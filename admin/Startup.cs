@@ -41,10 +41,6 @@ namespace Epa.Camd.Easey.JobScheduler
             //     });
             // });
 
-            var l = new List<Assembly>();
-            l.Add(typeof(RemoveExpiredRecord).Assembly);
-
-
             services.AddDbContext<NpgSqlContext>(options =>
                 options.UseNpgsql(connectionString)
             ); 
@@ -101,12 +97,6 @@ namespace Epa.Camd.Easey.JobScheduler
                     nameValueCollection.Set(quartzConfig.Current.Key, quartzConfig.Current.Value);
                 }
                 nameValueCollection.Set("quartz.dataSource.default.connectionString", connectionString);
-            },
-            () => {
-                var l = new List<Assembly>();
-                l.Add(typeof(RemoveExpiredRecord).Assembly);
-
-                return l;
             }
             );
             services.AddOptions();
