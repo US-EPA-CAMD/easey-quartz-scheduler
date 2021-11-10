@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SilkierQuartz;
 using Epa.Camd.Easey.RulesApi.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using DatabaseAccess;
 //using Epa.Camd.Easey.JobScheduler.Jobs;
 using System.Collections.Generic;
@@ -68,27 +69,13 @@ namespace Epa.Camd.Easey.JobScheduler
                 {
                     DayOfWeekStartIndexZero = false //Quartz uses 1-7 as the range
                 };
-            }
-            #if ENABLE_AUTH
-                        ,
-                        authenticationOptions =>
-                        {
-                            authenticationOptions.AuthScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                            authenticationOptions.SilkierQuartzClaim = "Silkier";
-                            authenticationOptions.SilkierQuartzClaimValue = "Quartz";
-                            authenticationOptions.UserName = "admin";
-                            authenticationOptions.UserPassword = "password";
-                            authenticationOptions.AccessRequirement = SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowOnlyUsersWithClaim;
-                            authenticationOptions.IsAuthenticationPersist = false
-                        }
-            #else 
-                ,
-                        authenticationOptions =>
-                        {
-                            authenticationOptions.AccessRequirement = SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowAnonymous;
-                        }
-            #endif
-            ,
+            },
+            authenticationOptions =>
+            {
+                authenticationOptions.UserName = "admin";
+                authenticationOptions.UserPassword = "password";
+                authenticationOptions.AccessRequirement = SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowOnlyAuthenticated;
+            },
             nameValueCollection => {
                 var quartzConfig = Configuration.GetSection("Quartz").GetChildren().GetEnumerator();
 

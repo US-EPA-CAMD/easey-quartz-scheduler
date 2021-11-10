@@ -7,12 +7,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace SilkierQuartz.Controllers
 {
     [AllowAnonymous]
     public class AuthenticateController : PageControllerBase
     {
+        private static readonly HttpClient client = new HttpClient();
+
         private readonly SilkierQuartzAuthenticationOptions authenticationOptions;
 
         public AuthenticateController(SilkierQuartzAuthenticationOptions authenticationOptions)
@@ -71,18 +74,25 @@ namespace SilkierQuartz.Controllers
         {
             var form = HttpContext.Request.Form;
 
-            if (string.Compare(request.UserName, authenticationOptions.UserName,
-                StringComparison.InvariantCulture) != 0 ||
-                string.Compare(request.Password, authenticationOptions.UserPassword,
-                    StringComparison.InvariantCulture) != 0)
+            var values = new Dictionary<string, string>
+            {
+                { "userId",  request.UserName},
+                { "password",  request.Password}
+            };
+
+            var content = new FormUrlEncodedContent(values);
+            var response = await client.PostAsync("https://easey-dev.app.cloud.gov/api/auth-mgmt/authentication/sign-in", content);
+
+            if(response.IsSuccessStatusCode){
+                await SignIn(request.IsPersist);
+
+                return RedirectToAction(nameof(SchedulerController.Index), nameof(Scheduler));
+            }
+            else
             {
                 request.IsLoginError = true;
                 return View(request);
             }
-
-            await SignIn(request.IsPersist);
-
-            return RedirectToAction(nameof(SchedulerController.Index), nameof(Scheduler));
         }
 
         [HttpGet]
