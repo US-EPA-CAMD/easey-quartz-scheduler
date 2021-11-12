@@ -19,6 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\CheckEngine\CheckEngine.csproj" />
     <ProjectReference Include="..\SilkierQuartz\SilkierQuartz.csproj" />
-    <ProjectReference Include="..\DatabaseAccess\DatabaseAccess.csproj" />
+    <ProjectReference Include="..\CheckEngine\DatabaseAccess\DatabaseAccess.csproj" />
   </ItemGroup>
 </Project>

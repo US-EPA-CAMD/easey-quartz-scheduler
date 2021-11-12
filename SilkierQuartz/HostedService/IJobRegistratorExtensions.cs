@@ -5,11 +5,15 @@ using SilkierQuartz.HostedService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace SilkierQuartz
 {
     public static class IJobRegistratorExtensions
     {
+
+        public static List<string> jobList = new List<string>();
+
         public static IJobRegistrator RegiserCRONJob<TJob>(
             this IJobRegistrator jobRegistrator,
             Action<JobOptions> jobOptions)
@@ -69,6 +73,8 @@ namespace SilkierQuartz
         {
             services.AddTransient<TJob>();
             var jobDetail = JobBuilder.Create(typeof(TJob)).Build();
+        
+            jobList.Add(jobDetail.JobType.ToString() + ", " + Assembly.GetAssembly(typeof(TJob)).ToString().Split(",")[0]);
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(jobDetail, new List<ITrigger>()));
             return services;
         }

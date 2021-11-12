@@ -15,6 +15,7 @@ namespace SilkierQuartz.Controllers
     [Authorize(Policy = SilkierQuartzAuthenticationOptions.AuthorizationPolicyName)]
     public class JobsController : PageControllerBase
     {
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -56,8 +57,11 @@ namespace SilkierQuartz.Controllers
 
             job.GroupList = (await Scheduler.GetJobGroupNames()).GroupArray();
             job.Group = SchedulerConstants.DefaultGroup;
-            job.TypeList = Services.Cache.JobTypes;
 
+            //job.TypeList = Services.Cache.JobTypes;
+
+            job.TypeList =  IJobRegistratorExtensions.jobList;
+            
             return View("Edit", new JobViewModel() { Job = job, DataMap = jobDataMap });
         }
 
@@ -115,7 +119,9 @@ namespace SilkierQuartz.Controllers
             jobModel.GroupList = (await Scheduler.GetJobGroupNames()).GroupArray();
 
             jobModel.Type = job.JobType.RemoveAssemblyDetails();
-            jobModel.TypeList = Services.Cache.JobTypes;
+            //jobModel.TypeList = Services.Cache.JobTypes;
+
+            jobModel.TypeList =  IJobRegistratorExtensions.jobList;
 
             jobModel.Description = job.Description;
             jobModel.Recovery = job.RequestsRecovery;

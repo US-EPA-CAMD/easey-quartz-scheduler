@@ -72,8 +72,6 @@ namespace Epa.Camd.Easey.JobScheduler
             },
             authenticationOptions =>
             {
-                authenticationOptions.UserName = "admin";
-                authenticationOptions.UserPassword = "password";
                 authenticationOptions.AccessRequirement = SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowOnlyAuthenticated;
             },
             nameValueCollection => {
@@ -88,8 +86,9 @@ namespace Epa.Camd.Easey.JobScheduler
             );
             services.AddOptions();
             //services.AddQuartzJob<cCheckEngine>();
-            //services.AddQuartzJob<RemoveExpiredRecord>();
-            services.AddQuartzJob<Epa.Camd.Easey.JobScheduler.Jobs.HelloWorld>();
+            services.AddQuartzJob<Epa.Camd.Easey.JobScheduler.Jobs.RemoveExpiredUserSession>();
+            services.AddQuartzJob<Epa.Camd.Easey.JobScheduler.Jobs.RemoveExpiredCheckoutRecord>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
