@@ -46,6 +46,8 @@ namespace Epa.Camd.Easey.JobScheduler
             //     });
             // });
 
+
+            services.AddSession();
             services.AddDbContext<NpgSqlContext>(options =>
                 options.UseNpgsql(connectionString)
             ); 
@@ -126,6 +128,8 @@ namespace Epa.Camd.Easey.JobScheduler
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseSession();
+            
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();

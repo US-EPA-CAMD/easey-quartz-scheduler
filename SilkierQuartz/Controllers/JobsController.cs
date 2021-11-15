@@ -15,11 +15,9 @@ namespace SilkierQuartz.Controllers
     [Authorize(Policy = SilkierQuartzAuthenticationOptions.AuthorizationPolicyName)]
     public class JobsController : PageControllerBase
     {
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-
             var keys = (await Scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup())).OrderBy(x => x.ToString());
             var list = new List<JobListItem>();
             var knownTypes = new List<string>();
