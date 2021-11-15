@@ -5,13 +5,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+
+using Quartz;
+using Quartz.Job;
+using Quartz.Impl.Matchers;
+
 using SilkierQuartz;
-using Epa.Camd.Easey.RulesApi.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using DatabaseAccess;
-//using Epa.Camd.Easey.JobScheduler.Jobs;
-using System.Collections.Generic;
-using System.Reflection;
+
+using Epa.Camd.Easey.JobScheduler.Jobs;
+using Epa.Camd.Easey.JobScheduler.Models;
+using Epa.Camd.Easey.JobScheduler.Jobs.Listeners;
 
 namespace Epa.Camd.Easey.JobScheduler
 {
@@ -82,17 +86,36 @@ namespace Epa.Camd.Easey.JobScheduler
                     nameValueCollection.Set(quartzConfig.Current.Key, quartzConfig.Current.Value);
                 }
                 nameValueCollection.Set("quartz.dataSource.default.connectionString", connectionString);
-            }
-            );
+            });
+
             services.AddOptions();
-            //services.AddQuartzJob<cCheckEngine>();
-            services.AddQuartzJob<Epa.Camd.Easey.JobScheduler.Jobs.RemoveExpiredUserSession>();
-            services.AddQuartzJob<Epa.Camd.Easey.JobScheduler.Jobs.RemoveExpiredCheckoutRecord>();
-            
+
+            // services.AddQuartzJob<SendMailJob>(
+            //     Constants.JobDetails.SEND_EMAIL_KEY,
+            //     Constants.JobDetails.SEND_EMAIL_DESCRIPTION
+            // );
+
+            // services.AddQuartzJob<CheckEngineEvaluation>(
+            //     Constants.JobDetails.CHECK_ENGINE_EVALUATION_KEY,
+            //     Constants.JobDetails.CHECK_ENGINE_EVALUATION_DESCRIPTION
+            // );
+
+            //services.AddQuartzJob<RemoveExpiredUserSession>();
+            //     Constants.JobDetails.EXPIRED_USER_SESSIONS_KEY,
+            //     Constants.JobDetails.EXPIRED_USER_SESSIONS_DESCRIPTION
+            // );
+            // services.AddQuartzJobDetail(
+            //     RemoveExpiredUserSession.WithJobDetail()
+            // );
+
+            // services.AddQuartzJob<RemoveExpiredCheckoutRecord>(
+            //     Constants.JobDetails.EXPIRED_CHECK_OUTS_KEY,
+            //     Constants.JobDetails.EXPIRED_CHECK_OUTS_DESCRIPTION
+            // );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -119,12 +142,32 @@ namespace Epa.Camd.Easey.JobScheduler
             app.UseSwagger(c => {
                 c.RouteTemplate = "quartz/api/swagger/{documentname}/swagger.json";
             });
+
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/quartz/api/swagger/v1/swagger.json", "v1");
                 c.RoutePrefix = "quartz/api/swagger";
             });
 
-             //app.UseQuartzJob<RemoveExpiredRecord>(TriggerBuilder.Create().WithSimpleSchedule(x => x.WithIntervalInSeconds(10).RepeatForever()));
+            IScheduler scheduler = app.GetScheduler();
+
+            if (!await scheduler.CheckExists(
+                    RemoveExpiredUserSession.WithJobKey()
+            ))
+            {
+                app.UseQuartzJob<RemoveExpiredUserSession>(
+                    RemoveExpiredUserSession.WithCronSchedule("0 0/2 * ? * * *")
+                );
+            }
+
+            // app.GetScheduler().ListenerManager.AddJobListener(
+            //     new CheckEngineEvaluationListener(Configuration),
+            //     KeyMatcher<JobKey>.KeyEquals(
+            //         new JobKey(
+            //             Constants.JobDetails.CHECK_ENGINE_EVALUATION_KEY,
+            //             Constants.JobDetails.CHECK_ENGINE_EVALUATION_GROUP
+            //         )
+            //     )
+            // );
         }
     }
 }

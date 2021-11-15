@@ -1,11 +1,13 @@
-using System.Threading.Tasks;
 using System;
-using Quartz;
-using Epa.Camd.Easey.RulesApi.Models;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Epa.Camd.Easey.Logging;
 
-namespace Epa.Camd.Easey.JobScheduler.Jobs{
+using Quartz;
+using Epa.Camd.Easey.JobScheduler.Models;
+using Epa.Camd.Easey.JobScheduler.Logging;
+
+namespace Epa.Camd.Easey.JobScheduler.Jobs
+{
     public class RemoveExpiredUserSession : IJob
     {
         private NpgSqlContext _dbContext = null;
@@ -31,6 +33,46 @@ namespace Epa.Camd.Easey.JobScheduler.Jobs{
 
             LogHelper.info(_logger, "Executed RemoveExpiredUserSession job successfully");
             return Task.CompletedTask;
+        }
+
+        public static JobKey WithJobKey()
+        {
+            return new JobKey(
+                Constants.JobDetails.EXPIRED_USER_SESSIONS_KEY,
+                Constants.JobDetails.EXPIRED_USER_SESSIONS_GROUP
+            );
+        }
+
+        public static TriggerKey WithTriggerKey()
+        {
+            return new TriggerKey(
+                Constants.TriggerDetails.EXPIRED_USER_SESSIONS_KEY,
+                Constants.TriggerDetails.EXPIRED_USER_SESSIONS_GROUP
+            );
+        }
+
+        public static IJobDetail WithJobDetail()
+        {
+            return JobBuilder.Create<RemoveExpiredUserSession>()
+                .WithIdentity(
+                    RemoveExpiredUserSession.WithJobKey()
+                )
+                .WithDescription(
+                    Constants.JobDetails.EXPIRED_USER_SESSIONS_DESCRIPTION
+                )
+                .Build();
+        }        
+
+        public static TriggerBuilder WithCronSchedule(string cronExpression)
+        {
+            return TriggerBuilder.Create()
+                .WithIdentity(
+                    RemoveExpiredUserSession.WithTriggerKey()
+                )
+                .WithDescription(
+                    Constants.TriggerDetails.EXPIRED_USER_SESSIONS_DESCRIPTION
+                )
+                .WithCronSchedule(cronExpression);
         }
     }
 }

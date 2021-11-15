@@ -1,11 +1,13 @@
-using System.Threading.Tasks;
 using System;
-using Quartz;
-using Epa.Camd.Easey.RulesApi.Models;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Epa.Camd.Easey.Logging;
 
-namespace Epa.Camd.Easey.JobScheduler.Jobs{
+using Quartz;
+using Epa.Camd.Easey.JobScheduler.Models;
+using Epa.Camd.Easey.JobScheduler.Logging;
+
+namespace Epa.Camd.Easey.JobScheduler.Jobs
+{
     public class RemoveExpiredCheckoutRecord : IJob
     {
         private NpgSqlContext _dbContext = null;

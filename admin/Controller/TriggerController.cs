@@ -1,91 +1,87 @@
-﻿/*
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
-using Quartz;
 using SilkierQuartz;
-
-using ECMPS.Checks.CheckEngine;
+using Epa.Camd.Easey.JobScheduler.Jobs;
+using Epa.Camd.Easey.JobScheduler.Models;
 
 namespace Epa.Camd.Easey.JobScheduler
 {
   [ApiController]
   [Route("quartz/api/triggers")]
-  [Produces("application/json")]  
+  [Produces("application/json")]
   public class TriggerController : ControllerBase
   {
-    private async Task<ActionResult> TriggerEvaluation(
+    private IConfiguration Configuration { get; }
+
+    public TriggerController(IConfiguration configuration)
+    {
+      Configuration = configuration;
+    }
+
+    private async Task<ActionResult> TriggerCheckEngineEvaluation(
       string processCode,
-      string group,
-      string key,
-      string jobDesc,
-      string triggerDesc,
       EvaluationRequest request
     ) {
-
       Services Services = (Services)Request.HttpContext.Items[typeof(Services)];
-      IScheduler Scheduler = Services.Scheduler;
+      
+      Guid id = Guid.NewGuid();
+      DateTime submittedOn = DateTime.Now;
 
-      IJobDetail job = JobBuilder.Create<cCheckEngine>()
-        .WithIdentity("Monitor Plan Evaluation", "DEFAULT")
-        .UsingJobData("ProcessCode", processCode)
-        .Build();
-
-      ITrigger trigger = TriggerBuilder.Create()
-        .WithIdentity("Monitor Plan Evaluation", "DEFAULT")
-        .UsingJobData("MonitorPlanId", request.MonitorPlanId)
-        .UsingJobData("ConfigurationName", request.ConfigurationName)
-        .StartNow()
-        .Build();
-
-      await Scheduler.ScheduleJob(job, trigger);
+      await CheckEngineEvaluation.StartNow(
+        Services.Scheduler,
+        id,
+        processCode,
+        request.MonitorPlanId,
+        request.UserId,
+        submittedOn
+      );
 
       return CreatedAtAction("EvaluationResponse)", new {
+        id = id,
         processCode = processCode,
-        facilityId = request.FacilityId,
-        facilityname = request.FacilityName,
         monitorPlanId = request.MonitorPlanId,
-        configurationName = request.ConfigurationName
+        userId = request.UserId,
+        submittedOn = submittedOn
       });
     }
 
     [HttpPost("monitor-plans")]
-    public async Task<ActionResult> TriggerMPEvaluation([FromBody] EvaluationRequest request) {
-      return await TriggerEvaluation(
-        "MP",
-        "DEFAULT",
-        "Monitor Plan Evaluation",
-        "Evaluates a Monitor Plan configuration",
-        $"Monitor Plan Configuration: {request.ConfigurationName}, Monitor Plan Id: {request.MonitorPlanId}",
-        request
-      );
+    public async Task<ActionResult> TriggerMPEvaluation([FromBody] EvaluationRequest request)
+    {
+      return await TriggerCheckEngineEvaluation("MP", request);
     }
 
     [HttpPost("qa-certifications")]
     public async Task<ActionResult> TriggerQAEvaluation([FromBody] EvaluationRequest request)
     {
-      return await TriggerEvaluation(
-        "QA",
-        "DEFAULT",
-        "",
-        "",
-        "",
-        request
-      );
+      return await TriggerCheckEngineEvaluation("QA", request);
     }
 
     [HttpPost("emissions")]
     public async Task<ActionResult> TriggerEMEvaluation([FromBody] EvaluationRequest request)
     {
-      return await TriggerEvaluation(
-        "EM",
-        "DEFAULT",
-        "",
-        "",
-        "",
-        request
+      return await TriggerCheckEngineEvaluation("EM", request);
+    }
+
+    [HttpPost("email")]
+    public async Task<ActionResult> SendEmail([FromBody] SendEmailRequest request)
+    {
+      Services services = (Services)Request.HttpContext.Items[typeof(Services)];
+      
+      await SendMail.StartNow(
+        services.Scheduler,
+        request.ToEmail,
+        request.FromEmail,
+        request.Subject,
+        request.Message,
+        Configuration["EASEY_SMTP_HOST"],
+        Configuration["EASEY_SMTP_PORT"]
       );
+
+      return CreatedAtAction("SendEmailResponse", request);
     }
   }
 }
-*/
