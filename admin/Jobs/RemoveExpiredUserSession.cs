@@ -21,18 +21,26 @@ namespace Epa.Camd.Easey.JobScheduler.Jobs
 
         public Task Execute(IJobExecutionContext context)
         {
-            LogHelper.info(_logger, "Executing RemoveExpiredUserSession job");
-            try{
-                var sql_command = "DELETE FROM camdecmpswks.user_session WHERE token_expiration < now()";
+            try
+            {
+                LogHelper.info(_logger, "Executing RemoveExpiredUserSession job");
+                try{
+                    var sql_command = "DELETE FROM camdecmpswks.user_session WHERE token_expiration < now()";
 
-                _dbContext.ExecuteSql(sql_command);
-            }
-            catch(Exception e){
-                LogHelper.error(_logger, e.Message, new LogVariable("stack", e.StackTrace));
-            }
+                    _dbContext.ExecuteSql(sql_command);
+                }
+                catch(Exception e){
+                    LogHelper.error(_logger, e.Message, new LogVariable("stack", e.StackTrace));
+                }
 
-            LogHelper.info(_logger, "Executed RemoveExpiredUserSession job successfully");
-            return Task.CompletedTask;
+                LogHelper.info(_logger, "Executed RemoveExpiredUserSession job successfully");
+                return Task.CompletedTask;
+            }
+            catch(Exception e)
+            {
+                Console.Write(e.Message);
+                return null;
+            }
         }
 
         public static JobKey WithJobKey()
@@ -53,7 +61,7 @@ namespace Epa.Camd.Easey.JobScheduler.Jobs
 
         public static IJobDetail WithJobDetail()
         {
-            return JobBuilder.Create<RemoveExpiredUserSession>()
+            return JobBuilder.Create(typeof(RemoveExpiredUserSession))
                 .WithIdentity(
                     RemoveExpiredUserSession.WithJobKey()
                 )

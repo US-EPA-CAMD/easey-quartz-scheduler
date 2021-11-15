@@ -106,9 +106,14 @@ namespace Epa.Camd.Easey.JobScheduler
             //     Constants.JobDetails.EXPIRED_USER_SESSIONS_KEY,
             //     Constants.JobDetails.EXPIRED_USER_SESSIONS_DESCRIPTION
             // );
-            // services.AddQuartzJobDetail(
+
+            services.AddQuartzJob<RemoveExpiredUserSession>(RemoveExpiredUserSession.WithJobKey(), Constants.JobDetails.EXPIRED_USER_SESSIONS_DESCRIPTION);
+            services.AddQuartzJob<RemoveExpiredCheckoutRecord>(RemoveExpiredCheckoutRecord.WithJobKey(), Constants.JobDetails.EXPIRED_CHECK_OUTS_DESCRIPTION);
+
+            //services.AddQuartzJobDetail(
             //     RemoveExpiredUserSession.WithJobDetail()
-            // );
+            //);
+            
 
             // services.AddQuartzJob<RemoveExpiredCheckoutRecord>(
             //     Constants.JobDetails.EXPIRED_CHECK_OUTS_KEY,
@@ -129,7 +134,6 @@ namespace Epa.Camd.Easey.JobScheduler
             }
 
             app.UseSession();
-            
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
@@ -154,6 +158,7 @@ namespace Epa.Camd.Easey.JobScheduler
 
             IScheduler scheduler = app.GetScheduler();
 
+            
             if (!await scheduler.CheckExists(
                     RemoveExpiredUserSession.WithJobKey()
             ))
@@ -162,6 +167,16 @@ namespace Epa.Camd.Easey.JobScheduler
                     RemoveExpiredUserSession.WithCronSchedule("0 0/2 * ? * * *")
                 );
             }
+
+            if (!await scheduler.CheckExists(
+                    RemoveExpiredCheckoutRecord.WithJobKey()
+            ))
+            {
+                app.UseQuartzJob<RemoveExpiredCheckoutRecord>(
+                    RemoveExpiredCheckoutRecord.WithCronSchedule("0 0/2 * ? * * *")
+                );
+            }
+            
 
             // app.GetScheduler().ListenerManager.AddJobListener(
             //     new CheckEngineEvaluationListener(Configuration),
