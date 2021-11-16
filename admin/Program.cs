@@ -8,7 +8,7 @@ using Serilog.Formatting.Compact;
 
 using SilkierQuartz;
 
-namespace Epa.Camd.Easey.JobScheduler
+namespace Epa.Camd.Quartz.Scheduler
 {
   public class Program
   {

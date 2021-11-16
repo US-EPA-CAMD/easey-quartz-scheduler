@@ -1,4 +1,4 @@
-namespace Epa.Camd.Easey.JobScheduler
+namespace Epa.Camd.Quartz.Scheduler
 {
   public static class Constants
   {

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Quartz;
 using Quartz.Listener;
 
-namespace Epa.Camd.Easey.JobScheduler.Jobs.Listeners
+namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
 {
   public class CheckEngineEvaluationListener : JobListenerSupport
   {

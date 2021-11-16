@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 using SilkierQuartz;
-using Epa.Camd.Easey.JobScheduler.Jobs;
-using Epa.Camd.Easey.JobScheduler.Models;
+using Epa.Camd.Quartz.Scheduler.Jobs;
+using Epa.Camd.Quartz.Scheduler.Models;
 
-namespace Epa.Camd.Easey.JobScheduler
+namespace Epa.Camd.Quartz.Scheduler
 {
   [ApiController]
   [Route("quartz/api/triggers")]

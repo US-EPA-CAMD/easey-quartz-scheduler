@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Epa.Camd.Easey.JobScheduler.Models
+namespace Epa.Camd.Quartz.Scheduler.Models
 {
 	[Table("monitor_plan_location", Schema = "camdecmpswks")]
 	public class MonitorPlanLocation

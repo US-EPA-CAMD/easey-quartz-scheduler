@@ -1,4 +1,4 @@
-namespace Epa.Camd.Easey.JobScheduler.Models
+namespace Epa.Camd.Quartz.Scheduler.Models
 {
 	public class EvaluationRequest {
 		public string UserId { get; set; }

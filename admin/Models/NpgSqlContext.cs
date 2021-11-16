@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 using Npgsql;
 
-namespace Epa.Camd.Easey.JobScheduler.Models
+namespace Epa.Camd.Quartz.Scheduler.Models
 {
   public class NpgSqlContext : DbContext
   {

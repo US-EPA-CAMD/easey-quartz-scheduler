@@ -13,11 +13,11 @@ using Quartz.Impl.Matchers;
 using SilkierQuartz;
 using DatabaseAccess;
 
-using Epa.Camd.Easey.JobScheduler.Jobs;
-using Epa.Camd.Easey.JobScheduler.Models;
-using Epa.Camd.Easey.JobScheduler.Jobs.Listeners;
+using Epa.Camd.Quartz.Scheduler.Jobs;
+using Epa.Camd.Quartz.Scheduler.Models;
+using Epa.Camd.Quartz.Scheduler.Jobs.Listeners;
 
-namespace Epa.Camd.Easey.JobScheduler
+namespace Epa.Camd.Quartz.Scheduler
 {
     public class Startup
     {

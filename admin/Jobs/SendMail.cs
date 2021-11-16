@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Quartz;
 using Quartz.Job;
 
-namespace Epa.Camd.Easey.JobScheduler.Jobs
+namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   // There is no execute method becasue we are using the built in Quartz SendMailJob
   // However, this class was created to house the static StartNow function like we have for our custom jobs

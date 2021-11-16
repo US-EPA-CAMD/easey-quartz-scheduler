@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
-namespace Epa.Camd.Easey.JobScheduler.Logging
+namespace Epa.Camd.Quartz.Scheduler.Logging
 {
   public class LogHelper
   {

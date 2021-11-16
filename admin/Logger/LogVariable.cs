@@ -1,4 +1,4 @@
-namespace Epa.Camd.Easey.JobScheduler.Logging
+namespace Epa.Camd.Quartz.Scheduler.Logging
 {
   public class LogVariable
   {

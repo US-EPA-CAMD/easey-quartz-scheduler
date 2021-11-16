@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 using Quartz;
-using Epa.Camd.Easey.JobScheduler.Models;
-using Epa.Camd.Easey.JobScheduler.Logging;
+using Epa.Camd.Quartz.Scheduler.Models;
+using Epa.Camd.Quartz.Scheduler.Logging;
 
-namespace Epa.Camd.Easey.JobScheduler.Jobs
+namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
     public class RemoveExpiredCheckoutRecord : IJob
     {

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Epa.Camd.Easey.JobScheduler.Models
+namespace Epa.Camd.Quartz.Scheduler.Models
 {
 	[Table("plant", Schema = "camd")]
 	public class Facility
