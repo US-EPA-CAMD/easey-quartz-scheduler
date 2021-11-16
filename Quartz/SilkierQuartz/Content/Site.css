@@ -3,11 +3,28 @@
 }
 
 #top-menu {
-    background-color: #294158;
+    margin: 0%;
+    background-color: #1a4480;
+}
+
+#environment-alert{
+    width: 100%;
+    padding-top: .5rem;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 400;
+    padding-bottom: .5rem;
+    background: linear-gradient(to bottom, #520001 0%, #6c0810 100%);
+}
+
+#environment-text{
+    line-height: 1.5;
+    color:gold;
 }
 
 .top.menu .header.item img.logo {
-    margin-right: 0.8em;
+    margin-right: 0.4em;
+    height: auto;  
 }
 
 .top.menu .header.item {
@@ -500,3 +517,4 @@ table#history-list > tbody > tr:not(.error-row):hover,
 table#history-list > tbody > tr:hover + tr.error-row {
     background-color: #f4f4f4;
 }
+
