@@ -10,10 +10,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
+using SilkierQuartz;
 
 namespace SilkierQuartz.Controllers
 {
-
     public class AuthResponse{
         public string userId;
         public string firstName;
@@ -91,7 +91,8 @@ namespace SilkierQuartz.Controllers
             };
 
             var content = new FormUrlEncodedContent(values);
-            var response = await client.PostAsync("https://easey-dev.app.cloud.gov/api/auth-mgmt/authentication/sign-in", content);
+            
+            var response = await client.PostAsync(IJobRegistratorExtensions.AppConfiguration["AuthUrl"] + "/authentication/sign-in", content);
 
             if(response.IsSuccessStatusCode){
                 AuthResponse parsed = JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
@@ -112,10 +113,9 @@ namespace SilkierQuartz.Controllers
         [Authorize(Policy = SilkierQuartzAuthenticationOptions.AuthorizationPolicyName)]
         public async Task<IActionResult> Logout()
         {    
-            
             string token = HttpContext.Session.GetString("token");
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            var response = await client.DeleteAsync("https://easey-dev.app.cloud.gov/api/auth-mgmt/authentication/sign-out");
+            var response = await client.DeleteAsync(IJobRegistratorExtensions.AppConfiguration["AuthUrl"] + "/authentication/sign-out");
             
             await HttpContext.SignOutAsync(authenticationOptions.AuthScheme);
             return RedirectToAction(nameof(Login));
