@@ -6,13 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Configuration;
 
 namespace SilkierQuartz
 {
     public static class IJobRegistratorExtensions
     {
-
         public static List<string> jobList = new List<string>();
+        public static IConfiguration AppConfiguration; 
 
         public static IJobRegistrator RegiserCRONJob<TJob>(
             this IJobRegistrator jobRegistrator,
@@ -33,9 +34,14 @@ namespace SilkierQuartz
             Func<IEnumerable<TriggerBuilder>> triggers)
             where TJob : class, IJob
         {
-
             return jobRegistrator.RegiserJob<TJob>(triggers());
         }
+
+        public static IServiceCollection AddAppConfiguration(this IServiceCollection services, IConfiguration configuration){
+            AppConfiguration = configuration;
+            return services;
+        }
+
         public static IServiceCollection AddQuartzJobDetail(this IServiceCollection services, Func<IJobDetail> detail)
         {
             
@@ -66,7 +72,6 @@ namespace SilkierQuartz
 
         public static IServiceCollection AddQuartzJobDetail(this IServiceCollection services, IJobDetail detail)
         {
-            jobList.Add(detail.JobType.ToString() + ", easey-job-scheduler");
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(detail, new List<ITrigger>()));
             return services;
         }
