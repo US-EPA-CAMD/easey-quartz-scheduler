@@ -1,6 +1,7 @@
-public class EvaluationRequest {
-	public int FacilityId { get; set; }
-	public string FacilityName { get; set; }
-	public string MonitorPlanId { get; set; }
-  public string ConfigurationName { get; set; }
+namespace Epa.Camd.Easey.JobScheduler.Models
+{
+	public class EvaluationRequest {
+		public string UserId { get; set; }
+		public string MonitorPlanId { get; set; }
+	}
 }

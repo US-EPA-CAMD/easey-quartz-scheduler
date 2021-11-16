@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using SilkierQuartz.Models;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,18 @@ using System.Diagnostics;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace SilkierQuartz.Controllers
 {
+
+    public class AuthResponse{
+        public string userId;
+        public string firstName;
+        public string lastName;
+        public string token;
+    }
+
     [AllowAnonymous]
     public class AuthenticateController : PageControllerBase
     {
@@ -84,6 +94,9 @@ namespace SilkierQuartz.Controllers
             var response = await client.PostAsync("https://easey-dev.app.cloud.gov/api/auth-mgmt/authentication/sign-in", content);
 
             if(response.IsSuccessStatusCode){
+                AuthResponse parsed = JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
+                HttpContext.Session.SetString("token", parsed.token);
+
                 await SignIn(request.IsPersist);
 
                 return RedirectToAction(nameof(SchedulerController.Index), nameof(Scheduler));
@@ -98,7 +111,12 @@ namespace SilkierQuartz.Controllers
         [HttpGet]
         [Authorize(Policy = SilkierQuartzAuthenticationOptions.AuthorizationPolicyName)]
         public async Task<IActionResult> Logout()
-        {
+        {    
+            
+            string token = HttpContext.Session.GetString("token");
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var response = await client.DeleteAsync("https://easey-dev.app.cloud.gov/api/auth-mgmt/authentication/sign-out");
+            
             await HttpContext.SignOutAsync(authenticationOptions.AuthScheme);
             return RedirectToAction(nameof(Login));
         }

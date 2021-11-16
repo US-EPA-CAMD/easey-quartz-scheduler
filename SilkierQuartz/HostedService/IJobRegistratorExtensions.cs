@@ -38,6 +38,7 @@ namespace SilkierQuartz
         }
         public static IServiceCollection AddQuartzJobDetail(this IServiceCollection services, Func<IJobDetail> detail)
         {
+            
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(detail(), new List<ITrigger>()));
             return services;
         }
@@ -65,14 +66,15 @@ namespace SilkierQuartz
 
         public static IServiceCollection AddQuartzJobDetail(this IServiceCollection services, IJobDetail detail)
         {
+            jobList.Add(detail.JobType.ToString() + ", easey-job-scheduler");
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(detail, new List<ITrigger>()));
             return services;
         }
 
-        public static IServiceCollection AddQuartzJob<TJob>(this IServiceCollection services) where TJob : class
+        public static IServiceCollection AddQuartzJob<TJob>(this IServiceCollection services, JobKey key, string description) where TJob : class
         {
             services.AddTransient<TJob>();
-            var jobDetail = JobBuilder.Create(typeof(TJob)).Build();
+            var jobDetail = JobBuilder.Create(typeof(TJob)).WithIdentity(key).WithDescription(description).Build();
         
             jobList.Add(jobDetail.JobType.ToString() + ", " + Assembly.GetAssembly(typeof(TJob)).ToString().Split(",")[0]);
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(jobDetail, new List<ITrigger>()));
