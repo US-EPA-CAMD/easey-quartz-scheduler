@@ -24,7 +24,14 @@ namespace Epa.Camd.Easey.JobScheduler.Jobs
             LogHelper.info(_logger, "Executing RemoveExpiredCheckoutRecord job");
             try
             {
-                var sql_command = "DELETE FROM camdecmpswks.user_check_out WHERE last_activity > now() + interval '2' minute";
+                JobDataMap dataMap = context.MergedJobDataMap;
+                int interval;
+                if(dataMap.Contains("Interval"))
+                    interval = dataMap.GetInt("Interval");
+                else
+                    interval = 2;
+
+                var sql_command = "DELETE FROM camdecmpswks.user_check_out WHERE last_activity > now() + interval '" + interval.ToString() + "' minute";
 
                 _dbContext.ExecuteSql(sql_command);
             }

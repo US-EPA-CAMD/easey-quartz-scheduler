@@ -45,8 +45,6 @@ namespace Epa.Camd.Easey.JobScheduler
             //         .AllowAnyHeader();
             //     });
             // });
-
-
             services.AddSession();
             services.AddDbContext<NpgSqlContext>(options =>
                 options.UseNpgsql(connectionString)
@@ -92,33 +90,30 @@ namespace Epa.Camd.Easey.JobScheduler
 
             services.AddOptions();
 
-            // services.AddQuartzJob<SendMailJob>(
-            //     Constants.JobDetails.SEND_EMAIL_KEY,
-            //     Constants.JobDetails.SEND_EMAIL_DESCRIPTION
-            // );
+            services.AddQuartzJob<SendMailJob>(
+                new JobKey(
+                    Constants.JobDetails.SEND_EMAIL_KEY,
+                    Constants.JobDetails.SEND_EMAIL_GROUP
+                ),
+                Constants.JobDetails.SEND_EMAIL_DESCRIPTION
+            );
 
-            // services.AddQuartzJob<CheckEngineEvaluation>(
-            //     Constants.JobDetails.CHECK_ENGINE_EVALUATION_KEY,
-            //     Constants.JobDetails.CHECK_ENGINE_EVALUATION_DESCRIPTION
-            // );
+            services.AddQuartzJob<CheckEngineEvaluation>(
+                CheckEngineEvaluation.WithJobKey(),
+                Constants.JobDetails.CHECK_ENGINE_EVALUATION_DESCRIPTION
+            );
 
-            //services.AddQuartzJob<RemoveExpiredUserSession>();
-            //     Constants.JobDetails.EXPIRED_USER_SESSIONS_KEY,
-            //     Constants.JobDetails.EXPIRED_USER_SESSIONS_DESCRIPTION
-            // );
-
-            services.AddQuartzJob<RemoveExpiredUserSession>(RemoveExpiredUserSession.WithJobKey(), Constants.JobDetails.EXPIRED_USER_SESSIONS_DESCRIPTION);
-            services.AddQuartzJob<RemoveExpiredCheckoutRecord>(RemoveExpiredCheckoutRecord.WithJobKey(), Constants.JobDetails.EXPIRED_CHECK_OUTS_DESCRIPTION);
-
-            //services.AddQuartzJobDetail(
-            //     RemoveExpiredUserSession.WithJobDetail()
-            //);
+            services.AddQuartzJob<RemoveExpiredUserSession>(
+                RemoveExpiredUserSession.WithJobKey(), 
+                Constants.JobDetails.EXPIRED_USER_SESSIONS_DESCRIPTION
+            );
             
+            services.AddQuartzJob<RemoveExpiredCheckoutRecord>(
+                RemoveExpiredCheckoutRecord.WithJobKey(), 
+                Constants.JobDetails.EXPIRED_CHECK_OUTS_DESCRIPTION
+            );
 
-            // services.AddQuartzJob<RemoveExpiredCheckoutRecord>(
-            //     Constants.JobDetails.EXPIRED_CHECK_OUTS_KEY,
-            //     Constants.JobDetails.EXPIRED_CHECK_OUTS_DESCRIPTION
-            // );
+            services.AddAppConfiguration(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -157,14 +152,13 @@ namespace Epa.Camd.Easey.JobScheduler
             });
 
             IScheduler scheduler = app.GetScheduler();
-
             
             if (!await scheduler.CheckExists(
                     RemoveExpiredUserSession.WithJobKey()
             ))
             {
                 app.UseQuartzJob<RemoveExpiredUserSession>(
-                    RemoveExpiredUserSession.WithCronSchedule("0 0/2 * ? * * *")
+                    RemoveExpiredUserSession.WithCronSchedule("0 0/15 * ? * * *")
                 );
             }
 
@@ -173,20 +167,20 @@ namespace Epa.Camd.Easey.JobScheduler
             ))
             {
                 app.UseQuartzJob<RemoveExpiredCheckoutRecord>(
-                    RemoveExpiredCheckoutRecord.WithCronSchedule("0 0/2 * ? * * *")
+                    RemoveExpiredCheckoutRecord.WithCronSchedule("0 0/15 * ? * * *")
                 );
             }
-            
 
-            // app.GetScheduler().ListenerManager.AddJobListener(
-            //     new CheckEngineEvaluationListener(Configuration),
-            //     KeyMatcher<JobKey>.KeyEquals(
-            //         new JobKey(
-            //             Constants.JobDetails.CHECK_ENGINE_EVALUATION_KEY,
-            //             Constants.JobDetails.CHECK_ENGINE_EVALUATION_GROUP
-            //         )
-            //     )
-            // );
+            app.GetScheduler().ListenerManager.AddJobListener(
+                new CheckEngineEvaluationListener(Configuration),
+                KeyMatcher<JobKey>.KeyEquals(
+                    new JobKey(
+                        Constants.JobDetails.CHECK_ENGINE_EVALUATION_KEY,
+                        Constants.JobDetails.CHECK_ENGINE_EVALUATION_GROUP
+                    )
+                )
+            );
+        
         }
     }
 }

@@ -69,6 +69,7 @@ namespace Epa.Camd.Easey.JobScheduler
     [HttpPost("email")]
     public async Task<ActionResult> SendEmail([FromBody] SendEmailRequest request)
     {
+
       Services services = (Services)Request.HttpContext.Items[typeof(Services)];
       
       await SendMail.StartNow(
@@ -77,8 +78,8 @@ namespace Epa.Camd.Easey.JobScheduler
         request.FromEmail,
         request.Subject,
         request.Message,
-        Configuration["EASEY_SMTP_HOST"],
-        Configuration["EASEY_SMTP_PORT"]
+        Configuration["EmailSettings:EASEY_QUARTZ_SMTP_HOST"],
+        Configuration["EmailSettings:EASEY_QUARTZ_SMTP_PORT"]
       );
 
       return CreatedAtAction("SendEmailResponse", request);

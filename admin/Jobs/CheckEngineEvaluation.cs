@@ -112,5 +112,20 @@ namespace Epa.Camd.Easey.JobScheduler.Jobs
 
       await scheduler.ScheduleJob(job, trigger);
     }
+
+    public static JobKey WithJobKey()
+    {
+       return new JobKey(
+           Constants.JobDetails.CHECK_ENGINE_EVALUATION_KEY,
+           Constants.JobDetails.CHECK_ENGINE_EVALUATION_GROUP
+       );
+    }
+    public static TriggerKey WithTriggerKey()
+    {
+        return new TriggerKey(
+           Constants.JobDetails.CHECK_ENGINE_EVALUATION_KEY,
+           Constants.JobDetails.CHECK_ENGINE_EVALUATION_GROUP
+        );
+    }
   }
 }
