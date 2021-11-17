@@ -32,12 +32,20 @@
     <script src="Content/Scripts/global.js"></script>
 </head>
 <body>
+
+    <div class="ui container" id="environment-alert">
+        <p id="environment-text"> EPA development environment: The content on this page is not production data and this site is being used for <b>development</b> and/or <b>testing</b> purposes only. </p>
+    </div>
+
+    <div class="ui container" style="padding:15px;">
+        <img class="logo" src="{{Logo}}" width="15%" height="15%">
+    </div>
+
     <div class="ui top inverted stackable menu" id="top-menu">
         <div class="ui container">
             <div class="ui header item">
-                <img class="logo" src="{{Logo}}">
                 <a class="navbar-brand" href="{{BaseUrl}}">
-                    {{ProductName}} SilkierQuartz
+                    {{ProductName}} Easey-Quartz-Scheduler
                 </a>
             </div>
 
@@ -76,10 +84,5 @@
         });
     </script>
 
-    {{#footer}}
-    <footer style="text-align:center; margin-top: 3em; padding: .8em 0; background-color: #f8f8f8; font-size: 90%; border-top: 1px solid rgba(34,36,38,.1);">
-        <a href="https://github.com/maikebing/SilkierQuartz" target="_blank" style="color: #909090"><i class="github icon"></i> SilkierQuartz&nbsp;&nbsp;v{{SilkierQuartzVersion}}</a>
-    </footer>
-    {{/footer}}
 </body>
 </html>
