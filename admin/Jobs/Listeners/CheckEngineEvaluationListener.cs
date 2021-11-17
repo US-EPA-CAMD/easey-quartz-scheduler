@@ -16,19 +16,41 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
     public CheckEngineEvaluationListener(IConfiguration configuration)
     {
       Configuration = configuration;
-    }    
+    }
 
     public override async Task JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException, CancellationToken cancellationToken = default)
     {
-      //TODO: get userId from context and use CDX to get user email address
-      string toEmail = "kyleherceg@cvpcorp.com";
+      JobKey key = context.JobDetail.Key;
+      JobDataMap dataMap = context.MergedJobDataMap;
+
+      string id = dataMap.GetString("Id");
+      string processCode = dataMap.GetString("ProcessCode");
+      int facilityId = dataMap.GetIntValue("FacilityId");
+      string facilityName = dataMap.GetString("FacilityName");
+      string monitorPlanId = dataMap.GetString("MonitorPlanId");
+      string configuration = dataMap.GetString("Configuration");
+      string userId = dataMap.GetString("UserId");
+      string submittedOn = dataMap.GetString("SubmittedOn");
+
+      string toEmail = "jasonwhitehead@cvpcorp.com";//dataMap.GetString("UserEmail");
       string fromEmail = Configuration["EmailSettings:EASEY_QUARTZ_EMAIL"];
-      //TODO: confirm subject line
-      string subject = "Check Engine Evaluation Status";
-      //TODO: confirm message format & add link to eval report
-      string message = "This is a test of the Monitor Plan evaluation status email";
       string smtpHost = Configuration["EmailSettings:EASEY_QUARTZ_SMTP_HOST"];
       string smtpPort = Configuration["EmailSettings:EASEY_QUARTZ_SMTP_PORT"];
+
+      string subject = string.Format(
+        "{0} Evaluation of {1} {2} Completed",
+        CheckEngineEvaluation.GetProcess(processCode),
+        facilityName,
+        configuration
+      );
+
+      string message = string.Format(
+        "{0} Evaluation of {1} {2} completed with an Evaluation Status of {3}",
+        CheckEngineEvaluation.GetProcess(processCode),
+        facilityName,
+        configuration,
+        "PASS"
+      );;
 
       await SendMail.StartNow(
         context.Scheduler,
@@ -36,6 +58,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
         fromEmail,
         subject,
         message,
+        subject,
         smtpHost,
         smtpPort
       );

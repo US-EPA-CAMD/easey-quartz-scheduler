@@ -1,11 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 using Quartz;
+using SilkierQuartz;
+
 using Epa.Camd.Quartz.Scheduler.Models;
 using Epa.Camd.Quartz.Scheduler.Logging;
 
@@ -14,13 +15,34 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
   public class CheckEngineEvaluation : IJob
   {
     private readonly ILogger _logger;
-
     private NpgSqlContext _dbContext = null;
+    private IConfiguration Configuration { get; }
 
-    public CheckEngineEvaluation(NpgSqlContext dbContext, ILogger<CheckEngineEvaluation> logger)
+    public static class Identity
     {
-      _dbContext = dbContext;
+      public static readonly string Group = Constants.QuartzGroups.EVALUATIONS;      
+      public static readonly string JobName = "{0} Evaluation";
+      public static readonly string JobDescription = "Evaluates a {0} data set for accuracy as specified by the EPA Part 75 reporting instructions.";
+      public static readonly string TriggerName = "{0} Evaluation ({1} {2})";
+      public static readonly string TriggerDescription = "Evaluates a {0} data set for accuracy as specified by the EPA Part 75 reporting instructions.";
+    }
+
+    public static void RegisterWithQuartz(IServiceCollection services)
+    {
+      services.AddQuartzJob<CheckEngineEvaluation>(WithJobKey("MP"), Identity.JobDescription);
+      services.AddQuartzJob<CheckEngineEvaluation>(WithJobKey("QA"), Identity.JobDescription);
+      services.AddQuartzJob<CheckEngineEvaluation>(WithJobKey("EM"), Identity.JobDescription);
+    }    
+
+    public CheckEngineEvaluation(
+      NpgSqlContext dbContext,
+      IConfiguration configuration,
+      ILogger<CheckEngineEvaluation> logger
+    )
+    {
       _logger = logger;
+      _dbContext = dbContext;
+      Configuration = configuration;
     }
 
     public Task Execute(IJobExecutionContext context)
@@ -31,52 +53,49 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         JobDataMap dataMap = context.MergedJobDataMap;
 
         string id = dataMap.GetString("Id");
-        string userId = dataMap.GetString("UserId");
-        string monPlanId = dataMap.GetString("MonitorPlanId");
         string processCode = dataMap.GetString("ProcessCode");
+        int facilityId = dataMap.GetIntValue("FacilityId");
+        string facilityName = dataMap.GetString("FacilityName");
+        string monitorPlanId = dataMap.GetString("MonitorPlanId");
+        string configuration = dataMap.GetString("Configuration");
+        string userId = dataMap.GetString("UserId");
         string submittedOn = dataMap.GetString("SubmittedOn");
 
         LogHelper.info(
           _logger, $"Executing {key.Group}.{key.Name} with data map...",
           new LogVariable("Id", id),
           new LogVariable("Process Code", processCode),
-          new LogVariable("Monior Plan Id", monPlanId),
+          new LogVariable("Facility Id", facilityId),
+          new LogVariable("Facility Name", facilityName),
+          new LogVariable("Monior Plan Id", monitorPlanId),
+          new LogVariable("Configuration", configuration),
           new LogVariable("User Id", userId),
           new LogVariable("Submitted On", submittedOn)
         );
 
-        MonitorPlan mp = _dbContext.MonitorPlans.Find(monPlanId);
-        Facility fac = _dbContext.Facilities.Find(mp.FacilityId);
+        MonitorPlan mp = _dbContext.MonitorPlans.Find(monitorPlanId);
+        mp.EvalStatus = "WIP";
+        _dbContext.MonitorPlans.Update(mp);
+        _dbContext.SaveChanges();
 
-        List<MonitorPlanLocation> mpl = _dbContext.MonitorPlanLocations.FromSqlRaw(
-          @"SELECT * FROM camdecmpswks.monitor_plan_location WHERE mon_plan_id = {0}",
-          monPlanId
-        ).ToList();
+        /////////////////////////////////////////////////////////////////////////////////////////////
+        // PLUGIN IN CHECK ENGINE HERE
 
-        string[] locationIds = mpl.Select(x => x.LocationId).ToArray();
-        
-        List<MonitorLocation> mlocs = _dbContext.MonitorLocations.FromSqlRaw(@"
-          SELECT ml.mon_loc_id, u.unit_id, u.unitid, sp.stack_pipe_id, sp.stack_name
-          FROM camdecmpswks.monitor_location ml
-          LEFT JOIN camd.unit u ON ml.unit_id = u.unit_id
-          LEFT JOIN camdecmpswks.stack_pipe sp ON ml.stack_pipe_id = sp.stack_pipe_id
-          WHERE mon_loc_id IN ({0})
-          ORDER BY unitId, stack_name",
-          locationIds
-        ).ToList();
+        // Remove once actual Check Engine has bee plugged in
+        System.Threading.Thread.Sleep(5000);
 
-        string config = string.Join(", ", mlocs.Select(x =>
-          string.IsNullOrWhiteSpace(x.UnitName) ? x.StackName : x.UnitName
-        ));
+        // TODO: instantiate Check Engine and execute the proper process based on the process code
+        LogHelper.info(_logger, "Executing Checks...");
 
-        //System.Threading.Thread.Sleep(30000);
-        //item.StatusCode = "Complete";
-        //_dbContext.Submissions.Update(item);
-        //_dbContext.SaveChanges();
+        // Remove once actual Check Engine has bee plugged in
+        System.Threading.Thread.Sleep(30000);
+        /////////////////////////////////////////////////////////////////////////////////////////////
 
-        //await Console.Out.WriteLineAsync($"{key.Group} process ended for {key.Name}...");
+        mp.EvalStatus = "PASS"; // this will need to be set based off the check session final results
+        _dbContext.MonitorPlans.Update(mp);
+        _dbContext.SaveChanges();
 
-        LogHelper.info(_logger, "Executed CheckEngineEvaluation job successfully");
+        LogHelper.info(_logger, $"{key.Group}.{key.Name} completed successfully");
         return Task.CompletedTask;
       }
       catch (Exception ex)
@@ -86,46 +105,73 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
+    public static string GetProcess(string processCode)
+    {
+      switch(processCode)
+      {
+        case "MP": return "Monitor Plan";
+        case "QA": return "QA-Test Certification";
+        case "EM": return "Emissions";
+      }
+
+      return null;
+    }
+
+    public static JobKey WithJobKey(string processCode)
+    {
+      return new JobKey(string.Format(
+          Identity.JobName,
+          GetProcess(processCode)
+        ),
+        Identity.Group
+      );
+    }
+
+    public static TriggerKey WithTriggerKey(string processCode, string facilityName, string configuration)
+    {
+        return new TriggerKey(string.Format(
+            Identity.TriggerName,
+            GetProcess(processCode),
+            facilityName,
+            configuration
+          ),
+          Identity.Group
+        );
+    }
+
     public static async Task StartNow(
       IScheduler scheduler,
       Guid id,
       string processCode,
+      int facilityId,
+      string facilityName,
       string monitorPlanId,
+      string configuration,
       string userId,
       DateTime submittedOn
     ) {
+      string processName = GetProcess(processCode);
+
       IJobDetail job = JobBuilder.Create<CheckEngineEvaluation>()
-        .WithIdentity(
-          Constants.JobDetails.CHECK_ENGINE_EVALUATION_KEY,
-          Constants.JobDetails.CHECK_ENGINE_EVALUATION_GROUP
-        )
+        .WithIdentity(WithJobKey(processCode))
+        .WithDescription(string.Format(Identity.JobDescription, processName))
         .UsingJobData("ProcessCode", processCode)
         .Build();
 
       ITrigger trigger = TriggerBuilder.Create()
+        .WithIdentity(WithTriggerKey(processCode, facilityName, configuration))
+        .WithDescription(string.Format(Identity.TriggerDescription, processName, facilityName, configuration))
         .UsingJobData("Id", id.ToString())
+        .UsingJobData("FacilityId", facilityId)
+        .UsingJobData("FacilityName", facilityName)
         .UsingJobData("MonitorPlanId", monitorPlanId)
+        .UsingJobData("Configuration", configuration)
         .UsingJobData("UserId", userId)
         .UsingJobData("SubmittedOn", submittedOn.ToString())
         .StartNow()
         .Build();
 
       await scheduler.ScheduleJob(job, trigger);
-    }
-
-    public static JobKey WithJobKey()
-    {
-       return new JobKey(
-           Constants.JobDetails.CHECK_ENGINE_EVALUATION_KEY,
-           Constants.JobDetails.CHECK_ENGINE_EVALUATION_GROUP
-       );
-    }
-    public static TriggerKey WithTriggerKey()
-    {
-        return new TriggerKey(
-           Constants.JobDetails.CHECK_ENGINE_EVALUATION_KEY,
-           Constants.JobDetails.CHECK_ENGINE_EVALUATION_GROUP
-        );
     }
   }
 }

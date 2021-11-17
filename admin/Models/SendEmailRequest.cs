@@ -6,5 +6,6 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public string FromEmail { get; set; }
     public string Subject { get; set; }
     public string Message { get; set; }
+    public string Purpose { get; set; }
   }
 }
