@@ -92,8 +92,9 @@ namespace SilkierQuartz.Controllers
 
             var content = new FormUrlEncodedContent(values);
             
-            var response = await client.PostAsync(IJobRegistratorExtensions.AppConfiguration["AuthUrl"] + "/authentication/sign-in", content);
-
+            var response = await client.PostAsync(IJobRegistratorExtensions.AppConfiguration["EASEY_AUTH_URL"] + "/authentication/sign-in", content);
+            //var response = await client.PostAsync("https://easey-dev.app.cloud.gov/api/auth-mgmt" + "/authentication/sign-in", content);
+            //var response = await client.PostAsync(Configuration["EASEY_AUTH_URL"] + "/authentication/sign-in", content);
             if(response.IsSuccessStatusCode){
                 AuthResponse parsed = JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
                 HttpContext.Session.SetString("token", parsed.token);
@@ -115,7 +116,7 @@ namespace SilkierQuartz.Controllers
         {    
             string token = HttpContext.Session.GetString("token");
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            var response = await client.DeleteAsync(IJobRegistratorExtensions.AppConfiguration["AuthUrl"] + "/authentication/sign-out");
+            var response = await client.DeleteAsync(IJobRegistratorExtensions.AppConfiguration["EASEY_AUTH_URL"] + "/authentication/sign-out");
             
             await HttpContext.SignOutAsync(authenticationOptions.AuthScheme);
             return RedirectToAction(nameof(Login));
