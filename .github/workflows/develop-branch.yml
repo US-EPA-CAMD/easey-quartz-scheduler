@@ -23,17 +23,21 @@ jobs:
         run: devops/scripts/environment-variables.sh
         env:
           ENV_VAR_PREFIX: EASEY
+      - name: Change to app directory
+        run: cd admin
       - name: Build
-        run: devops/scripts/dotnet/build.sh
+        run: ../devops/scripts/dotnet/build.sh
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Unit Tests
-        run: devops/scripts/dotnet/unit-tests.sh
+        run: ../devops/scripts/dotnet/unit-tests.sh
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Change to root directory
+        run: cd ..
       - name: Install cf cli
         run: devops/scripts/install-cf-cli.sh
       - name: Login to cloud.gov
