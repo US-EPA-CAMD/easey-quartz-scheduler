@@ -2,6 +2,7 @@
 name: quartz-scheduler
 title: Clean Ait Markets Job Scheduler
 path: quartz
+instances: 1
 environment: development
 host: easey-dev.app.cloud.gov
 memory: 1024M

@@ -1,8 +1,9 @@
 applications:
   - name: ((name))
     memory: ((memory))
+    instances: ((instances))
     buildpacks:
-      - dotnet_core_buildpack    
+      - dotnet_core_buildpack
     env:
       CACHE_NUGET_PACKAGES: false
     routes:

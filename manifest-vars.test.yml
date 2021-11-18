@@ -1,0 +1,4 @@
+instances: 1
+environment: test
+host: easey-tst.app.cloud.gov
+memory: 1024M
