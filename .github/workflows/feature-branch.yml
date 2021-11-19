@@ -24,11 +24,28 @@ jobs:
         env:
           ENV_VAR_PREFIX: EASEY
       - name: Build
-        run: devops/scripts/dotnet/build.sh admin
+        run: |
+          echo "--------------------------------------"
+          echo "---------- dotnet/build.sh -----------"
+          echo "--------------------------------------"
+
+          echo "Installing dependencies..."
+          cd admin
+          dotnet restore
+
+          echo "Building..."
+          CI=false dotnet build
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run Unit Tests
-        run: devops/scripts/dotnet/unit-tests.sh admin
+      # - name: Run Unit Tests
+      #   run: |
+      #     echo "--------------------------------------"
+      #     echo "-------- dotnet/unit-tests.sh --------"
+      #     echo "--------------------------------------"
+
+      #     echo "Running Unit tests... "
+      #     cd admin
+      #     CI=true dotnet run tests
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
