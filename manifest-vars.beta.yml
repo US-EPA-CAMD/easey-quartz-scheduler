@@ -1,4 +1,5 @@
 instances: 2
-environment: test
-host: easey-tst.app.cloud.gov
 memory: 2048M
+environment: beta
+host: easey-beta.app.cloud.gov
+apiHost: api.epa.gov/easey/beta

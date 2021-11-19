@@ -62,6 +62,7 @@ namespace SilkierQuartz.Helpers
             h.RegisterHelper(nameof(SilkierQuartzVersion), SilkierQuartzVersion);
             h.RegisterHelper(nameof(Logo), Logo);
             h.RegisterHelper(nameof(ProductName), ProductName);
+            h.RegisterHelper(nameof(Environment), Environment);
         }
 
         static bool IsTrue(object value) => value?.ToString()?.Equals("true", StringComparison.OrdinalIgnoreCase) == true;
@@ -278,6 +279,10 @@ namespace SilkierQuartz.Helpers
         void ProductName(TextWriter output, dynamic context, params object[] arguments)
         {
             output.Write(_services.Options.ProductName);
+        }
+        void Environment(TextWriter output, dynamic context, params object[] arguments)
+        {
+            output.Write(_services.Options.Environment);
         }
     }
 }

@@ -16,7 +16,15 @@ namespace SilkierQuartz
         /// </summary>
         public string Logo { get; set; } = "Content/Images/logo.png";
 
-        public string ProductName { get; set; } = "";
+        public string ProductName
+        {
+            get { return IJobRegistratorExtensions.AppConfiguration["EASEY_QUARTZ_SCHEDULER_TITLE"]; }
+        }
+
+        public string Environment
+        {
+            get { return IJobRegistratorExtensions.AppConfiguration["EASEY_QUARTZ_SCHEDULER_ENV"]; }
+        }
 
         public string VirtualPathRoot { get; set; } = "/";
         public string VirtualPathRootUrlEncode => VirtualPathRoot.Replace("/", "%2F");

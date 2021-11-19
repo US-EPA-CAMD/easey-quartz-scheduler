@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using SilkierQuartz;
 using Epa.Camd.Quartz.Scheduler.Jobs;
 using Epa.Camd.Quartz.Scheduler.Models;
+using Epa.Camd.Quartz.Scheduler.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
@@ -31,20 +32,34 @@ namespace Epa.Camd.Quartz.Scheduler
     [HttpPost("emails")]
     public async Task<ActionResult> SendEmail([FromBody] SendEmailRequest request)
     {
-      Services services = (Services)Request.HttpContext.Items[typeof(Services)];
-      
-      await SendMail.StartNow(
-        services.Scheduler,
-        request.ToEmail,
-        request.FromEmail,
-        request.Subject,
-        request.Message,
-        request.Purpose,
-        Configuration["EmailSettings:EASEY_QUARTZ_SMTP_HOST"],
-        Configuration["EmailSettings:EASEY_QUARTZ_SMTP_PORT"]
-      );
+      string apiKey = Request.Headers["X-API-KEY"];
 
-      return CreatedAtAction("SendEmailResponse", request);
+      if (
+        apiKey != null &&
+        (apiKey == Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS"] ||
+         apiKey == Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD"])
+      )
+      {
+        Services services = (Services)Request.HttpContext.Items[typeof(Services)];
+        
+        await SendMail.StartNow(
+          request.ToEmail,
+          request.FromEmail,
+          request.Subject,
+          request.Message,
+          request.Purpose,
+          services.Scheduler,
+          Configuration
+        );
+
+        return CreatedAtAction("SendEmailResponse", request);
+      }
+      else
+      {
+        string message = "API Key is either missing or not an authorized client!";
+        LogHelper.error(_logger, message, new LogVariable("API Key", apiKey), new LogVariable("Request", request));
+        return BadRequest(message);
+      }
     }
   }
 }
