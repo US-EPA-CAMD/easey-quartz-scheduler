@@ -57,7 +57,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         else
           interval = 2;
 
-        var sql_command = "DELETE FROM camdecmpswks.user_check_out WHERE last_activity > now() + interval '" + interval.ToString() + "' minute";
+        //DELETE FROM camdecmpswks.user_check_out WHERE last_activity < now() - interval '2' minute
+        var sql_command = "DELETE FROM camdecmpswks.user_check_out WHERE last_activity < now() - interval '" + interval.ToString() + "' minute";
 
         _dbContext.ExecuteSql(sql_command);
       }

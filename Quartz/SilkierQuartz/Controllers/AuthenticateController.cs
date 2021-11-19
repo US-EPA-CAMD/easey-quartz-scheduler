@@ -10,7 +10,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
-using SilkierQuartz;
 
 namespace SilkierQuartz.Controllers
 {
@@ -24,12 +23,15 @@ namespace SilkierQuartz.Controllers
     [AllowAnonymous]
     public class AuthenticateController : PageControllerBase
     {
+        private string authUri;
+
         private static readonly HttpClient client = new HttpClient();
 
         private readonly SilkierQuartzAuthenticationOptions authenticationOptions;
 
         public AuthenticateController(SilkierQuartzAuthenticationOptions authenticationOptions)
         {
+            authUri = IJobRegistratorExtensions.AppConfiguration["EASEY_AUTH_API"];
             this.authenticationOptions = authenticationOptions ?? throw new ArgumentNullException(nameof(authenticationOptions));
         }
 
@@ -91,8 +93,7 @@ namespace SilkierQuartz.Controllers
             };
 
             var content = new FormUrlEncodedContent(values);
-            
-            var response = await client.PostAsync(IJobRegistratorExtensions.AppConfiguration["AuthUrl"] + "/authentication/sign-in", content);
+            var response = await client.PostAsync(authUri + "/authentication/sign-in", content);
 
             if(response.IsSuccessStatusCode){
                 AuthResponse parsed = JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
@@ -115,7 +116,7 @@ namespace SilkierQuartz.Controllers
         {    
             string token = HttpContext.Session.GetString("token");
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            var response = await client.DeleteAsync(IJobRegistratorExtensions.AppConfiguration["AuthUrl"] + "/authentication/sign-out");
+            var response = await client.DeleteAsync(authUri + "/authentication/sign-out");
             
             await HttpContext.SignOutAsync(authenticationOptions.AuthScheme);
             return RedirectToAction(nameof(Login));

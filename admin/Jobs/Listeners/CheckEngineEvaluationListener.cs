@@ -33,9 +33,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
       string submittedOn = dataMap.GetString("SubmittedOn");
 
       string toEmail = "jasonwhitehead@cvpcorp.com";//dataMap.GetString("UserEmail");
-      string fromEmail = Configuration["EmailSettings:EASEY_QUARTZ_EMAIL"];
-      string smtpHost = Configuration["EmailSettings:EASEY_QUARTZ_SMTP_HOST"];
-      string smtpPort = Configuration["EmailSettings:EASEY_QUARTZ_SMTP_PORT"];
+      string fromEmail = Configuration["EASEY_QUARTZ_SCHEDULER_EMAIL"];
 
       string subject = string.Format(
         "{0} Evaluation of {1} {2} Completed",
@@ -53,14 +51,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
       );;
 
       await SendMail.StartNow(
-        context.Scheduler,
         toEmail,
         fromEmail,
         subject,
         message,
         subject,
-        smtpHost,
-        smtpPort
+        context.Scheduler,
+        Configuration
       );
 
       await base.JobWasExecuted(context, jobException, cancellationToken);

@@ -1,8 +1,12 @@
 #THIS FILE SHOULD CONTAIN DEV SETTINGS AND CI/CD WORKFLOW WILL CHANGE SETTINGS BASED ON ENV
 name: quartz-scheduler
-title: Clean Ait Markets Job Scheduler
+title: Clean Air Markets EASEY Quartz Scheduler
 path: quartz
+email: noreply@epa.gov
+smtpHost: smtp.epa.gov
+smtpPort: 25
 instances: 1
+memory: 1024M
 environment: development
 host: easey-dev.app.cloud.gov
-memory: 1024M
+apiHost: api.epa.gov/easey/dev

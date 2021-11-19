@@ -22,6 +22,7 @@ namespace Epa.Camd.Quartz.Scheduler
         .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
         .CreateLogger();
       
+
       try
       {
         Log.Information("Starting web host");

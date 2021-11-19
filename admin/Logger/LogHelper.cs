@@ -44,7 +44,6 @@ namespace Epa.Camd.Quartz.Scheduler.Logging
       {
         logger.LogError(message);
       }
-      //throw new Exception(message + " | errorId: " + errorId.ToString());
     }
   }
 }

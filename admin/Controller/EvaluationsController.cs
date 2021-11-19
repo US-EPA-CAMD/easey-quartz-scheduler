@@ -11,6 +11,7 @@ using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Jobs;
 using Epa.Camd.Quartz.Scheduler.Models;
+using Epa.Camd.Quartz.Scheduler.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
@@ -93,31 +94,26 @@ namespace Epa.Camd.Quartz.Scheduler
     [HttpPost("monitor-plans")]
     public async Task<ActionResult> TriggerMPEvaluation([FromBody] EvaluationRequest request)
     {
-      return await TriggerCheckEngineEvaluation(
-        "MP",
-        request.MonitorPlanId,
-        request.UserId
-      );
-    }
+      string apiKey = Request.Headers["X-API-KEY"];
 
-    [HttpPost("qa-certifications")]
-    public async Task<ActionResult> TriggerQAEvaluation([FromBody] EvaluationRequest request)
-    {
-      return await TriggerCheckEngineEvaluation(
-        "QA",
-        request.MonitorPlanId,
-        request.UserId
-      );
-    }
-
-    [HttpPost("emissions")]
-    public async Task<ActionResult> TriggerEMEvaluation([FromBody] EvaluationRequest request)
-    {
-      return await TriggerCheckEngineEvaluation(
-        "EM",
-        request.MonitorPlanId,
-        request.UserId
-      );
+      if (
+        apiKey != null &&
+        (apiKey == Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS"] ||
+         apiKey == Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD"])
+      )
+      {
+        return await TriggerCheckEngineEvaluation(
+          "MP",
+          request.MonitorPlanId,
+          request.UserId
+        );
+      }
+      else
+      {
+        string message = "API Key is either missing or not an authorized client!";
+        LogHelper.error(_logger, message, new LogVariable("API Key", apiKey), new LogVariable("Request", request));
+        return BadRequest(message);
+      }
     }
   }
 }

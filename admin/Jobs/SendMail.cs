@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Quartz;
@@ -39,15 +40,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     }
 
     public static async Task StartNow(
-      IScheduler scheduler,
       string toEmail,
       string fromEmail,
       string subject,
       string message,
       string purpose,
-      string smtpHost,
-      string smtpPort
+      IScheduler scheduler,
+      IConfiguration configuration
     ) {
+      string smtpHost = configuration["EASEY_QUARTZ_SCHEDULER_SMTP_HOST"];
+      string smtpPort = configuration["EASEY_QUARTZ_SCHEDULER_SMTP_PORT"];
+
       IJobDetail job = JobBuilder.Create<SendMailJob>()
         .WithIdentity(WithJobKey())
         .WithDescription(Identity.JobDescription)
