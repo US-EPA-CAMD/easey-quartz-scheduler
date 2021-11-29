@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace SilkierQuartz.Controllers
 {
@@ -27,6 +28,8 @@ namespace SilkierQuartz.Controllers
 
         private static readonly HttpClient client = new HttpClient();
 
+        public static int uid;
+
         private readonly SilkierQuartzAuthenticationOptions authenticationOptions;
 
         public AuthenticateController(SilkierQuartzAuthenticationOptions authenticationOptions)
@@ -38,6 +41,9 @@ namespace SilkierQuartz.Controllers
         [HttpGet]
         public async Task<IActionResult> Login([FromServices] IAuthenticationSchemeProvider schemes)
         {
+
+            uid = new Random().Next();
+
             if (authenticationOptions.AccessRequirement == SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowAnonymous)
             {
                 return RedirectToAction(nameof(SchedulerController.Index), nameof(Scheduler));
@@ -98,6 +104,21 @@ namespace SilkierQuartz.Controllers
             if(response.IsSuccessStatusCode){
                 AuthResponse parsed = JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
                 HttpContext.Session.SetString("token", parsed.token);
+                
+                var currentSession = HttpContext.Session;
+
+                Task t = Task.Run(async () => {
+                    for(;;){
+                        await Task.Delay(1000);
+                        Console.Write("Refreshing User Token For User " + request.UserName + " UID: " + uid);
+                        try{
+                            
+                        }
+                        catch(Exception e){
+                            Console.Write(e.Message);
+                        }
+                    }
+                });
 
                 await SignIn(request.IsPersist);
 
