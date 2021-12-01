@@ -21,6 +21,7 @@ namespace Epa.Camd.Quartz.Scheduler
   public class Startup
   {
     private string connectionString;
+    private readonly string corsPolicy = "AllowedCORSOptions";
     private IConfiguration Configuration { get; }
 
     public Startup(IConfiguration configuration)
@@ -32,22 +33,38 @@ namespace Epa.Camd.Quartz.Scheduler
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      // services.AddCors(options => {
-      //     options.AddPolicy("CorsPolicy", builder => {
-      //         builder.WithOrigins(
-      //             "http://localhost:3000",
-      //             "https://localhost:3000",
-      //             "https://easey-dev.app.cloud.gov",
-      //             "https://easey-tst.app.cloud.gov"
-      //         )
-      //         .AllowAnyMethod()
-      //         .AllowAnyHeader();
-      //     });
-      // });
-      services.AddSession();
+      services.AddAppConfiguration(Configuration);
+
       services.AddDbContext<NpgSqlContext>(options =>
           options.UseNpgsql(connectionString)
       );
+
+      // NpgSqlContext dbContext = services.BuildServiceProvider().GetService<NpgSqlContext>();
+
+      // dbContext.CorsOptions.FromSqlRaw(@"
+      //   SELECT key, value
+      //   FROM camdaux.cors
+      //   LEFT JOIN camdaux.cors_to_api
+      //     USING(cors_id)
+      //   LEFT JOIN camdaux.api
+      //     USING(api_id)
+      //   WHERE api_id IS NULL OR name = 'quartz-api'
+      //   ORDER BY key, value;"
+      // );
+
+      //string[] allowedOrigins = new string[0];
+      //string[] allowedMethods = new string[0];
+      //string[] allowedHeaders = new string[0];
+
+      services.AddCors(options => {
+          options.AddPolicy(corsPolicy, builder => {
+              builder.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+          });
+      });
+
+      services.AddSession();
 
       services.AddSwaggerGen(c =>
       {
@@ -96,8 +113,6 @@ namespace Epa.Camd.Quartz.Scheduler
       CheckEngineEvaluation.RegisterWithQuartz(services);
       RemoveExpiredUserSession.RegisterWithQuartz(services);
       RemoveExpiredCheckoutRecord.RegisterWithQuartz(services);
-
-      services.AddAppConfiguration(Configuration);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -115,11 +130,10 @@ namespace Epa.Camd.Quartz.Scheduler
       app.UseSession();
       app.UseStaticFiles();
       app.UseRouting();
+      app.UseCors(corsPolicy);
       app.UseAuthentication();
       app.UseAuthorization();
       app.UseSilkierQuartz();
-
-      //app.UseCors("CorsPolicy");
 
       app.UseEndpoints(endpoints =>
       {
