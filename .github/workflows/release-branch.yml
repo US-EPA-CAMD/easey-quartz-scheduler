@@ -86,9 +86,17 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ARTIFACTS_STORAGE_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARTIFACTS_STORAGE_SECRET_ACCESS_KEY }}
-      - name: Deployment
+      - name: Init Application
+        run: devops/scripts/cf-app-init.sh
+      - name: Configure Env Vars (secrets)
         run: |
-          devops/scripts/deploy.sh
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS $EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD $EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD
+        env:
+          EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS: ${{ secrets.EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS }}
+          EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD: ${{ secrets.EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD }}
+      - name: Deploy
+        run: devops/scripts/deploy.sh
   Beta-Deployment:
     needs: Build-Test-Package
     runs-on: ubuntu-latest
@@ -121,9 +129,17 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ARTIFACTS_STORAGE_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARTIFACTS_STORAGE_SECRET_ACCESS_KEY }}
-      - name: Deployment
+      - name: Init Application
+        run: devops/scripts/cf-app-init.sh
+      - name: Configure Env Vars (secrets)
         run: |
-          devops/scripts/deploy.sh
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS $EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD $EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD
+        env:
+          EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS: ${{ secrets.EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS }}
+          EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD: ${{ secrets.EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD }}
+      - name: Deploy
+        run: devops/scripts/deploy.sh
   Stage-Deployment:
     needs: Test-Deployment
     runs-on: ubuntu-latest
@@ -156,6 +172,14 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ARTIFACTS_STORAGE_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARTIFACTS_STORAGE_SECRET_ACCESS_KEY }}
-      - name: Deployment
+      - name: Init Application
+        run: devops/scripts/cf-app-init.sh
+      - name: Configure Env Vars (secrets)
         run: |
-          devops/scripts/deploy.sh
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS $EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD $EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD
+        env:
+          EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS: ${{ secrets.EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS }}
+          EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD: ${{ secrets.EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD }}
+      - name: Deploy
+        run: devops/scripts/deploy.sh

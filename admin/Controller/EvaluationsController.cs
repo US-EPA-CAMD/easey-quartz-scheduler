@@ -38,7 +38,8 @@ namespace Epa.Camd.Quartz.Scheduler
     private async Task<ActionResult> TriggerCheckEngineEvaluation(
       string processCode,
       string monitorPlanId,
-      string userId
+      string userId,
+      string userEmail
     ) {
       Services services = (Services)Request.HttpContext.Items[typeof(Services)];
 
@@ -58,7 +59,7 @@ namespace Epa.Camd.Quartz.Scheduler
         monitorPlanId
       ).ToList();
 
-      string configuration = string.Join(", ", locs.Select(x =>
+      string monPlanConfig = string.Join(", ", locs.Select(x =>
         string.IsNullOrWhiteSpace(x.UnitName) ? x.StackName : x.UnitName
       ));
 
@@ -69,8 +70,9 @@ namespace Epa.Camd.Quartz.Scheduler
         fac.OrisCode,
         fac.Name,
         monitorPlanId,
-        configuration,
+        monPlanConfig,
         userId,
+        userEmail,
         submittedOn
       );
 
@@ -85,8 +87,9 @@ namespace Epa.Camd.Quartz.Scheduler
         facilityId = fac.OrisCode,
         facilityName = fac.Name,
         monitorPlanId = monitorPlanId,
-        configuration = configuration,
+        configuration = monPlanConfig,
         userId = userId,
+        userEmail = userEmail,
         submittedOn = submittedOn
       });
     }
@@ -105,7 +108,8 @@ namespace Epa.Camd.Quartz.Scheduler
         return await TriggerCheckEngineEvaluation(
           "MP",
           request.MonitorPlanId,
-          request.UserId
+          request.UserId,
+          request.UserEmail
         );
       }
       else

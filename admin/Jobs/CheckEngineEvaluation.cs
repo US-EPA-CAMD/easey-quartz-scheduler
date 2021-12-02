@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,8 +59,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         int facilityId = dataMap.GetIntValue("FacilityId");
         string facilityName = dataMap.GetString("FacilityName");
         string monitorPlanId = dataMap.GetString("MonitorPlanId");
-        string configuration = dataMap.GetString("Configuration");
+        string monPlanConfig = dataMap.GetString("Configuration");
         string userId = dataMap.GetString("UserId");
+        string userEmail = dataMap.GetString("UserEmail");
         string submittedOn = dataMap.GetString("SubmittedOn");
 
         LogHelper.info(
@@ -68,8 +71,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           new LogVariable("Facility Id", facilityId),
           new LogVariable("Facility Name", facilityName),
           new LogVariable("Monior Plan Id", monitorPlanId),
-          new LogVariable("Configuration", configuration),
+          new LogVariable("Configuration", monPlanConfig),
           new LogVariable("User Id", userId),
+          new LogVariable("User Email", userEmail),
           new LogVariable("Submitted On", submittedOn)
         );
 
@@ -91,7 +95,34 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         System.Threading.Thread.Sleep(30000);
         /////////////////////////////////////////////////////////////////////////////////////////////
 
-        mp.EvalStatus = "PASS"; // this will need to be set based off the check session final results
+        // Need to retrieve again to get session id that was set by evaluation job
+        mp = _dbContext.MonitorPlans.Find(monitorPlanId);
+        CheckSession chkSession = _dbContext.CheckSessions.Find(mp.CheckSessionId);
+
+        switch(chkSession.SeverityCode)
+        {
+          case "NONE":
+            mp.EvalStatus = "PASS";
+            break;
+          case "ADMNOVR":
+            mp.EvalStatus = ""; // TODO: NEED SEVERITY CODE TO EVAL STATUS MAPPING
+            break;
+          case "INFORM":
+            mp.EvalStatus = "INFO";
+            break;
+          case "NONCRIT":
+            mp.EvalStatus = ""; // TODO: NEED SEVERITY CODE TO EVAL STATUS MAPPING
+            break;
+          case "CRIT1":
+          case "CRIT2":
+          case "CRIT3":
+          case "FATAL":          
+            mp.EvalStatus = "ERR";
+            break;
+        }
+
+        context.MergedJobDataMap.Add("EvaluationStauts", mp.EvalStatus);
+
         _dbContext.MonitorPlans.Update(mp);
         _dbContext.SaveChanges();
 
@@ -146,8 +177,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       int facilityId,
       string facilityName,
       string monitorPlanId,
-      string configuration,
+      string monPlanConfig,
       string userId,
+      string userEmail,
       DateTime submittedOn
     ) {
       string processName = GetProcess(processCode);
@@ -159,14 +191,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         .Build();
 
       ITrigger trigger = TriggerBuilder.Create()
-        .WithIdentity(WithTriggerKey(processCode, facilityName, configuration))
-        .WithDescription(string.Format(Identity.TriggerDescription, processName, facilityName, configuration))
+        .WithIdentity(WithTriggerKey(processCode, facilityName, monPlanConfig))
+        .WithDescription(string.Format(Identity.TriggerDescription, processName, facilityName, monPlanConfig))
         .UsingJobData("Id", id.ToString())
         .UsingJobData("FacilityId", facilityId)
         .UsingJobData("FacilityName", facilityName)
         .UsingJobData("MonitorPlanId", monitorPlanId)
-        .UsingJobData("Configuration", configuration)
+        .UsingJobData("Configuration", monPlanConfig)
         .UsingJobData("UserId", userId)
+        .UsingJobData("UserEmail", userEmail)        
         .UsingJobData("SubmittedOn", submittedOn.ToString())
         .StartNow()
         .Build();

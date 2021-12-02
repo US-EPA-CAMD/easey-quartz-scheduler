@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -69,13 +70,23 @@ namespace Epa.Camd.Quartz.Scheduler
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc(
-            "v1",
-            new OpenApiInfo
-            {
-              Title = "Quartz Job Management OpenAPI Specification",
-              Version = "v1",
-            }
+          "v1",
+          new OpenApiInfo
+          {
+            Title = "Quartz Job Management OpenAPI Specification",
+            Version = "v1",
+          }
         );
+
+        var scheme = new OpenApiSecurityScheme {
+          Type = SecuritySchemeType.ApiKey,
+          In = ParameterLocation.Header,
+          Name = "API Key",
+          Description = "Use of this api requires a registered API Key!"
+        };
+
+        c.AddSecurityDefinition("api key", scheme);
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement { { scheme, new List<string>() } });
       });
 
       services.AddRazorPages();
