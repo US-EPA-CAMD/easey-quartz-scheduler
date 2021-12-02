@@ -1,7 +1,5 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,8 +9,9 @@ using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
 using Epa.Camd.Quartz.Scheduler.Logging;
-using ECMPS.Checks.CheckEngine;
+
 using DatabaseAccess;
+using ECMPS.Checks.CheckEngine;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -49,13 +48,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       Configuration = configuration;
     }
 
-    public async Task Execute(IJobExecutionContext context)
+    public Task Execute(IJobExecutionContext context)
     {
       try
       {
         JobKey key = context.JobDetail.Key;
         JobDataMap dataMap = context.MergedJobDataMap;
-        dataMap.Add("connectionString", ConnectionStringManager.getConnectionString(Configuration));
+
+        bool result = false;
         string id = dataMap.GetString("Id");
         string processCode = dataMap.GetString("ProcessCode");
         int facilityId = dataMap.GetIntValue("FacilityId");
@@ -65,7 +65,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         string userId = dataMap.GetString("UserId");
         string userEmail = dataMap.GetString("UserEmail");
         string submittedOn = dataMap.GetString("SubmittedOn");
-                
+        string connectionString = ConnectionStringManager.getConnectionString(Configuration);
+
         LogHelper.info(
           _logger, $"Executing {key.Group}.{key.Name} with data map...",
           new LogVariable("Id", id),
@@ -84,20 +85,32 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.MonitorPlans.Update(mp);
         _dbContext.SaveChanges();
 
-        /////////////////////////////////////////////////////////////////////////////////////////////
-        // PLUGIN IN CHECK ENGINE HERE
-        cCheckEngine runEngine = new cCheckEngine();
-        await runEngine.Execute(context);
-        await Task.CompletedTask;
-        // Remove once actual Check Engine has bee plugged in
-         System.Threading.Thread.Sleep(5000);
+        switch (processCode)
+        {
+          case "MP":
+            string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
+            LogHelper.info(_logger, "...initializing check egine");
+            LogHelper.info(_logger, $"base directory: {System.AppDomain.CurrentDomain.BaseDirectory}");            
+            //cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
 
-        // TODO: instantiate Check Engine and execute the proper process based on the process code
-        LogHelper.info(_logger, "Executing Checks...");
-
-        // Remove once actual Check Engine has bee plugged in
-        System.Threading.Thread.Sleep(30000);
-        /////////////////////////////////////////////////////////////////////////////////////////////
+            LogHelper.info(_logger, "...running RunChecks_MpReport");
+            //result = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+            break;
+          case "QA-QCE":
+            LogHelper.info(_logger, "...running RunChecks_QaReport_Qce");
+            //this.RunChecks_QaReport_Qce();
+            break;
+          case "QA-TEE":
+            LogHelper.info(_logger, "...running RunChecks_QaReport_Tee");
+            //this.RunChecks_QaReport_Tee();
+            break;
+          case "EM":
+            LogHelper.info(_logger, "...running RunChecks_EmReport");
+            //this.RunChecks_EmReport();
+            break;
+          default:
+            throw new Exception("A Process Code of [MP, QA-QCE, QA-TEE, EM] is required and was not provided");
+        }
 
         // Need to retrieve again to get session id that was set by evaluation job
         mp = _dbContext.MonitorPlans.Find(monitorPlanId);
@@ -131,12 +144,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.SaveChanges();
 
         LogHelper.info(_logger, $"{key.Group}.{key.Name} completed successfully");
-       
+        return Task.CompletedTask;
       }
       catch (Exception ex)
       {
         LogHelper.error(_logger, ex.ToString());
-       
+        return Task.FromException(ex);
       }
     }
 

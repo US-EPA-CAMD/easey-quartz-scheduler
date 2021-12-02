@@ -1,90 +1,81 @@
 using System;
-using System.Collections;
 using System.Data;
-using System.Data.SqlClient;
-using System.Reflection;
-using System.Runtime.Remoting;
-using System.Threading.Tasks;
 using ECMPS.Checks.CheckEngine.Definitions;
 using ECMPS.Checks.DatabaseAccess;
-using ECMPS.Checks.Parameters;
 using ECMPS.Checks.TypeUtilities;
 
-using ECMPS.Common;
 using ECMPS.Definitions.Extensions;
 using ECMPS.Definitions.SeverityCode;
-using ECMPS.ErrorSuppression;
-using Quartz;
 
 namespace ECMPS.Checks.CheckEngine
 {
     /// <summary>
     /// The ECMPS Check Engine 
     /// </summary>
-    public class cCheckEngine : IJob
+    public class cCheckEngine //: IJob
     {
-        /// <summary>
-        /// Description.
-        /// </summary>
-        /// <param name="context">The Quartz JobExecutionContext.</param>
-        public async Task Execute(IJobExecutionContext context)
-        {
-            await Task.Run(() => {
-                Console.WriteLine("cCheckEngine::Execute START");
+        // /// <summary>
+        // /// Description.
+        // /// </summary>
+        // /// <param name="context">The Quartz JobExecutionContext.</param>
+        // public async Task Execute(IJobExecutionContext context)
+        // {
+        //     await Task.Run(() => {
+        //         Console.WriteLine("cCheckEngine::Execute START");
 
-                Console.WriteLine("...retrieving job data map");
-                JobDataMap dataMap = context.MergedJobDataMap;
-                string processCode = dataMap.GetString("ProcessCode");
-                string monPlanId = dataMap.GetString("MonitorPlanId");
-                string configurationName = dataMap.GetString("ConfigurationName");
-                string connectionString = dataMap.GetString("connectionString");
+        //         Console.WriteLine("...retrieving job data map");
+        //         JobDataMap dataMap = context.MergedJobDataMap;
+        //         string processCode = dataMap.GetString("ProcessCode");
+        //         string monPlanId = dataMap.GetString("MonitorPlanId");
+        //         string configurationName = dataMap.GetString("ConfigurationName");
+        //         string connectionString = dataMap.GetString("connectionString");
 
-                Console.WriteLine($"...ProcessCode={processCode}");
-                Console.WriteLine($"...MonitorPlanId={monPlanId}");
-                Console.WriteLine($"...ConfigurationName={configurationName}");
+        //         Console.WriteLine($"...ProcessCode={processCode}");
+        //         Console.WriteLine($"...MonitorPlanId={monPlanId}");
+        //         Console.WriteLine($"...ConfigurationName={configurationName}");
 
-                Console.WriteLine("...initializing check egine");
-                cDecimalPrecision.Initialize();
-                UserId = "";
-                DataConnectionString = "";
-                AuxConnectionString = "";
-                WorkspaceConnectionString = "";
-                ChecksDllPath = "";
-                CommandTimeout = 300;
+        //         Console.WriteLine("...initializing check egine");
+        //         cDecimalPrecision.Initialize();
+        //         UserId = "";
+        //         DataConnectionString = "";
+        //         AuxConnectionString = "";
+        //         WorkspaceConnectionString = "";
+        //         ChecksDllPath = "";
+        //         CommandTimeout = 300;
 
-                switch (processCode)
-                {
-                    case "MP":
-                        Console.WriteLine("...running RunChecks_MpReport");
-                        string k = System.AppDomain.CurrentDomain.BaseDirectory;
-                        Console.WriteLine(k);
-                        System.Diagnostics.Debug.WriteLine(k);
-                        //this.CheckEngine("testUser", connectionString, "C:\\Users\\simerahailu\\Documents\\GitHub\\easey-job-scheduler\\MonitorPlan\\obj\\Debug\\netcoreapp3.1\\", "dumpfilePath", 20);
-                        //this.RunChecks_MpReport("02022-614W-168CEAA018EA4CBDAE347BE98F95A548", new DateTime(2011, 2, 12), new DateTime(2011, 2, 12), eCheckEngineRunMode.Normal);
-                        System.Threading.Thread.Sleep(30000);
-                        break;
-                    case "QA-QCE":
-                        Console.WriteLine("...running RunChecks_QaReport_Qce");
-                        //this.RunChecks_QaReport_Qce();
-                        System.Threading.Thread.Sleep(30000);
-                        break;
-                    case "QA-TEE":
-                        Console.WriteLine("...running RunChecks_QaReport_Tee");
-                        //this.RunChecks_QaReport_Tee();
-                        System.Threading.Thread.Sleep(30000);
-                        break;
-                    case "EM":
-                        Console.WriteLine("...running RunChecks_EmReport");
-                        //this.RunChecks_EmReport();
-                        System.Threading.Thread.Sleep(30000);
-                        break;
-                    default:
-                        throw new Exception("A Process Code of [MP, QA-QCE, QA-TEE, EM] is required and was not provided");
-                }
+        //         switch (processCode)
+        //         {
+        //             case "MP":
+        //                 Console.WriteLine("...running RunChecks_MpReport");
+        //                 string k = System.AppDomain.CurrentDomain.BaseDirectory;
+        //                 Console.WriteLine(k);
+        //                 System.Diagnostics.Debug.WriteLine(k);
+        //                 //this.CheckEngine("testUser", connectionString, "C:\\Users\\simerahailu\\Documents\\GitHub\\easey-job-scheduler\\MonitorPlan\\obj\\Debug\\netcoreapp3.1\\", "dumpfilePath", 20);
+        //                 //this.RunChecks_MpReport("02022-614W-168CEAA018EA4CBDAE347BE98F95A548", new DateTime(2011, 2, 12), new DateTime(2011, 2, 12), eCheckEngineRunMode.Normal);
+        //                 System.Threading.Thread.Sleep(30000);
+        //                 break;
+        //             case "QA-QCE":
+        //                 Console.WriteLine("...running RunChecks_QaReport_Qce");
+        //                 //this.RunChecks_QaReport_Qce();
+        //                 System.Threading.Thread.Sleep(30000);
+        //                 break;
+        //             case "QA-TEE":
+        //                 Console.WriteLine("...running RunChecks_QaReport_Tee");
+        //                 //this.RunChecks_QaReport_Tee();
+        //                 System.Threading.Thread.Sleep(30000);
+        //                 break;
+        //             case "EM":
+        //                 Console.WriteLine("...running RunChecks_EmReport");
+        //                 //this.RunChecks_EmReport();
+        //                 System.Threading.Thread.Sleep(30000);
+        //                 break;
+        //             default:
+        //                 throw new Exception("A Process Code of [MP, QA-QCE, QA-TEE, EM] is required and was not provided");
+        //         }
 
-                Console.WriteLine("cCheckEngine::Execute COMPLETE");
-            });
-        }
+        //         Console.WriteLine("cCheckEngine::Execute COMPLETE");
+        //     });
+        // }
 
         #region Public Constructors
 
@@ -130,12 +121,10 @@ namespace ECMPS.Checks.CheckEngine
         /// </summary>
         /// <param name="userId">The current user id.</param>
         /// <param name="dataConnectionString">The ECMPS database connection string.</param>
-        /// <param name="auxConnectionString">The ECMPS_AUX database conneciton string.</param>
-        /// <param name="workspaceConnectionString">The ECMPS_WS database connection string.</param>
         /// <param name="checksDllPath">The path of the checks DLLs.</param>
         /// <param name="systemStateDumpFilePath">The path in which to dump system state information.</param>
         /// <param name="commandTimeout">The timeout to use on SQL commands.</param>
-        public void CheckEngine(string userId,
+        public cCheckEngine(string userId,
                             string dataConnectionString,
                             string checksDllPath,
                             string systemStateDumpFilePath,
@@ -738,7 +727,7 @@ namespace ECMPS.Checks.CheckEngine
                                                                               null, null).Unwrap();
 
                             // if (WorkspaceSessionInit() && CheckSessionInit())
-                            if (!CheckSessionInit())
+                            if (CheckSessionInit())
                             {
                                 if (Process.ExecuteChecks(ChecksDllPath, ref errorMessage))
                                 {
