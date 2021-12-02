@@ -21,6 +21,7 @@
     <PackageReference Include="Quartz.Serialization.Json" Version="3.3.3" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CheckEngine\CheckEngine\CheckEngine.csproj" />
     <ProjectReference Include="..\Quartz\SilkierQuartz\SilkierQuartz.csproj" />
     <ProjectReference Include="..\CheckEngine\DatabaseAccess\DatabaseAccess.csproj" />
   </ItemGroup>
