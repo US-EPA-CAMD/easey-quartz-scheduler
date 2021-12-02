@@ -9,13 +9,12 @@ using NpgsqlTypes;
 using ECMPS.Common;
 using ECMPS.Definitions.Extensions;
 
-
 namespace ECMPS.Checks.DatabaseAccess
 {
     /// <summary>
     /// Database abstration class for PostgreSQL Server
     /// </summary>
-    public class cNpgsqlDatabase
+    public class cDatabase
     {
 
         #region Public Types
@@ -112,7 +111,7 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <summary>
         /// The NpgsqlClient.Connection object
         /// </summary>
-        public NpgsqlConnection Connection
+        public NpgsqlConnection SQLConnection
         {
             get { return m_sqlConn; }
         }
@@ -243,9 +242,9 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <param name="nCmdTimeout">The timeout to assign to the command objects created.</param>
         /// <param name="sModule">The calling module</param>
         /// <returns>A cNpgsqlDatabase object with the connection already opened</returns>
-        public static cNpgsqlDatabase GetConnection(eCatalog initCatalog, int nCmdTimeout, string sModule)
+        public static cDatabase GetConnection(eCatalog initCatalog, int nCmdTimeout, string sModule)
         {
-            cNpgsqlDatabase me = new cNpgsqlDatabase(sModule, nCmdTimeout);
+            cDatabase me = new cDatabase(sModule, nCmdTimeout);
             me.Open(initCatalog);
 
             return me;
@@ -257,9 +256,9 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <param name="initCatalog">The name of the catalog to connect to</param>
         /// <param name="sModule">The calling module</param>
         /// <returns>A cNpgsqlDatabase object with the connection already opened</returns>
-        public static cNpgsqlDatabase GetConnection(eCatalog initCatalog, string sModule)
+        public static cDatabase GetConnection(eCatalog initCatalog, string sModule)
         {
-            cNpgsqlDatabase me = new cNpgsqlDatabase(sModule);
+            cDatabase me = new cDatabase(sModule);
             me.Open(initCatalog);
 
             return me;
@@ -270,7 +269,7 @@ namespace ECMPS.Checks.DatabaseAccess
         /// </summary>
         /// <param name="sModule">The calling module</param>
         /// <returns>A cNpgsqlDatabase object with the connection already opened</returns>
-        public static cNpgsqlDatabase GetConnection(string sModule)
+        public static cDatabase GetConnection(string sModule)
         {
             return GetConnection(eCatalog.DATA, sModule);
         }
@@ -278,7 +277,7 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <summary>
         /// Default constructor
         /// </summary>
-        public cNpgsqlDatabase()
+        public cDatabase()
         {
         }
 
@@ -286,7 +285,7 @@ namespace ECMPS.Checks.DatabaseAccess
         /// Constructor with module name
         /// </summary>
         /// <param name="sModule">The module/application name to give the connection</param>
-        public cNpgsqlDatabase(string sModule)
+        public cDatabase(string sModule)
         {
             m_sModule = sModule;
         }
@@ -296,7 +295,7 @@ namespace ECMPS.Checks.DatabaseAccess
         /// </summary>
         /// <param name="sModule">The module/application name to give the connection</param>
         /// <param name="nCmdTimeout">The timeout to assign to the command objects created.</param>
-        public cNpgsqlDatabase(string sModule, int nCmdTimeout)
+        public cDatabase(string sModule, int nCmdTimeout)
         {
             m_sModule = sModule;
             m_nCmdTimeout = nCmdTimeout;
@@ -1650,63 +1649,182 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <summary>
         /// Bulk load wrapper
         /// </summary>
+        /// <param name = "sourceTable" > The source data table.</param>
+        /// <param name = "targetTableName" > The target table name.</param>
+        /// <param name = "excludeColumnNames" > List of column names to exclude from copy.</param>
+        /// <param name = "sqlTransaction" > The transaction to use, null if none.</param>
+        /// <param name = "errorMessage" > Error message.</param>
+        /// <returns>True if successful.</returns>
+        public bool BulkLoad(DataTable sourceTable,
+                             string targetTableName,
+                             List<string> excludeColumnNames,
+                             NpgsqlTransaction sqlTransaction, // was SqlTransaction
+                             ref string errorMessage)
+        {
+            bool result = false;
+
+            string errorTemplate = string.Format("BulkLoad[{0}]: {1}", targetTableName, "{0}");
+
+            List<int> excludeColumnIndex = new List<int>();
+
+            //FOR TESTING ONLY
+            //if (sourceTable.Rows.Count == 0)
+            //{
+            //    //Dummy row for testing
+            //    object[] _params = { "", "'c6d513ce-6150-ef8f-6dc3-3dc1685541a8'", new DateTime(2021, 11, 22), 1, "'Result Message'", "'Check Log Comment'", 2, "'10'", "'TestSumId'", new DateTime(2021, 11, 21), 10, new DateTime(2021, 11, 22), 0, "'Source Table'", "'row'", new DateTime(2021, 11, 22), 13, "'Check_result:PASS'", "'NONE'", "'NONE'", 5 };
+            //    sourceTable.Rows.Add(_params);
+            //}
+
+            if (sourceTable != null && sourceTable.Rows.Count > 0)
+            {
+                string insertColumns = string.Empty;
+                foreach (DataColumn column in sourceTable.Columns)
+                    if (!excludeColumnNames.Contains(column.ColumnName))
+                        insertColumns += column.ColumnName + ",";
+                    else
+                        excludeColumnIndex.Add(sourceTable.Columns.IndexOf(column));
+
+                insertColumns = insertColumns.TrimEnd(',').ToLower();
+
+                string sqlInsert = "INSERT INTO " + targetTableName + " (" + insertColumns + ") VALUES (";
+
+                string columnValues = string.Empty;
+                foreach (DataRow row in sourceTable.Rows)
+                {
+                    for (int i = 0; i < row.ItemArray.Length; i++)
+                        if (!excludeColumnIndex.Contains(i))
+                        {
+                            if ((sourceTable.Columns[i].DataType != typeof(int))){
+                                columnValues += "'" + row[i] + "',";
+                            }
+                            else
+                            {
+                                columnValues += object.Equals((row[i]), null) ? "null" : row[i] + ",";
+                            }
+                        }
+                            //columnValues += (sourceTable.Columns[i].DataType != typeof(int) ? "'" + row[i] + "'" : row[i]) + ",";
+
+                    sqlInsert += columnValues.TrimEnd(',') + ");";
+                    try
+                    {
+                        int rowsAffected = 0;
+                        using (var cmd = new NpgsqlCommand(sqlInsert, m_sqlConn))
+                        {
+                            rowsAffected = cmd.ExecuteNonQuery();
+                            result = rowsAffected > 0;
+                            if (!result)
+                                break;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        errorMessage = string.Format(errorTemplate, ex.Message);
+                        result = false;
+                    }
+                    finally
+                    {
+                        if (!string.IsNullOrEmpty(errorMessage))
+                            result = false;
+                    }
+
+                    //SQL SERVER BULK COPY
+                    /*SqlBulkCopy bulkCopy = new System.Data.SqlClient.SqlBulkCopy(m_sqlConn, SqlBulkCopyOptions.Default, sqlTransaction);
+
+                    try
+                    {
+                        bulkCopy.BulkCopyTimeout = 600;
+
+                        bulkCopy.DestinationTableName = targetTableName;
+
+                        if ((excludeColumnNames != null) && (excludeColumnNames.Count > 0))
+                        {
+                            bulkCopy.ColumnMappings.Clear();
+
+                            foreach (DataColumn column in sourceTable.Columns)
+                            {
+                                if (!excludeColumnNames.Contains(column.ColumnName))
+                                    bulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(column.ColumnName, column.ColumnName));
+                            }
+                        }
+
+                        bulkCopy.WriteToServer(sourceTable);
+                        bulkCopy.Close();
+
+
+                        result = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        errorMessage = string.Format(errorTemplate, ex.Message);
+                        result = false;
+                    }
+                    finally
+                    {
+                        //bulkCopy = null;
+                        result = false;
+                    } */
+                }
+            }
+            else
+                result = true;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Bulk load wrapper
+        /// </summary>
+        /// <param name = "sourceTable" > The source data table.</param>
+        /// <param name = "targetTableName" > The target table name.</param>
+        /// <param name = "excludeColumnNames" > List of column names to exclude from copy.</param>
+        /// <param name = "sqlTransaction" > The transaction to use, null if none.</param>
+        /// <param name = "errorMessage" > Error message.</param>
+        /// <returns>True if successful.</returns>
+        public bool BulkLoad(DataTable sourceTable,
+                             string targetTableName,
+                             string[] excludeColumnNames,
+                             NpgsqlTransaction sqlTransaction,   // was SqlTransaction
+                             ref string errorMessage)
+        {
+            bool result;
+
+            List<string> excludeColumnNameCollection = new List<string>(excludeColumnNames.Length);
+
+            for (int columnDex = 0; columnDex < excludeColumnNames.Length; columnDex++)
+                excludeColumnNameCollection.Add(excludeColumnNames[columnDex]);
+
+            result = BulkLoad(sourceTable,
+                              targetTableName,
+                              excludeColumnNameCollection,
+                              sqlTransaction,
+                              ref errorMessage);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Bulk load wrapper
+        /// </summary>
         /// <param name="sourceTable">The source data table.</param>
         /// <param name="targetTableName">The target table name.</param>
-        /// <param name="excludeColumnNames">List of column names to exclude from copy.</param>
         /// <param name="sqlTransaction">The transaction to use, null if none.</param>
         /// <param name="errorMessage">Error message.</param>
         /// <returns>True if successful.</returns>
-        //public bool BulkLoad(DataTable sourceTable,
-        //                     string targetTableName,
-        //                     List<string> excludeColumnNames,
-        //                     NpgsqlTransaction sqlTransaction, // was SqlTransaction
-        //                     ref string errorMessage)
-        //{
-        //    bool result;
+        public bool BulkLoad(DataTable sourceTable,
+                             string targetTableName,
+                             NpgsqlTransaction sqlTransaction,   // was SqlTransaction
+                             ref string errorMessage)
+        {
+            bool result;
 
-        //    string errorTemplate = string.Format("BulkLoad[{0}]: {1}", targetTableName, "{0}");
+            result = BulkLoad(sourceTable,
+                              targetTableName,
+                              (List<string>)null,
+                              sqlTransaction,
+                              ref errorMessage);
 
-        //    if ((sourceTable != null) && (sourceTable.Rows.Count > 0))
-        //    {
-        //        SqlBulkCopy bulkCopy = new SqlBulkCopy(m_sqlConn, SqlBulkCopyOptions.Default, sqlTransaction);
-
-        //        try
-        //        {
-        //            bulkCopy.BulkCopyTimeout = 600;
-
-        //            bulkCopy.DestinationTableName = targetTableName;
-
-        //            if ((excludeColumnNames != null) && (excludeColumnNames.Count > 0))
-        //            {
-        //                bulkCopy.ColumnMappings.Clear();
-
-        //                foreach (DataColumn column in sourceTable.Columns)
-        //                {
-        //                    if (!excludeColumnNames.Contains(column.ColumnName))
-        //                        bulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(column.ColumnName, column.ColumnName));
-        //                }
-        //            }
-
-        //            bulkCopy.WriteToServer(sourceTable);
-        //            bulkCopy.Close();
-
-        //            result = true;
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            errorMessage = string.Format(errorTemplate, ex.Message);
-        //            result = false;
-        //        }
-        //        finally
-        //        {
-        //            bulkCopy = null;
-        //        }
-        //    }
-        //    else
-        //        result = true;
-
-        //    return result;
-        //}
+            return result;
+        }
 
         /// <summary>
         /// Bulk load wrapper
@@ -1714,124 +1832,69 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <param name="sourceTable">The source data table.</param>
         /// <param name="targetTableName">The target table name.</param>
         /// <param name="excludeColumnNames">List of column names to exclude from copy.</param>
-        /// <param name="sqlTransaction">The transaction to use, null if none.</param>
         /// <param name="errorMessage">Error message.</param>
         /// <returns>True if successful.</returns>
-        //public bool BulkLoad(DataTable sourceTable,
-        //                     string targetTableName,
-        //                     string[] excludeColumnNames,
-        //                     NpgsqlTransaction sqlTransaction,   // was SqlTransaction
-        //                     ref string errorMessage)
-        //{
-        //    bool result;
+        public bool BulkLoad(DataTable sourceTable,
+                             string targetTableName,
+                             List<string> excludeColumnNames,
+                             ref string errorMessage)
+        {
+            bool result;
 
-        //    List<string> excludeColumnNameCollection = new List<string>(excludeColumnNames.Length);
+            result = BulkLoad(sourceTable,
+                              targetTableName,
+                              excludeColumnNames,
+                              null,
+                              ref errorMessage);
 
-        //    for (int columnDex = 0; columnDex < excludeColumnNames.Length; columnDex++)
-        //        excludeColumnNameCollection.Add(excludeColumnNames[columnDex]);
+            return result;
+        }
 
-        //    result = BulkLoad(sourceTable,
-        //                      targetTableName,
-        //                      excludeColumnNameCollection,
-        //                      sqlTransaction,
-        //                      ref errorMessage);
+        /// <summary>
+        /// Bulk load wrapper
+        /// </summary>
+        /// <param name="sourceTable">The source data table.</param>
+        /// <param name="targetTableName">The target table name.</param>
+        /// <param name="excludeColumnNames">List of column names to exclude from copy.</param>
+        /// <param name="errorMessage">Error message.</param>
+        /// <returns>True if successful.</returns>
+        public bool BulkLoad(DataTable sourceTable,
+                             string targetTableName,
+                             string[] excludeColumnNames,
+                             ref string errorMessage)
+        {
+            bool result;
 
-        //    return result;
-        //}
+            result = BulkLoad(sourceTable,
+                              targetTableName,
+                              excludeColumnNames,
+                              null,
+                              ref errorMessage);
 
-        ///// <summary>
-        ///// Bulk load wrapper
-        ///// </summary>
-        ///// <param name="sourceTable">The source data table.</param>
-        ///// <param name="targetTableName">The target table name.</param>
-        ///// <param name="sqlTransaction">The transaction to use, null if none.</param>
-        ///// <param name="errorMessage">Error message.</param>
-        ///// <returns>True if successful.</returns>
-        //public bool BulkLoad(DataTable sourceTable,
-        //                     string targetTableName,
-        //                     NpgsqlTransaction sqlTransaction,   // was SqlTransaction
-        //                     ref string errorMessage)
-        //{
-        //    bool result;
+            return result;
+        }
 
-        //    result = BulkLoad(sourceTable,
-        //                      targetTableName,
-        //                      (List<string>)null,
-        //                      sqlTransaction,
-        //                      ref errorMessage);
+        /// <summary>
+        /// Bulk load wrapper
+        /// </summary>
+        /// <param name="sourceTable">The source data table.</param>
+        /// <param name="targetTableName">The target table name.</param>
+        /// <param name="errorMessage">Error message.</param>
+        /// <returns>True if successful.</returns>
+        public bool BulkLoad(DataTable sourceTable,
+                             string targetTableName,
+                             ref string errorMessage)
+        {
+            bool result;
 
-        //    return result;
-        //}
+            result = BulkLoad(sourceTable,
+                              targetTableName,
+                              (List<string>)null,
+                              null,
+                              ref errorMessage);
 
-        ///// <summary>
-        ///// Bulk load wrapper
-        ///// </summary>
-        ///// <param name="sourceTable">The source data table.</param>
-        ///// <param name="targetTableName">The target table name.</param>
-        ///// <param name="excludeColumnNames">List of column names to exclude from copy.</param>
-        ///// <param name="errorMessage">Error message.</param>
-        ///// <returns>True if successful.</returns>
-        //public bool BulkLoad(DataTable sourceTable,
-        //                     string targetTableName,
-        //                     List<string> excludeColumnNames,
-        //                     ref string errorMessage)
-        //{
-        //    bool result;
-
-        //    result = BulkLoad(sourceTable,
-        //                      targetTableName,
-        //                      excludeColumnNames,
-        //                      null,
-        //                      ref errorMessage);
-
-        //    return result;
-        //}
-
-        ///// <summary>
-        ///// Bulk load wrapper
-        ///// </summary>
-        ///// <param name="sourceTable">The source data table.</param>
-        ///// <param name="targetTableName">The target table name.</param>
-        ///// <param name="excludeColumnNames">List of column names to exclude from copy.</param>
-        ///// <param name="errorMessage">Error message.</param>
-        ///// <returns>True if successful.</returns>
-        //public bool BulkLoad(DataTable sourceTable,
-        //                     string targetTableName,
-        //                     string[] excludeColumnNames,
-        //                     ref string errorMessage)
-        //{
-        //    bool result;
-
-        //    result = BulkLoad(sourceTable,
-        //                      targetTableName,
-        //                      excludeColumnNames,
-        //                      null,
-        //                      ref errorMessage);
-
-        //    return result;
-        //}
-
-        ///// <summary>
-        ///// Bulk load wrapper
-        ///// </summary>
-        ///// <param name="sourceTable">The source data table.</param>
-        ///// <param name="targetTableName">The target table name.</param>
-        ///// <param name="errorMessage">Error message.</param>
-        ///// <returns>True if successful.</returns>
-        //public bool BulkLoad(DataTable sourceTable,
-        //                     string targetTableName,
-        //                     ref string errorMessage)
-        //{
-        //    bool result;
-
-        //    result = BulkLoad(sourceTable,
-        //                      targetTableName,
-        //                      (List<string>)null,
-        //                      null,
-        //                      ref errorMessage);
-
-        //    return result;
-        //}
+            return result;
+        }
 
         #endregion
 
@@ -2353,8 +2416,8 @@ namespace ECMPS.Checks.DatabaseAccess
 
         private static bool LoadSeverityCode()
         {
-            string Sql = "select Severity_Cd, Severity_Cd_Description, Severity_Level from Severity_Code";
-            cNpgsqlDatabase AuxConn = cNpgsqlDatabase.GetConnection(eCatalog.AUX, "LoadSeverityCode");
+            string Sql = "select Severity_Cd, Severity_Cd_Description, Severity_Level from camdecmpsmd.severity_code";
+            cDatabase AuxConn = cDatabase.GetConnection(eCatalog.AUX, "LoadSeverityCode");
 
             try
             {
@@ -2395,7 +2458,7 @@ namespace ECMPS.Checks.DatabaseAccess
         {
             bool result;
 
-         //   DataDBDataContext db = this.GetDataDBContext();
+            DataDBDataContext db = this.GetDataDBContext();
 
             string lookupTypeCd;
             {
@@ -2413,7 +2476,7 @@ namespace ECMPS.Checks.DatabaseAccess
 
             try
             {
-     //           db.GetFacilityInfo(lookupTypeCd, lookupId, ref facId, ref firstEcmpsRptPeriodId, ref errorMessage);
+               db.GetFacilityInfo(lookupTypeCd, lookupId, ref facId, ref firstEcmpsRptPeriodId, ref errorMessage);
                 result = facId.HasValue;
             }
             catch (Exception ex)
@@ -2459,113 +2522,118 @@ namespace ECMPS.Checks.DatabaseAccess
 
     }
 
-    ///// <summary>
-    ///// The types of ids used to lookup facility information
-    ///// </summary>
-    //public enum eFacilityLookupType
-    //{
-    //    /// <summary>
-    //    /// MON_PLAN_ID
-    //    /// </summary>
-    //    MP,
+    /// <summary>
+    /// The types of ids used to lookup facility information
+    /// </summary>
+    public enum eFacilityLookupType
+    {
+        /// <summary>
+        /// MON_PLAN_ID
+        /// </summary>
+        MP,
 
-    //    /// <summary>
-    //    /// MON_LOC_ID
-    //    /// </summary>
-    //    ML,
+        /// <summary>
+        /// MON_LOC_ID
+        /// </summary>
+        ML,
 
-    //    /// <summary>
-    //    /// TEST_SUM_ID
-    //    /// </summary>
-    //    TEST,
+        /// <summary>
+        /// TEST_SUM_ID
+        /// </summary>
+        TEST,
 
-    //    /// <summary>
-    //    /// QA_CERT_EVENT_ID
-    //    /// </summary>
-    //    QCE,
+        /// <summary>
+        /// QA_CERT_EVENT_ID
+        /// </summary>
+        QCE,
 
-    //    /// <summary>
-    //    /// TEST_EXTENSION_EXEMPTION_ID
-    //    /// </summary>
-    //    TEE,
+        /// <summary>
+        /// TEST_EXTENSION_EXEMPTION_ID
+        /// </summary>
+        TEE,
 
-    //    /// <summary>
-    //    /// ORIS_CODE
-    //    /// </summary>
-    //    ORIS,
+        /// <summary>
+        /// ORIS_CODE
+        /// </summary>
+        ORIS,
 
-    //    /// <summary>
-    //    /// FAC_ID
-    //    /// </summary>
-    //    FAC
-    //}
+        /// <summary>
+        /// FAC_ID
+        /// </summary>
+        FAC
+    }
 
-    ///// <summary>
-    ///// The types of workspace data update by evaluations
-    ///// </summary>
-    //public enum eWorkspaceDataType
-    //{
-    //    /// <summary>
-    //    /// QA/Test Data
-    //    /// </summary>
-    //    QA,
+    /// <summary>
+    /// The types of workspace data update by evaluations
+    /// </summary>
+    public enum eWorkspaceDataType
+    {
+        /// <summary>
+        /// QA/Test Data
+        /// </summary>
+        QA,
 
-    //    /// <summary>
-    //    /// Emissions Data
-    //    /// </summary>
-    //    EM,
+        /// <summary>
+        /// Emissions Data
+        /// </summary>
+        EM,
 
-    //    /// <summary>
-    //    /// LME Data
-    //    /// </summary>
-    //    LME,
+        /// <summary>
+        /// LME Data
+        /// </summary>
+        LME,
 
-    //    /// <summary>
-    //    /// Non Operating Emission Generation Data
-    //    /// </summary>
-    //    EMGEN
-    //}
+        /// <summary>
+        /// Non Operating Emission Generation Data
+        /// </summary>
+        EMGEN
+    }
 
 
     /// <summary>
     /// Extensions for Database and DataTable type stuff
     /// </summary>
-    //public static class DatabaseRelatedExtensions
-    //{
+    public static class DatabaseRelatedExtensions
+    {
 
-    //    /// <summary>
-    //    /// Get a context for the ECMPS_AUX database
-    //    /// </summary>
-    //    /// <param name="oDBConn">The cNpgsqlDatabase connection to use</param>
-    //    /// <returns>New context for the ECMPS_AUX database</returns>
-    //    public static AuxDBDataContext GetAuxDBContext(this cNpgsqlDatabase oDBConn)
-    //    {
-    //        AuxDBDataContext db = new AuxDBDataContext(oDBConn);
-    //        db.CommandTimeout = cNpgsqlDatabase.DefaultCommandTimeout;
-    //        return db;
-    //    }
+        /// <summary>
+        /// Get a context for the ECMPS_AUX database
+        /// </summary>
+        /// <param name="oDBConn">The cNpgsqlDatabase connection to use</param>
+        /// <returns>New context for the ECMPS_AUX database</returns>
+        public static AuxDBDataContext GetAuxDBContext(this cDatabase oDBConn)
+        {
+            AuxDBDataContext db = new AuxDBDataContext(oDBConn);
+            db.CommandTimeout = cDatabase.DefaultCommandTimeout;
+            return db;
+        }
 
-    //    /// <summary>
-    //    /// Get a context for the ECMPS database
-    //    /// </summary>
-    //    /// <param name="oDBConn">The cNpgsqlDatabase connection to use</param>
-    //    /// <returns>New context for the ECMPS database</returns>
-    //    public static DataDBDataContext GetDataDBContext(this cNpgsqlDatabase oDBConn)
-    //    {
-    //        DataDBDataContext db = new DataDBDataContext(oDBConn);
-    //        db.CommandTimeout = cNpgsqlDatabase.DefaultCommandTimeout;
-    //        return db;
-    //    }
+        /// <summary>
+        /// Get a context for the ECMPS database
+        /// </summary>
+        /// <param name="oDBConn">The cNpgsqlDatabase connection to use</param>
+        /// <returns>New context for the ECMPS database</returns>
+        public static DataDBDataContext GetDataDBContext(this cDatabase oDBConn)
+        {
+            DataDBDataContext db = new DataDBDataContext(oDBConn);
+            db.CommandTimeout = cDatabase.DefaultCommandTimeout;
+            return db;
+        }
 
-    //    /// <summary>
-    //    /// Returns the code associated with the Workspace Data Type enumeration member.
-    //    /// </summary>
-    //    /// <param name="eType">The Workspace Data Type enumeration member.</param>
-    //    /// <returns>The associated code.</returns>
-    //    public static string ToCode(this eWorkspaceDataType eType)
-    //    {
-    //        return eType.ToString().ToUpper();
-    //    }
+        /// <summary>
+        /// Returns the code associated with the Workspace Data Type enumeration member.
+        /// </summary>
+        /// <param name="eType">The Workspace Data Type enumeration member.</param>
+        /// <returns>The associated code.</returns>
+        public static string ToCode(this eWorkspaceDataType eType)
+        {
+            return eType.ToString().ToUpper();
+        }
 
-    //}
+
+
+
+    }
+
+
 }
