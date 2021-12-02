@@ -11,6 +11,8 @@ using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
 using Epa.Camd.Quartz.Scheduler.Logging;
+using ECMPS.Checks.CheckEngine;
+using DatabaseAccess;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -47,13 +49,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       Configuration = configuration;
     }
 
-    public Task Execute(IJobExecutionContext context)
+    public async Task Execute(IJobExecutionContext context)
     {
       try
       {
         JobKey key = context.JobDetail.Key;
         JobDataMap dataMap = context.MergedJobDataMap;
-
+        dataMap.Add("connectionString", ConnectionStringManager.getConnectionString(Configuration));
         string id = dataMap.GetString("Id");
         string processCode = dataMap.GetString("ProcessCode");
         int facilityId = dataMap.GetIntValue("FacilityId");
@@ -63,7 +65,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         string userId = dataMap.GetString("UserId");
         string userEmail = dataMap.GetString("UserEmail");
         string submittedOn = dataMap.GetString("SubmittedOn");
-
+                
         LogHelper.info(
           _logger, $"Executing {key.Group}.{key.Name} with data map...",
           new LogVariable("Id", id),
@@ -84,9 +86,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         /////////////////////////////////////////////////////////////////////////////////////////////
         // PLUGIN IN CHECK ENGINE HERE
-
+        cCheckEngine runEngine = new cCheckEngine();
+        await runEngine.Execute(context);
+        await Task.CompletedTask;
         // Remove once actual Check Engine has bee plugged in
-        System.Threading.Thread.Sleep(5000);
+         System.Threading.Thread.Sleep(5000);
 
         // TODO: instantiate Check Engine and execute the proper process based on the process code
         LogHelper.info(_logger, "Executing Checks...");
@@ -127,12 +131,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.SaveChanges();
 
         LogHelper.info(_logger, $"{key.Group}.{key.Name} completed successfully");
-        return Task.CompletedTask;
+       
       }
       catch (Exception ex)
       {
         LogHelper.error(_logger, ex.ToString());
-        return Task.FromException(ex);
+       
       }
     }
 
