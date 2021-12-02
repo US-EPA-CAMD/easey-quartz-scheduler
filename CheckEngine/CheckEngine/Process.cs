@@ -14,6 +14,7 @@ using ECMPS.Common;
 using ECMPS.Definitions.Extensions;
 using ECMPS.Definitions.SeverityCode;
 using Npgsql;
+using System.Collections.Generic;
 
 namespace ECMPS.Checks.CheckEngine
 {
@@ -1246,10 +1247,10 @@ namespace ECMPS.Checks.CheckEngine
             string resultTemplate = "DbUpdate_EcmpsStatus [{0}]: {1}";
             string vResult = string.Empty;
             bool result;
-
+            List<string> values = new List<string>();
 
             DataTable AResultTable;
-            string Sql = "call camdecmpswks.update_ecmps_status_for_mp_evaluation('" + CheckEngine.MonPlanId + "','" + CheckEngine.ChkSessionId + "')";
+            string Sql = "select camdecmpswks.update_ecmps_status_for_mp_evaluation('" + CheckEngine.MonPlanId + "','" + CheckEngine.ChkSessionId + "')";
 
 
             if (DbUpdate_EcmpsStatusProcess != null)
@@ -1262,10 +1263,18 @@ namespace ECMPS.Checks.CheckEngine
                     foreach (DataRow row in AResultTable.Rows)
                     {
 
-                        vResult = row["vResult"].ToString();
-                        errorMessage = row["vErrorMsg"].ToString();
+                        var chkSessionIds = row["update_ecmps_status_for_mp_evaluation"];
+                        IEnumerable enumerable = chkSessionIds as IEnumerable;
+                        if (enumerable != null)
+                        {
+                            foreach (object element in enumerable)
+                            {
+                                values.Add(element.ToString());
+                            }
+                        }
                     }
-
+                    vResult = values[0];
+                    errorMessage = values[1];
                     if (vResult == "T")
                         result = true;
                     else
