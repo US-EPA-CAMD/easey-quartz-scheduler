@@ -206,7 +206,7 @@ namespace ECMPS.Checks.DatabaseAccess
                 resultString = values[1];
                 errorMessage = values[2];
 
-
+                Console.WriteLine("************CheckSessionInit Created ");
             }
             catch (Exception ex)
             {
