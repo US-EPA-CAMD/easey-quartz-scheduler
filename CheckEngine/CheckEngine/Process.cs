@@ -1282,6 +1282,7 @@ namespace ECMPS.Checks.CheckEngine
                         errorMessage = string.Format(resultTemplate, "DB", errorMessage);
                         result = false;
                     }
+                    Console.WriteLine("Completed update_ecmps_status_for_mp_evaluation");
                 }
                 catch (Exception ex)
                 {

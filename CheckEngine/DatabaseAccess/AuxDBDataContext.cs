@@ -50,6 +50,8 @@ namespace ECMPS.Checks.DatabaseAccess
 
             //Database.CreateStoredProcedureCommand("Check.CheckSessionCompleted");
 
+            Console.WriteLine("***********************************************running Check session");
+
             DataTable AResultTable;
             string Sql = "call camdecmpswks.check_session_completed('" + chkSessionId + "','" + severityCd + "')";
 

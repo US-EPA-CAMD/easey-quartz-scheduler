@@ -24,7 +24,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
         public cMonitorPlan(cCheckEngine CheckEngine)
           : base(CheckEngine)
         {
-            Console.WriteLine("*****************************************************Executing Monitoring Plan");
+            Console.WriteLine("*****************************************************Initalizing Monitoring Plan");
         }
 
         #endregion
@@ -378,7 +378,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
                 DbUpdate(ref Result);
 
-
+                Console.WriteLine("*****************************************************Completed Monitoring Plan Checks  ");
                 return Result;
             }
             catch (Exception e) {

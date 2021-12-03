@@ -729,8 +729,10 @@ namespace ECMPS.Checks.CheckEngine
                             // if (WorkspaceSessionInit() && CheckSessionInit())
                             if (CheckSessionInit())
                             {
+                                Console.WriteLine("***********************************************Ready to run Checks");
                                 if (Process.ExecuteChecks(ChecksDllPath, ref errorMessage))
                                 {
+                                    Console.WriteLine("***********************************************Processed Monplan checks "+MonPlanId);
                                     result = CheckSessionCompleted(Process.SeverityCd);
                                 }
                                 else
