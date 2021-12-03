@@ -11,7 +11,7 @@ namespace ECMPS.Checks.DatabaseAccess
     /// Replaces AuxDBDataContext DBML, especially the method calls for stored procedures/functions
     /// </summary>
     public class AuxDBDataContext
-    {
+     {
 
         /// <summary>
         /// Creates a DataDBDataContext instance using the cDatabase instance and command timeout defaulted to 30 seconds.
