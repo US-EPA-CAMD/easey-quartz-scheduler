@@ -10,4 +10,4 @@ memory: 1024M
 environment: development
 host: easey-dev.app.cloud.gov
 apiHost: api.epa.gov/easey/dev
-checkEngineDllPath: 
+checkEngineDllPath: /home/app/bin/Debug/netcoreapp3.1/MonitorPlan.dll

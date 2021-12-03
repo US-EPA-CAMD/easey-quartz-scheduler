@@ -12,6 +12,7 @@ using Epa.Camd.Quartz.Scheduler.Logging;
 
 using DatabaseAccess;
 using ECMPS.Checks.CheckEngine;
+using ECMPS.Checks.CheckEngine.Definitions;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -89,12 +90,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         {
           case "MP":
             string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
-            LogHelper.info(_logger, "...initializing check egine");
-            LogHelper.info(_logger, $"base directory: {System.AppDomain.CurrentDomain.BaseDirectory}");            
-            //cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
+            cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
 
             LogHelper.info(_logger, "...running RunChecks_MpReport");
-            //result = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+            result = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
             break;
           case "QA-QCE":
             LogHelper.info(_logger, "...running RunChecks_QaReport_Qce");

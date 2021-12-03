@@ -98,12 +98,9 @@ namespace Epa.Camd.Quartz.Scheduler
     public async Task<ActionResult> TriggerMPEvaluation([FromBody] EvaluationRequest request)
     {
       string apiKey = Request.Headers["X-API-KEY"];
+      string allowedKeys = Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATIONS_API_KEYS"];
 
-      if (
-        apiKey != null &&
-        (apiKey == Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS"] ||
-         apiKey == Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD"])
-      )
+      if (apiKey != null && allowedKeys.Split(',').Contains(apiKey))
       {
         return await TriggerCheckEngineEvaluation(
           "MP",

@@ -8,7 +8,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 	{
  		[Key]
 		[Column("check_session_id")]
- 		public int Id { get; set; } 
+ 		public string Id { get; set; } 
 
 		[Column("mon_plan_id")]
  		public string MonitorPlanId { get; set; }

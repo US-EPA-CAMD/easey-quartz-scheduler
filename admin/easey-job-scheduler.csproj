@@ -22,7 +22,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CheckEngine\CheckEngine\CheckEngine.csproj" />
-    <ProjectReference Include="..\Quartz\SilkierQuartz\SilkierQuartz.csproj" />
     <ProjectReference Include="..\CheckEngine\DatabaseAccess\DatabaseAccess.csproj" />
+    <ProjectReference Include="..\CheckEngine\MonitorPlan\MonitorPlan.csproj" />
+    <ProjectReference Include="..\Quartz\SilkierQuartz\SilkierQuartz.csproj" />
   </ItemGroup>
 </Project>

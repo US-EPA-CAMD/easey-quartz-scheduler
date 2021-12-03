@@ -90,11 +90,11 @@ jobs:
         run: devops/scripts/cf-app-init.sh
       - name: Configure Env Vars (secrets)
         run: |
-          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS $EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS
-          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD $EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_EVALUATIONS_API_KEYS $ECMPS_API_KEY
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_NOTIFICATIONS_API_KEYS "${ECMPS_API_KEY},${CAMPD_API_KEY}"
         env:
-          EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS: ${{ secrets.EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS }}
-          EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD: ${{ secrets.EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD }}
+          ECMPS_API_KEY: ${{ secrets.ECMPS_NON_PROD_API_KEY }}
+          CAMPD_API_KEY: ${{ secrets.CAMPD_NON_PROD_API_KEY }}
       - name: Deploy
         run: devops/scripts/deploy.sh
   Beta-Deployment:
@@ -133,11 +133,11 @@ jobs:
         run: devops/scripts/cf-app-init.sh
       - name: Configure Env Vars (secrets)
         run: |
-          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS $EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS
-          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD $EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_EVALUATIONS_API_KEYS $ECMPS_API_KEY
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_NOTIFICATIONS_API_KEYS "${ECMPS_API_KEY},${CAMPD_API_KEY}"
         env:
-          EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS: ${{ secrets.EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS }}
-          EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD: ${{ secrets.EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD }}
+          ECMPS_API_KEY: ${{ secrets.ECMPS_NON_PROD_API_KEY }}
+          CAMPD_API_KEY: ${{ secrets.CAMPD_NON_PROD_API_KEY }}
       - name: Deploy
         run: devops/scripts/deploy.sh
   Stage-Deployment:
@@ -176,10 +176,10 @@ jobs:
         run: devops/scripts/cf-app-init.sh
       - name: Configure Env Vars (secrets)
         run: |
-          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS $EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS
-          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD $EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_EVALUATIONS_API_KEYS $ECMPS_API_KEY
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_NOTIFICATIONS_API_KEYS "${ECMPS_API_KEY},${CAMPD_API_KEY}"
         env:
-          EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS: ${{ secrets.EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS }}
-          EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD: ${{ secrets.EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD }}
+          ECMPS_API_KEY: ${{ secrets.ECMPS_NON_PROD_API_KEY }}
+          CAMPD_API_KEY: ${{ secrets.CAMPD_NON_PROD_API_KEY }}
       - name: Deploy
         run: devops/scripts/deploy.sh
