@@ -386,7 +386,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
                 Console.WriteLine("******************************************************** checks Failed" + e.ToString());
                 
             }
-            return false;
+            return "false";
         }
 
         protected override void InitCalculatedData()
