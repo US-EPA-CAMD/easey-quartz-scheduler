@@ -28,30 +28,44 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
       int facilityId = dataMap.GetIntValue("FacilityId");
       string facilityName = dataMap.GetString("FacilityName");
       string monitorPlanId = dataMap.GetString("MonitorPlanId");
-      string configuration = dataMap.GetString("Configuration");
+      string monPlanConfig = dataMap.GetString("Configuration");
       string userId = dataMap.GetString("UserId");
+      string userEmail = dataMap.GetString("UserEmail");
       string submittedOn = dataMap.GetString("SubmittedOn");
-
-      string toEmail = "jasonwhitehead@cvpcorp.com";//dataMap.GetString("UserEmail");
+      string evaluationStatus = dataMap.GetString("EvaluationStatus");
+      string evaluationResult = dataMap.GetString("EvaluationResult");
       string fromEmail = Configuration["EASEY_QUARTZ_SCHEDULER_EMAIL"];
 
       string subject = string.Format(
-        "{0} Evaluation of {1} {2} Completed",
+        "{0} Evaluation {1} {2} - {3}",
         CheckEngineEvaluation.GetProcess(processCode),
         facilityName,
-        configuration
+        monPlanConfig,
+        evaluationResult
       );
 
-      string message = string.Format(
-        "{0} Evaluation of {1} {2} completed with an Evaluation Status of {3}",
+      string message = string.Format(@"
+        The {0} Evaluation process for the following details has completed with a result of {1}!
+
+        Facility Id: {2}          Facility Name: {3}
+        Configuration: {4}        Submitted: {5}
+        Status: {6}               Report Url: https://{7}/ecmps/monitoring-plans/{8}/evaluation-report
+
+        Thanks,
+        ECMPS Support",
         CheckEngineEvaluation.GetProcess(processCode),
+        evaluationResult,
+        facilityId,
         facilityName,
-        configuration,
-        "PASS"
-      );;
+        monPlanConfig,
+        submittedOn,
+        evaluationStatus,
+        Configuration["EASEY_QUARTZ_SCHEDULER_HOST"],
+        monitorPlanId
+      );
 
       await SendMail.StartNow(
-        toEmail,
+        userEmail,
         fromEmail,
         subject,
         message,

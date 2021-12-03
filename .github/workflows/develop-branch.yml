@@ -9,6 +9,9 @@ on:
 jobs:
   Build-Test-Deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: Dev
+      url: https://easey-dev.app.cloud.gov/quartz
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -58,5 +61,14 @@ jobs:
         env:
           CF_USERNAME: ${{ secrets.CF_DEV_DEPLOYMENT_SVC }}
           CF_PASSWORD: ${{ secrets.CF_DEV_DEPLOYMENT_SVC_PWD }}
+      - name: Init Application
+        run: devops/scripts/cf-app-init.sh
+      - name: Configure Env Vars (secrets)
+        run: |
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_EVALUATIONS_API_KEYS $ECMPS_API_KEY
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_NOTIFICATIONS_API_KEYS "${ECMPS_API_KEY},${CAMPD_API_KEY}"
+        env:
+          ECMPS_API_KEY: ${{ secrets.ECMPS_NON_PROD_API_KEY }}
+          CAMPD_API_KEY: ${{ secrets.CAMPD_NON_PROD_API_KEY }}
       - name: Deploy
         run: devops/scripts/deploy.sh

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -33,12 +35,9 @@ namespace Epa.Camd.Quartz.Scheduler
     public async Task<ActionResult> SendEmail([FromBody] SendEmailRequest request)
     {
       string apiKey = Request.Headers["X-API-KEY"];
+      string allowedKeys = Configuration["EASEY_QUARTZ_SCHEDULER_NOTIFICATIONS_API_KEYS"];
 
-      if (
-        apiKey != null &&
-        (apiKey == Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY_ECMPS"] ||
-         apiKey == Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY_CAMPD"])
-      )
+      if (apiKey != null && allowedKeys.Split(',').Contains(apiKey))
       {
         Services services = (Services)Request.HttpContext.Items[typeof(Services)];
         

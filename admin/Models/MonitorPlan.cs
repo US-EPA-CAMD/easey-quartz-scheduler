@@ -15,5 +15,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 
 		[Column("eval_status_cd")]
  		public string EvalStatus { get; set; }
+
+		[Column("chk_session_id")]
+ 		public string CheckSessionId { get; set; }
 	}
 }

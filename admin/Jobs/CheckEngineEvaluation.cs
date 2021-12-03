@@ -10,6 +10,10 @@ using SilkierQuartz;
 using Epa.Camd.Quartz.Scheduler.Models;
 using Epa.Camd.Quartz.Scheduler.Logging;
 
+using DatabaseAccess;
+using ECMPS.Checks.CheckEngine;
+using ECMPS.Checks.CheckEngine.Definitions;
+
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   public class CheckEngineEvaluation : IJob
@@ -47,19 +51,23 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public Task Execute(IJobExecutionContext context)
     {
+      JobKey key = context.JobDetail.Key;
+
       try
       {
-        JobKey key = context.JobDetail.Key;
         JobDataMap dataMap = context.MergedJobDataMap;
 
+        bool result = false;
         string id = dataMap.GetString("Id");
         string processCode = dataMap.GetString("ProcessCode");
         int facilityId = dataMap.GetIntValue("FacilityId");
         string facilityName = dataMap.GetString("FacilityName");
         string monitorPlanId = dataMap.GetString("MonitorPlanId");
-        string configuration = dataMap.GetString("Configuration");
+        string monPlanConfig = dataMap.GetString("Configuration");
         string userId = dataMap.GetString("UserId");
+        string userEmail = dataMap.GetString("UserEmail");
         string submittedOn = dataMap.GetString("SubmittedOn");
+        string connectionString = ConnectionStringManager.getConnectionString(Configuration);
 
         LogHelper.info(
           _logger, $"Executing {key.Group}.{key.Name} with data map...",
@@ -68,8 +76,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           new LogVariable("Facility Id", facilityId),
           new LogVariable("Facility Name", facilityName),
           new LogVariable("Monior Plan Id", monitorPlanId),
-          new LogVariable("Configuration", configuration),
+          new LogVariable("Configuration", monPlanConfig),
           new LogVariable("User Id", userId),
+          new LogVariable("User Email", userEmail),
           new LogVariable("Submitted On", submittedOn)
         );
 
@@ -78,28 +87,73 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.MonitorPlans.Update(mp);
         _dbContext.SaveChanges();
 
-        /////////////////////////////////////////////////////////////////////////////////////////////
-        // PLUGIN IN CHECK ENGINE HERE
+        switch (processCode)
+        {
+          case "MP":
+            string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
+            cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
 
-        // Remove once actual Check Engine has bee plugged in
-        System.Threading.Thread.Sleep(5000);
+            LogHelper.info(_logger, "Running RunChecks_MpReport...");
+            result = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+            LogHelper.info(_logger, $"RunChecks_MpReport returned a result of {result}!");
 
-        // TODO: instantiate Check Engine and execute the proper process based on the process code
-        LogHelper.info(_logger, "Executing Checks...");
+            break;
+          case "QA-QCE":
+            LogHelper.info(_logger, "Running RunChecks_QaReport_Qce...");
+            //this.RunChecks_QaReport_Qce();
+            break;
+          case "QA-TEE":
+            LogHelper.info(_logger, "Running RunChecks_QaReport_Tee...");
+            //this.RunChecks_QaReport_Tee();
+            break;
+          case "EM":
+            LogHelper.info(_logger, "Running RunChecks_EmReport...");
+            //this.RunChecks_EmReport();
+            break;
+          default:
+            throw new Exception("A Process Code of [MP, QA-QCE, QA-TEE, EM] is required and was not provided");
+        }
 
-        // Remove once actual Check Engine has bee plugged in
-        System.Threading.Thread.Sleep(30000);
-        /////////////////////////////////////////////////////////////////////////////////////////////
+        // Need to retrieve again to get session id that was set by evaluation job
+        mp = _dbContext.MonitorPlans.Find(monitorPlanId);
+        CheckSession chkSession = _dbContext.CheckSessions.Find(mp.CheckSessionId);
 
-        mp.EvalStatus = "PASS"; // this will need to be set based off the check session final results
+        switch(chkSession.SeverityCode)
+        {
+          case "NONE":
+            mp.EvalStatus = "PASS";
+            break;
+          case "ADMNOVR":
+            mp.EvalStatus = ""; // TODO: NEED SEVERITY CODE TO EVAL STATUS MAPPING
+            break;
+          case "INFORM":
+            mp.EvalStatus = "INFO";
+            break;
+          case "NONCRIT":
+            mp.EvalStatus = ""; // TODO: NEED SEVERITY CODE TO EVAL STATUS MAPPING
+            break;
+          case "CRIT1":
+          case "CRIT2":
+          case "CRIT3":
+          case "FATAL":          
+            mp.EvalStatus = "ERR";
+            break;
+        }
+
         _dbContext.MonitorPlans.Update(mp);
         _dbContext.SaveChanges();
+
+        context.MergedJobDataMap.Add("EvaluationResult", "COMPLETE");
+        context.MergedJobDataMap.Add("EvaluationStatus", mp.EvalStatus);        
 
         LogHelper.info(_logger, $"{key.Group}.{key.Name} completed successfully");
         return Task.CompletedTask;
       }
       catch (Exception ex)
       {
+        LogHelper.info(_logger, $"{key.Group}.{key.Name} failed");
+        context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
+        context.MergedJobDataMap.Add("EvaluationStatus", "FAILED");
         LogHelper.error(_logger, ex.ToString());
         return Task.FromException(ex);
       }
@@ -146,8 +200,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       int facilityId,
       string facilityName,
       string monitorPlanId,
-      string configuration,
+      string monPlanConfig,
       string userId,
+      string userEmail,
       DateTime submittedOn
     ) {
       string processName = GetProcess(processCode);
@@ -159,14 +214,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         .Build();
 
       ITrigger trigger = TriggerBuilder.Create()
-        .WithIdentity(WithTriggerKey(processCode, facilityName, configuration))
-        .WithDescription(string.Format(Identity.TriggerDescription, processName, facilityName, configuration))
+        .WithIdentity(WithTriggerKey(processCode, facilityName, monPlanConfig))
+        .WithDescription(string.Format(Identity.TriggerDescription, processName, facilityName, monPlanConfig))
         .UsingJobData("Id", id.ToString())
         .UsingJobData("FacilityId", facilityId)
         .UsingJobData("FacilityName", facilityName)
         .UsingJobData("MonitorPlanId", monitorPlanId)
-        .UsingJobData("Configuration", configuration)
+        .UsingJobData("Configuration", monPlanConfig)
         .UsingJobData("UserId", userId)
+        .UsingJobData("UserEmail", userEmail)        
         .UsingJobData("SubmittedOn", submittedOn.ToString())
         .StartNow()
         .Build();
