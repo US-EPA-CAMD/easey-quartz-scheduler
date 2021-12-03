@@ -743,6 +743,7 @@ namespace ECMPS.Checks.CheckEngine
                             }
                             else
                                 result = false;
+                            Console.WriteLine("***********************************************check session Failed");
                         }
                         else
                         {

@@ -24,6 +24,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
         public cMonitorPlan(cCheckEngine CheckEngine)
           : base(CheckEngine)
         {
+            Console.WriteLine("*****************************************************Executing Monitoring Plan");
         }
 
         #endregion

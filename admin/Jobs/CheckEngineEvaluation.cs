@@ -91,7 +91,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         {
           case "MP":
             string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
-            cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
+            cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, "`/home/vcap/deps/0/dotnet_publish/", "dumpfilePath", 20);
 
             LogHelper.info(_logger, "Running RunChecks_MpReport...");
             result = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
