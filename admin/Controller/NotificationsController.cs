@@ -34,7 +34,7 @@ namespace Epa.Camd.Quartz.Scheduler
     [HttpPost("emails")]
     public async Task<ActionResult> SendEmail([FromBody] SendEmailRequest request)
     {
-      string apiKey = Request.Headers["X-API-KEY"];
+      string apiKey = Request.Headers["x-api-key"];
       string allowedKeys = Configuration["EASEY_QUARTZ_SCHEDULER_NOTIFICATIONS_API_KEYS"];
 
       if (apiKey != null && allowedKeys.Split(',').Contains(apiKey))

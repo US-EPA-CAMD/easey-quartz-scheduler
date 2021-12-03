@@ -6,6 +6,8 @@ using System.Text;
 
 namespace DatabaseAccess
 {
+
+    /// ConnectionStringManager
     public static class ConnectionStringManager
     {
         private static IConfiguration Configuration { get; set; }
@@ -17,6 +19,8 @@ namespace DatabaseAccess
 
         private static string connectionString { get; set; }
 
+
+        /// getConnectionString
         public static string getConnectionString(IConfiguration configuration)
         {
             Configuration = configuration;

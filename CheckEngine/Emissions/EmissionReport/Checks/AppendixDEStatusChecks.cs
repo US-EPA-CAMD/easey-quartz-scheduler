@@ -933,7 +933,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     int EndQtr = cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"]);
                     Category.SetCheckParameter("FF2L_Accuracy_End_Year_Quarter", EndYear.ToString() + EndQtr.ToString(), eParameterDataType.String);
                     DataView OpSuppRecs = Category.GetCheckParameter("Operating_Supp_Data_Records_by_Location").ValueAsDataView();
-                    DataView OpSuppRecsFound;
+                    //DataView OpSuppRecsFound;
                     FilterFF2LRecs = new sFilterPair[3];
                     FilterFF2LRecs[0].Set("MON_SYS_ID", MonSysID);
                     sFilterPair[] FilterOpSupp = new sFilterPair[5];
@@ -1053,7 +1053,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     DataRowView CurrentFFRecord = Category.GetCheckParameter("Current_Fuel_Flow_Record").ValueAsDataRowView();
                     string FuelCd = cDBConvert.ToString(CurrentFFRecord["FUEL_CD"]);
                     DataView OpSuppRecs = Category.GetCheckParameter("Operating_Supp_Data_Records_by_Location").ValueAsDataView();
-                    DataView OpSuppRecsFound;
+                    //DataView OpSuppRecsFound;
                     sFilterPair[] FilterOpSupp = new sFilterPair[4];
                     FilterOpSupp[0].Set("OP_TYPE_CD", "OPHOURS");
                     FilterOpSupp[1].Set("FUEL_CD", FuelCd);
@@ -1782,7 +1782,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     int EndQtr = cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"]);
                     Category.SetCheckParameter("FF2L_PEI_End_Year_Quarter", EndYear.ToString() + EndQtr.ToString(), eParameterDataType.String);
                     DataView OpSuppRecs = Category.GetCheckParameter("Operating_Supp_Data_Records_by_Location").ValueAsDataView();
-                    DataView OpSuppRecsFound;
+                    //DataView OpSuppRecsFound;
                     FilterFF2LRecs = new sFilterPair[3];
                     FilterFF2LRecs[0].Set("MON_SYS_ID", MonSysID);
                     sFilterPair[] FilterOpSupp = new sFilterPair[5];

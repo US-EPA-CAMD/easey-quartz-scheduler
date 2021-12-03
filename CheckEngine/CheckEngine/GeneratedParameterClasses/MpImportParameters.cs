@@ -110,35 +110,6 @@ namespace ECMPS.Checks.MpImport.Parameters
             }
         }
         
-        /// <summary>
-        /// The current Calibration Standard record in the Workspace.
-        /// </summary>
-        //public static ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckMpCalibrationstandardRow CurrentWorkspaceCalibrationStandard
-        //{
-        //    get
-        //    {
-        //        System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpImportParameters.GetCheckParameter("Current_Workspace_Calibration_Standard")));
-        //        if ((sourceRow == null))
-        //        {
-        //            return null;
-        //        }
-        //        else
-        //        {
-        //            return new ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckMpCalibrationstandardRow(sourceRow);
-        //        }
-        //    }
-        //    set
-        //    {
-        //        if ((value == null))
-        //        {
-        //            MpImportParameters.SetCheckParameter("Current_Workspace_Calibration_Standard", null);
-        //        }
-        //        else
-        //        {
-        //            MpImportParameters.SetCheckParameter("Current_Workspace_Calibration_Standard", value.SourceRow);
-        //        }
-        //    }
-        //}
         
         /// <summary>
         /// The current component in the Workspace tables (in the following tables):

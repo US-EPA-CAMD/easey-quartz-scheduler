@@ -2329,8 +2329,8 @@ namespace ECMPS.Checks.DatabaseAccess
         public decimal? GetNextSessionID()
         {
             decimal? nSessionID = null;
-            char? cResult = 'F';
-            string sError = null;
+            //char? cResult = 'F';
+            //string sError = null;
 
           //  AuxDBDataContext db = this.GetAuxDBContext();
             try

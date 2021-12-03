@@ -97,7 +97,7 @@ namespace Epa.Camd.Quartz.Scheduler
     [HttpPost("monitor-plans")]
     public async Task<ActionResult> TriggerMPEvaluation([FromBody] EvaluationRequest request)
     {
-      string apiKey = Request.Headers["X-API-KEY"];
+      string apiKey = Request.Headers["x-api-key"];
       string allowedKeys = Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATIONS_API_KEYS"];
 
       if (apiKey != null && allowedKeys.Split(',').Contains(apiKey))

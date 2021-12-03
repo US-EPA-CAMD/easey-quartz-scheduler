@@ -78,15 +78,24 @@ namespace Epa.Camd.Quartz.Scheduler
           }
         );
 
-        var scheme = new OpenApiSecurityScheme {
-          Type = SecuritySchemeType.ApiKey,
+        var apiKeyScheme = new OpenApiSecurityScheme {
+          Name = "x-api-key",
           In = ParameterLocation.Header,
-          Name = "API Key",
-          Description = "Use of this api requires a registered API Key!"
+          Type = SecuritySchemeType.ApiKey,
+          Description = "Authorization by x-api-key request header!",
+          Scheme = "ApiKeyScheme",
+          Reference = new OpenApiReference {
+            Id = "ApiKey",
+            Type = ReferenceType.SecurityScheme,
+          }
         };
 
-        c.AddSecurityDefinition("api key", scheme);
-        c.AddSecurityRequirement(new OpenApiSecurityRequirement { { scheme, new List<string>() } });
+        c.AddSecurityDefinition("ApiKey", apiKeyScheme);
+        c.AddSecurityRequirement(
+          new OpenApiSecurityRequirement {{
+            apiKeyScheme,
+            new List<string>()
+          }});
       });
 
       services.AddRazorPages();
