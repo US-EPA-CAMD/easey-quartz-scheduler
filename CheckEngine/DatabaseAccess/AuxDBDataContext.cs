@@ -50,7 +50,7 @@ namespace ECMPS.Checks.DatabaseAccess
 
             //Database.CreateStoredProcedureCommand("Check.CheckSessionCompleted");
 
-            Console.WriteLine("***********************************************running Check session");
+            Console.WriteLine("***********************************************running Check session Complete");
 
             DataTable AResultTable;
             string Sql = "call camdecmpswks.check_session_completed('" + chkSessionId + "','" + severityCd + "')";
@@ -67,6 +67,7 @@ namespace ECMPS.Checks.DatabaseAccess
                 }
 
                 result = 'T';
+                Console.WriteLine("***********************************************Completed Check session Complete");
             }
             catch (Exception ex)
             {
@@ -83,7 +84,7 @@ namespace ECMPS.Checks.DatabaseAccess
             //resultString = Database.GetParameterString("@V_RESULT");
             //errorMessage = Database.GetParameterString("@V_ERROR_MSG");
 
-            result = !string.IsNullOrWhiteSpace(resultString) ? resultString[0] : (char?)null;
+            //result = !string.IsNullOrWhiteSpace(resultString) ? resultString[0] : (char?)null;
 
             return 0;
         }

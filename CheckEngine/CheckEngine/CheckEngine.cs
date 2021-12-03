@@ -697,15 +697,14 @@ namespace ECMPS.Checks.CheckEngine
         /// <param name="additionalInitialization">Delegate for additional initialization that should occur before running checks.</param>
         /// <returns>Return true if processing is successful.</returns>
         private bool RunChecks_Process(string processCd, string categoryCd,
-                                       string processDllName,
-                                       string processNameSpace,
-                                       string processClassName,
-                                       object[] processConstructorArgements,
-                                       eCheckEngineRunMode runMode,
-                                       dAdditionalInitialization additionalInitialization)
+                                        string processDllName,
+                                        string processNameSpace,
+                                        string processClassName,
+                                        object[] processConstructorArgements,
+                                        eCheckEngineRunMode runMode,
+                                        dAdditionalInitialization additionalInitialization)
         {
             bool result;
-
 
             RunMode = runMode; // Sets CheckTestInit and DebugMode
 
@@ -726,13 +725,12 @@ namespace ECMPS.Checks.CheckEngine
                                                                               processConstructorArgements,
                                                                               null, null).Unwrap();
 
-                            // if (WorkspaceSessionInit() && CheckSessionInit())
                             if (CheckSessionInit())
                             {
                                 Console.WriteLine("***********************************************Ready to run Checks");
                                 if (Process.ExecuteChecks(ChecksDllPath, ref errorMessage))
                                 {
-                                    Console.WriteLine("***********************************************Processed Monplan checks "+MonPlanId);
+                                    Console.WriteLine("***********************************************Processed Monplan checks for Monplan: " + MonPlanId);
                                     result = CheckSessionCompleted(Process.SeverityCd);
                                 }
                                 else
@@ -745,19 +743,12 @@ namespace ECMPS.Checks.CheckEngine
                             }
                             else
                                 result = false;
-                            Console.WriteLine("***********************************************check session Failed");
                         }
                         else
                         {
                             result = false;
                         }
                     }
-                    catch (Exception e)
-                    {
-
-                        Console.WriteLine(e.ToString());
-                    }
-
                     finally
                     {
                         RunChecks_ProcessFini();
@@ -792,7 +783,7 @@ namespace ECMPS.Checks.CheckEngine
                 result = false;
             }
 
-            return true;
+            return result;
         }
 
         /// <summary>
