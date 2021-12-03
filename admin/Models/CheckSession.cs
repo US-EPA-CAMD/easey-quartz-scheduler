@@ -13,7 +13,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 		[Column("mon_plan_id")]
  		public string MonitorPlanId { get; set; }
 
-		[Column("severity_code")]
+		[Column("severity_cd")]
  		public string SeverityCode { get; set; }
 	}
 }

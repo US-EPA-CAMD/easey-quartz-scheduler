@@ -153,7 +153,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       {
         LogHelper.info(_logger, $"{key.Group}.{key.Name} failed");
         context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
-        context.MergedJobDataMap.Add("EvaluationStatus", "FATAL");
+        context.MergedJobDataMap.Add("EvaluationStatus", "FAILED");
         LogHelper.error(_logger, ex.ToString());
         return Task.FromException(ex);
       }
