@@ -75,308 +75,318 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
         protected override string ExecuteChecksWork()
         {
-            bool RunResult;
-            string Result = "";
-            Console.WriteLine("*****************************************************Running Monitoring Plan Checks");
-
-            // Create category objects with check bands initialized
-            cMonitorPlanCategory MonitorPlanCategory = cMonitorPlanCategory.GetInitialized(mCheckEngine, this);
-            cMonitorLocation MonitorLocation = cMonitorLocation.GetInitialized(mCheckEngine, this);
-            cMonitorLocationAttribute MonitorLocationAttribute = cMonitorLocationAttribute.GetInitialized(mCheckEngine, this);
-            cUnitStackConfiguration UnitStackConfiguration = cUnitStackConfiguration.GetInitialized(mCheckEngine, this);
-            cUnitProgram UnitProgramCategory = cUnitProgram.GetInitialized(mCheckEngine, this);
-            cUnitProgramParameterCategory UnitProgramParameterCategory = cUnitProgramParameterCategory.GetInitialized(UnitProgramCategory);
-            cComponent Component = cComponent.GetInitialized(mCheckEngine, this);
-            cAnalyzerRange AnalyzerRange = cAnalyzerRange.GetInitialized(mCheckEngine, this);
-            //cCalibrationStandardDataCategory CalibrationStandard = cCalibrationStandardDataCategory.GetInitialized(mCheckEngine, this);
-            cSystemCategory MonitorSystem = cSystemCategory.GetInitialized(mCheckEngine, this);
-            cSystemComponentCategory SystemComponentCategory = cSystemComponentCategory.GetInitialized(mCheckEngine, this);
-            cSystemFuelFlowCategory SystemFuelFlowCategory = cSystemFuelFlowCategory.GetInitialized(mCheckEngine, this);
-            cFormula Formula = cFormula.GetInitialized(mCheckEngine, this);
-            cSpanCategory SpanCategory = cSpanCategory.GetInitialized(mCheckEngine, this);
-            cDefaultCategory Default = cDefaultCategory.GetInitialized(mCheckEngine, this);
-            cWAFCategory Waf = cWAFCategory.GetInitialized(mCheckEngine, this);
-            cLoadCategory Load = cLoadCategory.GetInitialized(mCheckEngine, this);
-            cQualificationCategory Qual = cQualificationCategory.GetInitialized(mCheckEngine, this);
-            cQualificationPercentCategory QualPct = cQualificationPercentCategory.GetInitialized(mCheckEngine, this);
-            cQualificationLMECategory QualLME = cQualificationLMECategory.GetInitialized(mCheckEngine, this);
-            cQualificationLEECategory QualLEE = cQualificationLEECategory.GetInitialized(mCheckEngine, this);
-            cMethod _Method = cMethod.GetInitialized(mCheckEngine, this);
-            cUnitControlCategory _UnitControl = cUnitControlCategory.GetInitialized(mCheckEngine, this);
-            cUnitCapacityCategory _UnitCapacity = cUnitCapacityCategory.GetInitialized(mCheckEngine, this);
-            cUnitFuelCategory _UnitFuel = cUnitFuelCategory.GetInitialized(mCheckEngine, this);
-            cMonitorPlanCommentCategory MonitorPlanCommentCategory = cMonitorPlanCommentCategory.GetInitialized(mCheckEngine, this);
-            cMATSSupplementalMethodCategory MATSMethod = cMATSSupplementalMethodCategory.GetInitialized(mCheckEngine, this);
-
-            SetCheckParameter("First_ECMPS_Reporting_Period", CheckEngine.FirstEcmpsReportingPeriodId);
-
-            RunResult = MonitorPlanCategory.ProcessChecks(mCheckEngine.MonPlanId);
-
-            if (RunResult == true && (bool)MonitorPlanCategory.GetCheckParameter("Evaluate_Monitoring_Plan").ParameterValue)
+            try
             {
-                //MONLOC
-                foreach (DataRow drMonitorLocation in mSourceData.Tables["MpLocation"].Rows)
+                bool RunResult;
+                string Result = "";
+                Console.WriteLine("*****************************************************Running Monitoring Plan Checks");
+
+                // Create category objects with check bands initialized
+                cMonitorPlanCategory MonitorPlanCategory = cMonitorPlanCategory.GetInitialized(mCheckEngine, this);
+                cMonitorLocation MonitorLocation = cMonitorLocation.GetInitialized(mCheckEngine, this);
+                cMonitorLocationAttribute MonitorLocationAttribute = cMonitorLocationAttribute.GetInitialized(mCheckEngine, this);
+                cUnitStackConfiguration UnitStackConfiguration = cUnitStackConfiguration.GetInitialized(mCheckEngine, this);
+                cUnitProgram UnitProgramCategory = cUnitProgram.GetInitialized(mCheckEngine, this);
+                cUnitProgramParameterCategory UnitProgramParameterCategory = cUnitProgramParameterCategory.GetInitialized(UnitProgramCategory);
+                cComponent Component = cComponent.GetInitialized(mCheckEngine, this);
+                cAnalyzerRange AnalyzerRange = cAnalyzerRange.GetInitialized(mCheckEngine, this);
+                //cCalibrationStandardDataCategory CalibrationStandard = cCalibrationStandardDataCategory.GetInitialized(mCheckEngine, this);
+                cSystemCategory MonitorSystem = cSystemCategory.GetInitialized(mCheckEngine, this);
+                cSystemComponentCategory SystemComponentCategory = cSystemComponentCategory.GetInitialized(mCheckEngine, this);
+                cSystemFuelFlowCategory SystemFuelFlowCategory = cSystemFuelFlowCategory.GetInitialized(mCheckEngine, this);
+                cFormula Formula = cFormula.GetInitialized(mCheckEngine, this);
+                cSpanCategory SpanCategory = cSpanCategory.GetInitialized(mCheckEngine, this);
+                cDefaultCategory Default = cDefaultCategory.GetInitialized(mCheckEngine, this);
+                cWAFCategory Waf = cWAFCategory.GetInitialized(mCheckEngine, this);
+                cLoadCategory Load = cLoadCategory.GetInitialized(mCheckEngine, this);
+                cQualificationCategory Qual = cQualificationCategory.GetInitialized(mCheckEngine, this);
+                cQualificationPercentCategory QualPct = cQualificationPercentCategory.GetInitialized(mCheckEngine, this);
+                cQualificationLMECategory QualLME = cQualificationLMECategory.GetInitialized(mCheckEngine, this);
+                cQualificationLEECategory QualLEE = cQualificationLEECategory.GetInitialized(mCheckEngine, this);
+                cMethod _Method = cMethod.GetInitialized(mCheckEngine, this);
+                cUnitControlCategory _UnitControl = cUnitControlCategory.GetInitialized(mCheckEngine, this);
+                cUnitCapacityCategory _UnitCapacity = cUnitCapacityCategory.GetInitialized(mCheckEngine, this);
+                cUnitFuelCategory _UnitFuel = cUnitFuelCategory.GetInitialized(mCheckEngine, this);
+                cMonitorPlanCommentCategory MonitorPlanCommentCategory = cMonitorPlanCommentCategory.GetInitialized(mCheckEngine, this);
+                cMATSSupplementalMethodCategory MATSMethod = cMATSSupplementalMethodCategory.GetInitialized(mCheckEngine, this);
+
+                SetCheckParameter("First_ECMPS_Reporting_Period", CheckEngine.FirstEcmpsReportingPeriodId);
+
+                RunResult = MonitorPlanCategory.ProcessChecks(mCheckEngine.MonPlanId);
+
+                if (RunResult == true && (bool)MonitorPlanCategory.GetCheckParameter("Evaluate_Monitoring_Plan").ParameterValue)
                 {
-                    string MonitorLocationFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
-                    MonLocId = (string)drMonitorLocation["mon_loc_id"];
-
-                    RunResult = MonitorLocation.ProcessChecks(MonLocId);
-
-                    if (RunResult == true && !(bool)MonitorLocation.GetCheckParameter("Abort_Location_Evaluation").ParameterValue)
+                    //MONLOC
+                    foreach (DataRow drMonitorLocation in mSourceData.Tables["MpLocation"].Rows)
                     {
-                        //LOCCHAR
-                        mSourceData.Tables["LocationAttribute"].DefaultView.RowFilter = "mon_loc_id = '" + (string)drMonitorLocation["mon_loc_id"] + "'";
+                        string MonitorLocationFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
+                        MonLocId = (string)drMonitorLocation["mon_loc_id"];
 
-                        foreach (DataRowView drvMonitorLocationAttribute in mSourceData.Tables["LocationAttribute"].DefaultView)
+                        RunResult = MonitorLocation.ProcessChecks(MonLocId);
+
+                        if (RunResult == true && !(bool)MonitorLocation.GetCheckParameter("Abort_Location_Evaluation").ParameterValue)
                         {
-                            RunResult = MonitorLocationAttribute.ProcessChecks((string)drvMonitorLocationAttribute["mon_loc_attrib_id"], MonLocId);
-                            MonitorLocationAttribute.EraseParameters();
-                        }
+                            //LOCCHAR
+                            mSourceData.Tables["LocationAttribute"].DefaultView.RowFilter = "mon_loc_id = '" + (string)drMonitorLocation["mon_loc_id"] + "'";
 
-                        //UNITSTK
-                        mSourceData.Tables["UnitStackConfiguration"].DefaultView.RowFilter = "stack_pipe_id = '" + cDBConvert.ToString(drMonitorLocation["stack_pipe_id"]) + "'";
-
-                        foreach (DataRowView drvUnitStackConfiguration in mSourceData.Tables["UnitStackConfiguration"].DefaultView)
-                        {
-                            RunResult = UnitStackConfiguration.ProcessChecks((string)drvUnitStackConfiguration["config_id"], MonLocId);
-                            UnitStackConfiguration.EraseParameters();
-                        }
-
-                        //PROGRAM
-                        mSourceData.Tables["LocationProgram"].DefaultView.RowFilter = "unit_id = " + cDBConvert.ToLong(drMonitorLocation["unit_id"]) + "";
-
-                        foreach (DataRowView drvUnitProgram in mSourceData.Tables["LocationProgram"].DefaultView)
-                        {
-                            if (cDBConvert.ToString(drvUnitProgram["LOCATION_IDENTIFIER"]) == cDBConvert.ToString(drvUnitProgram["UNITID"]))
+                            foreach (DataRowView drvMonitorLocationAttribute in mSourceData.Tables["LocationAttribute"].DefaultView)
                             {
-                                RunResult = UnitProgramCategory.ProcessChecks(cDBConvert.ToString(drvUnitProgram["up_id"]), MonLocId);
+                                RunResult = MonitorLocationAttribute.ProcessChecks((string)drvMonitorLocationAttribute["mon_loc_attrib_id"], MonLocId);
+                                MonitorLocationAttribute.EraseParameters();
+                            }
 
-                                //PRGPRAM
+                            //UNITSTK
+                            mSourceData.Tables["UnitStackConfiguration"].DefaultView.RowFilter = "stack_pipe_id = '" + cDBConvert.ToString(drMonitorLocation["stack_pipe_id"]) + "'";
+
+                            foreach (DataRowView drvUnitStackConfiguration in mSourceData.Tables["UnitStackConfiguration"].DefaultView)
+                            {
+                                RunResult = UnitStackConfiguration.ProcessChecks((string)drvUnitStackConfiguration["config_id"], MonLocId);
+                                UnitStackConfiguration.EraseParameters();
+                            }
+
+                            //PROGRAM
+                            mSourceData.Tables["LocationProgram"].DefaultView.RowFilter = "unit_id = " + cDBConvert.ToLong(drMonitorLocation["unit_id"]) + "";
+
+                            foreach (DataRowView drvUnitProgram in mSourceData.Tables["LocationProgram"].DefaultView)
+                            {
+                                if (cDBConvert.ToString(drvUnitProgram["LOCATION_IDENTIFIER"]) == cDBConvert.ToString(drvUnitProgram["UNITID"]))
                                 {
-                                    if (GetCheckParameter("Current_Program_Active").AsBoolean(false))
-                                    {
-                                        mSourceData.Tables["UnitProgramParameter"].DefaultView.RowFilter = string.Format("UP_ID = {0}", drvUnitProgram["UP_ID"]);
+                                    RunResult = UnitProgramCategory.ProcessChecks(cDBConvert.ToString(drvUnitProgram["up_id"]), MonLocId);
 
-                                        foreach (DataRowView unitProgramParameterRow in mSourceData.Tables["UnitProgramParameter"].DefaultView)
+                                    //PRGPRAM
+                                    {
+                                        if (GetCheckParameter("Current_Program_Active").AsBoolean(false))
                                         {
-                                            RunResult = UnitProgramParameterCategory.ProcessChecks(MonLocId, unitProgramParameterRow["PRG_PARAM_ID"].AsLong());
-                                            UnitProgramParameterCategory.EraseParameters();
+                                            mSourceData.Tables["UnitProgramParameter"].DefaultView.RowFilter = string.Format("UP_ID = {0}", drvUnitProgram["UP_ID"]);
+
+                                            foreach (DataRowView unitProgramParameterRow in mSourceData.Tables["UnitProgramParameter"].DefaultView)
+                                            {
+                                                RunResult = UnitProgramParameterCategory.ProcessChecks(MonLocId, unitProgramParameterRow["PRG_PARAM_ID"].AsLong());
+                                                UnitProgramParameterCategory.EraseParameters();
+                                            }
                                         }
+                                    }
+
+                                    UnitProgramCategory.EraseParameters();
+                                }
+                            }
+
+                            //COMP
+                            mSourceData.Tables["Component"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
+
+                            foreach (DataRowView drvComponent in mSourceData.Tables["Component"].DefaultView)
+                            {
+                                RunResult = Component.ProcessChecks((string)drvComponent["component_id"], MonLocId);
+
+                                if (RunResult == true)
+                                {
+                                    //ANRANGE
+                                    mSourceData.Tables["AnalyzerRange"].DefaultView.RowFilter = "component_id = '" + cDBConvert.ToString(drvComponent["component_id"]) + "'";
+
+                                    foreach (DataRowView drvAnalyzerRange in mSourceData.Tables["AnalyzerRange"].DefaultView)
+                                    {
+                                        RunResult = AnalyzerRange.ProcessChecks((string)drvAnalyzerRange["analyzer_range_id"], MonLocId);
+                                        AnalyzerRange.EraseParameters();
                                     }
                                 }
 
-                                UnitProgramCategory.EraseParameters();
+                                Component.EraseParameters();
                             }
-                        }
 
-                        //COMP
-                        mSourceData.Tables["Component"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
+                            //Monitor System
+                            mSourceData.Tables["MonitorSystem"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
 
-                        foreach (DataRowView drvComponent in mSourceData.Tables["Component"].DefaultView)
-                        {
-                            RunResult = Component.ProcessChecks((string)drvComponent["component_id"], MonLocId);
-
-                            if (RunResult == true)
+                            foreach (DataRowView drvSystem in mSourceData.Tables["MonitorSystem"].DefaultView)
                             {
-                                //ANRANGE
-                                mSourceData.Tables["AnalyzerRange"].DefaultView.RowFilter = "component_id = '" + cDBConvert.ToString(drvComponent["component_id"]) + "'";
+                                RunResult = MonitorSystem.ProcessChecks((string)drvSystem["mon_sys_id"], MonLocId);
 
-                                foreach (DataRowView drvAnalyzerRange in mSourceData.Tables["AnalyzerRange"].DefaultView)
+                                if (RunResult == true)
                                 {
-                                    RunResult = AnalyzerRange.ProcessChecks((string)drvAnalyzerRange["analyzer_range_id"], MonLocId);
-                                    AnalyzerRange.EraseParameters();
+                                    string MonSysId = cDBConvert.ToString(drvSystem["mon_sys_id"]);
+
+                                    //SYSCOMP
+                                    mSourceData.Tables["MonitorSystemComponent"].DefaultView.RowFilter = "mon_sys_id = '" + MonSysId + "'";
+
+                                    foreach (DataRowView drvSystemComponentCategory in mSourceData.Tables["MonitorSystemComponent"].DefaultView)
+                                    {
+                                        string monSysCompId = drvSystemComponentCategory["mon_sys_comp_id"].AsString();
+                                        RunResult = SystemComponentCategory.ProcessChecks(monSysCompId, MonLocId);
+                                        SystemComponentCategory.EraseParameters();
+                                    }
+
+                                    //FUELFLW
+                                    mSourceData.Tables["SystemFuelFlow"].DefaultView.RowFilter = "mon_sys_id = '" + MonSysId + "'";
+
+                                    foreach (DataRowView SystemFuelFlowRow in mSourceData.Tables["SystemFuelFlow"].DefaultView)
+                                    {
+                                        RunResult = SystemFuelFlowCategory.ProcessChecks((string)SystemFuelFlowRow["sys_fuel_id"], MonSysId, MonLocId);
+                                        SystemFuelFlowCategory.EraseParameters();
+                                    }
                                 }
+
+                                MonitorSystem.EraseParameters();
                             }
 
-                            Component.EraseParameters();
-                        }
+                            //FORMULA
+                            mSourceData.Tables["MonitorFormula"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
 
-                        //Monitor System
-                        mSourceData.Tables["MonitorSystem"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
-
-                        foreach (DataRowView drvSystem in mSourceData.Tables["MonitorSystem"].DefaultView)
-                        {
-                            RunResult = MonitorSystem.ProcessChecks((string)drvSystem["mon_sys_id"], MonLocId);
-
-                            if (RunResult == true)
+                            foreach (DataRowView drvFormula in mSourceData.Tables["MonitorFormula"].DefaultView)
                             {
-                                string MonSysId = cDBConvert.ToString(drvSystem["mon_sys_id"]);
-
-                                //SYSCOMP
-                                mSourceData.Tables["MonitorSystemComponent"].DefaultView.RowFilter = "mon_sys_id = '" + MonSysId + "'";
-
-                                foreach (DataRowView drvSystemComponentCategory in mSourceData.Tables["MonitorSystemComponent"].DefaultView)
-                                {
-                                    string monSysCompId = drvSystemComponentCategory["mon_sys_comp_id"].AsString();
-                                    RunResult = SystemComponentCategory.ProcessChecks(monSysCompId, MonLocId);
-                                    SystemComponentCategory.EraseParameters();
-                                }
-
-                                //FUELFLW
-                                mSourceData.Tables["SystemFuelFlow"].DefaultView.RowFilter = "mon_sys_id = '" + MonSysId + "'";
-
-                                foreach (DataRowView SystemFuelFlowRow in mSourceData.Tables["SystemFuelFlow"].DefaultView)
-                                {
-                                    RunResult = SystemFuelFlowCategory.ProcessChecks((string)SystemFuelFlowRow["sys_fuel_id"], MonSysId, MonLocId);
-                                    SystemFuelFlowCategory.EraseParameters();
-                                }
+                                RunResult = Formula.ProcessChecks((string)drvFormula["mon_form_id"], MonLocId);
+                                Formula.EraseParameters();
                             }
 
-                            MonitorSystem.EraseParameters();
-                        }
+                            //SPAN
+                            mSourceData.Tables["MonitorSpan"].DefaultView.RowFilter = MonitorLocationFilter;
 
-                        //FORMULA
-                        mSourceData.Tables["MonitorFormula"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
-
-                        foreach (DataRowView drvFormula in mSourceData.Tables["MonitorFormula"].DefaultView)
-                        {
-                            RunResult = Formula.ProcessChecks((string)drvFormula["mon_form_id"], MonLocId);
-                            Formula.EraseParameters();
-                        }
-
-                        //SPAN
-                        mSourceData.Tables["MonitorSpan"].DefaultView.RowFilter = MonitorLocationFilter;
-
-                        foreach (DataRowView SpanRow in mSourceData.Tables["MonitorSpan"].DefaultView)
-                        {
-                            RunResult = SpanCategory.ProcessChecks((string)SpanRow["Span_Id"], MonLocId);
-                            SpanCategory.EraseParameters();
-                        }
-
-                        //DEFAULT
-                        mSourceData.Tables["MonitorDefault"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
-
-                        foreach (DataRowView drvDefault in mSourceData.Tables["MonitorDefault"].DefaultView)
-                        {
-                            RunResult = Default.ProcessChecks((string)drvDefault["mondef_id"], MonLocId);
-                            Default.EraseParameters();
-                        }
-
-                        //WAF
-                        mSourceData.Tables["RectDuctWaf"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
-
-                        foreach (DataRowView drvWAF in mSourceData.Tables["RectDuctWaf"].DefaultView)
-                        {
-                            RunResult = Waf.ProcessChecks((string)drvWAF["rect_duct_waf_data_id"], MonLocId);
-                            Waf.EraseParameters();
-                        }
-
-                        //LOAD
-                        mSourceData.Tables["MonitorLoad"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
-
-                        foreach (DataRowView drvLoad in mSourceData.Tables["MonitorLoad"].DefaultView)
-                        {
-                            RunResult = Load.ProcessChecks((string)drvLoad["load_id"], MonLocId);
-                            Load.EraseParameters();
-                        }
-
-                        //QUAL
-                        mSourceData.Tables["MonitorQualification"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
-
-                        foreach (DataRowView drvQual in mSourceData.Tables["MonitorQualification"].DefaultView)
-                        {
-                            RunResult = Qual.ProcessChecks((string)drvQual["mon_qual_id"], MonLocId);
-
-                            if (RunResult == true)
+                            foreach (DataRowView SpanRow in mSourceData.Tables["MonitorSpan"].DefaultView)
                             {
-                                //QUALPCT
-                                mSourceData.Tables["MonitorQualificationPct"].DefaultView.RowFilter = "mon_qual_id = '" + cDBConvert.ToString(drvQual["mon_qual_id"]) + "'";
-
-                                foreach (DataRowView drvQualPct in mSourceData.Tables["MonitorQualificationPct"].DefaultView)
-                                {
-                                    RunResult = QualPct.ProcessChecks((string)drvQualPct["mon_pct_id"], MonLocId);
-                                    QualPct.EraseParameters();
-                                }
-
-                                //QUALLME
-                                mSourceData.Tables["MonitorQualificationLME"].DefaultView.RowFilter = "mon_qual_id = '" + cDBConvert.ToString(drvQual["mon_qual_id"]) + "'";
-
-                                foreach (DataRowView drvQualLME in mSourceData.Tables["MonitorQualificationLME"].DefaultView)
-                                {
-                                    RunResult = QualLME.ProcessChecks((string)drvQualLME["mon_LME_id"], MonLocId);
-                                    QualLME.EraseParameters();
-                                }
-                                //QUALLEE
-                                mSourceData.Tables["MonitorQualificationLEE"].DefaultView.RowFilter = "mon_qual_id = '" + cDBConvert.ToString(drvQual["mon_qual_id"]) + "'";
-
-                                foreach (DataRowView drvQualLEE in mSourceData.Tables["MonitorQualificationLEE"].DefaultView)
-                                {
-                                    RunResult = QualLEE.ProcessChecks((string)drvQualLEE["mon_LEE_id"], MonLocId);
-                                    QualLEE.EraseParameters();
-                                }
+                                RunResult = SpanCategory.ProcessChecks((string)SpanRow["Span_Id"], MonLocId);
+                                SpanCategory.EraseParameters();
                             }
 
-                            Qual.EraseParameters();
+                            //DEFAULT
+                            mSourceData.Tables["MonitorDefault"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
+
+                            foreach (DataRowView drvDefault in mSourceData.Tables["MonitorDefault"].DefaultView)
+                            {
+                                RunResult = Default.ProcessChecks((string)drvDefault["mondef_id"], MonLocId);
+                                Default.EraseParameters();
+                            }
+
+                            //WAF
+                            mSourceData.Tables["RectDuctWaf"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
+
+                            foreach (DataRowView drvWAF in mSourceData.Tables["RectDuctWaf"].DefaultView)
+                            {
+                                RunResult = Waf.ProcessChecks((string)drvWAF["rect_duct_waf_data_id"], MonLocId);
+                                Waf.EraseParameters();
+                            }
+
+                            //LOAD
+                            mSourceData.Tables["MonitorLoad"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
+
+                            foreach (DataRowView drvLoad in mSourceData.Tables["MonitorLoad"].DefaultView)
+                            {
+                                RunResult = Load.ProcessChecks((string)drvLoad["load_id"], MonLocId);
+                                Load.EraseParameters();
+                            }
+
+                            //QUAL
+                            mSourceData.Tables["MonitorQualification"].DefaultView.RowFilter = "mon_loc_id = '" + cDBConvert.ToString(drMonitorLocation["mon_loc_id"]) + "'";
+
+                            foreach (DataRowView drvQual in mSourceData.Tables["MonitorQualification"].DefaultView)
+                            {
+                                RunResult = Qual.ProcessChecks((string)drvQual["mon_qual_id"], MonLocId);
+
+                                if (RunResult == true)
+                                {
+                                    //QUALPCT
+                                    mSourceData.Tables["MonitorQualificationPct"].DefaultView.RowFilter = "mon_qual_id = '" + cDBConvert.ToString(drvQual["mon_qual_id"]) + "'";
+
+                                    foreach (DataRowView drvQualPct in mSourceData.Tables["MonitorQualificationPct"].DefaultView)
+                                    {
+                                        RunResult = QualPct.ProcessChecks((string)drvQualPct["mon_pct_id"], MonLocId);
+                                        QualPct.EraseParameters();
+                                    }
+
+                                    //QUALLME
+                                    mSourceData.Tables["MonitorQualificationLME"].DefaultView.RowFilter = "mon_qual_id = '" + cDBConvert.ToString(drvQual["mon_qual_id"]) + "'";
+
+                                    foreach (DataRowView drvQualLME in mSourceData.Tables["MonitorQualificationLME"].DefaultView)
+                                    {
+                                        RunResult = QualLME.ProcessChecks((string)drvQualLME["mon_LME_id"], MonLocId);
+                                        QualLME.EraseParameters();
+                                    }
+                                    //QUALLEE
+                                    mSourceData.Tables["MonitorQualificationLEE"].DefaultView.RowFilter = "mon_qual_id = '" + cDBConvert.ToString(drvQual["mon_qual_id"]) + "'";
+
+                                    foreach (DataRowView drvQualLEE in mSourceData.Tables["MonitorQualificationLEE"].DefaultView)
+                                    {
+                                        RunResult = QualLEE.ProcessChecks((string)drvQualLEE["mon_LEE_id"], MonLocId);
+                                        QualLEE.EraseParameters();
+                                    }
+                                }
+
+                                Qual.EraseParameters();
+                            }
+
+                            // Method
+                            mSourceData.Tables["MonitorMethod"].DefaultView.RowFilter = string.Format("mon_loc_id = '{0}'", cDBConvert.ToString(drMonitorLocation["mon_loc_id"]));
+
+                            foreach (DataRowView drvMethod in mSourceData.Tables["MonitorMethod"].DefaultView)
+                            {
+                                RunResult = _Method.ProcessChecks((string)drvMethod["mon_method_id"], MonLocId);
+                                _Method.EraseParameters();
+                            }
+
+                            // MATS Supplemental Method
+                            mSourceData.Tables["MATSMethodData"].DefaultView.RowFilter = string.Format("mon_loc_id = '{0}'", cDBConvert.ToString(drMonitorLocation["mon_loc_id"]));
+
+                            foreach (DataRowView drvMethod in mSourceData.Tables["MATSMethodData"].DefaultView)
+                            {
+                                RunResult = MATSMethod.ProcessChecks((string)drvMethod["MATS_Method_ID"], MonLocId);
+                                MATSMethod.EraseParameters();
+                            }
+
+                            // UnitControl
+                            string _UnitControlFilter = string.Format("mon_loc_id = '{0}' and Location_Identifier = UnitId", cDBConvert.ToString(drMonitorLocation["mon_loc_id"]));
+                            mSourceData.Tables["LocationControl"].DefaultView.RowFilter = _UnitControlFilter;
+
+                            foreach (DataRowView drvUnitControl in mSourceData.Tables["LocationControl"].DefaultView)
+                            {
+                                RunResult = _UnitControl.ProcessChecks(drvUnitControl["ctl_id"].ToString(), MonLocId);
+                                _UnitControl.EraseParameters();
+                            }
+
+                            // UnitCapacity
+                            string _UnitCapacityFilter = string.Format("mon_loc_id = '{0}' and Location_Identifier = UnitId", cDBConvert.ToString(drMonitorLocation["mon_loc_id"]));
+                            mSourceData.Tables["LocationCapacity"].DefaultView.RowFilter = _UnitCapacityFilter;
+
+                            foreach (DataRowView drvUnitCapacity in mSourceData.Tables["LocationCapacity"].DefaultView)
+                            {
+                                RunResult = _UnitCapacity.ProcessChecks(drvUnitCapacity["unit_cap_id"].ToString(), MonLocId);
+                                _UnitCapacity.EraseParameters();
+                            }
+
+                            // UnitFuel
+                            string _UnitFuelFilter = string.Format("mon_loc_id = '{0}' and Location_Identifier = UnitId", cDBConvert.ToString(drMonitorLocation["mon_loc_id"]));
+                            mSourceData.Tables["LocationFuel"].DefaultView.RowFilter = _UnitFuelFilter;
+
+                            foreach (DataRowView drvUnitFuel in mSourceData.Tables["LocationFuel"].DefaultView)
+                            {
+                                RunResult = _UnitFuel.ProcessChecks(drvUnitFuel["uf_id"].ToString(), MonLocId);
+                                _UnitFuel.EraseParameters();
+                            }
+
                         }
 
-                        // Method
-                        mSourceData.Tables["MonitorMethod"].DefaultView.RowFilter = string.Format("mon_loc_id = '{0}'", cDBConvert.ToString(drMonitorLocation["mon_loc_id"]));
-
-                        foreach (DataRowView drvMethod in mSourceData.Tables["MonitorMethod"].DefaultView)
-                        {
-                            RunResult = _Method.ProcessChecks((string)drvMethod["mon_method_id"], MonLocId);
-                            _Method.EraseParameters();
-                        }
-
-                        // MATS Supplemental Method
-                        mSourceData.Tables["MATSMethodData"].DefaultView.RowFilter = string.Format("mon_loc_id = '{0}'", cDBConvert.ToString(drMonitorLocation["mon_loc_id"]));
-
-                        foreach (DataRowView drvMethod in mSourceData.Tables["MATSMethodData"].DefaultView)
-                        {
-                            RunResult = MATSMethod.ProcessChecks((string)drvMethod["MATS_Method_ID"], MonLocId);
-                            MATSMethod.EraseParameters();
-                        }
-
-                        // UnitControl
-                        string _UnitControlFilter = string.Format("mon_loc_id = '{0}' and Location_Identifier = UnitId", cDBConvert.ToString(drMonitorLocation["mon_loc_id"]));
-                        mSourceData.Tables["LocationControl"].DefaultView.RowFilter = _UnitControlFilter;
-
-                        foreach (DataRowView drvUnitControl in mSourceData.Tables["LocationControl"].DefaultView)
-                        {
-                            RunResult = _UnitControl.ProcessChecks(drvUnitControl["ctl_id"].ToString(), MonLocId);
-                            _UnitControl.EraseParameters();
-                        }
-
-                        // UnitCapacity
-                        string _UnitCapacityFilter = string.Format("mon_loc_id = '{0}' and Location_Identifier = UnitId", cDBConvert.ToString(drMonitorLocation["mon_loc_id"]));
-                        mSourceData.Tables["LocationCapacity"].DefaultView.RowFilter = _UnitCapacityFilter;
-
-                        foreach (DataRowView drvUnitCapacity in mSourceData.Tables["LocationCapacity"].DefaultView)
-                        {
-                            RunResult = _UnitCapacity.ProcessChecks(drvUnitCapacity["unit_cap_id"].ToString(), MonLocId);
-                            _UnitCapacity.EraseParameters();
-                        }
-
-                        // UnitFuel
-                        string _UnitFuelFilter = string.Format("mon_loc_id = '{0}' and Location_Identifier = UnitId", cDBConvert.ToString(drMonitorLocation["mon_loc_id"]));
-                        mSourceData.Tables["LocationFuel"].DefaultView.RowFilter = _UnitFuelFilter;
-
-                        foreach (DataRowView drvUnitFuel in mSourceData.Tables["LocationFuel"].DefaultView)
-                        {
-                            RunResult = _UnitFuel.ProcessChecks(drvUnitFuel["uf_id"].ToString(), MonLocId);
-                            _UnitFuel.EraseParameters();
-                        }
-
+                        MonitorLocation.EraseParameters();
                     }
 
-                    MonitorLocation.EraseParameters();
+                    //MPCOMM
+                    mSourceData.Tables["MpMonitorPlanComment"].DefaultView.RowFilter = "mon_plan_id = '" + mCheckEngine.MonPlanId + "'";
+
+                    foreach (DataRowView MonitorPlanCommentRow in mSourceData.Tables["MpMonitorPlanComment"].DefaultView)
+                    {
+                        RunResult = MonitorPlanCommentCategory.ProcessChecks((string)MonitorPlanCommentRow["mon_plan_comment_id"]);
+                        MonitorPlanCommentCategory.EraseParameters();
+                    }
                 }
 
-                //MPCOMM
-                mSourceData.Tables["MpMonitorPlanComment"].DefaultView.RowFilter = "mon_plan_id = '" + mCheckEngine.MonPlanId + "'";
+                MonitorPlanCategory.EraseParameters();
 
-                foreach (DataRowView MonitorPlanCommentRow in mSourceData.Tables["MpMonitorPlanComment"].DefaultView)
-                {
-                    RunResult = MonitorPlanCommentCategory.ProcessChecks((string)MonitorPlanCommentRow["mon_plan_comment_id"]);
-                    MonitorPlanCommentCategory.EraseParameters();
-                }
+                DbUpdate(ref Result);
+
+
+                return Result;
             }
+            catch (Exception e) {
 
-            MonitorPlanCategory.EraseParameters();
-
-            DbUpdate(ref Result);
-
-            return Result;
+                Console.WriteLine("******************************************************** checks Failed" + e.ToString());
+                
+            }
+            return false;
         }
 
         protected override void InitCalculatedData()
