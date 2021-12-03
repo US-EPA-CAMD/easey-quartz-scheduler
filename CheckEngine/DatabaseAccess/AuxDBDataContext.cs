@@ -54,7 +54,7 @@ namespace ECMPS.Checks.DatabaseAccess
 
             DataTable AResultTable;
             string Sql = "call camdecmpswks.check_session_completed('" + chkSessionId + "','" + severityCd + "')";
-
+            
             try
             {
                 AResultTable = Database.GetDataTable(Sql);
@@ -213,7 +213,7 @@ namespace ECMPS.Checks.DatabaseAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine("************CheckSessionInit failed ");
+                Console.WriteLine("************CheckSessionInit failed "+Sql+"*****"+ex.ToString());
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
             }
 
