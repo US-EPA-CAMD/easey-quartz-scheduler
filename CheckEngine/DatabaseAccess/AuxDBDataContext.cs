@@ -183,7 +183,8 @@ namespace ECMPS.Checks.DatabaseAccess
 
             DataTable AResultTable;
             //   string Sql = "call camdecmpswks.check_session_init('" + processCd + "','" + 
-            string Sql = "select camdecmpswks.check_session_init('" + processCd + "'," + categoryCdParam + ",'" + monPlanId + "'," + rptPeriodIdParam + "," + testSumIdParam + "," + qaCertEventIddParam + "," + testExtensionExemptionIdParam + ",'" + evaluationBeginDate + "','" + evaluationEndDate + "','" + userId + "')";
+         //   string Sql = "select camdecmpswks.check_session_init('" + processCd + "'," + categoryCdParam + ",'" + monPlanId + "'," + rptPeriodIdParam + "," + testSumIdParam + "," + qaCertEventIddParam + "," + testExtensionExemptionIdParam + ",'" + evaluationBeginDate + "','" + evaluationEndDate + "','" + userId + "')";
+            string Sql = "select camdecmpswks.check_session_init('" + processCd + "', null,'" + monPlanId + "',null,null,null,null,'" + evaluationBeginDate + "','" + evaluationEndDate + "','" + userId + "')";
 
             try
             {
@@ -209,6 +210,7 @@ namespace ECMPS.Checks.DatabaseAccess
             }
             catch (Exception ex)
             {
+                Console.WriteLine("************CheckSessionInit failed ");
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
             }
 
