@@ -33,25 +33,28 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
       string userEmail = dataMap.GetString("UserEmail");
       string submittedOn = dataMap.GetString("SubmittedOn");
       string evaluationStatus = dataMap.GetString("EvaluationStatus");
+      string evaluationResult = dataMap.GetString("EvaluationResult");
       string fromEmail = Configuration["EASEY_QUARTZ_SCHEDULER_EMAIL"];
 
       string subject = string.Format(
-        "{0} Evaluation {1} {2} - COMPLETE",
+        "{0} Evaluation {1} {2} - {3}",
         CheckEngineEvaluation.GetProcess(processCode),
         facilityName,
-        monPlanConfig
+        monPlanConfig,
+        evaluationResult
       );
 
       string message = string.Format(@"
-        {0} Evaluation for the following details has completed successfully!
+        The {0} Evaluation process for the following details has completed with a result of {1}!
 
-        Facility Id: {1}          Facility Name: {2}
-        Configuration: {3}        Submitted: {4}
-        Status: {5}               Report Url: https://{6}/ecmps/monitoring-plans/{7}/evaluation-report
+        Facility Id: {2}          Facility Name: {3}
+        Configuration: {4}        Submitted: {5}
+        Status: {6}               Report Url: https://{7}/ecmps/monitoring-plans/{8}/evaluation-report
 
         Thanks,
         ECMPS Support",
         CheckEngineEvaluation.GetProcess(processCode),
+        evaluationResult,
         facilityId,
         facilityName,
         monPlanConfig,
@@ -59,7 +62,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
         evaluationStatus,
         Configuration["EASEY_QUARTZ_SCHEDULER_HOST"],
         monitorPlanId
-      );;
+      );
 
       await SendMail.StartNow(
         userEmail,

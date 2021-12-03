@@ -51,9 +51,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public Task Execute(IJobExecutionContext context)
     {
+      JobKey key = context.JobDetail.Key;
+
       try
       {
-        JobKey key = context.JobDetail.Key;
         JobDataMap dataMap = context.MergedJobDataMap;
 
         bool result = false;
@@ -92,19 +93,21 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
             cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
 
-            LogHelper.info(_logger, "...running RunChecks_MpReport");
+            LogHelper.info(_logger, "Running RunChecks_MpReport...");
             result = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+            LogHelper.info(_logger, $"RunChecks_MpReport returned a result of {result}!");
+
             break;
           case "QA-QCE":
-            LogHelper.info(_logger, "...running RunChecks_QaReport_Qce");
+            LogHelper.info(_logger, "Running RunChecks_QaReport_Qce...");
             //this.RunChecks_QaReport_Qce();
             break;
           case "QA-TEE":
-            LogHelper.info(_logger, "...running RunChecks_QaReport_Tee");
+            LogHelper.info(_logger, "Running RunChecks_QaReport_Tee...");
             //this.RunChecks_QaReport_Tee();
             break;
           case "EM":
-            LogHelper.info(_logger, "...running RunChecks_EmReport");
+            LogHelper.info(_logger, "Running RunChecks_EmReport...");
             //this.RunChecks_EmReport();
             break;
           default:
@@ -137,16 +140,20 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             break;
         }
 
-        context.MergedJobDataMap.Add("EvaluationStauts", mp.EvalStatus);
-
         _dbContext.MonitorPlans.Update(mp);
         _dbContext.SaveChanges();
+
+        context.MergedJobDataMap.Add("EvaluationResult", "COMPLETE");
+        context.MergedJobDataMap.Add("EvaluationStatus", mp.EvalStatus);        
 
         LogHelper.info(_logger, $"{key.Group}.{key.Name} completed successfully");
         return Task.CompletedTask;
       }
       catch (Exception ex)
       {
+        LogHelper.info(_logger, $"{key.Group}.{key.Name} failed");
+        context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
+        context.MergedJobDataMap.Add("EvaluationStatus", "FATAL");
         LogHelper.error(_logger, ex.ToString());
         return Task.FromException(ex);
       }
