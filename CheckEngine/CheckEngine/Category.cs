@@ -414,6 +414,7 @@ namespace ECMPS.Checks.CheckEngine
             {
                 System.Diagnostics.Debug.WriteLine("");
                 System.Diagnostics.Debug.WriteLine(string.Format("Check Category: {0}", this.CategoryCd));
+                Console.WriteLine("************************************"+string.Format("Check Category: {0}", this.CategoryCd));
             }
 
             string ErrorMessage = "";
