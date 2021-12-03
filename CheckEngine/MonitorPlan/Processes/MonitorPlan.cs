@@ -79,7 +79,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
             {
                 bool RunResult;
                 string Result = "";
-                Console.WriteLine("*****************************************************Running Monitoring Plan Checks");
+                Console.WriteLine("*****************************************************Running Monitoring Plan Checks ");
 
                 // Create category objects with check bands initialized
                 cMonitorPlanCategory MonitorPlanCategory = cMonitorPlanCategory.GetInitialized(mCheckEngine, this);
