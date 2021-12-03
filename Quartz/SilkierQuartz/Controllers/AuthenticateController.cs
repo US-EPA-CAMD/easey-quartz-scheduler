@@ -107,19 +107,6 @@ namespace SilkierQuartz.Controllers
                 
                 var currentSession = HttpContext.Session;
 
-                Task t = Task.Run(async () => {
-                    for(;;){
-                        await Task.Delay(1000);
-                        Console.Write("Refreshing User Token For User " + request.UserName + " UID: " + uid);
-                        try{
-                            
-                        }
-                        catch(Exception e){
-                            Console.Write(e.Message);
-                        }
-                    }
-                });
-
                 await SignIn(request.IsPersist);
 
                 return RedirectToAction(nameof(SchedulerController.Index), nameof(Scheduler));
