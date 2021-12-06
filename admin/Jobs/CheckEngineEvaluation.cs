@@ -127,15 +127,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.MonitorPlans.Update(mp);
         _dbContext.SaveChanges();
 
-        context.MergedJobDataMap.Add("EvaluationResult", "COMPLETE");
+        context.MergedJobDataMap.Add("EvaluationResult", "COMPLETED");
         context.MergedJobDataMap.Add("EvaluationStatus", evalStatus.Description);
 
-        LogHelper.info(_logger, $"{key.Group}.{key.Name} completed successfully");
+        LogHelper.info(_logger, $"{key.Group}.{key.Name} COMPLETED successfully!");
         return Task.CompletedTask;
       }
       catch (Exception ex)
       {
-        LogHelper.info(_logger, $"{key.Group}.{key.Name} failed");
+        LogHelper.info(_logger, $"{key.Group}.{key.Name} FAILED!");
         context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
         context.MergedJobDataMap.Add("EvaluationStatus", "FATAL");
         LogHelper.error(_logger, ex.ToString());
