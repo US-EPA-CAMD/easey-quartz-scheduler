@@ -13,6 +13,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
   {
     private readonly ILogger _logger;
     public IConfiguration Configuration { get; }
+    public DbSet<SeverityCode> SeverityCodes { get; set; }
+    public DbSet<EvalStatusCode> EvalStatusCodes { get; set; }
     public DbSet<CheckSession> CheckSessions { get; set; }
     public DbSet<CorsOptions> CorsOptions { get; set; }
     public DbSet<Facility> Facilities { get; set; }

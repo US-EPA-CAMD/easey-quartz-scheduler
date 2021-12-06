@@ -45,20 +45,26 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
       );
 
       string message = string.Format(@"
-        The {0} Evaluation process for the following details has completed with a result of {1}!
+        The {0} Evaluation process submitted by {1} on {2} for...
 
-        Facility Id: {2}          Facility Name: {3}
-        Configuration: {4}        Submitted: {5}
-        Status: {6}               Report Url: https://{7}/ecmps/monitoring-plans/{8}/evaluation-report
+        Facility Id: {3}
+        Facility Name: {4}
+        Configuration: {5}
+
+        {6} with status of {7}!
+        
+        You can view details of the report here...
+        https://{8}/ecmps/monitoring-plans/{9}/evaluation-report
 
         Thanks,
         ECMPS Support",
         CheckEngineEvaluation.GetProcess(processCode),
-        evaluationResult,
+        userId,
+        submittedOn,
         facilityId,
         facilityName,
         monPlanConfig,
-        submittedOn,
+        evaluationResult,        
         evaluationStatus,
         Configuration["EASEY_QUARTZ_SCHEDULER_HOST"],
         monitorPlanId

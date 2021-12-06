@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -114,37 +118,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             throw new Exception("A Process Code of [MP, QA-QCE, QA-TEE, EM] is required and was not provided");
         }
 
-        // Need to retrieve again to get session id that was set by evaluation job
         mp = _dbContext.MonitorPlans.Find(monitorPlanId);
         CheckSession chkSession = _dbContext.CheckSessions.Find(mp.CheckSessionId);
+        SeverityCode severity = _dbContext.SeverityCodes.Find(chkSession.SeverityCode);
+        EvalStatusCode evalStatus = _dbContext.EvalStatusCodes.Find(severity.EvalStatusCode);
 
-        switch(chkSession.SeverityCode)
-        {
-          case "NONE":
-            mp.EvalStatus = "PASS";
-            break;
-          case "ADMNOVR":
-            mp.EvalStatus = ""; // TODO: NEED SEVERITY CODE TO EVAL STATUS MAPPING
-            break;
-          case "INFORM":
-            mp.EvalStatus = "INFO";
-            break;
-          case "NONCRIT":
-            mp.EvalStatus = ""; // TODO: NEED SEVERITY CODE TO EVAL STATUS MAPPING
-            break;
-          case "CRIT1":
-          case "CRIT2":
-          case "CRIT3":
-          case "FATAL":          
-            mp.EvalStatus = "ERR";
-            break;
-        }
-
+        mp.EvalStatus = evalStatus.Code;
         _dbContext.MonitorPlans.Update(mp);
         _dbContext.SaveChanges();
 
         context.MergedJobDataMap.Add("EvaluationResult", "COMPLETE");
-        context.MergedJobDataMap.Add("EvaluationStatus", mp.EvalStatus);        
+        context.MergedJobDataMap.Add("EvaluationStatus", evalStatus.Description);
 
         LogHelper.info(_logger, $"{key.Group}.{key.Name} completed successfully");
         return Task.CompletedTask;
@@ -153,7 +137,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       {
         LogHelper.info(_logger, $"{key.Group}.{key.Name} failed");
         context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
-        context.MergedJobDataMap.Add("EvaluationStatus", "FAILED");
+        context.MergedJobDataMap.Add("EvaluationStatus", "FATAL");
         LogHelper.error(_logger, ex.ToString());
         return Task.FromException(ex);
       }
