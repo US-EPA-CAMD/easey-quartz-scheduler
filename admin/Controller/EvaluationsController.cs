@@ -63,6 +63,10 @@ namespace Epa.Camd.Quartz.Scheduler
         string.IsNullOrWhiteSpace(x.UnitName) ? x.StackName : x.UnitName
       ));
 
+      mp.EvalStatus = "INQ"; // set eval status to In Queue
+      _dbContext.MonitorPlans.Update(mp);
+      _dbContext.SaveChanges();
+
       await CheckEngineEvaluation.StartNow(
         services.Scheduler,
         id,
@@ -75,10 +79,6 @@ namespace Epa.Camd.Quartz.Scheduler
         userEmail,
         submittedOn
       );
-
-      mp.EvalStatus = "INQ"; // set eval status to In Queue
-      _dbContext.MonitorPlans.Update(mp);
-      _dbContext.SaveChanges();
 
       return CreatedAtAction("EvaluationResponse)", new
       {

@@ -104,24 +104,34 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             break;
           case "QA-QCE":
             LogHelper.info(_logger, "Running RunChecks_QaReport_Qce...");
-            //this.RunChecks_QaReport_Qce();
+            // result = this.RunChecks_QaReport_Qce();
             break;
           case "QA-TEE":
             LogHelper.info(_logger, "Running RunChecks_QaReport_Tee...");
-            //this.RunChecks_QaReport_Tee();
+            // result = this.RunChecks_QaReport_Tee();
             break;
           case "EM":
             LogHelper.info(_logger, "Running RunChecks_EmReport...");
-            //this.RunChecks_EmReport();
+            // result = this.RunChecks_EmReport();
             break;
           default:
             throw new Exception("A Process Code of [MP, QA-QCE, QA-TEE, EM] is required and was not provided");
         }
 
-        mp = _dbContext.MonitorPlans.Find(monitorPlanId);
-        CheckSession chkSession = _dbContext.CheckSessions.Find(mp.CheckSessionId);
-        SeverityCode severity = _dbContext.SeverityCodes.Find(chkSession.SeverityCode);
-        EvalStatusCode evalStatus = _dbContext.EvalStatusCodes.Find(severity.EvalStatusCode);
+        EvalStatusCode evalStatus;
+        _dbContext.Entry<MonitorPlan>(mp).Reload();
+
+        if (result)
+        {
+          CheckSession chkSession = _dbContext.CheckSessions.Find(mp.CheckSessionId);
+          SeverityCode severity = _dbContext.SeverityCodes.Find(chkSession.SeverityCode);
+          evalStatus = _dbContext.EvalStatusCodes.Find(severity.EvalStatusCode);
+        }
+        else
+        {
+          // TODO: MAY NEED A STATUS FOR THIS SITUATION WHERE CHECK ENGINE RETURNS FALSE AND NO SESSION ID TO LOOKUP EVAL STATUS
+          evalStatus = _dbContext.EvalStatusCodes.Find("ERR");
+        }        
 
         mp.EvalStatus = evalStatus.Code;
         _dbContext.MonitorPlans.Update(mp);
