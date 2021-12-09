@@ -94,8 +94,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         switch (processCode)
         {
           case "MP":
-            string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
-            cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
+             string dllPath = "C:\\Users\\simerahailu\\Documents\\GitHub\\easey-quartz-scheduler\\CheckEngine\\MonitorPlan\\obj\\Debug\\netcoreapp3.1\\";
+             cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
 
             LogHelper.info(_logger, "Running RunChecks_MpReport...");
             result = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
