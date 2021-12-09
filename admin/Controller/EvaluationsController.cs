@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Jobs;
 using Epa.Camd.Quartz.Scheduler.Models;
+using Epa.Camd.Logger;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
@@ -19,17 +19,14 @@ namespace Epa.Camd.Quartz.Scheduler
     [Produces("application/json")]
     public class EvaluationsController : ControllerBase
     {
-        private readonly ILogger _logger;
         private NpgSqlContext _dbContext = null;
         private IConfiguration Configuration { get; }
 
         public EvaluationsController(
           NpgSqlContext dbContext,
-          IConfiguration configuration,
-          ILogger<CheckEngineEvaluation> logger
+          IConfiguration configuration
         )
         {
-            _logger = logger;
             _dbContext = dbContext;
             Configuration = configuration;
         }
@@ -97,10 +94,10 @@ namespace Epa.Camd.Quartz.Scheduler
         [HttpPost("monitor-plans")]
         public async Task<ActionResult> TriggerMPEvaluation([FromBody] EvaluationRequest request)
         {
-            //string apiKey = Request.Headers["x-api-key"];
-            //string allowedKeys = Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATIONS_API_KEYS"];
+            string apiKey = Request.Headers["x-api-key"];
+            string allowedKeys = Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATIONS_API_KEYS"];
 
-            //if (apiKey != null && allowedKeys.Split(',').Contains(apiKey))
+            if (apiKey != null && allowedKeys.Split(',').Contains(apiKey))
             {
                 return await TriggerCheckEngineEvaluation(
                   "MP",
@@ -109,12 +106,12 @@ namespace Epa.Camd.Quartz.Scheduler
                   request.UserEmail
                 );
             }
-            //else
-            //{
-            //  string message = "API Key is either missing or not an authorized client!";
-            //  LogHelper.error(_logger, message, new LogVariable("API Key", apiKey), new LogVariable("Request", request));
-            //  return BadRequest(message);
-            //}
+            else
+            {
+              string message = "API Key is either missing or not an authorized client!";
+              LogHelper.error(message, new LogVariable("API Key", apiKey), new LogVariable("Request", request));
+              return BadRequest(message);
+            }
         }
     }
 }
