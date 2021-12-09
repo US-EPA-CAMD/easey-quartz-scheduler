@@ -1,21 +1,19 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 
 using Quartz;
 using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
-using Epa.Camd.Quartz.Scheduler.Logging;
+using Epa.Camd.Logger;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   public class RemoveExpiredUserSession : IJob
   {
     private NpgSqlContext _dbContext = null;
-    private readonly ILogger _logger;
 
     public static class Identity
     {
@@ -39,17 +37,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public RemoveExpiredUserSession(NpgSqlContext dbContext, ILogger<RemoveExpiredUserSession> logger)
+    public RemoveExpiredUserSession(NpgSqlContext dbContext)
     {
       _dbContext = dbContext;
-      _logger = logger;
     }
 
     public Task Execute(IJobExecutionContext context)
     {
       try
       {
-        LogHelper.info(_logger, "Executing RemoveExpiredUserSession job");
+        LogHelper.info("Executing RemoveExpiredUserSession job");
         try
         {
           var sql_command = "DELETE FROM camdecmpswks.user_session WHERE token_expiration < now()";
@@ -58,10 +55,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
         catch (Exception e)
         {
-          LogHelper.error(_logger, e.Message, new LogVariable("stack", e.StackTrace));
+          LogHelper.error(e.Message, new LogVariable("stack", e.StackTrace));
         }
 
-        LogHelper.info(_logger, "Executed RemoveExpiredUserSession job successfully");
+        LogHelper.info("Executed RemoveExpiredUserSession job successfully");
         return Task.CompletedTask;
       }
       catch (Exception e)

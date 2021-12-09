@@ -11,7 +11,6 @@ using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Jobs;
 using Epa.Camd.Quartz.Scheduler.Models;
-using Epa.Camd.Quartz.Scheduler.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler
 {

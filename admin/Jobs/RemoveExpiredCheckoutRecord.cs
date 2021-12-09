@@ -1,21 +1,19 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 
 using Quartz;
 using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
-using Epa.Camd.Quartz.Scheduler.Logging;
+using Epa.Camd.Logger;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   public class RemoveExpiredCheckoutRecord : IJob
   {
     private NpgSqlContext _dbContext = null;
-    private readonly ILogger _logger;
 
     public static class Identity
     {
@@ -39,15 +37,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public RemoveExpiredCheckoutRecord(NpgSqlContext dbContext, ILogger<RemoveExpiredCheckoutRecord> logger)
+    public RemoveExpiredCheckoutRecord(NpgSqlContext dbContext)
     {
       _dbContext = dbContext;
-      _logger = logger;
     }
 
     public Task Execute(IJobExecutionContext context)
     {
-      LogHelper.info(_logger, "Executing RemoveExpiredCheckoutRecord job");
+      LogHelper.info("Executing RemoveExpiredCheckoutRecord job");
       try
       {
         JobDataMap dataMap = context.MergedJobDataMap;
@@ -64,10 +61,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
       catch (Exception e)
       {
-        LogHelper.error(_logger, e.Message, new LogVariable("stack", e.StackTrace));
+        LogHelper.error(e.Message, new LogVariable("stack", e.StackTrace));
       }
 
-      LogHelper.info(_logger, "Executed RemoveExpiredCheckoutRecord job successfully");
+      LogHelper.info("Executed RemoveExpiredCheckoutRecord job successfully");
       return Task.CompletedTask;
     }
 

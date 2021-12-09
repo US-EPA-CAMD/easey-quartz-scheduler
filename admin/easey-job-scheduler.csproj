@@ -25,5 +25,6 @@
     <ProjectReference Include="..\CheckEngine\DatabaseAccess\DatabaseAccess.csproj" />
     <ProjectReference Include="..\CheckEngine\MonitorPlan\MonitorPlan.csproj" />
     <ProjectReference Include="..\Quartz\SilkierQuartz\SilkierQuartz.csproj" />
+    <ProjectReference Include="..\Logger\Logger.csproj" />
   </ItemGroup>
 </Project>
