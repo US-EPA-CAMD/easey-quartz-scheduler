@@ -302,7 +302,7 @@ namespace ECMPS.Checks.SpanChecks
               DataView LocationControlRecords = (DataView)Category.GetCheckParameter("Location_Control_Records").ParameterValue;
 
               RowFilter = new sFilterPair[1];
-              RowFilter[0].Set("control_equip_param_cd", "SO2");
+              RowFilter[0].Set("CE_PARAM", "SO2");
 
               DateTime SpanAltEndDate = (SpanEvalEndedDate != DateTime.MaxValue) 
                                       ? SpanEvalEndedDate.AddDays(-180) 
@@ -337,7 +337,7 @@ namespace ECMPS.Checks.SpanChecks
               DataView LocationControlRecords = (DataView)Category.GetCheckParameter("Location_Control_Records").ParameterValue;
 
               RowFilter = new sFilterPair[2];
-              RowFilter[0].Set("control_equip_param_cd", "NOX");
+              RowFilter[0].Set("CE_PARAM", "NOX");
               RowFilter[1].Set("Control_Cd", "H2O,STM,SCR,SNCR,DLNB,NH3", eFilterPairStringCompare.InList);
 
               DateTime SpanAltEndDate = (SpanEvalEndedDate != DateTime.MaxValue)

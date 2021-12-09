@@ -325,7 +325,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
                             foreach (DataRowView drvMethod in mSourceData.Tables["MATSMethodData"].DefaultView)
                             {
-                                RunResult = MATSMethod.ProcessChecks((string)drvMethod["MATS_Method_ID"], MonLocId);
+                                RunResult = MATSMethod.ProcessChecks((string)drvMethod["mats_method_data_id"], MonLocId);
                                 MATSMethod.EraseParameters();
                             }
 

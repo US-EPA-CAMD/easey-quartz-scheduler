@@ -95,7 +95,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
     {
       //filter MATSMethodData to find this one based on the MATS_Method_ID
       SetDataRowCheckParameter("MATS_Supplemental_Compliance_Method_Record", mMonitorPlan.SourceData.Tables["MATSMethodData"],
-		"MATS_Method_ID = '" + mMATSMethodID + "'", "MATS_Method_ID");
+        "mats_method_data_id = '" + mMATSMethodID + "'", "mats_method_data_id");
     }
 
     protected override void SetRecordIdentifier()
