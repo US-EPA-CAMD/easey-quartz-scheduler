@@ -20,5 +20,6 @@ applications:
       EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH: ((checkEngineDllPath)) 
     routes:
       - route: ((host))/((path))
+      - route: ((apiHost))/((apiPath))
     services:
       - camd-pg-db
