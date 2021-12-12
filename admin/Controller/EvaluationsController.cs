@@ -16,7 +16,7 @@ using Epa.Camd.Quartz.Scheduler.Logging;
 namespace Epa.Camd.Quartz.Scheduler
 {
   [ApiController]
-  [Route("quartz/api/triggers/evaluations")]
+  [Route("quartz-mgmt/triggers/evaluations")]
   [Produces("application/json")]
   public class EvaluationsController : ControllerBase
   {

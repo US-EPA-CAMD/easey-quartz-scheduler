@@ -2,6 +2,7 @@
 name: quartz-scheduler
 title: Clean Air Markets EASEY Quartz Scheduler
 path: quartz
+apiPath: quartz-mgmt
 email: noreply@epa.gov
 smtpHost: smtp.epa.gov
 smtpPort: 25

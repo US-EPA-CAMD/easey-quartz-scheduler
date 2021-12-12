@@ -13,7 +13,7 @@ using Epa.Camd.Quartz.Scheduler.Logging;
 namespace Epa.Camd.Quartz.Scheduler
 {
   [ApiController()]
-  [Route("quartz/api/triggers/notifications")]
+  [Route("quartz-mgmt/triggers/notifications")]
   [Produces("application/json")]
   public class NotificationsController : ControllerBase
   {
