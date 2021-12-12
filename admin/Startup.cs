@@ -84,7 +84,7 @@ namespace Epa.Camd.Quartz.Scheduler
         if (!string.IsNullOrWhiteSpace(host) && host != "localhost")
         {
           c.AddServer(new OpenApiServer() {
-            Url = $"https://{apiHost}/",
+            Url = $"https://{apiHost}",
           });
         }        
 
