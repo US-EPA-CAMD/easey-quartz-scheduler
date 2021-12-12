@@ -7,7 +7,8 @@ applications:
     env:
       OPTIMIZE_MEMORY: true
       CACHE_NUGET_PACKAGES: false
-      EASEY_AUTH_API: https://((apiHost))/auth-mgmt
+      EASEY_API_GATEWAY_HOST: ((apiGatewayHost))
+      EASEY_AUTH_API: https://((apiGatewayHost))/auth-mgmt
       EASEY_QUARTZ_SCHEDULER_TITLE: ((title))
       EASEY_QUARTZ_SCHEDULER_HOST: ((host))
       EASEY_QUARTZ_SCHEDULER_PATH: ((path))

@@ -79,7 +79,7 @@ namespace Epa.Camd.Quartz.Scheduler
         );
 
         string host = Configuration["EASEY_QUARTZ_SCHEDULER_HOST"];
-        string apiHost = Configuration["EASEY_QUARTZ_SCHEDULER_API_HOST"];
+        string apiHost = Configuration["EASEY_API_GATEWAY_HOST"];
 
         if (!string.IsNullOrWhiteSpace(host) && host != "localhost")
         {

@@ -2,4 +2,5 @@ instances: 4
 memory: 2048M
 environment: production
 host: easey.app.cloud.gov
-apiHost: api.epa.gov/easey
+apiHost: api-easey.app.cloud.gov
+apiGatewayHost: api.epa.gov/easey
