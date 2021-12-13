@@ -34,7 +34,11 @@ namespace SilkierQuartz.Controllers
 
         public AuthenticateController(SilkierQuartzAuthenticationOptions authenticationOptions)
         {
-            client.DefaultRequestHeaders.Add("x-api-key", IJobRegistratorExtensions.AppConfiguration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
+
+            if(!client.DefaultRequestHeaders.Contains("x-api-key")){
+                client.DefaultRequestHeaders.Add("x-api-key", IJobRegistratorExtensions.AppConfiguration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
+            }
+
             authUri = IJobRegistratorExtensions.AppConfiguration["EASEY_AUTH_API"];
             this.authenticationOptions = authenticationOptions ?? throw new ArgumentNullException(nameof(authenticationOptions));
         }
@@ -100,7 +104,10 @@ namespace SilkierQuartz.Controllers
             };
 
             var content = new FormUrlEncodedContent(values);
+            Console.Write(client.DefaultRequestHeaders);
             var response = await client.PostAsync(authUri + "/authentication/sign-in", content);
+
+            Console.Write(response);
 
             if(response.IsSuccessStatusCode){
                 AuthResponse parsed = JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
