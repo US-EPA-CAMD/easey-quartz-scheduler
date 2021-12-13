@@ -11,7 +11,7 @@ using ECMPS.Common;
 using ECMPS.Definitions.SeverityCode;
 using ECMPS.ErrorSuppression;
 using ECMPS.Definitions.Extensions;
-
+using Epa.Camd.Logger;
 
 namespace ECMPS.Checks.CheckEngine
 {
@@ -414,7 +414,7 @@ namespace ECMPS.Checks.CheckEngine
             {
                 System.Diagnostics.Debug.WriteLine("");
                 System.Diagnostics.Debug.WriteLine(string.Format("Check Category: {0}", this.CategoryCd));
-                Console.WriteLine("************************************"+string.Format("Check Category: {0}", this.CategoryCd));
+                LogHelper.info(string.Format("Check Category: {0}", this.CategoryCd));
             }
 
             string ErrorMessage = "";

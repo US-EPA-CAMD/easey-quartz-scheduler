@@ -6,6 +6,7 @@ using ECMPS.Checks.TypeUtilities;
 
 using ECMPS.Definitions.Extensions;
 using ECMPS.Definitions.SeverityCode;
+using Epa.Camd.Logger;
 
 namespace ECMPS.Checks.CheckEngine
 {
@@ -727,10 +728,11 @@ namespace ECMPS.Checks.CheckEngine
 
                             if (CheckSessionInit())
                             {
-                                Console.WriteLine("***********************************************Ready to run Checks");
+                                LogHelper.info("Ready to run checks");
+                                
                                 if (Process.ExecuteChecks(ChecksDllPath, ref errorMessage))
                                 {
-                                    Console.WriteLine("***********************************************Processed Monplan checks for Monplan: " + MonPlanId);
+                                    LogHelper.info("Processed Monplan checks", new LogVariable("MonPlanId", MonPlanId));
                                     result = CheckSessionCompleted(Process.SeverityCd);
                                 }
                                 else

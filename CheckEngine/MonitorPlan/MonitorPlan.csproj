@@ -15,6 +15,7 @@
     <ProjectReference Include="..\DatabaseAccess\DatabaseAccess.csproj" />
     <ProjectReference Include="..\EcmpsCommon\EcmpsCommon.csproj" />
     <ProjectReference Include="..\TypeUtilities\TypeUtilities.csproj" />
+    <ProjectReference Include="..\..\Logger\Logger.csproj" />
   </ItemGroup>
 
   <ItemGroup>

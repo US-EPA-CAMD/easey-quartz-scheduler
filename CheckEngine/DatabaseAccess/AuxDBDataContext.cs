@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Epa.Camd.Logger;
 
 namespace ECMPS.Checks.DatabaseAccess
 {
@@ -50,7 +51,7 @@ namespace ECMPS.Checks.DatabaseAccess
 
             //Database.CreateStoredProcedureCommand("Check.CheckSessionCompleted");
 
-            Console.WriteLine("***********************************************running Check session Complete");
+            LogHelper.info("Running Check session Complete");
 
             DataTable AResultTable;
             string Sql = "call camdecmpswks.check_session_completed('" + chkSessionId + "','" + severityCd + "')";
@@ -67,7 +68,7 @@ namespace ECMPS.Checks.DatabaseAccess
                 }
 
                 result = 'T';
-                Console.WriteLine("***********************************************Completed Check session Complete");
+                LogHelper.info("Completed Check session Complete");
             }
             catch (Exception ex)
             {
@@ -209,12 +210,11 @@ namespace ECMPS.Checks.DatabaseAccess
                 resultString = values[1];
                 errorMessage = values[2];
 
-                Console.WriteLine("************CheckSessionInit Created ");
+                LogHelper.info("CheckSessionInit Created");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("************CheckSessionInit failed "+Sql+"*****"+ex.ToString());
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                LogHelper.error("CheckSessionInit failed "+Sql+"*****"+ex.ToString());
             }
 
             //Database.AddInputParameter("@V_PROCESS_CD", processCd);

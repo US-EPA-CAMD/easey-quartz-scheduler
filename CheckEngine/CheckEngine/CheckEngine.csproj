@@ -17,6 +17,7 @@
     <ProjectReference Include="..\CheckParameters\CheckParameters.csproj" />
     <ProjectReference Include="..\DatabaseAccess\DatabaseAccess.csproj" />
     <ProjectReference Include="..\EcmpsCommon\EcmpsCommon.csproj" />
+    <ProjectReference Include="..\..\Logger\Logger.csproj" />
   </ItemGroup>
 
 </Project>
