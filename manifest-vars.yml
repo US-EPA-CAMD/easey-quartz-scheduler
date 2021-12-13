@@ -2,12 +2,14 @@
 name: quartz-scheduler
 title: Clean Air Markets EASEY Quartz Scheduler
 path: quartz
+apiPath: quartz-mgmt
 email: noreply@epa.gov
 smtpHost: smtp.epa.gov
 smtpPort: 25
+checkEngineDllPath: ./
 instances: 1
 memory: 1024M
 environment: development
 host: easey-dev.app.cloud.gov
-apiHost: api.epa.gov/easey/dev
-checkEngineDllPath: ./
+apiHost: api-easey-dev.app.cloud.gov
+apiGatewayHost: api.epa.gov/easey/dev

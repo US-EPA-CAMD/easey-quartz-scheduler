@@ -78,6 +78,16 @@ namespace Epa.Camd.Quartz.Scheduler
           }
         );
 
+        string host = Configuration["EASEY_QUARTZ_SCHEDULER_HOST"];
+        string apiHost = Configuration["EASEY_API_GATEWAY_HOST"];
+
+        if (!string.IsNullOrWhiteSpace(host) && host != "localhost")
+        {
+          c.AddServer(new OpenApiServer() {
+            Url = $"https://{apiHost}",
+          });
+        }        
+
         var apiKeyScheme = new OpenApiSecurityScheme {
           Name = "x-api-key",
           In = ParameterLocation.Header,
@@ -160,15 +170,17 @@ namespace Epa.Camd.Quartz.Scheduler
         endpoints.MapControllers();
       });
 
+      string apiPath = Configuration["EASEY_QUARTZ_SCHEDULER_API_PATH"];
+
       app.UseSwagger(c =>
       {
-        c.RouteTemplate = "quartz/api/swagger/{documentname}/swagger.json";
+        c.RouteTemplate = apiPath + "/swagger/{documentname}/swagger.json";
       });
 
       app.UseSwaggerUI(c =>
       {
-        c.SwaggerEndpoint("/quartz/api/swagger/v1/swagger.json", "v1");
-        c.RoutePrefix = "quartz/api/swagger";
+        c.SwaggerEndpoint($"/{apiPath}/swagger/v1/swagger.json", "v1");
+        c.RoutePrefix = $"{apiPath}/swagger";
       });
 
       IScheduler scheduler = app.GetScheduler();

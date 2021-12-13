@@ -14,22 +14,23 @@ using Epa.Camd.Logger;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
-    [ApiController]
-    [Route("quartz/api/triggers/evaluations")]
-    [Produces("application/json")]
-    public class EvaluationsController : ControllerBase
-    {
-        private NpgSqlContext _dbContext = null;
-        private IConfiguration Configuration { get; }
+  [ApiController]
+  [Route("quartz-mgmt/triggers/evaluations")]
+  [Produces("application/json")]
+  public class EvaluationsController : ControllerBase
+  {
+    private NpgSqlContext _dbContext = null;
+    private IConfiguration Configuration { get; }
 
-        public EvaluationsController(
-          NpgSqlContext dbContext,
-          IConfiguration configuration
-        )
-        {
-            _dbContext = dbContext;
-            Configuration = configuration;
-        }
+    
+      public EvaluationsController(
+        NpgSqlContext dbContext,
+        IConfiguration configuration
+      )
+      {
+        _dbContext = dbContext;
+        Configuration = configuration;
+      }
 
         private async Task<ActionResult> TriggerCheckEngineEvaluation(
           string processCode,

@@ -7,16 +7,20 @@ applications:
     env:
       OPTIMIZE_MEMORY: true
       CACHE_NUGET_PACKAGES: false
-      EASEY_AUTH_API: https://((apiHost))/auth-mgmt
+      EASEY_API_GATEWAY_HOST: ((apiGatewayHost))
+      EASEY_AUTH_API: https://((apiGatewayHost))/auth-mgmt
       EASEY_QUARTZ_SCHEDULER_TITLE: ((title))
       EASEY_QUARTZ_SCHEDULER_HOST: ((host))
       EASEY_QUARTZ_SCHEDULER_PATH: ((path))
       EASEY_QUARTZ_SCHEDULER_ENV: ((environment))      
       EASEY_QUARTZ_SCHEDULER_EMAIL: ((email))
+      EASEY_QUARTZ_SCHEDULER_API_HOST: ((apiHost))
+      EASEY_QUARTZ_SCHEDULER_API_PATH: ((apiPath))
       EASEY_QUARTZ_SCHEDULER_SMTP_HOST: ((smtpHost))
       EASEY_QUARTZ_SCHEDULER_SMTP_PORT: ((smtpPort))
       EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH: ((checkEngineDllPath)) 
     routes:
       - route: ((host))/((path))
+      - route: ((apiHost))/((apiPath))
     services:
       - camd-pg-db
