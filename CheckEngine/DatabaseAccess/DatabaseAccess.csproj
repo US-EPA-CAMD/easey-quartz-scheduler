@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EcmpsCommon\EcmpsCommon.csproj" />
+    <ProjectReference Include="..\..\Logger\Logger.csproj" />
   </ItemGroup>
 
 </Project>

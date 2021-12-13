@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,7 +7,7 @@ using Quartz;
 using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
-using Epa.Camd.Quartz.Scheduler.Logging;
+using Epa.Camd.Logger;
 
 using DatabaseAccess;
 using ECMPS.Checks.CheckEngine;
@@ -22,7 +17,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   public class CheckEngineEvaluation : IJob
   {
-    private readonly ILogger _logger;
     private NpgSqlContext _dbContext = null;
     private IConfiguration Configuration { get; }
 
@@ -44,11 +38,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public CheckEngineEvaluation(
       NpgSqlContext dbContext,
-      IConfiguration configuration,
-      ILogger<CheckEngineEvaluation> logger
+      IConfiguration configuration
     )
     {
-      _logger = logger;
       _dbContext = dbContext;
       Configuration = configuration;
     }
@@ -74,7 +66,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         string connectionString = ConnectionStringManager.getConnectionString(Configuration);
 
         LogHelper.info(
-          _logger, $"Executing {key.Group}.{key.Name} with data map...",
+          $"Executing {key.Group}.{key.Name} with data map...",
           new LogVariable("Id", id),
           new LogVariable("Process Code", processCode),
           new LogVariable("Facility Id", facilityId),
@@ -94,24 +86,24 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         switch (processCode)
         {
           case "MP":
-            string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
-            cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
+             string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
+             cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
 
-            LogHelper.info(_logger, "Running RunChecks_MpReport...");
+            LogHelper.info("Running RunChecks_MpReport...");
             result = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
-            LogHelper.info(_logger, $"RunChecks_MpReport returned a result of {result}!");
+            LogHelper.info($"RunChecks_MpReport returned a result of {result}!");
 
             break;
           case "QA-QCE":
-            LogHelper.info(_logger, "Running RunChecks_QaReport_Qce...");
+            LogHelper.info("Running RunChecks_QaReport_Qce...");
             // result = this.RunChecks_QaReport_Qce();
             break;
           case "QA-TEE":
-            LogHelper.info(_logger, "Running RunChecks_QaReport_Tee...");
+            LogHelper.info("Running RunChecks_QaReport_Tee...");
             // result = this.RunChecks_QaReport_Tee();
             break;
           case "EM":
-            LogHelper.info(_logger, "Running RunChecks_EmReport...");
+            LogHelper.info("Running RunChecks_EmReport...");
             // result = this.RunChecks_EmReport();
             break;
           default:
@@ -140,15 +132,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         context.MergedJobDataMap.Add("EvaluationResult", "COMPLETED");
         context.MergedJobDataMap.Add("EvaluationStatus", evalStatus.Description);
 
-        LogHelper.info(_logger, $"{key.Group}.{key.Name} COMPLETED successfully!");
+        LogHelper.info($"{key.Group}.{key.Name} COMPLETED successfully!");
         return Task.CompletedTask;
       }
       catch (Exception ex)
       {
-        LogHelper.info(_logger, $"{key.Group}.{key.Name} FAILED!");
         context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
         context.MergedJobDataMap.Add("EvaluationStatus", "FATAL");
-        LogHelper.error(_logger, ex.ToString());
+        LogHelper.error(ex.ToString());
         return Task.FromException(ex);
       }
     }

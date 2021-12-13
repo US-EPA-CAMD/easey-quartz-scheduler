@@ -2,12 +2,16 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
-namespace Epa.Camd.Quartz.Scheduler.Logging
+namespace Epa.Camd.Logger
 {
   public class LogHelper
   {
-    public static void info(ILogger logger, string message, params LogVariable[] parameters)
+
+    private static ILogger logger = new LoggerFactory().CreateLogger(typeof(LogHelper));
+
+    public static void info(string message, params LogVariable[] parameters)
     {
+
       try
       {
         Dictionary<string, object> scope = new Dictionary<string, object>();
@@ -28,7 +32,7 @@ namespace Epa.Camd.Quartz.Scheduler.Logging
       }
     }
 
-    public static void error(ILogger logger, string message, params LogVariable[] parameters)
+    public static void error(string message, params LogVariable[] parameters)
     {
       Dictionary<string, object> scope = new Dictionary<string, object>();
 

@@ -12,7 +12,7 @@ using ECMPS.Checks.Parameters;
 using ECMPS.Checks.TypeUtilities;
 
 using ECMPS.Definitions.Extensions;
-
+using Epa.Camd.Logger;
 
 namespace ECMPS.Checks.MonitorPlanEvaluation
 {
@@ -24,7 +24,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
         public cMonitorPlan(cCheckEngine CheckEngine)
           : base(CheckEngine)
         {
-            Console.WriteLine("*****************************************************Initalizing Monitoring Plan");
+            LogHelper.info("Initalizing Monitoring Plan");
         }
 
         #endregion
@@ -68,6 +68,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
             {
                 errorMessage = ex.FormatError();
                 result = false;
+                LogHelper.error(errorMessage);
             }
 
             return result;
@@ -79,7 +80,8 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
             {
                 bool RunResult;
                 string Result = "";
-                Console.WriteLine("*****************************************************Running Monitoring Plan Checks  ");
+
+                LogHelper.info("Running Monitoring Plan Checks");
 
                 // Create category objects with check bands initialized
                 cMonitorPlanCategory MonitorPlanCategory = cMonitorPlanCategory.GetInitialized(mCheckEngine, this);
@@ -378,13 +380,11 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
                 DbUpdate(ref Result);
 
-                Console.WriteLine("*****************************************************Completed Monitoring Plan Checks  ");
+                LogHelper.info("Completed Monitoring Plan Checks");
                 return Result;
             }
             catch (Exception e) {
-
-                Console.WriteLine("******************************************************** checks Failed" + e.ToString());
-                
+                LogHelper.error("checks Failed" + e.ToString());
             }
             return "false";
         }
