@@ -65,8 +65,8 @@ jobs:
         run: devops/scripts/cf-app-init.sh
       - name: Configure Env Vars (secrets)
         run: |
-          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY $EASEY_QUARTZ_SCHEDULER_API_KEY
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY $QUARTZ_API_KEY
         env:
-          EASEY_QUARTZ_SCHEDULER_API_KEY: ${{ secrets.QUARTZ_NON_PROD_API_KEY }}
+          QUARTZ_API_KEY: ${{ secrets.QUARTZ_NON_PROD_API_KEY }}
       - name: Deploy
         run: devops/scripts/deploy.sh
