@@ -1662,19 +1662,15 @@ namespace ECMPS.Checks.DatabaseAccess
                              ref string errorMessage)
         {
             bool result = false;
-
             string errorTemplate = string.Format("BulkLoad[{0}]: {1}", targetTableName, "{0}");
-
             List<int> excludeColumnIndex = new List<int>();
-
             //FOR TESTING ONLY
             //if (sourceTable.Rows.Count == 0)
             //{
             //    //Dummy row for testing
-            //    object[] _params = { "", "'c6d513ce-6150-ef8f-6dc3-3dc1685541a8'", new DateTime(2021, 11, 22), 1, "'Result Message'", "'Check Log Comment'", 2, "'10'", "'TestSumId'", new DateTime(2021, 11, 21), 10, new DateTime(2021, 11, 22), 0, "'Source Table'", "'row'", new DateTime(2021, 11, 22), 13, "'Check_result:PASS'", "'NONE'", "'NONE'", 5 };
+            //    object[] _params = { "", "'c6d513ce-6150-ef8f-6dc3-3dc1685541a8'", new DateTime(2021, 11, 22), int.MinValue, "Result Message", "Check Log Comment", "2", "10", "", new DateTime(2021, 11, 21), 10, new DateTime(2021, 11, 22), 0, "Source Table", "row", new DateTime(2021, 11, 22), 13, "Check_result:PASS", "NONE", "NONE", "5" };
             //    sourceTable.Rows.Add(_params);
             //}
-
             if (sourceTable != null && sourceTable.Rows.Count > 0)
             {
                 string insertColumns = string.Empty;
@@ -1683,27 +1679,29 @@ namespace ECMPS.Checks.DatabaseAccess
                         insertColumns += column.ColumnName + ",";
                     else
                         excludeColumnIndex.Add(sourceTable.Columns.IndexOf(column));
-
                 insertColumns = insertColumns.TrimEnd(',').ToLower();
-
                 string sqlInsert = "INSERT INTO " + targetTableName + " (" + insertColumns + ") VALUES (";
-
                 string columnValues = string.Empty;
                 foreach (DataRow row in sourceTable.Rows)
                 {
                     for (int i = 0; i < row.ItemArray.Length; i++)
                         if (!excludeColumnIndex.Contains(i))
                         {
-                            if ((sourceTable.Columns[i].DataType != typeof(int))){
-                                columnValues += "'" + row[i] + "',";
-                            }
+                            object colValue = row[i];
+                            if (colValue == DBNull.Value)
+                                columnValues += "null,";
                             else
                             {
-                                columnValues += object.Equals((row[i]), null) ? "null" : row[i] + ",";
+                                if ((sourceTable.Columns[i].DataType != typeof(int)))
+                                {
+                                    if (sourceTable.Columns[i].DataType == typeof(string))
+                                        colValue = colValue.ToString().Trim(new[] { ' ', '\'' });
+                                    columnValues += "'" + colValue + "',";
+                                }
+                                else
+                                    columnValues += colValue + ",";
                             }
                         }
-                            //columnValues += (sourceTable.Columns[i].DataType != typeof(int) ? "'" + row[i] + "'" : row[i]) + ",";
-
                     sqlInsert += columnValues.TrimEnd(',') + ");";
                     try
                     {
@@ -1726,31 +1724,23 @@ namespace ECMPS.Checks.DatabaseAccess
                         if (!string.IsNullOrEmpty(errorMessage))
                             result = false;
                     }
-
                     //SQL SERVER BULK COPY
                     /*SqlBulkCopy bulkCopy = new System.Data.SqlClient.SqlBulkCopy(m_sqlConn, SqlBulkCopyOptions.Default, sqlTransaction);
-
                     try
                     {
                         bulkCopy.BulkCopyTimeout = 600;
-
                         bulkCopy.DestinationTableName = targetTableName;
-
                         if ((excludeColumnNames != null) && (excludeColumnNames.Count > 0))
                         {
                             bulkCopy.ColumnMappings.Clear();
-
                             foreach (DataColumn column in sourceTable.Columns)
                             {
                                 if (!excludeColumnNames.Contains(column.ColumnName))
                                     bulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(column.ColumnName, column.ColumnName));
                             }
                         }
-
                         bulkCopy.WriteToServer(sourceTable);
                         bulkCopy.Close();
-
-
                         result = true;
                     }
                     catch (Exception ex)
@@ -1767,9 +1757,9 @@ namespace ECMPS.Checks.DatabaseAccess
             }
             else
                 result = true;
-
             return result;
         }
+     
 
         /// <summary>
         /// Bulk load wrapper
