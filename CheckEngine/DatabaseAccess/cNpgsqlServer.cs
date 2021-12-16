@@ -1680,10 +1680,11 @@ namespace ECMPS.Checks.DatabaseAccess
                     else
                         excludeColumnIndex.Add(sourceTable.Columns.IndexOf(column));
                 insertColumns = insertColumns.TrimEnd(',').ToLower();
-                string sqlInsert = "INSERT INTO " + targetTableName + " (" + insertColumns + ") VALUES (";
-                string columnValues = string.Empty;
+                string insertHeader = "INSERT INTO " + targetTableName + " (" + insertColumns + ") VALUES (";
                 foreach (DataRow row in sourceTable.Rows)
                 {
+                    string columnValues = string.Empty;
+                    string sqlInsert = insertHeader;
                     for (int i = 0; i < row.ItemArray.Length; i++)
                         if (!excludeColumnIndex.Contains(i))
                         {
@@ -1702,7 +1703,7 @@ namespace ECMPS.Checks.DatabaseAccess
                                     columnValues += colValue + ",";
                             }
                         }
-                    sqlInsert += columnValues.TrimEnd(',') + ");";
+                   sqlInsert += columnValues.TrimEnd(',') + ");";
                     try
                     {
                         int rowsAffected = 0;
