@@ -1703,7 +1703,7 @@ namespace ECMPS.Checks.DatabaseAccess
                                     columnValues += colValue + ",";
                             }
                         }
-                   sqlInsert += columnValues.TrimEnd(',') + ");";
+                    sqlInsert += columnValues.TrimEnd(',') + ");";
                     try
                     {
                         int rowsAffected = 0;
