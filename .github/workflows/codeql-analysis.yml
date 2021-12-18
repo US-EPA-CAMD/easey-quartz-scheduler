@@ -51,8 +51,9 @@ jobs:
 
     - name: Build
       run: |
+        cd admin
         dotnet restore
-        CI=false dotnet build
+        dotnet build
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
