@@ -827,7 +827,7 @@ namespace ECMPS.Checks.DefaultChecks
 					{
 						DataView UnitControlRecords = Category.GetCheckParameter("Location_Control_Records").ValueAsDataView();
 						string CtrlFilter = UnitControlRecords.RowFilter;
-						UnitControlRecords.RowFilter = AddToDataViewFilter(CtrlFilter, "control_equip_param_cd = 'NOX' and control_cd in ('DLNB','H2O','NH3','SCR','SNCR','STM') ");
+						UnitControlRecords.RowFilter = AddToDataViewFilter(CtrlFilter, "CE_PARAM = 'NOX' and control_cd in ('DLNB','H2O','NH3','SCR','SNCR','STM') ");
 						UnitControlRecords.RowFilter = AddEvaluationDateRangeToDataViewFilter(UnitControlRecords.RowFilter, "install_date", "retire_date", EvalBeginDate, EvalEndDate, false, false, true);
 						if (UnitControlRecords.Count > 0)
 							Category.CheckCatalogResult = "A";
@@ -848,7 +848,7 @@ namespace ECMPS.Checks.DefaultChecks
 						int RangeCount = 0;
 						DataView UnitControlRecords = Category.GetCheckParameter("Location_Control_Records").ValueAsDataView();
 						string CtrlFilter = UnitControlRecords.RowFilter;
-						UnitControlRecords.RowFilter = AddToDataViewFilter(CtrlFilter, "control_equip_param_cd = 'NOX'");
+						UnitControlRecords.RowFilter = AddToDataViewFilter(CtrlFilter, "CE_PARAM = 'NOX'");
 						UnitControlRecords.RowFilter = AddEvaluationDateRangeToDataViewFilter(UnitControlRecords.RowFilter, "install_date", "retire_date", EvalBeginDate, EvalEndDate, false, false, true);
 						if (UnitControlRecords.Count == 0)
 							Category.CheckCatalogResult = "C";
