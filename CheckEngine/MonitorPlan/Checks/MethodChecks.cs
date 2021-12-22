@@ -1555,10 +1555,10 @@ namespace ECMPS.Checks.MethodChecks
 					int nUnitTypeCount = dvUnitTypeRecords.Count;
 					if (nUnitTypeCount == 0 || !CheckEndDateForRetrievedRecords(Category, dvUnitTypeRecords, EvalEndDate))
 					{
-						string sParamFilter = string.Format("control_equip_param_cd = '{0}'", ParameterCd);
+						string sParamFilter = string.Format("CE_PARAM = '{0}'", ParameterCd);
 						if (ParameterCd == "NOXR")
 						{
-							sParamFilter = "control_equip_param_cd = 'NOX'";
+							sParamFilter = "CE_PARAM = 'NOX'";
 						}
 
 						dvControlRecords.RowFilter = AddToDataViewFilter(sControlFilter, sParamFilter);
