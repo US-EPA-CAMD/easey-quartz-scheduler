@@ -8,14 +8,20 @@ using System.Threading.Tasks;
 
 namespace CheckEngineRunner
 {
+    static class CheckEngineRunnerDBCredentials
+    {
+        private static string dbName = Environment.GetEnvironmentVariable("EASEY_DB_NAME");
+        private static string dbPort = Environment.GetEnvironmentVariable("EASEY_DB_PORT");
+        private static string dbUser = Environment.GetEnvironmentVariable("EASEY_DB_USER");
+        private static string dbPwd = Environment.GetEnvironmentVariable("EASEY_DB_PWD");
+
+        private static string dbConnString = "server = localhost; port = " + dbPort + "; user id = " + dbUser + "; password = " + dbPwd + "; database = " + dbName + "; pooling = true";
+
+        public static string CheckEngineRunnerDBConnectionStr { get { return dbConnString; } }
+    }
     class Program
     {
-        private static string dbName = Environment.GetEnvironmentVariable("EASEY_DB_NAME", EnvironmentVariableTarget.Machine);
-        private static string dbPort = Environment.GetEnvironmentVariable("EASEY_DB_PORT", EnvironmentVariableTarget.Machine);
-        private static string dbUser = Environment.GetEnvironmentVariable("EASEY_DB_USER", EnvironmentVariableTarget.Machine);
-        private static string dbPwd = Environment.GetEnvironmentVariable("EASEY_DB_PWD", EnvironmentVariableTarget.Machine);
-
-        private static string con = "server = localhost; port = "+dbPort+"; user id = "+dbUser+"; password = "+dbPwd+"; database = "+dbName+"; pooling = true";
+        
 
         static async Task Main(string[] args)
         {
@@ -30,7 +36,7 @@ namespace CheckEngineRunner
             IJobDetail job = JobBuilder.Create<CheckEnginerJob>()
                     .WithIdentity("Monitor Plan Evaluation", "DEFAULT")
                  .UsingJobData("ProcessCode", "MP")
-                 .UsingJobData("connectionString", con)
+                 .UsingJobData("connectionString", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr)
                  .Build();
 
             // 4. Create a trigger
@@ -48,22 +54,16 @@ namespace CheckEngineRunner
         }
     }
 
-
     public class CheckEnginerJob : IJob
     {
-        private static string dbName = Environment.GetEnvironmentVariable("EASEY_DB_NAME", EnvironmentVariableTarget.Machine);
-        private static string dbPort = Environment.GetEnvironmentVariable("EASEY_DB_PORT", EnvironmentVariableTarget.Machine);
-        private static string dbUser = Environment.GetEnvironmentVariable("EASEY_DB_USER", EnvironmentVariableTarget.Machine);
-        private static string dbPwd = Environment.GetEnvironmentVariable("EASEY_DB_PWD", EnvironmentVariableTarget.Machine);
+        private static string connStr = CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr;
 
-        private static string con = "server = localhost; port = " + dbPort + "; user id = " + dbUser + "; password = " + dbPwd + "; database = " + dbName + "; pooling = true";
-        
         public async Task Execute(IJobExecutionContext context)
         {
             string localDir = System.IO.Directory.GetCurrentDirectory();
             string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\MonitorPlan\\obj\\Debug\\netcoreapp3.1\\";
-            Console.WriteLine(con);
-            cCheckEngine checkEngine = new cCheckEngine("userId", con, con, con, dllPath, "dumpfilePath", 20);
+            //Console.WriteLine(connStr);
+            cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
   
             bool result = checkEngine.RunChecks_MpReport("MDC-97B373B8EC1245EB986354DCC390693D", new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
             await Task.CompletedTask;
