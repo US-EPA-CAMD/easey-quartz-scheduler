@@ -10,7 +10,7 @@
       "request": "launch",
       "preLaunchTask": "build",
       // If you have changed target frameworks, make sure to update the program path.
-      "program": "${workspaceFolder}/admin/bin/Debug/netcoreapp3.1/easey-job-scheduler.dll",
+      "program": "${workspaceFolder}/CheckEngine/CheckEngineRunner/bin/Debug/netcoreapp3.1/CheckEngineRunner.dll",
       "args": [],
       "cwd": "${workspaceFolder}/admin",
       "stopAtEntry": false,
