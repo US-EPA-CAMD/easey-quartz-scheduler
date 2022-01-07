@@ -48,26 +48,33 @@ namespace ECMPS.Checks.DatabaseAccess
         {
             //TODO (EC-3519): Testing Needed
             string resultString = string.Empty;
+            List<string> values = new List<string>();
 
             //Database.CreateStoredProcedureCommand("Check.CheckSessionCompleted");
 
             LogHelper.info("Running Check session Complete");
 
             DataTable AResultTable;
-            string Sql = "call camdecmpswks.check_session_completed('" + chkSessionId + "','" + severityCd + "')";
-            
+            string Sql = "select camdecmpswks.check_session_completed('" + chkSessionId + "','" + severityCd + "')";
+        
             try
             {
                 AResultTable = Database.GetDataTable(Sql);
 
                 foreach (DataRow row in AResultTable.Rows)
                 {
-
-                    resultString = row["V_RESULT"].ToString();
-                    errorMessage = row["V_ERROR_MSG"].ToString();
+                    var chkSessionIds = row[0];
+                    IEnumerable enumerable = chkSessionIds as IEnumerable;
+                    if (enumerable != null)
+                    {
+                        foreach (object element in enumerable)
+                        {
+                            values.Add(element.ToString());
+                        }
+                    }
                 }
-
-                result = 'T';
+                result = values[0].ToCharArray()[0];
+                errorMessage = values[1];
                 LogHelper.info("Completed Check session Complete");
             }
             catch (Exception ex)
@@ -113,7 +120,8 @@ namespace ECMPS.Checks.DatabaseAccess
 
                 foreach (DataRow row in AResultTable.Rows)
                 {
-                    var chkSessionIds = row["check_session_failed"];
+                    //var chkSessionIds = row["check_session_failed"];
+                    var chkSessionIds = row[0];
                     IEnumerable enumerable = chkSessionIds as IEnumerable;
                     if (enumerable != null)
                     {
@@ -202,7 +210,8 @@ namespace ECMPS.Checks.DatabaseAccess
 
                 foreach (DataRow row in AResultTable.Rows)
                 {
-                    var chkSessionIds = row["check_session_init"];
+                    //var chkSessionIds = row["check_session_init"];
+                    var chkSessionIds = row[0];
                     IEnumerable enumerable = chkSessionIds as IEnumerable;
                     if (enumerable != null)
                     {

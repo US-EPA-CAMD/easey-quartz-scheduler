@@ -1263,7 +1263,8 @@ namespace ECMPS.Checks.CheckEngine
                     foreach (DataRow row in AResultTable.Rows)
                     {
 
-                        var chkSessionIds = row["update_ecmps_status_for_mp_evaluation"];
+                        //var chkSessionIds = row["update_ecmps_status_for_mp_evaluation"];
+                        var chkSessionIds = row[0];
                         IEnumerable enumerable = chkSessionIds as IEnumerable;
                         if (enumerable != null)
                         {

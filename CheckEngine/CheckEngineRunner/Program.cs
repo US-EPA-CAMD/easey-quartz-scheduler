@@ -65,7 +65,7 @@ namespace CheckEngineRunner
             //Console.WriteLine(connStr);
             cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
   
-            bool result = checkEngine.RunChecks_MpReport("TWCORNEL5-F4E3DAADF24B4E1C8F2BEDD2DE59B436", new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+            bool result = checkEngine.RunChecks_MpReport("MDC-35BD8C92A94E4FBB9767E23439691D0C", new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
             await Task.CompletedTask;
         }     
     }
