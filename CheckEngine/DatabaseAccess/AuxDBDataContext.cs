@@ -103,9 +103,9 @@ namespace ECMPS.Checks.DatabaseAccess
         {
             //TODO (EC-3519): Testing Needed
             string resultString = string.Empty;
-
+            List<string> values = new List<string>();
             DataTable AResultTable;
-            string Sql = "call camdecmpswks.check_session_failed('" + chkSessionId + "','" + errorComment + "')";
+            string Sql = "select camdecmpswks.check_session_failed('" + chkSessionId + "','" + errorComment + "')";
 
             try
             {
@@ -113,12 +113,18 @@ namespace ECMPS.Checks.DatabaseAccess
 
                 foreach (DataRow row in AResultTable.Rows)
                 {
-
-                    resultString = row["V_RESULT"].ToString();
-                    errorMessage = row["V_ERROR_MSG"].ToString();
+                    var chkSessionIds = row["check_session_failed"];
+                    IEnumerable enumerable = chkSessionIds as IEnumerable;
+                    if (enumerable != null)
+                    {
+                        foreach (object element in enumerable)
+                        {
+                            values.Add(element.ToString());
+                        }
+                    }
                 }
-
-
+                resultString = values[0];
+                errorMessage = values[1];
             }
             catch (Exception ex)
             {
