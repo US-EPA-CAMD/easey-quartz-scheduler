@@ -57,7 +57,7 @@ namespace CheckEngineRunner
     public class CheckEnginerJob : IJob
     {
         private static string connStr = CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr;
-
+        
         public async Task Execute(IJobExecutionContext context)
         {
             string localDir = System.IO.Directory.GetCurrentDirectory();
