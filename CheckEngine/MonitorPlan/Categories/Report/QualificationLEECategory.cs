@@ -95,7 +95,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
     {
       //filter MonitorQualificationLEE to find this one based on the mMonLeeID
       SetDataRowCheckParameter("Current_Qualification_LEE", mMonitorPlan.SourceData.Tables["MonitorQualificationLEE"],
-		"mon_LEE_id = '" + mMonLeeID + "'", "mon_LEE_id");
+		"mon_qual_lee_id = '" + mMonLeeID + "'", "mon_qual_lee_id");
 
 	  //lookup tables
 	  SetDataViewCheckParameter("Qualification_LEE_Test_Type_Code_Lookup_Table", mMonitorPlan.SourceData.Tables["QualLEETestTypeCode"], "", "");

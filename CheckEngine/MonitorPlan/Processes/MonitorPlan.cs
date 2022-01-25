@@ -305,7 +305,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
                                     foreach (DataRowView drvQualLEE in mSourceData.Tables["MonitorQualificationLEE"].DefaultView)
                                     {
-                                        RunResult = QualLEE.ProcessChecks((string)drvQualLEE["mon_LEE_id"], MonLocId);
+                                        RunResult = QualLEE.ProcessChecks((string)drvQualLEE["mon_qual_lee_id"], MonLocId);
                                         QualLEE.EraseParameters();
                                     }
                                 }
