@@ -7,6 +7,7 @@ namespace Epa.Camd.Quartz.Scheduler
       public static readonly string DEFAULT = "DEFAULT";
       public static readonly string QUARTZ = "QUARTZ";
       public static readonly string EVALUATIONS = "EVALUATIONS";
+      public static readonly string BULK_DATA = "BULK_DATA";
       public static readonly string MAINTAINANCE = "MAINTAINANCE";
     }
   }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 using Npgsql;
 
@@ -26,6 +27,43 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     {
       _logger = logger;
       Configuration = configuration;
+    }
+
+    public async  Task<List<List<Object>>> ExecuteSqlQuery(string commandText, int columns)
+    {
+      var connectionString = this.Database.GetConnectionString();
+      List<List<Object>> rows = new List<List<Object>>();
+
+      try
+      {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+          if (connection.State != ConnectionState.Open)
+            connection.Open();
+
+          await using var cmd = new NpgsqlCommand(commandText, connection);
+          await using var reader = await cmd.ExecuteReaderAsync();
+
+          while (reader.Read())
+          {
+              List<Object> row = new List<Object>();
+              
+              for(int i = 0; i < columns; i++){
+                row.Add(reader.GetProviderSpecificValue(i));
+              }
+                            
+              rows.Add(row);
+          }
+
+          connection.Close();
+        }
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine(e);
+      }
+
+      return rows;
     }
 
     public void ExecuteSql(string commandText)
