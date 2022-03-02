@@ -75,6 +75,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               for(int copies = 0; copies < 1; copies++){
                 Guid job_id = new Guid();
                 IJobDetail newJob = BulkDataFile.CreateJobDetail();
+                
+                
+                QuartzBulkDataFile newEntry = new QuartzBulkDataFile();
+                newEntry.JobId = job_id;
+                newEntry.ParentJobId = parent_job_id;
+
+                if(urlIndex == 2){
+                  newEntry.DataType = "mats";
+                  newEntry.DataSubType = "";
+                }else
+                {
+                  if(urlIndex == 0)
+                    newEntry.DataSubType = "hourly";
+                  else
+                    newEntry.DataSubType = "daily";
+
+                  newEntry.DataType = "emissions";
+                }
+                newEntry.Year = (decimal) rows[row][0];
+                newEntry.Quarter = (decimal) rows[row][1];
+                newEntry.StateCd = (string) rows[row][2];
+                
+
                 newJob.JobDataMap.Add(new KeyValuePair<string, object>("job_id", job_id));
                 newJob.JobDataMap.Add(new KeyValuePair<string, object>("parent_job_id", parent_job_id));
                 newJob.JobDataMap.Add(new KeyValuePair<string, object>("format", "csv"));
@@ -86,6 +109,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                   newJob.JobDataMap.Add(new KeyValuePair<string, object>("url", urls[urlIndex] + "beginDate="+rows[row][0]+"-01-01&endDate="+rows[row][0]+"-12-31&stateCode=" + rows[row][2]));
                   newJob.JobDataMap.Add(new KeyValuePair<string, object>("fileName", fileNames[urlIndex] + "state/Emissions-Hourly-" + rows[row][0]+"-"+rows[row][2]+ ".csv"));
                 }
+                
+                _dbContext.BulkDataFiles.Add(newEntry);
+                _dbContext.SaveChanges();
 
                 await context.Scheduler.ScheduleJob(newJob, TriggerBuilder.Create().StartNow().Build());
               }
@@ -94,6 +120,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
         catch (Exception e)
         {
+          Console.Write(e);
           LogHelper.error(e.Message, new LogVariable("stack", e.StackTrace));
         }
 

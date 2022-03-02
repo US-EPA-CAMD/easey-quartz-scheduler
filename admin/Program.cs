@@ -24,6 +24,7 @@ namespace Epa.Camd.Quartz.Scheduler
 
       try
       {
+        DotNetEnv.Env.Load();
         Log.Information("Starting web host");
         CreateHostBuilder(args).Build().Run();
         return 0;
