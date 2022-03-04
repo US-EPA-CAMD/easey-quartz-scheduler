@@ -36,10 +36,10 @@ namespace Epa.Camd.Quartz.Scheduler.Models
  		public DateTime AddDate { get; set; } 
 
 		[Column("start_date")]
- 		public DateTime StartDate { get; set; } 
+ 		public DateTime? StartDate { get; set; } 
 
 		[Column("end_date")]
- 		public DateTime EndDate { get; set; } 
+ 		public DateTime? EndDate { get; set; } 
 
 		[Column("status_cd")]
  		public string StatusCd { get; set; }

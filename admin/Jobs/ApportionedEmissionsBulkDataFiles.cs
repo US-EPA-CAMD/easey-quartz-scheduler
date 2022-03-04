@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
 using Quartz;
 using SilkierQuartz;
@@ -18,6 +19,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     private Guid parent_job_id = Guid.NewGuid();
 
     private NpgSqlContext _dbContext = null;
+
+    public IConfiguration Configuration { get; }
 
     public static class Identity
     {
@@ -41,9 +44,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public ApportionedEmissionsBulkData(NpgSqlContext dbContext)
+    public ApportionedEmissionsBulkData(NpgSqlContext dbContext, IConfiguration configuration)
     {
       _dbContext = dbContext;
+      Configuration = configuration;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -67,7 +71,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
           List<List<Object>> rows = await _dbContext.ExecuteSqlQuery(sql_command, 5);
 
-          string[] urls = {"/emissions-mgmt/apportioned/hourly/stream?", "/emissions-mgmt/apportioned/daily/stream?", "/emissions-mgmt/apportioned/mats/stream?", };
+          string[] urls = {"/apportioned/hourly/stream?", "/apportioned/daily/stream?", "/apportioned/mats/stream?", };
           string[] fileNames = {"/emissions/hourly/", "/emissions/daily/", "/emissions/mats/"};
 
           for(int row = 0; row < rows.Count; row++){
@@ -75,7 +79,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               for(int copies = 0; copies < 1; copies++){
                 Guid job_id = new Guid();
                 IJobDetail newJob = BulkDataFile.CreateJobDetail();
-                
                 
                 QuartzBulkDataFile newEntry = new QuartzBulkDataFile();
                 newEntry.JobId = job_id;
@@ -96,17 +99,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 newEntry.Year = (decimal) rows[row][0];
                 newEntry.Quarter = (decimal) rows[row][1];
                 newEntry.StateCd = (string) rows[row][2];
-                
 
+                newEntry.StatusCd = "QUEUED";
+                newEntry.AddDate = DateTime.Now;
+                newEntry.StartDate = null;
+                newEntry.EndDate = null;
+                newEntry.IsValid = "Y";
+                
                 newJob.JobDataMap.Add(new KeyValuePair<string, object>("job_id", job_id));
                 newJob.JobDataMap.Add(new KeyValuePair<string, object>("parent_job_id", parent_job_id));
-                newJob.JobDataMap.Add(new KeyValuePair<string, object>("format", "csv"));
+                newJob.JobDataMap.Add(new KeyValuePair<string, object>("format", "text/csv"));
 
                 if(copies == 0){
-                  newJob.JobDataMap.Add(new KeyValuePair<string, object>("url", urls[urlIndex]+ "beginDate=" + rows[row][3] + "&endDate="+rows[row][4]));
+                  newJob.JobDataMap.Add(new KeyValuePair<string, object>("url", Configuration["EASEY_EMISSIONS_API"] + urls[urlIndex]+ "beginDate=" + rows[row][3] + "&endDate="+rows[row][4]));
                   newJob.JobDataMap.Add(new KeyValuePair<string, object>("fileName", fileNames[urlIndex] + "quarter/Emissions-Hourly-"+rows[row][0] + "-Q" + rows[row][1] +".csv"));
                 }else{
-                  newJob.JobDataMap.Add(new KeyValuePair<string, object>("url", urls[urlIndex] + "beginDate="+rows[row][0]+"-01-01&endDate="+rows[row][0]+"-12-31&stateCode=" + rows[row][2]));
+                  newJob.JobDataMap.Add(new KeyValuePair<string, object>("url", Configuration["EASEY_EMISSIONS_API"] + "beginDate="+rows[row][0]+"-01-01&endDate="+rows[row][0]+"-12-31&stateCode=" + rows[row][2]));
                   newJob.JobDataMap.Add(new KeyValuePair<string, object>("fileName", fileNames[urlIndex] + "state/Emissions-Hourly-" + rows[row][0]+"-"+rows[row][2]+ ".csv"));
                 }
                 
@@ -114,8 +122,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 _dbContext.SaveChanges();
 
                 await context.Scheduler.ScheduleJob(newJob, TriggerBuilder.Create().StartNow().Build());
+                break;
               }
+              break;
             }
+            break;
           }
         }
         catch (Exception e)

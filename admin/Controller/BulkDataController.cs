@@ -16,7 +16,7 @@ namespace Epa.Camd.Quartz.Scheduler
   [Route("quartz-mgmt/bulk-files")]
   public class BulkDataController : ControllerBase
   {
-    private static IAmazonS3 client;
+    public static IAmazonS3 client;
     private IConfiguration Configuration { get; }
 
     public BulkDataController(IConfiguration configuration)
