@@ -4,3 +4,4 @@ environment: production
 host: easey.app.cloud.gov
 apiHost: api-easey.app.cloud.gov
 apiGatewayHost: api.epa.gov/easey
+bulkDataS3Bucket: 
