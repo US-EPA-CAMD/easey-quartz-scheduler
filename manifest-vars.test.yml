@@ -4,3 +4,4 @@ environment: test
 host: easey-tst.app.cloud.gov
 apiHost: api-easey-tst.app.cloud.gov
 apiGatewayHost: api.epa.gov/easey/test
+bulkDataS3Bucket: cg-fceefece-417a-4e3d-8fd4-6943acd8ea55

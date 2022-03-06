@@ -13,3 +13,4 @@ environment: development
 host: easey-dev.app.cloud.gov
 apiHost: api-easey-dev.app.cloud.gov
 apiGatewayHost: api.epa.gov/easey/dev
+bulkDataS3Bucket: cg-e7433599-fb63-4afa-9e14-652c10fa370a
