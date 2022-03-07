@@ -78,7 +78,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             for(int urlIndex = 0; urlIndex < urls.Length; urlIndex++){
               for(int copies = 0; copies < 1; copies++){
                 Guid job_id = Guid.NewGuid();
-                IJobDetail newJob = BulkDataFile.CreateJobDetail();
+                
+                IJobDetail newJob = BulkDataFile.CreateJobDetail(job_id.ToString());     
                 
                 QuartzBulkDataFile newEntry = new QuartzBulkDataFile();
                 newEntry.JobId = job_id;

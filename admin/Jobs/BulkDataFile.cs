@@ -31,10 +31,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       public static readonly string JobName = "Bulk Data File";
       public static readonly string JobDescription = "Streams a file to an S3 bucket";
     }
-
+    
     public static void RegisterWithQuartz(IServiceCollection services)
     {
       services.AddQuartzJob<BulkDataFile>(WithJobKey(), Identity.JobDescription);
+    }
+    
+    public static JobKey WithJobKey()
+    {
+      return new JobKey(Identity.JobName, Identity.Group);
     }
 
     public BulkDataFile(NpgSqlContext dbContext, IConfiguration configuration)
@@ -168,14 +173,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public static IJobDetail CreateJobDetail()
+    public static IJobDetail CreateJobDetail(string key)
     {
-      return JobBuilder.Create<BulkDataFile>().Build();
-    }
-
-    public static JobKey WithJobKey()
-    {
-      return new JobKey(Identity.JobName, Identity.Group);
+      return JobBuilder.Create<BulkDataFile>().WithIdentity(new JobKey(key, Constants.QuartzGroups.BULK_DATA)).Build();
     }
 
   }

@@ -139,7 +139,10 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddOptions();
 
+        
+
       BulkDataFile.RegisterWithQuartz(services);
+      BulkDataFileMaintenance.RegisterWithQuartz(services);
       ApportionedEmissionsBulkData.RegisterWithQuartz(services);
       SendMail.RegisterWithQuartz(services);
       CheckEngineEvaluation.RegisterWithQuartz(services);
@@ -195,6 +198,7 @@ namespace Epa.Camd.Quartz.Scheduler
       );
 
       ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
+      BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
       RemoveExpiredUserSession.ScheduleWithQuartz(scheduler, app);
       RemoveExpiredCheckoutRecord.ScheduleWithQuartz(scheduler, app);      
     }

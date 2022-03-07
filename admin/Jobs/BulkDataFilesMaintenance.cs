@@ -52,32 +52,26 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       try
       {
         LogHelper.info("Executing BulkDataFileMaintenance job");
-        
-        var sql_command = @"select bdf.*
+
+        List<QuartzBulkDataFile> maintenance_files = await _dbContext.ExecuteBulkDataFileQuery(@"select bdf.*
             from camdaux.qrtz_bulk_data_file_queue bdf
-            join (
-            	select data_type, data_subtype, year, quarter, state_cd, prg_cd
-            	from camdaux.qrtz_bulk_data_file_queue
-            	where is_valid = 'Y'
-            	group by data_type, data_subtype, year, quarter, state_cd, prg_cd
-            	having count(*) > 1
-            ) d on
-            	bdf.data_type = d.data_type and
-            	bdf.data_subtype = d.data_subtype and
-            	bdf.year = d.year and
-            	coalesce(bdf.quarter, 0) = coalesce(d.quarter, 0) and
-            	coalesce(bdf.state_cd, 'NULL') = coalesce(d.state_cd, 'NULL') and
-            	coalesce(bdf.prg_cd, 'NULL') = coalesce(d.prg_cd, 'NULL')
             where is_valid = 'Y' and (
             	status_cd = 'ERROR' or (
             		(status_cd = 'QUEUED' or status_cd = 'WIP') and
             		current_timestamp >= bdf.add_date + interval '24 hours'
             	)
             )
-            order by year, quarter, state_cd";
+            order by year, quarter, state_cd");
 
-        List<List<Object>> rows = await _dbContext.ExecuteSqlQuery(sql_command, );
-        
+        maintenance_files.ForEach(file => {
+            if(file.StatusCd == "ERROR" && file.StatusCd == "Y"){
+               file.StatusCd = "N"; 
+            }
+            else if((file.StatusCd == "WIP" || file.StatusCd == "QUEUED") && file.StatusCd == "Y"){
+                Console.Write(context.Scheduler.DeleteJob(new JobKey(file.JobId.ToString(), Constants.QuartzGroups.BULK_DATA)));
+            }
+        });
+
         LogHelper.info("Executed BulkDataFileMaintenance job successfully");
       }
       catch (Exception e)

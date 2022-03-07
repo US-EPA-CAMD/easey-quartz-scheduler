@@ -31,6 +31,10 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       Configuration = configuration;
     }
 
+    public async Task<List<QuartzBulkDataFile>> ExecuteBulkDataFileQuery(string query){
+      return await BulkDataFiles.FromSqlRaw<QuartzBulkDataFile>(query).ToListAsync();
+    }
+
     public async  Task<List<List<Object>>> ExecuteSqlQuery(string commandText, int columns)
     {
 
