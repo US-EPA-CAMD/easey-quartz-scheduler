@@ -46,20 +46,30 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public async Task Execute(IJobExecutionContext context)
     {
 
+      string url = ((string) context.JobDetail.JobDataMap.Get("url"));
+      string fileName = ((string) context.JobDetail.JobDataMap.Get("fileName"));
+      Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
+
+      Console.Write("EXECUTING STREAM OF: " + url);
+
       IAmazonS3 s3Client = new AmazonS3Client(
         Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_ACCESS_KEY_ID"],
         Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_SECRET_ACCESS_KEY"],
         RegionEndpoint.USGovCloudWest1
       );
 
+      QuartzBulkDataFile bulkFile = await _dbContext.BulkDataFiles.FindAsync(job_id);
+
       try
-      {
-
-        string url = ((string) context.JobDetail.JobDataMap.Get("url"));
-
-        Console.Write("EXECUTING STREAM OF: " + url);
+      {        
+        bulkFile.StatusCd = "WIP";
+        bulkFile.StartDate = DateTime.Now;
+        _dbContext.BulkDataFiles.Update(bulkFile);
+        _dbContext.SaveChanges();
         
-        //url = "https://api-easey-dev.app.cloud.gov/emissions-mgmt/apportioned/daily/stream?beginDate=2020-01-01&endDate=2020-01-03&programCode=ARP";
+        //url = "https://api-easey-dev.app.cloud.gov/emissions-mgmt/apportioned/daily/stream?beginDate=2020-01-01&endDate=2020-01-10&programCode=ARP";
+
+        /*
 
         using (HttpClient client = new HttpClient())
         {
@@ -73,7 +83,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 InitiateMultipartUploadRequest initiateRequest = new InitiateMultipartUploadRequest
                 {
                     BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
-                    Key = (string) context.JobDetail.JobDataMap.Get("fileName")
+                    Key = fileName
                 };
 
                 InitiateMultipartUploadResponse initResponse = await s3Client.InitiateMultipartUploadAsync(initiateRequest);
@@ -107,7 +117,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     UploadPartRequest uploadRequest = new UploadPartRequest
                     {
                         BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
-                        Key = (string) context.JobDetail.JobDataMap.Get("fileName"),
+                        Key = fileName,
                         UploadId = initResponse.UploadId,
                         PartNumber = uploadPartNumber,
                         PartSize = bufferSize,
@@ -123,7 +133,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
                 {
                     BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
-                    Key = (string) context.JobDetail.JobDataMap.Get("fileName"),
+                    Key = fileName,
                     UploadId = initResponse.UploadId
                 };
                 completeRequest.AddPartETags(uploadResponses);
@@ -135,6 +145,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           }
         }
 
+        */
+
+        bulkFile.StatusCd = "COMPLETE";
+        bulkFile.EndDate = DateTime.Now;
+        _dbContext.BulkDataFiles.Update(bulkFile);
+        _dbContext.SaveChanges();
+
         Console.Write("STREAMED DATA SUCCESSFULLY");
         
         //return Task.CompletedTask;
@@ -142,6 +159,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       catch (Exception e)
       {
         Console.Write(e.Message);
+        bulkFile.StatusCd = "ERROR";
+        bulkFile.EndDate = DateTime.Now;
+        bulkFile.StatusMsg = e.Message;
+        _dbContext.BulkDataFiles.Update(bulkFile);
+        _dbContext.SaveChanges();
         //return null;
       }
     }

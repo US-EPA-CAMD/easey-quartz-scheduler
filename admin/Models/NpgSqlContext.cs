@@ -33,6 +33,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 
     public async  Task<List<List<Object>>> ExecuteSqlQuery(string commandText, int columns)
     {
+
       var connectionString = this.Database.GetConnectionString();
       List<List<Object>> rows = new List<List<Object>>();
 
