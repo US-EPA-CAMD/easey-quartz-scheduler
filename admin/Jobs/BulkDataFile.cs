@@ -52,6 +52,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
 
       /*
+
       string url = ((string) context.JobDetail.JobDataMap.Get("url"));
       string fileName = ((string) context.JobDetail.JobDataMap.Get("fileName"));
       Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
@@ -64,16 +65,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         RegionEndpoint.USGovCloudWest1
       );
 
-      QuartzBulkDataFile bulkFile = await _dbContext.BulkDataFiles.FindAsync(job_id);
+      JobLog bulkFile = await _dbContext.JobLogs.FindAsync(job_id);
 
       try
       {        
         bulkFile.StatusCd = "WIP";
         bulkFile.StartDate = DateTime.Now;
-        _dbContext.BulkDataFiles.Update(bulkFile);
-        _dbContext.SaveChanges();
+        _dbContext.JobLogs.Update(bulkFile);
+        await _dbContext.SaveChangesAsync();
         
-        //url = "https://api-easey-dev.app.cloud.gov/emissions-mgmt/apportioned/daily/stream?beginDate=2020-01-01&endDate=2020-01-10&programCode=ARP";
+        url = "https://api-easey-dev.app.cloud.gov/emissions-mgmt/apportioned/daily/stream?beginDate=2020-01-01&endDate=2020-01-10&programCode=ARP";
 
         using (HttpClient client = new HttpClient())
         {
@@ -151,23 +152,20 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         bulkFile.StatusCd = "COMPLETE";
         bulkFile.EndDate = DateTime.Now;
-        _dbContext.BulkDataFiles.Update(bulkFile);
+        _dbContext.JobLogs.Update(bulkFile);
         _dbContext.SaveChanges();
-
-        Console.Write("STREAMED DATA SUCCESSFULLY");
-        
-        //return Task.CompletedTask;
       }
       catch (Exception e)
       {
         Console.Write(e.Message);
         bulkFile.StatusCd = "ERROR";
         bulkFile.EndDate = DateTime.Now;
-        bulkFile.StatusMsg = e.Message;
-        _dbContext.BulkDataFiles.Update(bulkFile);
+        bulkFile.AdditionalDetails = e.Message;
+        _dbContext.JobLogs.Update(bulkFile);
         _dbContext.SaveChanges();
-        //return null;
       }
+
+      Console.Write("STREAMED DATA SUCCESSFULLY");
       */
     }
 

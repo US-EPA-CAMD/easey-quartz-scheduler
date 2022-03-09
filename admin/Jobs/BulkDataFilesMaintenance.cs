@@ -15,6 +15,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   public class BulkDataFileMaintenance : IJob
   {
+
+    private Guid job_id = Guid.NewGuid();
+
     private NpgSqlContext _dbContext = null;
 
     public IConfiguration Configuration { get; }
@@ -49,37 +52,52 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
-      /*
-      try
-      {
-        LogHelper.info("Executing BulkDataFileMaintenance job");
+      LogHelper.info("Executing BulkDataFileMaintenance job");
 
-        List<QuartzBulkDataFile> maintenance_files = await _dbContext.ExecuteBulkDataFileQuery(@"select bdf.*
-            from camdaux.qrtz_bulk_data_file_queue bdf
-            where is_valid = 'Y' and (
-            	status_cd = 'ERROR' or (
-            		(status_cd = 'QUEUED' or status_cd = 'WIP') and
-            		current_timestamp >= bdf.add_date + interval '24 hours'
-            	)
-            )
-            order by year, quarter, state_cd");
+      JobLog jl = new JobLog();
+      try{
+        jl.JobId = job_id;
+        jl.JobSystem = "Quartz";
+        jl.JobClass = "Bulk Data File";
+        jl.JobName = "Bulk Data File Maintenance";
+        jl.AddDate = DateTime.Now;
+        jl.StartDate = DateTime.Now;
+        jl.EndDate = null;
+        jl.StatusCd = "WIP";
+        _dbContext.JobLogs.Add(jl);
+        await _dbContext.SaveChangesAsync();
 
-        maintenance_files.ForEach(file => {
-            if(file.StatusCd == "ERROR" && file.StatusCd == "Y"){
-               file.StatusCd = "N"; 
-            }
-            else if((file.StatusCd == "WIP" || file.StatusCd == "QUEUED") && file.StatusCd == "Y"){
-                Console.Write(context.Scheduler.DeleteJob(new JobKey(file.JobId.ToString(), Constants.QuartzGroups.BULK_DATA)));
-            }
-        });
+        _dbContext.ExecuteSql("DELETE FROM camdaux.job_log WHERE job_id IN (SELECT job_id FROM camdaux.vw_bulk_file_jobs_to_delete);");
 
-        LogHelper.info("Executed BulkDataFileMaintenance job successfully");
+        List<List<Object>> rows = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_bulk_file_jobs_to_process", 16);
+
+        for(int row = 0; row < rows.Count; row++){
+          JobKey lookupKey = new JobKey((string) rows[row][0], Constants.QuartzGroups.BULK_DATA);
+
+          IJobDetail jobToProcess = await context.Scheduler.GetJobDetail(lookupKey);
+          if(jobToProcess != null){
+            await context.Scheduler.DeleteJob(lookupKey);
+            await context.Scheduler.ScheduleJob(jobToProcess, TriggerBuilder.Create().StartNow().Build());
+
+            Console.Write("Reprocessed Job");
+          }
+        }
+
+        jl.StatusCd = "COMPLETE";
+        jl.EndDate = DateTime.Now;
+        _dbContext.JobLogs.Update(jl);
+        await _dbContext.SaveChangesAsync();
+
+      }catch(Exception e){
+        jl.StatusCd = "ERROR";
+        jl.EndDate = DateTime.Now;
+        jl.AdditionalDetails = e.Message;
+        _dbContext.JobLogs.Update(jl);
+        await _dbContext.SaveChangesAsync();
+        LogHelper.error(e.Message);
       }
-      catch (Exception e)
-      {
-        Console.Write(e.Message);
-      }
-      */
+
+      LogHelper.info("Executed BulkDataFileMaintenance job");
     }
 
     public static JobKey WithJobKey()
