@@ -51,6 +51,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public async Task Execute(IJobExecutionContext context)
     {
 
+      /*
       string url = ((string) context.JobDetail.JobDataMap.Get("url"));
       string fileName = ((string) context.JobDetail.JobDataMap.Get("fileName"));
       Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
@@ -73,8 +74,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.SaveChanges();
         
         //url = "https://api-easey-dev.app.cloud.gov/emissions-mgmt/apportioned/daily/stream?beginDate=2020-01-01&endDate=2020-01-10&programCode=ARP";
-
-        /*
 
         using (HttpClient client = new HttpClient())
         {
@@ -150,8 +149,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           }
         }
 
-        */
-
         bulkFile.StatusCd = "COMPLETE";
         bulkFile.EndDate = DateTime.Now;
         _dbContext.BulkDataFiles.Update(bulkFile);
@@ -171,6 +168,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.SaveChanges();
         //return null;
       }
+      */
     }
 
     public static IJobDetail CreateJobDetail(string key)

@@ -16,7 +16,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
   public class ApportionedEmissionsBulkData : IJob
   {
 
-    private Guid parent_job_id = Guid.NewGuid();
+    private Guid job_id = Guid.NewGuid();
 
     private NpgSqlContext _dbContext = null;
 
@@ -50,98 +50,106 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       Configuration = configuration;
     }
 
+    private async Task<IJobDetail> CreateBulkFileJob(decimal year, decimal? quarter, string stateCd, string dataType, string subType, string url, string fileName){
+      Guid child_job_id = Guid.NewGuid();
+
+      JobLog jl = new JobLog();
+      jl.JobId = child_job_id;
+      jl.JobSystem = "Quartz";
+      jl.JobClass = "Bulk Data File";
+      jl.AddDate = DateTime.Now;
+      jl.StartDate = null;
+      jl.EndDate = null;
+      jl.StatusCd = "QUEUED";
+
+      BulkFileLog bfl = new BulkFileLog();
+      bfl.JobId = child_job_id;
+      bfl.ParentJobId = job_id;
+      Console.Write("JOB ID" + bfl.ParentJobId);
+      bfl.DataType = dataType;
+      bfl.DataSubType = subType;
+      bfl.Year = year;
+      bfl.PrgCd = null;
+
+      if(quarter != null){
+        bfl.Quarter = quarter;
+        bfl.StateCd = null;
+
+        jl.JobName = dataType + "-" + subType + "-" + year + "-" + quarter + "Q";
+      }
+      else{
+        bfl.Quarter = null;
+        bfl.StateCd = stateCd;
+
+        jl.JobName = dataType + "-" + subType + "-" + year + "-" + stateCd;
+      }
+
+      await _dbContext.JobLogs.AddAsync(jl);
+      await _dbContext.SaveChangesAsync();
+
+      await _dbContext.BulkFileLogs.AddAsync(bfl);
+      await _dbContext.SaveChangesAsync();
+
+      IJobDetail newJob = BulkDataFile.CreateJobDetail(child_job_id.ToString());
+      newJob.JobDataMap.Add("job_id", child_job_id);
+      newJob.JobDataMap.Add("parent_job_id", job_id);
+      newJob.JobDataMap.Add("format", "text/csv");
+      newJob.JobDataMap.Add("url", url);
+      newJob.JobDataMap.Add("fileName", fileName);
+
+      return newJob;
+    }
+
     public async Task Execute(IJobExecutionContext context)
     {
+      LogHelper.info("Executing ApportionedEmissionsBulkDataFiles job");
+
       try
       {
-        LogHelper.info("Executing ApportionedEmissionsBulkDataFiles job");
-        try
-        {
-          var sql_command = @"select rp.calendar_year as year, rp.quarter, p.state as state_cd, rp.begin_date, rp.end_date
-                                from camdecmps.dm_emissions dme
-                                join camdecmpsmd.reporting_period rp using (rpt_period_id)
-                                join camdecmps.monitor_plan mp using (mon_plan_id)
-                                join camd.plant p using (fac_id)
-                                left join camdecmps.dm_emissions_user dmeu
-                                    on dme.dm_emissions_id = dmeu.dm_emissions_id
-                                    and dmeu.dm_emissions_user_cd = 'S3BDF'
-                                where dmeu.dm_emissions_id is null
-                                group by rp.calendar_year, rp.quarter, rp.begin_date, rp.end_date, p.state
-                                order by year, quarter, state_cd;";
 
-          List<List<Object>> rows = await _dbContext.ExecuteSqlQuery(sql_command, 5);
+        JobLog jl = new JobLog(); 
+        jl.JobId = job_id;
+        jl.JobSystem = "Quartz";
+        jl.JobClass = "Bulk Data File";
+        jl.JobName = "Apportioned Emissions";
+        jl.AddDate = DateTime.Now;
+        jl.StartDate = DateTime.Now;
+        jl.EndDate = null;
+        jl.StatusCd = "WIP";
 
-          string[] urls = {"/apportioned/hourly/stream?", "/apportioned/daily/stream?", "/apportioned/mats/stream?", };
-          string[] fileNames = {"/emissions/hourly/", "/emissions/daily/", "/emissions/mats/"};
-
-          for(int row = 0; row < rows.Count; row++){
-            for(int urlIndex = 0; urlIndex < urls.Length; urlIndex++){
-              for(int copies = 0; copies < 1; copies++){
-                Guid job_id = Guid.NewGuid();
-                
-                IJobDetail newJob = BulkDataFile.CreateJobDetail(job_id.ToString());     
-                
-                QuartzBulkDataFile newEntry = new QuartzBulkDataFile();
-                newEntry.JobId = job_id;
-                newEntry.ParentJobId = parent_job_id;
-
-                if(urlIndex == 2){
-                  newEntry.DataType = "mats";
-                  newEntry.DataSubType = "";
-                }else
-                {
-                  if(urlIndex == 0)
-                    newEntry.DataSubType = "hourly";
-                  else
-                    newEntry.DataSubType = "daily";
-
-                  newEntry.DataType = "emissions";
-                }
-                newEntry.Year = (decimal) rows[row][0];
-                newEntry.Quarter = (decimal) rows[row][1];
-                newEntry.StateCd = (string) rows[row][2];
-
-                newEntry.StatusCd = "QUEUED";
-                newEntry.AddDate = DateTime.Now;
-                newEntry.StartDate = null;
-                newEntry.EndDate = null;
-                newEntry.IsValid = "Y";
-                
-                newJob.JobDataMap.Add(new KeyValuePair<string, object>("job_id", job_id));
-                newJob.JobDataMap.Add(new KeyValuePair<string, object>("parent_job_id", parent_job_id));
-                newJob.JobDataMap.Add(new KeyValuePair<string, object>("format", "text/csv"));
-
-                if(copies == 0){
-                  newJob.JobDataMap.Add(new KeyValuePair<string, object>("url", Configuration["EASEY_EMISSIONS_API"] + urls[urlIndex]+ "beginDate=" + rows[row][3] + "&endDate="+rows[row][4]));
-                  newJob.JobDataMap.Add(new KeyValuePair<string, object>("fileName", fileNames[urlIndex] + "quarter/Emissions-Hourly-"+rows[row][0] + "-Q" + rows[row][1] +".csv"));
-                }else{
-                  newJob.JobDataMap.Add(new KeyValuePair<string, object>("url", Configuration["EASEY_EMISSIONS_API"] + "beginDate="+rows[row][0]+"-01-01&endDate="+rows[row][0]+"-12-31&stateCode=" + rows[row][2]));
-                  newJob.JobDataMap.Add(new KeyValuePair<string, object>("fileName", fileNames[urlIndex] + "state/Emissions-Hourly-" + rows[row][0]+"-"+rows[row][2]+ ".csv"));
-                }
-                
-                _dbContext.BulkDataFiles.Add(newEntry);
-                _dbContext.SaveChanges();
-
-                await context.Scheduler.ScheduleJob(newJob, TriggerBuilder.Create().StartNow().Build());
-                break;
-              }
-              break;
-            }
-            break;
-          }
+        _dbContext.JobLogs.Add(jl);
+        await _dbContext.SaveChangesAsync();
+        
+        List<List<Object>> rowsPerState = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_emissions_bulk_files_per_state_to_generate", 2);
+        List<List<Object>> rowsPerQuarter = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_emissions_bulk_files_per_quarter_to_generate", 4);
+        
+        for(int row = 0; row < rowsPerState.Count; row++){
+          decimal year = (decimal) rowsPerState[row][0];
+          string stateCd = (string) rowsPerState[row][1];
+          string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + stateCd;
+          
+          await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, null, stateCd, "Emissions", "Hourly", "/emissions-mgmt/apportioned/hourly/stream?" + urlParams, "/emissions/hourly/state/Emissions-Hourly-" + year + "-" + stateCd + ".csv"), TriggerBuilder.Create().StartNow().Build());
+          await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, null, stateCd, "Emissions", "Daily", "/emissions-mgmt/apportioned/daily/stream?" + urlParams, "/emissions/daily/state/Emissions-Daily-" + year + "-" + stateCd + ".csv"), TriggerBuilder.Create().StartNow().Build());
+          await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, null, stateCd, "MATS", "Daily", "/emissions-mgmt/mats/hourly/stream?" + urlParams, "/emissions/hourly/state/MATS-Hourly-" + year + "-" + stateCd + ".csv"), TriggerBuilder.Create().StartNow().Build());
         }
-        catch (Exception e)
-        {
-          Console.Write(e);
-          LogHelper.error(e.Message, new LogVariable("stack", e.StackTrace));
-        }
+        
+        for(int row = 0; row < rowsPerQuarter.Count; row++){
+          decimal year = (decimal) rowsPerQuarter[row][0];
+          decimal quarter = (decimal) rowsPerQuarter[row][1];
+          NpgsqlTypes.NpgsqlDate startDate = (NpgsqlTypes.NpgsqlDate) rowsPerQuarter[row][2];
+          NpgsqlTypes.NpgsqlDate endDate = (NpgsqlTypes.NpgsqlDate) rowsPerQuarter[row][3];
+          string urlParams = "beginDate=" + startDate.ToString() + "&endDate=" + endDate.ToString();
 
-        LogHelper.info("Executed ApportionedEmissionsBulkDataFiles job successfully");
+          await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, quarter, null, "Emissions", "Hourly", "/emissions-mgmt/apportioned/hourly/stream?" + urlParams, "/emissions/hourly/quarter/Emissions-Hourly-" + year + "-Q" + quarter + ".csv"), TriggerBuilder.Create().StartNow().Build());
+          await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, quarter, null, "Emissions", "Daily", "/emissions-mgmt/apportioned/daily/stream?" + urlParams, "/emissions/daily/quarter/Emissions-Daily-" + year + "-Q" + quarter + ".csv"), TriggerBuilder.Create().StartNow().Build());
+          await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, quarter, null, "MATS", "Hourly", "/emissions-mgmt/apportioned/mats/hourly/stream?" + urlParams, "/emissions/hourly/quarter/MATS-Hourly-" + year + "-Q" + quarter + ".csv"), TriggerBuilder.Create().StartNow().Build());
+        }
       }
       catch (Exception e)
       {
         Console.Write(e.Message);
       }
+      LogHelper.info("Executed ApportionedEmissionsBulkDataFiles job successfully");
     }
 
     public static JobKey WithJobKey()

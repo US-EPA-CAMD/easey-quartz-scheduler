@@ -14,8 +14,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
   {
     private readonly ILogger _logger;
     public IConfiguration Configuration { get; }
-
-    public DbSet<QuartzBulkDataFile> BulkDataFiles {get; set; }
+    public DbSet<JobLog> JobLogs {get; set; }
+    public DbSet<BulkFileLog> BulkFileLogs {get; set; }
     public DbSet<SeverityCode> SeverityCodes { get; set; }
     public DbSet<EvalStatusCode> EvalStatusCodes { get; set; }
     public DbSet<CheckSession> CheckSessions { get; set; }
@@ -29,10 +29,6 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     {
       _logger = logger;
       Configuration = configuration;
-    }
-
-    public async Task<List<QuartzBulkDataFile>> ExecuteBulkDataFileQuery(string query){
-      return await BulkDataFiles.FromSqlRaw<QuartzBulkDataFile>(query).ToListAsync();
     }
 
     public async  Task<List<List<Object>>> ExecuteSqlQuery(string commandText, int columns)

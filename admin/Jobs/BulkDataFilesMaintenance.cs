@@ -49,6 +49,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
+      /*
       try
       {
         LogHelper.info("Executing BulkDataFileMaintenance job");
@@ -78,6 +79,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       {
         Console.Write(e.Message);
       }
+      */
     }
 
     public static JobKey WithJobKey()
