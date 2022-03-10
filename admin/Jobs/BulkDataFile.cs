@@ -51,6 +51,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public async Task Execute(IJobExecutionContext context)
     {
 
+      Console.Write("OUTPUTTING FILE");
+
       /*
 
       string url = ((string) context.JobDetail.JobDataMap.Get("url"));

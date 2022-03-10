@@ -50,6 +50,20 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       Configuration = configuration;
     }
 
+    private async void handleJob(IJobExecutionContext context, List<List<Object>> rows, bool reschedule){
+      for(int row = 0; row < rows.Count; row++){
+          JobKey lookupKey = new JobKey((string) rows[row][0], Constants.QuartzGroups.BULK_DATA);
+          IJobDetail jobToProcess = await context.Scheduler.GetJobDetail(lookupKey);
+
+          if(jobToProcess != null){
+              await context.Scheduler.DeleteJob(lookupKey);
+              if(reschedule){
+                await context.Scheduler.ScheduleJob(jobToProcess, TriggerBuilder.Create().StartNow().Build());
+              }
+          }
+        }
+    }
+
     public async Task Execute(IJobExecutionContext context)
     {
       LogHelper.info("Executing BulkDataFileMaintenance job");
@@ -67,21 +81,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.JobLogs.Add(jl);
         await _dbContext.SaveChangesAsync();
 
+        List<List<Object>> toDelete = await _dbContext.ExecuteSqlQuery("SELECT job_id FROM camdaux.vw_bulk_file_jobs_to_delete", 1);
+        handleJob(context, toDelete, false);
         _dbContext.ExecuteSql("DELETE FROM camdaux.job_log WHERE job_id IN (SELECT job_id FROM camdaux.vw_bulk_file_jobs_to_delete);");
 
-        List<List<Object>> rows = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_bulk_file_jobs_to_process", 16);
 
-        for(int row = 0; row < rows.Count; row++){
-          JobKey lookupKey = new JobKey((string) rows[row][0], Constants.QuartzGroups.BULK_DATA);
+        List<List<Object>> toProcess = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_bulk_file_jobs_to_process", 16);
+        handleJob(context, toProcess, true);
 
-          IJobDetail jobToProcess = await context.Scheduler.GetJobDetail(lookupKey);
-          if(jobToProcess != null){
-            await context.Scheduler.DeleteJob(lookupKey);
-            await context.Scheduler.ScheduleJob(jobToProcess, TriggerBuilder.Create().StartNow().Build());
-
-            Console.Write("Reprocessed Job");
-          }
-        }
+        _dbContext.ExecuteSql("DELETE from camdaux.job_log where add_date < now() - interval '30 days'");
 
         jl.StatusCd = "COMPLETE";
         jl.EndDate = DateTime.Now;
