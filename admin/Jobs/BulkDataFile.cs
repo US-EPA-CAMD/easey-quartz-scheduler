@@ -6,6 +6,7 @@ using System.IO;
 using Microsoft.Extensions.Configuration;
 using Amazon.S3.Model;
 using System.Collections.Generic;
+using System.Net;
 
 using Amazon;
 using Amazon.S3;
@@ -53,9 +54,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
       Console.Write("OUTPUTTING FILE");
 
-      /*
-
-      string url = ((string) context.JobDetail.JobDataMap.Get("url"));
+      string url = Configuration["EASEY_EMISSIONS_API"] + ((string) context.JobDetail.JobDataMap.Get("url"));
       string fileName = ((string) context.JobDetail.JobDataMap.Get("fileName"));
       Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
 
@@ -76,81 +75,84 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.JobLogs.Update(bulkFile);
         await _dbContext.SaveChangesAsync();
         
-        url = "https://api-easey-dev.app.cloud.gov/emissions-mgmt/apportioned/daily/stream?beginDate=2020-01-01&endDate=2020-01-10&programCode=ARP";
+        //url = "https://api-easey-dev.app.cloud.gov/emissions-mgmt/apportioned/daily/stream?beginDate=2019-01-01&endDate=2020-01-10";
 
-        using (HttpClient client = new HttpClient())
+        HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+        myHttpWebRequest.Headers.Add("x-api-key", Configuration["QUARTZ_API_KEY"]);
+        myHttpWebRequest.Headers.Add("accept", (string) context.JobDetail.JobDataMap.Get("format"));
+
+        HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
+
+        Stream s = myHttpWebResponse.GetResponseStream();
+        
+        List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
+        
+        InitiateMultipartUploadRequest initiateRequest = new InitiateMultipartUploadRequest
         {
-            client.DefaultRequestHeaders.Add("x-api-key", Configuration["QUARTZ_API_KEY"]);
-            client.DefaultRequestHeaders.Add("accept", (string) context.JobDetail.JobDataMap.Get("format"));
+            BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
+            Key = fileName
+        };
 
-            using (HttpResponseMessage response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead)){
-              using(Stream s = await response.Content.ReadAsStreamAsync()){
-                List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
-                
-                InitiateMultipartUploadRequest initiateRequest = new InitiateMultipartUploadRequest
-                {
-                    BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
-                    Key = fileName
-                };
+        InitiateMultipartUploadResponse initResponse = await s3Client.InitiateMultipartUploadAsync(initiateRequest);
 
-                InitiateMultipartUploadResponse initResponse = await s3Client.InitiateMultipartUploadAsync(initiateRequest);
+        const int bufferSize = 5242880;
+        var bytes = new byte[bufferSize];
 
-                const int bufferSize = 5242880;
-                var bytes = new byte[bufferSize];
+        int readBytes;
+        int totalReadBytes;
+        int uploadPartNumber = 1;
 
-                int readBytes;
-                int totalReadBytes;
-                int uploadPartNumber = 1;
+        while(true)
+        {
+            totalReadBytes = 0;
+            do{
+               readBytes = await s.ReadAsync(
+                bytes,
+                totalReadBytes,
+                bufferSize - totalReadBytes);
 
-                while(true)
-                {
-                    totalReadBytes = 0;
-                    do{
-                       readBytes = await s.ReadAsync(
-                        bytes,
-                        totalReadBytes,
-                        bufferSize - totalReadBytes);
+                totalReadBytes += readBytes;
 
-                        totalReadBytes += readBytes;
+                if (readBytes == 0)
+                    break;  
+            }while(totalReadBytes < bufferSize);
 
-                        if (readBytes == 0)
-                            break;  
-                    }while(totalReadBytes < bufferSize);
+            Console.Write("Wrote5MB");
 
-                    if(totalReadBytes == 0){
-                      break;
-                    }
+            if(totalReadBytes == 0){
+              break;
+            }
 
-                    UploadPartRequest uploadRequest = new UploadPartRequest
-                    {
-                        BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
-                        Key = fileName,
-                        UploadId = initResponse.UploadId,
-                        PartNumber = uploadPartNumber,
-                        PartSize = bufferSize,
-                        InputStream = new MemoryStream(bytes)
-                    };
+            UploadPartRequest uploadRequest = new UploadPartRequest
+            {
+                BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
+                Key = fileName,
+                UploadId = initResponse.UploadId,
+                PartNumber = uploadPartNumber,
+                PartSize = bufferSize,
+                InputStream = new MemoryStream(bytes)
+            };
 
-                    uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
-                    await s.FlushAsync();
+            uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
+            await s.FlushAsync();
 
-                    uploadPartNumber++;
-                }
-
-                CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
-                {
-                    BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
-                    Key = fileName,
-                    UploadId = initResponse.UploadId
-                };
-                completeRequest.AddPartETags(uploadResponses);
-
-                // Complete the upload.
-                CompleteMultipartUploadResponse completeUploadResponse =
-                    await s3Client.CompleteMultipartUploadAsync(completeRequest);
-            }  
-          }
+            uploadPartNumber++;
         }
+
+        myHttpWebResponse.Close();
+
+        CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
+        {
+            BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
+            Key = fileName,
+            UploadId = initResponse.UploadId
+        };
+        completeRequest.AddPartETags(uploadResponses);
+
+        // Complete the upload.
+        CompleteMultipartUploadResponse completeUploadResponse =
+            await s3Client.CompleteMultipartUploadAsync(completeRequest);
+
 
         bulkFile.StatusCd = "COMPLETE";
         bulkFile.EndDate = DateTime.Now;
@@ -168,7 +170,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
 
       Console.Write("STREAMED DATA SUCCESSFULLY");
-      */
+      
     }
 
     public static IJobDetail CreateJobDetail(string key)

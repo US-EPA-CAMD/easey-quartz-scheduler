@@ -52,7 +52,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private async void handleJob(IJobExecutionContext context, List<List<Object>> rows, bool reschedule){
       for(int row = 0; row < rows.Count; row++){
-          JobKey lookupKey = new JobKey((string) rows[row][0], Constants.QuartzGroups.BULK_DATA);
+          JobKey lookupKey = new JobKey(rows[row][0].ToString(), Constants.QuartzGroups.BULK_DATA);
           IJobDetail jobToProcess = await context.Scheduler.GetJobDetail(lookupKey);
 
           if(jobToProcess != null){
