@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using Amazon.S3.Model;
@@ -51,14 +50,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
-
-      Console.Write("OUTPUTTING FILE");
-
       string url = Configuration["EASEY_EMISSIONS_API"] + ((string) context.JobDetail.JobDataMap.Get("url"));
       string fileName = ((string) context.JobDetail.JobDataMap.Get("fileName"));
       Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
 
-      Console.Write("EXECUTING STREAM OF: " + url);
+      LogHelper.info("Executing new stream", new LogVariable("url", url));
 
       IAmazonS3 s3Client = new AmazonS3Client(
         Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_ACCESS_KEY_ID"],
@@ -74,12 +70,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         bulkFile.StartDate = DateTime.Now;
         _dbContext.JobLogs.Update(bulkFile);
         await _dbContext.SaveChangesAsync();
-        
-        //url = "https://api-easey-dev.app.cloud.gov/emissions-mgmt/apportioned/daily/stream?beginDate=2019-01-01&endDate=2020-01-10";
 
         HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
         myHttpWebRequest.Headers.Add("x-api-key", Configuration["QUARTZ_API_KEY"]);
         myHttpWebRequest.Headers.Add("accept", (string) context.JobDetail.JobDataMap.Get("format"));
+        myHttpWebRequest.KeepAlive = true;
 
         HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
 
@@ -115,9 +110,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
                 if (readBytes == 0)
                     break;  
-            }while(totalReadBytes < bufferSize);
 
-            Console.Write("Wrote5MB");
+            }while(totalReadBytes < bufferSize);
 
             if(totalReadBytes == 0){
               break;
@@ -140,6 +134,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
 
         myHttpWebResponse.Close();
+        myHttpWebRequest.Abort();
 
         CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
         {
@@ -153,24 +148,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         CompleteMultipartUploadResponse completeUploadResponse =
             await s3Client.CompleteMultipartUploadAsync(completeRequest);
 
-
         bulkFile.StatusCd = "COMPLETE";
         bulkFile.EndDate = DateTime.Now;
         _dbContext.JobLogs.Update(bulkFile);
         _dbContext.SaveChanges();
+
+        LogHelper.info("Executed stream successfully", new LogVariable("url", url));      
       }
       catch (Exception e)
       {
-        Console.Write(e.Message);
+        LogHelper.error(e.Message);
         bulkFile.StatusCd = "ERROR";
         bulkFile.EndDate = DateTime.Now;
         bulkFile.AdditionalDetails = e.Message;
         _dbContext.JobLogs.Update(bulkFile);
         _dbContext.SaveChanges();
       }
-
-      Console.Write("STREAMED DATA SUCCESSFULLY");
-      
     }
 
     public static IJobDetail CreateJobDetail(string key)

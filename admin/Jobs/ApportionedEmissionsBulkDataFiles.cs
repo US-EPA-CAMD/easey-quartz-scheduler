@@ -123,33 +123,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         List<List<Object>> rowsPerState = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_emissions_bulk_files_per_state_to_generate", 2);
         List<List<Object>> rowsPerQuarter = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_emissions_bulk_files_per_quarter_to_generate", 4);
         
-        /*
-        decimal year = (decimal) rowsPerState[0][0];
-        string stateCd = (string) rowsPerState[0][1];
-        string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + stateCd;
-        await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, null, stateCd, "Emissions", "Daily", "/apportioned/daily/stream?" + urlParams, "/daily/state/Emissions-Daily-" + year + "-" + stateCd + ".csv"), TriggerBuilder.Create().StartNow().Build());
-        */
-
-        int scheduled = 0;
-        
         for(int row = 0; row < rowsPerState.Count; row++){
           decimal year = (decimal) rowsPerState[row][0];
           DateTime currentDate = DateTime.Now.ToUniversalTime();
 
-          if( Math.Ceiling(currentDate.Year - year) > 1 || ( Math.Ceiling(currentDate.Year - year) == 1 && currentDate.Month > 1)){ // Past year, or last year after january
-            Console.Write(rowsPerState[row][0] + " " + rowsPerState[row][1]);
-            
+          if( Math.Ceiling(currentDate.Year - year) > 1 || ( Math.Ceiling(currentDate.Year - year) == 1 && currentDate.Month > 1)){ // Past year, or last year after january            
             string stateCd = (string) rowsPerState[row][1];
             string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + stateCd;
 
-            Console.WriteLine("ROWS " + rowsPerState[row][0] + rowsPerState[row][1]);
-
-            if(scheduled < 2){
             await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, null, stateCd, "Emissions", "Hourly", "/apportioned/hourly/stream?" + urlParams, "emissions/hourly/state/Emissions-Hourly-" + year + "-" + stateCd + ".csv"), TriggerBuilder.Create().StartNow().Build());
-            scheduled ++;
-            }
-            //await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, null, stateCd, "Emissions", "Daily", "/apportioned/daily/stream?" + urlParams, "emissions/daily/state/Emissions-Daily-" + year + "-" + stateCd + ".csv"), TriggerBuilder.Create().StartNow().Build());
-            //await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, null, stateCd, "MATS", "Daily", "/apportioned/mats/hourly/stream?" + urlParams, "emissions/hourly/state/MATS-Hourly-" + year + "-" + stateCd + ".csv"), TriggerBuilder.Create().StartNow().Build());
+            await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, null, stateCd, "Emissions", "Daily", "/apportioned/daily/stream?" + urlParams, "emissions/daily/state/Emissions-Daily-" + year + "-" + stateCd + ".csv"), TriggerBuilder.Create().StartNow().Build());
+            await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, null, stateCd, "MATS", "Daily", "/apportioned/mats/hourly/stream?" + urlParams, "emissions/hourly/state/MATS-Hourly-" + year + "-" + stateCd + ".csv"), TriggerBuilder.Create().StartNow().Build());
           }
         }
         
@@ -160,9 +144,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           NpgsqlTypes.NpgsqlDate endDate = (NpgsqlTypes.NpgsqlDate) rowsPerQuarter[row][3];
           string urlParams = "beginDate=" + startDate.ToString() + "&endDate=" + endDate.ToString();
 
-          //await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, quarter, null, "Emissions", "Hourly", "/apportioned/hourly/stream?" + urlParams, "emissions/hourly/quarter/Emissions-Hourly-" + year + "-Q" + quarter + ".csv"), TriggerBuilder.Create().StartNow().Build());
-          //await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, quarter, null, "Emissions", "Daily", "/apportioned/daily/stream?" + urlParams, "emissions/daily/quarter/Emissions-Daily-" + year + "-Q" + quarter + ".csv"), TriggerBuilder.Create().StartNow().Build());
-          //await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, quarter, null, "MATS", "Hourly", "/apportioned/mats/hourly/stream?" + urlParams, "emissions/hourly/quarter/MATS-Hourly-" + year + "-Q" + quarter + ".csv"), TriggerBuilder.Create().StartNow().Build());
+          await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, quarter, null, "Emissions", "Hourly", "/apportioned/hourly/stream?" + urlParams, "emissions/hourly/quarter/Emissions-Hourly-" + year + "-Q" + quarter + ".csv"), TriggerBuilder.Create().StartNow().Build());
+          await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, quarter, null, "Emissions", "Daily", "/apportioned/daily/stream?" + urlParams, "emissions/daily/quarter/Emissions-Daily-" + year + "-Q" + quarter + ".csv"), TriggerBuilder.Create().StartNow().Build());
+          await context.Scheduler.ScheduleJob(await CreateBulkFileJob(year, quarter, null, "MATS", "Hourly", "/apportioned/mats/hourly/stream?" + urlParams, "emissions/hourly/quarter/MATS-Hourly-" + year + "-Q" + quarter + ".csv"), TriggerBuilder.Create().StartNow().Build());
         }
 
 
@@ -170,6 +154,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         jl.EndDate = DateTime.Now;
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
+        LogHelper.info("Executed ApportionedEmissionsBulkDataFiles job successfully");
       }
       catch (Exception e)
       {
@@ -180,7 +165,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         await _dbContext.SaveChangesAsync();
         LogHelper.error(e.Message);
       }
-      LogHelper.info("Executed ApportionedEmissionsBulkDataFiles job successfully");
     }
 
     public static JobKey WithJobKey()
