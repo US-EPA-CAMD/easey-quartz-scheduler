@@ -14,8 +14,12 @@ namespace Epa.Camd.Quartz.Scheduler.Models
   {
     private readonly ILogger _logger;
     public IConfiguration Configuration { get; }
+<<<<<<< HEAD
     public DbSet<JobLog> JobLogs {get; set; }
     public DbSet<BulkFileLog> BulkFileLogs {get; set; }
+=======
+    public DbSet<ProgramCode> ProgramCodes { get; set; }    
+>>>>>>> 91157e132bc27074a933c2b7c4c35d13e1ebb639
     public DbSet<SeverityCode> SeverityCodes { get; set; }
     public DbSet<EvalStatusCode> EvalStatusCodes { get; set; }
     public DbSet<CheckSession> CheckSessions { get; set; }

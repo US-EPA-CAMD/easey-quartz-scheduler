@@ -19,6 +19,7 @@ applications:
       EASEY_QUARTZ_SCHEDULER_API_PATH: ((apiPath))
       EASEY_QUARTZ_SCHEDULER_SMTP_HOST: ((smtpHost))
       EASEY_QUARTZ_SCHEDULER_SMTP_PORT: ((smtpPort))
+      EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET: ((bulkDataS3Bucket))
       EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH: ((checkEngineDllPath))
     routes:
       - route: ((host))/((path))

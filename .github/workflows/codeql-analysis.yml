@@ -14,6 +14,11 @@ name: "CodeQL"
 on:
   push:
     branches: [ develop ]
+    paths-ignore:
+    - '**/*.md'
+    - 'LICENSE'
+    - '.github/**'
+    - '.gitignore'
   schedule:
     - cron: '23 3 * * 2'
 

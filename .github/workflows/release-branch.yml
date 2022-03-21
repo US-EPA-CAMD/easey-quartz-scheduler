@@ -2,7 +2,7 @@ name: Release Branch Workflow
 
 on:
   push:
-    branches: [ release/v* ]
+    branches: [ release/* ]
 
 jobs:
   Build-Test-Package:
@@ -91,8 +91,12 @@ jobs:
       - name: Configure Env Vars (secrets)
         run: |
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY $QUARTZ_API_KEY
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_ACCESS_KEY_ID $BULK_DATA_S3_AWS_ACCESS_KEY_ID
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_SECRET_ACCESS_KEY $BULK_DATA_S3_AWS_SECRET_ACCESS_KEY
         env:
           QUARTZ_API_KEY: ${{ secrets.QUARTZ_NON_PROD_API_KEY }}
+          BULK_DATA_S3_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
+          BULK_DATA_S3_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
       - name: Deploy
         run: devops/scripts/deploy.sh
   Beta-Deployment:
@@ -132,8 +136,12 @@ jobs:
       - name: Configure Env Vars (secrets)
         run: |
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY $QUARTZ_API_KEY
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_ACCESS_KEY_ID $BULK_DATA_S3_AWS_ACCESS_KEY_ID
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_SECRET_ACCESS_KEY $BULK_DATA_S3_AWS_SECRET_ACCESS_KEY
         env:
           QUARTZ_API_KEY: ${{ secrets.QUARTZ_NON_PROD_API_KEY }}
+          BULK_DATA_S3_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
+          BULK_DATA_S3_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
       - name: Deploy
         run: devops/scripts/deploy.sh
   Stage-Deployment:
@@ -173,7 +181,11 @@ jobs:
       - name: Configure Env Vars (secrets)
         run: |
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY $QUARTZ_API_KEY
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_ACCESS_KEY_ID $BULK_DATA_S3_AWS_ACCESS_KEY_ID
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_SECRET_ACCESS_KEY $BULK_DATA_S3_AWS_SECRET_ACCESS_KEY
         env:
           QUARTZ_API_KEY: ${{ secrets.QUARTZ_NON_PROD_API_KEY }}
+          BULK_DATA_S3_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
+          BULK_DATA_S3_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
       - name: Deploy
         run: devops/scripts/deploy.sh
