@@ -27,7 +27,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       public static readonly string Group = Constants.QuartzGroups.BULK_DATA;
       public static readonly string JobName = "Apportioned Emissions Bulk Data";
       public static readonly string JobDescription = "Determine which emissions need to be regenerated and schedule BulkDataFile jobs to handle the regen";
-      public static readonly string TriggerName = "Run nightly and check which files need to be regenerated";
+      public static readonly string TriggerName = "Run nightly and check which emissions files need to be regenerated";
       public static readonly string TriggerDescription = "Runs nightly to determine if files need to be regenerated based on query results or end of reporting quarter";
     }
 
@@ -58,13 +58,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
       try
       {
-
         jl.JobId = job_id;
         jl.JobSystem = "Quartz";
         jl.JobClass = "Bulk Data File";
         jl.JobName = "Apportioned Emissions";
-        jl.AddDate = DateTime.Now;
-        jl.StartDate = DateTime.Now;
+        jl.AddDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+        jl.StartDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         jl.EndDate = null;
         jl.StatusCd = "WIP";
 
@@ -74,7 +73,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         List<List<Object>> rowsPerState = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_emissions_bulk_files_per_state_to_generate", 2);
         List<List<Object>> rowsPerQuarter = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_emissions_bulk_files_per_quarter_to_generate", 4);
         
-        /*
         for(int row = 0; row < rowsPerState.Count; row++){
           decimal year = (decimal) rowsPerState[row][0];
           DateTime currentDate = DateTime.Now.ToUniversalTime();
@@ -85,7 +83,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
             await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, stateCd, "Emissions", "Hourly", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/hourly/stream?" + urlParams, "emissions/hourly/state/emissions-hourly-" + year + "-" + stateCd + ".csv", job_id), TriggerBuilder.Create().StartNow().Build());
             await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, stateCd, "Emissions", "Daily",Configuration["EASEY_EMISSIONS_API"] +  "/apportioned/daily/stream?" + urlParams, "emissions/daily/state/emissions-daily-" + year + "-" + stateCd + ".csv", job_id), TriggerBuilder.Create().StartNow().Build());
-            await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, stateCd, "MATS", "Daily", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/mats/hourly/stream?" + urlParams, "emissions/hourly/state/mats-hourly-" + year + "-" + stateCd + ".csv", job_id), TriggerBuilder.Create().StartNow().Build());
+            await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, stateCd, "MATS", "Daily", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/mats/hourly/stream?" + urlParams, "mats/hourly/state/mats-hourly-" + year + "-" + stateCd + ".csv", job_id), TriggerBuilder.Create().StartNow().Build());
           }
         }
         
@@ -98,13 +96,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
           await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", "Hourly", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/hourly/stream?" + urlParams, "emissions/hourly/quarter/emissions-hourly-" + year + "-q" + quarter + ".csv", job_id), TriggerBuilder.Create().StartNow().Build());
           await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", "Daily", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/daily/stream?" + urlParams, "emissions/daily/quarter/emissions-daily-" + year + "-q" + quarter + ".csv", job_id), TriggerBuilder.Create().StartNow().Build());
-          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, quarter, null, "MATS", "Hourly", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/mats/hourly/stream?" + urlParams, "emissions/hourly/quarter/mats-hourly-" + year + "-q" + quarter + ".csv", job_id), TriggerBuilder.Create().StartNow().Build());
+          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, quarter, null, "MATS", "Hourly", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/mats/hourly/stream?" + urlParams, "mats/hourly/quarter/mats-hourly-" + year + "-q" + quarter + ".csv", job_id), TriggerBuilder.Create().StartNow().Build());
         }
-        */
+        
         _dbContext.ExecuteSql("CALL camdaux.procedure_set_dm_emissions_user();");
 
         jl.StatusCd = "COMPLETE";
-        jl.EndDate = DateTime.Now;
+        jl.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
         LogHelper.info("Executed ApportionedEmissionsBulkDataFiles job successfully");
@@ -112,7 +110,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       catch (Exception e)
       {
         jl.StatusCd = "ERROR";
-        jl.EndDate = DateTime.Now;
+        jl.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         jl.AdditionalDetails = e.Message;
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();

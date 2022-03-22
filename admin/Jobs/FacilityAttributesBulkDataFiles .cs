@@ -27,7 +27,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       public static readonly string Group = Constants.QuartzGroups.BULK_DATA;
       public static readonly string JobName = "Facility Attributes Bulk Data";
       public static readonly string JobDescription = "Determine which facility attributes need to be regenerated and schedule BulkDataFile jobs to handle the regen";
-      public static readonly string TriggerName = "Run nightly and check which files need to be regenerated";
+      public static readonly string TriggerName = "Run nightly and check which facility attributes files need to be regenerated";
       public static readonly string TriggerDescription = "Runs nightly to determine if files need to be regenerated based on query results or end of reporting quarter";
     }
 
@@ -72,16 +72,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         await _dbContext.SaveChangesAsync();
         
         List<List<Object>> rowsPerState = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_facility_bulk_files_to_generate", 1);
-
-        Console.Write(rowsPerState[0]);
         
         for(int row = 0; row < rowsPerState.Count; row++){
           decimal year = (decimal) rowsPerState[row][0];
-          DateTime currentDate = DateTime.Now.ToUniversalTime();
-
-          if( Math.Ceiling(currentDate.Year - year) > 1 || ( Math.Ceiling(currentDate.Year - year) == 1 && currentDate.Month > 1)){ // Past year, or last year after january            
-            await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, null, "Facilities", "Annually", Configuration["EASEY_FACILITIES_API"] + "/facilities/attributes/stream?year=" + year, "facility/facility" + "-" + year + ".csv", job_id), TriggerBuilder.Create().StartNow().Build());
-          }
+          DateTime currentDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+          
+          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, null, "Facilities", "Annually", Configuration["EASEY_FACILITIES_API"] + "/facilities/attributes/stream?year=" + year, "facility/facility" + "-" + year + ".csv", job_id), TriggerBuilder.Create().StartNow().Build());
         }
 
         jl.StatusCd = "COMPLETE";

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,13 +17,9 @@ namespace Epa.Camd.Quartz.Scheduler
   [Route("quartz-mgmt/bulk-files")]
   public class BulkDataController : ControllerBase
   {
-<<<<<<< HEAD
-    public static IAmazonS3 client;
-=======
     private AmazonS3Client client;
     private NpgSqlContext dbContext = null;
     private List<ProgramCode> programs = null;
->>>>>>> 91157e132bc27074a933c2b7c4c35d13e1ebb639
     private IConfiguration Configuration { get; }
 
     public BulkDataController(

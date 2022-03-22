@@ -67,7 +67,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       try
       {        
         bulkFile.StatusCd = "WIP";
-        bulkFile.StartDate = DateTime.Now;
+        bulkFile.StartDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         _dbContext.JobLogs.Update(bulkFile);
         await _dbContext.SaveChangesAsync();
 
@@ -110,7 +110,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
                 if (readBytes == 0)
                     break;  
-
+                Console.Write(readBytes);
             }while(totalReadBytes < bufferSize);
 
             if(totalReadBytes == 0){
@@ -149,7 +149,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             await s3Client.CompleteMultipartUploadAsync(completeRequest);
 
         bulkFile.StatusCd = "COMPLETE";
-        bulkFile.EndDate = DateTime.Now;
+        bulkFile.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         _dbContext.JobLogs.Update(bulkFile);
         _dbContext.SaveChanges();
 
@@ -159,7 +159,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       {
         LogHelper.error(e.Message);
         bulkFile.StatusCd = "ERROR";
-        bulkFile.EndDate = DateTime.Now;
+        bulkFile.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         bulkFile.AdditionalDetails = e.Message;
         _dbContext.JobLogs.Update(bulkFile);
         _dbContext.SaveChanges();

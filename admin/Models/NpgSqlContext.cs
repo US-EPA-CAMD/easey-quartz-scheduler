@@ -40,7 +40,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       jl.JobId = child_job_id;
       jl.JobSystem = "Quartz";
       jl.JobClass = "Bulk Data File";
-      jl.AddDate = DateTime.Now;
+      jl.AddDate = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
       jl.StartDate = null;
       jl.EndDate = null;
       jl.StatusCd = "QUEUED";
