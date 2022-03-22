@@ -50,8 +50,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
-      string url = Configuration["EASEY_EMISSIONS_API"] + ((string) context.JobDetail.JobDataMap.Get("url"));
-      string fileName = ((string) context.JobDetail.JobDataMap.Get("fileName"));
+      string url =  (string) context.JobDetail.JobDataMap.Get("url");
+      string fileName = (string) context.JobDetail.JobDataMap.Get("fileName");
       Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
 
       LogHelper.info("Executing new stream", new LogVariable("url", url));

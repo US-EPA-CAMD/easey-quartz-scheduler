@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using Quartz;
+using Epa.Camd.Quartz.Scheduler.Jobs;
 
 using Npgsql;
 
@@ -14,12 +16,9 @@ namespace Epa.Camd.Quartz.Scheduler.Models
   {
     private readonly ILogger _logger;
     public IConfiguration Configuration { get; }
-<<<<<<< HEAD
     public DbSet<JobLog> JobLogs {get; set; }
     public DbSet<BulkFileLog> BulkFileLogs {get; set; }
-=======
     public DbSet<ProgramCode> ProgramCodes { get; set; }    
->>>>>>> 91157e132bc27074a933c2b7c4c35d13e1ebb639
     public DbSet<SeverityCode> SeverityCodes { get; set; }
     public DbSet<EvalStatusCode> EvalStatusCodes { get; set; }
     public DbSet<CheckSession> CheckSessions { get; set; }
@@ -33,6 +32,59 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     {
       _logger = logger;
       Configuration = configuration;
+    }
+    public async Task<IJobDetail> CreateBulkFileJob(decimal year, decimal? quarter, string stateCd, string dataType, string subType, string url, string fileName, Guid job_id){
+      Guid child_job_id = Guid.NewGuid();
+
+      JobLog jl = new JobLog();
+      jl.JobId = child_job_id;
+      jl.JobSystem = "Quartz";
+      jl.JobClass = "Bulk Data File";
+      jl.AddDate = DateTime.Now;
+      jl.StartDate = null;
+      jl.EndDate = null;
+      jl.StatusCd = "QUEUED";
+
+      BulkFileLog bfl = new BulkFileLog();
+      bfl.JobId = child_job_id;
+      bfl.ParentJobId = job_id;
+      bfl.DataType = dataType;
+      bfl.DataSubType = subType;
+      bfl.Year = year;
+      bfl.PrgCd = null;
+
+      if(quarter != null){
+        bfl.Quarter = quarter;
+        bfl.StateCd = null;
+
+        jl.JobName = dataType + "-" + subType + "-" + year + "-Q" + quarter;
+      }
+      else if(stateCd != null){
+        bfl.Quarter = null;
+        bfl.StateCd = stateCd;
+
+        jl.JobName = dataType + "-" + subType + "-" + year + "-" + stateCd;
+      }
+      else{
+        bfl.Quarter = null;
+        bfl.StateCd = null;
+        jl.JobName = dataType + "-" + subType + "-" + year;
+      }
+
+      await this.JobLogs.AddAsync(jl);
+      await this.SaveChangesAsync();
+
+      await this.BulkFileLogs.AddAsync(bfl);
+      await this.SaveChangesAsync();
+
+      IJobDetail newJob = BulkDataFile.CreateJobDetail(child_job_id.ToString());
+      newJob.JobDataMap.Add("job_id", child_job_id);
+      newJob.JobDataMap.Add("parent_job_id", job_id);
+      newJob.JobDataMap.Add("format", "text/csv");
+      newJob.JobDataMap.Add("url", url);
+      newJob.JobDataMap.Add("fileName", fileName);
+
+      return newJob;
     }
 
     public async  Task<List<List<Object>>> ExecuteSqlQuery(string commandText, int columns)
