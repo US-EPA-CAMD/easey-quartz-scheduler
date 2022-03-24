@@ -33,7 +33,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       _logger = logger;
       Configuration = configuration;
     }
-    public async Task<IJobDetail> CreateBulkFileJob(decimal year, decimal? quarter, string stateCd, string dataType, string subType, string url, string fileName, Guid job_id){
+    public async Task<IJobDetail> CreateBulkFileJob(decimal? year, decimal? quarter, string stateCd, string dataType, string subType, string url, string fileName, Guid job_id, string program_code){
       Guid child_job_id = Guid.NewGuid();
 
       JobLog jl = new JobLog();
@@ -51,7 +51,16 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       bfl.DataType = dataType;
       bfl.DataSubType = subType;
       bfl.Year = year;
-      bfl.PrgCd = null;
+
+      if(year == null)
+        bfl.Year = null;
+      else
+        bfl.Year = year;
+
+      if(program_code == null)
+        bfl.PrgCd = null;
+      else
+       bfl.PrgCd = program_code;
 
       if(quarter != null){
         bfl.Quarter = quarter;

@@ -139,7 +139,9 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddOptions();
 
-        
+      AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
+      EmissionsComplianceBulkDataFiles.RegisterWithQuartz(services);
+      AllowanceTransactionsBulkDataFiles.RegisterWithQuartz(services);
       FacilityAttributesBulkDataFiles.RegisterWithQuartz(services);
       BulkDataFile.RegisterWithQuartz(services);
       BulkDataFileMaintenance.RegisterWithQuartz(services);
@@ -151,7 +153,7 @@ namespace Epa.Camd.Quartz.Scheduler
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       if (env.IsDevelopment())
       {
@@ -197,6 +199,9 @@ namespace Epa.Camd.Quartz.Scheduler
           KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("EM"))
       );
 
+      AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
       BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);

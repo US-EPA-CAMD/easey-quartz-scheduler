@@ -74,7 +74,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
         myHttpWebRequest.Headers.Add("x-api-key", Configuration["QUARTZ_API_KEY"]);
         myHttpWebRequest.Headers.Add("accept", (string) context.JobDetail.JobDataMap.Get("format"));
-        myHttpWebRequest.KeepAlive = true;
+        myHttpWebRequest.Timeout = 900000;
 
         HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
 
@@ -110,7 +110,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
                 if (readBytes == 0)
                     break;  
-                Console.Write(readBytes);
+                Console.WriteLine(readBytes);
             }while(totalReadBytes < bufferSize);
 
             if(totalReadBytes == 0){
@@ -157,6 +157,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
       catch (Exception e)
       {
+        Console.Write(e);
         LogHelper.error(e.Message);
         bulkFile.StatusCd = "ERROR";
         bulkFile.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));

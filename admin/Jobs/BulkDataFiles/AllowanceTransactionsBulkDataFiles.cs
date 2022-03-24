@@ -13,7 +13,7 @@ using Epa.Camd.Logger;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
-  public class FacilityAttributesBulkDataFiles : IJob
+  public class AllowanceTransactionsBulkDataFiles : IJob
   {
 
     private Guid job_id = Guid.NewGuid();
@@ -25,26 +25,26 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public static class Identity
     {
       public static readonly string Group = Constants.QuartzGroups.BULK_DATA;
-      public static readonly string JobName = "Facility Attributes Bulk Data";
-      public static readonly string JobDescription = "Determine which facility attributes need to be regenerated and schedule BulkDataFile jobs to handle the regen";
-      public static readonly string TriggerName = "Run nightly and check which facility attributes files need to be regenerated";
-      public static readonly string TriggerDescription = "Runs nightly to determine if files need to be regenerated based on query results or end of reporting quarter";
+      public static readonly string JobName = "Allowance Transactions Bulk Data";
+      public static readonly string JobDescription = "Determine which allowance transactions need to be regenerated and schedule BulkDataFile jobs to handle the regen";
+      public static readonly string TriggerName = "Run nightly and check which allowance transaction attributes files need to be regenerated";
+      public static readonly string TriggerDescription = "Runs nightly to determine if files need to be regenerated based on query results";
     }
 
     public static void RegisterWithQuartz(IServiceCollection services)
     {
-      services.AddQuartzJob<FacilityAttributesBulkDataFiles>(WithJobKey(), Identity.JobDescription);
+      services.AddQuartzJob<AllowanceTransactionsBulkDataFiles>(WithJobKey(), Identity.JobDescription);
     }
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
       if (!await scheduler.CheckExists(WithJobKey()))
       {
-        app.UseQuartzJob<FacilityAttributesBulkDataFiles>(WithCronSchedule("0 0 * * * ?"));
+        app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(WithCronSchedule("0 0 0 15 1 ? *"));
       }
     }
 
-    public FacilityAttributesBulkDataFiles(NpgSqlContext dbContext, IConfiguration configuration)
+    public AllowanceTransactionsBulkDataFiles(NpgSqlContext dbContext, IConfiguration configuration)
     {
       _dbContext = dbContext;
       Configuration = configuration;
@@ -52,7 +52,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
-      LogHelper.info("Executing FacilityAttributesBulkDataFiles job");
+      LogHelper.info("Executing AllowanceTransactionsBulkDataFiles job");
 
       JobLog jl = new JobLog(); 
 
@@ -62,7 +62,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         jl.JobId = job_id;
         jl.JobSystem = "Quartz";
         jl.JobClass = "Bulk Data File";
-        jl.JobName = "Facility Attributes";
+        jl.JobName = "Allowance Transactions";
         jl.AddDate = DateTime.Now;
         jl.StartDate = DateTime.Now;
         jl.EndDate = null;
@@ -71,20 +71,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.JobLogs.Add(jl);
         await _dbContext.SaveChangesAsync();
         
-        List<List<Object>> rowsPerState = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_facility_bulk_files_to_generate", 1);
+        List<List<Object>> rowsPerPrg = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_allowance_transactions_bulk_files_to_generate", 1);
         
-        for(int row = 0; row < rowsPerState.Count; row++){
-          decimal year = (decimal) rowsPerState[row][0];
-          DateTime currentDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
-          
-          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, null, "Facilities", "Annually", Configuration["EASEY_FACILITIES_API"] + "/facilities/attributes/stream?year=" + year, "facility/facility" + "-" + year + ".csv", job_id), TriggerBuilder.Create().StartNow().Build());
-        }
+        
+        for(int row = 0; row < rowsPerPrg.Count; row++){
+          string code = (string) rowsPerPrg[row][0];
+          decimal year = DateTime.Now.ToUniversalTime().Year - 1;
+          string urlParams = "transactionBeginDate=" + year + "-01-01&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
 
+          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, null, "Allowance-Transactions", "Total", Configuration["EASEY_ACCOUNT_API"] + "/allowance-transactions/stream?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
+        }
+        
         jl.StatusCd = "COMPLETE";
         jl.EndDate = DateTime.Now;
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
-        LogHelper.info("Executing FacilityAttributesBulkDataFiles job successfully");
+        LogHelper.info("Executing AllowanceTransactionsBulkDataFiles job successfully");
       }
       catch (Exception e)
       {
@@ -109,7 +111,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static IJobDetail WithJobDetail()
     {
-      return JobBuilder.Create<FacilityAttributesBulkDataFiles>()
+      return JobBuilder.Create<AllowanceTransactionsBulkDataFiles>()
           .WithIdentity(WithJobKey())
           .WithDescription(Identity.JobDescription)
           .Build();
