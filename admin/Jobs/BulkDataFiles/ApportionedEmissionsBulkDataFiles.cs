@@ -15,7 +15,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   public class ApportionedEmissionsBulkData : IJob
   {
-
     private Guid job_id = Guid.NewGuid();
 
     private NpgSqlContext _dbContext = null;
