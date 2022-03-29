@@ -86,9 +86,6 @@ namespace Epa.Camd.Quartz.Scheduler
         string description = string.Empty;
         string[] fileParts = filename.Replace(".csv", string.Empty).Split('-');
 
-        string stateCode = null;
-        string quarter = null;
-
         if (dataType.Equals("facility", StringComparison.OrdinalIgnoreCase))
         {
           description = $"Facility/Unit attributes data for {fileParts[1]}";
@@ -128,32 +125,30 @@ namespace Epa.Camd.Quartz.Scheduler
           description = $"{programs.Find(i => i.Code == fileParts[1].ToUpper()).Description} Annual Reconciliation Data";
         }
 
-        GetObjectMetadataRequest request = new GetObjectMetadataRequest();
-        request.BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"];
-        request.Key = key;
         GetObjectMetadataResponse response = await client.GetObjectMetadataAsync(Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"], key);
 
-        if(response.Metadata["x-amz-meta-statecode"] != null){
-          stateCode = response.Metadata["x-amz-meta-statecode"];
-          quarter = response.Metadata["x-amz-quarter"];
-          dataType = response.Metadata["x-amz-meta-datatype"];
-          dataSubType = response.Metadata["x-amz-meta-datasubtype"];
-        }
+        Dictionary<string, object> meta = new Dictionary<string, object>(); 
+        
+        if(grouping != null)
+          meta.Add("grouping", grouping);
+
+        foreach(string metaKey in response.Metadata.Keys) {  
+          string strippedKey = metaKey.Substring(11);
+          Console.Write(strippedKey);
+          meta.Add(strippedKey, response.Metadata[metaKey]);
+        } 
 
         return new BulkFile
         {
           S3Path = entry.Key,
           Filename = filename,
-          DataType = dataType,
-          DataSubType = dataSubType,
-          Grouping = grouping,
           Bytes = entry.Size,
           LastUpdated = entry.LastModified.ToUniversalTime(),
           Description = description,
-          StateCode = stateCode,
-          Quarter = quarter
+          Metadata = meta
         };
-      }catch(Exception e){
+      }
+      catch(Exception e){
         Console.Write(e.Message);
         return null;
       }

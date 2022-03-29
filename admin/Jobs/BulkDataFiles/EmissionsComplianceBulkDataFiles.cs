@@ -86,7 +86,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         List<List<Object>> rowsPerPrg = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_emissions_based_compliance_bulk_files_to_generate", 1);
         
         if(rowsPerPrg.Count > 0){
-          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(null, null, null, "Emissions-Compliance", "Total", Configuration["EASEY_ACCOUNT_API"] + "/emissions-compliance/stream", "compliance/emissions-compliance-arpnox.csv", job_id, "ARP"), TriggerBuilder.Create().StartNow().Build());
+          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(null, null, null, "Emissions-Compliance", null, Configuration["EASEY_ACCOUNT_API"] + "/emissions-compliance/stream", "compliance/emissions-compliance-arpnox.csv", job_id, "ARP"), TriggerBuilder.Create().StartNow().Build());
         }
                 
         jl.StatusCd = "COMPLETE";

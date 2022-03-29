@@ -79,7 +79,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           decimal year = DateTime.Now.ToUniversalTime().Year - 1;
           string urlParams = "transactionBeginDate=" + year + "-01-01&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
 
-          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, null, "Allowance-Transactions", "Total", Configuration["EASEY_ACCOUNT_API"] + "/allowance-transactions/stream?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
+          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, null, "Allowance-Transactions", null, Configuration["EASEY_ACCOUNT_API"] + "/allowance-transactions/stream?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
         }
         
         jl.StatusCd = "COMPLETE";

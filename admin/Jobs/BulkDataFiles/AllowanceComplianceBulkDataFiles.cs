@@ -91,7 +91,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           string code = (string) rowsPerPrg[row][0];
           string urlParams = "programCodeInfo=" + code;
 
-          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(null, null, null, "Allowance-Compliance", "Annually", Configuration["EASEY_ACCOUNT_API"] + "/allowance-compliance/stream?" + urlParams, "compliance/compliance-" + code.ToLower() + ".csv", job_id, code), TriggerBuilder.Create().StartNow().Build());
+          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(null, null, null, "Allowance-Compliance", null, Configuration["EASEY_ACCOUNT_API"] + "/allowance-compliance/stream?" + urlParams, "compliance/compliance-" + code.ToLower() + ".csv", job_id, code), TriggerBuilder.Create().StartNow().Build());
         }
         
                 

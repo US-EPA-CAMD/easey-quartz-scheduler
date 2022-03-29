@@ -58,6 +58,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       string dataType = (string) context.JobDetail.JobDataMap.Get("DataType");
       string dataSubType = (string) context.JobDetail.JobDataMap.Get("DataSubType");
       string quarter = (string) context.JobDetail.JobDataMap.Get("Quarter");
+      string programCode = (string) context.JobDetail.JobDataMap.Get("ProgramCode");
 
       LogHelper.info("Executing new stream", new LogVariable("url", url));
 
@@ -92,10 +93,21 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
             Key = fileName,
         };
-        initiateRequest.Metadata.Add("StateCode", stateCode);
-        initiateRequest.Metadata.Add("DataType", dataType);
-        initiateRequest.Metadata.Add("DataSubType", dataSubType);
-        initiateRequest.Metadata.Add("Quarter", quarter);
+
+        if(stateCode != null)
+          initiateRequest.Metadata.Add("StateCode", stateCode);
+        
+        if(dataType != null)
+          initiateRequest.Metadata.Add("DataType", dataType);
+
+        if(dataSubType != null)
+          initiateRequest.Metadata.Add("DataSubType", dataSubType);
+
+        if(quarter != null)
+          initiateRequest.Metadata.Add("Quarter", quarter);
+
+        if(programCode != null)
+          initiateRequest.Metadata.Add("ProgramCode", programCode);
 
         InitiateMultipartUploadResponse initResponse = await s3Client.InitiateMultipartUploadAsync(initiateRequest);
 
