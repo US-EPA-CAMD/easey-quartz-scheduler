@@ -64,6 +64,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       if(datamartExists.Count == 0){
         return;
       }
+      
 
       LogHelper.info("Executing FacilityAttributesBulkDataFiles job");
 

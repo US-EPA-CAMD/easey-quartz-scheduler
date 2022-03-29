@@ -92,6 +92,10 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       newJob.JobDataMap.Add("format", "text/csv");
       newJob.JobDataMap.Add("url", url);
       newJob.JobDataMap.Add("fileName", fileName);
+      newJob.JobDataMap.Add("StateCode", stateCd);
+      newJob.JobDataMap.Add("DataType", dataType);
+      newJob.JobDataMap.Add("DataSubType", subType);
+      newJob.JobDataMap.Add("Quarter", quarter);
 
       return newJob;
     }

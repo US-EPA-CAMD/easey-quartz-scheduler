@@ -15,5 +15,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public long GigaBytes { get { return this.MegaBytes / 1024; } }
     public DateTime LastUpdated { get; set; }
     public string Description { get; set; }
+    public string StateCode {get; set; }
+    public string Quarter {get; set; }
   }
 }

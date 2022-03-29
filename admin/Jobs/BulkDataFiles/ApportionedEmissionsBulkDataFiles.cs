@@ -58,11 +58,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         return; // Job already exists , do not run again
       }
 
+      
       // Does data mart nightly exists for current date and has it completed
       List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Emissions Nightly' AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
       if(datamartExists.Count == 0){
         return;
       }
+      
 
       LogHelper.info("Executing ApportionedEmissionsBulkDataFiles job");
 
@@ -86,15 +88,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         List<List<Object>> rowsPerQuarter = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_emissions_bulk_files_per_quarter_to_generate", 4);
         
         /*
-          decimal year = 2020;
-          decimal quarter = 4;
-          string startDate = "2020-10-01";
-          string endDate = "2020-12-31";
-          string urlParams = "beginDate=" + startDate.ToString() + "&endDate=" + endDate.ToString();        
-          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", "Hourly", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/hourly/stream?" + urlParams, "emissions/hourly/quarter/emissions-hourly-" + year + "-q" + quarter + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
+        decimal year = 2020;
+        string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=AL";
+        await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, "AL", "Emissions", "Daily", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/daily/stream?" + urlParams, "emissions/daily/state/emissions-daily-" + year + "-al" + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
         */
       
-        
         for(int row = 0; row < rowsPerState.Count; row++){
           decimal year = (decimal) rowsPerState[row][0];
           DateTime currentDate = DateTime.Now.ToUniversalTime();

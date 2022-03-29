@@ -54,6 +54,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       string fileName = (string) context.JobDetail.JobDataMap.Get("fileName");
       Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
 
+      string stateCode = (string) context.JobDetail.JobDataMap.Get("StateCode");
+      string dataType = (string) context.JobDetail.JobDataMap.Get("DataType");
+      string dataSubType = (string) context.JobDetail.JobDataMap.Get("DataSubType");
+      string quarter = (string) context.JobDetail.JobDataMap.Get("Quarter");
+
       LogHelper.info("Executing new stream", new LogVariable("url", url));
 
       IAmazonS3 s3Client = new AmazonS3Client(
@@ -85,8 +90,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         InitiateMultipartUploadRequest initiateRequest = new InitiateMultipartUploadRequest
         {
             BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
-            Key = fileName
+            Key = fileName,
         };
+        initiateRequest.Metadata.Add("StateCode", stateCode);
+        initiateRequest.Metadata.Add("DataType", dataType);
+        initiateRequest.Metadata.Add("DataSubType", dataSubType);
+        initiateRequest.Metadata.Add("Quarter", quarter);
 
         InitiateMultipartUploadResponse initResponse = await s3Client.InitiateMultipartUploadAsync(initiateRequest);
 
