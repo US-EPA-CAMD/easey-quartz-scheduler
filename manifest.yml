@@ -10,6 +10,8 @@ applications:
       EASEY_API_GATEWAY_HOST: ((apiGatewayHost))
       EASEY_AUTH_API: https://((apiGatewayHost))/auth-mgmt
       EASEY_EMISSIONS_API: https://((apiGatewayHost))/emissions-mgmt
+      EASEY_ACCOUNT_API: https://((apiGatewayHost))/account-mgmt
+      EASEY_FACILITIES_API: https://((apiGatewayHost))/facilities-mgmt
       EASEY_QUARTZ_SCHEDULER_TITLE: ((title))
       EASEY_QUARTZ_SCHEDULER_HOST: ((host))
       EASEY_QUARTZ_SCHEDULER_PATH: ((path))
@@ -21,6 +23,7 @@ applications:
       EASEY_QUARTZ_SCHEDULER_SMTP_PORT: ((smtpPort))
       EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET: ((bulkDataS3Bucket))
       EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH: ((checkEngineDllPath))
+      EASEY_DATAMART_BYPASS: false
     routes:
       - route: ((host))/((path))
       - route: ((apiHost))/((apiPath))
