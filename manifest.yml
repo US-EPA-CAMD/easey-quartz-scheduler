@@ -9,6 +9,7 @@ applications:
       CACHE_NUGET_PACKAGES: false
       EASEY_API_GATEWAY_HOST: ((apiGatewayHost))
       EASEY_AUTH_API: https://((apiGatewayHost))/auth-mgmt
+      EASEY_EMISSIONS_API: https://((apiGatewayHost))/emissions-mgmt
       EASEY_QUARTZ_SCHEDULER_TITLE: ((title))
       EASEY_QUARTZ_SCHEDULER_HOST: ((host))
       EASEY_QUARTZ_SCHEDULER_PATH: ((path))

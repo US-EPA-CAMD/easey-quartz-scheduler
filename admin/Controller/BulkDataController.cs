@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,7 +54,9 @@ namespace Epa.Camd.Quartz.Scheduler
 
         foreach (S3Object entry in response.S3Objects)
         {
-          files.Add(this.CreateBulkFile(entry));
+          BulkFile file = await this.CreateBulkFile(entry);
+          if(file != null)
+            files.Add(await this.CreateBulkFile(entry));
         }
       }
       catch (AmazonS3Exception amazonS3Exception)
@@ -71,66 +73,85 @@ namespace Epa.Camd.Quartz.Scheduler
       return new OkObjectResult(files);
     }
 
-    private BulkFile CreateBulkFile(S3Object entry)
+    private async Task<BulkFile> CreateBulkFile(S3Object entry)
     {
-      string key = entry.Key;
-      string[] keyParts = key.Split('/');
-      string dataType = keyParts[0];
-      string filename = keyParts[keyParts.Length - 1];
+      try{
+        string key = entry.Key;
+        string[] keyParts = key.Split('/');
+        string dataType = keyParts[0];
+        string filename = keyParts[keyParts.Length - 1];
 
-      string grouping = null;
-      string dataSubType = null;
-      string description = string.Empty;
-      string[] fileParts = filename.Replace(".csv", string.Empty).Split('-');
+        string grouping = null;
+        string dataSubType = null;
+        string description = string.Empty;
+        string[] fileParts = filename.Replace(".csv", string.Empty).Split('-');
 
-      if (dataType.Equals("facility", StringComparison.OrdinalIgnoreCase))
-      {
-        description = $"Facility/Unit attributes data for {fileParts[1]}";
-      }
-      else if (
-        dataType.Equals("mats", StringComparison.OrdinalIgnoreCase) ||
-        dataType.Equals("emissions", StringComparison.OrdinalIgnoreCase)
-      )
-      {
-        grouping = keyParts[2];
-        dataSubType = keyParts[1];
-        string year = fileParts[2];
-        string stateQuarter = fileParts[3];
-        string regulation = dataType.Equals("mats", StringComparison.OrdinalIgnoreCase)
-          ? "Mercury and Air Toxics Standards (MATS)"
-          : "Part 75";
-
-        if (grouping.Equals("state", StringComparison.OrdinalIgnoreCase))
-          description = $"Unit-level {dataSubType} {regulation} emissions data for all {stateQuarter} facilities/units for {year}";
-
-        if (grouping.Equals("quarter", StringComparison.OrdinalIgnoreCase))
-          description = $"Unit-level {dataSubType} {regulation} emissions data for all facilities/units for {year} {stateQuarter.Replace("Q", "quarter ")}";
-      }
-      else if (dataType.Equals("allowance", StringComparison.OrdinalIgnoreCase))
-      {
-        if (filename.StartsWith("arp-initial-allocations", StringComparison.OrdinalIgnoreCase))
-          description = "Acid Rain Program (ARP) Initial Allowance Allocations Data";
-        else
+        if (dataType.Equals("facility", StringComparison.OrdinalIgnoreCase))
         {
-          description = $"{programs.Find(i => i.Code == fileParts[1].ToUpper()).Description} Allowance Transactions Data";
+          description = $"Facility/Unit attributes data for {fileParts[1]}";
         }
-      }
-      else if (dataType.Equals("compliance", StringComparison.OrdinalIgnoreCase))
-      {
-        description = $"{programs.Find(i => i.Code == fileParts[1].ToUpper()).Description} Annual Reconciliation Data";
-      }
+        else if (
+          dataType.Equals("mats", StringComparison.OrdinalIgnoreCase) ||
+          dataType.Equals("emissions", StringComparison.OrdinalIgnoreCase)
+        )
+        {
+          grouping = keyParts[2];
+          dataSubType = keyParts[1];
+          string year = fileParts[2];
+          string stateQuarter = fileParts[3];
+          string regulation = dataType.Equals("mats", StringComparison.OrdinalIgnoreCase)
+            ? "Mercury and Air Toxics Standards (MATS)"
+            : "Part 75";
 
-      return new BulkFile
-      {
-        S3Path = entry.Key,
-        Filename = filename,
-        DataType = dataType,
-        DataSubType = dataSubType,
-        Grouping = grouping,
-        Bytes = entry.Size,
-        LastUpdated = entry.LastModified.ToUniversalTime(),
-        Description = description,
-      };
+          if (grouping.Equals("state", StringComparison.OrdinalIgnoreCase)){
+            description = $"Unit-level {dataSubType} {regulation} emissions data for all {stateQuarter} facilities/units for {year}";
+          }
+
+          if (grouping.Equals("quarter", StringComparison.OrdinalIgnoreCase)){
+            description = $"Unit-level {dataSubType} {regulation} emissions data for all facilities/units for {year} {stateQuarter.Replace("Q", "quarter ")}";
+          }
+        }
+        else if (dataType.Equals("allowance", StringComparison.OrdinalIgnoreCase))
+        {
+          if (filename.StartsWith("arp-initial-allocations", StringComparison.OrdinalIgnoreCase))
+            description = "Acid Rain Program (ARP) Initial Allowance Allocations Data";
+          else
+          {
+            description = $"{programs.Find(i => i.Code == fileParts[1].ToUpper()).Description} Allowance Transactions Data";
+          }
+        }
+        else if (dataType.Equals("compliance", StringComparison.OrdinalIgnoreCase))
+        {
+          description = $"{programs.Find(i => i.Code == fileParts[1].ToUpper()).Description} Annual Reconciliation Data";
+        }
+
+        GetObjectMetadataResponse response = await client.GetObjectMetadataAsync(Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"], key);
+
+        Dictionary<string, object> meta = new Dictionary<string, object>(); 
+        
+        if(grouping != null)
+          meta.Add("grouping", grouping);
+
+        foreach(string metaKey in response.Metadata.Keys) {  
+          string strippedKey = metaKey.Substring(11);
+          Console.Write(strippedKey);
+          meta.Add(strippedKey, response.Metadata[metaKey]);
+        } 
+
+        return new BulkFile
+        {
+          S3Path = entry.Key,
+          Filename = filename,
+          Bytes = entry.Size,
+          LastUpdated = entry.LastModified.ToUniversalTime(),
+          Description = description,
+          Metadata = meta
+        };
+      }
+      catch(Exception e){
+        Console.Write(e.Message);
+        return null;
+      }
     }
   }
 }
