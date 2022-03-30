@@ -61,13 +61,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         return; // Job already exists , do not run again
       }
 
-      
-      // Does data mart nightly exists for current date and has it completed
-      List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Emissions Nightly' AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
-      if(datamartExists.Count == 0){
-        return;
+      if(Configuration["EASEY_DATAMART_BYPASS"] != "true"){
+        // Does data mart nightly exists for current date and has it completed
+        List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Emissions Nightly' AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
+        if(datamartExists.Count == 0){
+          return;
+        }
       }
-      
 
       LogHelper.info("Executing ApportionedEmissionsBulkDataFiles job");
 
@@ -122,6 +122,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", "Daily", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/daily/stream?" + urlParams, "emissions/daily/quarter/emissions-daily-" + year + "-q" + quarter + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
           await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, quarter, null, "MATS", "Hourly", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/mats/hourly/stream?" + urlParams, "mats/hourly/quarter/mats-hourly-" + year + "-q" + quarter + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
         }
+        
         
         _dbContext.ExecuteSql("CALL camdaux.procedure_set_dm_emissions_user();");
 

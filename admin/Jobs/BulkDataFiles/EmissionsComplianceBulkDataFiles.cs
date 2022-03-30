@@ -59,10 +59,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         return; // Job already exists , do not run again
       }
 
-      // Does data mart nightly exists for current date and has it completed
-      List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name in ('Datamart Nightly', 'Datamart Monthly') AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
-      if(datamartExists.Count == 0){
-        return;
+      if(Configuration["EASEY_DATAMART_BYPASS"] != "true"){
+        // Does data mart nightly exists for current date and has it completed
+        List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name in ('Datamart Nightly', 'Datamart Monthly') AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
+        if(datamartExists.Count == 0){
+          return;
+        }
       }
 
       LogHelper.info("Executing EmissionsComplianceBulkDataFiles job");

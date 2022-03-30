@@ -40,7 +40,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       if (!await scheduler.CheckExists(WithJobKey()))
       {
-        app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(WithCronSchedule("0 0 0 15 1 ? *"));
+        app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(WithCronSchedule("* 0/10 1-5 30 1 ? *"));
       }
     }
 
@@ -53,6 +53,21 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public async Task Execute(IJobExecutionContext context)
     {
       LogHelper.info("Executing AllowanceTransactionsBulkDataFiles job");
+
+      // Does this job already exist? Otherwise create and schedule a new copy
+      List<List<Object>> jobAlreadyExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Allowance Transactions' AND add_date::date = now()::date;", 9);
+      if(jobAlreadyExists.Count != 0){
+        return; // Job already exists , do not run again
+      }
+
+      // Does data mart nightly exists for current date and has it completed
+
+      if(Configuration["EASEY_DATAMART_BYPASS"] != "true"){
+        List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name in ('Datamart Nightly', 'Datamart Monthly') AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
+        if(datamartExists.Count == 0){
+          return;
+        }
+      }
 
       JobLog jl = new JobLog(); 
 
