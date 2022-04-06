@@ -65,6 +65,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         // Does data mart nightly exists for current date and has it completed
         List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Emissions Nightly' AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
         if(datamartExists.Count == 0){
+          Console.Write("Why");
           return;
         }
       }
@@ -90,13 +91,49 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         List<List<Object>> rowsPerState = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_emissions_bulk_files_per_state_to_generate", 2);
         List<List<Object>> rowsPerQuarter = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_emissions_bulk_files_per_quarter_to_generate", 4);
         
-        /*
+        List<List<Object>> states = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdmd.state_code", 5);
+
         decimal year = 2020;
-        string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=AL";
-        await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, "AL", "Emissions", "Daily", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/daily/stream?" + urlParams, "emissions/daily/state/emissions-daily-" + year + "-al" + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
+        string[] stateCds = {"AL", "VA", "OK", "CA", "TN", "SD"};
+        for(int i = 0; i < stateCds.Length; i++){
+          string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + stateCds[i];
+          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, stateCds[i], "Emissions", "Hourly", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/hourly/stream?" + urlParams, "emissions/hourly/state/emissions-hourly-" + year + "-" + stateCds[i].ToLower() + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
+        }
+
+        /*
+
+        Dictionary<IJobDetail, IReadOnlyCollection<ITrigger>> jobs_to_schedule = new Dictionary<IJobDetail, IReadOnlyCollection<ITrigger>>();
+        decimal year = 2019;
+        for(int i = 0; i < states.Count; i++){
+          string state = (string) states[i][0];
+          string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + state;
+          if(state == "UM")
+            continue;
+
+          IJobDetail job = await _dbContext.CreateBulkFileJob(year, null, state, "Emissions", "Daily", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/daily/stream?" + urlParams, "emissions/daily/state/emissions-daily-" + year + "-" + state.ToLower() + ".csv", job_id, null);
+          List<ITrigger> collection = new List<ITrigger>();
+
+          jobs_to_schedule.Add(job, collection);
+        }
+        Console.Write("Scheduling Jobs");
+        await context.Scheduler.ScheduleJobs(jobs_to_schedule, true);
+
+        */
+      
+        /*
+        string state = "MA";
+        int year = 2020;
+        string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + state;
+        await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, state, "Emissions", "Daily", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/daily/stream?" + urlParams, "emissions/daily/state/emissions-daily-" + year + "-" + state.ToLower() + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
+        
+        state = "OK";
+        year = 2020;
+        urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + state;
+        await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, state, "Emissions", "Daily", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/daily/stream?" + urlParams, "emissions/daily/state/emissions-daily-" + year + "-" + state.ToLower() + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
         */
 
-        
+    
+        /*
         for(int row = 0; row < rowsPerState.Count; row++){
           decimal year = (decimal) rowsPerState[row][0];
           DateTime currentDate = DateTime.Now.ToUniversalTime();
@@ -122,8 +159,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", "Daily", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/daily/stream?" + urlParams, "emissions/daily/quarter/emissions-daily-" + year + "-q" + quarter + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
           await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, quarter, null, "MATS", "Hourly", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/mats/hourly/stream?" + urlParams, "mats/hourly/quarter/mats-hourly-" + year + "-q" + quarter + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
         }
-        
-        
+        */
+                
         _dbContext.ExecuteSql("CALL camdaux.procedure_set_dm_emissions_user();");
 
         jl.StatusCd = "COMPLETE";
@@ -134,6 +171,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
       catch (Exception e)
       {
+
+        Console.Write(e.Message);
         jl.StatusCd = "ERROR";
         jl.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         jl.AdditionalDetails = e.Message;

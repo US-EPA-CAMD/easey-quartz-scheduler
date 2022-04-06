@@ -95,7 +95,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       newJob.JobDataMap.Add("StateCode", stateCd);
       newJob.JobDataMap.Add("DataType", dataType);
       newJob.JobDataMap.Add("DataSubType", subType);
-      newJob.JobDataMap.Add("Quarter", quarter);
+      newJob.JobDataMap.Add("Quarter", quarter.ToString());
       newJob.JobDataMap.Add("ProgramCode", program_code);
 
       return newJob;

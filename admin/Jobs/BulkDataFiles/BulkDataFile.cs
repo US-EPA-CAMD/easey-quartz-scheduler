@@ -50,6 +50,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
+
       string url =  (string) context.JobDetail.JobDataMap.Get("url");
       string fileName = (string) context.JobDetail.JobDataMap.Get("fileName");
       Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
@@ -69,9 +70,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       );
 
       JobLog bulkFile = await _dbContext.JobLogs.FindAsync(job_id);
-
-      try
-      {        
+      
+      try{
         bulkFile.StatusCd = "WIP";
         bulkFile.StartDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         _dbContext.JobLogs.Update(bulkFile);
@@ -149,6 +149,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             };
 
             uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
+
+            bytes = new byte[bufferSize];
             await s.FlushAsync();
 
             uploadPartNumber++;
@@ -157,40 +159,46 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         myHttpWebResponse.Close();
         myHttpWebRequest.Abort();
 
-        CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
-        {
-            BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
-            Key = fileName,
-            UploadId = initResponse.UploadId
-        };
-        completeRequest.AddPartETags(uploadResponses);
+        if(uploadPartNumber != 1 || totalReadBytes > 0){
+          CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
+          {
+              BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
+              Key = fileName,
+              UploadId = initResponse.UploadId
+          };
+          completeRequest.AddPartETags(uploadResponses);
 
-        // Complete the upload.
-        CompleteMultipartUploadResponse completeUploadResponse =
-            await s3Client.CompleteMultipartUploadAsync(completeRequest);
+          // Complete the upload.
+          CompleteMultipartUploadResponse completeUploadResponse =
+              await s3Client.CompleteMultipartUploadAsync(completeRequest);
+        }
 
         bulkFile.StatusCd = "COMPLETE";
         bulkFile.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         _dbContext.JobLogs.Update(bulkFile);
         _dbContext.SaveChanges();
 
+        Console.Write("COMPLETE");
+
         LogHelper.info("Executed stream successfully", new LogVariable("url", url));      
       }
       catch (Exception e)
       {
-        Console.Write(e);
+        Console.Write("ERROR " + e);
         LogHelper.error(e.Message);
+
         bulkFile.StatusCd = "ERROR";
         bulkFile.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         bulkFile.AdditionalDetails = e.Message;
         _dbContext.JobLogs.Update(bulkFile);
         _dbContext.SaveChanges();
+        
       }
     }
 
     public static IJobDetail CreateJobDetail(string key)
     {
-      return JobBuilder.Create<BulkDataFile>().WithIdentity(new JobKey(key, Constants.QuartzGroups.BULK_DATA)).Build();
+      return JobBuilder.Create<BulkDataFile>().WithIdentity(new JobKey(key, Constants.QuartzGroups.BULK_DATA)).StoreDurably().Build();
     }
 
   }
