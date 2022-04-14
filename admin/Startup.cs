@@ -139,6 +139,7 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddOptions();
 
+      BulkFileJobQueue.RegisterWithQuartz(services);
       AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
       EmissionsComplianceBulkDataFiles.RegisterWithQuartz(services);
       AllowanceTransactionsBulkDataFiles.RegisterWithQuartz(services);
@@ -199,6 +200,7 @@ namespace Epa.Camd.Quartz.Scheduler
           KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("EM"))
       );
 
+      BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
       AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);

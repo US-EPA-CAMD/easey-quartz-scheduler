@@ -12,7 +12,6 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public long MegaBytes { get { return this.KiloBytes / 1024; } }
     public long GigaBytes { get { return this.MegaBytes / 1024; } }
     public DateTime LastUpdated { get; set; }
-    public string Description { get; set; }
     public Dictionary<string, object> Metadata {get; set; }
   }
 }

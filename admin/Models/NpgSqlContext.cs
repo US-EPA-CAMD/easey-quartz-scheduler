@@ -36,6 +36,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public async Task<IJobDetail> CreateBulkFileJob(decimal? year, decimal? quarter, string stateCd, string dataType, string subType, string url, string fileName, Guid job_id, string program_code){
       Guid child_job_id = Guid.NewGuid();
 
+      Console.Write(year);
+
       JobLog jl = new JobLog();
       jl.JobId = child_job_id;
       jl.JobSystem = "Quartz";
@@ -95,10 +97,15 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       newJob.JobDataMap.Add("StateCode", stateCd);
       newJob.JobDataMap.Add("DataType", dataType);
       newJob.JobDataMap.Add("DataSubType", subType);
+      newJob.JobDataMap.Add("Year", year);
       newJob.JobDataMap.Add("Quarter", quarter);
       newJob.JobDataMap.Add("ProgramCode", program_code);
 
       return newJob;
+    }
+
+    public async Task<List<ProgramCode>> getProgramCodes(){
+      return await this.ProgramCodes.ToListAsync();
     }
 
     public async  Task<List<List<Object>>> ExecuteSqlQuery(string commandText, int columns)
@@ -143,6 +150,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     {
       var connectionString = this.Database.GetConnectionString();
 
+
+      Console.Write(commandText);
       try
       {
         using (var connection = new NpgsqlConnection(connectionString))
