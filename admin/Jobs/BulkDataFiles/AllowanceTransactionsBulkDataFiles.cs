@@ -62,7 +62,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
       // Does data mart nightly exists for current date and has it completed
       if(Configuration["EASEY_DATAMART_BYPASS"] != "true"){
-        List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name in ('Datamart Nightly', 'Datamart Monthly') AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
+        List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name in ('Datamart Nightly') AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
         if(datamartExists.Count == 0){
           return;
         }

@@ -67,7 +67,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             : "Part 75";
 
           if (state != null){
-            description = $"Unit-level {subType} {regulation} emissions data for all {state} facilities/units for {year}";
+            description = $"Unit-level {subType} {regulation} emissions data for all {state.ToUpper()} facilities/units for {year}";
           }
 
           if (quarter != null){
@@ -199,7 +199,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
 
         myHttpWebResponse.Close();
-        myHttpWebRequest.Abort();
+        //myHttpWebRequest.Abort();
 
         if(uploadPartNumber != 1 || totalReadBytes > 0){
 
