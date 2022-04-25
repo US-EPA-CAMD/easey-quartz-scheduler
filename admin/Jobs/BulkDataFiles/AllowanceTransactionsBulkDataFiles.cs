@@ -62,7 +62,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
       // Does data mart nightly exists for current date and has it completed
       if(Configuration["EASEY_DATAMART_BYPASS"] != "true"){
-        List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name in ('Datamart Nightly', 'Datamart Monthly') AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
+        List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name in ('Datamart Nightly') AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
         if(datamartExists.Count == 0){
           return;
         }
@@ -93,7 +93,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           decimal year = DateTime.Now.ToUniversalTime().Year - 1;
           string urlParams = "transactionBeginDate=" + year + "-01-01&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
 
-          await context.Scheduler.ScheduleJob(await _dbContext.CreateBulkFileJob(year, null, null, "Allowance-Transactions", null, Configuration["EASEY_ACCOUNT_API"] + "/allowance-transactions/stream?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, null), TriggerBuilder.Create().StartNow().Build());
+          BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_ACCOUNT_API"] + "/allowance-transactions/stream?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code));
         }
         
         jl.StatusCd = "COMPLETE";

@@ -34,71 +34,84 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       Configuration = configuration;
     }
     public async Task<IJobDetail> CreateBulkFileJob(decimal? year, decimal? quarter, string stateCd, string dataType, string subType, string url, string fileName, Guid job_id, string program_code){
-      Guid child_job_id = Guid.NewGuid();
+      
+      try{
+        Guid child_job_id = Guid.NewGuid();
 
-      JobLog jl = new JobLog();
-      jl.JobId = child_job_id;
-      jl.JobSystem = "Quartz";
-      jl.JobClass = "Bulk Data File";
-      jl.AddDate = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
-      jl.StartDate = null;
-      jl.EndDate = null;
-      jl.StatusCd = "QUEUED";
+        Console.Write(year);
 
-      BulkFileLog bfl = new BulkFileLog();
-      bfl.JobId = child_job_id;
-      bfl.ParentJobId = job_id;
-      bfl.DataType = dataType;
-      bfl.DataSubType = subType;
-      bfl.Year = year;
+        JobLog jl = new JobLog();
+        jl.JobId = child_job_id;
+        jl.JobSystem = "Quartz";
+        jl.JobClass = "Bulk Data File";
+        jl.AddDate = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+        jl.StartDate = null;
+        jl.EndDate = null;
+        jl.StatusCd = "QUEUED";
 
-      if(year == null)
-        bfl.Year = null;
-      else
+        BulkFileLog bfl = new BulkFileLog();
+        bfl.JobId = child_job_id;
+        bfl.ParentJobId = job_id;
+        bfl.DataType = dataType;
+        bfl.DataSubType = subType;
         bfl.Year = year;
 
-      if(program_code == null)
-        bfl.PrgCd = null;
-      else
-       bfl.PrgCd = program_code;
+        if(year == null)
+          bfl.Year = null;
+        else
+          bfl.Year = year;
 
-      if(quarter != null){
-        bfl.Quarter = quarter;
-        bfl.StateCd = null;
+        if(program_code == null)
+          bfl.PrgCd = null;
+        else
+        bfl.PrgCd = program_code;
 
-        jl.JobName = dataType + "-" + subType + "-" + year + "-Q" + quarter;
+        if(quarter != null){
+          bfl.Quarter = quarter;
+          bfl.StateCd = null;
+
+          jl.JobName = dataType + "-" + subType + "-" + year + "-Q" + quarter;
+        }
+        else if(stateCd != null){
+          bfl.Quarter = null;
+          bfl.StateCd = stateCd;
+
+          jl.JobName = dataType + "-" + subType + "-" + year + "-" + stateCd;
+        }
+        else{
+          bfl.Quarter = null;
+          bfl.StateCd = null;
+          jl.JobName = dataType + "-" + subType + "-" + year;
+        }
+
+        await this.JobLogs.AddAsync(jl);
+        await this.SaveChangesAsync();
+
+        await this.BulkFileLogs.AddAsync(bfl);
+        await this.SaveChangesAsync();
+
+        IJobDetail newJob = BulkDataFile.CreateJobDetail(child_job_id.ToString());
+        newJob.JobDataMap.Add("job_id", child_job_id);
+        newJob.JobDataMap.Add("parent_job_id", job_id);
+        newJob.JobDataMap.Add("format", "text/csv");
+        newJob.JobDataMap.Add("url", url);
+        newJob.JobDataMap.Add("fileName", fileName);
+        newJob.JobDataMap.Add("StateCode", stateCd);
+        newJob.JobDataMap.Add("DataType", dataType);
+        newJob.JobDataMap.Add("DataSubType", subType);
+        newJob.JobDataMap.Add("Year", year);
+        newJob.JobDataMap.Add("Quarter", quarter);
+        newJob.JobDataMap.Add("ProgramCode", program_code);
+
+        return newJob;
+      }catch(Exception e){
+        throw new Exception(e.Message);
       }
-      else if(stateCd != null){
-        bfl.Quarter = null;
-        bfl.StateCd = stateCd;
 
-        jl.JobName = dataType + "-" + subType + "-" + year + "-" + stateCd;
-      }
-      else{
-        bfl.Quarter = null;
-        bfl.StateCd = null;
-        jl.JobName = dataType + "-" + subType + "-" + year;
-      }
+    }
 
-      await this.JobLogs.AddAsync(jl);
-      await this.SaveChangesAsync();
-
-      await this.BulkFileLogs.AddAsync(bfl);
-      await this.SaveChangesAsync();
-
-      IJobDetail newJob = BulkDataFile.CreateJobDetail(child_job_id.ToString());
-      newJob.JobDataMap.Add("job_id", child_job_id);
-      newJob.JobDataMap.Add("parent_job_id", job_id);
-      newJob.JobDataMap.Add("format", "text/csv");
-      newJob.JobDataMap.Add("url", url);
-      newJob.JobDataMap.Add("fileName", fileName);
-      newJob.JobDataMap.Add("StateCode", stateCd);
-      newJob.JobDataMap.Add("DataType", dataType);
-      newJob.JobDataMap.Add("DataSubType", subType);
-      newJob.JobDataMap.Add("Quarter", quarter);
-      newJob.JobDataMap.Add("ProgramCode", program_code);
-
-      return newJob;
+    public async Task<List<ProgramCode>> getProgramCodes(){
+      return await this.ProgramCodes.ToListAsync();
     }
 
     public async  Task<List<List<Object>>> ExecuteSqlQuery(string commandText, int columns)
@@ -143,6 +156,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     {
       var connectionString = this.Database.GetConnectionString();
 
+
+      Console.Write(commandText);
       try
       {
         using (var connection = new NpgsqlConnection(connectionString))

@@ -48,6 +48,43 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       Configuration = configuration;
     }
 
+    private async Task<string> getDescription(string dataType, string subType, decimal year, string quarter, string state, string programCode){
+      string description = "";
+
+      List<ProgramCode> programs = await _dbContext.getProgramCodes();
+
+      if (dataType.Equals("facilities", StringComparison.OrdinalIgnoreCase))
+        {
+          description = $"Facility/Unit attributes data for {year}";
+        }
+        else if (
+          dataType.Equals("mats", StringComparison.OrdinalIgnoreCase) ||
+          dataType.Equals("emissions", StringComparison.OrdinalIgnoreCase)
+        )
+        {
+          string regulation = dataType.Equals("mats", StringComparison.OrdinalIgnoreCase)
+            ? "Mercury and Air Toxics Standards (MATS)"
+            : "Part 75";
+
+          if (state != null){
+            description = $"Unit-level {subType} {regulation} emissions data for all {state.ToUpper()} facilities/units for {year}";
+          }
+
+          if (quarter != null){
+            description = $"Unit-level {subType} {regulation} emissions data for all facilities/units for {year}  Q{quarter}";
+          }
+        }
+        else if (dataType.Equals("allowance", StringComparison.OrdinalIgnoreCase))
+        {
+            description = $"{programs.Find(i => i.Code == programCode.ToUpper()).Description} Allowance Transactions Data";
+        }
+        else if (dataType.Equals("compliance", StringComparison.OrdinalIgnoreCase))
+        {
+          description = $"{programs.Find(i => i.Code == programCode.ToUpper()).Description} Annual Reconciliation Data";
+        }
+      return description;
+    }
+
     public async Task Execute(IJobExecutionContext context)
     {
       string url =  (string) context.JobDetail.JobDataMap.Get("url");
@@ -58,7 +95,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       string dataType = (string) context.JobDetail.JobDataMap.Get("DataType");
       string dataSubType = (string) context.JobDetail.JobDataMap.Get("DataSubType");
       string quarter = (string) context.JobDetail.JobDataMap.Get("Quarter");
+      decimal year = (decimal) context.JobDetail.JobDataMap.Get("Year");
       string programCode = (string) context.JobDetail.JobDataMap.Get("ProgramCode");
+
+      string description = await getDescription(dataType, dataSubType, year, quarter, stateCode, programCode);
 
       LogHelper.info("Executing new stream", new LogVariable("url", url));
 
@@ -93,6 +133,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
             Key = fileName,
         };
+
+        initiateRequest.Metadata.Add("Description", description);
 
         if(stateCode != null)
           initiateRequest.Metadata.Add("StateCode", stateCode);
@@ -149,25 +191,32 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             };
 
             uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
+
+            bytes = new byte[bufferSize];
             await s.FlushAsync();
 
             uploadPartNumber++;
         }
 
         myHttpWebResponse.Close();
-        myHttpWebRequest.Abort();
+        //myHttpWebRequest.Abort();
 
-        CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
-        {
-            BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
-            Key = fileName,
-            UploadId = initResponse.UploadId
-        };
-        completeRequest.AddPartETags(uploadResponses);
+        if(uploadPartNumber != 1 || totalReadBytes > 0){
 
-        // Complete the upload.
-        CompleteMultipartUploadResponse completeUploadResponse =
-            await s3Client.CompleteMultipartUploadAsync(completeRequest);
+          CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
+          {
+              BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
+              Key = fileName,
+              UploadId = initResponse.UploadId
+          };
+          completeRequest.AddPartETags(uploadResponses);
+
+            // Complete the upload.
+          CompleteMultipartUploadResponse completeUploadResponse =
+              await s3Client.CompleteMultipartUploadAsync(completeRequest);
+
+        }
+
 
         bulkFile.StatusCd = "COMPLETE";
         bulkFile.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
@@ -190,7 +239,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static IJobDetail CreateJobDetail(string key)
     {
-      return JobBuilder.Create<BulkDataFile>().WithIdentity(new JobKey(key, Constants.QuartzGroups.BULK_DATA)).Build();
+      return JobBuilder.Create<BulkDataFile>().WithIdentity(new JobKey(key, Constants.QuartzGroups.BULK_DATA)).StoreDurably().Build();
     }
 
   }

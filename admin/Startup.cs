@@ -86,7 +86,20 @@ namespace Epa.Camd.Quartz.Scheduler
           c.AddServer(new OpenApiServer() {
             Url = $"https://{apiHost}",
           });
-        }        
+        }
+
+        var bearerKeyScheme = new OpenApiSecurityScheme
+        {
+          Name = "Bearer",
+          In = ParameterLocation.Header,
+          Type = SecuritySchemeType.ApiKey,
+          Description = "Authorization by bearer request token!",
+          Scheme = "Bearer",
+          Reference = new OpenApiReference {
+            Id = "BearerToken",
+            Type = ReferenceType.SecurityScheme,
+          }
+        };       
 
         var apiKeyScheme = new OpenApiSecurityScheme {
           Name = "x-api-key",
@@ -100,12 +113,17 @@ namespace Epa.Camd.Quartz.Scheduler
           }
         };
 
+        c.AddSecurityDefinition("BearerToken", bearerKeyScheme);
         c.AddSecurityDefinition("ApiKey", apiKeyScheme);
         c.AddSecurityRequirement(
           new OpenApiSecurityRequirement {{
             apiKeyScheme,
             new List<string>()
           }});
+        c.AddSecurityRequirement( new OpenApiSecurityRequirement {{
+            bearerKeyScheme,
+            new List<string>()
+        }});
       });
 
       services.AddRazorPages();
@@ -139,6 +157,7 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddOptions();
 
+      BulkFileJobQueue.RegisterWithQuartz(services);
       AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
       EmissionsComplianceBulkDataFiles.RegisterWithQuartz(services);
       AllowanceTransactionsBulkDataFiles.RegisterWithQuartz(services);
@@ -199,6 +218,7 @@ namespace Epa.Camd.Quartz.Scheduler
           KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("EM"))
       );
 
+      BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
       AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
