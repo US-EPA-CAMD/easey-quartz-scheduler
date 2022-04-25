@@ -73,7 +73,7 @@ namespace Epa.Camd.Quartz.Scheduler
         List<BulkFileParameters> objects = JsonConvert.DeserializeObject<List<BulkFileParameters>>(jsonList);
 
         for(int i = 0; i < objects.Count; i++){
-          BulkFileJobQueue.AddBulkDataJobToQueue(await dbContext.CreateBulkFileJob(objects[i].Year, objects[i].Quarter, objects[i].StateCode, objects[i].DataType, objects[i].SubType, objects[i].Url, objects[i].FileName, job_id, objects[i].ProgramCode));
+          BulkFileJobQueue.AddBulkDataJobToQueue(await dbContext.CreateBulkFileJob(objects[i].Year, objects[i].Quarter, objects[i].StateCode, objects[i].DataType, objects[i].SubType + "- On Demand", objects[i].Url, objects[i].FileName, job_id, objects[i].ProgramCode));
         }      
 
         jl.StatusCd = "COMPLETE";
