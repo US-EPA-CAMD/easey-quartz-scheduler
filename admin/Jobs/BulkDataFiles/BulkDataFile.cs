@@ -48,7 +48,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       Configuration = configuration;
     }
 
-    private async Task<string> getDescription(string dataType, string subType, decimal year, string quarter, string state, string programCode){
+    private async Task<string> getDescription(string dataType, string subType, decimal? year, decimal? quarter, string state, string programCode){
       string description = "";
 
       List<ProgramCode> programs = await _dbContext.getProgramCodes();
@@ -94,8 +94,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       string stateCode = (string) context.JobDetail.JobDataMap.Get("StateCode");
       string dataType = (string) context.JobDetail.JobDataMap.Get("DataType");
       string dataSubType = (string) context.JobDetail.JobDataMap.Get("DataSubType");
-      string quarter = (string) context.JobDetail.JobDataMap.Get("Quarter");
-      decimal year = (decimal) context.JobDetail.JobDataMap.Get("Year");
+      decimal? quarter = (decimal) context.JobDetail.JobDataMap.Get("Quarter");
+      decimal? year = (decimal) context.JobDetail.JobDataMap.Get("Year");
       string programCode = (string) context.JobDetail.JobDataMap.Get("ProgramCode");
 
       string description = await getDescription(dataType, dataSubType, year, quarter, stateCode, programCode);
@@ -136,6 +136,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         initiateRequest.Metadata.Add("Description", description);
 
+        if(year != null)
+          initiateRequest.Metadata.Add("Year", year.ToString());
+
         if(stateCode != null)
           initiateRequest.Metadata.Add("StateCode", stateCode);
         
@@ -146,7 +149,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           initiateRequest.Metadata.Add("DataSubType", dataSubType);
 
         if(quarter != null)
-          initiateRequest.Metadata.Add("Quarter", quarter);
+          initiateRequest.Metadata.Add("Quarter", quarter.ToString());
 
         if(programCode != null)
           initiateRequest.Metadata.Add("ProgramCode", programCode);

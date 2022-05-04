@@ -128,7 +128,8 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddRazorPages();
       services.AddControllers();
-
+      
+      
       services.AddSilkierQuartz(options =>
       {
         options.VirtualPathRoot = "/quartz";
@@ -154,6 +155,7 @@ namespace Epa.Camd.Quartz.Scheduler
         }
         nameValueCollection.Set("quartz.dataSource.default.connectionString", connectionString);
       });
+      
 
       services.AddOptions();
 

@@ -63,6 +63,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             for(int i = 0; i < jobs_to_schedule; i++){
               if(bulk_data_queue.Count > 0){
                 IJobDetail toSchedule = bulk_data_queue[0];
+                Console.Write("Scheduling " + bulk_data_queue[0].JobDataMap.Get("fileName"));
                 await context.Scheduler.ScheduleJob(toSchedule, TriggerBuilder.Create().StartNow().Build());
                 bulk_data_queue.Remove(toSchedule);
               }
