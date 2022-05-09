@@ -154,13 +154,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         if(programCode != null)
           Metadata.Add("ProgramCode", programCode);
 
-        BulkFileMetadata newMeta = new BulkFileMetadata();
-        newMeta.S3Key = fileName;
-        newMeta.Metadata = JsonConvert.SerializeObject(Metadata);
-
-        _dbContext.BulkFileMetadataSet.Add(newMeta);
-        _dbContext.SaveChanges();
-
         InitiateMultipartUploadResponse initResponse = await s3Client.InitiateMultipartUploadAsync(initiateRequest);
 
         const int bufferSize = 5242880;
@@ -169,6 +162,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         int readBytes;
         int totalReadBytes;
         int uploadPartNumber = 1;
+        int totalWrittenBytes = 0;
 
         while(true)
         {
@@ -180,6 +174,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 bufferSize - totalReadBytes);
 
                 totalReadBytes += readBytes;
+                totalWrittenBytes += readBytes;
 
                 if (readBytes == 0)
                     break;  
@@ -207,6 +202,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
             uploadPartNumber++;
         }
+
+        BulkFileMetadata newMeta = new BulkFileMetadata();
+        newMeta.S3Key = fileName;
+        newMeta.Metadata = JsonConvert.SerializeObject(Metadata);
+        newMeta.FileSize = totalWrittenBytes;
+        newMeta.AddDate = DateTime.Now;
+        newMeta.UpdateDate = DateTime.Now;
+
+        _dbContext.BulkFileMetadataSet.Add(newMeta);
+        _dbContext.SaveChanges();
 
         myHttpWebResponse.Close();
         //myHttpWebRequest.Abort();

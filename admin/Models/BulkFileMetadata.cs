@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System;
 
 namespace Epa.Camd.Quartz.Scheduler.Models
 {
@@ -16,5 +17,14 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 
 		[Column("metadata")]
 		public string Metadata { get; set; }
+
+		[Column("file_size")]
+		public int FileSize { get; set; }
+
+		[Column("add_date")]
+		public DateTime AddDate { get; set; }
+
+		[Column("last_update_date")]
+		public DateTime UpdateDate { get; set; }
 	}
 }
