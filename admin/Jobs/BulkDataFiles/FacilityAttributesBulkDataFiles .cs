@@ -92,7 +92,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           decimal year = (decimal) rowsPerState[row][0];
           DateTime currentDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
 
-          BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, null, null, "Facilities", null, Configuration["EASEY_FACILITIES_API"] + "/facilities/attributes/stream?year=" + year, "facility/facility" + "-" + year + ".csv", job_id, null));
+          BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, null, null, "Facility", null, Configuration["EASEY_FACILITIES_API"] + "/facilities/attributes/stream?year=" + year, "facility/facility" + "-" + year + ".csv", job_id, null));
         }
 
         jl.StatusCd = "COMPLETE";
