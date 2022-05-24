@@ -9,6 +9,7 @@ using SilkierQuartz;
 using Epa.Camd.Quartz.Scheduler.Models;
 using System.Collections.Generic;
 using Epa.Camd.Logger;
+using System.Threading;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -55,17 +56,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       {
         Console.Write("Checking Queue Now");
         List<List<Object>>  bulkFileWorkinProgress = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log where job_class = 'Bulk Data File' AND status_cd = 'WIP'", 9);
-        Console.Write(bulkFileWorkinProgress.Count);
-        if(bulkFileWorkinProgress.Count < 6){
-          Console.Write(bulk_data_queue.Count);
+
+        if(bulkFileWorkinProgress.Count < 8){
           if(bulk_data_queue.Count > 0){
-            int jobs_to_schedule = 6 - bulkFileWorkinProgress.Count;
+            int jobs_to_schedule = 8 - bulkFileWorkinProgress.Count;
+            Console.WriteLine("Scheduling Jobs: " + jobs_to_schedule);
             for(int i = 0; i < jobs_to_schedule; i++){
               if(bulk_data_queue.Count > 0){
                 IJobDetail toSchedule = bulk_data_queue[0];
-                Console.Write("Scheduling " + bulk_data_queue[0].JobDataMap.Get("fileName"));
+                //Console.Write("Scheduling " + bulk_data_queue[0].JobDataMap.Get("fileName"));
                 await context.Scheduler.ScheduleJob(toSchedule, TriggerBuilder.Create().StartNow().Build());
-                bulk_data_queue.Remove(toSchedule);
+                bulk_data_queue.RemoveAt(0);
+                Thread.Sleep(5000);
               }
             }
           }

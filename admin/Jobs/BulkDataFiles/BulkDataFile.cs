@@ -88,19 +88,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
+
+      string url =  (string) context.JobDetail.JobDataMap.Get("url");
+      string fileName = (string) context.JobDetail.JobDataMap.Get("fileName");
+      Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
+
+      string stateCode = (string) context.JobDetail.JobDataMap.Get("StateCode");
+      string dataType = (string) context.JobDetail.JobDataMap.Get("DataType");
+      string dataSubType = (string) context.JobDetail.JobDataMap.Get("DataSubType");
+      decimal? year = (decimal?) context.JobDetail.JobDataMap.Get("Year");
+      decimal? quarter = (decimal?) context.JobDetail.JobDataMap.Get("Quarter");
+      string programCode = (string) context.JobDetail.JobDataMap.Get("ProgramCode");
+      JobLog bulkFile = await _dbContext.JobLogs.FindAsync(job_id);
+
       try
       {       
 
-        string url =  (string) context.JobDetail.JobDataMap.Get("url");
-        string fileName = (string) context.JobDetail.JobDataMap.Get("fileName");
-        Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
-
-        string stateCode = (string) context.JobDetail.JobDataMap.Get("StateCode");
-        string dataType = (string) context.JobDetail.JobDataMap.Get("DataType");
-        string dataSubType = (string) context.JobDetail.JobDataMap.Get("DataSubType");
-        decimal? year = (decimal?) context.JobDetail.JobDataMap.Get("Year");
-        decimal? quarter = (decimal?) context.JobDetail.JobDataMap.Get("Quarter");
-        string programCode = (string) context.JobDetail.JobDataMap.Get("ProgramCode");
 
       string description = await getDescription(dataType, dataSubType, year, quarter, stateCode, programCode);
 
@@ -111,9 +114,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_SECRET_ACCESS_KEY"],
         RegionEndpoint.USGovCloudWest1
       );
-
-      JobLog bulkFile = await _dbContext.JobLogs.FindAsync(job_id);
-
         bulkFile.StatusCd = "WIP";
         bulkFile.StartDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         _dbContext.JobLogs.Update(bulkFile);
@@ -157,7 +157,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         InitiateMultipartUploadResponse initResponse = await s3Client.InitiateMultipartUploadAsync(initiateRequest);
 
         const int bufferSize = 5242880;
-        var bytes = new byte[bufferSize];
+        byte[] bytes = new byte[bufferSize];
 
         int readBytes;
         int totalReadBytes;
@@ -178,13 +178,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
                 if (readBytes == 0)
                     break;  
-                Console.WriteLine(readBytes);
+                //Console.WriteLine(readBytes);
             }while(totalReadBytes < bufferSize);
 
             if(totalReadBytes == 0){
               break;
             }
 
+            Console.WriteLine("Wrote 5MBs");
+            
             UploadPartRequest uploadRequest = new UploadPartRequest
             {
                 BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
@@ -196,25 +198,34 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             };
 
             uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
-
+            
             bytes = new byte[bufferSize];
             await s.FlushAsync();
 
             uploadPartNumber++;
         }
 
-        BulkFileMetadata newMeta = new BulkFileMetadata();
-        newMeta.S3Key = fileName;
-        newMeta.Metadata = JsonConvert.SerializeObject(Metadata);
-        newMeta.FileSize = totalWrittenBytes;
-        newMeta.AddDate = DateTime.Now;
-        newMeta.UpdateDate = DateTime.Now;
-
-        _dbContext.BulkFileMetadataSet.Add(newMeta);
-        _dbContext.SaveChanges();
+        /*
+        BulkFileMetadata found = _dbContext.BulkFileMetadataSet.Find(fileName);
+        if(found == null){
+          BulkFileMetadata newMeta = new BulkFileMetadata();
+          newMeta.S3Key = fileName;
+          newMeta.Metadata = JsonConvert.SerializeObject(Metadata);
+          newMeta.FileSize = totalWrittenBytes;
+          newMeta.AddDate = DateTime.Now;
+          newMeta.UpdateDate = DateTime.Now;
+          _dbContext.BulkFileMetadataSet.Add(newMeta);
+          await _dbContext.SaveChangesAsync();
+        }else{
+          found.UpdateDate = DateTime.Now;
+          found.FileSize = totalWrittenBytes;
+          _dbContext.BulkFileMetadataSet.Update(found);
+          await _dbContext.SaveChangesAsync();
+        }
+        */
+        
 
         myHttpWebResponse.Close();
-        //myHttpWebRequest.Abort();
 
         if(uploadPartNumber != 1 || totalReadBytes > 0){
 
@@ -236,21 +247,28 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         bulkFile.StatusCd = "COMPLETE";
         bulkFile.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         _dbContext.JobLogs.Update(bulkFile);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
 
         LogHelper.info("Executed stream successfully", new LogVariable("url", url));      
       }
       catch (Exception e)
       {
+        Console.WriteLine("ERRORED");
+        Console.WriteLine(bulkFile.JobId);
         Console.Write(e);
         LogHelper.error(e.Message);
-        /*
+        
+        try{
         bulkFile.StatusCd = "ERROR";
         bulkFile.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         bulkFile.AdditionalDetails = e.Message;
         _dbContext.JobLogs.Update(bulkFile);
-        _dbContext.SaveChanges();
-        */
+        await _dbContext.SaveChangesAsync();
+        }
+        catch(Exception er){
+          Console.WriteLine("INNER ERROR");
+          Console.WriteLine(er);
+        }
       }
     }
 

@@ -66,7 +66,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           return;
         }
       }
-      
 
       LogHelper.info("Executing ApportionedEmissionsBulkDataFiles job");
 
@@ -99,7 +98,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
             BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, null, stateCd, "Emissions", "Hourly", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/hourly/stream?" + urlParams, "emissions/hourly/state/emissions-hourly-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null));
             BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, null, stateCd, "Emissions", "Daily",Configuration["EASEY_EMISSIONS_API"] +  "/apportioned/daily/stream?" + urlParams, "emissions/daily/state/emissions-daily-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null));
-            BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, null, stateCd, "Mercury and Air Toxics Emissions (MATS)", "Daily", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/mats/hourly/stream?" + urlParams, "mats/hourly/state/mats-hourly-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null));
+            //BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, null, stateCd, "Mercury and Air Toxics Emissions (MATS)", "Daily", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/mats/hourly/stream?" + urlParams, "mats/hourly/state/mats-hourly-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null));
           }
         }
         
@@ -112,7 +111,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
           BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", "Hourly", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/hourly/stream?" + urlParams, "emissions/hourly/quarter/emissions-hourly-" + year + "-q" + quarter + ".csv", job_id, null));
           BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", "Daily", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/daily/stream?" + urlParams, "emissions/daily/quarter/emissions-daily-" + year + "-q" + quarter + ".csv", job_id, null));
-          BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, quarter, null, "Mercury and Air Toxics Emissions (MATS)", "Hourly", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/mats/hourly/stream?" + urlParams, "mats/hourly/quarter/mats-hourly-" + year + "-q" + quarter + ".csv", job_id, null));
+          //BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, quarter, null, "Mercury and Air Toxics Emissions (MATS)", "Hourly", Configuration["EASEY_EMISSIONS_API"] + "/apportioned/mats/hourly/stream?" + urlParams, "mats/hourly/quarter/mats-hourly-" + year + "-q" + quarter + ".csv", job_id, null));
         }
 
         
