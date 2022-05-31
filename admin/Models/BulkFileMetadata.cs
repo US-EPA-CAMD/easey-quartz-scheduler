@@ -8,12 +8,12 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 	public class BulkFileMetadata
 	{
 		[Key]
-		[Column("bulk_file_id")]
- 		public int Id { get; set; }
+		[Column("file_name")]
+ 		public string FileName { get; set; }
 
 		//[Key]
-		[Column("s3_key")]
- 		public string S3Key { get; set; }		 
+		[Column("s3_path")]
+ 		public string S3Path { get; set; }		 
 
 		[Column("metadata")]
 		public string Metadata { get; set; }

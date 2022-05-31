@@ -96,7 +96,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           string code = (string) rowsPerPrg[row][0];
           string urlParams = "programCodeInfo=" + code;
 
-          BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_ACCOUNT_API"] + "/allowance-compliance/stream?" + urlParams, "compliance/compliance-" + code.ToLower() + ".csv", job_id, code));
+          BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-compliance?" + urlParams, "compliance/compliance-" + code.ToLower() + ".csv", job_id, code));
         }
         
                 

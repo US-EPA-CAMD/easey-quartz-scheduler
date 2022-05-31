@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Amazon;
 using Amazon.S3;
 using Epa.Camd.Quartz.Scheduler.Models;
+using System.Threading.Tasks;
 
 using Quartz;
 using SilkierQuartz;
@@ -156,13 +157,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         InitiateMultipartUploadResponse initResponse = await s3Client.InitiateMultipartUploadAsync(initiateRequest);
 
-        const int bufferSize = 5242880;
+        int bufferSize = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_BULK_BUFFER_SIZE"]);
+
         byte[] bytes = new byte[bufferSize];
 
         int readBytes;
         int totalReadBytes;
         int uploadPartNumber = 1;
         int totalWrittenBytes = 0;
+
+        List<Task> parts = new List<Task>();
 
         while(true)
         {
@@ -178,23 +182,20 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
                 if (readBytes == 0)
                     break;  
-                //Console.WriteLine(readBytes);
             }while(totalReadBytes < bufferSize);
 
             if(totalReadBytes == 0){
               break;
             }
 
-            Console.WriteLine("Wrote 5MBs");
-            
             UploadPartRequest uploadRequest = new UploadPartRequest
             {
-                BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
-                Key = fileName,
-                UploadId = initResponse.UploadId,
-                PartNumber = uploadPartNumber,
-                PartSize = bufferSize,
-                InputStream = new MemoryStream(bytes)
+              BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
+              Key = fileName,
+              UploadId = initResponse.UploadId,
+              PartNumber = uploadPartNumber,
+              PartSize = bufferSize,
+              InputStream = new MemoryStream(bytes)
             };
 
             uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
@@ -205,11 +206,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             uploadPartNumber++;
         }
 
-        /*
-        BulkFileMetadata found = _dbContext.BulkFileMetadataSet.Find(fileName);
+        String[] split = fileName.Split("/");
+        string name = split[split.Length - 1];
+
+        
+        BulkFileMetadata found = _dbContext.BulkFileMetadataSet.Find(name);
         if(found == null){
           BulkFileMetadata newMeta = new BulkFileMetadata();
-          newMeta.S3Key = fileName;
+          newMeta.FileName = name;
+          newMeta.S3Path = fileName;
           newMeta.Metadata = JsonConvert.SerializeObject(Metadata);
           newMeta.FileSize = totalWrittenBytes;
           newMeta.AddDate = DateTime.Now;
@@ -222,11 +227,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           _dbContext.BulkFileMetadataSet.Update(found);
           await _dbContext.SaveChangesAsync();
         }
-        */
         
-
         myHttpWebResponse.Close();
-
+        
         if(uploadPartNumber != 1 || totalReadBytes > 0){
 
           CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
@@ -242,7 +245,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               await s3Client.CompleteMultipartUploadAsync(completeRequest);
 
         }
-
 
         bulkFile.StatusCd = "COMPLETE";
         bulkFile.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
