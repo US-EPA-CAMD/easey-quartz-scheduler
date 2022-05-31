@@ -1,5 +1,5 @@
 instances: 1
-memory: 1024M
+memory: 2048M
 environment: test
 host: easey-tst.app.cloud.gov
 apiHost: api-easey-tst.app.cloud.gov

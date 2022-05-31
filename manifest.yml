@@ -12,6 +12,7 @@ applications:
       EASEY_EMISSIONS_API: https://((apiGatewayHost))/emissions-mgmt
       EASEY_ACCOUNT_API: https://((apiGatewayHost))/account-mgmt
       EASEY_FACILITIES_API: https://((apiGatewayHost))/facilities-mgmt
+      EASEY_STREAMING_SERVICES: https://((apiGatewayHost))/streaming-services
       EASEY_QUARTZ_SCHEDULER_TITLE: ((title))
       EASEY_QUARTZ_SCHEDULER_HOST: ((host))
       EASEY_QUARTZ_SCHEDULER_PATH: ((path))
