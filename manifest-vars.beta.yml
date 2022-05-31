@@ -4,4 +4,4 @@ environment: beta
 host: easey-beta.app.cloud.gov
 apiHost: api-easey-beta.app.cloud.gov
 apiGatewayHost: api.epa.gov/easey/beta
-bulkDataS3Bucket: 
+bulkDataS3Bucket:

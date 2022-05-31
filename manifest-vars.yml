@@ -8,7 +8,7 @@ smtpHost: smtp.epa.gov
 smtpPort: 25
 checkEngineDllPath: ./
 instances: 1
-memory: 1024M
+memory: 2048M
 environment: development
 host: easey-dev.app.cloud.gov
 apiHost: api-easey-dev.app.cloud.gov
