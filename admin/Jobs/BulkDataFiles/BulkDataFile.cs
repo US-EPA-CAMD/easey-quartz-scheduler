@@ -6,10 +6,12 @@ using Microsoft.Extensions.Configuration;
 using Amazon.S3.Model;
 using System.Collections.Generic;
 using System.Net;
+using Newtonsoft.Json;
 
 using Amazon;
 using Amazon.S3;
 using Epa.Camd.Quartz.Scheduler.Models;
+using System.Threading.Tasks;
 
 using Quartz;
 using SilkierQuartz;
@@ -48,7 +50,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       Configuration = configuration;
     }
 
-    private async Task<string> getDescription(string dataType, string subType, decimal year, string quarter, string state, string programCode){
+    private async Task<string> getDescription(string dataType, string subType, decimal? year, decimal? quarter, string state, string programCode){
       string description = "";
 
       List<ProgramCode> programs = await _dbContext.getProgramCodes();
@@ -87,6 +89,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
+
       string url =  (string) context.JobDetail.JobDataMap.Get("url");
       string fileName = (string) context.JobDetail.JobDataMap.Get("fileName");
       Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
@@ -94,9 +97,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       string stateCode = (string) context.JobDetail.JobDataMap.Get("StateCode");
       string dataType = (string) context.JobDetail.JobDataMap.Get("DataType");
       string dataSubType = (string) context.JobDetail.JobDataMap.Get("DataSubType");
-      string quarter = (string) context.JobDetail.JobDataMap.Get("Quarter");
-      decimal year = (decimal) context.JobDetail.JobDataMap.Get("Year");
+      decimal? year = (decimal?) context.JobDetail.JobDataMap.Get("Year");
+      decimal? quarter = (decimal?) context.JobDetail.JobDataMap.Get("Quarter");
       string programCode = (string) context.JobDetail.JobDataMap.Get("ProgramCode");
+      JobLog bulkFile = await _dbContext.JobLogs.FindAsync(job_id);
+
+      try
+      {       
+
 
       string description = await getDescription(dataType, dataSubType, year, quarter, stateCode, programCode);
 
@@ -107,15 +115,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_SECRET_ACCESS_KEY"],
         RegionEndpoint.USGovCloudWest1
       );
-
-      JobLog bulkFile = await _dbContext.JobLogs.FindAsync(job_id);
-
-      try
-      {        
         bulkFile.StatusCd = "WIP";
         bulkFile.StartDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         _dbContext.JobLogs.Update(bulkFile);
         await _dbContext.SaveChangesAsync();
+
+        Console.Write(url);
 
         HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
         myHttpWebRequest.Headers.Add("x-api-key", Configuration["QUARTZ_API_KEY"]);
@@ -134,31 +139,34 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             Key = fileName,
         };
 
-        initiateRequest.Metadata.Add("Description", description);
+        Dictionary<String, Object> Metadata = new Dictionary<string, object>();
 
+        Metadata.Add("Description", description);
+        if(year != null)
+          Metadata.Add("Year", year.ToString());
         if(stateCode != null)
-          initiateRequest.Metadata.Add("StateCode", stateCode);
-        
+          Metadata.Add("StateCode", stateCode);
         if(dataType != null)
-          initiateRequest.Metadata.Add("DataType", dataType);
-
+          Metadata.Add("DataType", dataType);
         if(dataSubType != null)
-          initiateRequest.Metadata.Add("DataSubType", dataSubType);
-
+          Metadata.Add("DataSubType", dataSubType);
         if(quarter != null)
-          initiateRequest.Metadata.Add("Quarter", quarter);
-
+          Metadata.Add("Quarter", quarter.ToString());
         if(programCode != null)
-          initiateRequest.Metadata.Add("ProgramCode", programCode);
+          Metadata.Add("ProgramCode", programCode);
 
         InitiateMultipartUploadResponse initResponse = await s3Client.InitiateMultipartUploadAsync(initiateRequest);
 
-        const int bufferSize = 5242880;
-        var bytes = new byte[bufferSize];
+        int bufferSize = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_BULK_BUFFER_SIZE"]);
+
+        byte[] bytes = new byte[bufferSize];
 
         int readBytes;
         int totalReadBytes;
         int uploadPartNumber = 1;
+        int totalWrittenBytes = 0;
+
+        List<Task> parts = new List<Task>();
 
         while(true)
         {
@@ -170,10 +178,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 bufferSize - totalReadBytes);
 
                 totalReadBytes += readBytes;
+                totalWrittenBytes += readBytes;
 
                 if (readBytes == 0)
                     break;  
-                Console.WriteLine(readBytes);
             }while(totalReadBytes < bufferSize);
 
             if(totalReadBytes == 0){
@@ -182,25 +190,46 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
             UploadPartRequest uploadRequest = new UploadPartRequest
             {
-                BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
-                Key = fileName,
-                UploadId = initResponse.UploadId,
-                PartNumber = uploadPartNumber,
-                PartSize = bufferSize,
-                InputStream = new MemoryStream(bytes)
+              BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
+              Key = fileName,
+              UploadId = initResponse.UploadId,
+              PartNumber = uploadPartNumber,
+              PartSize = bufferSize,
+              InputStream = new MemoryStream(bytes)
             };
 
             uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
-
+            
             bytes = new byte[bufferSize];
             await s.FlushAsync();
 
             uploadPartNumber++;
         }
 
-        myHttpWebResponse.Close();
-        //myHttpWebRequest.Abort();
+        String[] split = fileName.Split("/");
+        string name = split[split.Length - 1];
 
+        
+        BulkFileMetadata found = _dbContext.BulkFileMetadataSet.Find(name);
+        if(found == null){
+          BulkFileMetadata newMeta = new BulkFileMetadata();
+          newMeta.FileName = name;
+          newMeta.S3Path = fileName;
+          newMeta.Metadata = JsonConvert.SerializeObject(Metadata);
+          newMeta.FileSize = totalWrittenBytes;
+          newMeta.AddDate = DateTime.Now;
+          newMeta.UpdateDate = DateTime.Now;
+          _dbContext.BulkFileMetadataSet.Add(newMeta);
+          await _dbContext.SaveChangesAsync();
+        }else{
+          found.UpdateDate = DateTime.Now;
+          found.FileSize = totalWrittenBytes;
+          _dbContext.BulkFileMetadataSet.Update(found);
+          await _dbContext.SaveChangesAsync();
+        }
+        
+        myHttpWebResponse.Close();
+        
         if(uploadPartNumber != 1 || totalReadBytes > 0){
 
           CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
@@ -217,23 +246,31 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         }
 
-
         bulkFile.StatusCd = "COMPLETE";
         bulkFile.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         _dbContext.JobLogs.Update(bulkFile);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
 
         LogHelper.info("Executed stream successfully", new LogVariable("url", url));      
       }
       catch (Exception e)
       {
+        Console.WriteLine("ERRORED");
+        Console.WriteLine(bulkFile.JobId);
         Console.Write(e);
         LogHelper.error(e.Message);
+        
+        try{
         bulkFile.StatusCd = "ERROR";
         bulkFile.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         bulkFile.AdditionalDetails = e.Message;
         _dbContext.JobLogs.Update(bulkFile);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
+        }
+        catch(Exception er){
+          Console.WriteLine("INNER ERROR");
+          Console.WriteLine(er);
+        }
       }
     }
 

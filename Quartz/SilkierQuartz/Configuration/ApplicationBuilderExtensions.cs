@@ -88,8 +88,7 @@ namespace Microsoft.AspNetCore.Builder
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(nameof(SilkierQuartz), $"{options.VirtualPathRoot}/{{controller=Scheduler}}/{{action=Index}}");
-                endpoints.MapControllerRoute($"{nameof(SilkierQuartz)}Authenticate",
-                    $"{options.VirtualPathRoot}/{{controller=Authenticate}}/{{action=Login}}");
+                endpoints.MapControllerRoute($"{nameof(SilkierQuartz)}Authenticate", $"{options.VirtualPathRoot}/{{controller=Authenticate}}/{{action=Login}}");
             });
 
             var types = JobsListHelper.GetSilkierQuartzJobs();
