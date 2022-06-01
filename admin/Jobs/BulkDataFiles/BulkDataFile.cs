@@ -266,7 +266,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         bulkFile.StatusCd = "ERROR";
         bulkFile.EndDate = Utils.getCurrentEasternTime();
 
-        bulkFile.AdditionalDetails = e.Message;
+        bulkFile.AdditionalDetails = e.ToString();
         _dbContext.JobLogs.Update(bulkFile);
         await _dbContext.SaveChangesAsync();
         }
