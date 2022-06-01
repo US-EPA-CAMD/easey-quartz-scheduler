@@ -116,7 +116,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         RegionEndpoint.USGovCloudWest1
       );
         bulkFile.StatusCd = "WIP";
-        bulkFile.StartDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+
+        bulkFile.StartDate = Utils.getCurrentEasternTime();
+
         _dbContext.JobLogs.Update(bulkFile);
         await _dbContext.SaveChangesAsync();
 
@@ -247,7 +249,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
 
         bulkFile.StatusCd = "COMPLETE";
-        bulkFile.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+        bulkFile.EndDate = Utils.getCurrentEasternTime();
         _dbContext.JobLogs.Update(bulkFile);
         await _dbContext.SaveChangesAsync();
 
@@ -262,7 +264,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         
         try{
         bulkFile.StatusCd = "ERROR";
-        bulkFile.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+        bulkFile.EndDate = Utils.getCurrentEasternTime();
+
         bulkFile.AdditionalDetails = e.Message;
         _dbContext.JobLogs.Update(bulkFile);
         await _dbContext.SaveChangesAsync();

@@ -77,8 +77,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         jl.JobSystem = "Quartz";
         jl.JobClass = "Bulk Data File";
         jl.JobName = "Apportioned Emissions";
-        jl.AddDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
-        jl.StartDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+        jl.AddDate = Utils.getCurrentEasternTime();
+        jl.StartDate = Utils.getCurrentEasternTime();
+
         jl.EndDate = null;
         jl.StatusCd = "WIP";
 
@@ -118,7 +119,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.ExecuteSql("CALL camdaux.procedure_set_dm_emissions_user();");
 
         jl.StatusCd = "COMPLETE";
-        jl.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+        jl.EndDate = Utils.getCurrentEasternTime();
+
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
         LogHelper.info("Executed ApportionedEmissionsBulkDataFiles job successfully");
@@ -126,7 +128,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       catch (Exception e)
       {
         jl.StatusCd = "ERROR";
-        jl.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+        jl.EndDate = Utils.getCurrentEasternTime();
         jl.AdditionalDetails = e.Message;
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
