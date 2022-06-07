@@ -26,7 +26,9 @@ applications:
       EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH: ((checkEngineDllPath))
       EASEY_DATAMART_BYPASS: false
       EASEY_EMISSIONS_NIGHTLY_BYPASS: false
+      EASEY_QUARTZ_SCHEDULER_DISPLAY_UI: true
       EASEY_QUARTZ_SCHEDULER_BULK_BUFFER_SIZE: ((bulkBufferSize))
+
     routes:
       - route: ((host))/((path))
       - route: ((apiHost))/((apiPath))

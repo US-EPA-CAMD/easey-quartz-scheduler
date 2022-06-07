@@ -191,7 +191,9 @@ namespace Epa.Camd.Quartz.Scheduler
       app.UseCors(corsPolicy);
       app.UseAuthentication();
       app.UseAuthorization();
-      app.UseSilkierQuartz();
+      
+      bool displayFlag = bool.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_DISPLAY_UI"]);
+      app.UseSilkierQuartz(displayUi: displayFlag);
 
       app.UseEndpoints(endpoints =>
       {
