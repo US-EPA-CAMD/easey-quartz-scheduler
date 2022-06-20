@@ -18,6 +18,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
+
         public static IScheduler GetScheduler(this IApplicationBuilder app)
         {
             return app.ApplicationServices.GetRequiredService<ISchedulerFactory>().GetScheduler().Result;
@@ -51,9 +52,11 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="configure"></param>
+        /// <param name="displayUi"></param>
         public static IApplicationBuilder UseSilkierQuartz(
             this IApplicationBuilder app,
-            Action<Services> configure = null)
+            Action<Services> configure = null,
+            bool displayUi = true)
         {
             var options = app.ApplicationServices
                 .GetService<SilkierQuartzOptions>() ?? throw new ArgumentNullException(nameof(SilkierQuartzOptions));
@@ -87,8 +90,10 @@ namespace Microsoft.AspNetCore.Builder
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(nameof(SilkierQuartz), $"{options.VirtualPathRoot}/{{controller=Scheduler}}/{{action=Index}}");
-                endpoints.MapControllerRoute($"{nameof(SilkierQuartz)}Authenticate", $"{options.VirtualPathRoot}/{{controller=Authenticate}}/{{action=Login}}");
+                if(displayUi){
+                    endpoints.MapControllerRoute(nameof(SilkierQuartz), $"{options.VirtualPathRoot}/{{controller=Scheduler}}/{{action=Index}}");
+                    endpoints.MapControllerRoute($"{nameof(SilkierQuartz)}Authenticate", $"{options.VirtualPathRoot}/{{controller=Authenticate}}/{{action=Login}}");
+                }
             });
 
             var types = JobsListHelper.GetSilkierQuartzJobs();

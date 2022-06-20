@@ -191,7 +191,9 @@ namespace Epa.Camd.Quartz.Scheduler
       app.UseCors(corsPolicy);
       app.UseAuthentication();
       app.UseAuthorization();
-      app.UseSilkierQuartz();
+      
+      bool displayFlag = bool.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_DISPLAY_UI"]);
+      app.UseSilkierQuartz(displayUi: displayFlag);
 
       app.UseEndpoints(endpoints =>
       {
@@ -220,7 +222,7 @@ namespace Epa.Camd.Quartz.Scheduler
           KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("EM"))
       );
 
-      //BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
+      BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
       //AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       //EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       //AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
