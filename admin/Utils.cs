@@ -32,12 +32,12 @@ namespace Epa.Camd.Quartz.Scheduler
     public async static Task<string> validateRequestCredentials(HttpRequest Request, IConfiguration Configuration){
 
       string bearer = Request.Headers["Authorization"];
-      string clientId = Request.Headers["x-client-id"];
+      string clientId = Configuration["EASEY_QUARTZ_SCHEDULER_CLIENT_ID"];
 
       var split = bearer.Split(" ");
 
-      if(bearer == null || split.Length != 2 || split[0] != "Bearer" || clientId == null)
-        return "clientId and bearer clientToken required";
+      if(bearer == null || split.Length != 2 || split[0] != "Bearer")
+        return "Bearer clientToken required";
       try{
         ClientTokenValidation payload = new ClientTokenValidation();
         payload.clientId = clientId;
