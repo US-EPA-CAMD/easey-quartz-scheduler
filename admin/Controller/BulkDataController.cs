@@ -44,16 +44,11 @@ namespace Epa.Camd.Quartz.Scheduler
     
     public async Task<ActionResult> CreateBulkFileApi([FromBody] string jsonList)
     {
-      string bearer = Request.Headers["Bearer"];
-
-      if(bearer == null)
-        return BadRequest("Bearer Token Required");
-
-      string[] validTokens = JsonConvert.DeserializeObject<string[]>(Configuration["EASEY_QUARTZ_SCHEDULER_BEARER_TOKENS"]);
-      Console.Write(validTokens);
-
-      if(!validTokens.Contains(bearer))
-        return BadRequest("Bearer Token Not Valid");
+      string errorMessage = await Utils.validateRequestCredentials(Request, Configuration);
+      if(errorMessage != "")
+      {
+        return BadRequest(errorMessage);
+      }
 
       JobLog jl = new JobLog();
       jl.JobId = job_id;
