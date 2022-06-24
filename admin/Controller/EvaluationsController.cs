@@ -94,6 +94,13 @@ namespace Epa.Camd.Quartz.Scheduler
     [HttpPost("monitor-plans")]
     public async Task<ActionResult> TriggerMPEvaluation([FromBody] EvaluationRequest request)
     {
+
+      string errorMessage = await Utils.validateRequestCredentials(Request, Configuration);
+      if(errorMessage != "")
+      {
+        return BadRequest(errorMessage);
+      }
+
       return await TriggerCheckEngineEvaluation(
         "MP",
         request.MonitorPlanId,
