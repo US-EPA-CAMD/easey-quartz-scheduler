@@ -182,7 +182,7 @@ namespace ECMPS.Checks.LME
             AddSourceDataTable( "MPOpSuppData", "VW_MP_OP_SUPP_DATA", sMonPlanWhereClause );
             AddSourceDataTable( "UnitStackConfig", "VW_UNIT_STACK_CONFIGURATION" );
             AddSourceDataTable( "LocationProgram", "VW_LOCATION_PROGRAM" );
-            AddSourceDataTable( "ReportingPeriod", "vw_reporting_period" );
+            AddSourceDataTable( "ReportingPeriod", "camdecmpsmd.vw_reporting_period");
 
             LoadCrossCheck( "Fuel Type Warning Levels for GCV" );
             LoadCrossCheck( "Fuel Type Reality Checks for GCV" );
@@ -444,7 +444,7 @@ namespace ECMPS.Checks.LME
         private void LoadCrossChecks()
         {
             DataTable Catalog = mCheckEngine.DbAuxConnection.GetDataTable( "SELECT * FROM vw_Cross_Check_Catalog" );
-            DataTable Value = mCheckEngine.DbAuxConnection.GetDataTable( "SELECT * FROM vw_Cross_Check_Catalog_Value" );
+            DataTable Value = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM camdecmpsmd.vw_Cross_Check_Catalog_Value");
             DataTable CrossCheck;
             DataRow CrossCheckRow;
             string CrossCheckName;
@@ -523,7 +523,7 @@ namespace ECMPS.Checks.LME
             if( Catalog != null && Catalog.Rows.Count >= 1 )
                 nCrossCheckCatalogID = Catalog.Rows[0].Field<int>( "CROSS_CHK_CATALOG_ID" );
 
-            sSQL = string.Format( "SELECT * FROM vw_Cross_Check_Catalog_Value WHERE CROSS_CHK_CATALOG_ID = {0}", nCrossCheckCatalogID );
+            sSQL = string.Format("SELECT * FROM camdecmpsmd.vw_Cross_Check_Catalog_Value WHERE CROSS_CHK_CATALOG_ID = {0}", nCrossCheckCatalogID );
             DataTable Value = mCheckEngine.DbAuxConnection.GetDataTable( sSQL );
             DataTable CrossCheck;
             DataRow CrossCheckRow;

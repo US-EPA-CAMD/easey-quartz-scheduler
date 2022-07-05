@@ -361,13 +361,13 @@ namespace ECMPS.Checks.Parameters
 
       if (AParameterUsageType == eParameterUsageType.Condition)
       {
-        Sql = "SELECT DISTINCT CHECK_PARAM_ID_NAME FROM camdecmpswks.vw_rule_check_condition WHERE RULE_CHECK_ID = '{0}'";
+        Sql = "SELECT DISTINCT CHECK_PARAM_ID_NAME FROM camdecmpsmd.vw_rule_check_condition WHERE RULE_CHECK_ID = '{0}'";
 
         UsageCd = null;
       }
       else
       {
-        Sql = "SELECT DISTINCT CHECK_PARAM_ID_NAME FROM camdecmpswks.vw_rule_check_parameter WHERE RULE_CHECK_ID = '{0}' AND CHECK_PARAM_USAGE_CD = '{1}'";
+        Sql = "SELECT DISTINCT CHECK_PARAM_ID_NAME FROM camdecmpsmd.vw_rule_check_parameter WHERE RULE_CHECK_ID = '{0}' AND CHECK_PARAM_USAGE_CD = '{1}'";
 
         switch (AParameterUsageType)
         {
@@ -432,7 +432,7 @@ namespace ECMPS.Checks.Parameters
                       + (AForRun ? " AND RUN_CHECK_FLG = 'Y'" : "");
 
       string Sql = string.Format("SELECT RULE_CHECK_ID, CHECK_TYPE_CD, CHECK_NUMBER " +
-                                 "  FROM  camdecmpswks.vw_rule_check" + 
+                                 "  FROM  camdecmpsmd.vw_rule_check" + 
                                  "  WHERE {0}", 
                                  WhereClause); //SQL SOurce: VW_RULE_CHECK
 
@@ -447,7 +447,7 @@ namespace ECMPS.Checks.Parameters
 
       string Sql = string.Format("SELECT COUNT(CHECK_CATALOG_ID) " +
                                  "  FROM (SELECT CHECK_CATALOG_ID " +
-                                 "          FROM camdecmpswks.vw_rule_check " +
+                                 "          FROM camdecmpsmd.vw_rule_check " +
                                  "          WHERE {0} " +
                                  "          GROUP BY CHECK_CATALOG_ID) as out",
                                  WhereClause); //SQL SOurce: VW_RULE_CHECK
@@ -467,8 +467,8 @@ namespace ECMPS.Checks.Parameters
                          + (AForRun ? " AND RUN_CHECK_FLG = 'Y'" : "");
 
       string Sql = string.Format("SELECT COUNT(CHECK_CATALOG_ID) " + 
-                                 "  FROM (SELECT CHECK_CATALOG_ID " + 
-                                 "          FROM camdecmpswks.vw_rule_check_parameter " + 
+                                 "  FROM (SELECT CHECK_CATALOG_ID " +
+                                 "          FROM camdecmpsmd.vw_rule_check_parameter " + 
                                  "          WHERE {0} " +
                                  "          GROUP BY CHECK_CATALOG_ID) as out",
                                  WhereClause);

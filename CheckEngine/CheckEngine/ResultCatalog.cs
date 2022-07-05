@@ -535,7 +535,7 @@ namespace ECMPS.Checks.CheckEngine
 
             string Sql = "select check_type_cd, check_number, plugin_name, " +
                    "       plugin_type_cd, check_param_id_name, field_name" +
-                   "  from camdecmpswks.vw_check_catalog_plugin ccp" +
+                   "  from camdecmpsmd.vw_check_catalog_plugin ccp" +
                    "  order by check_type_cd, check_number, plugin_name";
 
             //SQL Server Version of script
@@ -573,7 +573,7 @@ namespace ECMPS.Checks.CheckEngine
         {
             string Sql = "select check_catalog_result_id, check_type_cd, check_number, " +
                          "       check_result, response_catalog_description, severity_cd" +
-                         "  from camdecmpswks.vw_check_catalog_result  " +
+                         "  from camdecmpsmd.vw_check_catalog_result  " +
                          "  order by check_type_cd, check_number, check_result";
             //SQL Server version of Script
             //string Sql = "select ccr.Check_Catalog_Result_Id, ccr.Check_Type_Cd, ccr.Check_Number, " +

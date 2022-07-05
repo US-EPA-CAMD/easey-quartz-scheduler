@@ -531,7 +531,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
         //    AddSourceDataTable("SystemDesignationCode", "VW_System_Designation_Code");
         //    AddSourceDataTable("UnitsOfMeasureCode", "VW_Units_Of_Measure_Code");
         //    AddSourceDataTable("WafMethodCode", "VW_WAF_METHOD_CODE");
-            AddSourceDataTable("AnalyzerRangeCode", "camdecmpsmd.analyzer_range_code");
+            AddSourceDataTable("AnalyzerRangeCode", "camdecmpswks.analyzer_range_code");
             AddSourceDataTable("BypassApproachCode", "camdecmpsmd.bypass_approach_code");
             AddSourceDataTable("ComponentTypeCode", "camdecmpsmd.component_Type_code");
             AddSourceDataTable("ControlCode", "camdecmpsmd.control_code");

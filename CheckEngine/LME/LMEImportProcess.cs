@@ -116,7 +116,7 @@ namespace ECMPS.Checks.LME
             AddSourceDataFunction( "PROD_Monitor_Method", "CheckImp.Methods", mCheckEngine.DbDataConnection );
             AddSourceDataTable_Data( "PROD_Monitor_Plan_Location", "VW_MP_MONITOR_LOCATION", sORISCodeFilter );
             AddSourceDataTable_Data( "PROD_Monitor_Plan", "VW_MP_MONITOR_PLAN", sORISCodeFilter );
-            AddSourceDataTable_Data( "PROD_Reporting_Period_Lookup", "VW_REPORTING_PERIOD" );
+            AddSourceDataTable_Data( "PROD_Reporting_Period_Lookup", "camdecmpsmd.VW_REPORTING_PERIOD");
             AddSourceDataTable_Data( "PROD_Fuel_Code_Lookup", "FUEL_CODE" );
         }
 

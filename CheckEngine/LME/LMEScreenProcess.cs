@@ -158,7 +158,7 @@ namespace ECMPS.Checks.LME
                         break;
                     }
             }
-            AddSourceDataTable( "ReportingPeriod", "vw_reporting_period" );
+            AddSourceDataTable( "ReportingPeriod", "camdecmpsmd.vw_reporting_period");
             LoadCrossCheck( "Fuel Type Warning Levels for GCV" );
             LoadCrossCheck( "Fuel Type Reality Checks for GCV" );
         }
@@ -193,7 +193,7 @@ namespace ECMPS.Checks.LME
             if( Catalog != null && Catalog.Rows.Count >= 1 )
                 nCrossCheckCatalogID = Catalog.Rows[0].Field<int>( "CROSS_CHK_CATALOG_ID" );
 
-            sSQL = string.Format( "SELECT * FROM vw_Cross_Check_Catalog_Value WHERE CROSS_CHK_CATALOG_ID = {0}", nCrossCheckCatalogID );
+            sSQL = string.Format("SELECT * FROM camdecmpsmd.vw_Cross_Check_Catalog_Value WHERE CROSS_CHK_CATALOG_ID = {0}", nCrossCheckCatalogID );
             DataTable Value = mCheckEngine.DbAuxConnection.GetDataTable( sSQL );
             DataTable CrossCheck;
             DataRow CrossCheckRow;

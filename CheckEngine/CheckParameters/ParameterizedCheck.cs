@@ -245,7 +245,7 @@ namespace ECMPS.Checks.Parameters
                                             out DataTable AResultTable, ref string AErrorMessage)
     {
       string Sql = "SELECT DISTINCT AND_GROUP_NO, CHECK_PARAM_ID_NAME, CHECK_CONDITION, CHECK_OPERATOR_CD, NEGATION_IND"
-                 + "  FROM camdecmpswks.vw_rule_check_condition"
+                 + "  FROM camdecmpsmd.vw_rule_check_condition"
                  + "  WHERE RULE_CHECK_ID = {0}"
                  + "  ORDER BY AND_GROUP_NO";
 
@@ -258,7 +258,7 @@ namespace ECMPS.Checks.Parameters
                                                  out DataTable AResultTable, ref string AErrorMessage)
     {
       string Sql = "SELECT AND_GROUP_NO, COUNT(RULE_CHECK_ID) CONDITION_CNT"
-                 + "  FROM camdecmpswks.vw_rule_check_condition"
+                 + "  FROM camdecmpsmd.vw_rule_check_condition"
                  + "  WHERE RULE_CHECK_ID = {0}"
                  + "  GROUP BY AND_GROUP_NO"
                  + "  ORDER BY AND_GROUP_NO";
@@ -336,13 +336,13 @@ namespace ECMPS.Checks.Parameters
 
       if (AParameterUsageType == eParameterUsageType.Condition)
       {
-        Sql = "SELECT DISTINCT CHECK_PARAM_ID_NAME FROM camdecmpswks.vw_rule_check_condition WHERE RULE_CHECK_ID = '{0}'";
+        Sql = "SELECT DISTINCT CHECK_PARAM_ID_NAME FROM camdecmpsmd.vw_rule_check_condition WHERE RULE_CHECK_ID = '{0}'";
 
         UsageCd = null;
       }
       else
       {
-        Sql = "SELECT DISTINCT CHECK_PARAM_ID_NAME FROM camdecmpswks.vw_rule_check_parameter WHERE RULE_CHECK_ID = '{0}' AND CHECK_PARAM_USAGE_CD = '{1}'";
+        Sql = "SELECT DISTINCT CHECK_PARAM_ID_NAME FROM camdecmpsmd.vw_rule_check_parameter WHERE RULE_CHECK_ID = '{0}' AND CHECK_PARAM_USAGE_CD = '{1}'";
 
         switch (AParameterUsageType)
         {
@@ -402,7 +402,7 @@ namespace ECMPS.Checks.Parameters
 
     private int GetConditionAndCount(cDatabase AAuxDatabase, ref string AErrorMessage)
     {
-      string Sql = "SELECT COUNT(RULE_CHECK_ID) FROM camdecmpswks.vw_rule_check_condition WHERE RULE_CHECK_ID = {0} GROUP BY AND_GROUP_NO";
+      string Sql = "SELECT COUNT(RULE_CHECK_ID) FROM camdecmpsmd.vw_rule_check_condition WHERE RULE_CHECK_ID = {0} GROUP BY AND_GROUP_NO";
 
       Sql = string.Format(Sql, FRuleCheckId);
 

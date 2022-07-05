@@ -138,9 +138,9 @@ namespace ECMPS.Checks.Parameters
       base.InitializeCheckParameterList();
 
       // Add Unimplemented Legacy Parameters
-      string Sql = string.Format("select distinct CHECK_PARAM_ID, CHECK_PARAM_ID_NAME FROM camdecmpswks.vw_rule_check_parameter where PROCESS_CD = '{0}' " +
+      string Sql = string.Format("select distinct CHECK_PARAM_ID, CHECK_PARAM_ID_NAME FROM camdecmpsmd.vw_rule_check_parameter where PROCESS_CD = '{0}' " +
                                  "union " +
-                                 "select distinct CHECK_PARAM_ID, CHECK_PARAM_ID_NAME FROM camdecmpswks.vw_rule_check_condition where PROCESS_CD = '{0}' " +
+                                 "select distinct CHECK_PARAM_ID, CHECK_PARAM_ID_NAME FROM camdecmpsmd.vw_rule_check_condition where PROCESS_CD = '{0}' " +
                                  "order by CHECK_PARAM_ID_NAME",
                                  CheckProcess.ProcessCd);
       DataTable ParameterTable;

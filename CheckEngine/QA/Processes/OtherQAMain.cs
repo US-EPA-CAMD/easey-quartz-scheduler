@@ -554,7 +554,7 @@ namespace ECMPS.Checks.OtherQAEvaluation
 		private void LoadCrossChecks()
 		{
 			DataTable Catalog = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM vw_Cross_Check_Catalog");
-			DataTable Value = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM vw_Cross_Check_Catalog_Value");
+			DataTable Value = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM camdecmpsmd.vw_Cross_Check_Catalog_Value");
 			DataTable CrossCheck;
 			DataRow CrossCheckRow;
 			string CrossCheckName;
