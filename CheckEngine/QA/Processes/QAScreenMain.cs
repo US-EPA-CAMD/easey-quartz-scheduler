@@ -2055,7 +2055,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           {
             //get test summary records for this location ID
             SourceDataTable = new DataTable("QAGFM");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_SUMMARY_GFMCAL " +
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_GFMCAL " +
               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
