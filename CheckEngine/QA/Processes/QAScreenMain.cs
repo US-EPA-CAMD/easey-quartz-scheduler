@@ -1013,7 +1013,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get Flow To Load Checks for this location ID
             SourceDataTable = new DataTable("QAFlowLoadCheck");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_SUMMARY_F2LCHK " +
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_F2LCHK " +
               "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
@@ -1671,7 +1671,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get AppendixE tests for this test sum ID
             SourceDataTable = new DataTable("QAAppendixE");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_SUMMARY_APPE " +
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_APPE " +
               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
