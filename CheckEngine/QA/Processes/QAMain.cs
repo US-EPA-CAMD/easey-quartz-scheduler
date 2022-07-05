@@ -2675,7 +2675,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                 //get test summary record for this test sum ID
                 SourceDataTable = new DataTable("QATestSummary");
-                SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_SUMMARY " +
+                SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY " +
                   "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
                 // this defaults to 30 seconds if we don't override it
                 if (SourceDataAdapter.SelectCommand != null)
@@ -2688,7 +2688,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                 //get qa supp records for this location ID
                 SourceDataTable = new DataTable("QASuppData");
-                SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_SUPP_DATA " +
+                SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_SUPP_DATA " +
                   "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
                   "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                 // this defaults to 30 seconds if we don't override it
@@ -2734,7 +2734,7 @@ namespace ECMPS.Checks.QAEvaluation
                         {
                             //get linearity tests for this location ID
                             SourceDataTable = new DataTable("QALinearityTest");
-                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_SUMMARY_LINE " +
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_LINE " +
                               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
@@ -2919,7 +2919,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get fac qa supp records for this location ID
                             SourceDataTable = new DataTable("FacilityQASuppData");
-                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_SUPP_DATA " +
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_SUPP_DATA " +
                                     "WHERE FAC_ID IN (SELECT FAC_ID FROM VW_MONITOR_LOCATION " +
                                     "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'))", mCheckEngine.DbDataConnection.SQLConnection);
@@ -3076,7 +3076,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get test claim record for this test sum ID
                             SourceDataTable = new DataTable("QATestClaim");
-                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_CLAIM " +
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_CLAIM " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
                             if (SourceDataAdapter.SelectCommand != null)
@@ -3388,7 +3388,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get qa supp records for this facility
                             SourceDataTable = new DataTable("FacilityQASuppData");
-                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_SUPP_DATA " +
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_SUPP_DATA " +
                               "where mon_loc_id in (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
@@ -3400,7 +3400,7 @@ namespace ECMPS.Checks.QAEvaluation
                             //get qa supp attribute records for this facility
                             SourceDataTable = new DataTable("FacilityQASuppAttribute");
                             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM QA_SUPP_ATTRIBUTE " +
-                              "LEFT OUTER JOIN VW_QA_SUPP_DATA ON QA_SUPP_ATTRIBUTE.QA_SUPP_DATA_ID = VW_QA_SUPP_DATA.QA_SUPP_DATA_ID " +
+                              "LEFT OUTER JOIN camdecmpswks.VW_QA_SUPP_DATA ON QA_SUPP_ATTRIBUTE.QA_SUPP_DATA_ID = VW_QA_SUPP_DATA.QA_SUPP_DATA_ID " +
                               "where mon_loc_id in (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
@@ -3456,7 +3456,7 @@ namespace ECMPS.Checks.QAEvaluation
                         {
                             //get test summary records for this location ID
                             SourceDataTable = new DataTable("QACalibrationTest");
-                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_SUMMARY_7DAY " +
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_7DAY " +
                               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
@@ -3744,7 +3744,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get test summary records for this location ID
                             SourceDataTable = new DataTable("TestSummary");
-                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_SUMMARY " +
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY " +
                               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
@@ -4061,7 +4061,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get test summary records for this location ID
                             SourceDataTable = new DataTable("TestSummary");
-                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_SUMMARY " +
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY " +
                               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it

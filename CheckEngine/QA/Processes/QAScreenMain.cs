@@ -1431,7 +1431,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           {
             //get test claim records for this test sum ID
             SourceDataTable = new DataTable("QATestClaim");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_CLAIM " +
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_CLAIM " +
               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
@@ -2078,7 +2078,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
         case "SCRAETB":
           {
-            AddSourceData("TestSummary", string.Format("SELECT * FROM VW_QA_TEST_SUMMARY WHERE TEST_SUM_ID = '{0}'", mCheckEngine.TestSumId));
+            AddSourceData("TestSummary", string.Format("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY WHERE TEST_SUM_ID = '{0}'", mCheckEngine.TestSumId));
             break;
           }
 
@@ -2131,7 +2131,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
       {
         //get test summary records for this location ID
         SourceDataTable = new DataTable("TestSummary");
-        SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_SUMMARY " +
+        SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY " +
           "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
         // this defaults to 30 seconds if we don't override it
         if (SourceDataAdapter.SelectCommand != null)
@@ -2141,7 +2141,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
         //get qa supp records for this location ID
         SourceDataTable = new DataTable("QASuppData");
-        SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_SUPP_DATA " +
+        SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_SUPP_DATA " +
           "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
         // this defaults to 30 seconds if we don't override it
         if (SourceDataAdapter.SelectCommand != null)
