@@ -1069,7 +1069,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get Unit Stack Configuration records for this stack
             SourceDataTable = new DataTable("QAUnitStackConfiguration");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_UNIT_STACK_CONFIGURATION " +
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_UNIT_STACK_CONFIGURATION " +
               "WHERE FAC_ID = '" + mCheckEngine.FacilityID + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
@@ -1896,7 +1896,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           {
             //get unit default test run records for test sum ID
             SourceDataTable = new DataTable("QAUnitDefaultRun");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_UNIT_DEFAULT_TEST_RUN " +
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_UNIT_DEFAULT_TEST_RUN " +
               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
@@ -1999,7 +1999,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get Unit Stack Configuration records for this stack
             SourceDataTable = new DataTable("QAUnitStackConfiguration");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_UNIT_STACK_CONFIGURATION " +
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_UNIT_STACK_CONFIGURATION " +
               "WHERE FAC_ID = '" + mCheckEngine.FacilityID + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)

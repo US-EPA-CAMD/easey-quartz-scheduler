@@ -180,7 +180,7 @@ namespace ECMPS.Checks.LME
             AddSourceDataTable( "MPLoad", "VW_MP_MONITOR_LOAD", sMonPlanWhereClause );
             AddSourceDataTable( "MPDefault", "VW_MP_MONITOR_DEFAULT", sMonPlanWhereClause );
             AddSourceDataTable( "MPOpSuppData", "VW_MP_OP_SUPP_DATA", sMonPlanWhereClause );
-            AddSourceDataTable( "UnitStackConfig", "VW_UNIT_STACK_CONFIGURATION" );
+            AddSourceDataTable( "UnitStackConfig", "camdecmpswks.VW_UNIT_STACK_CONFIGURATION" );
             AddSourceDataTable( "LocationProgram", "VW_LOCATION_PROGRAM" );
             AddSourceDataTable( "ReportingPeriod", "camdecmpsmd.vw_reporting_period");
 

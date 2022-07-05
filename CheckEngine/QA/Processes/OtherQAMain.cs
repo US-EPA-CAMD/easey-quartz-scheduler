@@ -359,7 +359,7 @@ namespace ECMPS.Checks.OtherQAEvaluation
 
 					//get Unit Stack Configuration records for this stack
 					SourceDataTable = new DataTable("QAUnitStackConfiguration");
-					SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_UNIT_STACK_CONFIGURATION " +
+					SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_UNIT_STACK_CONFIGURATION " +
 					  "WHERE STACK_PIPE_MON_LOC_ID IN (SELECT MON_LOC_ID FROM VW_QA_CERT_EVENT " +
 					  "WHERE QA_CERT_EVENT_ID = '" + mCheckEngine.QaCertEventId + "')", mCheckEngine.DbDataConnection.SQLConnection);
 					// this defaults to 30 seconds if we don't override it

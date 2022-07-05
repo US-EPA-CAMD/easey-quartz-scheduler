@@ -619,7 +619,7 @@ namespace ECMPS.Checks.MPScreenEvaluation
                 case "SCRRWAF":
                     {
                         //get waf records for this location id
-                        AddSourceDataTable("RectDuctWaf", "VW_RECT_DUCT_WAF", sMonLocWhereClause);
+                        AddSourceDataTable("RectDuctWaf", "camdecmpswks.VW_RECT_DUCT_WAF", sMonLocWhereClause);
                         //lookup table
                         AddSourceDataTable("WafMethodCode", "VW_WAF_METHOD_CODE");
                         break;
@@ -704,7 +704,7 @@ namespace ECMPS.Checks.MPScreenEvaluation
             AddSourceData("MPLocation", "SELECT * FROM VW_MONITOR_LOCATION " + sMonLocWhereClause);
 
             //get Unit Stack Configuration records for this stack
-            AddSourceData("MPUnitStackConfiguration", string.Format("SELECT * FROM VW_UNIT_STACK_CONFIGURATION WHERE STACK_PIPE_MON_LOC_ID = '{0}' OR MON_LOC_ID = '{0}'", mCheckEngine.MonLocId));
+            AddSourceData("MPUnitStackConfiguration", string.Format("SELECT * FROM camdecmpswks.VW_UNIT_STACK_CONFIGURATION WHERE STACK_PIPE_MON_LOC_ID = '{0}' OR MON_LOC_ID = '{0}'", mCheckEngine.MonLocId));
 
             //get Used_identifier records for this location ID
             AddSourceData("UsedIdentifier", "SELECT * FROM Used_Identifier " + sMonLocWhereClause);

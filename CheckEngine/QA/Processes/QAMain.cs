@@ -3007,7 +3007,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get Unit Stack Configuration records for this stack
                             SourceDataTable = new DataTable("QAUnitStackConfiguration");
-                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_UNIT_STACK_CONFIGURATION " +
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_UNIT_STACK_CONFIGURATION " +
                               "WHERE STACK_PIPE_MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
@@ -3148,7 +3148,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get rectangular duct waf records for this location ID
                             SourceDataTable = new DataTable("QARectDuctWAF");
-                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_RECT_DUCT_WAF " +
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_RECT_DUCT_WAF " +
                               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
@@ -3204,7 +3204,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get Unit Stack Configuration records for this stack
                             SourceDataTable = new DataTable("QAUnitStackConfiguration");
-                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_UNIT_STACK_CONFIGURATION " +
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_UNIT_STACK_CONFIGURATION " +
                               "WHERE STACK_PIPE_MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
@@ -3766,7 +3766,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get Unit Stack Configuration records for this stack
                             SourceDataTable = new DataTable("QAUnitStackConfiguration");
-                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_UNIT_STACK_CONFIGURATION " +
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_UNIT_STACK_CONFIGURATION " +
                               "WHERE STACK_PIPE_MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
@@ -3973,7 +3973,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get unit def run records for this test sum ID
                             SourceDataTable = new DataTable("QAUnitDefaultRun");
-                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_UNIT_DEFAULT_TEST_RUN " +
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_UNIT_DEFAULT_TEST_RUN " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
                             if (SourceDataAdapter.SelectCommand != null)
