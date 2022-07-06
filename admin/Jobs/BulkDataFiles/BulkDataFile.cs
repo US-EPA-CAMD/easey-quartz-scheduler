@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 using Amazon;
 using Amazon.S3;
 using Epa.Camd.Quartz.Scheduler.Models;
-using System.Threading.Tasks;
 
 using Quartz;
 using SilkierQuartz;
@@ -143,19 +142,19 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         Dictionary<String, Object> Metadata = new Dictionary<string, object>();
 
-        Metadata.Add("Description", description);
+        Metadata.Add("description", description);
         if(year != null)
-          Metadata.Add("Year", year.ToString());
+          Metadata.Add("year", year.ToString());
         if(stateCode != null)
-          Metadata.Add("StateCode", stateCode);
+          Metadata.Add("stateCode", stateCode);
         if(dataType != null)
-          Metadata.Add("DataType", dataType);
+          Metadata.Add("dataType", dataType);
         if(dataSubType != null)
-          Metadata.Add("DataSubType", dataSubType);
+          Metadata.Add("dataSubType", dataSubType);
         if(quarter != null)
-          Metadata.Add("Quarter", quarter.ToString());
+          Metadata.Add("quarter", quarter.ToString());
         if(programCode != null)
-          Metadata.Add("ProgramCode", programCode);
+          Metadata.Add("programCode", programCode);
 
         InitiateMultipartUploadResponse initResponse = await s3Client.InitiateMultipartUploadAsync(initiateRequest);
 
