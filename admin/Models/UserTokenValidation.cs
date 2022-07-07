@@ -1,6 +1,4 @@
 
-using System.Net;
-
 namespace Epa.Camd.Quartz.Scheduler.Models
 {
   public class UserTokenValidation
