@@ -44,7 +44,7 @@ namespace Epa.Camd.Quartz.Scheduler
     
     public async Task<ActionResult> CreateBulkFileApi([FromBody] string jsonList)
     {
-      string errorMessage = await Utils.validateRequestCredentials(Request, Configuration);
+      string errorMessage = await Utils.validateRequestCredentialsClientToken(Request, Configuration);
       if(errorMessage != "")
       {
         return BadRequest(errorMessage);

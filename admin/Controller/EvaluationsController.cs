@@ -95,7 +95,7 @@ namespace Epa.Camd.Quartz.Scheduler
     public async Task<ActionResult> TriggerMPEvaluation([FromBody] EvaluationRequest request)
     {
 
-      string errorMessage = await Utils.validateRequestCredentials(Request, Configuration);
+      string errorMessage = await Utils.validateRequestCredentialsUserToken(Request, Configuration);
       if(errorMessage != "")
       {
         return BadRequest(errorMessage);
