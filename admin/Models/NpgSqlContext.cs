@@ -84,6 +84,15 @@ namespace Epa.Camd.Quartz.Scheduler.Models
           bfl.Quarter = null;
           bfl.StateCd = null;
           jl.JobName = dataType + "-" + subType + "-" + year;
+
+          if(subType == null){
+            if(year == null){
+              jl.JobName = dataType + "-" + program_code;
+            }else{
+              jl.JobName = dataType + "-" + program_code;
+            }
+          }
+
         }
 
         await this.JobLogs.AddAsync(jl);
