@@ -31,12 +31,18 @@ namespace Epa.Camd.Quartz.Scheduler
 
     public async static Task<string> validateRequestCredentialsClientToken(HttpRequest Request, IConfiguration Configuration){
 
-      string bearer = Request.Headers["Authorization"];
+      string[] split;
+      if(Request.Headers.ContainsKey("Authorization")){
+        string token = Request.Headers["Authorization"];
+        split = token.Split(" ");
+      }else{
+        string token = Request.Headers["Bearer"];
+        split = new string[]{"Bearer", token};
+      }
+
       string clientId = Configuration["EASEY_QUARTZ_SCHEDULER_CLIENT_ID"];
 
-      var split = bearer.Split(" ");
-
-      if(bearer == null || split.Length != 2 || split[0] != "Bearer")
+      if(split.Length != 2 || split[0] != "Bearer")
         return "Bearer clientToken required";
       try{
         ClientTokenValidation payload = new ClientTokenValidation();
@@ -47,6 +53,7 @@ namespace Epa.Camd.Quartz.Scheduler
 
         client.DefaultRequestHeaders.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
         HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_AUTH_API"] + "/tokens/client/validate", httpContent);
+        Console.Write(response.Content);
         response.EnsureSuccessStatusCode();
       }catch(Exception e){
         Console.WriteLine(e.ToString());
@@ -58,11 +65,16 @@ namespace Epa.Camd.Quartz.Scheduler
 
     public async static Task<string> validateRequestCredentialsUserToken(HttpRequest Request, IConfiguration Configuration){
 
-      string bearer = Request.Headers["Authorization"];
+      string[] split;
+      if(Request.Headers.ContainsKey("Authorization")){
+        string token = Request.Headers["Authorization"];
+        split = token.Split(" ");
+      }else{
+        string token = Request.Headers["Bearer"];
+        split = new string[]{"Bearer", token};
+      }
 
-      var split = bearer.Split(" ");
-
-      if(bearer == null || split.Length != 2 || split[0] != "Bearer")
+      if(split.Length != 2 || split[0] != "Bearer")
         return "User bearer token required";
       try{
         UserTokenValidation payload = new UserTokenValidation();

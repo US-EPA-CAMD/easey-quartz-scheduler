@@ -50,6 +50,8 @@ namespace Epa.Camd.Quartz.Scheduler
         return BadRequest(errorMessage);
       }
 
+      Console.Write("Made it here");
+
       JobLog jl = new JobLog();
       jl.JobId = job_id;
       jl.JobSystem = "Quartz";
