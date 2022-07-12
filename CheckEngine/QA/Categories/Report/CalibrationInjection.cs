@@ -38,7 +38,7 @@ namespace ECMPS.Checks.QAEvaluation
       mCalInjID = CalInjID;
       //mCalibration = Calibration;
 
-      TableName = "CALIBRATION_INJECTION";
+      TableName = "camdecmpswks.calibration_injection";
       CurrentRowId = mCalInjID;
 
       FilterData();

@@ -38,7 +38,7 @@ namespace ECMPS.Checks.QAEvaluation
       mFlowRATARunID = FlowRATARunID;
       //mRATARun = RATARun;
 
-      TableName = "FLOW_RATA_RUN";
+      TableName = "camdecmpswks.flow_rata_run";
       CurrentRowId = mFlowRATARunID;
 
       FilterData();
