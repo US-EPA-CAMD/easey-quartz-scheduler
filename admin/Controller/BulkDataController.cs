@@ -57,8 +57,8 @@ namespace Epa.Camd.Quartz.Scheduler
       jl.JobSystem = "Quartz";
       jl.JobClass = "Bulk Data File";
       jl.JobName = "Bulk File Generation API";
-      jl.AddDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
-      jl.StartDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+      jl.AddDate = Utils.getCurrentEasternTime();
+      jl.StartDate = Utils.getCurrentEasternTime();
       jl.EndDate = null;
       jl.StatusCd = "WIP";
 
@@ -74,7 +74,7 @@ namespace Epa.Camd.Quartz.Scheduler
         }      
 
         jl.StatusCd = "COMPLETE";
-        jl.EndDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+        jl.EndDate = Utils.getCurrentEasternTime();
         dbContext.JobLogs.Update(jl);
         await dbContext.SaveChangesAsync();  
       }
