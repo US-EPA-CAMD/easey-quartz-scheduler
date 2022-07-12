@@ -15,18 +15,11 @@ namespace Epa.Camd.Quartz.Scheduler
     private static readonly HttpClient client = new HttpClient();
 
     public static DateTime getCurrentEasternTime(){
-        TimeZoneInfo easternStandardTime;
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            easternStandardTime = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+        try{
+          return TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("America/New_York"));
+        }catch(Exception e){
+          return TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         }
-        else
-        {
-            easternStandardTime = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
-        }
-
-        return TimeZoneInfo.ConvertTime (DateTime.Now, easternStandardTime);
     }
 
     public async static Task<string> validateRequestCredentialsClientToken(HttpRequest Request, IConfiguration Configuration){
