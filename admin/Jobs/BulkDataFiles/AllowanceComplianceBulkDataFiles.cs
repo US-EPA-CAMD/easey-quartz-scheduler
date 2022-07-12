@@ -53,7 +53,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public async Task Execute(IJobExecutionContext context)
     {
 
-      /*
+      
       // Does this job already exist? Otherwise create and schedule a new copy
       List<List<Object>> jobAlreadyExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Emissions Compliance' AND add_date::date = now()::date;", 9);
       if(jobAlreadyExists.Count != 0){
@@ -68,7 +68,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           return;
         }
       }
-      */
+      
 
       LogHelper.info("Executing AllowanceComplianceBulkDataFiles job");
 

@@ -89,7 +89,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         List<List<Object>> rowsPerState = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_facility_bulk_files_to_generate", 1);
         
         for(int row = 0; row < rowsPerState.Count; row++){
-          decimal year = (decimal) rowsPerState[row][0];
+          decimal year = Convert.ToDecimal(rowsPerState[row][0]);
           DateTime currentDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
 
           BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, null, null, "Facility", null, Configuration["EASEY_STREAMING_SERVICES"] + "/facilities/attributes?year=" + year, "facility/facility" + "-" + year + ".csv", job_id, null));
