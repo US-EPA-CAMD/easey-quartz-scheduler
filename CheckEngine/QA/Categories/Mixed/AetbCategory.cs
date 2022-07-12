@@ -69,7 +69,7 @@ namespace ECMPS.Checks.QA
     {
       QaProcess = (cQaProcess)qaProcess;
 
-      TableName = "AIR_EMISSION_TESTING";
+      TableName = "camdecmpswks.air_emission_testing";
 
       // Set Current AETB and CurrentRowId
       if ((aetbRow != null) && (aetbRow.Row != null) && (aetbRow.Row.Table != null) && aetbRow.Row.Table.Columns.Contains("AIR_EMISSION_TEST_ID"))

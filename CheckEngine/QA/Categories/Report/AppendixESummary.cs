@@ -32,7 +32,7 @@ namespace ECMPS.Checks.QAEvaluation
       mQA = QA;
       mAPPESummaryId = APPESummaryId;
 
-      TableName = "AE_CORRELATION_TEST_SUM";
+      TableName = "camdecmpswks.ae_correlation_test_sum";
       CurrentRowId = mAPPESummaryId;
 
       FilterData();

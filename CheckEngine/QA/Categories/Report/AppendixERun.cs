@@ -32,7 +32,7 @@ namespace ECMPS.Checks.QAEvaluation
       mMonitorLocationID = MonitorLocationID;
       mQA = QA;
       mAPPERunId = APPERunId;
-      TableName = "AE_CORRELATION_TEST_RUN";
+      TableName = "camdecmpswks.ae_correlation_test_run";
       CurrentRowId = mAPPERunId;
 
       FilterData();

@@ -34,7 +34,7 @@ namespace ECMPS.Checks.QAEvaluation
       mAPPEHIOilId = APPEHIOilId;
       //cAppendixERun = AppendixERun;
 
-      TableName = "AE_HI_OIL";
+      TableName = "camdecmpswks.ae_hi_oil";
       CurrentRowId = mAPPEHIOilId;
 
       FilterData();

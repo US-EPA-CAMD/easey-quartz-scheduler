@@ -34,7 +34,7 @@ namespace ECMPS.Checks.QAEvaluation
       mAPPEHIGasId = APPEHIGasId;
       //cAppendixERun = AppendixERun;
 
-      TableName = "AE_HI_GAS";
+      TableName = "camdecmpswks.ae_hi_gas";
       CurrentRowId = mAPPEHIGasId;
 
       FilterData();
