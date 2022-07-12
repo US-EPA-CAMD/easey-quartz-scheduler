@@ -15,6 +15,8 @@ namespace Epa.Camd.Quartz.Scheduler
     private static readonly HttpClient client = new HttpClient();
 
     public static DateTime getCurrentEasternTime(){
+      Console.Write("ZONES");
+      Console.WriteLine(TimeZoneInfo.GetSystemTimeZones());
         try{
           return TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("America/New_York"));
         }catch(Exception e){
