@@ -91,6 +91,8 @@ namespace Epa.Camd.Quartz.Scheduler
         client.DefaultRequestHeaders.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
         HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_AUTH_API"] + "/tokens/validate", httpContent);
 
+        Console.WriteLine(response.Content);
+
         response.EnsureSuccessStatusCode();
       }catch(Exception e){
         Console.WriteLine(e.GetBaseException());
