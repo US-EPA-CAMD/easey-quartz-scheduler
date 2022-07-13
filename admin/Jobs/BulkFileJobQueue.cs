@@ -8,7 +8,7 @@ using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
 using System.Collections.Generic;
-using Epa.Camd.Logger;
+using Microsoft.Extensions.Configuration;
 using System.Threading;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
@@ -16,6 +16,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
   public class BulkFileJobQueue : IJob
   {
     private NpgSqlContext _dbContext = null;
+
+    private IConfiguration Configuration { get; }
+
 
     private static List<IJobDetail> bulk_data_queue = new List<IJobDetail>();
 
@@ -45,9 +48,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public BulkFileJobQueue(NpgSqlContext dbContext)
+    public BulkFileJobQueue(NpgSqlContext dbContext, IConfiguration configuration)
     {
       _dbContext = dbContext;
+      Configuration = configuration;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -57,9 +61,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         Console.Write("Checking Queue Now");
         List<List<Object>>  bulkFileWorkinProgress = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log where job_class = 'Bulk Data File' AND status_cd = 'WIP'", 9);
 
-        if(bulkFileWorkinProgress.Count < 8){
+        if(bulkFileWorkinProgress.Count < Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_BULK_FILE_JOBS"])){
           if(bulk_data_queue.Count > 0){
-            int jobs_to_schedule = 8 - bulkFileWorkinProgress.Count;
+            int jobs_to_schedule = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_BULK_FILE_JOBS"]) - bulkFileWorkinProgress.Count;
             Console.WriteLine("Scheduling Jobs: " + jobs_to_schedule);
             for(int i = 0; i < jobs_to_schedule; i++){
               if(bulk_data_queue.Count > 0){

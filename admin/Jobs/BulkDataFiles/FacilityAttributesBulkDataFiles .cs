@@ -90,7 +90,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         
         for(int row = 0; row < rowsPerState.Count; row++){
           decimal year = Convert.ToDecimal(rowsPerState[row][0]);
-          DateTime currentDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+          DateTime currentDate = Utils.getCurrentEasternTime();
 
           BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, null, null, "Facility", null, Configuration["EASEY_STREAMING_SERVICES"] + "/facilities/attributes?year=" + year, "facility/facility" + "-" + year + ".csv", job_id, null));
         }
