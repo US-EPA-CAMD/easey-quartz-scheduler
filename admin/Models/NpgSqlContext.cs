@@ -88,8 +88,11 @@ namespace Epa.Camd.Quartz.Scheduler.Models
           if(subType == null){
             if(year == null){
               jl.JobName = dataType + "-" + program_code;
-            }else{
-              jl.JobName = dataType + "-" + program_code;
+            }else if(program_code == null){
+              jl.JobName = dataType + "-" + year;
+            }
+            else{
+              jl.JobName = dataType + "-" + year + '-' + program_code;
             }
           }
 

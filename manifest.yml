@@ -28,6 +28,7 @@ applications:
       EASEY_EMISSIONS_NIGHTLY_BYPASS: false
       EASEY_QUARTZ_SCHEDULER_DISPLAY_UI: true
       EASEY_QUARTZ_SCHEDULER_BULK_BUFFER_SIZE: ((bulkBufferSize))
+      EASEY_QUARTZ_SCHEDULER_MAX_BULK_FILE_JOBS: 8
 
     routes:
       - route: ((host))/((path))
