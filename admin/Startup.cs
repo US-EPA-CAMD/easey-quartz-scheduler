@@ -215,6 +215,8 @@ namespace Epa.Camd.Quartz.Scheduler
 
       IScheduler scheduler = app.GetScheduler();
 
+      BulkDataFile.setScheduler(scheduler);
+
       scheduler.ListenerManager.AddJobListener(
           new CheckEngineEvaluationListener(Configuration),
           KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("MP")),

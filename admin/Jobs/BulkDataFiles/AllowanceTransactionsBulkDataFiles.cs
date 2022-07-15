@@ -93,7 +93,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           decimal year = DateTime.Now.ToUniversalTime().Year - 1;
           string urlParams = "transactionBeginDate=" + year + "-01-01&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
 
-          BulkFileJobQueue.AddBulkDataJobToQueue(await _dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code));
+          await _dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code);
         }
         
         jl.StatusCd = "COMPLETE";
