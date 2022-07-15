@@ -58,12 +58,12 @@ namespace Epa.Camd.Quartz.Scheduler
     private async Task generateMassFacilityJobs(int? from, int? to){
       for(int? year = from; year <= to; year++){
           DateTime currentDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
-          BulkFileJobQueue.AddBulkDataJobToQueue(await this.dbContext.CreateBulkFileJob(year, null, null, "Facility", null, Configuration["EASEY_STREAMING_SERVICES"] + "/facilities/attributes?year=" + year, "facility/facility" + "-" + year + ".csv", job_id, null));
+          await this.dbContext.CreateBulkFileJob(year, null, null, "Facility", null, Configuration["EASEY_STREAMING_SERVICES"] + "/facilities/attributes?year=" + year, "facility/facility" + "-" + year + ".csv", job_id, null);
       }
     }
 
     private async Task generateMassEmissionsCompliance(){
-      BulkFileJobQueue.AddBulkDataJobToQueue(await this.dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance", "compliance/emissions-compliance-arpnox.csv", job_id, "ARP"));
+      await this.dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance", "compliance/emissions-compliance-arpnox.csv", job_id, "ARP");
     }
 
     private async Task generateMassAllowanceComplianceJobs(string[] programCodes){
@@ -71,7 +71,8 @@ namespace Epa.Camd.Quartz.Scheduler
       foreach (string code in codes)
       {
         string urlParams = "programCodeInfo=" + code;
-        BulkFileJobQueue.AddBulkDataJobToQueue(await this.dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-compliance?" + urlParams, "compliance/compliance-" + code.ToLower() + ".csv", job_id, code));
+        await this.dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-compliance?" + urlParams, "compliance/compliance-" + code.ToLower() + ".csv", job_id, code);
+        
       }  
     }
 
@@ -81,7 +82,7 @@ namespace Epa.Camd.Quartz.Scheduler
         foreach (string code in codes)
         {
           string urlParams = "transactionBeginDate=" + year + "-01-01&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
-          BulkFileJobQueue.AddBulkDataJobToQueue(await this.dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code));
+          await this.dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code);
         }  
       }
     }
@@ -106,7 +107,7 @@ namespace Epa.Camd.Quartz.Scheduler
           string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + stateCd;
 
           foreach(string dataSubType in dataSubTypes){
-            BulkFileJobQueue.AddBulkDataJobToQueue(await this.dbContext.CreateBulkFileJob(year, null, stateCd, "Emissions", dataSubType, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/" + dataSubType.ToLower() + "?" + urlParams, "emissions/" + dataSubType.ToLower() + "/state/emissions-"+ dataSubType.ToLower() +"-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null));
+            await this.dbContext.CreateBulkFileJob(year, null, stateCd, "Emissions", dataSubType, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/" + dataSubType.ToLower() + "?" + urlParams, "emissions/" + dataSubType.ToLower() + "/state/emissions-"+ dataSubType.ToLower() +"-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
           }
         }  
       }
@@ -146,7 +147,7 @@ namespace Epa.Camd.Quartz.Scheduler
 
           string urlParams = "beginDate=" + beginDate + "&endDate=" + endDate;
           foreach(string dataSubType in dataSubTypes){
-            BulkFileJobQueue.AddBulkDataJobToQueue(await this.dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", dataSubType, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/" + dataSubType.ToLower() + "?" + urlParams, "emissions/" + dataSubType.ToLower() + "/quarter/emissions-" + dataSubType.ToLower() + "-" + year + "-q" + quarter + ".csv", job_id, null));
+            await this.dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", dataSubType, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/" + dataSubType.ToLower() + "?" + urlParams, "emissions/" + dataSubType.ToLower() + "/quarter/emissions-" + dataSubType.ToLower() + "-" + year + "-q" + quarter + ".csv", job_id, null);
           }
         }  
       }
@@ -156,11 +157,13 @@ namespace Epa.Camd.Quartz.Scheduler
     public async Task<ActionResult> CreateMassBulkFileApi([FromBody] OnDemandBulkFileRequest massRequest)
     {
       
+      /*
       string errorMessage = await Utils.validateRequestCredentialsClientToken(Request, Configuration);
       if(errorMessage != "")
       {
         return BadRequest(errorMessage);
       }
+      */
       
       JobLog jl = new JobLog();
       jl.JobId = job_id;

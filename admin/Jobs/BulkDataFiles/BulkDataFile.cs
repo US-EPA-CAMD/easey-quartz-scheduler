@@ -24,6 +24,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public IConfiguration Configuration { get; }
 
+    public static IScheduler BulkDataScheduler {get; set;}
+
     private NpgSqlContext _dbContext = null;
 
     public static class Identity
@@ -252,6 +254,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.JobLogs.Update(bulkFile);
         await _dbContext.SaveChangesAsync();
 
+        await context.Scheduler.DeleteJob(new JobKey(job_id.ToString()));
+
         LogHelper.info("Executed stream successfully", new LogVariable("url", url));      
       }
       catch (Exception e)
@@ -278,7 +282,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static IJobDetail CreateJobDetail(string key)
     {
-      return JobBuilder.Create<BulkDataFile>().WithIdentity(new JobKey(key, Constants.QuartzGroups.BULK_DATA)).StoreDurably().Build();
+      IJobDetail jobDetail = JobBuilder.Create<BulkDataFile>().WithIdentity(new JobKey(key)).StoreDurably().Build();
+      BulkDataScheduler.AddJob(jobDetail, false);
+
+      return jobDetail;
+    }
+
+    public static void setScheduler(IScheduler scheduler){
+      BulkDataFile.BulkDataScheduler = scheduler;
     }
 
   }

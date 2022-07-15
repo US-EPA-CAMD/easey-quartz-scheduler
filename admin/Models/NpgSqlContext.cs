@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using Quartz;
+using Quartz.Impl;
 using Epa.Camd.Quartz.Scheduler.Jobs;
 
 using Npgsql;
