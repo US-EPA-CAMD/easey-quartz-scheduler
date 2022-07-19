@@ -209,7 +209,7 @@ namespace Epa.Camd.Quartz.Scheduler
 
       app.UseSwaggerUI(c =>
       {
-        c.SwaggerEndpoint($"/{apiPath}/swagger/v1/swagger.json", "v1");
+        c.SwaggerEndpoint($"./v1/swagger.json", "Quartz API v1");
         c.RoutePrefix = $"{apiPath}/swagger";
       });
 
