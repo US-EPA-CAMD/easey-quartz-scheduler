@@ -20,8 +20,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private NpgSqlContext _dbContext = null;
 
-    public IConfiguration Configuration { get; }
-
     public static class Identity
     {
       public static readonly string Group = Constants.QuartzGroups.BULK_DATA;
@@ -40,14 +38,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       if (!await scheduler.CheckExists(WithJobKey()))
       {
-        app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(WithCronSchedule("0 0/10 1-5 15 1 ? *"));
+        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_TRANSACTIONS_SCHEDULE"] != null){
+          app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_TRANSACTIONS_SCHEDULE"]));
+        }
+        else
+          app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(WithCronSchedule("0 0/10 1-5 15 1 ? *"));
       }
     }
 
     public AllowanceTransactionsBulkDataFiles(NpgSqlContext dbContext, IConfiguration configuration)
     {
       _dbContext = dbContext;
-      Configuration = configuration;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -61,7 +62,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
 
       // Does data mart nightly exists for current date and has it completed
-      if(Configuration["EASEY_DATAMART_BYPASS"] != "true"){
+      if(Utils.Configuration["EASEY_DATAMART_BYPASS"] != "true"){
         List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name in ('Datamart Nightly') AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
         if(datamartExists.Count == 0){
           return;
@@ -97,7 +98,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           decimal year = DateTime.Now.ToUniversalTime().Year - 1;
           string urlParams = "transactionBeginDate=" + year + "-01-01&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
 
-          await _dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code);
+          await _dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code);
         }
         
         jl.StatusCd = "COMPLETE";

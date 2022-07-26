@@ -20,8 +20,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private NpgSqlContext _dbContext = null;
 
-    public IConfiguration Configuration { get; }
-
     public static class Identity
     {
       public static readonly string Group = Constants.QuartzGroups.BULK_DATA;
@@ -40,14 +38,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       if (!await scheduler.CheckExists(WithJobKey()))
       {
-        app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(WithCronSchedule("0 0/10 1-5 15 * ? *"));
+        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EMISSIONS_COMPLIANCE_SCHEDULE"] != null){
+          app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EMISSIONS_COMPLIANCE_SCHEDULE"]));
+        }
+        else
+          app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(WithCronSchedule("0 0/10 1-5 15 * ? *"));
       }
     }
 
     public EmissionsComplianceBulkDataFiles (NpgSqlContext dbContext, IConfiguration configuration)
     {
       _dbContext = dbContext;
-      Configuration = configuration;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -59,7 +60,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         return; // Job already exists , do not run again
       }
 
-      if(Configuration["EASEY_DATAMART_BYPASS"] != "true"){
+      if(Utils.Configuration["EASEY_DATAMART_BYPASS"] != "true"){
         // Does data mart nightly exists for current date and has it completed
         List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name in ('Datamart Nightly') AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
         if(datamartExists.Count == 0){
@@ -91,7 +92,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           decimal year = (decimal) rowsPerPrg[row][0];
           string urlParams = "year=" + year;
 
-          await _dbContext.CreateBulkFileJob(year, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance?" + urlParams, "compliance/emissions-compliance-arpnox-" + year + ".csv", job_id, "ARP");
+          await _dbContext.CreateBulkFileJob(year, null, null, "Compliance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance?" + urlParams, "compliance/emissions-compliance-arpnox-" + year + ".csv", job_id, "ARP");
         }
                 
         jl.StatusCd = "COMPLETE";
