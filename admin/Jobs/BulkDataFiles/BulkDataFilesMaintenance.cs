@@ -20,8 +20,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private NpgSqlContext _dbContext = null;
 
-    public IConfiguration Configuration { get; }
-
     public static class Identity
     {
       public static readonly string Group = Constants.QuartzGroups.BULK_DATA;
@@ -40,14 +38,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       if (!await scheduler.CheckExists(WithJobKey()))
       {
-        app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule("0 0 8 ? * * *"));
+        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_MAINTENANCE_SCHEDULE"] != null){
+          app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_MAINTENANCE_SCHEDULE"]));
+        }
+        else
+          app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule("0 0 8 ? * * *"));
       }
     }
 
     public BulkDataFileMaintenance(NpgSqlContext dbContext, IConfiguration configuration)
     {
       _dbContext = dbContext;
-      Configuration = configuration;
     }
 
     private async void handleJob(IJobExecutionContext context, List<List<Object>> rows, bool reschedule){
