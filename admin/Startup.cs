@@ -226,12 +226,13 @@ namespace Epa.Camd.Quartz.Scheduler
       );
 
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
-      //AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      //EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      //AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      //FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      //ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
-      //BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
+      AllowanceHoldingsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
+      BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
       RemoveExpiredUserSession.ScheduleWithQuartz(scheduler, app);
       RemoveExpiredCheckoutRecord.ScheduleWithQuartz(scheduler, app);      
     }
