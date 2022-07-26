@@ -160,6 +160,7 @@ namespace Epa.Camd.Quartz.Scheduler
       services.AddOptions();
 
       BulkFileJobQueue.RegisterWithQuartz(services);
+      AllowanceHoldingsBulkDataFiles.RegisterWithQuartz(services);
       AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
       EmissionsComplianceBulkDataFiles.RegisterWithQuartz(services);
       AllowanceTransactionsBulkDataFiles.RegisterWithQuartz(services);

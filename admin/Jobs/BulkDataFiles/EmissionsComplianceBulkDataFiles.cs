@@ -85,10 +85,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.JobLogs.Add(jl);
         await _dbContext.SaveChangesAsync();
         
-        List<List<Object>> rowsPerPrg = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_emissions_based_compliance_bulk_files_to_generate", 1);
-        
-        if(rowsPerPrg.Count > 0){
-          await _dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance", "compliance/emissions-compliance-arpnox.csv", job_id, "ARP");
+        List<List<Object>> rowsPerPrg = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_emissions_based_compliance_bulk_files_to_generate", 2);
+
+        for(int row = 0; row < rowsPerPrg.Count; row++){
+          decimal year = (decimal) rowsPerPrg[row][0];
+          string urlParams = "year=" + year;
+
+          await _dbContext.CreateBulkFileJob(year, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance?" + urlParams, "compliance/emissions-compliance-arpnox-" + year + ".csv", job_id, "ARP");
         }
                 
         jl.StatusCd = "COMPLETE";

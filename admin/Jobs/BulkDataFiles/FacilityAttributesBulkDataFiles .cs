@@ -78,8 +78,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         jl.JobSystem = "Quartz";
         jl.JobClass = "Bulk Data File";
         jl.JobName = "Facility Attributes";
-        jl.AddDate = DateTime.Now;
-        jl.StartDate = DateTime.Now;
+        jl.AddDate = Utils.getCurrentEasternTime();;
+        jl.StartDate = Utils.getCurrentEasternTime();;
         jl.EndDate = null;
         jl.StatusCd = "WIP";
 
@@ -96,7 +96,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
 
         jl.StatusCd = "COMPLETE";
-        jl.EndDate = DateTime.Now;
+        jl.EndDate = Utils.getCurrentEasternTime();;
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
         LogHelper.info("Executing FacilityAttributesBulkDataFiles job successfully");
@@ -104,7 +104,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       catch (Exception e)
       {
         jl.StatusCd = "ERROR";
-        jl.EndDate = DateTime.Now;
+        jl.EndDate = Utils.getCurrentEasternTime();;
         jl.AdditionalDetails = e.Message;
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
