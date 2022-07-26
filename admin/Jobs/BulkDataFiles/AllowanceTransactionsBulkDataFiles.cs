@@ -40,7 +40,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       if (!await scheduler.CheckExists(WithJobKey()))
       {
-        app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(WithCronSchedule("* 0/10 1-5 30 1 ? *"));
+        app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(WithCronSchedule("0 0/10 1-5 15 1 ? *"));
       }
     }
 
@@ -85,11 +85,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.JobLogs.Add(jl);
         await _dbContext.SaveChangesAsync();
         
-        List<List<Object>> rowsPerPrg = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_allowance_transactions_bulk_files_to_generate", 1);
+        List<List<Object>> programCodeRows = await this._dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code", 1);
+        string[] programCodes = new string[programCodeRows.Count];
+
+        for(int i = 0; i < programCodeRows.Count; i++){
+          programCodes[i] = (string) programCodeRows[i][0];
+        }
         
-        
-        for(int row = 0; row < rowsPerPrg.Count; row++){
-          string code = (string) rowsPerPrg[row][0];
+        for(int row = 0; row < programCodes.Length; row++){
+          string code = programCodes[row];
           decimal year = DateTime.Now.ToUniversalTime().Year - 1;
           string urlParams = "transactionBeginDate=" + year + "-01-01&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
 

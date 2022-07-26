@@ -39,7 +39,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       if (!await scheduler.CheckExists(WithJobKey()))
       {
-        app.UseQuartzJob<ApportionedEmissionsBulkData>(WithCronSchedule("* 0/10 4-8 * * ? *"));
+        app.UseQuartzJob<ApportionedEmissionsBulkData>(WithCronSchedule("0 0/10 4-8 ? * * *"));
       }
     }
 

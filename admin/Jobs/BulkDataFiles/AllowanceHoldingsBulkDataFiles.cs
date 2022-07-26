@@ -13,7 +13,7 @@ using Epa.Camd.Logger;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
-  public class AllowanceComplianceBulkDataFiles  : IJob
+  public class AllowanceHoldingsBulkDataFiles : IJob
   {
 
     private Guid job_id = Guid.NewGuid();
@@ -25,26 +25,26 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public static class Identity
     {
       public static readonly string Group = Constants.QuartzGroups.BULK_DATA;
-      public static readonly string JobName = "Allowance Compliance Bulk Data";
-      public static readonly string JobDescription = "Determine which allowance compliance data needs to be regenerated and schedule BulkDataFile jobs to handle the regen";
-      public static readonly string TriggerName = "Run yearly and check which allowance compliance files need to be regenerated";
-      public static readonly string TriggerDescription = "Runs yearly to determine if files need to be regenerated based on query results";
+      public static readonly string JobName = "Allowance Holdings Bulk Data";
+      public static readonly string JobDescription = "Generate Allowance Holdings and schedule BulkDataFile jobs to handle the regen";
+      public static readonly string TriggerName = "Run nightly and regen allowance holdings files";
+      public static readonly string TriggerDescription = "Runs nightly to generate allowance holdings files";
     }
 
     public static void RegisterWithQuartz(IServiceCollection services)
     {
-      services.AddQuartzJob<AllowanceComplianceBulkDataFiles>(WithJobKey(), Identity.JobDescription);
+      services.AddQuartzJob<AllowanceHoldingsBulkDataFiles>(WithJobKey(), Identity.JobDescription);
     }
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
       if (!await scheduler.CheckExists(WithJobKey()))
       {
-        app.UseQuartzJob<AllowanceComplianceBulkDataFiles>(WithCronSchedule("0 0/10 1-5 15 * ? *"));
+        app.UseQuartzJob<AllowanceHoldingsBulkDataFiles>(WithCronSchedule("0 0/10 1-5 ? * * *"));
       }
     }
 
-    public AllowanceComplianceBulkDataFiles (NpgSqlContext dbContext, IConfiguration configuration)
+    public AllowanceHoldingsBulkDataFiles(NpgSqlContext dbContext, IConfiguration configuration)
     {
       _dbContext = dbContext;
       Configuration = configuration;
@@ -52,16 +52,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
+      LogHelper.info("Executing AllowanceHoldingsBulkDataFiles job");
 
-      
       // Does this job already exist? Otherwise create and schedule a new copy
-      List<List<Object>> jobAlreadyExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Emissions Compliance' AND add_date::date = now()::date;", 9);
+      List<List<Object>> jobAlreadyExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Allowance Holdings' AND add_date::date = now()::date;", 9);
       if(jobAlreadyExists.Count != 0){
         return; // Job already exists , do not run again
       }
 
+      
       // Does data mart nightly exists for current date and has it completed
-
       if(Configuration["EASEY_DATAMART_BYPASS"] != "true"){
         List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name in ('Datamart Nightly') AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
         if(datamartExists.Count == 0){
@@ -69,8 +69,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
       }
       
-
-      LogHelper.info("Executing AllowanceComplianceBulkDataFiles job");
 
       JobLog jl = new JobLog(); 
 
@@ -80,7 +78,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         jl.JobId = job_id;
         jl.JobSystem = "Quartz";
         jl.JobClass = "Bulk Data File";
-        jl.JobName = "Allowance Compliance";
+        jl.JobName = "Allowance Holdings";
         jl.AddDate = Utils.getCurrentEasternTime();
         jl.StartDate = Utils.getCurrentEasternTime();
         jl.EndDate = null;
@@ -89,22 +87,26 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.JobLogs.Add(jl);
         await _dbContext.SaveChangesAsync();
         
-        List<List<Object>> rowsPerPrg = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_allowance_based_compliance_bulk_files_to_generate", 1);
-        
-        
-        for(int row = 0; row < rowsPerPrg.Count; row++){
-          string code = (string) rowsPerPrg[row][0];
-          string urlParams = "programCodeInfo=" + code;
+        List<List<Object>> programCodeRows = await this._dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code", 1);
+        string[] programCodes = new string[programCodeRows.Count];
 
-          await _dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-compliance?" + urlParams, "compliance/compliance-" + code.ToLower() + ".csv", job_id, code);
+        for(int i = 0; i < programCodeRows.Count; i++){
+          programCodes[i] = (string) programCodeRows[i][0];
         }
         
-                
+        for(int row = 0; row < programCodes.Length; row++){
+          string code = programCodes[row];
+          decimal year = DateTime.Now.ToUniversalTime().Year - 1;
+          string urlParams = "programCodeInfo=" + code;
+
+          await _dbContext.CreateBulkFileJob(null, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-holdings?" + urlParams, "allowance/holdings-" + code.ToLower() + ".csv", job_id, code);
+        }
+        
         jl.StatusCd = "COMPLETE";
-        jl.EndDate = DateTime.Now;
+        jl.EndDate = Utils.getCurrentEasternTime();
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
-        LogHelper.info("Executing AllowanceComplianceBulkDataFiles job successfully");
+        LogHelper.info("Executing AllowanceHoldingsBulkDataFiles job successfully");
       }
       catch (Exception e)
       {
@@ -129,7 +131,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static IJobDetail WithJobDetail()
     {
-      return JobBuilder.Create<AllowanceComplianceBulkDataFiles>()
+      return JobBuilder.Create<AllowanceHoldingsBulkDataFiles>()
           .WithIdentity(WithJobKey())
           .WithDescription(Identity.JobDescription)
           .Build();
