@@ -40,7 +40,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       if (!await scheduler.CheckExists(WithJobKey()))
       {
-        app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule("0 0 8 1/1 * ? *"));
+        app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule("0 0 8 ? * * *"));
       }
     }
 
@@ -52,14 +52,19 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private async void handleJob(IJobExecutionContext context, List<List<Object>> rows, bool reschedule){
       for(int row = 0; row < rows.Count; row++){
-          JobKey lookupKey = new JobKey(rows[row][0].ToString());
-          IJobDetail jobToProcess = await context.Scheduler.GetJobDetail(lookupKey);
+          try{
+            JobKey lookupKey = new JobKey(rows[row][0].ToString());
+            IJobDetail jobToProcess = await context.Scheduler.GetJobDetail(lookupKey);
 
-          if(jobToProcess != null){
-              await context.Scheduler.DeleteJob(lookupKey);
-              if(reschedule){
-                await context.Scheduler.ScheduleJob(jobToProcess, TriggerBuilder.Create().StartNow().Build());
-              }
+            if(jobToProcess != null){
+                await context.Scheduler.DeleteJob(lookupKey);
+                if(reschedule){
+                  await context.Scheduler.ScheduleJob(jobToProcess, TriggerBuilder.Create().StartNow().Build());
+                }
+            }
+          }
+          catch(Exception e){
+            Console.Write(e.ToString());
           }
         }
     }
