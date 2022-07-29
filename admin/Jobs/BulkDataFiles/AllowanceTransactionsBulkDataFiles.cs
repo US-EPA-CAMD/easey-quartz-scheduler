@@ -86,7 +86,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.JobLogs.Add(jl);
         await _dbContext.SaveChangesAsync();
         
-        List<List<Object>> programCodeRows = await this._dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code", 1);
+        List<List<Object>> programCodeRows = await this._dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code pc WHERE pc.active = 1", 1);
         string[] programCodes = new string[programCodeRows.Count];
 
         for(int i = 0; i < programCodeRows.Count; i++){
