@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Epa.Camd.Quartz.Scheduler.Models
 {
 	public class EvaluationRequest {

@@ -470,7 +470,7 @@ namespace ECMPS.Checks.CheckEngine
         /// <param name="monPlanId">The MON_PLAN_ID to evaluate.</param>
         /// <param name="runMode">The type of run to perform.</param>
         /// <returns>True if the evaluation completed without processing errors.</returns>
-        public bool RunChecks_QaReport_Qce(string qaCertEventId, string monPlanId, eCheckEngineRunMode runMode)
+        public bool RunChecks_QaReport_Qce(string qaCertEventId, string monPlanId, eCheckEngineRunMode runMode, string batchId)
         {
             bool result;
 
@@ -496,7 +496,7 @@ namespace ECMPS.Checks.CheckEngine
         /// <param name="monPlanId">The MON_PLAN_ID to evaluate.</param>
         /// <param name="runMode">The type of run to perform.</param>
         /// <returns>True if the evaluation completed without processing errors.</returns>
-        public bool RunChecks_QaReport_Tee(string testExtensionExemptionId, string monPlanId, eCheckEngineRunMode runMode)
+        public bool RunChecks_QaReport_Tee(string testExtensionExemptionId, string monPlanId, eCheckEngineRunMode runMode, string batchId)
         {
             bool result;
 
@@ -522,7 +522,7 @@ namespace ECMPS.Checks.CheckEngine
         /// <param name="testSumId">The TEST_SUM_ID to evaluate.</param>
         /// <param name="runMode">The type of run to perform.</param>
         /// <returns>True if the evaluation completed without processing errors.</returns>
-        public bool RunChecks_QaReport_Test(string testSumId, string monPlanId, eCheckEngineRunMode runMode)
+        public bool RunChecks_QaReport_Test(string testSumId, string monPlanId, eCheckEngineRunMode runMode, string batchId)
         {
             bool result;
 
