@@ -115,8 +115,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             List<string> testExtensionExemptionId = JsonConvert.DeserializeObject<List<string>>(dataMap.GetString("testExtensionExemption"));
             List<string> testSumId = JsonConvert.DeserializeObject<List<string>>(dataMap.GetString("testSumId"));
 
+            int numberOfRecordsToGen = qaCertEventId.Count + testExtensionExemptionId.Count + testSumId.Count;
+
             string batchId = null;
-            if(qaCertEventId.Count + testExtensionExemptionId.Count + testSumId.Count > 1){ //We need to initialize a batch, there is more than one record coming in
+            if(numberOfRecordsToGen > 1){ //We need to initialize a batch, there is more than one record coming in
               batchId = Guid.NewGuid().ToString();
             }
 

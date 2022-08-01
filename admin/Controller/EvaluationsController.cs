@@ -66,6 +66,24 @@ namespace Epa.Camd.Quartz.Scheduler
         monitorPlanId
       ).ToList();
 
+      // Should we regenerate all of the ids?
+      if(qaCertEventId.Count == 0 && testExtensionExemptionId.Count == 0 && testSumId.Count == 0){
+        foreach(MonitorLocation loc in locs){
+          List<List<object>> qaCertRows = await _dbContext.ExecuteSqlQuery("SELECT qa_cert_event_id FROM camdecmpswks.qa_cert_event WHERE mon_loc_id = '" + loc.Id + "'", 1);
+          for(int i = 0; i < qaCertRows.Count; i++){
+            qaCertEventId.Add((string) qaCertRows[i][0]);
+          }
+          List<List<object>> testExtensionExemptionRows = await _dbContext.ExecuteSqlQuery("SELECT test_extension_exemption_id FROM camdecmpswks.test_extension_exemption WHERE mon_loc_id = '" + loc.Id + "'", 1);
+          for(int i = 0; i < testExtensionExemptionRows.Count; i++){
+            testExtensionExemptionId.Add((string) testExtensionExemptionRows[i][0]);
+          }
+          List<List<object>> testSumRows = await _dbContext.ExecuteSqlQuery("SELECT test_sum_id FROM camdecmpswks.test_summary WHERE mon_loc_id = '" + loc.Id + "'", 1);
+          for(int i = 0; i < testSumRows.Count; i++){
+            testSumId.Add((string) testSumRows[i][0]);
+          }
+        }
+      }
+
       string monPlanConfig = string.Join(", ", locs.Select(x =>
         string.IsNullOrWhiteSpace(x.UnitName) ? x.StackName : x.UnitName
       ));
@@ -104,13 +122,13 @@ namespace Epa.Camd.Quartz.Scheduler
       });
     }
 
-    [HttpPost("monitor-qa")]
+    [HttpPost("qa-certifications")]
     public async Task<ActionResult> TriggerQAEvaluation([FromBody] QaEvaluationRequest request)
     {
 
       /*
       string errorMessage = await Utils.validateRequestCredentialsUserToken(Request, Configuration);
-      if(errorMessage != "")
+      if(errorMessage != "")s
       {
         return BadRequest(errorMessage);
       }
