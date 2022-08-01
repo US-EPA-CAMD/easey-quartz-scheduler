@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+
 
 using Quartz;
 using SilkierQuartz;
@@ -19,6 +23,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
   {
     private NpgSqlContext _dbContext = null;
     private IConfiguration Configuration { get; }
+    static SemaphoreSlim semaphore;
 
     public static class Identity
     {
@@ -43,6 +48,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       _dbContext = dbContext;
       Configuration = configuration;
+
+      int maxThreads = Int32.Parse(configuration["EASEY_QUARTZ_SCHEDULER_MAX_CHECK_THREADS"]);
+      semaphore = new SemaphoreSlim(maxThreads, maxThreads);
     }
 
     public Task Execute(IJobExecutionContext context)
@@ -83,24 +91,83 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.MonitorPlans.Update(mp);
         _dbContext.SaveChanges();
 
+        string dllPath;
+        cCheckEngine checkEngine;
+
         switch (processCode)
         {
           case "MP":
-             string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
-             cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
+            dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
+            checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
 
             LogHelper.info("Running RunChecks_MpReport...");
             result = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
             LogHelper.info($"RunChecks_MpReport returned a result of {result}!");
 
             break;
-          case "QA-QCE":
-            LogHelper.info("Running RunChecks_QaReport_Qce...");
-            // result = this.RunChecks_QaReport_Qce();
-            break;
-          case "QA-TEE":
-            LogHelper.info("Running RunChecks_QaReport_Tee...");
-            // result = this.RunChecks_QaReport_Tee();
+          case "QA":
+            dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
+            checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
+
+            LogHelper.info("Running QA import checks...");
+
+            List<string> qaCertEventId = JsonConvert.DeserializeObject<List<string>>(dataMap.GetString("qaCertId"));
+            List<string> testExtensionExemptionId = JsonConvert.DeserializeObject<List<string>>(dataMap.GetString("testExtensionExemption"));
+            List<string> testSumId = JsonConvert.DeserializeObject<List<string>>(dataMap.GetString("testSumId"));
+
+            string batchId = null;
+            if(qaCertEventId.Count + testExtensionExemptionId.Count + testSumId.Count > 1){ //We need to initialize a batch, there is more than one record coming in
+              batchId = Guid.NewGuid().ToString();
+            }
+
+            List<Task> threadPool = new List<Task>();
+
+            Console.WriteLine("{0} tasks can enter the semaphore.", semaphore.CurrentCount);
+
+            foreach (string certId in qaCertEventId)
+            {
+                threadPool.Add(Task.Run(() => {
+                  semaphore.Wait();
+                  try{
+                    //checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, batchId);
+                  }
+                  finally{
+                    semaphore.Release();
+                  }
+                }));
+            }
+
+            foreach (string extensionExemptionId in testExtensionExemptionId)
+            {
+                threadPool.Add(Task.Run(() => {
+                  semaphore.Wait();
+                  try{
+                    //checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, batchId);
+                  }finally{
+                    semaphore.Release();
+                  }
+                  return;
+                }));
+            }
+
+            foreach (string testId in testSumId)
+            {
+                threadPool.Add(Task.Run(() => {
+                  semaphore.Wait();
+                  try{
+                    //checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, batchId);
+                  }finally{
+                    semaphore.Release();
+                  }
+                }));
+            }
+
+            LogHelper.info($"Waiting on QA checks");
+
+            Task.WaitAll(threadPool.ToArray());
+
+            LogHelper.info($"QA import checks finished");
+
             break;
           case "EM":
             LogHelper.info("Running RunChecks_EmReport...");
@@ -188,7 +255,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       string monPlanConfig,
       string userId,
       string userEmail,
-      DateTime submittedOn
+      DateTime submittedOn,
+      string qaCertEventIdJSON,
+      string testExtensionExemptionIdJSON,
+      string testSumIdJSON
     ) {
       string processName = GetProcess(processCode);
 
@@ -209,6 +279,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         .UsingJobData("UserId", userId)
         .UsingJobData("UserEmail", userEmail)        
         .UsingJobData("SubmittedOn", submittedOn.ToString())
+        .UsingJobData("qaCertId", qaCertEventIdJSON)
+        .UsingJobData("testExtensionExemption", testExtensionExemptionIdJSON)
+        .UsingJobData("testSumId", testSumIdJSON)        
         .StartNow()
         .Build();
 

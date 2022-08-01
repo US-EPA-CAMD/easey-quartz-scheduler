@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 using SilkierQuartz;
 
@@ -35,13 +36,22 @@ namespace Epa.Camd.Quartz.Scheduler
       string processCode,
       string monitorPlanId,
       string userId,
-      string userEmail
+      string userEmail,
+      List<string> qaCertEventId = null,
+      List<string> testExtensionExemptionId = null,
+      List<string> testSumId = null
     )
     {
+
+      // Optional input for QA lists, default to empty list
+      qaCertEventId = qaCertEventId ?? new List<string>();
+      testExtensionExemptionId = testExtensionExemptionId ?? new List<string>();
+      testSumId = testSumId ?? new List<string>();
+
       Services services = (Services)Request.HttpContext.Items[typeof(Services)];
 
       Guid id = Guid.NewGuid();
-      DateTime submittedOn = DateTime.Now;
+      DateTime submittedOn = Utils.getCurrentEasternTime();
 
       MonitorPlan mp = _dbContext.MonitorPlans.Find(monitorPlanId);
       Facility fac = _dbContext.Facilities.Find(mp.FacilityId);
@@ -70,14 +80,17 @@ namespace Epa.Camd.Quartz.Scheduler
         monPlanConfig,
         userId,
         userEmail,
-        submittedOn
+        submittedOn,
+        JsonConvert.SerializeObject(qaCertEventId),
+        JsonConvert.SerializeObject(testExtensionExemptionId),
+        JsonConvert.SerializeObject(testSumId)
       );
 
       mp.EvalStatus = "INQ"; // set eval status to In Queue
       _dbContext.MonitorPlans.Update(mp);
       _dbContext.SaveChanges();
 
-      return CreatedAtAction("EvaluationResponse)", new
+      return CreatedAtAction("EvaluationResponse", new
       {
         id = id,
         processCode = processCode,
@@ -89,6 +102,29 @@ namespace Epa.Camd.Quartz.Scheduler
         userEmail = userEmail,
         submittedOn = submittedOn
       });
+    }
+
+    [HttpPost("monitor-qa")]
+    public async Task<ActionResult> TriggerQAEvaluation([FromBody] QaEvaluationRequest request)
+    {
+
+      /*
+      string errorMessage = await Utils.validateRequestCredentialsUserToken(Request, Configuration);
+      if(errorMessage != "")
+      {
+        return BadRequest(errorMessage);
+      }
+      */
+
+      return await TriggerCheckEngineEvaluation(
+        "QA",
+        request.MonitorPlanId,
+        request.UserId,
+        request.UserEmail,
+        request.qaCertEventId,
+        request.testExtensionExemptionId,
+        request.testSumId
+      );
     }
 
     [HttpPost("monitor-plans")]
