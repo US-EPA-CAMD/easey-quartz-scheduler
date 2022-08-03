@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,30 +44,39 @@ namespace Epa.Camd.Quartz.Scheduler
           options.UseNpgsql(connectionString)
       );
 
-      // NpgSqlContext dbContext = services.BuildServiceProvider().GetService<NpgSqlContext>();
+      NpgSqlContext dbContext = services.BuildServiceProvider().GetService<NpgSqlContext>();
 
-      // dbContext.CorsOptions.FromSqlRaw(@"
-      //   SELECT key, value
-      //   FROM camdaux.cors
-      //   LEFT JOIN camdaux.cors_to_api
-      //     USING(cors_id)
-      //   LEFT JOIN camdaux.api
-      //     USING(api_id)
-      //   WHERE api_id IS NULL OR name = 'quartz-api'
-      //   ORDER BY key, value;"
-      // );
+      // CORS Configuration ---
 
-      //string[] allowedOrigins = new string[0];
-      //string[] allowedMethods = new string[0];
-      //string[] allowedHeaders = new string[0];
+      List<CorsOptions> options =  dbContext.CorsOptions.ToListAsync<CorsOptions>().Result;
+
+      List<string> allowedOrigins = new List<string>();
+      List<string> allowedMethods = new List<string>();
+      List<string> allowedHeaders = new List<string>();
+
+      foreach(CorsOptions opts in options){
+        switch(opts.Key){
+          case "origin":
+              allowedOrigins.Add(opts.Value);
+            break;
+          case "header":
+              allowedHeaders.Add(opts.Value);
+            break;
+          case "method":
+              allowedMethods.Add(opts.Value);
+            break;
+        }
+      }
 
       services.AddCors(options => {
           options.AddPolicy(corsPolicy, builder => {
-              builder.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+              builder.WithOrigins(allowedOrigins.ToArray())
+              .WithHeaders(allowedHeaders.ToArray())
+              .WithMethods(allowedMethods.ToArray());
           });
       });
+
+      // ---
 
       services.AddSession();
 
