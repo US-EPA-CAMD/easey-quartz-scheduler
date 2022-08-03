@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Epa.Camd.Quartz.Scheduler.Models
 {
-	[Table("cors", Schema = "camdaux")]
+	[Table("cors_config", Schema = "camdaux")]
 	public class CorsOptions
 	{
  		[Key]
