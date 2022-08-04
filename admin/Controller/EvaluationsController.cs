@@ -67,7 +67,7 @@ namespace Epa.Camd.Quartz.Scheduler
       ).ToList();
 
       // Should we regenerate all of the ids?
-      if(qaCertEventId.Count == 0 && testExtensionExemptionId.Count == 0 && testSumId.Count == 0){
+      if(processCode == "QA" && qaCertEventId.Count == 0 && testExtensionExemptionId.Count == 0 && testSumId.Count == 0){
         foreach(MonitorLocation loc in locs){
           List<List<object>> qaCertRows = await _dbContext.ExecuteSqlQuery("SELECT qa_cert_event_id FROM camdecmpswks.qa_cert_event WHERE mon_loc_id = '" + loc.Id + "'", 1);
           for(int i = 0; i < qaCertRows.Count; i++){
@@ -104,9 +104,40 @@ namespace Epa.Camd.Quartz.Scheduler
         JsonConvert.SerializeObject(testSumId)
       );
 
-      mp.EvalStatus = "INQ"; // set eval status to In Queue
-      _dbContext.MonitorPlans.Update(mp);
-      _dbContext.SaveChanges();
+
+      switch(processCode){
+        case "MP": 
+            mp.EvalStatus = "INQ"; // set eval status to In Queue
+            _dbContext.MonitorPlans.Update(mp);
+          break;
+        case "QA":
+            foreach (string certId in qaCertEventId)
+            {
+                CertEvent certIdRecord = _dbContext.CertEvents.Find(certId);
+                certIdRecord.EvalStatus = "INQ";
+                _dbContext.CertEvents.Update(certIdRecord);
+            }
+
+            foreach (string extensionExemptionId in testExtensionExemptionId)
+            {
+                TestExtensionExemption extensionExemptionRecord = _dbContext.TestExtensionExemptions.Find(extensionExemptionId);
+                extensionExemptionRecord.EvalStatus = "INQ";
+                _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
+            }
+
+            foreach (string testId in testSumId)
+            {
+                TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
+                testSummaryRecord.EvalStatus = "INQ";
+                _dbContext.TestSummaries.Update(testSummaryRecord);
+            }
+          break;
+
+        case "EM": 
+          break;
+      }
+
+      _dbContext.SaveChanges(); 
 
       return CreatedAtAction("EvaluationResponse", new
       {

@@ -51,6 +51,10 @@ namespace Epa.Camd.Quartz.Scheduler
       List<CorsOptions> options =  dbContext.CorsOptions.ToListAsync<CorsOptions>().Result;
 
       List<string> allowedOrigins = new List<string>();
+
+      // TODO: Check to see if environment is dev, if so then push localhost onto list
+      // Set Caching Headers for each request
+
       List<string> allowedMethods = new List<string>();
       List<string> allowedHeaders = new List<string>();
 

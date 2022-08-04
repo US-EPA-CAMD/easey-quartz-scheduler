@@ -53,6 +53,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       semaphore = new SemaphoreSlim(maxThreads, maxThreads);
     }
 
+    private EvalStatusCode getStatusCodeByCheckId(string checkSessionId, bool result){
+
+      if(result){
+        CheckSession chkSession = _dbContext.CheckSessions.Find(checkSessionId);
+        SeverityCode severity = _dbContext.SeverityCodes.Find(chkSession.SeverityCode);
+        return _dbContext.EvalStatusCodes.Find(severity.EvalStatusCode);
+      }
+      else{
+        return _dbContext.EvalStatusCodes.Find("ERR");
+      }
+    }
+
     public Task Execute(IJobExecutionContext context)
     {
       JobKey key = context.JobDetail.Key;
@@ -61,7 +73,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       {
         JobDataMap dataMap = context.MergedJobDataMap;
 
-        bool result = false;
         string id = dataMap.GetString("Id");
         string processCode = dataMap.GetString("ProcessCode");
         int facilityId = dataMap.GetIntValue("FacilityId");
@@ -86,52 +97,63 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           new LogVariable("Submitted On", submittedOn)
         );
 
-        MonitorPlan mp = _dbContext.MonitorPlans.Find(monitorPlanId);
-        mp.EvalStatus = "WIP";
-        _dbContext.MonitorPlans.Update(mp);
-        _dbContext.SaveChanges();
+        string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
+        cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
 
-        string dllPath;
-        cCheckEngine checkEngine;
+        MonitorPlan mp = _dbContext.MonitorPlans.Find(monitorPlanId);
 
         switch (processCode)
         {
           case "MP":
-            dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
-            checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
-
             LogHelper.info("Running RunChecks_MpReport...");
-            result = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
-            LogHelper.info($"RunChecks_MpReport returned a result of {result}!");
 
+            mp.EvalStatus = "WIP";
+            _dbContext.MonitorPlans.Update(mp);
+            _dbContext.SaveChanges();
+
+            bool mpResult = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+
+            _dbContext.Entry<MonitorPlan>(mp).Reload();
+            EvalStatusCode evalStatus = getStatusCodeByCheckId(mp.CheckSessionId, mpResult);
+            mp.EvalStatus = evalStatus.Code;
+            _dbContext.MonitorPlans.Update(mp);
+            _dbContext.SaveChanges();
+
+            context.MergedJobDataMap.Add("EvaluationStatus", evalStatus.Description);
+
+            LogHelper.info($"RunChecks_MpReport returned a result of {mpResult}!");
             break;
           case "QA":
-            dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
-            checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
-
             LogHelper.info("Running QA import checks...");
 
             List<string> qaCertEventId = JsonConvert.DeserializeObject<List<string>>(dataMap.GetString("qaCertId"));
             List<string> testExtensionExemptionId = JsonConvert.DeserializeObject<List<string>>(dataMap.GetString("testExtensionExemption"));
             List<string> testSumId = JsonConvert.DeserializeObject<List<string>>(dataMap.GetString("testSumId"));
 
-            int numberOfRecordsToGen = qaCertEventId.Count + testExtensionExemptionId.Count + testSumId.Count;
-
             string batchId = null;
-            if(numberOfRecordsToGen > 1){ //We need to initialize a batch, there is more than one record coming in
+            if(qaCertEventId.Count + testExtensionExemptionId.Count + testSumId.Count > 1){ //We need to initialize a batch, there is more than one record coming in
               batchId = Guid.NewGuid().ToString();
             }
 
             List<Task> threadPool = new List<Task>();
-
-            Console.WriteLine("{0} tasks can enter the semaphore.", semaphore.CurrentCount);
 
             foreach (string certId in qaCertEventId)
             {
                 threadPool.Add(Task.Run(() => {
                   semaphore.Wait();
                   try{
-                    //checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, batchId);
+                    CertEvent certIdRecord = _dbContext.CertEvents.Find(certId);
+                    certIdRecord.EvalStatus = "WIP";
+                    _dbContext.CertEvents.Update(certIdRecord);
+                    _dbContext.SaveChanges();
+
+                    bool listResult = checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, batchId);
+
+                    _dbContext.Entry<CertEvent>(certIdRecord).Reload();
+                    EvalStatusCode evalStatus = getStatusCodeByCheckId(certIdRecord.CheckSessionId, listResult);
+                    certIdRecord.EvalStatus = evalStatus.Code;
+                    _dbContext.CertEvents.Update(certIdRecord);
+                    _dbContext.SaveChanges();
                   }
                   finally{
                     semaphore.Release();
@@ -144,7 +166,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 threadPool.Add(Task.Run(() => {
                   semaphore.Wait();
                   try{
-                    //checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, batchId);
+                    TestExtensionExemption extensionExemptionRecord = _dbContext.TestExtensionExemptions.Find(extensionExemptionId);
+                    extensionExemptionRecord.EvalStatus = "WIP";
+                    _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
+                    _dbContext.SaveChanges();
+
+                    bool listResult = checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, batchId);
+
+                    _dbContext.Entry<TestExtensionExemption>(extensionExemptionRecord).Reload();
+                    EvalStatusCode evalStatus = getStatusCodeByCheckId(extensionExemptionRecord.CheckSessionId, listResult);
+                    extensionExemptionRecord.EvalStatus = evalStatus.Code;
+                    _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
+                    _dbContext.SaveChanges();
                   }finally{
                     semaphore.Release();
                   }
@@ -157,7 +190,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 threadPool.Add(Task.Run(() => {
                   semaphore.Wait();
                   try{
-                    //checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, batchId);
+
+                    TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
+                    testSummaryRecord.EvalStatus = "WIP";
+                    _dbContext.TestSummaries.Update(testSummaryRecord);
+
+                    bool listResult = checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, batchId);
+
+                    _dbContext.Entry<TestSummary>(testSummaryRecord).Reload();
+                    EvalStatusCode evalStatus = getStatusCodeByCheckId(testSummaryRecord.CheckSessionId, listResult);
+                    testSummaryRecord.EvalStatus = evalStatus.Code;
+                    _dbContext.TestSummaries.Update(testSummaryRecord);
+                    _dbContext.SaveChanges();
                   }finally{
                     semaphore.Release();
                   }
@@ -179,27 +223,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             throw new Exception("A Process Code of [MP, QA-QCE, QA-TEE, EM] is required and was not provided");
         }
 
-        EvalStatusCode evalStatus;
-        _dbContext.Entry<MonitorPlan>(mp).Reload();
-
-        if (result)
-        {
-          CheckSession chkSession = _dbContext.CheckSessions.Find(mp.CheckSessionId);
-          SeverityCode severity = _dbContext.SeverityCodes.Find(chkSession.SeverityCode);
-          evalStatus = _dbContext.EvalStatusCodes.Find(severity.EvalStatusCode);
-        }
-        else
-        {
-          // TODO: MAY NEED A STATUS FOR THIS SITUATION WHERE CHECK ENGINE RETURNS FALSE AND NO SESSION ID TO LOOKUP EVAL STATUS
-          evalStatus = _dbContext.EvalStatusCodes.Find("ERR");
-        }        
-
-        mp.EvalStatus = evalStatus.Code;
-        _dbContext.MonitorPlans.Update(mp);
-        _dbContext.SaveChanges();
-
         context.MergedJobDataMap.Add("EvaluationResult", "COMPLETED");
-        context.MergedJobDataMap.Add("EvaluationStatus", evalStatus.Description);
 
         LogHelper.info($"{key.Group}.{key.Name} COMPLETED successfully!");
         return Task.CompletedTask;

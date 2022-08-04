@@ -28,6 +28,13 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public DbSet<CorsOptions> CorsOptions { get; set; }
     public DbSet<Facility> Facilities { get; set; }
     public DbSet<MonitorPlan> MonitorPlans { get; set; }
+
+    public DbSet<CertEvent> CertEvents { get; set; }
+
+    public DbSet<TestSummary> TestSummaries { get; set; }
+
+    public DbSet<TestExtensionExemption> TestExtensionExemptions { get; set; }
+
     public DbSet<MonitorLocation> MonitorLocations { get; set; }
     public DbSet<MonitorPlanLocation> MonitorPlanLocations { get; set; }
 
