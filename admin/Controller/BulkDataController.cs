@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -8,8 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Amazon;
 using Amazon.S3;
 using Epa.Camd.Quartz.Scheduler.Models;
-using Newtonsoft.Json;
-using Epa.Camd.Quartz.Scheduler.Jobs;
 
 namespace Epa.Camd.Quartz.Scheduler
 {

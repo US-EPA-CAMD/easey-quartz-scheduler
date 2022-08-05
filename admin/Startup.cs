@@ -47,38 +47,44 @@ namespace Epa.Camd.Quartz.Scheduler
       NpgSqlContext dbContext = services.BuildServiceProvider().GetService<NpgSqlContext>();
 
       // CORS Configuration ---
-
       List<CorsOptions> options =  dbContext.CorsOptions.ToListAsync<CorsOptions>().Result;
 
-      List<string> allowedOrigins = new List<string>();
-
-      // TODO: Check to see if environment is dev, if so then push localhost onto list
-      // Set Caching Headers for each request
-
-      List<string> allowedMethods = new List<string>();
-      List<string> allowedHeaders = new List<string>();
-
-      foreach(CorsOptions opts in options){
-        switch(opts.Key){
-          case "origin":
-              allowedOrigins.Add(opts.Value);
-            break;
-          case "header":
-              allowedHeaders.Add(opts.Value);
-            break;
-          case "method":
-              allowedMethods.Add(opts.Value);
-            break;
-        }
+      if(Configuration["EASEY_QUARTZ_SCHEDULER_ENV"] != "production"){
+          services.AddCors(options => {
+            options.AddPolicy(corsPolicy, builder => {
+                builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+            });
+        });
       }
+      else{
+        List<string> allowedOrigins = new List<string>();
+        List<string> allowedMethods = new List<string>();
+        List<string> allowedHeaders = new List<string>();
 
-      services.AddCors(options => {
-          options.AddPolicy(corsPolicy, builder => {
-              builder.WithOrigins(allowedOrigins.ToArray())
-              .WithHeaders(allowedHeaders.ToArray())
-              .WithMethods(allowedMethods.ToArray());
-          });
-      });
+        foreach(CorsOptions opts in options){
+          switch(opts.Key){
+            case "origin":
+                allowedOrigins.Add(opts.Value);
+              break;
+            case "header":
+                allowedHeaders.Add(opts.Value);
+              break;
+            case "method":
+                allowedMethods.Add(opts.Value);
+              break;
+          }
+        }
+
+        services.AddCors(options => {
+            options.AddPolicy(corsPolicy, builder => {
+                builder.WithOrigins(allowedOrigins.ToArray())
+                .WithHeaders(allowedHeaders.ToArray())
+                .WithMethods(allowedMethods.ToArray());
+            });
+        });
+      }
 
       // ---
 
