@@ -161,18 +161,6 @@ namespace Epa.Camd.Quartz.Scheduler
         return BadRequest(errorMessage);
       }
       */
-
-      /*
-        req.res.setHeader("Vary", "Origin");
-        req.res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        req.res.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        req.res.setHeader("Expires", "0");
-      */
-
-      Response.Headers.Add("Vary", "Origin");
-      Response.Headers.Add("Cache-Control", "no-cache, no-store, must-revalidate");
-      Response.Headers.Add("Pragma", "no-cache");
-      Response.Headers.Add("Expires", "0");
       
       JobLog jl = new JobLog();
       jl.JobId = job_id;
