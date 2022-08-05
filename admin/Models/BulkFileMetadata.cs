@@ -19,7 +19,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 		public string Metadata { get; set; }
 
 		[Column("file_size")]
-		public int FileSize { get; set; }
+		public long FileSize { get; set; }
 
 		[Column("add_date")]
 		public DateTime AddDate { get; set; }

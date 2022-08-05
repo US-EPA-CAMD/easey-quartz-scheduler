@@ -167,7 +167,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         int readBytes;
         int totalReadBytes;
         int uploadPartNumber = 1;
-        int totalWrittenBytes = 0;
+        long totalWrittenBytes = 0;
 
         List<Task> parts = new List<Task>();
 
@@ -211,29 +211,28 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         String[] split = fileName.Split("/");
         string name = split[split.Length - 1];
-
-        
-        BulkFileMetadata found = _dbContext.BulkFileMetadataSet.Find(name);
-        if(found == null){
-          BulkFileMetadata newMeta = new BulkFileMetadata();
-          newMeta.FileName = name;
-          newMeta.S3Path = fileName;
-          newMeta.Metadata = JsonConvert.SerializeObject(Metadata);
-          newMeta.FileSize = totalWrittenBytes;
-          newMeta.AddDate = DateTime.Now;
-          newMeta.UpdateDate = DateTime.Now;
-          _dbContext.BulkFileMetadataSet.Add(newMeta);
-          await _dbContext.SaveChangesAsync();
-        }else{
-          found.UpdateDate = DateTime.Now;
-          found.FileSize = totalWrittenBytes;
-          _dbContext.BulkFileMetadataSet.Update(found);
-          await _dbContext.SaveChangesAsync();
-        }
         
         myHttpWebResponse.Close();
         
         if(uploadPartNumber != 1 || totalReadBytes > 0){
+
+          BulkFileMetadata found = _dbContext.BulkFileMetadataSet.Find(name);
+          if(found == null){
+            BulkFileMetadata newMeta = new BulkFileMetadata();
+            newMeta.FileName = name;
+            newMeta.S3Path = fileName;
+            newMeta.Metadata = JsonConvert.SerializeObject(Metadata);
+            newMeta.FileSize = totalWrittenBytes;
+            newMeta.AddDate = DateTime.Now;
+            newMeta.UpdateDate = DateTime.Now;
+            _dbContext.BulkFileMetadataSet.Add(newMeta);
+            await _dbContext.SaveChangesAsync();
+          }else{
+            found.UpdateDate = DateTime.Now;
+            found.FileSize = totalWrittenBytes;
+            _dbContext.BulkFileMetadataSet.Update(found);
+            await _dbContext.SaveChangesAsync();
+          }
 
           CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
           {
