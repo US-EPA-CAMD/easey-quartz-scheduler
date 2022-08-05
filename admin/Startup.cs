@@ -219,6 +219,15 @@ namespace Epa.Camd.Quartz.Scheduler
       bool displayFlag = bool.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_DISPLAY_UI"]);
       app.UseSilkierQuartz(displayUi: displayFlag);
 
+      app.Use(async (context, next) =>
+      {
+          context.Response.Headers.Add("Vary", "Origin");
+          context.Response.Headers.Add("Cache-Control", "no-cache, no-store, must-revalidate");
+          context.Response.Headers.Add("Pragma", "no-cache");
+          context.Response.Headers.Add("Expires", "0");
+          await next();
+      });
+
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllers();
