@@ -2,10 +2,11 @@ using System;
 using System.Data;
 
 using ECMPS.Checks.CheckEngine;
+using ECMPS.Checks.Data.Ecmps.Dbo.View;
 using ECMPS.Checks.Parameters;
 using ECMPS.Checks.Qa.Parameters;
-
 using ECMPS.Checks.TypeUtilities;
+using ECMPS.Definitions.Enumerations;
 using ECMPS.Definitions.Extensions;
 
 
@@ -158,7 +159,7 @@ namespace ECMPS.Checks.LinearityChecks
 					string CompTypeCd = cDBConvert.ToString(CurrentLinearity["COMPONENT_TYPE_CD"]);
 					if (TestTypeCd == "LINE")
 					{
-						if (CompTypeCd.InList("SO2,NOX,CO2,O2,HG"))
+						if (CompTypeCd.InList("SO2,NOX,CO2,O2"))
 						{
 							Category.SetCheckParameter("Linearity_Test_Type", "linearity check", eParameterDataType.String);
 							Category.SetCheckParameter("Linearity_Component_Valid", true, eParameterDataType.Boolean);
@@ -195,6 +196,37 @@ namespace ECMPS.Checks.LinearityChecks
 							Category.CheckCatalogResult = "C";
 						}
 					}
+					
+					/* TODO: BeginDateHour / etc is not defined as part of QAParameters.CurrentLinearityTest
+					
+					if ((QaParameters.LinearityComponentValid == true) && TestTypeCd.InList("LINE,HGLINE,HGSI3"))
+                    {
+						int count = QaParameters.SystemComponentRecords.CountRows
+							(
+								new cFilterCondition[]
+                                {
+									new cFilterCondition("COMPONENT_ID", QaParameters.CurrentLinearityTest.ComponentId),
+									new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual.ToString(), QaParameters.CurrentLinearityTest.BeginDatehour.Default(DateTypes.START), eNullDateDefault.Min),
+									new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual.ToString(), QaParameters.CurrentLinearityTest.BeginDatehour.Default(DateTypes.START), eNullDateDefault.Max),
+									new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual.ToString(), QaParameters.CurrentLinearityTest.EndDatehour.Default(DateTypes.END), eNullDateDefault.Min),
+									new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual.ToString(), QaParameters.CurrentLinearityTest.EndDatehour.Default(DateTypes.END), eNullDateDefault.Max)
+								}
+							);
+
+						if (count == 0)
+                        {
+							VwMonitorSystemComponentRow earliestBySystemBegin 
+								= QaParameters.SystemComponentRecords.FindFirstRow("SYSTEM_BEGIN_DATEHOUR", 
+								                                                   new cFilterCondition[] { new cFilterCondition("COMPONENT_ID", QaParameters.CurrentLinearityTest.ComponentId) });
+
+							if ((earliestBySystemBegin == null) || (earliestBySystemBegin.SystemBeginDatehour <= QaParameters.CurrentLinearityTest.EndDatehour))
+                            {
+								QaParameters.LinearityComponentValid = false;
+								Category.CheckCatalogResult = "D";
+							}
+						}
+                    }
+					*/
 				}
 			}
 			catch (Exception ex)
@@ -1491,7 +1523,18 @@ namespace ECMPS.Checks.LinearityChecks
 								}
 						}
 					}
+
 					Category.SetCheckParameter("Linearity_Test_Result", TestResult, eParameterDataType.String);
+
+
+					if ((APSInd == 0) && (QaParameters.LinearitySummaryApsIndicator == 1))
+					{
+						Category.CheckCatalogResult = "B";
+					}
+					else if ((APSInd == 1) && (QaParameters.LinearitySummaryApsIndicator == 0))
+					{
+						Category.CheckCatalogResult = "C";
+					}
 				}
 				else
 				{
@@ -1713,10 +1756,21 @@ namespace ECMPS.Checks.LinearityChecks
 				{
 					string LinTestRes = Convert.ToString(Category.GetCheckParameter("Linearity_Test_Result").ParameterValue);
 					if (LinTestRes == "FAILED" && TestResultCd.InList("PASSED,PASSAPS"))
+					{
 						Category.CheckCatalogResult = "D";
-					else
-						if (LinTestRes.InList("PASSED,PASSAPS") && TestResultCd == "FAILED")
-							Category.CheckCatalogResult = "E";
+					}
+					else if (LinTestRes.InList("PASSED,PASSAPS") && TestResultCd == "FAILED")
+					{
+						Category.CheckCatalogResult = "E";
+					}
+					else if ((LinTestRes == "PASSAPS") && (TestResultCd == "PASSED"))
+					{
+						Category.CheckCatalogResult = "F";
+					}
+					else if ((LinTestRes == "PASSED") && (TestResultCd == "PASSAPS"))
+					{
+						Category.CheckCatalogResult = "G";
+					}
 				}
 			}
 			catch (Exception ex)

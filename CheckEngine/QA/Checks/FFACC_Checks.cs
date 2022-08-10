@@ -3,6 +3,7 @@ using System.Data;
 
 using ECMPS.Checks.CheckEngine;
 using ECMPS.Checks.Parameters;
+using ECMPS.Checks.Qa.Parameters;
 using ECMPS.Checks.TypeUtilities;
 using ECMPS.Definitions.Extensions;
 
@@ -12,7 +13,7 @@ namespace ECMPS.Checks.FFACC_Checks
     {
         public cFFACC_Checks()
         {
-            CheckProcedures = new dCheckProcedure[14];
+            CheckProcedures = new dCheckProcedure[15];
 
             CheckProcedures[1] = new dCheckProcedure(FFACC1);
             CheckProcedures[2] = new dCheckProcedure(FFACC2);
@@ -27,6 +28,7 @@ namespace ECMPS.Checks.FFACC_Checks
             CheckProcedures[11] = new dCheckProcedure(FFACC11);
             CheckProcedures[12] = new dCheckProcedure(FFACC12);
             CheckProcedures[13] = new dCheckProcedure(FFACC13);
+            CheckProcedures[14] = new dCheckProcedure(FFACC14);
         }
 
 
@@ -504,6 +506,58 @@ namespace ECMPS.Checks.FFACC_Checks
             }
 
             return ReturnVal;
+        }
+
+        
+        /// <summary>
+        /// Accuracy Test Does Not Reuse Transmitter-Transducer Test Number
+        /// 
+        /// Enusres that a Fuel Flowmeter Accuracy test does not share the same test number with a Transmitter-Transducer test. 
+        /// </summary>
+        /// <param name="category"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        public static string FFACC14(cCategory category, ref bool log)
+        {
+            string returnVal = ""; ;
+
+            try
+            {
+                if ((QaParameters.CurrentAccuracyTest.TestNum != null) && (QaParameters.CurrentAccuracyTest.EndDate >= new DateTime(2021, 10, 1)))
+                {
+                    int count;
+
+                    count = QaParameters.LocationTestRecords.FindRows
+                            (
+                                new cFilterCondition("TEST_TYPE_CD", "FFACCTT"),
+                                new cFilterCondition("TEST_NUM", QaParameters.CurrentAccuracyTest.TestNum)
+                            ).Count;
+
+                    if (count > 0)
+                    {
+                        category.CheckCatalogResult = "A";
+                    }
+                    else
+                    {
+                        count = QaParameters.QaSupplementalDataRecords.FindRows
+                                (
+                                    new cFilterCondition("TEST_TYPE_CD", "FFACCTT"),
+                                    new cFilterCondition("TEST_NUM", QaParameters.CurrentAccuracyTest.TestNum)
+                                ).Count;
+
+                        if (count > 0)
+                        {
+                            category.CheckCatalogResult = "B";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                returnVal = category.CheckEngine.FormatError(ex);
+            }
+
+            return returnVal;
         }
 
         #endregion

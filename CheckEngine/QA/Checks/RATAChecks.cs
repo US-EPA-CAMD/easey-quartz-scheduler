@@ -2,6 +2,7 @@ using System;
 using System.Data;
 
 using ECMPS.Checks.CheckEngine;
+using ECMPS.Checks.Data.Ecmps.Dbo.View;
 using ECMPS.Checks.Data.Ecmps.Lookup.Table;
 using ECMPS.Checks.Parameters;
 using ECMPS.Checks.Qa.Parameters;
@@ -18,7 +19,7 @@ namespace ECMPS.Checks.RATAChecks
 
         public cRATAChecks()
         {
-            CheckProcedures = new dCheckProcedure[132];
+            CheckProcedures = new dCheckProcedure[133];
 
             CheckProcedures[1] = new dCheckProcedure(RATA1);
             CheckProcedures[2] = new dCheckProcedure(RATA2);
@@ -150,6 +151,7 @@ namespace ECMPS.Checks.RATAChecks
             CheckProcedures[129] = new dCheckProcedure(RATA129);
             CheckProcedures[130] = new dCheckProcedure(RATA130);
             CheckProcedures[131] = new dCheckProcedure(RATA131);
+            CheckProcedures[132] = new dCheckProcedure(RATA132);
         }
 
         #endregion
@@ -1447,6 +1449,14 @@ namespace ECMPS.Checks.RATAChecks
                             Category.SetCheckParameter("RATA_Sum_CEM_Values",
                                 cDBConvert.ToDecimal(Category.GetCheckParameter("RATA_Sum_CEM_Values").ParameterValue) + CEMValue,
                                 eParameterDataType.Decimal);
+
+                            if ((QaParameters.CurrentRataRun.SysTypeCd != null) && QaParameters.CurrentRataRun.SysTypeCd.NotInList("HCL,HF,HG,ST"))
+                            {
+                                if (CEMValue != Math.Round(CEMValue, 3, MidpointRounding.AwayFromZero))
+                                {
+                                    Category.CheckCatalogResult = "C";
+                                }
+                            }
                         }
                     }
                 }
@@ -1730,6 +1740,15 @@ namespace ECMPS.Checks.RATAChecks
                                     Category.SetCheckParameter("RATA_Sum_Square_Differences",
                                         cDBConvert.ToDecimal(Category.GetCheckParameter("RATA_Sum_Square_Differences").ParameterValue) + ((RefValue - CEMValue) * (RefValue - CEMValue)),
                                         eParameterDataType.Decimal);
+                                }
+                            }
+
+
+                            if ((QaParameters.CurrentRataRun.SysTypeCd != null) && QaParameters.CurrentRataRun.SysTypeCd.NotInList("HCL,HF,HG,ST"))
+                            {
+                                if (RefValue != Math.Round(RefValue, 3, MidpointRounding.AwayFromZero))
+                                {
+                                    Category.CheckCatalogResult = "C";
                                 }
                             }
                         }
@@ -2182,8 +2201,8 @@ namespace ECMPS.Checks.RATAChecks
                                         }
                                         else
                                         {
-                                            MeanDiffParameter = Math.Round(Math.Abs(Category.GetCheckParameter("RATA_Summary_Mean_Difference").ValueAsDecimal()), 2, MidpointRounding.AwayFromZero);
-                                            if (MeanRef <= Convert.ToDecimal(0.20) && MeanDiffParameter <= Convert.ToDecimal(0.02))
+                                            MeanDiffParameter = Math.Round(Math.Abs(Category.GetCheckParameter("RATA_Summary_Mean_Difference").ValueAsDecimal()), 3, MidpointRounding.AwayFromZero);
+                                            if (MeanRef <= Convert.ToDecimal(0.20) && MeanDiffParameter <= Convert.ToDecimal(0.020))
                                             {
                                                 Tempresult = "PASSAPS";
                                                 Tempfreq = "2QTRS";
@@ -3118,19 +3137,22 @@ namespace ECMPS.Checks.RATAChecks
                 if ((bool)Category.GetCheckParameter("Calculate_RATA_Level").ParameterValue == true)
                 {
                     DataRowView CurrentRATASummary = (DataRowView)Category.GetCheckParameter("Current_RATA_Summary").ParameterValue;
+                    string SysTypeCd = cDBConvert.ToString(CurrentRATASummary["Sys_Type_Cd"]);
 
-                    decimal CEM = System.Math.Round((decimal)Category.GetCheckParameter("RATA_Summary_Mean_CEM_Value").ParameterValue, 5, MidpointRounding.AwayFromZero);
-                    decimal Ref = System.Math.Round((decimal)Category.GetCheckParameter("RATA_Summary_Mean_Reference_Value").ParameterValue, 5, MidpointRounding.AwayFromZero);
-                    decimal Diff = System.Math.Round((decimal)Category.GetCheckParameter("RATA_Summary_Mean_Difference").ParameterValue, 5, MidpointRounding.AwayFromZero);
-                    decimal SDev = System.Math.Round((decimal)Category.GetCheckParameter("RATA_Summary_Standard_Deviation").ParameterValue, 5, MidpointRounding.AwayFromZero);
-                    decimal Conf = System.Math.Round((decimal)Category.GetCheckParameter("RATA_Summary_Confidence_Coefficient").ParameterValue, 5, MidpointRounding.AwayFromZero);
+                    int decimals = (SysTypeCd.InList("HCL,HF,HG,ST")) ? 5 : 3;
+
+                    decimal CEM = System.Math.Round((decimal)Category.GetCheckParameter("RATA_Summary_Mean_CEM_Value").ParameterValue, decimals, MidpointRounding.AwayFromZero);
+                    decimal Ref = System.Math.Round((decimal)Category.GetCheckParameter("RATA_Summary_Mean_Reference_Value").ParameterValue, decimals, MidpointRounding.AwayFromZero);
+                    decimal Diff = System.Math.Round((decimal)Category.GetCheckParameter("RATA_Summary_Mean_Difference").ParameterValue, decimals, MidpointRounding.AwayFromZero);
+                    decimal SDev = System.Math.Round((decimal)Category.GetCheckParameter("RATA_Summary_Standard_Deviation").ParameterValue, decimals, MidpointRounding.AwayFromZero);
+                    decimal Conf = System.Math.Round((decimal)Category.GetCheckParameter("RATA_Summary_Confidence_Coefficient").ParameterValue, decimals, MidpointRounding.AwayFromZero);
 
                     Category.SetCheckParameter("RATA_Summary_Mean_CEM_Value", CEM, eParameterDataType.Decimal);
                     Category.SetCheckParameter("RATA_Summary_Mean_Reference_Value", Ref, eParameterDataType.Decimal);
                     Category.SetCheckParameter("RATA_Summary_Mean_Difference", Diff, eParameterDataType.Decimal);
                     Category.SetCheckParameter("RATA_Summary_Standard_Deviation", SDev, eParameterDataType.Decimal);
                     Category.SetCheckParameter("RATA_Summary_Confidence_Coefficient", Conf, eParameterDataType.Decimal);
-                    string SysTypeCd = cDBConvert.ToString(CurrentRATASummary["Sys_Type_Cd"]);
+
                     DataView TestToleranceRecords = (DataView)Category.GetCheckParameter("Test_Tolerances_Cross_Check_Table").ParameterValue;
                     String OldFilter = TestToleranceRecords.RowFilter;
 
@@ -4020,7 +4042,7 @@ namespace ECMPS.Checks.RATAChecks
                             }
                             LocationAttributeRecords.RowFilter = OldFilter2;
                         }
-                        if (ReportedFreq == "8QTRS" && RATAFreqParam != "ALTSL" && SysDesigCd == "B" && SysTypeCd.NotInList("HG,ST"))
+                        if (ReportedFreq == "8QTRS" && RATAFreqParam != "ALTSL" && SysDesigCd == "B")
                             RATAFreqParam = "8QTRS";
                     }
 
@@ -7458,12 +7480,16 @@ namespace ECMPS.Checks.RATAChecks
                                     else
                                         Category.SetCheckParameter("RATA_Calc_BAF", (decimal)1, eParameterDataType.Decimal);
                                 }
-                                Category.SetCheckParameter("RATA_Calc_CC", Math.Round(Convert.ToDecimal(Category.GetCheckParameter("RATA_Calc_CC").ParameterValue), 5, MidpointRounding.AwayFromZero), eParameterDataType.Decimal);
-                                Category.SetCheckParameter("RATA_Calc_Mean_CEM", Math.Round(Convert.ToDecimal(Category.GetCheckParameter("RATA_Calc_Mean_CEM").ParameterValue), 5, MidpointRounding.AwayFromZero), eParameterDataType.Decimal);
-                                Category.SetCheckParameter("RATA_Calc_Mean_Diff", Math.Round(Convert.ToDecimal(Category.GetCheckParameter("RATA_Calc_Mean_Diff").ParameterValue), 5, MidpointRounding.AwayFromZero), eParameterDataType.Decimal);
-                                Category.SetCheckParameter("RATA_Calc_Mean_RV", Math.Round(Convert.ToDecimal(Category.GetCheckParameter("RATA_Calc_Mean_RV").ParameterValue), 5, MidpointRounding.AwayFromZero), eParameterDataType.Decimal);
-                                Category.SetCheckParameter("RATA_Calc_SD", Math.Round(Convert.ToDecimal(Category.GetCheckParameter("RATA_Calc_SD").ParameterValue), 5, MidpointRounding.AwayFromZero), eParameterDataType.Decimal);
-                            }
+
+
+                                int decimals = (SysTypeCd.InList("HCL,HF,HG,ST")) ? 5 : 3;
+
+                                Category.SetCheckParameter("RATA_Calc_CC", Math.Round(Convert.ToDecimal(Category.GetCheckParameter("RATA_Calc_CC").ParameterValue), decimals, MidpointRounding.AwayFromZero), eParameterDataType.Decimal);
+                                Category.SetCheckParameter("RATA_Calc_Mean_CEM", Math.Round(Convert.ToDecimal(Category.GetCheckParameter("RATA_Calc_Mean_CEM").ParameterValue), decimals, MidpointRounding.AwayFromZero), eParameterDataType.Decimal);
+                                Category.SetCheckParameter("RATA_Calc_Mean_Diff", Math.Round(Convert.ToDecimal(Category.GetCheckParameter("RATA_Calc_Mean_Diff").ParameterValue), decimals, MidpointRounding.AwayFromZero), eParameterDataType.Decimal);
+                                Category.SetCheckParameter("RATA_Calc_Mean_RV", Math.Round(Convert.ToDecimal(Category.GetCheckParameter("RATA_Calc_Mean_RV").ParameterValue), decimals, MidpointRounding.AwayFromZero), eParameterDataType.Decimal);
+                                Category.SetCheckParameter("RATA_Calc_SD", Math.Round(Convert.ToDecimal(Category.GetCheckParameter("RATA_Calc_SD").ParameterValue), decimals, MidpointRounding.AwayFromZero), eParameterDataType.Decimal);   
+                                                         }
                     }
                 }
             }
@@ -8440,6 +8466,76 @@ namespace ECMPS.Checks.RATAChecks
                     else if (QaParameters.ApsCodeLookupTable.CountRows(new cFilterCondition[] { new cFilterCondition("APS_CD", QaParameters.CurrentRataSummary.ApsCd) }) == 0)
                     {
                         category.CheckCatalogResult = "C";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                returnVal = category.CheckEngine.FormatError(ex);
+            }
+
+            return returnVal;
+        }
+
+
+        /// <summary>
+        /// Reported Part 75 RATA Summary Values Contain Valid Decimal Places.
+        /// 
+        /// Returns a result if the System Type is not for a MATS system, the CalculateRataLevel either ttrue (report eval) or null (screen eval), 
+        /// and any of Confidence Coefficient, Mean CEM Value, Mean Difference, Mean RATA Reference Value, and Standard Deviation Difference are 
+        /// not rounded to 3 decimal places.
+        /// </summary>
+        /// <param name="category"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        public static string RATA132(cCategory category, ref bool log)
+        {
+            string returnVal = "";
+
+            try
+            {
+                QaParameters.RataFieldsWithBadRounding = null;
+
+                VwQaRataSummaryRow currentRataSummary = QaParameters.CurrentRataSummary;
+                {
+                    if (currentRataSummary.SysTypeCd.NotInList("HCL,HF,HG,ST"))
+                    {
+                        if (currentRataSummary.ConfidenceCoef.HasValue &&
+                            (currentRataSummary.ConfidenceCoef.Value != Math.Round(currentRataSummary.ConfidenceCoef.Value, 3, MidpointRounding.AwayFromZero)))
+                        {
+                            QaParameters.RataFieldsWithBadRounding = QaParameters.RataFieldsWithBadRounding.ListAdd("ConfidenceCoefficient");
+                        }
+
+                        if (currentRataSummary.MeanCemValue.HasValue &&
+                            (currentRataSummary.MeanCemValue.Value != Math.Round(currentRataSummary.MeanCemValue.Value, 3, MidpointRounding.AwayFromZero)))
+                        {
+                            QaParameters.RataFieldsWithBadRounding = QaParameters.RataFieldsWithBadRounding.ListAdd("MeanCEMValue");
+                        }
+
+                        if (currentRataSummary.MeanDiff.HasValue &&
+                            (currentRataSummary.MeanDiff.Value != Math.Round(currentRataSummary.MeanDiff.Value, 3, MidpointRounding.AwayFromZero)))
+                        {
+                            QaParameters.RataFieldsWithBadRounding = QaParameters.RataFieldsWithBadRounding.ListAdd("MeanDifference");
+                        }
+
+                        if (currentRataSummary.MeanRataRefValue.HasValue &&
+                            (currentRataSummary.MeanRataRefValue.Value != Math.Round(currentRataSummary.MeanRataRefValue.Value, 3, MidpointRounding.AwayFromZero)))
+                        {
+                            QaParameters.RataFieldsWithBadRounding = QaParameters.RataFieldsWithBadRounding.ListAdd("MeanRATAReferenceValue");
+                        }
+
+                        if (currentRataSummary.StndDevDiff.HasValue &&
+                            (currentRataSummary.StndDevDiff.Value != Math.Round(currentRataSummary.StndDevDiff.Value, 3, MidpointRounding.AwayFromZero)))
+                        {
+                            QaParameters.RataFieldsWithBadRounding = QaParameters.RataFieldsWithBadRounding.ListAdd("StandardDeviationDifference");
+                        }
+
+                        
+                        if (QaParameters.RataFieldsWithBadRounding != null)
+                        {
+                            QaParameters.RataFieldsWithBadRounding = QaParameters.RataFieldsWithBadRounding.FormatList();
+                            category.CheckCatalogResult = "A";
+                        }
                     }
                 }
             }

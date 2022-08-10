@@ -173,12 +173,13 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <param name="chkSessionId">The Check Session Id for the evaluation.</param>
         /// <param name="result">'T' if the update was successful and 'F' if it was not.</param>
         /// <param name="errorMessage">The error message produced when the update was not successful.</param>
+        /// <param name="batchId">The QA batch identifier.</param>
         /// <returns>0</returns>
         public int CheckSessionInit(string processCd, string categoryCd, string monPlanId, System.Nullable<int> rptPeriodId,
                                     string testSumId, string qaCertEventId, string testExtensionExemptionId,
                                     System.Nullable<System.DateTime> evaluationBeginDate, System.Nullable<System.DateTime> evaluationEndDate,
                                     string userId, ref string chkSessionId,
-                                    ref System.Nullable<char> result, ref string errorMessage)
+                                    ref System.Nullable<char> result, ref string errorMessage, string batchId)
         {
             List<string> values = new List<string>();
             string resultString = string.Empty;
@@ -202,7 +203,15 @@ namespace ECMPS.Checks.DatabaseAccess
             DataTable AResultTable;
             //   string Sql = "call camdecmpswks.check_session_init('" + processCd + "','" + 
          //   string Sql = "select camdecmpswks.check_session_init('" + processCd + "'," + categoryCdParam + ",'" + monPlanId + "'," + rptPeriodIdParam + "," + testSumIdParam + "," + qaCertEventIddParam + "," + testExtensionExemptionIdParam + ",'" + evaluationBeginDate + "','" + evaluationEndDate + "','" + userId + "')";
-            string Sql = "select camdecmpswks.check_session_init('" + processCd + "', null,'" + monPlanId + "',null,null,null,null,'" + evaluationBeginDate + "','" + evaluationEndDate + "','" + userId + "')";
+            
+
+            string Sql = "select camdecmpswks.check_session_init('" + processCd + "', null,'" + monPlanId + "',null,null,null,null,'" + evaluationBeginDate + "','" + evaluationEndDate + "','" + userId + "'";
+
+            if(batchId != null && batchId != ""){
+                Sql += ",'" + batchId + "'";
+            }
+
+            Sql += ")";
 
             try
             {

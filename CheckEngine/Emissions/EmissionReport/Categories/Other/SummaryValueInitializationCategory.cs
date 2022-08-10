@@ -143,8 +143,12 @@ namespace ECMPS.Checks.EmissionsReport
 
                 // Unit Stack Configuration rows that were active during the reporting period
                 SetDataViewCheckParameter("EM_Unit_Stack_Configuration_Records", SourceTables()["UnitStackConfiguration"], 
-                                          $"Begin_Date <= '{EmParameters.CurrentReportingPeriodEndDate}' and End_Date >= '{EmParameters.CurrentReportingPeriodBeginDate}'", 
+                                          $"Begin_Date <= '{EmParameters.CurrentReportingPeriodEndDate}' and (End_Date is null or End_Date >= '{EmParameters.CurrentReportingPeriodBeginDate}')", 
                                           "");
+
+                // Crosscheck Tables
+                SetDataViewCheckParameter("F-factor_Range_Cross_Check_Table", SourceTables()["CrossCheck_F-factorRangeChecks"], "", "");
+                SetDataViewCheckParameter("Fuel_Type_Reality_Checks_For_Fc_Factor_Cross_Check_Table", SourceTables()["CrossCheck_FuelTypeRealityChecksforFCFACTOR"], "", "");
             }
         }
 

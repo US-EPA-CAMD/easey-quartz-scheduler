@@ -7890,6 +7890,21 @@ namespace ECMPS.Checks.Qa.Parameters
                 QaParameters.SetCheckParameter("RATA_End_Minute", value);
             }
         }
+
+        /// <summary>
+        /// Used as a result message plugin for RATA-132, and contains a list of RATA Summary Values the allow more decimal places than allowed.
+        /// </summary>
+        public static string RataFieldsWithBadRounding
+        {
+            get
+            {
+                return ((string)(QaParameters.GetCheckParameter("RATA_Fields_With_Bad_Rounding")));
+            }
+            set
+            {
+                QaParameters.SetCheckParameter("RATA_Fields_With_Bad_Rounding", value);
+            }
+        }
         
         /// <summary>
         /// Code that indicates the expiration date of the RATA based on calculated results.
@@ -10976,6 +10991,7 @@ namespace ECMPS.Checks.Qa.Parameters
             Process.ProcessParameters.RegisterParameter(1273, "RATA_End_Date");
             Process.ProcessParameters.RegisterParameter(1274, "RATA_End_Hour");
             Process.ProcessParameters.RegisterParameter(1275, "RATA_End_Minute");
+            Process.ProcessParameters.RegisterParameter(4741, "RATA_Fields_With_Bad_Rounding");
             Process.ProcessParameters.RegisterParameter(1325, "RATA_Frequency");
             Process.ProcessParameters.RegisterParameter(1881, "RATA_Frequency_Code_Lookup_Table");
             Process.ProcessParameters.RegisterParameter(1335, "RATA_Frequency_Determined");

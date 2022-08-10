@@ -656,6 +656,11 @@ namespace ECMPS.Checks.DefaultChecks
 									Category.SetCheckParameter("Default_Fuel_Code_Valid", false, eParameterDataType.Boolean);
 									Category.CheckCatalogResult = "C";
 								}
+								else if ((FuelCd == "C") && (DefaultRecord["End_Date"].AsEndDateTime() >= new DateTime(2022, 1, 1)))
+								{
+									Category.SetCheckParameter("Default_Fuel_Code_Valid", false, eParameterDataType.Boolean);
+									Category.CheckCatalogResult = "C";
+								}
 							}
 							else if (ParamCd == "MNGF")
 							{
@@ -714,16 +719,20 @@ namespace ECMPS.Checks.DefaultChecks
 					{
 						bool NOXLME = true;
 
+						DateTime DfltEvalBgnDt = (DateTime)Category.GetCheckParameter("Default_Evaluation_Begin_Date").ParameterValue;
+						DateTime DfltEvalEndDt = (DateTime)Category.GetCheckParameter("Default_Evaluation_End_Date").ParameterValue;
+						int EvalBeginHour = Category.GetCheckParameter("Default_Evaluation_Begin_Hour").ValueAsInt();
+						int EvalEndHour = Category.GetCheckParameter("Default_Evaluation_End_Hour").ValueAsInt();
+						string tempFilter;
+
 						if (DfltPrpsCd == "MD")
 						{
 							//Locate another Monitor Default record for the location where the ParameterCode is equal to "NOXR", the DefaultPurposeCode is equal to "LM", the BeginDate is null or is on or before the Default Evaluation End Date, and the EndDate is null or is on or after the Default Evaluation Start Date
-							DateTime DfltEvalBgnDt = (DateTime)Category.GetCheckParameter("Default_Evaluation_Begin_Date").ParameterValue;
-							DateTime DfltEvalEndDt = (DateTime)Category.GetCheckParameter("Default_Evaluation_End_Date").ParameterValue;
-							int EvalBeginHour = Category.GetCheckParameter("Default_Evaluation_Begin_Hour").ValueAsInt();
-							int EvalEndHour = Category.GetCheckParameter("Default_Evaluation_End_Hour").ValueAsInt();
+							
 							DataView DefaultRecords = (DataView)Category.GetCheckParameter("Default_Records").ParameterValue;
 							string DefaultFilter = DefaultRecords.RowFilter;
-							string tempFilter = DefaultFilter;
+							
+							tempFilter = DefaultFilter;
 							tempFilter = AddToDataViewFilter(tempFilter, "parameter_cd = 'NOXR' and default_purpose_cd = 'LM'");
 							tempFilter = AddEvaluationDateHourRangeToDataViewFilter(tempFilter, DfltEvalBgnDt, DfltEvalEndDt, EvalBeginHour, EvalBeginHour, false, true);
 							DefaultRecords.RowFilter = tempFilter;

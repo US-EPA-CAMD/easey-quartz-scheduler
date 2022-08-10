@@ -745,6 +745,7 @@ namespace ECMPS.Checks.EmissionsChecks
                 Category.SetCheckParameter("Invalid_FF2L_Test_Number", null, eParameterDataType.String);
                 Category.SetCheckParameter("Missing_FF2L_Year_Quarter", null, eParameterDataType.String);
                 DateTime CheckDate = Category.GetCheckParameter("FF2L_Accuracy_Check_Date").ValueAsDateTime(DateTypes.END);
+
                 if (Category.GetCheckParameter("FF2L_Accuracy_Eligible").ValueAsBool())
                 {
                     DataView FF2LTestRecs = Category.GetCheckParameter("FF2L_Test_Records_By_Location_For_QA_Status").ValueAsDataView();
@@ -754,9 +755,11 @@ namespace ECMPS.Checks.EmissionsChecks
                     DataRowView PriorAccTestRec = Category.GetCheckParameter("Prior_Accuracy_Record").ValueAsDataRowView();
                     DateTime PriorAccRecEndDate = cDBConvert.ToDate(PriorAccTestRec["END_DATE"], DateTypes.START);
                     DateTime ReinstallDate = cDBConvert.ToDate(PriorAccTestRec["REINSTALL_DATE"], DateTypes.START);
+
                     DateTime FirstDate = PriorAccRecEndDate;
                     if (ReinstallDate > PriorAccRecEndDate)
                         FirstDate = ReinstallDate;
+
                     int FirstYear = FirstDate.Year;
                     int FirstQuarter = cDateFunctions.ThisQuarter(FirstDate);
                     int SecondYear = CurrentDate.Year;
@@ -766,10 +769,12 @@ namespace ECMPS.Checks.EmissionsChecks
                     FilterFF2LRecs[0].Set("MON_SYS_ID", MonSysID);
                     FilterFF2LRecs[1].Set("TEST_RESULT_CD", "FAILED");
                     DataView FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
+
                     int thisYear;
                     int thisQuarter;
                     bool FoundFF2LRec = false;
                     string FoundTestNum = "";//compiler needs initialization
+
                     foreach (DataRowView drv in FF2LTestRecsFound)
                     {
                         thisYear = cDBConvert.ToInteger(drv["CALENDAR_YEAR"]);
@@ -782,16 +787,19 @@ namespace ECMPS.Checks.EmissionsChecks
                                 break;
                             }
                     }
+
                     if (FoundFF2LRec)
                     {
                         Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
                         Category.SetCheckParameter("Current_Accuracy_Status", "OOC-Fuel Flow to Load Test Failed", eParameterDataType.String);
                         return ReturnVal;
                     }
+
                     FilterFF2LRecs[1].Set("TEST_RESULT_CD", DBNull.Value, eFilterDataType.String);
                     FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
                     FoundFF2LRec = false;
                     FoundTestNum = "";
+                    
                     foreach (DataRowView drv in FF2LTestRecsFound)
                     {
                         thisYear = cDBConvert.ToInteger(drv["CALENDAR_YEAR"]);
@@ -804,12 +812,14 @@ namespace ECMPS.Checks.EmissionsChecks
                                 break;
                             }
                     }
+
                     if (FoundFF2LRec)
                     {
                         Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
                         Category.SetCheckParameter("Current_Accuracy_Status", "OOC-Fuel Flow to Load Test Has Critical Errors", eParameterDataType.String);
                         return ReturnVal;
                     }
+
                     FilterFF2LRecs[1].Set("QA_NEEDS_EVAL_FLG", "Y");
                     FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
                     FoundFF2LRec = false;
@@ -1566,9 +1576,11 @@ namespace ECMPS.Checks.EmissionsChecks
                     DataRowView PriorPEITestRec = Category.GetCheckParameter("Prior_PEI_Record").ValueAsDataRowView();
                     DateTime PriorPEIRecEndDate = cDBConvert.ToDate(PriorPEITestRec["END_DATE"], DateTypes.START);
                     DateTime ReinstallDate = cDBConvert.ToDate(PriorPEITestRec["REINSTALL_DATE"], DateTypes.START);
+
                     DateTime FirstDate = PriorPEIRecEndDate;
                     if (ReinstallDate > PriorPEIRecEndDate)
                         FirstDate = ReinstallDate;
+
                     int FirstYear = FirstDate.Year;
                     int FirstQuarter = cDateFunctions.ThisQuarter(FirstDate);
                     int SecondYear = CurrentDate.Year;
@@ -1584,6 +1596,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     int thisQuarter;
                     bool FoundFF2LRec = false;
                     string FoundTestNum = "";//compiler needs initialization
+
                     DataRowView FuelFlowToLoadRow = null;
                     {
                         foreach (DataRowView drv in FF2LTestRecsFound)
@@ -1628,10 +1641,12 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
                     }
 
+
                     FilterFF2LRecs[1].Set("TEST_RESULT_CD", DBNull.Value, eFilterDataType.String);
                     FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
                     FoundFF2LRec = false;
                     FoundTestNum = "";
+
                     foreach (DataRowView drv in FF2LTestRecsFound)
                     {
                         thisYear = cDBConvert.ToInteger(drv["CALENDAR_YEAR"]);
@@ -1644,6 +1659,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                 break;
                             }
                     }
+
                     if (FoundFF2LRec)
                     {
                         Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
@@ -1652,10 +1668,13 @@ namespace ECMPS.Checks.EmissionsChecks
                         Category.CheckCatalogResult = Status;
                         return ReturnVal;
                     }
+
+
                     FilterFF2LRecs[1].Set("QA_NEEDS_EVAL_FLG", "Y");
                     FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
                     FoundFF2LRec = false;
                     FoundTestNum = "";
+
                     foreach (DataRowView drv in FF2LTestRecsFound)
                     {
                         thisYear = cDBConvert.ToInteger(drv["CALENDAR_YEAR"]);
@@ -1668,6 +1687,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                 break;
                             }
                     }
+                    
                     if (FoundFF2LRec)
                     {
                         Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);

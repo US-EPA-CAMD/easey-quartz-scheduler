@@ -271,17 +271,11 @@ namespace ECMPS.Checks.EmissionsReport
                 SetDataViewCheckParameter("Fuel_Type_Warning_Levels_For_GCV_Cross_Check_Table",
                                         SourceTables()["CrossCheck_FuelTypeWarningLevelsForGCV"], "", "");
 
-                SetDataViewCheckParameter("Fuel_Type_Reality_Checks_For_Fc_Factor_Cross_Check_Table",
-                                      SourceTables()["CrossCheck_FuelTypeRealityChecksforFCFACTOR"], "", "");
-
                 SetDataViewCheckParameter("Parameter_Units_Of_Measure_Lookup_Table",
                                         SourceTables()["ParameterUOM"], "", "");
 
                 SetDataViewCheckParameter("Table_D-6_Missing_Data_Values",
                                       SourceTables()["CrossCheck_TableD-6MissingDataValues"], "", "");
-
-                SetDataViewCheckParameter("F-factor_Range_Cross_Check_Table",
-                                    SourceTables()["CrossCheck_F-factorRangeChecks"], "", "");
             }
         }
 
