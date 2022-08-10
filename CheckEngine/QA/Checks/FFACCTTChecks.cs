@@ -3,6 +3,8 @@ using System.Data;
 
 using ECMPS.Checks.CheckEngine;
 using ECMPS.Checks.Parameters;
+using ECMPS.Checks.Qa.Parameters;
+
 using ECMPS.Checks.TypeUtilities;
 using ECMPS.Definitions.Extensions;
 
@@ -12,7 +14,7 @@ namespace ECMPS.Checks.FFACCTTChecks
     {
         public cFFACCTTChecks()
         {
-            CheckProcedures = new dCheckProcedure[14];
+            CheckProcedures = new dCheckProcedure[15];
 
             CheckProcedures[1] = new dCheckProcedure(FFACCTT1);
             CheckProcedures[2] = new dCheckProcedure(FFACCTT2);
@@ -27,6 +29,7 @@ namespace ECMPS.Checks.FFACCTTChecks
             CheckProcedures[11] = new dCheckProcedure(FFACCTT11);
             CheckProcedures[12] = new dCheckProcedure(FFACCTT12);
             CheckProcedures[13] = new dCheckProcedure(FFACCTT13);
+            CheckProcedures[14] = new dCheckProcedure(FFACCTT14);
         }
 
 
@@ -565,6 +568,59 @@ namespace ECMPS.Checks.FFACCTTChecks
 
             return ReturnVal;
         }
+
+
+        /// <summary>
+        /// Accuracy Test Does Not Reuse Transmitter-Transducer Test Number
+        /// 
+        /// Enusres that a Fuel Flowmeter Accuracy test does not share the same test number with a Transmitter-Transducer test. 
+        /// </summary>
+        /// <param name="category"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        public static string FFACCTT14(cCategory category, ref bool log)
+        {
+            string returnVal = ""; ;
+
+            try
+            {
+                if ((QaParameters.CurrentTransmitterTransducerTest.TestNum != null) && (QaParameters.CurrentTransmitterTransducerTest.EndDate >= new DateTime(2021, 10, 1)))
+                {
+                    int count;
+
+                    count = QaParameters.LocationTestRecords.FindRows
+                            (
+                                new cFilterCondition("TEST_TYPE_CD", "FFACC"),
+                                new cFilterCondition("TEST_NUM", QaParameters.CurrentTransmitterTransducerTest.TestNum)
+                            ).Count;
+
+                    if (count > 0)
+                    {
+                        category.CheckCatalogResult = "A";
+                    }
+                    else
+                    {
+                        count = QaParameters.QaSupplementalDataRecords.FindRows
+                                (
+                                    new cFilterCondition("TEST_TYPE_CD", "FFACC"),
+                                    new cFilterCondition("TEST_NUM", QaParameters.CurrentTransmitterTransducerTest.TestNum)
+                                ).Count;
+
+                        if (count > 0)
+                        {
+                            category.CheckCatalogResult = "B";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                returnVal = category.CheckEngine.FormatError(ex);
+            }
+
+            return returnVal;
+        }
+        
         #endregion
 
     }

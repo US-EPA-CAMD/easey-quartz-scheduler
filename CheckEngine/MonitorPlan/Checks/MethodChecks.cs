@@ -1159,16 +1159,6 @@ namespace ECMPS.Checks.MethodChecks
 												// and started before this method then the begin date of this method is invalid.
 												// CO2 methods not associated with a program must begin on January 1st.
 												category.CheckCatalogResult = "E";
-											else
-												// Warn that method is not associated with a program and is only valid if reported
-												// for Greenhouse Gas Mandatory Reporting Rule.
-												category.CheckCatalogResult = "F";
-										}
-										else
-										{
-											// Warn that method is not associated with a program and is only valid if reported
-											// for Greenhouse Gas Mandatory Reporting Rule.
-											category.CheckCatalogResult = "F";
 										}
 									}
 								}

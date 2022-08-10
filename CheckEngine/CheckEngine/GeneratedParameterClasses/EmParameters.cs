@@ -6506,11 +6506,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The maximum value allowed for an FC FACTOR
         /// </summary>
-        public static bool? FcFactorMaximum
+        public static decimal? FcFactorMaximum
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Fc_Factor_Maximum")));
+                return ((decimal?)(EmParameters.GetCheckParameter("Fc_Factor_Maximum")));
             }
             set
             {
@@ -6545,6 +6545,36 @@ namespace ECMPS.Checks.Em.Parameters
             set
             {
                 EmParameters.SetCheckParameter("FC_Factor_Needed", value);
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether the Unit Fuel records associated with locations in the monitoring plan for a emission report all span the emissiion reports quarter.
+        /// </summary>
+        public static bool? FcValicationSpansQuarter
+        {
+            get
+            {
+                return ((bool?)(EmParameters.GetCheckParameter("Fc_Valication_Spans_Quarter")));
+            }
+            set
+            {
+                EmParameters.SetCheckParameter("Fc_Valication_Spans_Quarter", value);
+            }
+        }
+        
+        /// <summary>
+        /// Contains an array with an element for each location in which the elements contain a unique comma delimited list of primary fuels for the lcoation.
+        /// </summary>
+        public static FcValidationInfo[] FcValidationInfoByLocationArray
+        {
+            get
+            {
+                return ((FcValidationInfo[])(EmParameters.GetCheckParameter("Fc_Validation_Info_By_Location_Array")));
+            }
+            set
+            {
+                EmParameters.SetCheckParameter("Fc_Validation_Info_By_Location_Array", value);
             }
         }
         
@@ -6741,6 +6771,36 @@ namespace ECMPS.Checks.Em.Parameters
             set
             {
                 EmParameters.SetCheckParameter("FF2L_PEI_End_Year_Quarter", value);
+            }
+        }
+
+        /// <summary>
+        /// The year and quarter list for which  fuel-flow-to-load tests are missing in the Appendix D status analysis.
+        /// </summary>
+        public static string Ff2lProblemQuarterList
+        {
+            get
+            {
+                return ((string)(EmParameters.GetCheckParameter("FF2L_Problem_Quarter_List")));
+            }
+            set
+            {
+                EmParameters.SetCheckParameter("FF2L_Problem_Quarter_List", value);
+            }
+        }
+        
+        /// <summary>
+        /// The TestNumber list of invalid Fuel-Flow-to-Load Tests in the Appendix D Status analysis.
+        /// </summary>
+        public static string Ff2lProblemTestnumList
+        {
+            get
+            {
+                return ((string)(EmParameters.GetCheckParameter("FF2L_Problem_TestNum_List")));
+            }
+            set
+            {
+                EmParameters.SetCheckParameter("FF2L_Problem_TestNum_List", value);
             }
         }
         
@@ -17535,6 +17595,21 @@ namespace ECMPS.Checks.Em.Parameters
                 EmParameters.SetCheckParameter("Rpt_Period_Op_Days_Calculated_Value", value);
             }
         }
+
+        /// <summary>
+        /// Accumulates the total Op Hours Reported  - array indexed based on location entities (stacks/pipes/units)
+        /// </summary>
+        public static Int32[] RptPeriodOpHoursAccumulatorArray
+        {
+            get
+            {
+                return ((Int32[])(EmParameters.GetCheckParameter("Rpt_Period_Op_Hours_Accumulator_Array")));
+            }
+            set
+            {
+                EmParameters.SetCheckParameter("Rpt_Period_Op_Hours_Accumulator_Array", value);
+            }
+        }
         
         /// <summary>
         /// The recalculated quarterly value for operating hours.
@@ -19620,6 +19695,9 @@ namespace ECMPS.Checks.Em.Parameters
             Process.ProcessParameters.RegisterParameter(2440, "Fc_Factor_Maximum");
             Process.ProcessParameters.RegisterParameter(2439, "Fc_Factor_Minimum");
             Process.ProcessParameters.RegisterParameter(2453, "FC_Factor_Needed");
+
+            Process.ProcessParameters.RegisterParameter(4740, "Fc_Valication_Spans_Quarter");
+            Process.ProcessParameters.RegisterParameter(4739, "Fc_Validation_Info_By_Location_Array");
             Process.ProcessParameters.RegisterParameter(2443, "Fd_Factor_Maximum");
             Process.ProcessParameters.RegisterParameter(2442, "Fd_Factor_Minimum");
             Process.ProcessParameters.RegisterParameter(2454, "FD_Factor_Needed");
@@ -19632,6 +19710,8 @@ namespace ECMPS.Checks.Em.Parameters
             Process.ProcessParameters.RegisterParameter(3218, "FF2L_PEI_Check_Date");
             Process.ProcessParameters.RegisterParameter(3085, "FF2L_PEI_Eligible");
             Process.ProcessParameters.RegisterParameter(3087, "FF2L_PEI_End_Year_Quarter");
+            Process.ProcessParameters.RegisterParameter(3099, "FF2L_Problem_Quarter_List");
+            Process.ProcessParameters.RegisterParameter(3098, "FF2L_Problem_TestNum_List");
             Process.ProcessParameters.RegisterParameter(3076, "FF2L_Test_Records_By_Location_For_QA_Status");
             Process.ProcessParameters.RegisterParameter(2441, "F-factor_Range_Cross_Check_Table");
             Process.ProcessParameters.RegisterParameter(3624, "Final_Conversion_Factor");
@@ -20184,6 +20264,8 @@ namespace ECMPS.Checks.Em.Parameters
             Process.ProcessParameters.RegisterParameter(3205, "Rpt_Period_NOx_Rate_Hours");
             Process.ProcessParameters.RegisterParameter(3206, "Rpt_Period_NOx_Rate_Sum");
             Process.ProcessParameters.RegisterParameter(2891, "Rpt_Period_Op_Days_Calculated_Value");
+            Process.ProcessParameters.RegisterParameter(1996, "Rpt_Period_Op_Hours_Accumulator_Array");
+
             Process.ProcessParameters.RegisterParameter(2704, "Rpt_Period_Op_Hours_Calculated_Value");
             Process.ProcessParameters.RegisterParameter(2703, "Rpt_Period_Op_Time_Calculated_Value");
             Process.ProcessParameters.RegisterParameter(2700, "Rpt_Period_SO2_Mass_Calculated_Value");

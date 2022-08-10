@@ -89,6 +89,8 @@ namespace ECMPS.Checks.QAEvaluation
       SetCheckParameter("QA_Supplemental_Data_Records", new DataView(mQA.SourceData.Tables["QASuppData"],
         "", "", DataViewRowState.CurrentRows), eParameterDataType.DataView);
 
+      SetCheckParameter("Location_Test_Records", new DataView(mQA.SourceData.Tables["TestSummary"],
+        "", "", DataViewRowState.CurrentRows), eParameterDataType.DataView);
       SetCheckParameter("Test_Reason_Code_Lookup_Table", new DataView(mQA.SourceData.Tables["TestReasonCode"],
         "", "", DataViewRowState.CurrentRows), eParameterDataType.DataView);
 

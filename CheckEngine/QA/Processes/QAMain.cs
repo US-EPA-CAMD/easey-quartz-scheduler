@@ -3682,6 +3682,17 @@ namespace ECMPS.Checks.QAEvaluation
                                 SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
                             SourceDataAdapter.Fill(SourceDataTable);
                             mSourceData.Tables.Add(SourceDataTable);
+
+                            //get test summary records for this location ID
+                            SourceDataTable = new DataTable("TestSummary");
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_SUMMARY " +
+                              "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
+                              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
+                            // this defaults to 30 seconds if we don't override it
+                            if (SourceDataAdapter.SelectCommand != null)
+                                SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
+                            SourceDataAdapter.Fill(SourceDataTable);
+                            mSourceData.Tables.Add(SourceDataTable);
                             break;
                         }
                     case "FFACCTT":
@@ -3716,6 +3727,18 @@ namespace ECMPS.Checks.QAEvaluation
                                 SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
                             SourceDataAdapter.Fill(SourceDataTable);
                             mSourceData.Tables.Add(SourceDataTable);
+
+                            //get test summary records for this location ID
+                            SourceDataTable = new DataTable("TestSummary");
+                            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_SUMMARY " +
+                              "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
+                              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
+                            // this defaults to 30 seconds if we don't override it
+                            if (SourceDataAdapter.SelectCommand != null)
+                                SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
+                            SourceDataAdapter.Fill(SourceDataTable);
+                            mSourceData.Tables.Add(SourceDataTable);
+
                             break;
                         }
                     case "FF2LBAS":
@@ -4161,7 +4184,6 @@ namespace ECMPS.Checks.QAEvaluation
         /// <param name="sqlTransaction">The transaction to use with any commands.  Use null for no transaction.</param>
         /// <param name="errorMessage">The error message returned on failure.</param>
         /// <returns>Returns true if the update succeeds.</returns>
-        
         protected override bool DbUpdate_CalcWsLoad(NpgsqlTransaction sqlTransaction, ref string errorMessage)
         // protected override bool DbUpdate_CalcWsLoad(SqlTransaction sqlTransaction, ref string errorMessage)
         {
