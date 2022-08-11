@@ -138,6 +138,11 @@ namespace ECMPS.Checks.CheckEngine
     /// </summary>
     public DataSet SourceData { get { return mSourceData; } }
 
+    /// <summary>
+    /// The process Qa Identifier.
+    /// </summary>
+    public string QaId {get; set; }
+
     #endregion
 
 
@@ -955,7 +960,6 @@ namespace ECMPS.Checks.CheckEngine
     protected bool DbUpdate(ref string errorMessage)
     {
       bool result;
-
             //     SqlTransaction sqlTransaction = mCheckEngine.DbDataConnection.BeginTransaction();
             NpgsqlTransaction sqlTransaction = mCheckEngine.DbDataConnection.BeginTransaction();
 
@@ -1235,6 +1239,7 @@ namespace ECMPS.Checks.CheckEngine
       mCheckLogs.DefaultView.Sort = "";
     }
 
+
         /// <summary>
         /// Calls the ECMPS UPDATE_ECMPS_STATUS stored procedure.
         /// </summary>
@@ -1250,8 +1255,17 @@ namespace ECMPS.Checks.CheckEngine
             List<string> values = new List<string>();
 
             DataTable AResultTable;
-            string Sql = "select camdecmpswks.update_ecmps_status_for_mp_evaluation('" + CheckEngine.MonPlanId + "','" + CheckEngine.ChkSessionId + "')";
-
+            
+            string Sql;
+            if(CheckEngine.ProcessCd == "OTHERQA" && CheckEngine.CategoryCd == "EVENT"){ //QA Cert Event
+              Sql = "select camdecmpswks.update_ecmps_status_for_qce_evaluation('" + CheckEngine.ChkSessionId + "','" + QaId + "')";
+            }else if(CheckEngine.ProcessCd == "OTHERQA" && CheckEngine.CategoryCd == "TEE"){
+              Sql = "select camdecmpswks.update_ecmps_status_for_tee_evaluation('" + CheckEngine.ChkSessionId + "','" + QaId + "')";
+            }else if(CheckEngine.ProcessCd == "TEST"){
+              Sql = "select camdecmpswks.update_ecmps_status_for_qa_evaluation('" + CheckEngine.ChkSessionId + "','" + QaId + "')";
+            }else{
+              Sql = "select camdecmpswks.update_ecmps_status_for_mp_evaluation('" + CheckEngine.MonPlanId + "','" + CheckEngine.ChkSessionId + "')";
+            }
 
             if (DbUpdate_EcmpsStatusProcess != null)
             {
@@ -1283,7 +1297,7 @@ namespace ECMPS.Checks.CheckEngine
                         errorMessage = string.Format(resultTemplate, "DB", errorMessage);
                         result = false;
                     }
-                    Console.WriteLine("Completed update_ecmps_status_for_mp_evaluation: " + (result ? "Success" : "Failure"));
+                    Console.WriteLine("Completed update_ecmps_status_for_evaluation: " + (result ? "Success" : "Failure"));
                 }
                 catch (Exception ex)
                 {
@@ -1303,49 +1317,6 @@ namespace ECMPS.Checks.CheckEngine
             else
                 result = true;
 
-
-
-            //if (DbUpdate_EcmpsStatusProcess != null)
-            //{
-            //  DbDataConnection.CreateStoredProcedureCommand("UPDATE_ECMPS_STATUS", sqlTransaction);
-
-            //  DbDataConnection.AddInputParameter("@V_PROCESS", DbUpdate_EcmpsStatusProcess);
-            //  DbDataConnection.AddInputParameter("@V_ID_KEY_OR_LIST", DbUpdate_EcmpsStatusIdKeyOrList);
-            //  DbDataConnection.AddInputParameter("@V_PERIOD_ID", DbUpdate_EcmpsStatusPeriodId);
-            //  DbDataConnection.AddInputParameter("@V_OTHER_FIELD", DbUpdate_EcmpsStatusOtherField);
-
-            //  DbDataConnection.AddOutputParameterString("@V_RESULT", 1);
-            //  DbDataConnection.AddOutputParameterString("@V_ERROR_MSG", 200);
-
-            //  try
-            //  {
-            //    DbDataConnection.ExecuteNonQuery();
-
-            //    if (DbDataConnection.GetParameterString("@V_RESULT") == "T")
-            //      result = true;
-            //    else
-            //    {
-            //      errorMessage = string.Format(resultTemplate, "DB", DbDataConnection.GetParameterString("@V_ERROR_MSG"));
-            //      result = false;
-            //    }
-            //  }
-            //  catch (Exception ex)
-            //  {
-            //    if ((DbDataConnection.GetParameterString("@V_RESULT") == "F") &&
-            //         DbDataConnection.GetParameterString("@V_ERROR_MSG").HasValue())
-            //    {
-            //      errorMessage = string.Format(resultTemplate, "DB/App", DbDataConnection.GetParameterString("@V_ERROR_MSG"));
-            //      result = false;
-            //    }
-            //    else
-            //    {
-            //      errorMessage = string.Format(resultTemplate, "App", ex.Message);
-            //      result = false;
-            //    }
-            //  }
-            //}
-            //else
-            //  result = true;
 
             return result;
         }
