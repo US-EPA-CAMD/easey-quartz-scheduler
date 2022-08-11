@@ -531,7 +531,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
         //    AddSourceDataTable("SystemDesignationCode", "VW_System_Designation_Code");
         //    AddSourceDataTable("UnitsOfMeasureCode", "VW_Units_Of_Measure_Code");
         //    AddSourceDataTable("WafMethodCode", "VW_WAF_METHOD_CODE");
-            AddSourceDataTable("AnalyzerRangeCode", "camdecmpswks.analyzer_range_code");
+            AddSourceDataTable("AnalyzerRangeCode", "camdecmpsmd.analyzer_range_code");
             AddSourceDataTable("BypassApproachCode", "camdecmpsmd.bypass_approach_code");
             AddSourceDataTable("ComponentTypeCode", "camdecmpsmd.component_Type_code");
             AddSourceDataTable("ControlCode", "camdecmpsmd.control_code");
@@ -649,7 +649,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
         private void LoadCrossChecks()
         {
             DataTable Catalog = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM camdecmpsmd.cross_check_catalog");
-            DataTable Value = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM camdecmpswks.vw_cross_check_catalog_value"); //SQL Source: vw_Cross_Check_Catalog_Value
+            DataTable Value = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM camdecmpsmd.vw_cross_check_catalog_value"); //SQL Source: vw_Cross_Check_Catalog_Value
             DataTable CrossCheck;
             DataRow CrossCheckRow;
             string CrossCheckName;
