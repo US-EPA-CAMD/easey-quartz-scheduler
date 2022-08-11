@@ -147,7 +147,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     _dbContext.CertEvents.Update(certIdRecord);
                     _dbContext.SaveChanges();
 
-                    bool listResult = checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, batchId);
+                    bool listResult = checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, certId, batchId);
 
                     _dbContext.Entry<CertEvent>(certIdRecord).Reload();
                     EvalStatusCode evalStatus = getStatusCodeByCheckId(certIdRecord.CheckSessionId, listResult);
@@ -171,7 +171,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
                     _dbContext.SaveChanges();
 
-                    bool listResult = checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, batchId);
+                    bool listResult = checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, extensionExemptionId, batchId);
 
                     _dbContext.Entry<TestExtensionExemption>(extensionExemptionRecord).Reload();
                     EvalStatusCode evalStatus = getStatusCodeByCheckId(extensionExemptionRecord.CheckSessionId, listResult);
@@ -195,7 +195,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     testSummaryRecord.EvalStatus = "WIP";
                     _dbContext.TestSummaries.Update(testSummaryRecord);
 
-                    bool listResult = checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, batchId);
+                    bool listResult = checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, testId, batchId);
 
                     _dbContext.Entry<TestSummary>(testSummaryRecord).Reload();
                     EvalStatusCode evalStatus = getStatusCodeByCheckId(testSummaryRecord.CheckSessionId, listResult);
