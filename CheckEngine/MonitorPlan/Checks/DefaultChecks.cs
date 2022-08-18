@@ -735,12 +735,14 @@ namespace ECMPS.Checks.DefaultChecks
 							tempFilter = DefaultFilter;
 							tempFilter = AddToDataViewFilter(tempFilter, "parameter_cd = 'NOXR' and default_purpose_cd = 'LM'");
 							tempFilter = AddEvaluationDateHourRangeToDataViewFilter(tempFilter, DfltEvalBgnDt, DfltEvalEndDt, EvalBeginHour, EvalBeginHour, false, true);
+
 							DefaultRecords.RowFilter = tempFilter;
 							if (DefaultRecords.Count == 0)
 								NOXLME = false;
 							DefaultRecords.RowFilter = DefaultFilter;
-							if (NOXLME == true)
-							{
+						}
+						if (NOXLME == true)
+						{
 								string BoilerType = "";
 								DataView LcnUnitTypeRecs = (DataView)Category.GetCheckParameter("Location_Unit_Type_Records").ParameterValue;
 								string UnitOldFilter = LcnUnitTypeRecs.RowFilter;
@@ -780,7 +782,6 @@ namespace ECMPS.Checks.DefaultChecks
 											Category.CheckCatalogResult = "B";
 									}
 								}
-							}
 						}
 					}
 					else
