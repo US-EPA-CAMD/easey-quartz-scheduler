@@ -51,6 +51,7 @@ namespace CheckEngineRunner
             await scheduler.ScheduleJob(job, trigger);
 
             Console.ReadLine();
+
         }
     }
 
@@ -65,7 +66,7 @@ namespace CheckEngineRunner
             //Console.WriteLine(connStr);
             cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
   
-            bool result = checkEngine.RunChecks_MpReport("TWCORNEL5-F4E3DAADF24B4E1C8F2BEDD2DE59B436", new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+            bool result = checkEngine.RunChecks_MpReport("TWCORNEL5-C0E3879920A14159BAA98E03F1980A7A", new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
             await Task.CompletedTask;
         }     
     }

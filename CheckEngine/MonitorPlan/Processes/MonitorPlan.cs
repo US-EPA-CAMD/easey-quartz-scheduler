@@ -534,7 +534,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
             AddSourceDataTable("AnalyzerRangeCode", "camdecmpsmd.analyzer_range_code");
             AddSourceDataTable("BypassApproachCode", "camdecmpsmd.bypass_approach_code");
             AddSourceDataTable("ComponentTypeCode", "camdecmpsmd.component_Type_code");
-            AddSourceDataTable("ControlCode", "camdecmpsmd.control_code");
+            AddSourceDataTable("ControlCode", "camdecmpsmd.vw_control_code");
             AddSourceDataTable("DefaultPurposeCode", "camdecmpsmd.default_purpose_code");
             AddSourceDataTable("DefaultSourceCode", "camdecmpsmd.default_source_code");
             AddSourceDataTable("DemMethodCode", "camdecmpsmd.dem_method_code");
