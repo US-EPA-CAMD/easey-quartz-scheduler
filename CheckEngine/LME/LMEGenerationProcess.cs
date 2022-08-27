@@ -233,7 +233,7 @@ namespace ECMPS.Checks.LME
 
             if( SeverityCd != eSeverityCd.FATAL && SeverityCd != eSeverityCd.CRIT1 )
             {
-                if( DbWsConnection.ClearUpdateSession( eWorkspaceDataType.LME, mCheckEngine.WorkspaceSessionId ) )
+                if( DbWsConnection.ClearUpdateSession( eWorkspaceDataType.LME, mCheckEngine.ChkSessionId ) )
                 {
                     if( DbWsConnection.BulkLoad( FGenDerivedHrlyValue, "CL_DerivedHourlyValue", ref errorMessage ) &&
                         DbWsConnection.BulkLoad( FGenSummaryValue, "CL_SummaryValue", ref errorMessage ) &&

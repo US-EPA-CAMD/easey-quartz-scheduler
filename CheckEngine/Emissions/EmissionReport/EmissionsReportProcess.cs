@@ -4647,33 +4647,36 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool result;
 
-            if (mCheckEngine.DbWsConnection.ClearUpdateSession(eWorkspaceDataType.EM, mCheckEngine.WorkspaceSessionId))
+            if (mCheckEngine.DbWsConnection.ClearUpdateSession(eWorkspaceDataType.EM, mCheckEngine.ChkSessionId))
             {
                 if (
-                        DbWsConnection.BulkLoad(FCalcDailyCal, "CE_DailyCalibration", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcDailyTestSummary, "CE_DailyTestSummary", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcDerivedHrlyValue, "CE_DerivedHourlyValue", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcMonitorHrlyValue, "CE_MonitorHourlyValue", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcHrlyFuelFlow, "CE_HourlyFuelFlow", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcHrlyParamFuelFlow, "CE_HourlyParameterFuelFlow", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcLongTermFuelFlow, "CE_LongTermFuelFlow", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcDailyEmission, "CE_DailyEmission", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcDailyFuel, "CE_DailyFuel", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FOperatingSuppData, "CE_OperatingSuppData", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcSummaryValue, "CE_SummaryValue", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(CalcMATSDHVData, "CE_MATSDerivedHourlyValue", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(CalcMATSMHVData, "CE_MATSMonitorHourlyValue", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcDailyCal, "daily_calibration", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcDailyTestSummary, "daily_test_summary", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcDerivedHrlyValue, "derived_hrly_value", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcMonitorHrlyValue, "monitor_hrly_value", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcHrlyFuelFlow, "hrly_fuel_flow", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcHrlyParamFuelFlow, "hrly_param_fuel_flow", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcLongTermFuelFlow, "long_term_fuel_flow", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcDailyEmission, "daily_emission", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcDailyFuel, "daily_fuel", ref errorMessage) &&
+                        
+                        // TODO: [JW] WE DO NOT HAVE THIS TABLE
+                        //DbWsConnection.BulkLoad(FOperatingSuppData, "op_supp_data", ref errorMessage) &&
+                        
+                        DbWsConnection.BulkLoad(FCalcSummaryValue, "summary_value", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcMATSDHVData, "mats_derived_hrly_value", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcMATSMHVData, "mats_monitor_hrly_value", ref errorMessage) &&
                         /* Sorbent Trap Related */
-                        DbWsConnection.BulkLoad(CalcHrlyGasFlowMeter, "CE_HourlyGasFlowMeter", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(CalcSamplingTrain, "CE_SamplingTrain", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(CalcSorbentTrap, "CE_SorbentTrap", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcHrlyGasFlowMeter, "hrly_gas_flow_meter", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcSamplingTrain, "sampling_train", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcSorbentTrap, "sorbent_trap", ref errorMessage) &&
                         /* Sampling Train Supplemental Data*/
                         DbWsConnection.BulkLoad(SamplingTrainEvalInformation.SupplementalDataUpdateDataTable,
                                                 SamplingTrainEvalInformation.SupplementalDataUpdateTableName,
                                                 ref errorMessage) &&
                         /* Weekly Emission Tests */
-                        DbWsConnection.BulkLoad(CalcWeeklyTestSummary, "CE_WeeklyTestSummary", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(CalcWeeklySystemIntegrity, "CE_WeeklySystemIntegrity", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcWeeklyTestSummary, "weekly_test_summary", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcWeeklySystemIntegrity, "weekly_system_integrity", ref errorMessage) &&
                         /* Supplemental Data*/
                         DbWsConnection.BulkLoad(QaCertificationSupplementalData.SupplementalDataUpdateDataTable, QaCertificationSupplementalData.SupplementalDataUpdateTablePath, ref errorMessage) &&
                         DbWsConnection.BulkLoad(SystemOperatingSupplementalData.SupplementalDataUpdateDataTable, SystemOperatingSupplementalData.SupplementalDataUpdateTablePath, ref errorMessage) &&

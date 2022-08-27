@@ -1664,13 +1664,6 @@ namespace ECMPS.Checks.DatabaseAccess
             bool result = false;
             string errorTemplate = string.Format("BulkLoad[{0}]: {1}", targetTableName, "{0}");
             List<int> excludeColumnIndex = new List<int>();
-            //FOR TESTING ONLY
-            //if (sourceTable.Rows.Count == 0)
-            //{
-            //    //Dummy row for testing
-            //    object[] _params = { "", "'c6d513ce-6150-ef8f-6dc3-3dc1685541a8'", new DateTime(2021, 11, 22), int.MinValue, "Result Message", "Check Log Comment", "2", "10", "", new DateTime(2021, 11, 21), 10, new DateTime(2021, 11, 22), 0, "Source Table", "row", new DateTime(2021, 11, 22), 13, "Check_result:PASS", "NONE", "NONE", "5" };
-            //    sourceTable.Rows.Add(_params);
-            //}
             if (sourceTable != null && sourceTable.Rows.Count > 0)
             {
                 string insertColumns = string.Empty;
@@ -1725,35 +1718,6 @@ namespace ECMPS.Checks.DatabaseAccess
                         if (!string.IsNullOrEmpty(errorMessage))
                             result = false;
                     }
-                    //SQL SERVER BULK COPY
-                    /*SqlBulkCopy bulkCopy = new System.Data.SqlClient.SqlBulkCopy(m_sqlConn, SqlBulkCopyOptions.Default, sqlTransaction);
-                    try
-                    {
-                        bulkCopy.BulkCopyTimeout = 600;
-                        bulkCopy.DestinationTableName = targetTableName;
-                        if ((excludeColumnNames != null) && (excludeColumnNames.Count > 0))
-                        {
-                            bulkCopy.ColumnMappings.Clear();
-                            foreach (DataColumn column in sourceTable.Columns)
-                            {
-                                if (!excludeColumnNames.Contains(column.ColumnName))
-                                    bulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(column.ColumnName, column.ColumnName));
-                            }
-                        }
-                        bulkCopy.WriteToServer(sourceTable);
-                        bulkCopy.Close();
-                        result = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        errorMessage = string.Format(errorTemplate, ex.Message);
-                        result = false;
-                    }
-                    finally
-                    {
-                        //bulkCopy = null;
-                        result = false;
-                    } */
                 }
             }
             else
@@ -1898,10 +1862,10 @@ namespace ECMPS.Checks.DatabaseAccess
         /// Clear the scratch tables for the given type
         /// </summary>
         /// <param name="eType">QA, EM or LME</param>
-        /// <param name="nSessionId">The id of the session to clear</param>
+        /// <param name="chkSessionId">The id of the check session to clear</param>
         /// <param name="sqlTransaction">The current SQL transaction.</param>
         /// <returns>true if successful, false if error and LastError contains error message</returns>
-        public bool ClearScratchSession(eWorkspaceDataType eType, decimal nSessionId,
+        public bool ClearScratchSession(eWorkspaceDataType eType, string chkSessionId,
                                         ref NpgsqlTransaction sqlTransaction)   // was SqlTransaction
         {
             bool bSuccessful = false;
@@ -1912,7 +1876,7 @@ namespace ECMPS.Checks.DatabaseAccess
                 this.CreateStoredProcedureCommand("CLEAR_SCRATCH_TABLES2", sqlTransaction);
 
             this.AddInputParameter("@V_TYPE", eType.ToCode());
-            this.AddInputParameter("@V_SESSION_ID", nSessionId);
+            this.AddInputParameter("@V_SESSION_ID", chkSessionId);
             this.AddOutputParameterString("@V_RESULT", 1);
             this.AddOutputParameterString("@V_ERROR_MSG", 200);
 
@@ -1929,23 +1893,23 @@ namespace ECMPS.Checks.DatabaseAccess
         /// Clear the scratch tables for the given type
         /// </summary>
         /// <param name="eType">QA, EM or LME</param>
-        /// <param name="nSessionId">The id of the session to clear</param>
+        /// <param name="chkSessionId">The id of the check session to clear</param>
         /// <returns>true if successful, false if error and LastError contains error message</returns>
-        public bool ClearScratchSession(eWorkspaceDataType eType, decimal nSessionId)
+        public bool ClearScratchSession(eWorkspaceDataType eType, string chkSessionId)
         {
             NpgsqlTransaction Transaction = null; // was SqlTransaction
 
-            return ClearScratchSession(eType, nSessionId, ref Transaction);
+            return ClearScratchSession(eType, chkSessionId, ref Transaction);
         }
 
         /// <summary>
         /// Clear the calc updates tables for the given type
         /// </summary>
         /// <param name="eType">QA, EM or LME</param>
-        /// <param name="nSessionId">The id of the session to clear</param>
+        /// <param name="chkSessionId">The id of the check session to clear</param>
         /// <param name="sqlTransaction">The current SQL transaction.</param>
         /// <returns>true if successful, false if error and LastError contains error message</returns>
-        public bool ClearUpdateSession(eWorkspaceDataType eType, decimal nSessionId,
+        public bool ClearUpdateSession(eWorkspaceDataType eType, string chkSessionId,
                                        ref NpgsqlTransaction sqlTransaction)   // was SqlTransaction
         {
             bool bSuccessful = false;
@@ -1956,7 +1920,7 @@ namespace ECMPS.Checks.DatabaseAccess
                 this.CreateStoredProcedureCommand("CLEAR_UPDATE_SESSION", sqlTransaction);
 
             this.AddInputParameter("@V_TYPE", eType.ToCode());
-            this.AddInputParameter("@V_SESSION_ID", nSessionId);
+            this.AddInputParameter("@V_SESSION_ID", chkSessionId);
             this.AddOutputParameterString("@V_RESULT", 1);
             this.AddOutputParameterString("@V_ERROR_MSG", 200);
 
@@ -1973,13 +1937,13 @@ namespace ECMPS.Checks.DatabaseAccess
         /// Clear the calc updates tables for the given type
         /// </summary>
         /// <param name="eType">QA, EM or LME</param>
-        /// <param name="nSessionId">The id of the session to clear</param>
+        /// <param name="chkSessionId">The id of the check session to clear</param>
         /// <returns>true if successful, false if error and LastError contains error message</returns>
-        public bool ClearUpdateSession(eWorkspaceDataType eType, decimal nSessionId)
+        public bool ClearUpdateSession(eWorkspaceDataType eType, string chkSessionId)
         {
             NpgsqlTransaction Transaction = null; // was SqlTransaction
 
-            return ClearUpdateSession(eType, nSessionId, ref Transaction);
+            return ClearUpdateSession(eType, chkSessionId, ref Transaction);
         }
 
         ///// <summary>
@@ -2037,14 +2001,14 @@ namespace ECMPS.Checks.DatabaseAccess
         /// Migrates calculated data from the ECMPS_WS database to the ECMPS database.
         /// </summary>
         /// <param name="workspaceDataType">The type of data to migrate.</param>
-        /// <param name="workspaceSessionId">The session id of the data to migrate.</param>
+        /// <param name="chkSessionId">The check session id of the data to migrate.</param>
         /// <param name="monPlanId">The monitor plan of the data to migrate.</param>
         /// <param name="rptPeriodId">The reporting period of the data to migrate.</param>
         /// <param name="userId">The user id to associate with the migration.</param>
         /// <param name="sqlTransaction">The current SQL transaction.</param>
         /// <returns>True if the migration succeded.</returns>
         public bool MigrateWorkspaceSession(eWorkspaceDataType? workspaceDataType,
-                                            decimal workspaceSessionId,
+                                            string chkSessionId,
                                             string monPlanId,
                                             int? rptPeriodId,
                                             string userId,
@@ -2056,25 +2020,25 @@ namespace ECMPS.Checks.DatabaseAccess
             {
                 case eWorkspaceDataType.EM:
                     {
-                        result = MigrateWorkspaceSession_EM(workspaceSessionId, monPlanId, rptPeriodId.Value, userId, ref sqlTransaction);
+                        result = MigrateWorkspaceSession_EM(chkSessionId, monPlanId, rptPeriodId.Value, userId, ref sqlTransaction);
                     }
                     break;
 
                 case eWorkspaceDataType.LME:
                     {
-                        result = MigrateWorkspaceSession_LME(workspaceSessionId, monPlanId, rptPeriodId.Value, userId, ref sqlTransaction);
+                        result = MigrateWorkspaceSession_LME(chkSessionId, monPlanId, rptPeriodId.Value, userId, ref sqlTransaction);
                     }
                     break;
 
                 case eWorkspaceDataType.QA:
                     {
-                        result = MigrateWorkspaceSession_QA(workspaceSessionId, userId, ref sqlTransaction);
+                        result = MigrateWorkspaceSession_QA(chkSessionId, userId, ref sqlTransaction);
                     }
                     break;
 
                 case eWorkspaceDataType.EMGEN:
                     {
-                        result = MigrateWorkspaceSession_EMGEN(workspaceSessionId, monPlanId, rptPeriodId.Value, ref sqlTransaction);
+                        result = MigrateWorkspaceSession_EMGEN(chkSessionId, monPlanId, rptPeriodId.Value, ref sqlTransaction);
                     }
                     break;
 
@@ -2092,21 +2056,22 @@ namespace ECMPS.Checks.DatabaseAccess
         /// Migrates emissions evaluation calculated data from the workspace
         /// schema to the data schema.
         /// </summary>
-        /// <param name="nSessionId">The session id of the data to migrate.</param>
+        /// <param name="chkSessionId">The check session id of the data to migrate.</param>
         /// <param name="sMonPlanId">The monitor plan of the data to migrate.</param>
         /// <param name="iRptPeriodId">The reporting period of the data to migrate.</param>
         /// <param name="sUserId">The user id to associate with the migration.</param>
         /// <param name="sqlTransaction">The current SQL transaction.</param>
         /// <returns>True if the migration succeded.</returns>
-        public bool MigrateWorkspaceSession_EM(decimal nSessionId,
-                                               string sMonPlanId, int iRptPeriodId,
+        public bool MigrateWorkspaceSession_EM(string chkSessionId,
+                                               string sMonPlanId,
+                                               int iRptPeriodId,
                                                string sUserId,
                                                ref NpgsqlTransaction sqlTransaction)
         {
             bool Result;
 
             this.CreateStoredProcedureCommand("UPD_SESSION_CALCULATED_EM", sqlTransaction);
-            this.AddInputParameter("@V_SESSION_ID", nSessionId);
+            this.AddInputParameter("@V_SESSION_ID", chkSessionId);
             this.AddInputParameter("@V_MON_PLAN_ID", sMonPlanId);
             this.AddInputParameter("@V_RPT_PERIOD_ID", iRptPeriodId);
             this.AddInputParameter("@V_CURRENT_USERID", sUserId);
@@ -2149,12 +2114,12 @@ namespace ECMPS.Checks.DatabaseAccess
         /// Migrates data generated for LME from the workspace
         /// schema to the data schema.
         /// </summary>
-        /// <param name="sessionId">The session id of the data to migrate.</param>
+        /// <param name="chkSessionId">The check session id of the data to migrate.</param>
         /// <param name="monPlanId">The monitor plan of the data to migrate.</param>
         /// <param name="rptPeriodId">The reporting period of the data to migrate.</param>
         /// <param name="sqlTransaction">The current SQL transaction.</param>
         /// <returns>True if the migration succeded.</returns>
-        public bool MigrateWorkspaceSession_EMGEN(decimal sessionId,
+        public bool MigrateWorkspaceSession_EMGEN(string chkSessionId,
                                                   string monPlanId,
                                                   int rptPeriodId,
                                                   ref NpgsqlTransaction sqlTransaction) // was SqlTransaction
@@ -2162,7 +2127,7 @@ namespace ECMPS.Checks.DatabaseAccess
             bool Result;
 
             this.CreateStoredProcedureCommand("CheckEmGen.MigrateWorkspace", sqlTransaction);
-            this.AddInputParameter("@sessionId", sessionId);
+            this.AddInputParameter("@sessionId", chkSessionId);
             this.AddInputParameter("@monPlanId", monPlanId);
             this.AddInputParameter("@rptPeriodId", rptPeriodId);
             this.AddOutputParameterString("@result", 1);
@@ -2204,21 +2169,22 @@ namespace ECMPS.Checks.DatabaseAccess
         /// Migrates data generated for LME from the workspace
         /// schema to the data schema.
         /// </summary>
-        /// <param name="nSessionId">The session id of the data to migrate.</param>
+        /// <param name="chkSessionId">The check session id of the data to migrate.</param>
         /// <param name="sMonPlanId">The monitor plan of the data to migrate.</param>
         /// <param name="iRptPeriodId">The reporting period of the data to migrate.</param>
         /// <param name="sUserId">The user id to associate with the migration.</param>
         /// <param name="sqlTransaction">The current SQL transaction.</param>
         /// <returns>True if the migration succeded.</returns>
-        public bool MigrateWorkspaceSession_LME(decimal nSessionId,
-                                                string sMonPlanId, int iRptPeriodId,
+        public bool MigrateWorkspaceSession_LME(string chkSessionId,
+                                                string sMonPlanId, 
+                                                int iRptPeriodId,
                                                 string sUserId,
                                                 ref NpgsqlTransaction sqlTransaction)   // was SqlTransaction
         {
             bool Result;
 
             this.CreateStoredProcedureCommand("UPD_SESSION_GENERATED_LME", sqlTransaction);
-            this.AddInputParameter("@V_SESSION_ID", nSessionId);
+            this.AddInputParameter("@V_SESSION_ID", chkSessionId);
             this.AddInputParameter("@V_MON_PLAN_ID", sMonPlanId);
             this.AddInputParameter("@V_RPT_PERIOD_ID", iRptPeriodId);
             this.AddInputParameter("@V_CURRENT_USERID", sUserId);
@@ -2261,17 +2227,18 @@ namespace ECMPS.Checks.DatabaseAccess
         /// Migrates QA/Test evaluation calculated data from the workspace
         /// schema to the data schema.
         /// </summary>
-        /// <param name="nSessionId">The session id of the data to migrate.</param>
+        /// <param name="chkSessionId">The check session id of the data to migrate.</param>
         /// <param name="sUserId">The user id to associate with the migration.</param>
         /// <param name="sqlTransaction">The current SQL transaction.</param>
         /// <returns>True if the migration succeded.</returns>
-        public bool MigrateWorkspaceSession_QA(decimal nSessionId, string sUserId,
-                                               ref NpgsqlTransaction sqlTransaction)   // was SqlTransaction
+        public bool MigrateWorkspaceSession_QA(string chkSessionId, 
+                                                string sUserId,
+                                                ref NpgsqlTransaction sqlTransaction)   // was SqlTransaction
         {
             bool Result;
 
-            this.CreateStoredProcedureCommand("UPD_SESSION_CALCULATED_QA", sqlTransaction);
-            this.AddInputParameter("@V_SESSION_ID", nSessionId);
+            this.CreateStoredProcedureCommand("camdecmpswks.UPD_SESSION_CALCULATED_QA", sqlTransaction);
+            this.AddInputParameter("@V_SESSION_ID", chkSessionId);
             this.AddInputParameter("@V_CURRENT_USERID", sUserId);
             this.AddOutputParameterString("@V_RESULT", 1);
             this.AddOutputParameterString("@V_ERROR_MSG", 200);

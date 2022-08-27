@@ -130,11 +130,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             List<string> testExtensionExemptionId = JsonConvert.DeserializeObject<List<string>>(dataMap.GetString("testExtensionExemption"));
             List<string> testSumId = JsonConvert.DeserializeObject<List<string>>(dataMap.GetString("testSumId"));
 
-            string batchId = null;
-            if(qaCertEventId.Count + testExtensionExemptionId.Count + testSumId.Count > 1){ //We need to initialize a batch, there is more than one record coming in
-              batchId = Guid.NewGuid().ToString();
-            }
-
             List<Task> threadPool = new List<Task>();
 
             foreach (string certId in qaCertEventId)
@@ -147,7 +142,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     _dbContext.CertEvents.Update(certIdRecord);
                     _dbContext.SaveChanges();
 
-                    bool listResult = checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, certId, batchId);
+                    bool listResult = checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, certId);
 
                     _dbContext.Entry<CertEvent>(certIdRecord).Reload();
                     EvalStatusCode evalStatus = getStatusCodeByCheckId(certIdRecord.CheckSessionId, listResult);
@@ -171,7 +166,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
                     _dbContext.SaveChanges();
 
-                    bool listResult = checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, extensionExemptionId, batchId);
+                    bool listResult = checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, extensionExemptionId);
 
                     _dbContext.Entry<TestExtensionExemption>(extensionExemptionRecord).Reload();
                     EvalStatusCode evalStatus = getStatusCodeByCheckId(extensionExemptionRecord.CheckSessionId, listResult);
@@ -195,7 +190,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     testSummaryRecord.EvalStatus = "WIP";
                     _dbContext.TestSummaries.Update(testSummaryRecord);
 
-                    bool listResult = checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, testId, batchId);
+                    bool listResult = checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, testId);
 
                     _dbContext.Entry<TestSummary>(testSummaryRecord).Reload();
                     EvalStatusCode evalStatus = getStatusCodeByCheckId(testSummaryRecord.CheckSessionId, listResult);

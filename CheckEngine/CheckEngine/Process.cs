@@ -1010,7 +1010,7 @@ namespace ECMPS.Checks.CheckEngine
       try
       {
         if (!DbDataConnection.MigrateWorkspaceSession(DbUpdate_WorkspaceDataType,
-                                                      CheckEngine.WorkspaceSessionId,
+                                                      CheckEngine.ChkSessionId,
                                                       CheckEngine.MonPlanId,
                                                       CheckEngine.RptPeriodId,
                                                       CheckEngine.UserId,
@@ -1024,7 +1024,7 @@ namespace ECMPS.Checks.CheckEngine
           dbFunction = "ClearScratchSession";
           if ((CheckEngine.WorkspaceSessionId != 0) &&
               DbUpdate_WorkspaceDataType.HasValue &&
-              !DbDataConnection.ClearScratchSession(DbUpdate_WorkspaceDataType.Value, CheckEngine.WorkspaceSessionId, ref sqlTransaction))
+              !DbDataConnection.ClearScratchSession(DbUpdate_WorkspaceDataType.Value, CheckEngine.ChkSessionId, ref sqlTransaction))
           {
             errorMessage = string.Format(resultTemplate, "DB", dbFunction, DbDataConnection.LastError);
             result = false;
@@ -1068,7 +1068,7 @@ namespace ECMPS.Checks.CheckEngine
       DbUpdate_CheckLogMerge();
 
       result = mCheckEngine.DbDataConnection.BulkLoad(mCheckLogsMerged,
-                                                     "camdecmpswks.check_log",//"ecmps_aux.dbo.Check_Log",
+                                                     "camdecmpswks.check_log",
                                                      new string[] { "CHK_LOG_ID" },
                                                      sqlTransaction,
                                                      ref errorMessage);
@@ -1429,8 +1429,8 @@ namespace ECMPS.Checks.CheckEngine
       string Sql = "SELECT Ordinal_Position, Column_Name, Is_Nullable, " +
                    "       Data_Type, Character_Maximum_Length, " +
                    "       Numeric_Precision, Numeric_Scale, Datetime_Precision " +
-                   "  FROM " + ACatalogName + ".Information_Schema.Columns " +
-                   "  WHERE Table_Name = '" + ATableName + "' " +
+                   "  FROM Information_Schema.Columns " +
+                   "  WHERE Table_Schema = '" + ACatalogName + "' AND Table_Name = '" + ATableName + "' " +
                    "  ORDER BY Ordinal_Position, Column_Name ";
       EGetResults GetResults;
 
