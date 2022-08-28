@@ -1535,6 +1535,27 @@ namespace ECMPS.Checks.DatabaseAccess
         }
 
         /// <summary>
+        /// Add a string/Varchar input/output parameter to the SQL command object
+        /// </summary>
+        /// <param name="sParamName">The name of the parameter</param>
+        /// <param name="nSize">The size/length of the Varchar parameter</param>
+        public void AddInputOutputParameterString(string sParamName, int nSize, object oValue)
+        {
+            Debug.Assert(m_sqlCmd != null, "m_sqlCmd is null.");
+
+            // make sure we use DBNull if appropriate
+            object oDBValue = oValue;
+            if (oValue == null)
+                oDBValue = DBNull.Value;            
+
+            NpgsqlParameter param = new NpgsqlParameter(sParamName, NpgsqlDbType.Varchar);    //was SqldbType.VarChar;
+            param.Size = nSize;
+            param.Value = oDBValue;
+            param.Direction = ParameterDirection.InputOutput;
+            m_sqlCmd.Parameters.Add(param);
+        }
+
+        /// <summary>
         /// Add a string/Varchar output parameter to the SQL command object
         /// </summary>
         /// <param name="sParamName">The name of the parameter</param>
@@ -2237,11 +2258,15 @@ namespace ECMPS.Checks.DatabaseAccess
         {
             bool Result;
 
-            this.CreateStoredProcedureCommand("camdecmpswks.UPD_SESSION_CALCULATED_QA", sqlTransaction);
+            this.CreateTextCommand(
+                "CALL camdecmpswks.UPD_SESSION_CALCULATED_QA(@V_SESSION_ID, @V_CURRENT_USERID, @V_RESULT, @V_ERROR_MSG)",
+                sqlTransaction
+            );
+            
             this.AddInputParameter("@V_SESSION_ID", chkSessionId);
             this.AddInputParameter("@V_CURRENT_USERID", sUserId);
-            this.AddOutputParameterString("@V_RESULT", 1);
-            this.AddOutputParameterString("@V_ERROR_MSG", 200);
+            this.AddInputOutputParameterString("@V_RESULT", 1, "T");
+            this.AddInputOutputParameterString("@V_ERROR_MSG", 200, string.Empty);
 
             try
             {
