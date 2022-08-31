@@ -74,7 +74,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           }
 
           if (quarter != null){
-            description = $"Unit-level {subType} {regulation} emissions data for all facilities/units for {year}  Q{quarter}";
+            description = $"Unit-level {subType} {regulation} emissions data for all facilities/units for {year} quarter {quarter}";
           }
         }
         else if (dataType.Equals("allowance", StringComparison.OrdinalIgnoreCase))

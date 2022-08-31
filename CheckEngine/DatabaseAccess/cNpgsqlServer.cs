@@ -1671,6 +1671,10 @@ namespace ECMPS.Checks.DatabaseAccess
             //    object[] _params = { "", "'c6d513ce-6150-ef8f-6dc3-3dc1685541a8'", new DateTime(2021, 11, 22), int.MinValue, "Result Message", "Check Log Comment", "2", "10", "", new DateTime(2021, 11, 21), 10, new DateTime(2021, 11, 22), 0, "Source Table", "row", new DateTime(2021, 11, 22), 13, "Check_result:PASS", "NONE", "NONE", "5" };
             //    sourceTable.Rows.Add(_params);
             //}
+
+            if(excludeColumnNames == null)
+                excludeColumnNames = new List<string>();
+
             if (sourceTable != null && sourceTable.Rows.Count > 0)
             {
                 string insertColumns = string.Empty;
@@ -1904,6 +1908,7 @@ namespace ECMPS.Checks.DatabaseAccess
         public bool ClearScratchSession(eWorkspaceDataType eType, decimal nSessionId,
                                         ref NpgsqlTransaction sqlTransaction)   // was SqlTransaction
         {
+            /*
             bool bSuccessful = false;
 
             if (sqlTransaction == null)
@@ -1923,6 +1928,8 @@ namespace ECMPS.Checks.DatabaseAccess
                 bSuccessful = true;
 
             return bSuccessful;
+            */
+            return true;
         }
 
         /// <summary>

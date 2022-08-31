@@ -1021,6 +1021,8 @@ namespace ECMPS.Checks.CheckEngine
         }
         else
         {
+          result = true;
+          /* TODO - Remove This
           dbFunction = "ClearScratchSession";
           if ((CheckEngine.WorkspaceSessionId != 0) &&
               DbUpdate_WorkspaceDataType.HasValue &&
@@ -1031,6 +1033,7 @@ namespace ECMPS.Checks.CheckEngine
           }
           else
             result = true;
+            */
         }
       }
       catch (Exception ex)
@@ -1429,8 +1432,8 @@ namespace ECMPS.Checks.CheckEngine
       string Sql = "SELECT Ordinal_Position, Column_Name, Is_Nullable, " +
                    "       Data_Type, Character_Maximum_Length, " +
                    "       Numeric_Precision, Numeric_Scale, Datetime_Precision " +
-                   "  FROM " + ACatalogName + ".Information_Schema.Columns " +
-                   "  WHERE Table_Name = '" + ATableName + "' " +
+                   "  FROM Information_Schema.Columns " +
+                   "  WHERE Table_Schema = '" + ACatalogName + "' AND Table_Name = '" + ATableName + "' " +
                    "  ORDER BY Ordinal_Position, Column_Name ";
       EGetResults GetResults;
 
