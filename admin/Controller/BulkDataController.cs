@@ -39,7 +39,7 @@ namespace Epa.Camd.Quartz.Scheduler
     private async Task<string[]> getProgramCodeList(string[] programCodes){
       string[] programCodesToReturn;
       if(programCodes.Length == 0 || programCodes[0] == "*"){
-        List<List<Object>> programCodeRows = await this.dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code", 1);
+        List<List<Object>> programCodeRows = await this.dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code pc WHERE pc.active = 1", 1);
         programCodesToReturn = new string[programCodeRows.Count];
 
         for(int i = 0; i < programCodeRows.Count; i++){
@@ -54,13 +54,24 @@ namespace Epa.Camd.Quartz.Scheduler
 
     private async Task generateMassFacilityJobs(int? from, int? to){
       for(int? year = from; year <= to; year++){
-          DateTime currentDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+          DateTime currentDate = Utils.getCurrentEasternTime();
           await this.dbContext.CreateBulkFileJob(year, null, null, "Facility", null, Configuration["EASEY_STREAMING_SERVICES"] + "/facilities/attributes?year=" + year, "facility/facility" + "-" + year + ".csv", job_id, null);
       }
     }
 
     private async Task generateMassEmissionsCompliance(){
       await this.dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance", "compliance/emissions-compliance-arpnox.csv", job_id, "ARP");
+    }
+
+    private async Task generateMassAllowanceHoldingsJobs(string[] programCodes){
+      string[] codes = await getProgramCodeList(programCodes);
+      foreach (string code in codes)
+      {
+          decimal year = DateTime.Now.ToUniversalTime().Year - 1;
+          string urlParams = "programCodeInfo=" + code;
+
+          await dbContext.CreateBulkFileJob(null, null, null, "Allowance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-holdings?" + urlParams, "allowance/holdings-" + code.ToLower() + ".csv", job_id, code);
+      }  
     }
 
     private async Task generateMassAllowanceComplianceJobs(string[] programCodes){
@@ -179,6 +190,10 @@ namespace Epa.Camd.Quartz.Scheduler
       {
 
         if(massRequest.emissionsCompliance){
+          await generateMassEmissionsCompliance();
+        }
+
+        if(massRequest.allowanceHoldings){
           await generateMassEmissionsCompliance();
         }
 

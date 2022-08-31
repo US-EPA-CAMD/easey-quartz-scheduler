@@ -14,5 +14,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public string[] ProgramCodes {get; set;}
     public bool emissionsCompliance {get; set;}
 
+    public bool allowanceHoldings {get; set;}
+
   }
 }
