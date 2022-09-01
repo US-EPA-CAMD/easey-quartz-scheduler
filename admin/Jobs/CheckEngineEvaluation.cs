@@ -28,9 +28,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public static class Identity
     {
       public static readonly string Group = Constants.QuartzGroups.EVALUATIONS;      
-      public static readonly string JobName = "{0} Evaluation";
+      public static readonly string JobName = "{0} Evaluation {1}";
       public static readonly string JobDescription = "Evaluates a {0} data set for accuracy as specified by the EPA Part 75 reporting instructions.";
-      public static readonly string TriggerName = "{0} Evaluation ({1} {2})";
+      public static readonly string TriggerName = "{0} Evaluation ({1} {2}) {3}";
       public static readonly string TriggerDescription = "Evaluates a {0} data set for accuracy as specified by the EPA Part 75 reporting instructions.";
     }
 
@@ -253,7 +253,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       return new JobKey(string.Format(
           Identity.JobName,
-          GetProcess(processCode)
+          GetProcess(processCode),
+          Guid.NewGuid().ToString()
         ),
         Identity.Group
       );
@@ -265,7 +266,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             Identity.TriggerName,
             GetProcess(processCode),
             facilityName,
-            configuration
+            configuration,
+            Guid.NewGuid().ToString()
           ),
           Identity.Group
         );
