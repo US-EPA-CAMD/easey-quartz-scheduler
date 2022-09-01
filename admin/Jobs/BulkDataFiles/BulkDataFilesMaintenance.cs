@@ -80,8 +80,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         jl.JobSystem = "Quartz";
         jl.JobClass = "Bulk Data File";
         jl.JobName = "Bulk Data File Maintenance";
-        jl.AddDate = DateTime.Now;
-        jl.StartDate = DateTime.Now;
+        jl.AddDate = Utils.getCurrentEasternTime();
+        jl.StartDate = Utils.getCurrentEasternTime();
         jl.EndDate = null;
         jl.StatusCd = "WIP";
         _dbContext.JobLogs.Add(jl);
@@ -98,13 +98,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.ExecuteSql("DELETE from camdaux.job_log where add_date < now() - interval '30 days'");
 
         jl.StatusCd = "COMPLETE";
-        jl.EndDate = DateTime.Now;
+        jl.EndDate = Utils.getCurrentEasternTime();
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
 
       }catch(Exception e){
         jl.StatusCd = "ERROR";
-        jl.EndDate = DateTime.Now;
+        jl.EndDate = Utils.getCurrentEasternTime();
         jl.AdditionalDetails = e.Message;
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
