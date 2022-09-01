@@ -294,7 +294,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         .WithIdentity(WithJobKey(processCode))
         .WithDescription(string.Format(Identity.JobDescription, processName))
         .UsingJobData("ProcessCode", processCode)
-        .Build();
+        .Build(); //
 
       ITrigger trigger = TriggerBuilder.Create()
         .WithIdentity(WithTriggerKey(processCode, facilityName, monPlanConfig))
