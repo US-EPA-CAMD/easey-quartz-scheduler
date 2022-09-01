@@ -194,7 +194,7 @@ namespace Epa.Camd.Quartz.Scheduler
         }
 
         if(massRequest.allowanceHoldings){
-          await generateMassEmissionsCompliance();
+          await generateMassAllowanceHoldingsJobs(massRequest.ProgramCodes);
         }
 
         if(massRequest.ProgramCodes != null){
