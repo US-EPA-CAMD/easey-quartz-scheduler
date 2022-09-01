@@ -56,7 +56,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
       List<ProgramCode> programs = await _dbContext.getProgramCodes();
 
-      if (dataType.Equals("facilities", StringComparison.OrdinalIgnoreCase))
+      if (dataType.Equals("facility", StringComparison.OrdinalIgnoreCase))
         {
           description = $"Facility/Unit attributes data for {year}";
         }
@@ -223,12 +223,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             newMeta.S3Path = fileName;
             newMeta.Metadata = JsonConvert.SerializeObject(Metadata);
             newMeta.FileSize = totalWrittenBytes;
-            newMeta.AddDate = DateTime.Now;
-            newMeta.UpdateDate = DateTime.Now;
+            newMeta.AddDate = Utils.getCurrentEasternTime();
+            newMeta.UpdateDate = Utils.getCurrentEasternTime();
             _dbContext.BulkFileMetadataSet.Add(newMeta);
             await _dbContext.SaveChangesAsync();
           }else{
-            found.UpdateDate = DateTime.Now;
+            found.UpdateDate = Utils.getCurrentEasternTime();
+            found.Metadata = JsonConvert.SerializeObject(Metadata);
             found.FileSize = totalWrittenBytes;
             _dbContext.BulkFileMetadataSet.Update(found);
             await _dbContext.SaveChangesAsync();
