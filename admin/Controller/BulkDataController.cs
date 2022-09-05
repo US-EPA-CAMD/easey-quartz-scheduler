@@ -10,14 +10,13 @@ using Epa.Camd.Quartz.Scheduler.Models;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
-    [ApiController]
+  [ApiController]
   [Produces("application/json")]
   [Route("quartz-mgmt/bulk-files")]
   public class BulkDataController : ControllerBase
   {
     private AmazonS3Client client;
     private NpgSqlContext dbContext = null;
-    private List<ProgramCode> programs = null;
     private IConfiguration Configuration { get; }
 
     private Guid job_id = Guid.NewGuid();

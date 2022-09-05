@@ -14,15 +14,6 @@ namespace Epa.Camd.Quartz.Scheduler
   {
     public static int Main(string[] args)
     {
-      
-      /*
-      Log.Logger = new LoggerConfiguration()
-        .Enrich.FromLogContext()
-        .WriteTo.Console(new RenderedCompactJsonFormatter())
-        .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-        .CreateLogger();
-      */
-
       try
       {
         DotNetEnv.Env.Load();
