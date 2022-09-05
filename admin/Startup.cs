@@ -16,6 +16,7 @@ using DatabaseAccess;
 
 using Epa.Camd.Quartz.Scheduler.Jobs;
 using Epa.Camd.Quartz.Scheduler.Models;
+using Epa.Camd.Quartz.Scheduler.Jobs.Listeners;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
@@ -34,6 +35,7 @@ namespace Epa.Camd.Quartz.Scheduler
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+
       Utils.Configuration = Configuration;
 
       services.AddAppConfiguration(Configuration);
@@ -46,6 +48,7 @@ namespace Epa.Camd.Quartz.Scheduler
 
       // CORS Configuration ---
       List<CorsOptions> options =  dbContext.CorsOptions.ToListAsync<CorsOptions>().Result;
+
 
       List<string> allowedOrigins = new List<string>();
 
@@ -70,6 +73,7 @@ namespace Epa.Camd.Quartz.Scheduler
         }
       }
       
+
       services.AddCors(options => {
           options.AddPolicy(corsPolicy, builder => {
               builder.WithOrigins(allowedOrigins.ToArray())
@@ -77,6 +81,8 @@ namespace Epa.Camd.Quartz.Scheduler
               .WithMethods(allowedMethods.ToArray());
           });
       });
+
+      // ---
 
       services.AddSession();
 
@@ -142,6 +148,7 @@ namespace Epa.Camd.Quartz.Scheduler
       services.AddRazorPages();
       services.AddControllers();
       
+      
       services.AddSilkierQuartz(options =>
       {
         options.VirtualPathRoot = "/quartz";
@@ -167,6 +174,7 @@ namespace Epa.Camd.Quartz.Scheduler
         }
         nameValueCollection.Set("quartz.dataSource.default.connectionString", connectionString);
       });
+      
 
       services.AddOptions();
 
@@ -180,6 +188,9 @@ namespace Epa.Camd.Quartz.Scheduler
       BulkDataFileMaintenance.RegisterWithQuartz(services);
       ApportionedEmissionsBulkData.RegisterWithQuartz(services);
       SendMail.RegisterWithQuartz(services);
+      CheckEngineEvaluation.RegisterWithQuartz(services);
+      RemoveExpiredUserSession.RegisterWithQuartz(services);
+      RemoveExpiredCheckoutRecord.RegisterWithQuartz(services);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -234,6 +245,14 @@ namespace Epa.Camd.Quartz.Scheduler
       IScheduler scheduler = app.GetScheduler();
 
       BulkDataFile.setScheduler(scheduler);
+
+      scheduler.ListenerManager.AddJobListener(
+          new CheckEngineEvaluationListener(Configuration),
+          KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("MP")),
+          KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("QA")),
+          KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("EM"))
+      );
+
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
       AllowanceHoldingsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
@@ -242,6 +261,8 @@ namespace Epa.Camd.Quartz.Scheduler
       FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
       BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
+      RemoveExpiredUserSession.ScheduleWithQuartz(scheduler, app);
+      RemoveExpiredCheckoutRecord.ScheduleWithQuartz(scheduler, app);      
     }
   }
 }

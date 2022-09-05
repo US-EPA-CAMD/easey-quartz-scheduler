@@ -19,7 +19,7 @@ namespace Epa.Camd.Quartz.Scheduler
     public static DateTime getCurrentEasternTime(){
         try{
           return TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("America/New_York"));
-        } catch(Exception) {
+        }catch(Exception){
           return TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
         }
     }
