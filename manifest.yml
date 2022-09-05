@@ -23,6 +23,7 @@ applications:
       EASEY_QUARTZ_SCHEDULER_SMTP_HOST: ((smtpHost))
       EASEY_QUARTZ_SCHEDULER_SMTP_PORT: ((smtpPort))
       EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET: ((bulkDataS3Bucket))
+      EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH: ((checkEngineDllPath))
       EASEY_DATAMART_BYPASS: false
       EASEY_EMISSIONS_NIGHTLY_BYPASS: false
       EASEY_QUARTZ_SCHEDULER_DISPLAY_UI: true
@@ -37,6 +38,7 @@ applications:
       EASEY_QUARTZ_SCHEDULER_ALLOWANCE_COMPLIANCE_SCHEDULE: "0 0/10 1-5 15 * ? *"
       EASEY_QUARTZ_SCHEDULER_MAX_CHECK_THREADS: 10
     routes:
+      - route: ((host))/((path))
       - route: ((apiHost))/((apiPath))
     services:
       - camd-pg-db
