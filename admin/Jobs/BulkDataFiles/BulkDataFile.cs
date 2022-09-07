@@ -128,7 +128,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
         myHttpWebRequest.Headers.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
         myHttpWebRequest.Headers.Add("accept", (string) context.JobDetail.JobDataMap.Get("format"));
-        myHttpWebRequest.Timeout = 900000;
+        myHttpWebRequest.Timeout = 1803000;
 
         HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
 
