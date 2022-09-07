@@ -1,3 +1,4 @@
+using System.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,6 +11,15 @@ using Epa.Camd.Quartz.Scheduler.Models;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
+
+
+  class QuarterDates
+  {
+      public string beginDate {get; set;}
+      public string endDate {get; set; }
+  }
+
+
   [ApiController]
   [Produces("application/json")]
   [Route("quartz-mgmt/bulk-files")]
@@ -35,6 +45,28 @@ namespace Epa.Camd.Quartz.Scheduler
       );
     }
 
+    private QuarterDates getQuarterDates(int quarter, int? year){
+      QuarterDates qd = new QuarterDates();
+
+      if(quarter == 1){
+        qd.beginDate = year + "-01-01";
+        qd.endDate = year + "-03-31";
+      }
+      else if(quarter == 2){
+        qd.beginDate = year + "-04-01";
+        qd.endDate = year + "-06-30";
+      }
+      else if(quarter == 3){
+        qd.beginDate = year + "-07-01";
+        qd.endDate = year + "-09-30"; 
+      }else{
+        qd.beginDate = year + "-10-01";
+        qd.endDate = year + "-12-31"; 
+      }
+
+      return qd;
+    }
+
     private async Task<string[]> getProgramCodeList(string[] programCodes){
       string[] programCodesToReturn;
       if(programCodes.Length == 0 || programCodes[0] == "*"){
@@ -49,6 +81,34 @@ namespace Epa.Camd.Quartz.Scheduler
       }
 
       return programCodesToReturn;
+    }
+
+    private async Task<string[]> getStateCodeList(string[] stateCodes){
+      string[] stateCodesToIterate;
+      if(stateCodes.Length == 0 || stateCodes[0] == "*"){
+        List<List<Object>> rowsPerState = await this.dbContext.ExecuteSqlQuery("SELECT * FROM camdmd.state_code", 5);
+        stateCodesToIterate = new string[rowsPerState.Count];
+
+        for(int i = 0; i < rowsPerState.Count; i++){
+          stateCodesToIterate[i] = (string) rowsPerState[i][0];
+        }
+      }else{
+        stateCodesToIterate = stateCodes;
+      }
+
+      return stateCodesToIterate;
+    }
+
+    private async Task<int[]> getQuartersList(int[] quarters){
+      int[] quartersToIterate;
+
+      if(quarters.Length == 0){
+        quartersToIterate = new int[]{1, 2, 3, 4};
+      }else{
+        quartersToIterate = quarters;
+      }
+
+      return quartersToIterate;
     }
 
     private async Task generateMassFacilityJobs(int? from, int? to){
@@ -94,19 +154,37 @@ namespace Epa.Camd.Quartz.Scheduler
       }
     }
 
-    private async Task generateMassEmissionsForStates(int? from, int? to, string[] stateCodes, string[] dataSubTypes){
-      string[] stateCodesToIterate;
-
-      if(stateCodes.Length == 0 || stateCodes[0] == "*"){
-        List<List<Object>> rowsPerState = await this.dbContext.ExecuteSqlQuery("SELECT * FROM camdmd.state_code", 5);
-        stateCodesToIterate = new string[rowsPerState.Count];
-
-        for(int i = 0; i < rowsPerState.Count; i++){
-          stateCodesToIterate[i] = (string) rowsPerState[i][0];
+    private async Task generateMassMATsForStates(int? from, int? to, string[] stateCodes){
+      string[] stateCodesToIterate = await getStateCodeList(stateCodes);
+      for(int? year = from; year <= to; year++){
+        if(year >= 2015){ //MATs files only active after 2015
+          foreach (string stateCd in stateCodesToIterate)
+          {
+              string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + stateCd;
+              await this.dbContext.CreateBulkFileJob(year, null, stateCd, "Mercury and Air Toxics Emissions (MATS)", "Daily", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/mats/hourly?" + urlParams, "mats/hourly/state/mats-hourly-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
+          }  
         }
-      }else{
-        stateCodesToIterate = stateCodes;
       }
+    }
+
+    private async Task generateMassMATsForQuarters(int? from, int? to, int[] quarters){
+      int[] quartersToIterate = await getQuartersList(quarters);
+      
+      for(int? year = from; year <= to; year++){
+        if(year >= 2015){ //MATs files only active after 2015
+          foreach (int quarter in quartersToIterate)
+          {
+            QuarterDates qd = getQuarterDates(quarter, year);
+
+            string urlParams = "beginDate=" + qd.beginDate + "&endDate=" + qd.endDate;
+            await this.dbContext.CreateBulkFileJob(year, quarter, null, "Mercury and Air Toxics Emissions (MATS)", "Hourly", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/mats/hourly?" + urlParams, "mats/hourly/quarter/mats-hourly-" + year + "-q" + quarter + ".csv", job_id, null);
+          }
+        }  
+      }
+    }
+
+    private async Task generateMassEmissionsForStates(int? from, int? to, string[] stateCodes, string[] dataSubTypes){
+      string[] stateCodesToIterate = await getStateCodeList(stateCodes);
       
       for(int? year = from; year <= to; year++){
         foreach (string stateCd in stateCodesToIterate)
@@ -121,38 +199,14 @@ namespace Epa.Camd.Quartz.Scheduler
     }
 
   private async Task generateMassEmissionsForQuarters(int? from, int? to, int[] quarters, string[] dataSubTypes){
-      int[] quartersToIterate;
-
-      if(quarters.Length == 0){
-        quartersToIterate = new int[]{1, 2, 3, 4};
-      }else{
-        quartersToIterate = quarters;
-      }
+      int[] quartersToIterate = await getQuartersList(quarters);
       
       for(int? year = from; year <= to; year++){
         foreach (int quarter in quartersToIterate)
         {
+          QuarterDates qd = getQuarterDates(quarter, year);
 
-          string beginDate;
-          string endDate;
-
-          if(quarter == 1){
-            beginDate = year + "-01-01";
-            endDate = year + "-03-31";
-          }
-          else if(quarter == 2){
-            beginDate = year + "-04-01";
-            endDate = year + "-06-30";
-          }
-          else if(quarter == 3){
-            beginDate = year + "-07-01";
-            endDate = year + "-09-30"; 
-          }else{
-            beginDate = year + "-10-01";
-            endDate = year + "-12-31"; 
-          }
-
-          string urlParams = "beginDate=" + beginDate + "&endDate=" + endDate;
+          string urlParams = "beginDate=" + qd.beginDate + "&endDate=" + qd.endDate;
           foreach(string dataSubType in dataSubTypes){
             await this.dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", dataSubType, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/" + dataSubType.ToLower() + "?" + urlParams, "emissions/" + dataSubType.ToLower() + "/quarter/emissions-" + dataSubType.ToLower() + "-" + year + "-q" + quarter + ".csv", job_id, null);
           }
@@ -178,6 +232,14 @@ namespace Epa.Camd.Quartz.Scheduler
 
       try
       {
+
+        if(massRequest.generateStateMATS){
+          await generateMassMATsForStates(massRequest.From, massRequest.To, massRequest.StateCodes);
+        }
+
+        if(massRequest.generateQuarterMATS){
+          await generateMassMATsForQuarters(massRequest.From, massRequest.To, massRequest.Quarters);
+        }
 
         if(massRequest.emissionsCompliance){
           await generateMassEmissionsCompliance();
