@@ -51,17 +51,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       _dbContext = dbContext;
     }
 
-    private async void handleJob(IJobExecutionContext context, List<List<Object>> rows, bool reschedule){
+    private async void deleteJobs(IJobExecutionContext context, List<List<Object>> rows){
       for(int row = 0; row < rows.Count; row++){
           try{
             JobKey lookupKey = new JobKey(rows[row][0].ToString());
             IJobDetail jobToProcess = await context.Scheduler.GetJobDetail(lookupKey);
 
             if(jobToProcess != null){
-                await context.Scheduler.DeleteJob(lookupKey);
-                if(reschedule){
-                  await context.Scheduler.ScheduleJob(jobToProcess, TriggerBuilder.Create().StartNow().Build());
-                }
+              await context.Scheduler.DeleteJob(lookupKey);
             }
           }
           catch(Exception e){
@@ -88,12 +85,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         await _dbContext.SaveChangesAsync();
 
         List<List<Object>> toDelete = await _dbContext.ExecuteSqlQuery("SELECT job_id FROM camdaux.vw_bulk_file_jobs_to_delete", 1);
-        handleJob(context, toDelete, false);
+        deleteJobs(context, toDelete);
         _dbContext.ExecuteSql("DELETE FROM camdaux.job_log WHERE job_id IN (SELECT job_id FROM camdaux.vw_bulk_file_jobs_to_delete);");
 
-
-        List<List<Object>> toProcess = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_bulk_file_jobs_to_process", 16);
-        handleJob(context, toProcess, true);
+        _dbContext.ExecuteSql("CALL camdaux.procedure_bulk_file_requeue_check();");
 
         _dbContext.ExecuteSql("DELETE from camdaux.job_log where add_date < now() - interval '30 days'");
 
