@@ -2,11 +2,11 @@ name: Release Branch Workflow
 
 on:
   push:
-    branches: [ release/* ]
+    branches: [release/*]
     paths-ignore:
-    - '**/*.md'
-    - 'LICENSE'
-    - '.gitignore'
+      - "**/*.md"
+      - "LICENSE"
+      - ".gitignore"
 
 jobs:
   Build-Test-Package:
@@ -49,7 +49,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ARTIFACTS_STORAGE_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARTIFACTS_STORAGE_SECRET_ACCESS_KEY }}
-  
+
   Test-Deployment:
     needs: Build-Test-Package
     runs-on: ubuntu-latest
@@ -89,10 +89,12 @@ jobs:
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY $QUARTZ_API_KEY
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_ACCESS_KEY_ID $BULK_DATA_S3_AWS_ACCESS_KEY_ID
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_SECRET_ACCESS_KEY $BULK_DATA_S3_AWS_SECRET_ACCESS_KEY
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_SECRET_TOKEN $API_SECRET_TOKEN
         env:
           QUARTZ_API_KEY: ${{ secrets.QUARTZ_NON_PROD_API_KEY }}
           BULK_DATA_S3_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
           BULK_DATA_S3_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
+          API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
       - name: Deploy
         run: devops/scripts/deploy.sh
 
@@ -135,10 +137,12 @@ jobs:
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY $QUARTZ_API_KEY
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_ACCESS_KEY_ID $BULK_DATA_S3_AWS_ACCESS_KEY_ID
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_SECRET_ACCESS_KEY $BULK_DATA_S3_AWS_SECRET_ACCESS_KEY
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_SECRET_TOKEN $API_SECRET_TOKEN
         env:
           QUARTZ_API_KEY: ${{ secrets.QUARTZ_NON_PROD_API_KEY }}
           BULK_DATA_S3_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
           BULK_DATA_S3_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
+          API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
       - name: Deploy
         run: devops/scripts/deploy.sh
 
@@ -181,10 +185,12 @@ jobs:
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY $QUARTZ_API_KEY
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_ACCESS_KEY_ID $BULK_DATA_S3_AWS_ACCESS_KEY_ID
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_SECRET_ACCESS_KEY $BULK_DATA_S3_AWS_SECRET_ACCESS_KEY
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_SECRET_TOKEN $API_SECRET_TOKEN
         env:
           QUARTZ_API_KEY: ${{ secrets.QUARTZ_NON_PROD_API_KEY }}
           BULK_DATA_S3_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
           BULK_DATA_S3_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
+          API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
       - name: Deploy
         run: devops/scripts/deploy.sh
 
@@ -227,9 +233,11 @@ jobs:
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_API_KEY $QUARTZ_API_KEY
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_ACCESS_KEY_ID $BULK_DATA_S3_AWS_ACCESS_KEY_ID
           cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_SECRET_ACCESS_KEY $BULK_DATA_S3_AWS_SECRET_ACCESS_KEY
+          cf set-env $APP_NAME EASEY_QUARTZ_SCHEDULER_SECRET_TOKEN $API_SECRET_TOKEN
         env:
           QUARTZ_API_KEY: ${{ secrets.QUARTZ_NON_PROD_API_KEY }}
           BULK_DATA_S3_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
           BULK_DATA_S3_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
+          API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
       - name: Deploy
         run: devops/scripts/deploy.sh
