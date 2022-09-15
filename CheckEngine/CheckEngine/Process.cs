@@ -1010,7 +1010,7 @@ namespace ECMPS.Checks.CheckEngine
       try
       {
         if (!DbDataConnection.MigrateWorkspaceSession(DbUpdate_WorkspaceDataType,
-                                                      CheckEngine.WorkspaceSessionId,
+                                                      CheckEngine.ChkSessionId,
                                                       CheckEngine.MonPlanId,
                                                       CheckEngine.RptPeriodId,
                                                       CheckEngine.UserId,
@@ -1026,7 +1026,7 @@ namespace ECMPS.Checks.CheckEngine
           dbFunction = "ClearScratchSession";
           if ((CheckEngine.WorkspaceSessionId != 0) &&
               DbUpdate_WorkspaceDataType.HasValue &&
-              !DbDataConnection.ClearScratchSession(DbUpdate_WorkspaceDataType.Value, CheckEngine.WorkspaceSessionId, ref sqlTransaction))
+              !DbDataConnection.ClearScratchSession(DbUpdate_WorkspaceDataType.Value, CheckEngine.ChkSessionId, ref sqlTransaction))
           {
             errorMessage = string.Format(resultTemplate, "DB", dbFunction, DbDataConnection.LastError);
             result = false;
@@ -1071,7 +1071,7 @@ namespace ECMPS.Checks.CheckEngine
       DbUpdate_CheckLogMerge();
 
       result = mCheckEngine.DbDataConnection.BulkLoad(mCheckLogsMerged,
-                                                     "camdecmpswks.check_log",//"ecmps_aux.dbo.Check_Log",
+                                                     "camdecmpswks.check_log",
                                                      new string[] { "CHK_LOG_ID" },
                                                      sqlTransaction,
                                                      ref errorMessage);

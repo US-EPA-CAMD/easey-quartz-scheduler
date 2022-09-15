@@ -173,45 +173,50 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <param name="chkSessionId">The Check Session Id for the evaluation.</param>
         /// <param name="result">'T' if the update was successful and 'F' if it was not.</param>
         /// <param name="errorMessage">The error message produced when the update was not successful.</param>
-        /// <param name="batchId">The QA batch identifier.</param>
         /// <returns>0</returns>
         public int CheckSessionInit(string processCd, string categoryCd, string monPlanId, System.Nullable<int> rptPeriodId,
                                     string testSumId, string qaCertEventId, string testExtensionExemptionId,
                                     System.Nullable<System.DateTime> evaluationBeginDate, System.Nullable<System.DateTime> evaluationEndDate,
                                     string userId, ref string chkSessionId,
-                                    ref System.Nullable<char> result, ref string errorMessage, string batchId)
+                                    ref System.Nullable<char> result, ref string errorMessage)
         {
-            List<string> values = new List<string>();
             string resultString = string.Empty;
-
-            string rptPeriodIdParam = string.Empty;
-            var categoryCdParam = (object.Equals(categoryCd, null) ? "null" : categoryCd);
-            if ((object.Equals(rptPeriodId, null)))
-            {
-                rptPeriodIdParam = "null";
-            }
-            else
-            {
-                rptPeriodIdParam = rptPeriodId.ToString();
-            }
-            var testSumIdParam = (object.Equals(testSumId, null) ? "null" : testSumId);
-            var qaCertEventIddParam = (object.Equals(qaCertEventId, null) ? "null" : qaCertEventId);
-            var testExtensionExemptionIdParam = (object.Equals(testExtensionExemptionId, null) ? "null" : testExtensionExemptionId);
-
-
+            List<string> values = new List<string>();
+            var categoryCdParam = object.Equals(categoryCd, null)
+                ? "null"
+                : $"'{categoryCd}'";
+            var rptPeriodIdParam = object.Equals(rptPeriodId, null)
+                ? "null"
+                : $"{rptPeriodId}";
+            var testSumIdParam = object.Equals(testSumId, null)
+                ? "null"
+                : $"'{testSumId}'";
+            var qaCertEventIdParam = object.Equals(qaCertEventId, null)
+                ? "null"
+                : $"'{qaCertEventId}'";
+            var testExtensionExemptionIdParam = object.Equals(testExtensionExemptionId, null)
+                ? "null"
+                : $"'{testExtensionExemptionId}'";
+            var evaluationBeginDateParam = object.Equals(evaluationBeginDate, null)
+                ? "null"
+                : $"'{evaluationBeginDate}'";
+            var evaluationEndDateParam = object.Equals(evaluationEndDate, null)
+                ? "null"
+                : $"'{evaluationEndDate}'";
 
             DataTable AResultTable;
-            //   string Sql = "call camdecmpswks.check_session_init('" + processCd + "','" + 
-         //   string Sql = "select camdecmpswks.check_session_init('" + processCd + "'," + categoryCdParam + ",'" + monPlanId + "'," + rptPeriodIdParam + "," + testSumIdParam + "," + qaCertEventIddParam + "," + testExtensionExemptionIdParam + ",'" + evaluationBeginDate + "','" + evaluationEndDate + "','" + userId + "')";
-            
-
-            string Sql = "select camdecmpswks.check_session_init('" + processCd + "', null,'" + monPlanId + "',null,null,null,null,'" + evaluationBeginDate + "','" + evaluationEndDate + "','" + userId + "'";
-
-            if(batchId != null && batchId != ""){
-                Sql += ",'" + batchId + "'";
-            }
-
-            Sql += ")";
+            string Sql = @$"select camdecmpswks.check_session_init(
+                '{processCd}',
+                {categoryCdParam},
+                '{monPlanId}',
+                {rptPeriodIdParam},
+                {testSumIdParam},
+                {qaCertEventIdParam},
+                {testExtensionExemptionIdParam},
+                {evaluationBeginDateParam},
+                {evaluationEndDateParam},
+                '{userId}'
+            )";
 
             try
             {
@@ -219,7 +224,6 @@ namespace ECMPS.Checks.DatabaseAccess
 
                 foreach (DataRow row in AResultTable.Rows)
                 {
-                    //var chkSessionIds = row["check_session_init"];
                     var chkSessionIds = row[0];
                     IEnumerable enumerable = chkSessionIds as IEnumerable;
                     if (enumerable != null)

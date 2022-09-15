@@ -264,7 +264,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     {
       bool result;
 
-      if (mCheckEngine.DbWsConnection.ClearUpdateSession(eWorkspaceDataType.EMGEN, CheckEngine.WorkspaceSessionId))
+      if (mCheckEngine.DbWsConnection.ClearUpdateSession(eWorkspaceDataType.EMGEN, CheckEngine.ChkSessionId))
       {
         if (MigrateGeneratedData)
         {

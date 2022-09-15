@@ -61,13 +61,17 @@ namespace CheckEngineRunner
         
         public async Task Execute(IJobExecutionContext context)
         {
+            string monPlanId = "MDC-B4147730E09A4AEFBCFE88A76A60C840";
+            string testSumId = "ac6d2246-8e07-4cc2-a4d6-a4f776d5fb6a";
+
             string localDir = System.IO.Directory.GetCurrentDirectory();
             string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp3.1\\";
-            //Console.WriteLine(connStr);
+
             cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
-  
-            //bool result = checkEngine.RunChecks_MpReport("SUPERMIKE-34FFE030555E4D5BB4DA7F6166F69B9F", new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
-            bool result = checkEngine.RunChecks_QaReport_Test("ac6d2246-8e07-4cc2-a4d6-a4f776d5fb6a", "MDC-B4147730E09A4AEFBCFE88A76A60C840", eCheckEngineRunMode.Normal, "test");
+
+            //bool result = checkEngine.RunChecks_MpReport(monPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+            bool result = checkEngine.RunChecks_QaReport_Test(testSumId, monPlanId, eCheckEngineRunMode.Normal, testSumId);
+
             await Task.CompletedTask;
         }     
     }

@@ -49,11 +49,11 @@ namespace ECMPS.Checks.OtherQAEvaluation
 
 			try
 			{
-				Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+				Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
 																		   "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
-				Checks[35] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+				Checks[35] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
 																   "ECMPS.Checks.CertEventChecks.cCertEventChecks").Unwrap();
-				Checks[36] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+				Checks[36] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
 																   "ECMPS.Checks.TEEChecks.cTEEChecks").Unwrap();
 
 				result = true;

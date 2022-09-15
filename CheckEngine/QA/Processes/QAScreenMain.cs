@@ -53,15 +53,15 @@ namespace ECMPS.Checks.QAScreenEvaluation
       
       try
       {
-		  Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+		  Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
 																	 "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
         switch (mCategoryCd)
         {
           case "SCRF2LC":
             {
-              Checks[25] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[25] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.FlowLoadCheckChecks.cFlowLoadCheckChecks").Unwrap();
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
               result = true;
             }
@@ -69,9 +69,9 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRF2LR":
             {
-              Checks[24] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[24] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.FlowLoadReferenceChecks.cFlowLoadReferenceChecks").Unwrap();
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
               result = true;
             }
@@ -79,21 +79,21 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "F2LCALC":
             {
-              Checks[24] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[24] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.FlowLoadReferenceChecks.cFlowLoadReferenceChecks").Unwrap();
               result = true;
             }
             break;
 
           case "SCRMISC":
-            Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+            Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
             break;
 
           case "SCR7CAL":
           case "7DYCALC":
             {
-              Checks[23] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[23] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.CalibrationChecks.cCalibrationChecks").Unwrap();
               result = true;
             }
@@ -101,9 +101,9 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCR7DAY":
             {
-              Checks[23] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[23] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.CalibrationChecks.cCalibrationChecks").Unwrap();
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
               result = true;
             }
@@ -111,16 +111,16 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRCYCI":
             {
-              Checks[26] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[26] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.CycleTimeChecks.cCycleTimeChecks").Unwrap();
             }
             break;
 
           case "SCRCYCL":
             {
-              Checks[26] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[26] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.CycleTimeChecks.cCycleTimeChecks").Unwrap();
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
               result = true;
             }
@@ -128,9 +128,9 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRFFAC":
             {
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
-              Checks[30] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[30] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.FFACC_Checks.cFFACC_Checks").Unwrap();
               result = true;
             }
@@ -138,9 +138,9 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRFFLB":
             {
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
-              Checks[32] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[32] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.FF2LBASChecks.cFF2LBASChecks").Unwrap();
               result = true;
             }
@@ -148,9 +148,9 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRFFLT":
             {
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
-              Checks[33] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[33] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.FF2LTSTChecks.cFF2LTSTChecks").Unwrap();
               result = true;
             }
@@ -158,9 +158,9 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRLINE":
             {
-              Checks[21] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[21] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.LinearityChecks.cLinearityChecks").Unwrap();
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
               result = true;
             }
@@ -170,7 +170,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           case "SCRLSUM":
           case "LINCALC":
             {
-              Checks[21] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[21] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.LinearityChecks.cLinearityChecks").Unwrap();
               result = true;
             }
@@ -178,16 +178,16 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRONOF":
             {
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
-              Checks[29] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[29] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.OOCChecks.cOOCChecks").Unwrap();
               result = true;
             }
             break;
           case "OOCCALC":
             {
-              Checks[29] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[29] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.OOCChecks.cOOCChecks").Unwrap();
               result = true;
             }
@@ -195,9 +195,9 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRRATA":
             {
-              Checks[22] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[22] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.RATAChecks.cRATAChecks").Unwrap();
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
               result = true;
             }
@@ -213,7 +213,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           case "SCRRTRV":
           case "SCRTSQL":
             {
-              Checks[22] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[22] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.RATAChecks.cRATAChecks").Unwrap();
               result = true;
             }
@@ -221,9 +221,9 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRFFTT":
             {
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
-              Checks[31] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[31] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.FFACCTTChecks.cFFACCTTChecks").Unwrap();
               result = true;
             }
@@ -231,9 +231,9 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRAPPE":
             {
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
-              Checks[34] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[34] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.AppendixEChecks.cAppendixEChecks").Unwrap();
               result = true;
             }
@@ -248,7 +248,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           case "SCRAEOL":
           case "SCRAEGS":
             {
-              Checks[34] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[34] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.AppendixEChecks.cAppendixEChecks").Unwrap();
               result = true;
             }
@@ -256,14 +256,14 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCREVNT":
             {
-              Checks[35] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[35] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.CertEventChecks.cCertEventChecks").Unwrap();
               result = true;
             }
             break;
           case "SCRTEE":
             {
-              Checks[36] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[36] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TEEChecks.cTEEChecks").Unwrap();
               result = true;
             }
@@ -271,9 +271,9 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRUDEF":
             {
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
-              Checks[41] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[41] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.UnitDefaultChecks.cUnitDefaultChecks").Unwrap();
               result = true;
             }
@@ -281,13 +281,13 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRUDRN":
           case "UDTCALC":
-            Checks[41] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+            Checks[41] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                "ECMPS.Checks.UnitDefaultChecks.cUnitDefaultChecks").Unwrap();
             break;
 
           case "SCRGFML":
             {
-              Checks[48] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[48] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.GFMCalibrationChecks.cGFMCalibrationChecks").Unwrap();
               result = true;
             }
@@ -295,9 +295,9 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRGFMC":
             {
-              Checks[48] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[48] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.GFMCalibrationChecks.cGFMCalibrationChecks").Unwrap();
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
               result = true;
             }
@@ -305,9 +305,9 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRHGLM":
             {
-              Checks[50] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[50] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.HGLMEDefaultChecks.cHGLMEDefaultChecks").Unwrap();
-              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
               result = true;
             }
@@ -316,7 +316,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           case "SCRHGRN":
           case "SCRHGSM":
             {
-              Checks[50] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[50] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                  "ECMPS.Checks.HGLMEDefaultChecks.cHGLMEDefaultChecks").Unwrap();
               result = true;
             }
@@ -324,7 +324,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRAETB":
             {
-              Checks[53] = (cAetbChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[53] = (cAetbChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                      "ECMPS.Checks.TestChecks.cAetbChecks",
                                                                      true, 0, null,
                                                                      new object[] { this },
@@ -335,7 +335,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
           case "SCRPGVP":
             {
-              Checks[54] = (cPgvpChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.QA.dll",
+              Checks[54] = (cPgvpChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                      "ECMPS.Checks.TestChecks.cPgvpChecks",
                                                                      true, 0, null,
                                                                      new object[] { this },

@@ -1030,7 +1030,7 @@ namespace ECMPS.Checks.EmissionsReport
                     DataTable checkLogMergeTable = CheckLogMerge();
 
                     result = DbAux.BulkLoad(checkLogMergeTable,
-                                            "CHECK_LOG",
+                                            "camdecmpswks.CHECK_LOG",
                                             new string[] { "CHK_LOG_ID" },
                                             ref errorMessage);
                 }
