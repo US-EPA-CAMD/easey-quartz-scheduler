@@ -58,6 +58,31 @@ namespace Epa.Camd.Quartz.Scheduler
       return "";
     }
 
+    public static string validateRequestCredentialsGatewayToken(HttpRequest Request, IConfiguration Configuration){
+      
+      if(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN"] == null || Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN"] == "false"){
+        return "";
+      }
+      
+      string key;
+      if(Request.Headers.ContainsKey("x-secret-token")){
+        key = Request.Headers["x-secret-token"];
+      }else{
+        return "Must go through the gateway to access this resource.";
+      }
+
+      string accessToken = Configuration["EASEY_QUARTZ_SCHEDULER_SECRET_TOKEN"];
+
+      Console.WriteLine(key);
+      Console.WriteLine(accessToken);
+
+      if(!key.Equals(accessToken)){
+        return "Incorrect gateway token provided.";
+      }
+
+      return "";
+    }
+
     public async static Task<string> validateRequestCredentialsUserToken(HttpRequest Request, IConfiguration Configuration){
 
       string[] split;

@@ -217,6 +217,11 @@ namespace Epa.Camd.Quartz.Scheduler
     [HttpPost("bulk-file")]
     public async Task<ActionResult> CreateMassBulkFileApi([FromBody] OnDemandBulkFileRequest massRequest)
     {
+      string errorMsg = Utils.validateRequestCredentialsGatewayToken(Request, Configuration);
+      if(errorMsg != ""){
+        return BadRequest(errorMsg);
+      }
+
       JobLog jl = new JobLog();
       jl.JobId = job_id;
       jl.JobSystem = "Quartz";
