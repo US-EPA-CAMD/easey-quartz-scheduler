@@ -35,7 +35,7 @@ namespace CheckEngineRunner
             // 3. Create a job
             IJobDetail job = JobBuilder.Create<CheckEnginerJob>()
                     .WithIdentity("Monitor Plan Evaluation", "DEFAULT")
-                 .UsingJobData("ProcessCode", "MP")
+                 .UsingJobData("ProcessCode", "QA")
                  .UsingJobData("connectionString", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr)
                  .Build();
 
@@ -66,10 +66,12 @@ namespace CheckEngineRunner
 
             string localDir = System.IO.Directory.GetCurrentDirectory();
             string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp3.1\\";
+
             cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
 
             //bool result = checkEngine.RunChecks_MpReport(monPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
             bool result = checkEngine.RunChecks_QaReport_Test(testSumId, monPlanId, eCheckEngineRunMode.Normal, testSumId);
+
             await Task.CompletedTask;
         }     
     }

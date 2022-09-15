@@ -28,9 +28,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public static class Identity
     {
       public static readonly string Group = Constants.QuartzGroups.EVALUATIONS;      
-      public static readonly string JobName = "{0} Evaluation";
+      public static readonly string JobName = "{0} Evaluation {1}";
       public static readonly string JobDescription = "Evaluates a {0} data set for accuracy as specified by the EPA Part 75 reporting instructions.";
-      public static readonly string TriggerName = "{0} Evaluation ({1} {2})";
+      public static readonly string TriggerName = "{0} Evaluation ({1} {2}) {3}";
       public static readonly string TriggerDescription = "Evaluates a {0} data set for accuracy as specified by the EPA Part 75 reporting instructions.";
     }
 
@@ -142,7 +142,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     _dbContext.CertEvents.Update(certIdRecord);
                     _dbContext.SaveChanges();
 
+
                     bool listResult = checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, certId);
+
 
                     _dbContext.Entry<CertEvent>(certIdRecord).Reload();
                     EvalStatusCode evalStatus = getStatusCodeByCheckId(certIdRecord.CheckSessionId, listResult);
@@ -166,7 +168,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
                     _dbContext.SaveChanges();
 
+
                     bool listResult = checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, extensionExemptionId);
+
 
                     _dbContext.Entry<TestExtensionExemption>(extensionExemptionRecord).Reload();
                     EvalStatusCode evalStatus = getStatusCodeByCheckId(extensionExemptionRecord.CheckSessionId, listResult);
@@ -190,7 +194,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     testSummaryRecord.EvalStatus = "WIP";
                     _dbContext.TestSummaries.Update(testSummaryRecord);
 
+
                     bool listResult = checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, testId);
+
 
                     _dbContext.Entry<TestSummary>(testSummaryRecord).Reload();
                     EvalStatusCode evalStatus = getStatusCodeByCheckId(testSummaryRecord.CheckSessionId, listResult);
@@ -248,7 +254,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       return new JobKey(string.Format(
           Identity.JobName,
-          GetProcess(processCode)
+          GetProcess(processCode),
+          Guid.NewGuid().ToString()
         ),
         Identity.Group
       );
@@ -260,7 +267,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             Identity.TriggerName,
             GetProcess(processCode),
             facilityName,
-            configuration
+            configuration,
+            Guid.NewGuid().ToString()
           ),
           Identity.Group
         );
@@ -287,7 +295,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         .WithIdentity(WithJobKey(processCode))
         .WithDescription(string.Format(Identity.JobDescription, processName))
         .UsingJobData("ProcessCode", processCode)
-        .Build();
+        .Build(); //
 
       ITrigger trigger = TriggerBuilder.Create()
         .WithIdentity(WithTriggerKey(processCode, facilityName, monPlanConfig))

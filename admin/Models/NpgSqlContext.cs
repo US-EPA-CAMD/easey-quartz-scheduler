@@ -74,36 +74,45 @@ namespace Epa.Camd.Quartz.Scheduler.Models
         if(program_code == null)
           bfl.PrgCd = null;
         else
-        bfl.PrgCd = program_code;
+          bfl.PrgCd = program_code;
 
         if(quarter != null){
           bfl.Quarter = quarter;
           bfl.StateCd = null;
-
-          jl.JobName = dataType + "-" + subType + "-" + year + "-Q" + quarter;
         }
         else if(stateCd != null){
           bfl.Quarter = null;
           bfl.StateCd = stateCd;
-
-          jl.JobName = dataType + "-" + subType + "-" + year + "-" + stateCd;
         }
         else{
           bfl.Quarter = null;
           bfl.StateCd = null;
-          jl.JobName = dataType + "-" + subType + "-" + year;
+        }
 
-          if(subType == null){
-            if(year == null){
-              jl.JobName = dataType + "-" + program_code;
-            }else if(program_code == null){
-              jl.JobName = dataType + "-" + year;
-            }
-            else{
-              jl.JobName = dataType + "-" + year + '-' + program_code;
-            }
+        if(dataType.Equals("Facility")){
+          jl.JobName = "facility-" + year;
+        }
+        else if(dataType.Equals("Compliance")){
+          if(year != null){
+            jl.JobName = "emissions-compliance-" + year;
+          }else{
+            jl.JobName = "allowance-compliance-" + program_code;
           }
-
+        }
+        else if(dataType.Equals("Allowance")){
+          if(year != null){
+            jl.JobName = "allowance-transactions-"+ year +"-"+ program_code;
+          }
+          else{
+            jl.JobName = "allowance-holdings-"+ program_code;
+          }
+        }
+        else{
+          if(quarter != null){
+            jl.JobName = dataType + "-" + subType + "-" + year + "-q" + quarter;
+          }else{
+            jl.JobName = dataType + "-" + subType + "-" + year + "-" + stateCd;
+          }
         }
 
         await this.JobLogs.AddAsync(jl);

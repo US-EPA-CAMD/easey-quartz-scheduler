@@ -474,6 +474,7 @@ namespace ECMPS.Checks.CheckEngine
         /// <param name="runMode">The type of run to perform.</param>
         /// <param name="certId">The certId of the run.</param>
         /// <returns>True if the evaluation completed without processing errors.</returns>
+
         public bool RunChecks_QaReport_Qce(string qaCertEventId, string monPlanId, eCheckEngineRunMode runMode, string certId)
         {
             bool result;
@@ -492,6 +493,7 @@ namespace ECMPS.Checks.CheckEngine
                                        runMode,
                                        certId);
 
+
             return result;
         }
 
@@ -503,6 +505,7 @@ namespace ECMPS.Checks.CheckEngine
         /// <param name="runMode">The type of run to perform.</param>
         /// <param name="teeId">The teeId of the run.</param>
         /// <returns>True if the evaluation completed without processing errors.</returns>
+
         public bool RunChecks_QaReport_Tee(string testExtensionExemptionId, string monPlanId, eCheckEngineRunMode runMode, string teeId)
         {
             bool result;
@@ -521,6 +524,7 @@ namespace ECMPS.Checks.CheckEngine
                                        runMode,
                                        teeId);
 
+
             return result;
         }
 
@@ -532,11 +536,17 @@ namespace ECMPS.Checks.CheckEngine
         /// <param name="runMode">The type of run to perform.</param>
         /// <param name="testId">The testId of the run.</param>
         /// <returns>True if the evaluation completed without processing errors.</returns>
+
         public bool RunChecks_QaReport_Test(string testSumId, string monPlanId, eCheckEngineRunMode runMode, string testId)
+
         {
             bool result;
 
             RunChecks_PropertiesClear();
+
+            //TODO -- Remove these
+            EvaluationBeganDate = new DateTime(2008, 1, 1);
+            EvaluationEndedDate = DateTime.Now.AddYears(1);
 
             TestSumId = testSumId;
             MonPlanId = monPlanId;

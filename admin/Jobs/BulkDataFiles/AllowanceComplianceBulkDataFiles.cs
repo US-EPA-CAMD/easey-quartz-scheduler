@@ -102,7 +102,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         
                 
         jl.StatusCd = "COMPLETE";
-        jl.EndDate = DateTime.Now;
+        jl.EndDate = Utils.getCurrentEasternTime();
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
         LogHelper.info("Executing AllowanceComplianceBulkDataFiles job successfully");
