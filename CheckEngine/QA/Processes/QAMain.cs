@@ -102,6 +102,7 @@ namespace ECMPS.Checks.QAEvaluation
                 Checks[34] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.AppendixEChecks.cAppendixEChecks").Unwrap();
                 Checks[41] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
+                                                                   "ECMPS.Checks.UnitDefaultChecks.cUnitDefaultChecks").Unwrap();
 
                 // Checks[6] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.MonitorPlan.dll",
                 //                                                   "ECMPS.Checks.MonitorPlanChecks.cMonitorPlanChecks").Unwrap();
