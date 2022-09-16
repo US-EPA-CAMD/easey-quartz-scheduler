@@ -191,6 +191,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               break;
             }
 
+            if(totalReadBytes < bufferSize){ //Concatenate last chunk of data into min size
+              byte[] copyBytes = new byte[totalReadBytes];
+              for(int i = 0; i < totalReadBytes; i++){
+                copyBytes[i] = bytes[i];
+              }
+              bytes = copyBytes;
+            }
+
             UploadPartRequest uploadRequest = new UploadPartRequest
             {
               BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
@@ -198,7 +206,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               UploadId = initResponse.UploadId,
               PartNumber = uploadPartNumber,
               PartSize = bufferSize,
-              InputStream = new MemoryStream(bytes)
+              InputStream = new MemoryStream(bytes),
             };
 
             uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
