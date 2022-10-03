@@ -112,7 +112,7 @@ namespace Epa.Camd.Quartz.Scheduler
           Name = "Bearer",
           In = ParameterLocation.Header,
           Type = SecuritySchemeType.ApiKey,
-          Description = "Authorization by bearer request token!",
+          Description = "Authorization by bearer client request token!",
           Scheme = "Bearer",
           Reference = new OpenApiReference {
             Id = "BearerToken",
