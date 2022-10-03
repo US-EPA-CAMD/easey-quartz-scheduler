@@ -38,6 +38,8 @@ applications:
       EASEY_QUARTZ_SCHEDULER_ALLOWANCE_COMPLIANCE_SCHEDULE: "0 0/10 1-5 15 * ? *"
       EASEY_QUARTZ_SCHEDULER_MAX_CHECK_THREADS: 10
       EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN: true
+      EASEY_QUARTZ_SCHEDULER_ENABLE_CLIENT_TOKEN: true
+      EASEY_QUARTZ_SCHEDULER_ENABLE_USER_TOKEN: true
     routes:
       - route: ((host))/((path))
       - route: ((apiHost))/((apiPath))
