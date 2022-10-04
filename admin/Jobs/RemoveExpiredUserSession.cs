@@ -33,7 +33,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       if (!await scheduler.CheckExists(WithJobKey()))
       {
-        app.UseQuartzJob<RemoveExpiredUserSession>(WithCronSchedule("0 0/5 * ? * * *"));
+        app.UseQuartzJob<RemoveExpiredUserSession>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_REMOVE_EXPIRED_SESSION_SCHEDULE"]));
       }
     }
 
