@@ -101,17 +101,9 @@ namespace Epa.Camd.Quartz.Scheduler
         if(Request.Headers.ContainsKey("x-forwarded-for")){
           string ip = Request.Headers["x-forwarded-for"];
           dto.clientIp = ip.Split(",")[0];
-          Console.WriteLine(ip);
+        }else{
+          dto.clientIp = Request.HttpContext.Connection.RemoteIpAddress.ToString();
         }
-
-        Console.WriteLine("IP ADDRESS");
-        Console.WriteLine(Request.Host.Host);
-
-        Console.WriteLine("REQUEST");
-        Console.WriteLine(Request);
-
-        Console.WriteLine("HEADERS");
-        Console.WriteLine(Request.Headers);
 
         StringContent httpContent = new StringContent(JsonConvert.SerializeObject(dto), System.Text.Encoding.UTF8, "application/json");
 
