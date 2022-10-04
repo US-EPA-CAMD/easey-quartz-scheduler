@@ -96,9 +96,18 @@ namespace Epa.Camd.Quartz.Scheduler
       try{
         HttpClient client = new HttpClient();
 
+        ClientDto dto = new ClientDto();
+
+        if(Request.Headers.ContainsKey("x-forwarded-for")){
+          string ip = Request.Headers["x-forwarded-for"];
+          dto.clientIp = ip.Split(",")[0];
+        }
+
+        StringContent httpContent = new StringContent(JsonConvert.SerializeObject(dto), System.Text.Encoding.UTF8, "application/json");
+
         client.DefaultRequestHeaders.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearer);
-        HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_AUTH_API"] + "/tokens/validate", null);
+        HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_AUTH_API"] + "/tokens/validate", httpContent);
 
         response.EnsureSuccessStatusCode();
       }catch(Exception e){

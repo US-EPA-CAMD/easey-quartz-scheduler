@@ -187,6 +187,7 @@ namespace Epa.Camd.Quartz.Scheduler
     public async Task<ActionResult> TriggerMPEvaluation([FromBody] EvaluationRequest request)
     {
 
+      /*
       string errorMsg;
       if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN"])){
         errorMsg = Utils.validateRequestCredentialsGatewayToken(Request, Configuration);
@@ -194,13 +195,14 @@ namespace Epa.Camd.Quartz.Scheduler
           return BadRequest(errorMsg);
         }
       }
+      */
 
-      if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_USER_TOKEN"])){
-        errorMsg = await Utils.validateRequestCredentialsUserToken(Request, Configuration);
+      //if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_USER_TOKEN"])){
+        string errorMsg = await Utils.validateRequestCredentialsUserToken(Request, Configuration);
         if(errorMsg != ""){
           return BadRequest(errorMsg);
         }
-      }
+      //}
     
       return await TriggerCheckEngineEvaluation(
         "MP",
