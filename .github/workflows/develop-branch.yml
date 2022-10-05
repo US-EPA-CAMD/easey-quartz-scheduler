@@ -61,5 +61,6 @@ jobs:
           BULK_DATA_S3_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
           BULK_DATA_S3_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
           API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
+          QUARTZ_CLIENT_ID: ${{ secrets.CLIENT_ID }}
       - name: Deploy
         run: devops/scripts/deploy.sh
