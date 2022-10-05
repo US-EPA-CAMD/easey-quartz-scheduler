@@ -242,7 +242,7 @@ namespace Epa.Camd.Quartz.Scheduler
       jl.StartDate = Utils.getCurrentEasternTime();
       jl.EndDate = null;
       jl.StatusCd = "WIP";
-
+//
       dbContext.JobLogs.Add(jl);
       await dbContext.SaveChangesAsync();
 
