@@ -142,9 +142,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     _dbContext.CertEvents.Update(certIdRecord);
                     _dbContext.SaveChanges();
 
-
                     bool listResult = checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, certId);
-
 
                     _dbContext.Entry<CertEvent>(certIdRecord).Reload();
                     EvalStatusCode evalStatus = getStatusCodeByCheckId(certIdRecord.CheckSessionId, listResult);

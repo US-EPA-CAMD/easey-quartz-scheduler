@@ -248,9 +248,7 @@ namespace Epa.Camd.Quartz.Scheduler
 
       scheduler.ListenerManager.AddJobListener(
           new CheckEngineEvaluationListener(Configuration),
-          KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("MP")),
-          KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("QA")),
-          KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("EM"))
+          GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS)
       );
 
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
