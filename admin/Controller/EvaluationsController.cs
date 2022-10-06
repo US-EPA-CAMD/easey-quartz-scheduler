@@ -156,7 +156,7 @@ namespace Epa.Camd.Quartz.Scheduler
     [HttpPost("qa-certifications")]
     public async Task<ActionResult> TriggerQAEvaluation([FromBody] QaEvaluationRequest request)
     {
-
+      
       string errorMsg;
       if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN"])){
         errorMsg = Utils.validateRequestCredentialsGatewayToken(Request, Configuration);
@@ -171,6 +171,7 @@ namespace Epa.Camd.Quartz.Scheduler
           return BadRequest(errorMsg);
         }
       }
+      
 
       return await TriggerCheckEngineEvaluation(
         "QA",
@@ -186,6 +187,7 @@ namespace Epa.Camd.Quartz.Scheduler
     [HttpPost("monitor-plans")]
     public async Task<ActionResult> TriggerMPEvaluation([FromBody] EvaluationRequest request)
     {
+      
       string errorMsg;
       if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN"])){
         errorMsg = Utils.validateRequestCredentialsGatewayToken(Request, Configuration);
@@ -200,6 +202,7 @@ namespace Epa.Camd.Quartz.Scheduler
           return BadRequest(errorMsg);
         }
       }
+      
     
       return await TriggerCheckEngineEvaluation(
         "MP",
