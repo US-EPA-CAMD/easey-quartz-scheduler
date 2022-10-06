@@ -65,7 +65,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
         {6} with a status of {7}!
         
         You can view details of the report here...
-        https://{8}/workspace/reports?reportCode={10}&monitorPlanId={0}
+        https://{8}/workspace/reports?reportCode={10}&monitorPlanId={9}
 
         Thanks,
         ECMPS Support",
