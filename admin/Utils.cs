@@ -105,9 +105,6 @@ namespace Epa.Camd.Quartz.Scheduler
           dto.clientIp = Request.HttpContext.Connection.RemoteIpAddress.ToString();
         }
 
-        Console.WriteLine("Client IP");
-        Console.WriteLine(dto.clientIp);
-
         StringContent httpContent = new StringContent(JsonConvert.SerializeObject(dto), System.Text.Encoding.UTF8, "application/json");
 
         client.DefaultRequestHeaders.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
