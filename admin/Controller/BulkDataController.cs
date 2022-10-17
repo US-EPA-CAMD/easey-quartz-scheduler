@@ -70,7 +70,7 @@ namespace Epa.Camd.Quartz.Scheduler
     private async Task<string[]> getProgramCodeList(string[] programCodes){
       string[] programCodesToReturn;
       if(programCodes.Length == 0 || programCodes[0] == "*"){
-        List<List<Object>> programCodeRows = await this.dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code pc WHERE pc.active = 1", 1);
+        List<List<Object>> programCodeRows = await this.dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code pc WHERE pc.bulk_file_active = 1", 1);
         programCodesToReturn = new string[programCodeRows.Count];
 
         for(int i = 0; i < programCodeRows.Count; i++){
@@ -149,7 +149,7 @@ namespace Epa.Camd.Quartz.Scheduler
         foreach (string code in codes)
         {
           string urlParams = "transactionBeginDate=" + year + "-01-01&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
-          await this.dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code);
+          await this.dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + year + "-" + code.ToLower() + ".csv", job_id, code);
         }  
       }
     }
