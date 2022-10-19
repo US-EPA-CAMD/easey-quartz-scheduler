@@ -119,7 +119,7 @@ namespace Epa.Camd.Quartz.Scheduler
     }
 
     private async Task generateMassEmissionsCompliance(){
-      await this.dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance", "compliance/emissions-compliance-arpnox.csv", job_id, "ARP");
+      await this.dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance", "compliance/compliance-arpnox.csv", job_id, "ARP");
     }
 
     private async Task generateMassAllowanceHoldingsJobs(string[] programCodes){
