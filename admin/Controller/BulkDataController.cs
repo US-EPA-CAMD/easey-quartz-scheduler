@@ -143,15 +143,14 @@ namespace Epa.Camd.Quartz.Scheduler
       }  
     }
 
-    private async Task generateMassAllowanceTransactionsJobs(int? from, int? to, string[] programCodes){
+    private async Task generateMassAllowanceTransactionsJobs(string[] programCodes){
       string[] codes = await getProgramCodeList(programCodes);
-      for(int? year = from; year <= to; year++){
-        foreach (string code in codes)
-        {
-          string urlParams = "transactionBeginDate=" + year + "-01-01&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
-          await this.dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + year + "-" + code.ToLower() + ".csv", job_id, code);
-        }  
-      }
+      decimal year = DateTime.Now.ToUniversalTime().Year - 1;
+      foreach (string code in codes)
+      {
+        string urlParams = "transactionBeginDate=1993-03-23&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
+        await this.dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-"+ code.ToLower() + ".csv", job_id, code);
+      }  
     }
 
     private async Task generateMassMATsForStates(int? from, int? to, string[] stateCodes){
@@ -263,15 +262,13 @@ namespace Epa.Camd.Quartz.Scheduler
           await generateMassAllowanceHoldingsJobs(massRequest.ProgramCodes);
         }
 
-        if(massRequest.ProgramCodes != null){
-          if(massRequest.To == null || massRequest.From == null){
-            Console.WriteLine("Generating Mass Allowance Compliance Data");
-            await generateMassAllowanceComplianceJobs(massRequest.ProgramCodes);
-          }
-          else if(massRequest.To != null && massRequest.From != null){
-            Console.WriteLine("Generating Mass Transactions Compliance Data");
-            await generateMassAllowanceTransactionsJobs(massRequest.From, massRequest.To, massRequest.ProgramCodes);
-          }
+        if(massRequest.allowanceTransactions){
+          await generateMassAllowanceTransactionsJobs(massRequest.ProgramCodes);
+        }
+
+        if(massRequest.ProgramCodes != null && (massRequest.To == null || massRequest.From == null)){
+          Console.WriteLine("Generating Mass Allowance Compliance Data");
+          await generateMassAllowanceComplianceJobs(massRequest.ProgramCodes);
         }
         else if(massRequest.To != null && massRequest.From != null){
           if(massRequest.SubTypes != null){

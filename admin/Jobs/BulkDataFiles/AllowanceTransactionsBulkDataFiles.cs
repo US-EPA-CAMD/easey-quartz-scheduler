@@ -96,9 +96,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         for(int row = 0; row < programCodes.Length; row++){
           string code = programCodes[row];
           decimal year = DateTime.Now.ToUniversalTime().Year - 1;
-          string urlParams = "transactionBeginDate=" + year + "-01-01&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
+          string urlParams = "transactionBeginDate=1993-03-23&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
 
-          await _dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + year + "-" + code.ToLower() + ".csv", job_id, code);
+          await _dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code);
         }
         
         jl.StatusCd = "COMPLETE";
