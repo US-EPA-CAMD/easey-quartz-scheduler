@@ -101,7 +101,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
         }
         else if(dataType.Equals("Allowance")){
           if(year != null){
-            jl.JobName = "allowance-transactions-"+ year +"-"+ program_code;
+            jl.JobName = "allowance-transactions-"+ program_code;
           }
           else{
             jl.JobName = "allowance-holdings-"+ program_code;
