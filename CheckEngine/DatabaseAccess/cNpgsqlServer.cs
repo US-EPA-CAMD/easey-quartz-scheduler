@@ -1710,7 +1710,8 @@ namespace ECMPS.Checks.DatabaseAccess
                                 if ((sourceTable.Columns[i].DataType != typeof(int)))
                                 {
                                     if (sourceTable.Columns[i].DataType == typeof(string))
-                                        colValue = colValue.ToString().Trim(new[] { ' ', '\'' });
+                                        colValue = colValue.ToString().Replace("'", "''").Trim(new[] { ' ' });
+                                    
                                     columnValues += "'" + colValue + "',";
                                 }
                                 else
@@ -1723,6 +1724,7 @@ namespace ECMPS.Checks.DatabaseAccess
                         int rowsAffected = 0;
                         using (var cmd = new NpgsqlCommand(sqlInsert, m_sqlConn))
                         {
+                        
                             rowsAffected = cmd.ExecuteNonQuery();
                             result = rowsAffected > 0;
                             if (!result)

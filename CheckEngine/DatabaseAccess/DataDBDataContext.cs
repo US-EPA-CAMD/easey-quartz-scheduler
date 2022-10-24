@@ -57,7 +57,7 @@ namespace ECMPS.Checks.DatabaseAccess
                 foreach (DataRow row in AResultTable.Rows)
                 {
                     facId = int.Parse(row["facId"].ToString());
-                    firstEcmpsRptPeriodId = int.Parse(row["firstEcmpsRptPeriodId"].ToString());
+                    firstEcmpsRptPeriodId = (row["firstEcmpsRptPeriodId"] != DBNull.Value) ? int.Parse(row["firstEcmpsRptPeriodId"].ToString()) : (int?)null; // Must handle a null firstEcmpsrptPeriodId
                     errorMessage = row["error_msg"].ToString();
                 }
 

@@ -361,10 +361,10 @@ namespace ECMPS.Checks.QAEvaluation
                             NewRow = QA.mCalculatedLinearitySummary.NewRow();
                             NewRow["LIN_SUM_ID"] = Convert.ToString(drLinearitySummary["lin_sum_id"]);
                         }
-                        NewRow["CALC_MEAN_REF_VALUE"] = null;
-                        NewRow["CALC_MEAN_MEASURED_VALUE"] = null;
-                        NewRow["CALC_APS_IND"] = null;
-                        NewRow["CALC_PERCENT_ERROR"] = null;
+                        NewRow["CALC_MEAN_REF_VALUE"] = DBNull.Value;
+                        NewRow["CALC_MEAN_MEASURED_VALUE"] = DBNull.Value;
+                        NewRow["CALC_APS_IND"] = DBNull.Value;
+                        NewRow["CALC_PERCENT_ERROR"] = DBNull.Value;
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                         //save to the correct table
@@ -420,10 +420,10 @@ namespace ECMPS.Checks.QAEvaluation
                                     NewRow = QA.mCalculatedLinearitySummary.NewRow();
                                     NewRow["LIN_SUM_ID"] = LinearitySummaryId;
                                 }
-                                NewRow["CALC_MEAN_REF_VALUE"] = null;
-                                NewRow["CALC_MEAN_MEASURED_VALUE"] = null;
-                                NewRow["CALC_APS_IND"] = null;
-                                NewRow["CALC_PERCENT_ERROR"] = null;
+                                NewRow["CALC_MEAN_REF_VALUE"] = DBNull.Value;
+                                NewRow["CALC_MEAN_MEASURED_VALUE"] = DBNull.Value;
+                                NewRow["CALC_APS_IND"] = DBNull.Value;
+                                NewRow["CALC_PERCENT_ERROR"] = DBNull.Value;
                                 NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                                 //save to the correct table
@@ -477,13 +477,13 @@ namespace ECMPS.Checks.QAEvaluation
                                             NewRow["LIN_SUM_ID"] = LinearitySummaryId;
                                         }
                                         if (QA.GetCheckParameter("Linearity_Summary_Mean_Reference_Value").ParameterValue != null)
-                                            NewRow["CALC_MEAN_REF_VALUE"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Linearity_Summary_Mean_Reference_Value").ParameterValue);
+                                            NewRow["CALC_MEAN_REF_VALUE"] = QaParameters.LinearitySummaryMeanReferenceValue.DbValue();
                                         if (QA.GetCheckParameter("Linearity_Summary_Mean_Measured_Value").ParameterValue != null)
-                                            NewRow["CALC_MEAN_MEASURED_VALUE"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Linearity_Summary_Mean_Measured_Value").ParameterValue);
+                                            NewRow["CALC_MEAN_MEASURED_VALUE"] = QaParameters.LinearitySummaryMeanMeasuredValue.DbValue();
                                         if (QA.GetCheckParameter("Linearity_Summary_APS_Indicator").ParameterValue != null)
-                                            NewRow["CALC_APS_IND"] = cDBConvert.ToString((int)QA.GetCheckParameter("Linearity_Summary_APS_Indicator").ParameterValue);
+                                            NewRow["CALC_APS_IND"] = QaParameters.LinearitySummaryApsIndicator.DbValue();
                                         if (QA.GetCheckParameter("Linearity_Summary_Percent_Error").ParameterValue != null)
-                                            NewRow["CALC_PERCENT_ERROR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Linearity_Summary_Percent_Error").ParameterValue);
+                                            NewRow["CALC_PERCENT_ERROR"] = QaParameters.LinearitySummaryPercentError.DbValue();
                                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                                         //save to the correct table
@@ -538,7 +538,8 @@ namespace ECMPS.Checks.QAEvaluation
                             NewRow["CALC_TEST_RESULT_CD"] = CalcTestResCdParameter;
 
                         if (QA.GetCheckParameter("Test_Span_Value").ParameterValue != null)
-                            NewRow["CALC_SPAN_VALUE"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Test_Span_Value").ParameterValue);
+                            NewRow["CALC_SPAN_VALUE"] = QaParameters.TestSpanValue.DbValue();
+
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                         QA.mCalculatedTestSummary.Rows.Add(NewRow);
 
@@ -560,25 +561,31 @@ namespace ECMPS.Checks.QAEvaluation
                             NewRow["TEST_TYPE_CD"] = cDBConvert.ToString(drTest["TEST_TYPE_CD"]);//"LINE" or "HGSI"
                             NewRow["MON_LOC_ID"] = (string)drTest["mon_loc_id"];
                             NewRow["COMPONENT_ID"] = (string)drTest["component_id"];
+                            
                             if (drTest["test_reason_cd"] != DBNull.Value)
                                 NewRow["TEST_REASON_CD"] = (string)drTest["test_reason_cd"];
+                            
                             NewRow["TEST_NUM"] = (string)drTest["test_num"];
+                            
                             if (drTest["span_scale_cd"] != DBNull.Value)
                                 NewRow["SPAN_SCALE"] = (string)drTest["span_scale_cd"];
+
                             if (drTest["begin_date"] != DBNull.Value)
-                                NewRow["BEGIN_DATE"] = cDBConvert.ToString((DateTime)drTest["begin_date"]);
+                                NewRow["BEGIN_DATE"] = (DateTime)drTest["begin_date"];
                             if (drTest["begin_hour"] != DBNull.Value)
-                                NewRow["BEGIN_HOUR"] = cDBConvert.ToString((Decimal)drTest["begin_hour"]);
+                                NewRow["BEGIN_HOUR"] = (Decimal)drTest["begin_hour"];
                             if (drTest["begin_min"] != DBNull.Value)
-                                NewRow["BEGIN_MIN"] = cDBConvert.ToString((Decimal)drTest["begin_min"]);
+                                NewRow["BEGIN_MIN"] = (Decimal)drTest["begin_min"];
+                            
                             if (drTest["end_date"] != DBNull.Value)
-                                NewRow["END_DATE"] = cDBConvert.ToString((DateTime)drTest["end_date"]);
+                                NewRow["END_DATE"] = (DateTime)drTest["end_date"];
                             if (drTest["end_hour"] != DBNull.Value)
-                                NewRow["END_HOUR"] = cDBConvert.ToString((Decimal)drTest["end_hour"]);
+                                NewRow["END_HOUR"] = (Decimal)drTest["end_hour"];
                             if (drTest["end_min"] != DBNull.Value)
-                                NewRow["END_MIN"] = cDBConvert.ToString((Decimal)drTest["end_min"]);
+                                NewRow["END_MIN"] = (Decimal)drTest["end_min"];
+                            
                             if (cDBConvert.ToInteger(drTest["gp_ind"]) == 1)
-                                NewRow["GP_IND"] = "1";
+                                NewRow["GP_IND"] = 1;
 
                             NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                             QA.mQASupp.Rows.Add(NewRow);
@@ -1287,7 +1294,7 @@ namespace ECMPS.Checks.QAEvaluation
                     if (drTest["test_reason_cd"] != DBNull.Value)
                         NewRow["TEST_REASON_CD"] = (string)drTest["test_reason_cd"];
                     if (drTest["rpt_period_id"] != DBNull.Value)
-                        NewRow["RPT_PERIOD_ID"] = (int)drTest["rpt_period_id"];
+                        NewRow["RPT_PERIOD_ID"] = Decimal.ToInt64((decimal)drTest["rpt_period_id"]); // camdecmpswks.vw_qa_test_summary returns RPT_PERIOD_ID as a decimal for ECMPS 2.0
                     if (OpLevelCd != "")
                         NewRow["OP_LEVEL_CD"] = OpLevelCd;
 
@@ -1562,10 +1569,10 @@ namespace ECMPS.Checks.QAEvaluation
                     {
                         NewRow = QA.mCalculatedCalibrationInjection.NewRow();
                         NewRow["CAL_INJ_ID"] = cDBConvert.ToString(drCalibrationInjection["cal_inj_id"]);
-                        NewRow["CALC_ZERO_APS_IND"] = null;
-                        NewRow["CALC_ZERO_CAL_ERROR"] = null;
-                        NewRow["CALC_UPSCALE_APS_IND"] = null;
-                        NewRow["CALC_UPSCALE_CAL_ERROR"] = null;
+                        NewRow["CALC_ZERO_APS_IND"] = DBNull.Value;
+                        NewRow["CALC_ZERO_CAL_ERROR"] = DBNull.Value;
+                        NewRow["CALC_UPSCALE_APS_IND"] = DBNull.Value;
+                        NewRow["CALC_UPSCALE_CAL_ERROR"] = DBNull.Value;
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                         QA.mCalculatedCalibrationInjection.Rows.Add(NewRow);
                     }
@@ -2173,7 +2180,7 @@ namespace ECMPS.Checks.QAEvaluation
                     if (drTest["end_hour"] != DBNull.Value)
                         NewRow["END_HOUR"] = cDBConvert.ToString((Decimal)drTest["end_hour"]);
                     if (drTest["rpt_period_id"] != DBNull.Value)
-                        NewRow["RPT_PERIOD_ID"] = (int)drTest["rpt_period_id"];
+                        NewRow["RPT_PERIOD_ID"] = Decimal.ToInt64((decimal)drTest["rpt_period_id"]); // camdecmpswks.vw_qa_test_summary returns RPT_PERIOD_ID as a decimal for ECMPS 2.0
                     NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                     QA.mQASupp.Rows.Add(NewRow);
                 }
@@ -3358,7 +3365,7 @@ namespace ECMPS.Checks.QAEvaluation
                             //get qa supp attribute records for this location ID
                             SourceDataTable = new DataTable("QASuppAttribute");
                             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.QA_SUPP_ATTRIBUTE " +
-                              "LEFT OUTER JOIN QA_SUPP_DATA ON QA_SUPP_ATTRIBUTE.QA_SUPP_DATA_ID = QA_SUPP_DATA.QA_SUPP_DATA_ID " +
+                              "LEFT OUTER JOIN camdecmpswks.QA_SUPP_DATA ON QA_SUPP_ATTRIBUTE.QA_SUPP_DATA_ID = QA_SUPP_DATA.QA_SUPP_DATA_ID " +
                               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM camdecmpswks.TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
