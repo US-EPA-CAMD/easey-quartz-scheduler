@@ -1741,7 +1741,7 @@ namespace ECMPS.Checks.QAEvaluation
                     {
                         NewRow = QA.mCalculatedCycleTimeInjection.NewRow();
                         NewRow["CYCLE_TIME_INJ_ID"] = cDBConvert.ToString(drCycleTimeInjection["cycle_time_inj_id"]);
-                        NewRow["CALC_INJECTION_CYCLE_TIME"] = null;
+                        NewRow["CALC_INJECTION_CYCLE_TIME"] = DBNull.Value;
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                         QA.mCalculatedCycleTimeInjection.Rows.Add(NewRow);
                     }
@@ -1799,7 +1799,7 @@ namespace ECMPS.Checks.QAEvaluation
                             NewRow["CALC_TEST_RESULT_CD"] = CalcTestResCdParameter;
                         else
                             if (QA.CheckEngine.SeverityCd == eSeverityCd.FATAL || QA.CheckEngine.SeverityCd == eSeverityCd.CRIT1)
-                            NewRow["CALC_TEST_RESULT_CD"] = null;
+                            NewRow["CALC_TEST_RESULT_CD"] = DBNull.Value;
                         else
                                 if (QA.CheckEngine.SeverityCd == eSeverityCd.CRIT2)
                             NewRow["CALC_TEST_RESULT_CD"] = "INVALID";
@@ -1826,7 +1826,7 @@ namespace ECMPS.Checks.QAEvaluation
                                 NewRow["TEST_RESULT_CD"] = CalcTestResCdParameter;
                             else
                                 if (QA.CheckEngine.SeverityCd == eSeverityCd.CRIT1)
-                                NewRow["TEST_RESULT_CD"] = null;
+                                NewRow["TEST_RESULT_CD"] = DBNull.Value;
                             else
                                     if (QA.CheckEngine.SeverityCd == eSeverityCd.CRIT2)
                                 NewRow["TEST_RESULT_CD"] = "INVALID";
