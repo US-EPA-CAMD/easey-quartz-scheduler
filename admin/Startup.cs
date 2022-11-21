@@ -112,7 +112,7 @@ namespace Epa.Camd.Quartz.Scheduler
           Name = "Bearer",
           In = ParameterLocation.Header,
           Type = SecuritySchemeType.ApiKey,
-          Description = "Authorization by bearer request token!",
+          Description = "Authorization by bearer client request token!",
           Scheme = "Bearer",
           Reference = new OpenApiReference {
             Id = "BearerToken",
@@ -194,7 +194,7 @@ namespace Epa.Camd.Quartz.Scheduler
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       if (env.IsDevelopment())
       {
@@ -248,9 +248,7 @@ namespace Epa.Camd.Quartz.Scheduler
 
       scheduler.ListenerManager.AddJobListener(
           new CheckEngineEvaluationListener(Configuration),
-          KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("MP")),
-          KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("QA")),
-          KeyMatcher<JobKey>.KeyEquals(CheckEngineEvaluation.WithJobKey("EM"))
+          GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS)
       );
 
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);

@@ -752,49 +752,41 @@ namespace ECMPS.Checks.CheckEngine
 
             foreach (DataRow ErrorSuppressionRow in AErrorSuppressionTable.Rows)
             {
-                string rowDi = ErrorSuppressionRow["DI"].AsString();
-                //TODO (EC-3519): Removing checksum reference.  Will need better cleanup.
-                //string computedDi = cErrorSuppressionDi.Compute(ErrorSuppressionRow);
-                string computedDi = rowDi;
+                long CheckCatalogId = cDBConvert.ToLong(ErrorSuppressionRow["Check_Catalog_Id"]);
+                long CheckCatalogResultId = cDBConvert.ToLong(ErrorSuppressionRow["Check_Catalog_Result_Id"]);
 
-                if (rowDi == computedDi)
+                if (BreakCheckCatalogResultId.HasValue &&
+                    ((CheckCatalogId != BreakCheckCatalogId) ||
+                     (CheckCatalogResultId != BreakCheckCatalogResultId)))
                 {
-                    long CheckCatalogId = cDBConvert.ToLong(ErrorSuppressionRow["Check_Catalog_Id"]);
-                    long CheckCatalogResultId = cDBConvert.ToLong(ErrorSuppressionRow["Check_Catalog_Result_Id"]);
-
-                    if (BreakCheckCatalogResultId.HasValue &&
-                        ((CheckCatalogId != BreakCheckCatalogId) ||
-                         (CheckCatalogResultId != BreakCheckCatalogResultId)))
-                    {
-                        Populate_PrepErrorSuppressionsDo(BreakCheckCatalogResultId.Value,
-                                                         BreakErrorSuppressionRows,
-                                                         ref BreakResult);
-                    }
-
-                    if ((BreakCheckCatalogId == null) || (CheckCatalogId != BreakCheckCatalogId))
-                    {
-                        BreakCheckCatalogId = CheckCatalogId;
-                        BreakCheckCatalogResultId = CheckCatalogResultId;
-
-                        string CheckTypeCd = cDBConvert.ToString(ErrorSuppressionRow["Check_Type_Cd"]);
-                        int CheckNumber = cDBConvert.ToInteger(ErrorSuppressionRow["Check_Number"]);
-
-                        BreakCheck = AResultLookup[GetCheckTypePos(CheckTypeCd)].GetCheck(CheckNumber);
-                        BreakResult = BreakCheck.GetResult(BreakCheckCatalogResultId.Value);
-
-                        BreakErrorSuppressionRows = new List<DataRow>();
-                    }
-                    else if (CheckCatalogResultId != BreakCheckCatalogResultId)
-                    {
-                        BreakCheckCatalogResultId = CheckCatalogResultId;
-
-                        BreakResult = BreakCheck.GetResult(BreakCheckCatalogResultId.Value);
-
-                        BreakErrorSuppressionRows = new List<DataRow>();
-                    }
-
-                    BreakErrorSuppressionRows.Add(ErrorSuppressionRow);
+                    Populate_PrepErrorSuppressionsDo(BreakCheckCatalogResultId.Value,
+                                                     BreakErrorSuppressionRows,
+                                                     ref BreakResult);
                 }
+
+                if ((BreakCheckCatalogId == null) || (CheckCatalogId != BreakCheckCatalogId))
+                {
+                    BreakCheckCatalogId = CheckCatalogId;
+                    BreakCheckCatalogResultId = CheckCatalogResultId;
+
+                    string CheckTypeCd = cDBConvert.ToString(ErrorSuppressionRow["Check_Type_Cd"]);
+                    int CheckNumber = cDBConvert.ToInteger(ErrorSuppressionRow["Check_Number"]);
+
+                    BreakCheck = AResultLookup[GetCheckTypePos(CheckTypeCd)].GetCheck(CheckNumber);
+                    BreakResult = BreakCheck.GetResult(BreakCheckCatalogResultId.Value);
+
+                    BreakErrorSuppressionRows = new List<DataRow>();
+                }
+                else if (CheckCatalogResultId != BreakCheckCatalogResultId)
+                {
+                    BreakCheckCatalogResultId = CheckCatalogResultId;
+
+                    BreakResult = BreakCheck.GetResult(BreakCheckCatalogResultId.Value);
+
+                    BreakErrorSuppressionRows = new List<DataRow>();
+                }
+
+                BreakErrorSuppressionRows.Add(ErrorSuppressionRow);
             }
 
             // Handle final group

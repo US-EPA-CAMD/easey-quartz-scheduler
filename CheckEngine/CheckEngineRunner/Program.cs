@@ -39,6 +39,7 @@ namespace CheckEngineRunner
 
             // 3. Create a job
             IJobDetail job = JobBuilder.Create<CheckEnginerJob>()
+
                 .WithIdentity("Monitor Plan Evaluation", "DEFAULT")
                 .UsingJobData("connectionString", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr)
                 .UsingJobData("ProcessCode", "MP")
@@ -75,6 +76,7 @@ namespace CheckEngineRunner
             string fileTypeCd = dataMap.GetString("fileTypeCd");
             string monPlanId = dataMap.GetString("monPlanId");
 
+
             switch (fileTypeCd)
             {
                 case "MP":
@@ -103,5 +105,6 @@ namespace CheckEngineRunner
             }
 
         }
+
     }
 }

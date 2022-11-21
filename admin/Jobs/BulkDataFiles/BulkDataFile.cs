@@ -56,7 +56,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
       List<ProgramCode> programs = await _dbContext.getProgramCodes();
 
-      if (dataType.Equals("facilities", StringComparison.OrdinalIgnoreCase))
+      if (dataType.Equals("facility", StringComparison.OrdinalIgnoreCase))
         {
           description = $"Facility/Unit attributes data for {year}";
         }
@@ -74,7 +74,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           }
 
           if (quarter != null){
-            description = $"Unit-level {subType} {regulation} emissions data for all facilities/units for {year}  Q{quarter}";
+            description = $"Unit-level {subType} {regulation} emissions data for all facilities/units for {year} quarter {quarter}";
           }
         }
         else if (dataType.Equals("allowance", StringComparison.OrdinalIgnoreCase))
@@ -128,7 +128,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
         myHttpWebRequest.Headers.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
         myHttpWebRequest.Headers.Add("accept", (string) context.JobDetail.JobDataMap.Get("format"));
-        myHttpWebRequest.Timeout = 900000;
+        myHttpWebRequest.Timeout = 1803000;
 
         HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
 
@@ -191,6 +191,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               break;
             }
 
+            if(totalReadBytes < bufferSize){ //Concatenate last chunk of data into min size
+              byte[] copyBytes = new byte[totalReadBytes];
+              for(int i = 0; i < totalReadBytes; i++){
+                copyBytes[i] = bytes[i];
+              }
+              bytes = copyBytes;
+            }
+
             UploadPartRequest uploadRequest = new UploadPartRequest
             {
               BucketName = Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET"],
@@ -198,7 +206,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               UploadId = initResponse.UploadId,
               PartNumber = uploadPartNumber,
               PartSize = bufferSize,
-              InputStream = new MemoryStream(bytes)
+              InputStream = new MemoryStream(bytes),
             };
 
             uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
@@ -223,12 +231,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             newMeta.S3Path = fileName;
             newMeta.Metadata = JsonConvert.SerializeObject(Metadata);
             newMeta.FileSize = totalWrittenBytes;
-            newMeta.AddDate = DateTime.Now;
-            newMeta.UpdateDate = DateTime.Now;
+            newMeta.AddDate = Utils.getCurrentEasternTime();
+            newMeta.UpdateDate = Utils.getCurrentEasternTime();
             _dbContext.BulkFileMetadataSet.Add(newMeta);
             await _dbContext.SaveChangesAsync();
           }else{
-            found.UpdateDate = DateTime.Now;
+            found.UpdateDate = Utils.getCurrentEasternTime();
+            found.Metadata = JsonConvert.SerializeObject(Metadata);
             found.FileSize = totalWrittenBytes;
             _dbContext.BulkFileMetadataSet.Update(found);
             await _dbContext.SaveChangesAsync();

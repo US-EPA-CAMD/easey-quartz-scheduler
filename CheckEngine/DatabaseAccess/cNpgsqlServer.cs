@@ -1891,6 +1891,7 @@ namespace ECMPS.Checks.DatabaseAccess
         public bool ClearScratchSession(eWorkspaceDataType eType, string chkSessionId,
                                         ref NpgsqlTransaction sqlTransaction)   // was SqlTransaction
         {
+            /*
             bool bSuccessful = false;
 
             if (sqlTransaction == null)
@@ -1910,6 +1911,8 @@ namespace ECMPS.Checks.DatabaseAccess
                 bSuccessful = true;
 
             return bSuccessful;
+            */
+            return true;
         }
 
         /// <summary>

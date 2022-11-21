@@ -1,7 +1,7 @@
 instances: 2
 memory: 2048M
 environment: beta
-host: easey-beta.app.cloud.gov
+host: ecmps-beta.app.cloud.gov
 apiHost: api-easey-beta.app.cloud.gov
 apiGatewayHost: api.epa.gov/easey/beta
-bulkDataS3Bucket:
+bulkDataS3Bucket: cg-fad47021-99a0-4ae0-a73c-3d9b3dd9d446

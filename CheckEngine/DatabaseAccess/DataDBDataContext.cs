@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Runtime.InteropServices.ComTypes;
+using System;
 using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Text;
@@ -57,7 +58,9 @@ namespace ECMPS.Checks.DatabaseAccess
                 foreach (DataRow row in AResultTable.Rows)
                 {
                     facId = int.Parse(row["facId"].ToString());
+
                     firstEcmpsRptPeriodId = (row["firstEcmpsRptPeriodId"] != DBNull.Value) ? int.Parse(row["firstEcmpsRptPeriodId"].ToString()) : (int?)null; // Must handle a null firstEcmpsrptPeriodId
+
                     errorMessage = row["error_msg"].ToString();
                 }
 

@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 using Microsoft.Extensions.Configuration;
 
 using Quartz;
@@ -36,6 +37,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
       string evaluationResult = dataMap.GetString("EvaluationResult");
       string fromEmail = Configuration["EASEY_QUARTZ_SCHEDULER_EMAIL"];
 
+
       string subject = string.Format(
         "{0} Evaluation {1} {2} - {3}",
         CheckEngineEvaluation.GetProcess(processCode),
@@ -43,6 +45,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
         monPlanConfig,
         evaluationResult
       );
+
+      //workspace/reports?reportCode=MP_EVAL&monitorPlanId=TWCORNEL5-C0E3879920A14159BAA98E03F1980A7A
+
+      string reportCode = "";
+      if(processCode.Equals("MP")){
+        reportCode = "MP_EVAL";
+      }else if(processCode.Equals("QA")){ //Will need to expand this
+        reportCode = "TEST_EVAL";
+      }
 
       string message = string.Format(@"
         The {0} Evaluation process submitted by {1} on {2} for...
@@ -54,7 +65,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
         {6} with a status of {7}!
         
         You can view details of the report here...
-        https://{8}/ecmps/workspace/monitoring-plans/{9}/evaluation-report
+        https://{8}/workspace/reports?reportCode={10}&monitorPlanId={9}
 
         Thanks,
         ECMPS Support",
@@ -67,7 +78,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
         evaluationResult.ToUpper(),
         evaluationStatus.ToUpper(),
         Configuration["EASEY_QUARTZ_SCHEDULER_HOST"],
-        monitorPlanId
+        monitorPlanId,
+        reportCode
       );
 
       await SendMail.StartNow(

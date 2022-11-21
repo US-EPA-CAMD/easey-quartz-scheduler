@@ -1,3 +1,5 @@
+using System.Numerics;
+using System.Runtime.CompilerServices;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -47,15 +49,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       LogHelper.info("Executing RemoveExpiredCheckoutRecord job");
       try
       {
-        JobDataMap dataMap = context.MergedJobDataMap;
-        int interval;
-        if (dataMap.Contains("Interval"))
-          interval = dataMap.GetInt("Interval");
-        else
-          interval = 2;
+        int interval =  Int32.Parse(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_REMOVE_EXPIRED_CHECKOUT_INTERVAL"]);
 
-        //DELETE FROM camdecmpswks.user_check_out WHERE last_activity < now() - interval '2' minute
-        var sql_command = "DELETE FROM camdecmpswks.user_check_out WHERE last_activity < now() - interval '" + interval.ToString() + "' minute";
+        var sql_command = "DELETE FROM camdecmpswks.user_check_out WHERE last_activity < now() - interval '" + interval + "' minute";
 
         _dbContext.ExecuteSql(sql_command);
       }

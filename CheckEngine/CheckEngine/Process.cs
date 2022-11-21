@@ -1021,6 +1021,8 @@ namespace ECMPS.Checks.CheckEngine
         }
         else
         {
+          result = true;
+          /* TODO - Remove This
           dbFunction = "ClearScratchSession";
           if ((CheckEngine.WorkspaceSessionId != 0) &&
               DbUpdate_WorkspaceDataType.HasValue &&
@@ -1031,6 +1033,7 @@ namespace ECMPS.Checks.CheckEngine
           }
           else
             result = true;
+            */
         }
       }
       catch (Exception ex)

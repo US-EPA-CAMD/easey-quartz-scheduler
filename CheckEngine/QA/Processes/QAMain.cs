@@ -103,6 +103,7 @@ namespace ECMPS.Checks.QAEvaluation
                                                                    "ECMPS.Checks.AppendixEChecks.cAppendixEChecks").Unwrap();
                 Checks[41] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.UnitDefaultChecks.cUnitDefaultChecks").Unwrap();
+
                 // Checks[6] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.MonitorPlan.dll",
                 //                                                   "ECMPS.Checks.MonitorPlanChecks.cMonitorPlanChecks").Unwrap();
                 Checks[48] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
@@ -350,6 +351,9 @@ namespace ECMPS.Checks.QAEvaluation
 
                     foreach (DataRowView drLinearitySummary in QA.mSourceData.Tables["QALinearitySummary"].DefaultView)
                     {
+
+
+
                         //figure out which table to save to with correct column names
                         if (drTest["TEST_TYPE_CD"].ToString().InList("HGLINE,HGSI3"))
                         {
@@ -361,11 +365,14 @@ namespace ECMPS.Checks.QAEvaluation
                             NewRow = QA.mCalculatedLinearitySummary.NewRow();
                             NewRow["LIN_SUM_ID"] = Convert.ToString(drLinearitySummary["lin_sum_id"]);
                         }
+
                         NewRow["CALC_MEAN_REF_VALUE"] = DBNull.Value;
                         NewRow["CALC_MEAN_MEASURED_VALUE"] = DBNull.Value;
                         NewRow["CALC_APS_IND"] = DBNull.Value;
                         NewRow["CALC_PERCENT_ERROR"] = DBNull.Value;
+
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
+
 
                         //save to the correct table
                         if (drTest["TEST_TYPE_CD"].ToString().InList("HGLINE,HGSI3"))
@@ -420,11 +427,14 @@ namespace ECMPS.Checks.QAEvaluation
                                     NewRow = QA.mCalculatedLinearitySummary.NewRow();
                                     NewRow["LIN_SUM_ID"] = LinearitySummaryId;
                                 }
+
                                 NewRow["CALC_MEAN_REF_VALUE"] = DBNull.Value;
                                 NewRow["CALC_MEAN_MEASURED_VALUE"] = DBNull.Value;
                                 NewRow["CALC_APS_IND"] = DBNull.Value;
                                 NewRow["CALC_PERCENT_ERROR"] = DBNull.Value;
+
                                 NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
+
 
                                 //save to the correct table
                                 if (drTest["TEST_TYPE_CD"].ToString().InList("HGLINE,HGSI3"))
@@ -483,7 +493,9 @@ namespace ECMPS.Checks.QAEvaluation
                                         if (QA.GetCheckParameter("Linearity_Summary_APS_Indicator").ParameterValue != null)
                                             NewRow["CALC_APS_IND"] = QaParameters.LinearitySummaryApsIndicator.DbValue();
                                         if (QA.GetCheckParameter("Linearity_Summary_Percent_Error").ParameterValue != null)
+
                                             NewRow["CALC_PERCENT_ERROR"] = QaParameters.LinearitySummaryPercentError.DbValue();
+
                                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                                         //save to the correct table
@@ -526,33 +538,32 @@ namespace ECMPS.Checks.QAEvaluation
                         NewRow["TEST_SUM_ID"] = TestSummaryId;
 
                         string CalcTestResCdParameter = (string)QA.GetCheckParameter("Linearity_Test_Result").ParameterValue;
-                        if (CalcTestResCdParameter == "FAILED" || CalcTestResCdParameter == "ABORTED")
+                        if (CalcTestResCdParameter == "FAILED" || CalcTestResCdParameter == "ABORTED"){
                             NewRow["CALC_TEST_RESULT_CD"] = CalcTestResCdParameter;
-                        else
-                            if (QA.CheckEngine.SeverityCd == eSeverityCd.FATAL || QA.CheckEngine.SeverityCd == eSeverityCd.CRIT1)
+                        }
+                        else if (QA.CheckEngine.SeverityCd == eSeverityCd.FATAL || QA.CheckEngine.SeverityCd == eSeverityCd.CRIT1){
                             NewRow["CALC_TEST_RESULT_CD"] = null;
-                        else
-                                if (QA.CheckEngine.SeverityCd == eSeverityCd.CRIT2)
+                        }
+                        else if (QA.CheckEngine.SeverityCd == eSeverityCd.CRIT2){
                             NewRow["CALC_TEST_RESULT_CD"] = "INVALID";
-                        else
+                        }
+                        else{
                             NewRow["CALC_TEST_RESULT_CD"] = CalcTestResCdParameter;
+                        }
 
                         if (QA.GetCheckParameter("Test_Span_Value").ParameterValue != null)
                             NewRow["CALC_SPAN_VALUE"] = QaParameters.TestSpanValue.DbValue();
 
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                         QA.mCalculatedTestSummary.Rows.Add(NewRow);
-
                         if (QA.CheckEngine.SeverityCd != eSeverityCd.FATAL)
                         {
                             NewRow = QA.mQASupp.NewRow();
                             if (CalcTestResCdParameter == "FAILED" || CalcTestResCdParameter == "ABORTED")
                                 NewRow["TEST_RESULT_CD"] = CalcTestResCdParameter;
-                            else
-                                if (QA.CheckEngine.SeverityCd == eSeverityCd.CRIT1)
+                            else if (QA.CheckEngine.SeverityCd == eSeverityCd.CRIT1)
                                 NewRow["TEST_RESULT_CD"] = null;
-                            else
-                                    if (QA.CheckEngine.SeverityCd == eSeverityCd.CRIT2)
+                            else if (QA.CheckEngine.SeverityCd == eSeverityCd.CRIT2)
                                 NewRow["TEST_RESULT_CD"] = "INVALID";
                             else
                                 NewRow["TEST_RESULT_CD"] = CalcTestResCdParameter;
@@ -587,7 +598,9 @@ namespace ECMPS.Checks.QAEvaluation
                             if (cDBConvert.ToInteger(drTest["gp_ind"]) == 1)
                                 NewRow["GP_IND"] = 1;
 
+
                             NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
+
                             QA.mQASupp.Rows.Add(NewRow);
                         }
                     }
@@ -3126,6 +3139,7 @@ namespace ECMPS.Checks.QAEvaluation
                             //get qa supp attribute records for this location ID
                             SourceDataTable = new DataTable("QASuppAttribute");
                             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_SUPP_ATTRIBUTE " +
+
                               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM camdecmpswks.TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
@@ -3300,6 +3314,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get qa supp attribute records for this location ID
                             SourceDataTable = new DataTable("QASuppAttribute");
+
                             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_SUPP_ATTRIBUTE " +
                               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM camdecmpswks.TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
@@ -3364,6 +3379,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get qa supp attribute records for this location ID
                             SourceDataTable = new DataTable("QASuppAttribute");
+
                             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.QA_SUPP_ATTRIBUTE " +
                               "LEFT OUTER JOIN camdecmpswks.QA_SUPP_DATA ON QA_SUPP_ATTRIBUTE.QA_SUPP_DATA_ID = QA_SUPP_DATA.QA_SUPP_DATA_ID " +
                               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM camdecmpswks.TEST_SUMMARY " +
@@ -3709,6 +3725,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get Accuracy Spec Code lookup
                             SourceDataTable = new DataTable("AccuracySpecificationCode");
+
                             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpsmd.ACCURACY_SPEC_CODE", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
                             if (SourceDataAdapter.SelectCommand != null)
@@ -3811,6 +3828,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get UOM lookup table
                             SourceDataTable = new DataTable("UnitsOfMeasureLookup");
+
                             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpsmd.PARAMETER_UOM", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
                             if (SourceDataAdapter.SelectCommand != null)
@@ -3875,6 +3893,7 @@ namespace ECMPS.Checks.QAEvaluation
                             //get System Component records for this component
                             SourceDataTable = new DataTable("QASystemSystemComponent");
                             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_MONITOR_SYSTEM_COMPONENT " +
+
                               "WHERE MON_SYS_ID IN (SELECT MON_SYS_ID FROM camdecmpswks.TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
@@ -3939,6 +3958,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get UOM lookup table
                             SourceDataTable = new DataTable("UnitsOfMeasureLookup");
+
                             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpsmd.PARAMETER_UOM", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
                             if (SourceDataAdapter.SelectCommand != null)
@@ -3959,6 +3979,7 @@ namespace ECMPS.Checks.QAEvaluation
 
                             //get default records for this location ID
                             SourceDataTable = new DataTable("QADefault");
+
                             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_MONITOR_DEFAULT " +
                               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM camdecmpswks.TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
@@ -4111,6 +4132,7 @@ namespace ECMPS.Checks.QAEvaluation
                         {
                             //get Monitor System records for this component
                             SourceDataTable = new DataTable("MonitorSystemRecords");
+
                             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_MONITOR_SYSTEM " +
                                 "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM camdecmpswks.TEST_SUMMARY " +
                                 "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
@@ -4187,6 +4209,7 @@ namespace ECMPS.Checks.QAEvaluation
         // protected override bool DbUpdate_CalcWsLoad(SqlTransaction sqlTransaction, ref string errorMessage)
         {
             bool result;
+
             List<string> excludeColumns = new List<string>();
             excludeColumns.Add("pk");
 
@@ -4212,6 +4235,7 @@ namespace ECMPS.Checks.QAEvaluation
                     DbWsConnection.BulkLoad(mCalculatedTestSummary, "camdecmpscalc.test_summary", excludeColumns, ref errorMessage) &&
                     DbWsConnection.BulkLoad(mQASuppAttribute, "camdecmpscalc.qa_supp_attribute", excludeColumns, ref errorMessage) &&
                     DbWsConnection.BulkLoad(mQASupp, "camdecmpscalc.qa_supp_data", excludeColumns, ref errorMessage))
+
                     result = true;
                 else
                     result = false;

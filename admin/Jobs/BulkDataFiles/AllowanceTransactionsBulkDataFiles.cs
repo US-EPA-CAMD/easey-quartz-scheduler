@@ -86,7 +86,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.JobLogs.Add(jl);
         await _dbContext.SaveChangesAsync();
         
-        List<List<Object>> programCodeRows = await this._dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code pc WHERE pc.active = 1", 1);
+        List<List<Object>> programCodeRows = await this._dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code pc WHERE pc.bulk_file_active = 1", 1);
         string[] programCodes = new string[programCodeRows.Count];
 
         for(int i = 0; i < programCodeRows.Count; i++){
@@ -96,7 +96,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         for(int row = 0; row < programCodes.Length; row++){
           string code = programCodes[row];
           decimal year = DateTime.Now.ToUniversalTime().Year - 1;
-          string urlParams = "transactionBeginDate=" + year + "-01-01&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
+          string urlParams = "transactionBeginDate=1993-03-23&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
 
           await _dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code);
         }

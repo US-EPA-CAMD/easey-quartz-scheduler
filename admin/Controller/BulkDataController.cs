@@ -1,3 +1,4 @@
+using System.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,14 +11,22 @@ using Epa.Camd.Quartz.Scheduler.Models;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
-    [ApiController]
+
+
+  class QuarterDates
+  {
+      public string beginDate {get; set;}
+      public string endDate {get; set; }
+  }
+
+
+  [ApiController]
   [Produces("application/json")]
   [Route("quartz-mgmt/bulk-files")]
   public class BulkDataController : ControllerBase
   {
     private AmazonS3Client client;
     private NpgSqlContext dbContext = null;
-    private List<ProgramCode> programs = null;
     private IConfiguration Configuration { get; }
 
     private Guid job_id = Guid.NewGuid();
@@ -36,10 +45,32 @@ namespace Epa.Camd.Quartz.Scheduler
       );
     }
 
+    private QuarterDates getQuarterDates(int quarter, int? year){
+      QuarterDates qd = new QuarterDates();
+
+      if(quarter == 1){
+        qd.beginDate = year + "-01-01";
+        qd.endDate = year + "-03-31";
+      }
+      else if(quarter == 2){
+        qd.beginDate = year + "-04-01";
+        qd.endDate = year + "-06-30";
+      }
+      else if(quarter == 3){
+        qd.beginDate = year + "-07-01";
+        qd.endDate = year + "-09-30"; 
+      }else{
+        qd.beginDate = year + "-10-01";
+        qd.endDate = year + "-12-31"; 
+      }
+
+      return qd;
+    }
+
     private async Task<string[]> getProgramCodeList(string[] programCodes){
       string[] programCodesToReturn;
       if(programCodes.Length == 0 || programCodes[0] == "*"){
-        List<List<Object>> programCodeRows = await this.dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code", 1);
+        List<List<Object>> programCodeRows = await this.dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code pc WHERE pc.bulk_file_active = 1", 1);
         programCodesToReturn = new string[programCodeRows.Count];
 
         for(int i = 0; i < programCodeRows.Count; i++){
@@ -52,15 +83,54 @@ namespace Epa.Camd.Quartz.Scheduler
       return programCodesToReturn;
     }
 
+    private async Task<string[]> getStateCodeList(string[] stateCodes){
+      string[] stateCodesToIterate;
+      if(stateCodes.Length == 0 || stateCodes[0] == "*"){
+        List<List<Object>> rowsPerState = await this.dbContext.ExecuteSqlQuery("SELECT * FROM camdmd.state_code", 5);
+        stateCodesToIterate = new string[rowsPerState.Count];
+
+        for(int i = 0; i < rowsPerState.Count; i++){
+          stateCodesToIterate[i] = (string) rowsPerState[i][0];
+        }
+      }else{
+        stateCodesToIterate = stateCodes;
+      }
+
+      return stateCodesToIterate;
+    }
+
+    private async Task<int[]> getQuartersList(int[] quarters){
+      int[] quartersToIterate;
+
+      if(quarters.Length == 0){
+        quartersToIterate = new int[]{1, 2, 3, 4};
+      }else{
+        quartersToIterate = quarters;
+      }
+
+      return quartersToIterate;
+    }
+
     private async Task generateMassFacilityJobs(int? from, int? to){
       for(int? year = from; year <= to; year++){
-          DateTime currentDate = TimeZoneInfo.ConvertTime (DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+          DateTime currentDate = Utils.getCurrentEasternTime();
           await this.dbContext.CreateBulkFileJob(year, null, null, "Facility", null, Configuration["EASEY_STREAMING_SERVICES"] + "/facilities/attributes?year=" + year, "facility/facility" + "-" + year + ".csv", job_id, null);
       }
     }
 
     private async Task generateMassEmissionsCompliance(){
-      await this.dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance", "compliance/emissions-compliance-arpnox.csv", job_id, "ARP");
+      await this.dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance", "compliance/compliance-arpnox.csv", job_id, "ARP");
+    }
+
+    private async Task generateMassAllowanceHoldingsJobs(string[] programCodes){
+      string[] codes = await getProgramCodeList(programCodes);
+      foreach (string code in codes)
+      {
+          decimal year = DateTime.Now.ToUniversalTime().Year - 1;
+          string urlParams = "programCodeInfo=" + code;
+
+          await dbContext.CreateBulkFileJob(null, null, null, "Allowance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-holdings?" + urlParams, "allowance/holdings-" + code.ToLower() + ".csv", job_id, code);
+      }  
     }
 
     private async Task generateMassAllowanceComplianceJobs(string[] programCodes){
@@ -73,30 +143,47 @@ namespace Epa.Camd.Quartz.Scheduler
       }  
     }
 
-    private async Task generateMassAllowanceTransactionsJobs(int? from, int? to, string[] programCodes){
+    private async Task generateMassAllowanceTransactionsJobs(string[] programCodes){
       string[] codes = await getProgramCodeList(programCodes);
+      decimal year = DateTime.Now.ToUniversalTime().Year - 1;
+      foreach (string code in codes)
+      {
+        string urlParams = "transactionBeginDate=1993-03-23&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
+        await this.dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-"+ code.ToLower() + ".csv", job_id, code);
+      }  
+    }
+
+    private async Task generateMassMATsForStates(int? from, int? to, string[] stateCodes){
+      string[] stateCodesToIterate = await getStateCodeList(stateCodes);
       for(int? year = from; year <= to; year++){
-        foreach (string code in codes)
-        {
-          string urlParams = "transactionBeginDate=" + year + "-01-01&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
-          await this.dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code);
+        if(year >= 2015){ //MATs files only active after 2015
+          foreach (string stateCd in stateCodesToIterate)
+          {
+              string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + stateCd;
+              await this.dbContext.CreateBulkFileJob(year, null, stateCd, "Mercury and Air Toxics Emissions (MATS)", "Daily", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/mats/hourly?" + urlParams, "mats/hourly/state/mats-hourly-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
+          }  
+        }
+      }
+    }
+
+    private async Task generateMassMATsForQuarters(int? from, int? to, int[] quarters){
+      int[] quartersToIterate = await getQuartersList(quarters);
+      
+      for(int? year = from; year <= to; year++){
+        if(year >= 2015){ //MATs files only active after 2015
+          foreach (int quarter in quartersToIterate)
+          {
+            QuarterDates qd = getQuarterDates(quarter, year);
+
+            string urlParams = "beginDate=" + qd.beginDate + "&endDate=" + qd.endDate;
+            await this.dbContext.CreateBulkFileJob(year, quarter, null, "Mercury and Air Toxics Emissions (MATS)", "Hourly", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/mats/hourly?" + urlParams, "mats/hourly/quarter/mats-hourly-" + year + "-q" + quarter + ".csv", job_id, null);
+          }
         }  
       }
     }
 
     private async Task generateMassEmissionsForStates(int? from, int? to, string[] stateCodes, string[] dataSubTypes){
-      string[] stateCodesToIterate;
-
-      if(stateCodes.Length == 0 || stateCodes[0] == "*"){
-        List<List<Object>> rowsPerState = await this.dbContext.ExecuteSqlQuery("SELECT * FROM camdmd.state_code", 5);
-        stateCodesToIterate = new string[rowsPerState.Count];
-
-        for(int i = 0; i < rowsPerState.Count; i++){
-          stateCodesToIterate[i] = (string) rowsPerState[i][0];
-        }
-      }else{
-        stateCodesToIterate = stateCodes;
-      }
+      string[] stateCodesToIterate = await getStateCodeList(stateCodes);
       
       for(int? year = from; year <= to; year++){
         foreach (string stateCd in stateCodesToIterate)
@@ -111,38 +198,14 @@ namespace Epa.Camd.Quartz.Scheduler
     }
 
   private async Task generateMassEmissionsForQuarters(int? from, int? to, int[] quarters, string[] dataSubTypes){
-      int[] quartersToIterate;
-
-      if(quarters.Length == 0){
-        quartersToIterate = new int[]{1, 2, 3, 4};
-      }else{
-        quartersToIterate = quarters;
-      }
+      int[] quartersToIterate = await getQuartersList(quarters);
       
       for(int? year = from; year <= to; year++){
         foreach (int quarter in quartersToIterate)
         {
+          QuarterDates qd = getQuarterDates(quarter, year);
 
-          string beginDate;
-          string endDate;
-
-          if(quarter == 1){
-            beginDate = year + "-01-01";
-            endDate = year + "-03-31";
-          }
-          else if(quarter == 2){
-            beginDate = year + "-04-01";
-            endDate = year + "-06-30";
-          }
-          else if(quarter == 3){
-            beginDate = year + "-07-01";
-            endDate = year + "-09-30"; 
-          }else{
-            beginDate = year + "-10-01";
-            endDate = year + "-12-31"; 
-          }
-
-          string urlParams = "beginDate=" + beginDate + "&endDate=" + endDate;
+          string urlParams = "beginDate=" + qd.beginDate + "&endDate=" + qd.endDate;
           foreach(string dataSubType in dataSubTypes){
             await this.dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", dataSubType, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/" + dataSubType.ToLower() + "?" + urlParams, "emissions/" + dataSubType.ToLower() + "/quarter/emissions-" + dataSubType.ToLower() + "-" + year + "-q" + quarter + ".csv", job_id, null);
           }
@@ -153,15 +216,20 @@ namespace Epa.Camd.Quartz.Scheduler
     [HttpPost("bulk-file")]
     public async Task<ActionResult> CreateMassBulkFileApi([FromBody] OnDemandBulkFileRequest massRequest)
     {
-      
-      /*
-      string errorMessage = await Utils.validateRequestCredentialsClientToken(Request, Configuration);
-      if(errorMessage != "")
-      {
-        return BadRequest(errorMessage);
+      string errorMsg;
+      if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN"])){
+        errorMsg = Utils.validateRequestCredentialsGatewayToken(Request, Configuration);
+        if(errorMsg != ""){
+          return BadRequest(errorMsg);
+        }
       }
-      */
-      
+      if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_CLIENT_TOKEN"])){
+        errorMsg = await Utils.validateRequestCredentialsClientToken(Request, Configuration);
+        if(errorMsg != ""){
+          return BadRequest(errorMsg);
+        }
+      }
+
       JobLog jl = new JobLog();
       jl.JobId = job_id;
       jl.JobSystem = "Quartz";
@@ -171,26 +239,36 @@ namespace Epa.Camd.Quartz.Scheduler
       jl.StartDate = Utils.getCurrentEasternTime();
       jl.EndDate = null;
       jl.StatusCd = "WIP";
-
+//
       dbContext.JobLogs.Add(jl);
       await dbContext.SaveChangesAsync();
 
       try
       {
 
+        if(massRequest.generateStateMATS){
+          await generateMassMATsForStates(massRequest.From, massRequest.To, massRequest.StateCodes);
+        }
+
+        if(massRequest.generateQuarterMATS){
+          await generateMassMATsForQuarters(massRequest.From, massRequest.To, massRequest.Quarters);
+        }
+
         if(massRequest.emissionsCompliance){
           await generateMassEmissionsCompliance();
         }
 
-        if(massRequest.ProgramCodes != null){
-          if(massRequest.To == null || massRequest.From == null){
-            Console.WriteLine("Generating Mass Allowance Compliance Data");
-            await generateMassAllowanceComplianceJobs(massRequest.ProgramCodes);
-          }
-          else if(massRequest.To != null && massRequest.From != null){
-            Console.WriteLine("Generating Mass Transactions Compliance Data");
-            await generateMassAllowanceTransactionsJobs(massRequest.From, massRequest.To, massRequest.ProgramCodes);
-          }
+        if(massRequest.allowanceHoldings){
+          await generateMassAllowanceHoldingsJobs(massRequest.ProgramCodes);
+        }
+
+        if(massRequest.allowanceTransactions){
+          await generateMassAllowanceTransactionsJobs(massRequest.ProgramCodes);
+        }
+
+        if(massRequest.ProgramCodes != null && (massRequest.To == null || massRequest.From == null)){
+          Console.WriteLine("Generating Mass Allowance Compliance Data");
+          await generateMassAllowanceComplianceJobs(massRequest.ProgramCodes);
         }
         else if(massRequest.To != null && massRequest.From != null){
           if(massRequest.SubTypes != null){
