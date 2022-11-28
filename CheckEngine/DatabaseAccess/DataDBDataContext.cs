@@ -59,12 +59,8 @@ namespace ECMPS.Checks.DatabaseAccess
                 {
                     facId = int.Parse(row["facId"].ToString());
 
-                    if(row["firstEcmpsRptPeriodId"] == DBNull.Value){
-                        firstEcmpsRptPeriodId = null;
-                    }else{
-                        firstEcmpsRptPeriodId =  int.Parse(row["firstEcmpsRptPeriodId"].ToString());
-                    }
-                    
+                    firstEcmpsRptPeriodId = (row["firstEcmpsRptPeriodId"] != DBNull.Value) ? int.Parse(row["firstEcmpsRptPeriodId"].ToString()) : (int?)null; // Must handle a null firstEcmpsrptPeriodId
+
                     errorMessage = row["error_msg"].ToString();
                 }
 

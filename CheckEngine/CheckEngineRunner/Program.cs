@@ -25,6 +25,11 @@ namespace CheckEngineRunner
 
         static async Task Main(string[] args)
         {
+            string fileTypeCd = ((args != null) && (args.Length >= 1)) ? args[0] : null;
+            string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
+            string otherId = ((args != null) && (args.Length >= 3)) ? args[2] : null;
+
+
             // 1. Create a scheduler Factory
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
@@ -34,16 +39,20 @@ namespace CheckEngineRunner
 
             // 3. Create a job
             IJobDetail job = JobBuilder.Create<CheckEnginerJob>()
-                    .WithIdentity("Monitor Plan Evaluation", "DEFAULT")
-                 .UsingJobData("ProcessCode", "QA")
-                 .UsingJobData("connectionString", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr)
-                 .Build();
+
+                .WithIdentity("Monitor Plan Evaluation", "DEFAULT")
+                .UsingJobData("connectionString", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr)
+                .UsingJobData("ProcessCode", "MP")
+                .UsingJobData("fileTypeCd", fileTypeCd)
+                .UsingJobData("monPlanId", monPlanId)
+                .UsingJobData("otherId", otherId)
+                .Build();
 
             // 4. Create a trigger
             ITrigger trigger = TriggerBuilder.Create()
-               .WithIdentity("Monitor Plan Evaluation", "DEFAULT")
-        .UsingJobData("MonitorPlanId", "request.MonitorPlanId")
-        .UsingJobData("ConfigurationName", "request.ConfigurationName")
+                .WithIdentity("Monitor Plan Evaluation", "DEFAULT")
+                .UsingJobData("MonitorPlanId", "request.MonitorPlanId")
+                .UsingJobData("ConfigurationName", "request.ConfigurationName")
                 .StartNow()
                 .Build();
 
@@ -61,18 +70,41 @@ namespace CheckEngineRunner
         
         public async Task Execute(IJobExecutionContext context)
         {
-            string monPlanId = "MDC-B4147730E09A4AEFBCFE88A76A60C840";
-            string testSumId = "ac6d2246-8e07-4cc2-a4d6-a4f776d5fb6a";
+            JobDataMap dataMap = context.JobDetail.JobDataMap;
 
-            string localDir = System.IO.Directory.GetCurrentDirectory();
-            string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp3.1\\";
 
-            cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
+            string fileTypeCd = dataMap.GetString("fileTypeCd");
+            string monPlanId = dataMap.GetString("monPlanId");
 
-            //bool result = checkEngine.RunChecks_MpReport(monPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
-            bool result = checkEngine.RunChecks_QaReport_Test(testSumId, monPlanId, eCheckEngineRunMode.Normal, testSumId);
 
-            await Task.CompletedTask;
-        }     
+            switch (fileTypeCd)
+            {
+                case "MP":
+                    {
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\MonitorPlan\\obj\\Debug\\netcoreapp3.1\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
+
+                        bool result = checkEngine.RunChecks_MpReport(monPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+                        await Task.CompletedTask;
+                    }
+                    break;
+
+                case "QAT":
+                    {
+                        string testSumId = dataMap.GetString("otherId");
+
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp3.1\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
+
+                        bool result = checkEngine.RunChecks_QaReport_Test(testSumId, monPlanId, eCheckEngineRunMode.Normal, testSumId);
+                        await Task.CompletedTask;
+                    }
+                    break;
+            }
+
+        }
+
     }
 }
