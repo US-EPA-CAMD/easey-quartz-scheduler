@@ -32,14 +32,15 @@ namespace Epa.Camd.Quartz.Scheduler
       Configuration = configuration;
     }
 
-    private async Task<ActionResult> TriggerCheckEngineEvaluation(
-      string processCode,
-      string monitorPlanId,
-      string userId,
-      string userEmail,
-      List<string> qaCertEventId = null,
-      List<string> testExtensionExemptionId = null,
-      List<string> testSumId = null
+        private async Task<ActionResult> TriggerCheckEngineEvaluation(
+          string processCode,
+          string monitorPlanId,
+          string userId,
+          string userEmail,
+          List<string> qaCertEventId = null,
+          List<string> testExtensionExemptionId = null,
+          List<string> testSumId = null,
+          int RptPeriodId = 0
     )
     {
 
@@ -184,7 +185,44 @@ namespace Epa.Camd.Quartz.Scheduler
       );
     }
 
-    [HttpPost("monitor-plans")]
+        [HttpPost("emissions")]
+        public async Task<ActionResult> TriggerEmissionsEvaluation([FromBody] EmmisionsEvaluationRequest request)
+        {
+
+            string errorMsg;
+            if (Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN"]))
+            {
+                errorMsg = Utils.validateRequestCredentialsGatewayToken(Request, Configuration);
+                if (errorMsg != "")
+                {
+                    return BadRequest(errorMsg);
+                }
+            }
+
+            if (Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_USER_TOKEN"]))
+            {
+                errorMsg = await Utils.validateRequestCredentialsUserToken(Request, Configuration);
+                if (errorMsg != "")
+                {
+                    return BadRequest(errorMsg);
+                }
+            }
+
+
+            return await TriggerCheckEngineEvaluation(
+              "EM",
+              request.MonitorPlanId,
+              request.UserId,
+              request.UserEmail,
+              null,
+              null,
+              null,
+              request.RptPeriodId
+            );
+        }
+
+
+        [HttpPost("monitor-plans")]
     public async Task<ActionResult> TriggerMPEvaluation([FromBody] EvaluationRequest request)
     {
       
