@@ -316,7 +316,12 @@ namespace Epa.Camd.Quartz.Scheduler
 
         await Task.WhenAll(evaluateRequests);
       
-        return new EmptyResult();
+        return CreatedAtAction("BulkEvaluationResponse", new
+        {          
+          userId = request.UserId,
+          userEmail = request.UserEmail,
+          submittedOn = Utils.getCurrentEasternTime()
+        });
       }
       catch(Exception e){
         throw new Exception(e.Message);
