@@ -249,5 +249,78 @@ namespace Epa.Camd.Quartz.Scheduler
         request.UserEmail
       );
     }
+
+    [HttpPost("bulk")]
+    public async Task<ActionResult> BulkEvaluation([FromBody] BulkEvaluationRequest request)
+    {
+      
+      string errorMsg;
+      if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN"])){
+        errorMsg = Utils.validateRequestCredentialsGatewayToken(Request, Configuration);
+        if(errorMsg != ""){
+          return BadRequest(errorMsg);
+        }
+      }
+
+      if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_USER_TOKEN"])){
+        errorMsg = await Utils.validateRequestCredentialsUserToken(Request, Configuration);
+        if(errorMsg != ""){
+          return BadRequest(errorMsg);
+        }
+      }
+
+      try{
+        List<Task> evaluateRequests = new List<Task>();
+
+        foreach (EvaluationItem item in request.items)
+        {
+            if(item.submitMonPlan == true){              
+              evaluateRequests.Add(TriggerCheckEngineEvaluation(
+                "MP",
+                item.monPlanId,
+                request.UserId,
+                request.UserEmail
+              ));
+            }
+
+            if(item.qceIds.Count > 0 || item.testSumIds.Count > 0 || item.teeIds.Count > 0){              
+              evaluateRequests.Add(TriggerCheckEngineEvaluation(
+                "QA",
+                item.monPlanId,
+                request.UserId,
+                request.UserEmail,
+                item.qceIds,
+                item.teeIds,
+                item.testSumIds
+              ));
+            }
+
+            foreach (string periodAbr in item.emissionReportingPeriods){
+                ReportingPeriod rp =  _dbContext.ReportingPeriods
+                                  .Where(rp => rp.PeriodAbbreviation == periodAbr)
+                                  .FirstOrDefault();
+                
+                evaluateRequests.Add(TriggerCheckEngineEvaluation(
+                "EM",
+                item.monPlanId,
+                request.UserId,
+                request.UserEmail,
+                null,
+                null,
+                null,
+                Convert.ToInt32(rp.ReportingPeriodId)
+              ));
+              
+            }
+        }
+
+        await Task.WhenAll(evaluateRequests);
+      
+        return new EmptyResult();
+      }
+      catch(Exception e){
+        throw new Exception(e.Message);
+      }
+    }
   }
 }
