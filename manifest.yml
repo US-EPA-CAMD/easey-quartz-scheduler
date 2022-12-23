@@ -43,6 +43,7 @@ applications:
       EASEY_QUARTZ_SCHEDULER_ENABLE_CLIENT_TOKEN: true
       EASEY_QUARTZ_SCHEDULER_ENABLE_USER_TOKEN: true
     routes:
+      - route: ((host))/((path))
       - route: ((apiHost))/((apiPath))
     services:
       - camd-pg-db

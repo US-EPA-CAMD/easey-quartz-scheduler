@@ -216,7 +216,6 @@ namespace Epa.Camd.Quartz.Scheduler
     [HttpPost("bulk-file")]
     public async Task<ActionResult> CreateMassBulkFileApi([FromBody] OnDemandBulkFileRequest massRequest)
     {
-      
       string errorMsg;
       if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN"])){
         errorMsg = Utils.validateRequestCredentialsGatewayToken(Request, Configuration);
@@ -224,7 +223,6 @@ namespace Epa.Camd.Quartz.Scheduler
           return BadRequest(errorMsg);
         }
       }
-      
       if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_CLIENT_TOKEN"])){
         errorMsg = await Utils.validateRequestCredentialsClientToken(Request, Configuration);
         if(errorMsg != ""){
@@ -241,7 +239,7 @@ namespace Epa.Camd.Quartz.Scheduler
       jl.StartDate = Utils.getCurrentEasternTime();
       jl.EndDate = null;
       jl.StatusCd = "WIP";
-
+//
       dbContext.JobLogs.Add(jl);
       await dbContext.SaveChangesAsync();
 
