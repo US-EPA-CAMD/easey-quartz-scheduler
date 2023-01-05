@@ -22,7 +22,6 @@ namespace Epa.Camd.Quartz.Scheduler
     private NpgSqlContext _dbContext = null;
     private IConfiguration Configuration { get; }
 
-
     public EvaluationsController(
       NpgSqlContext dbContext,
       IConfiguration configuration
@@ -32,128 +31,7 @@ namespace Epa.Camd.Quartz.Scheduler
       Configuration = configuration;
     }
 
-        private async Task<ActionResult> TriggerCheckEngineEvaluation(
-          string processCode,
-          string monitorPlanId,
-          string userId,
-          string userEmail,
-          List<string> qaCertEventId = null,
-          List<string> testExtensionExemptionId = null,
-          List<string> testSumId = null,
-          int RptPeriodId = 0
-    )
-    {
-
-      // Optional input for QA lists, default to empty list
-      qaCertEventId = qaCertEventId ?? new List<string>();
-      testExtensionExemptionId = testExtensionExemptionId ?? new List<string>();
-      testSumId = testSumId ?? new List<string>();
-
-      Services services = (Services)Request.HttpContext.Items[typeof(Services)];
-
-      Guid id = Guid.NewGuid();
-      DateTime submittedOn = Utils.getCurrentEasternTime();
-
-      MonitorPlan mp = _dbContext.MonitorPlans.Find(monitorPlanId);
-      Facility fac = _dbContext.Facilities.Find(mp.FacilityId);
-      List<MonitorLocation> locs = _dbContext.MonitorLocations.FromSqlRaw(@"
-        SELECT ml.mon_loc_id, u.unit_id, u.unitid, sp.stack_pipe_id, sp.stack_name
-        FROM camdecmpswks.monitor_location ml
-          JOIN camdecmpswks.monitor_plan_location USING(mon_loc_id)
-          LEFT JOIN camd.unit u ON ml.unit_id = u.unit_id
-          LEFT JOIN camdecmpswks.stack_pipe sp ON ml.stack_pipe_id = sp.stack_pipe_id
-        WHERE mon_plan_id = {0}
-        ORDER BY unitId, stack_name",
-        monitorPlanId
-      ).ToList();
-
-      // Should we regenerate all of the ids?
-      if(processCode == "QA" && qaCertEventId.Count == 0 && testExtensionExemptionId.Count == 0 && testSumId.Count == 0){
-        foreach(MonitorLocation loc in locs){
-          List<List<object>> qaCertRows = await _dbContext.ExecuteSqlQuery("SELECT qa_cert_event_id FROM camdecmpswks.qa_cert_event WHERE mon_loc_id = '" + loc.Id + "'", 1);
-          for(int i = 0; i < qaCertRows.Count; i++){
-            qaCertEventId.Add((string) qaCertRows[i][0]);
-          }
-          List<List<object>> testExtensionExemptionRows = await _dbContext.ExecuteSqlQuery("SELECT test_extension_exemption_id FROM camdecmpswks.test_extension_exemption WHERE mon_loc_id = '" + loc.Id + "'", 1);
-          for(int i = 0; i < testExtensionExemptionRows.Count; i++){
-            testExtensionExemptionId.Add((string) testExtensionExemptionRows[i][0]);
-          }
-          List<List<object>> testSumRows = await _dbContext.ExecuteSqlQuery("SELECT test_sum_id FROM camdecmpswks.test_summary WHERE mon_loc_id = '" + loc.Id + "'", 1);
-          for(int i = 0; i < testSumRows.Count; i++){
-            testSumId.Add((string) testSumRows[i][0]);
-          }
-        }
-      }
-
-      string monPlanConfig = string.Join(", ", locs.Select(x =>
-        string.IsNullOrWhiteSpace(x.UnitName) ? x.StackName : x.UnitName
-      ));
-
-      await CheckEngineEvaluation.StartNow(
-        services.Scheduler,
-        id,
-        processCode,
-        fac.OrisCode,
-        fac.Name,
-        monitorPlanId,
-        monPlanConfig,
-        userId,
-        userEmail,
-        submittedOn,
-        JsonConvert.SerializeObject(qaCertEventId),
-        JsonConvert.SerializeObject(testExtensionExemptionId),
-        JsonConvert.SerializeObject(testSumId)
-      );
-
-
-      switch(processCode){
-        case "MP": 
-            mp.EvalStatus = "INQ"; // set eval status to In Queue
-            _dbContext.MonitorPlans.Update(mp);
-          break;
-        case "QA":
-            foreach (string certId in qaCertEventId)
-            {
-                CertEvent certIdRecord = _dbContext.CertEvents.Find(certId);
-                certIdRecord.EvalStatus = "INQ";
-                _dbContext.CertEvents.Update(certIdRecord);
-            }
-
-            foreach (string extensionExemptionId in testExtensionExemptionId)
-            {
-                TestExtensionExemption extensionExemptionRecord = _dbContext.TestExtensionExemptions.Find(extensionExemptionId);
-                extensionExemptionRecord.EvalStatus = "INQ";
-                _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
-            }
-
-            foreach (string testId in testSumId)
-            {
-                TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
-                testSummaryRecord.EvalStatus = "INQ";
-                _dbContext.TestSummaries.Update(testSummaryRecord);
-            }
-          break;
-
-        case "EM": 
-          break;
-      }
-
-      _dbContext.SaveChanges(); 
-
-      return CreatedAtAction("EvaluationResponse", new
-      {
-        id = id,
-        processCode = processCode,
-        facilityId = fac.OrisCode,
-        facilityName = fac.Name,
-        monitorPlanId = monitorPlanId,
-        configuration = monPlanConfig,
-        userId = userId,
-        userEmail = userEmail,
-        submittedOn = submittedOn
-      });
-    }
-
+    /*
     [HttpPost("qa-certifications")]
     public async Task<ActionResult> TriggerQAEvaluation([FromBody] QaEvaluationRequest request)
     {
@@ -185,44 +63,45 @@ namespace Epa.Camd.Quartz.Scheduler
       );
     }
 
-        [HttpPost("emissions")]
-        public async Task<ActionResult> TriggerEmissionsEvaluation([FromBody] EmmisionsEvaluationRequest request)
+    [HttpPost("emissions")]
+    public async Task<ActionResult> TriggerEmissionsEvaluation([FromBody] EmmisionsEvaluationRequest request)
+    {
+
+        string errorMsg;
+        if (Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN"]))
         {
-
-            string errorMsg;
-            if (Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN"]))
+            errorMsg = Utils.validateRequestCredentialsGatewayToken(Request, Configuration);
+            if (errorMsg != "")
             {
-                errorMsg = Utils.validateRequestCredentialsGatewayToken(Request, Configuration);
-                if (errorMsg != "")
-                {
-                    return BadRequest(errorMsg);
-                }
+                return BadRequest(errorMsg);
             }
-
-            if (Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_USER_TOKEN"]))
-            {
-                errorMsg = await Utils.validateRequestCredentialsUserToken(Request, Configuration);
-                if (errorMsg != "")
-                {
-                    return BadRequest(errorMsg);
-                }
-            }
-
-
-            return await TriggerCheckEngineEvaluation(
-              "EM",
-              request.MonitorPlanId,
-              request.UserId,
-              request.UserEmail,
-              null,
-              null,
-              null,
-              request.RptPeriodId
-            );
         }
 
+        if (Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_USER_TOKEN"]))
+        {
+            errorMsg = await Utils.validateRequestCredentialsUserToken(Request, Configuration);
+            if (errorMsg != "")
+            {
+                return BadRequest(errorMsg);
+            }
+        }
 
-        [HttpPost("monitor-plans")]
+        return null;
+
+        return await TriggerCheckEngineEvaluation(
+          "EM",
+          request.MonitorPlanId,
+          request.UserId,
+          request.UserEmail,
+          null,
+          null,
+          null,
+          request.RptPeriodId
+        );
+    }
+
+
+    [HttpPost("monitor-plans")]
     public async Task<ActionResult> TriggerMPEvaluation([FromBody] EvaluationRequest request)
     {
       
@@ -240,6 +119,9 @@ namespace Epa.Camd.Quartz.Scheduler
           return BadRequest(errorMsg);
         }
       }
+
+      MonitorPlan mp = _dbContext.MonitorPlans.Find(request.MonitorPlanId);
+
       
     
       return await TriggerCheckEngineEvaluation(
@@ -249,11 +131,11 @@ namespace Epa.Camd.Quartz.Scheduler
         request.UserEmail
       );
     }
+    */
 
-    [HttpPost("bulk")]
-    public async Task<ActionResult> BulkEvaluation([FromBody] BulkEvaluationRequest request)
+    [HttpPost()]
+    public async Task<ActionResult> Evaluate([FromBody] BulkEvaluationRequest request)
     {
-      
       string errorMsg;
       if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN"])){
         errorMsg = Utils.validateRequestCredentialsGatewayToken(Request, Configuration);
@@ -269,63 +151,165 @@ namespace Epa.Camd.Quartz.Scheduler
         }
       }
 
-      try{
-        List<Task> evaluateRequests = new List<Task>();
+      foreach (EvaluationItem item in request.items)
+      {
 
-        foreach (EvaluationItem item in request.items)
-        {
-            if(item.submitMonPlan == true){              
-              evaluateRequests.Add(TriggerCheckEngineEvaluation(
-                "MP",
-                item.monPlanId,
-                request.UserId,
-                request.UserEmail
-              ));
+        try{
+            DateTime currentEasternTime = Utils.getCurrentEasternTime();
+            Guid set_id = Guid.NewGuid();
+
+            // Create Evaluation Set Record For Each Record -----------------
+
+            EvaluationSet es = new EvaluationSet();
+            es.SetId = set_id.ToString();
+            es.MonPlanId = item.monPlanId;
+            es.UserId = request.UserId;
+            es.UserEmail = request.UserEmail;
+            es.SubmittedOn = currentEasternTime;
+
+            MonitorLocation loc = _dbContext.MonitorLocations.FromSqlRaw(@"
+              SELECT ml.mon_loc_id, u.unit_id, u.unitid, sp.stack_pipe_id, sp.stack_name
+              FROM camdecmpswks.monitor_location ml
+                JOIN camdecmpswks.monitor_plan_location USING(mon_loc_id)
+                LEFT JOIN camd.unit u ON ml.unit_id = u.unit_id
+                LEFT JOIN camdecmpswks.stack_pipe sp ON ml.stack_pipe_id = sp.stack_pipe_id
+              WHERE mon_plan_id = {0}
+              ORDER BY unitId, stack_name",
+              item.monPlanId
+            ).First();
+
+            es.Config = string.IsNullOrWhiteSpace(loc.UnitName) ? loc.StackName : loc.UnitName;
+
+            MonitorPlan mp = _dbContext.MonitorPlans.Find(item.monPlanId);
+
+            Facility f = _dbContext.Facilities.Find(mp.FacilityId);
+            es.FacName = f.Name;
+            es.FacId = f.OrisCode;
+
+            _dbContext.EvaluationSet.Add(es);
+            _dbContext.SaveChanges();
+
+            //-------------------------------------------------
+
+            if(item.submitMonPlan == true){ //Create monitor plan queue record
+              mp.EvalStatus = "INQ";
+              _dbContext.MonitorPlans.Update(mp);
+
+              Evaluation mpRecord = new Evaluation();
+              mpRecord.EvaluationSetId = set_id.ToString();
+              mpRecord.ProcessCode = "MP";
+              mpRecord.StatusCode = "QUEUED";
+              mpRecord.SubmittedOn = currentEasternTime; 
+              _dbContext.Evaluations.Add(mpRecord);
+
+              _dbContext.SaveChanges();
             }
 
-            if(item.qceIds.Count > 0 || item.testSumIds.Count > 0 || item.teeIds.Count > 0){              
-              evaluateRequests.Add(TriggerCheckEngineEvaluation(
-                "QA",
-                item.monPlanId,
-                request.UserId,
-                request.UserEmail,
-                item.qceIds,
-                item.teeIds,
-                item.testSumIds
-              ));
-            }
+            // Load QA Queue Records --------------------------
 
-            foreach (string periodAbr in item.emissionReportingPeriods){
-                ReportingPeriod rp =  _dbContext.ReportingPeriods
-                                  .Where(rp => rp.PeriodAbbreviation == periodAbr)
-                                  .FirstOrDefault();
-                
-                evaluateRequests.Add(TriggerCheckEngineEvaluation(
-                "EM",
-                item.monPlanId,
-                request.UserId,
-                request.UserEmail,
-                null,
-                null,
-                null,
-                Convert.ToInt32(rp.ReportingPeriodId)
-              ));
+            foreach(string id in item.testSumIds){
+              TestSummary ts = _dbContext.TestSummaries.Find(id);
+              ts.EvalStatus = "INQ";
+              _dbContext.TestSummaries.Update(ts);
+
+              Evaluation tsRecord = new Evaluation();
+              tsRecord.EvaluationSetId = set_id.ToString();
+              tsRecord.ProcessCode = "QA";
               
-            }
-        }
+              if(item.submitMonPlan == false){
+                tsRecord.StatusCode = "QUEUED";
+              }else{
+                tsRecord.StatusCode = "PENDING";
+              }
+              tsRecord.TestSumId = id;
+              tsRecord.SubmittedOn = currentEasternTime; 
+              _dbContext.Evaluations.Add(tsRecord);
 
-        await Task.WhenAll(evaluateRequests);
-      
-        return CreatedAtAction("BulkEvaluationResponse", new
-        {          
-          userId = request.UserId,
-          userEmail = request.UserEmail,
-          submittedOn = Utils.getCurrentEasternTime()
-        });
+              _dbContext.SaveChanges();
+            }
+
+            foreach(string id in item.qceIds){
+              CertEvent ce = _dbContext.CertEvents.Find(id);
+              ce.EvalStatus = "INQ";
+              _dbContext.CertEvents.Update(ce);
+
+              Evaluation ceRecord = new Evaluation();
+              ceRecord.EvaluationSetId = set_id.ToString();
+              ceRecord.ProcessCode = "QA";
+              
+              if(item.submitMonPlan == false){
+                ceRecord.StatusCode = "QUEUED";
+              }else{
+                ceRecord.StatusCode = "PENDING";
+              }
+              ceRecord.QaCertEventId = id;
+              ceRecord.SubmittedOn = currentEasternTime; 
+              _dbContext.Evaluations.Add(ceRecord);
+
+              _dbContext.SaveChanges();
+            }
+
+            foreach(string id in item.teeIds){
+              TestExtensionExemption tee = _dbContext.TestExtensionExemptions.Find(id);
+              tee.EvalStatus = "INQ";
+              _dbContext.TestExtensionExemptions.Update(tee);
+
+              Evaluation teeRecord = new Evaluation();
+              teeRecord.EvaluationSetId = set_id.ToString();
+              teeRecord.ProcessCode = "QA";
+              
+              if(item.submitMonPlan == false){
+                teeRecord.StatusCode = "QUEUED";
+              }else{
+                teeRecord.StatusCode = "PENDING";
+              }
+              teeRecord.TeeId = id;
+              teeRecord.SubmittedOn = currentEasternTime; 
+              _dbContext.Evaluations.Add(teeRecord);
+
+              _dbContext.SaveChanges();
+            }
+
+            //----------------------------------------------
+
+            // Load Emission Queue Records -----------------
+            foreach (string periodAbr in item.emissionsReportingPeriods){
+              /*
+              ReportingPeriod rp =  _dbContext.ReportingPeriods
+                                .Where(rp => rp.PeriodAbbreviation == periodAbr)
+                                .FirstOrDefault();
+              
+              
+              EmissionEvaluation ee = _dbContext.EmissionEvaluations.Find(item.monPlanId, rp.ReportingPeriodId);
+              ee.EvalStatus = "INQ";
+              _dbContext.EmissionEvaluations.Update(ee);
+
+              Evaluation emissionRecord = new Evaluation();
+              emissionRecord.EvaluationSetId = set_id.ToString();
+              emissionRecord.ProcessCode = "EM";
+              
+              if(item.submitMonPlan == false && (item.testSumIds.Count == 0 && item.qceIds.Count == 0 && item.teeIds.Count == 0)){
+                emissionRecord.StatusCode = "QUEUED";
+              }else{
+                emissionRecord.StatusCode = "PENDING";
+              }
+              emissionRecord.RptPeriod = rp.ReportingPeriodId;
+              emissionRecord.SubmittedOn = currentEasternTime; 
+              _dbContext.Evaluation.Add(emissionRecord);
+
+              _dbContext.SaveChanges();  
+              */              
+            }
+          }catch(Exception e){
+            Console.WriteLine(e.Message);
+          }
       }
-      catch(Exception e){
-        throw new Exception(e.Message);
-      }
+      return CreatedAtAction("BulkEvaluationResponse", new
+      {          
+        userId = request.UserId,
+        userEmail = request.UserEmail,
+        submittedOn = Utils.getCurrentEasternTime()
+      });
     }
   }
 }

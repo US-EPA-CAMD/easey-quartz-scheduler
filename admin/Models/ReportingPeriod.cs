@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,7 +9,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 	{
  		[Key]
 		[Column("rpt_period_id")]
- 		public decimal ReportingPeriodId { get; set; }
+ 		public Int32 ReportingPeriodId { get; set; }
 
 		[Column("period_abbreviation")]
  		public string PeriodAbbreviation { get; set; }
