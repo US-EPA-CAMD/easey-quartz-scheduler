@@ -8,7 +8,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
         public List<string> testSumIds {get; set; }
         public List<string> qceIds {get; set; }
         public List<string> teeIds {get; set; }
-        public List<string> emissionReportingPeriods {get; set; }
+        public List<string> emissionsReportingPeriods {get; set; }
     }
 
 	public class BulkEvaluationRequest {

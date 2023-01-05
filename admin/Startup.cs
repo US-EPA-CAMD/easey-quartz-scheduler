@@ -178,6 +178,7 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddOptions();
 
+      EvaluationJobQueue.RegisterWithQuartz(services);
       BulkFileJobQueue.RegisterWithQuartz(services);
       AllowanceHoldingsBulkDataFiles.RegisterWithQuartz(services);
       AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
@@ -251,6 +252,7 @@ namespace Epa.Camd.Quartz.Scheduler
           GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS)
       );
 
+      EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
       AllowanceHoldingsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);

@@ -1,3 +1,4 @@
+using System.Diagnostics.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -5,6 +6,8 @@ using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 
 using Quartz;
@@ -48,9 +51,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       _dbContext = dbContext;
       Configuration = configuration;
-
-      int maxThreads = Int32.Parse(configuration["EASEY_QUARTZ_SCHEDULER_MAX_CHECK_THREADS"]);
-      semaphore = new SemaphoreSlim(maxThreads, maxThreads);
     }
 
     private EvalStatusCode getStatusCodeByCheckId(string checkSessionId, bool result){
@@ -67,13 +67,20 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public Task Execute(IJobExecutionContext context)
     {
+
+      JobDataMap dataMap = context.MergedJobDataMap;
       JobKey key = context.JobDetail.Key;
+
+      string id = dataMap.GetString("Id");
+
+      Evaluation evalRecord = _dbContext.Evaluations.Find(Int64.Parse(id));
+
+      evalRecord.StatusCode = "WIP";
+      _dbContext.Evaluations.Update(evalRecord);
+      _dbContext.SaveChanges();
 
       try
       {
-        JobDataMap dataMap = context.MergedJobDataMap;
-
-        string id = dataMap.GetString("Id");
         string processCode = dataMap.GetString("ProcessCode");
         int facilityId = dataMap.GetIntValue("FacilityId");
         string facilityName = dataMap.GetString("FacilityName");
@@ -102,6 +109,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         MonitorPlan mp = _dbContext.MonitorPlans.Find(monitorPlanId);
 
+        string evaluationStatus = "";
+
+        EvaluationSet es = _dbContext.EvaluationSet.Find(dataMap.GetString("SetId"));
+
         switch (processCode)
         {
           case "MP":
@@ -116,101 +127,95 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             _dbContext.Entry<MonitorPlan>(mp).Reload();
             EvalStatusCode evalStatus = getStatusCodeByCheckId(mp.CheckSessionId, mpResult);
             mp.EvalStatus = evalStatus.Code;
+            evaluationStatus = evalStatus.Code;
             _dbContext.MonitorPlans.Update(mp);
-            _dbContext.SaveChanges();
-
             context.MergedJobDataMap.Add("EvaluationStatus", evalStatus.Description);
+
+            // Logic to flip state and unlock qa or emissions files after run of MP
+            List<Evaluation> qaEvals = _dbContext.Evaluations.FromSqlRaw(@"
+              SELECT *
+              FROM camdecmpsaux.evaluation_queue
+              WHERE process_cd = 'QA' AND evaluation_set_id = {0}
+            ", es.SetId).ToList();
+            if(qaEvals.Count > 0){
+              foreach(Evaluation e in qaEvals){
+                e.StatusCode = "QUEUED";
+                _dbContext.Evaluations.Update(e);
+              }
+            }else{
+              List<Evaluation> emEvals = _dbContext.Evaluations.FromSqlRaw(@"
+                SELECT *
+                FROM camdecmpsaux.evaluation_queue
+                WHERE process_cd = 'EM' AND evaluation_set_id = {0}
+                ", es.SetId).ToList();
+              foreach(Evaluation e in emEvals){
+                e.StatusCode = "QUEUED";
+                _dbContext.Evaluations.Update(e);
+              }
+            }
+            // --------
 
             LogHelper.info($"RunChecks_MpReport returned a result of {mpResult}!");
             break;
           case "QA":
             LogHelper.info("Running QA import checks...");
+            if(!string.IsNullOrWhiteSpace(dataMap.GetString("testSumId"))){
+              string testId = dataMap.GetString("testSumId");
+              TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
+              testSummaryRecord.EvalStatus = "WIP";
+              _dbContext.TestSummaries.Update(testSummaryRecord);
 
-            List<string> qaCertEventId = JsonConvert.DeserializeObject<List<string>>(dataMap.GetString("qaCertId"));
-            List<string> testExtensionExemptionId = JsonConvert.DeserializeObject<List<string>>(dataMap.GetString("testExtensionExemption"));
-            List<string> testSumId = JsonConvert.DeserializeObject<List<string>>(dataMap.GetString("testSumId"));
+              bool listResult = checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, testId);
 
-            List<Task> threadPool = new List<Task>();
+              _dbContext.Entry<TestSummary>(testSummaryRecord).Reload();
+              EvalStatusCode testSumEvalStatus = getStatusCodeByCheckId(testSummaryRecord.CheckSessionId, listResult);
+              evaluationStatus = testSumEvalStatus.Code;
+              testSummaryRecord.EvalStatus = testSumEvalStatus.Code;
+              _dbContext.TestSummaries.Update(testSummaryRecord);
+            }
+            else if(!string.IsNullOrWhiteSpace(dataMap.GetString("qaCertId"))){
+              string certId = dataMap.GetString("qaCertId");
+              CertEvent certIdRecord = _dbContext.CertEvents.Find(certId);
+              certIdRecord.EvalStatus = "WIP";
+              _dbContext.CertEvents.Update(certIdRecord);
+              _dbContext.SaveChanges();
 
-            foreach (string certId in qaCertEventId)
-            {
-                threadPool.Add(Task.Run(() => {
-                  semaphore.Wait();
-                  try{
-                    CertEvent certIdRecord = _dbContext.CertEvents.Find(certId);
-                    certIdRecord.EvalStatus = "WIP";
-                    _dbContext.CertEvents.Update(certIdRecord);
-                    _dbContext.SaveChanges();
+              bool listResult = checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, certId);
 
-                    bool listResult = checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, certId);
+              _dbContext.Entry<CertEvent>(certIdRecord).Reload();
+              EvalStatusCode certEvalStatus = getStatusCodeByCheckId(certIdRecord.CheckSessionId, listResult);
+              evaluationStatus = certEvalStatus.Code;
+              certIdRecord.EvalStatus = certEvalStatus.Code;
+              _dbContext.CertEvents.Update(certIdRecord);
+            }
+            else{
+              string extensionExemptionId = dataMap.GetString("testExtensionExemption");
+              TestExtensionExemption extensionExemptionRecord = _dbContext.TestExtensionExemptions.Find(extensionExemptionId);
+              extensionExemptionRecord.EvalStatus = "WIP";
+              _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
+              _dbContext.SaveChanges();
 
-                    _dbContext.Entry<CertEvent>(certIdRecord).Reload();
-                    EvalStatusCode evalStatus = getStatusCodeByCheckId(certIdRecord.CheckSessionId, listResult);
-                    certIdRecord.EvalStatus = evalStatus.Code;
-                    _dbContext.CertEvents.Update(certIdRecord);
-                    _dbContext.SaveChanges();
-                  }
-                  finally{
-                    semaphore.Release();
-                  }
-                }));
+              bool listResult = checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, extensionExemptionId);
+
+              _dbContext.Entry<TestExtensionExemption>(extensionExemptionRecord).Reload();
+              EvalStatusCode teeEvalStatus = getStatusCodeByCheckId(extensionExemptionRecord.CheckSessionId, listResult);
+              evaluationStatus = teeEvalStatus.Code;
+              extensionExemptionRecord.EvalStatus = teeEvalStatus.Code;
+              _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
             }
 
-            foreach (string extensionExemptionId in testExtensionExemptionId)
-            {
-                threadPool.Add(Task.Run(() => {
-                  semaphore.Wait();
-                  try{
-                    TestExtensionExemption extensionExemptionRecord = _dbContext.TestExtensionExemptions.Find(extensionExemptionId);
-                    extensionExemptionRecord.EvalStatus = "WIP";
-                    _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
-                    _dbContext.SaveChanges();
-
-
-                    bool listResult = checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, extensionExemptionId);
-
-
-                    _dbContext.Entry<TestExtensionExemption>(extensionExemptionRecord).Reload();
-                    EvalStatusCode evalStatus = getStatusCodeByCheckId(extensionExemptionRecord.CheckSessionId, listResult);
-                    extensionExemptionRecord.EvalStatus = evalStatus.Code;
-                    _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
-                    _dbContext.SaveChanges();
-                  }finally{
-                    semaphore.Release();
-                  }
-                  return;
-                }));
+            // Flip Emissions Records After QA Is Run
+            List<Evaluation> qaEmEvals = _dbContext.Evaluations.FromSqlRaw(@"
+                SELECT *
+                FROM camdecmpsaux.evaluation_queue
+                WHERE process_cd = 'EM' AND evaluation_set_id = {0}
+                ", es.SetId).ToList();
+            foreach(Evaluation e in qaEmEvals){
+              e.StatusCode = "QUEUED";
+              _dbContext.Evaluations.Update(e);
             }
-
-            foreach (string testId in testSumId)
-            {
-                threadPool.Add(Task.Run(() => {
-                  semaphore.Wait();
-                  try{
-
-                    TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
-                    testSummaryRecord.EvalStatus = "WIP";
-                    _dbContext.TestSummaries.Update(testSummaryRecord);
-
-
-                    bool listResult = checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, testId);
-
-
-                    _dbContext.Entry<TestSummary>(testSummaryRecord).Reload();
-                    EvalStatusCode evalStatus = getStatusCodeByCheckId(testSummaryRecord.CheckSessionId, listResult);
-                    testSummaryRecord.EvalStatus = evalStatus.Code;
-                    _dbContext.TestSummaries.Update(testSummaryRecord);
-                    _dbContext.SaveChanges();
-                  }finally{
-                    semaphore.Release();
-                  }
-                }));
-            }
-
-            LogHelper.info($"Waiting on QA checks");
-
-            Task.WaitAll(threadPool.ToArray());
-
+            
+    
             LogHelper.info($"QA import checks finished");
 
             break;
@@ -224,11 +229,21 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         context.MergedJobDataMap.Add("EvaluationResult", "COMPLETED");
 
+        // Update our queued record
+        evalRecord.StatusCode = "COMPLETE";
+        evalRecord.ServerityCode = evaluationStatus;
+        _dbContext.Evaluations.Update(evalRecord);
+        _dbContext.SaveChanges();
+
         LogHelper.info($"{key.Group}.{key.Name} COMPLETED successfully!");
         return Task.CompletedTask;
       }
       catch (Exception ex)
       {
+        evalRecord.StatusCode = "ERROR";
+        _dbContext.Evaluations.Update(evalRecord);
+        _dbContext.SaveChanges();
+
         context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
         context.MergedJobDataMap.Add("EvaluationStatus", "FATAL");
         LogHelper.error(ex.ToString());
@@ -274,7 +289,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async Task StartNow(
       IScheduler scheduler,
-      Guid id,
+      long id,
+      string setId,
       string processCode,
       int facilityId,
       string facilityName,
@@ -283,9 +299,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       string userId,
       string userEmail,
       DateTime submittedOn,
-      string qaCertEventIdJSON,
-      string testExtensionExemptionIdJSON,
-      string testSumIdJSON
+      string testSumId,
+      string qaCertEventId,
+      string teeId,
+      int? rptPeriod
     ) {
       string processName = GetProcess(processCode);
 
@@ -299,6 +316,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         .WithIdentity(WithTriggerKey(processCode, facilityName, monPlanConfig))
         .WithDescription(string.Format(Identity.TriggerDescription, processName, facilityName, monPlanConfig))
         .UsingJobData("Id", id.ToString())
+        .UsingJobData("SetId", setId)
         .UsingJobData("FacilityId", facilityId)
         .UsingJobData("FacilityName", facilityName)
         .UsingJobData("MonitorPlanId", monitorPlanId)
@@ -306,9 +324,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         .UsingJobData("UserId", userId)
         .UsingJobData("UserEmail", userEmail)        
         .UsingJobData("SubmittedOn", submittedOn.ToString())
-        .UsingJobData("qaCertId", qaCertEventIdJSON)
-        .UsingJobData("testExtensionExemption", testExtensionExemptionIdJSON)
-        .UsingJobData("testSumId", testSumIdJSON)        
+        .UsingJobData("qaCertId", qaCertEventId)
+        .UsingJobData("testExtensionExemption", teeId)
+        .UsingJobData("testSumId", testSumId)        
         .StartNow()
         .Build();
 
