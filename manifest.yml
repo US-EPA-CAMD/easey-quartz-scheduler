@@ -3,7 +3,7 @@ applications:
     memory: ((memory))
     instances: ((instances))
     buildpacks:
-      - dotnet_core_buildpack
+      - https://github.com/cloudfoundry/dotnet-core-buildpack.git#v2.4.3
     env:
       OPTIMIZE_MEMORY: true
       CACHE_NUGET_PACKAGES: false
