@@ -180,8 +180,6 @@ namespace Epa.Camd.Quartz.Scheduler
 
       EvaluationJobQueue.RegisterWithQuartz(services);
       CheckEngineEvaluation.RegisterWithQuartz(services);
-
-      /*
       BulkFileJobQueue.RegisterWithQuartz(services);
       AllowanceHoldingsBulkDataFiles.RegisterWithQuartz(services);
       AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
@@ -194,7 +192,6 @@ namespace Epa.Camd.Quartz.Scheduler
       SendMail.RegisterWithQuartz(services);
       RemoveExpiredUserSession.RegisterWithQuartz(services);
       RemoveExpiredCheckoutRecord.RegisterWithQuartz(services);
-      */
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -250,16 +247,13 @@ namespace Epa.Camd.Quartz.Scheduler
 
       BulkDataFile.setScheduler(scheduler);
 
-      /*
       scheduler.ListenerManager.AddJobListener(
           new CheckEngineEvaluationListener(Configuration),
           GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS)
       );
-      */
 
       EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
 
-            /*
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
       AllowanceHoldingsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
@@ -270,7 +264,6 @@ namespace Epa.Camd.Quartz.Scheduler
       BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
       RemoveExpiredUserSession.ScheduleWithQuartz(scheduler, app);
       RemoveExpiredCheckoutRecord.ScheduleWithQuartz(scheduler, app);      
-            */
     }
   }
 }
