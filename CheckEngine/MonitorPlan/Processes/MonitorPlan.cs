@@ -29,6 +29,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
         #endregion
 
+        private MpParameters mpParams = new MpParameters(); 
 
         #region Base Class Overrides
 
@@ -84,33 +85,33 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
                 LogHelper.info("Running Monitoring Plan Checks");
 
                 // Create category objects with check bands initialized
-                cMonitorPlanCategory MonitorPlanCategory = cMonitorPlanCategory.GetInitialized(mCheckEngine, this);
-                cMonitorLocation MonitorLocation = cMonitorLocation.GetInitialized(mCheckEngine, this);
-                cMonitorLocationAttribute MonitorLocationAttribute = cMonitorLocationAttribute.GetInitialized(mCheckEngine, this);
-                cUnitStackConfiguration UnitStackConfiguration = cUnitStackConfiguration.GetInitialized(mCheckEngine, this);
-                cUnitProgram UnitProgramCategory = cUnitProgram.GetInitialized(mCheckEngine, this);
-                cUnitProgramParameterCategory UnitProgramParameterCategory = cUnitProgramParameterCategory.GetInitialized(UnitProgramCategory);
-                cComponent Component = cComponent.GetInitialized(mCheckEngine, this);
-                cAnalyzerRange AnalyzerRange = cAnalyzerRange.GetInitialized(mCheckEngine, this);
+                cMonitorPlanCategory MonitorPlanCategory = new cMonitorPlanCategory().GetInitialized(mCheckEngine, this, ref mpParams);
+                cMonitorLocation MonitorLocation = new cMonitorLocation().GetInitialized(mCheckEngine, this);
+                cMonitorLocationAttribute MonitorLocationAttribute = new cMonitorLocationAttribute().GetInitialized(mCheckEngine, this);
+                cUnitStackConfiguration UnitStackConfiguration = new cUnitStackConfiguration().GetInitialized(mCheckEngine, this);
+                cUnitProgram UnitProgramCategory = new cUnitProgram().GetInitialized(mCheckEngine, this);
+                cUnitProgramParameterCategory UnitProgramParameterCategory = new cUnitProgramParameterCategory().GetInitialized(UnitProgramCategory);
+                cComponent Component = new cComponent().GetInitialized(mCheckEngine, this);
+                cAnalyzerRange AnalyzerRange = new cAnalyzerRange().GetInitialized(mCheckEngine, this);
                 //cCalibrationStandardDataCategory CalibrationStandard = cCalibrationStandardDataCategory.GetInitialized(mCheckEngine, this);
-                cSystemCategory MonitorSystem = cSystemCategory.GetInitialized(mCheckEngine, this);
-                cSystemComponentCategory SystemComponentCategory = cSystemComponentCategory.GetInitialized(mCheckEngine, this);
-                cSystemFuelFlowCategory SystemFuelFlowCategory = cSystemFuelFlowCategory.GetInitialized(mCheckEngine, this);
-                cFormula Formula = cFormula.GetInitialized(mCheckEngine, this);
-                cSpanCategory SpanCategory = cSpanCategory.GetInitialized(mCheckEngine, this);
-                cDefaultCategory Default = cDefaultCategory.GetInitialized(mCheckEngine, this);
-                cWAFCategory Waf = cWAFCategory.GetInitialized(mCheckEngine, this);
-                cLoadCategory Load = cLoadCategory.GetInitialized(mCheckEngine, this);
-                cQualificationCategory Qual = cQualificationCategory.GetInitialized(mCheckEngine, this);
-                cQualificationPercentCategory QualPct = cQualificationPercentCategory.GetInitialized(mCheckEngine, this);
-                cQualificationLMECategory QualLME = cQualificationLMECategory.GetInitialized(mCheckEngine, this);
-                cQualificationLEECategory QualLEE = cQualificationLEECategory.GetInitialized(mCheckEngine, this);
-                cMethod _Method = cMethod.GetInitialized(mCheckEngine, this);
-                cUnitControlCategory _UnitControl = cUnitControlCategory.GetInitialized(mCheckEngine, this);
-                cUnitCapacityCategory _UnitCapacity = cUnitCapacityCategory.GetInitialized(mCheckEngine, this);
-                cUnitFuelCategory _UnitFuel = cUnitFuelCategory.GetInitialized(mCheckEngine, this);
-                cMonitorPlanCommentCategory MonitorPlanCommentCategory = cMonitorPlanCommentCategory.GetInitialized(mCheckEngine, this);
-                cMATSSupplementalMethodCategory MATSMethod = cMATSSupplementalMethodCategory.GetInitialized(mCheckEngine, this);
+                cSystemCategory MonitorSystem = new cSystemCategory().GetInitialized(mCheckEngine, this);
+                cSystemComponentCategory SystemComponentCategory = new cSystemComponentCategory().GetInitialized(mCheckEngine, this);
+                cSystemFuelFlowCategory SystemFuelFlowCategory = new cSystemFuelFlowCategory().GetInitialized(mCheckEngine, this);
+                cFormula Formula = new cFormula().GetInitialized(mCheckEngine, this);
+                cSpanCategory SpanCategory = new cSpanCategory().GetInitialized(mCheckEngine, this);
+                cDefaultCategory Default = new cDefaultCategory().GetInitialized(mCheckEngine, this);
+                cWAFCategory Waf = new cWAFCategory().GetInitialized(mCheckEngine, this);
+                cLoadCategory Load = new cLoadCategory().GetInitialized(mCheckEngine, this);
+                cQualificationCategory Qual = new cQualificationCategory().GetInitialized(mCheckEngine, this);
+                cQualificationPercentCategory QualPct = new cQualificationPercentCategory().GetInitialized(mCheckEngine, this);
+                cQualificationLMECategory QualLME = new cQualificationLMECategory().GetInitialized(mCheckEngine, this);
+                cQualificationLEECategory QualLEE = new cQualificationLEECategory().GetInitialized(mCheckEngine, this);
+                cMethod _Method = new cMethod().GetInitialized(mCheckEngine, this);
+                cUnitControlCategory _UnitControl = new cUnitControlCategory().GetInitialized(mCheckEngine, this);
+                cUnitCapacityCategory _UnitCapacity = new cUnitCapacityCategory().GetInitialized(mCheckEngine, this);
+                cUnitFuelCategory _UnitFuel = new cUnitFuelCategory().GetInitialized(mCheckEngine, this);
+                cMonitorPlanCommentCategory MonitorPlanCommentCategory = new cMonitorPlanCommentCategory().GetInitialized(mCheckEngine, this);
+                cMATSSupplementalMethodCategory MATSMethod = new cMATSSupplementalMethodCategory().GetInitialized(mCheckEngine, this);
 
                 SetCheckParameter("First_ECMPS_Reporting_Period", CheckEngine.FirstEcmpsReportingPeriodId);
 
@@ -575,7 +576,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
         /// </summary>
         protected override void InitStaticParameterClass()
         {
-            MpParameters.Init(this);
+            mpParams.Init(this);
         }
 
         /// <summary>
@@ -584,7 +585,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
         /// <param name="category"></param>
         public override void SetStaticParameterCategory(cCategory category)
         {
-            MpParameters.Category = category;
+            mpParams.Category = category;
         }
 
 
@@ -605,7 +606,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
             object[] constructorArgements = new object[] { this };
 
             cChecks result;
-
+            
             if (isMpChecksChild)
                 result = (cMpChecks)Activator.CreateInstanceFrom(dllPath + dllName,
                                                                  nameSpacePath + "." + namespaceLeaf + "." + className,
@@ -615,6 +616,8 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
             else
                 result = (cChecks)Activator.CreateInstanceFrom(dllPath + dllName,
                                                                nameSpacePath + "." + namespaceLeaf + "." + className).Unwrap();
+
+            result.setMpParamsForCheck(ref mpParams);
 
             return result;
         }

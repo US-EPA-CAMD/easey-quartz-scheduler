@@ -42,7 +42,7 @@ namespace ECMPS.Checks.SystemChecks
       CheckProcedures[24] = new dCheckProcedure(SYSTEM24);
     }
 
-    public static string SYSTEM1(cCategory Category, ref bool Log)
+    public string SYSTEM1(cCategory Category, ref bool Log)
     // System Begin Date Valid
     {
       string ReturnVal = "";
@@ -60,7 +60,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM2(cCategory Category, ref bool Log)
+    public string SYSTEM2(cCategory Category, ref bool Log)
     // System Begin Hour Valid
     {
       string ReturnVal = "";
@@ -77,7 +77,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM3(cCategory Category, ref bool Log)
+    public string SYSTEM3(cCategory Category, ref bool Log)
     // System End Date Valid
     {
       string ReturnVal = "";
@@ -94,7 +94,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM4(cCategory Category, ref bool Log)
+    public string SYSTEM4(cCategory Category, ref bool Log)
     // System End Hour Valid
     {
       string ReturnVal = "";
@@ -111,7 +111,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM5(cCategory Category, ref bool Log)
+    public string SYSTEM5(cCategory Category, ref bool Log)
     // System Dates and Hours Consistent
     {
       string ReturnVal = "";
@@ -133,7 +133,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM6(cCategory Category, ref bool Log)
+    public string SYSTEM6(cCategory Category, ref bool Log)
     // System Active Status
     {
       string ReturnVal = "";
@@ -162,7 +162,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM7(cCategory Category, ref bool Log)
+    public string SYSTEM7(cCategory Category, ref bool Log)
     // Monitoring System ID Valid
     {
       string ReturnVal = "";
@@ -185,7 +185,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM8(cCategory Category, ref bool Log)
+    public string SYSTEM8(cCategory Category, ref bool Log)
     // System Type Code Valid
     {
       string ReturnVal = "";
@@ -258,7 +258,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM9(cCategory Category, ref bool Log)
+    public string SYSTEM9(cCategory Category, ref bool Log)
     // System Designation Code Valid
     {
       string ReturnVal = "";
@@ -311,7 +311,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM10(cCategory Category, ref bool Log)
+    public string SYSTEM10(cCategory Category, ref bool Log)
     // System Fuel Code Valid
     {
       string ReturnVal = "";
@@ -372,7 +372,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM11(cCategory Category, ref bool Log)
+    public string SYSTEM11(cCategory Category, ref bool Log)
     // Overlapping Primary NFS Systems 
     {
       string ReturnVal = "";
@@ -531,7 +531,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM12(cCategory Category, ref bool Log)
+    public string SYSTEM12(cCategory Category, ref bool Log)
     // System Type Consistent with Method 
     {
       string ReturnVal = "";
@@ -626,7 +626,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM13(cCategory Category, ref bool Log)
+    public string SYSTEM13(cCategory Category, ref bool Log)
     // System Type Consistent with Components
     {
       string ReturnVal = "";
@@ -792,7 +792,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    private static string System13_BasisKey(DataRowView ARow)
+    private string System13_BasisKey(DataRowView ARow)
     {
       if ((cDBConvert.ToString(ARow["Basis_Cd"]) == "W") ||
           (cDBConvert.ToString(ARow["Basis_Cd"]) == "D"))
@@ -801,7 +801,7 @@ namespace ECMPS.Checks.SystemChecks
         return "WetAndDry";
     }
 
-    private static void System13_AnalyzerRangeCheck(cCategory ACategory, DataView ASystemComponentView,
+    private void System13_AnalyzerRangeCheck(cCategory ACategory, DataView ASystemComponentView,
                                                     DateTime ASysEvalBeganDate, int ASysEvalBeganHour,
                                                     DateTime ASysEvalEndedDate, int ASysEvalEndedHour)
     {
@@ -836,7 +836,7 @@ namespace ECMPS.Checks.SystemChecks
       }
     }
 
-    public static string SYSTEM14(cCategory Category, ref bool Log)
+    public string SYSTEM14(cCategory Category, ref bool Log)
     // System Fuel Consistent with Unit Fuel  
     {
       string ReturnVal = "";
@@ -890,7 +890,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM15(cCategory Category, ref bool Log)
+    public string SYSTEM15(cCategory Category, ref bool Log)
     // DB System Consistent with P or RB System 
     {
       string ReturnVal = "";
@@ -995,7 +995,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM16(cCategory Category, ref bool Log)
+    public string SYSTEM16(cCategory Category, ref bool Log)
     // RM System Consistent with Non-RM Systems  
     {
       string ReturnVal = "";
@@ -1075,7 +1075,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM17(cCategory Category, ref bool Log)
+    public string SYSTEM17(cCategory Category, ref bool Log)
     // Backup System Consistent with Primary System
     {
       string ReturnVal = "";
@@ -1173,7 +1173,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM18(cCategory Category, ref bool Log)
+    public string SYSTEM18(cCategory Category, ref bool Log)
     // Overlapping Primary NFS Systems 
     {
       string ReturnVal = "";
@@ -1223,7 +1223,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM19(cCategory Category, ref bool Log)
+    public string SYSTEM19(cCategory Category, ref bool Log)
     // Required Formula Reported for System
     {
       string ReturnVal = "";
@@ -1515,7 +1515,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM20(cCategory Category, ref bool Log)
+    public string SYSTEM20(cCategory Category, ref bool Log)
     // Required Non-DAHS Components Reported for System
     {
       string ReturnVal = "";
@@ -1582,7 +1582,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    private static void System20_OverlapChecking(cCategory ACategory, string AComponentTypeList,
+    private void System20_OverlapChecking(cCategory ACategory, string AComponentTypeList,
                                                  string AFormulaParameterCd, string AFormulaEquationCd, string AFormulaMissingTag,
                                                  DateTime ASysEvalBeganDate, int ASysEvalBeganHour,
                                                  DateTime ASysEvalEndedDate, int ASysEvalEndedHour)
@@ -1647,7 +1647,7 @@ namespace ECMPS.Checks.SystemChecks
       }
     }
 
-    public static string SYSTEM21(cCategory Category, ref bool Log)
+    public string SYSTEM21(cCategory Category, ref bool Log)
     // Required Defaults Reported for System 
     {
       string ReturnVal = "";
@@ -1743,7 +1743,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM22(cCategory Category, ref bool Log)
+    public string SYSTEM22(cCategory Category, ref bool Log)
     // Overlapping Primary NFS Systems 
     {
       string ReturnVal = "";
@@ -1805,7 +1805,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM23(cCategory Category, ref bool Log)
+    public string SYSTEM23(cCategory Category, ref bool Log)
     // Required Probe Reported for CEM System  
     {
       string ReturnVal = "";
@@ -1864,7 +1864,7 @@ namespace ECMPS.Checks.SystemChecks
       return ReturnVal;
     }
 
-    public static string SYSTEM24(cCategory Category, ref bool Log)
+    public string SYSTEM24(cCategory Category, ref bool Log)
     // Duplicate System Records
     {
       string ReturnVal = "";

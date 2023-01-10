@@ -38,7 +38,7 @@ namespace ECMPS.Checks.MonitorPlanChecks
 
         #region Monitor Plan Checks
 
-        public static string MONPLAN1(cCategory Category, ref bool Log)
+        public string MONPLAN1(cCategory Category, ref bool Log)
         // Monitoring Plan Has Affected Unit
         {
             string ReturnVal = "";
@@ -74,7 +74,7 @@ namespace ECMPS.Checks.MonitorPlanChecks
             return ReturnVal;
         }
 
-        public static string MONPLAN3(cCategory Category, ref bool Log)
+        public string MONPLAN3(cCategory Category, ref bool Log)
         // Duplicate Monitoring Plan Comment Records
         {
             string ReturnVal = "";
@@ -119,7 +119,7 @@ namespace ECMPS.Checks.MonitorPlanChecks
             return ReturnVal;
         }
 
-        public static string MONPLAN4(cCategory Category, ref bool Log)
+        public string MONPLAN4(cCategory Category, ref bool Log)
         // Monitor Plan Comment Begin Date Valid
         {
             string ReturnVal = "";
@@ -137,7 +137,7 @@ namespace ECMPS.Checks.MonitorPlanChecks
             return ReturnVal;
         }
 
-        public static string MONPLAN5(cCategory Category, ref bool Log)
+        public string MONPLAN5(cCategory Category, ref bool Log)
         // Monitor Plan Comment End Date Valid
         {
             string ReturnVal = "";
@@ -155,7 +155,7 @@ namespace ECMPS.Checks.MonitorPlanChecks
             return ReturnVal;
         }
 
-        public static string MONPLAN6(cCategory Category, ref bool Log)
+        public string MONPLAN6(cCategory Category, ref bool Log)
         // Monitor Plan Comment Dates Consistent
         {
             string ReturnVal = "";
@@ -175,7 +175,7 @@ namespace ECMPS.Checks.MonitorPlanChecks
             return ReturnVal;
         }
 
-        public static string MONPLAN7(cCategory Category, ref bool Log)
+        public string MONPLAN7(cCategory Category, ref bool Log)
         // Monitor Plan Comment Valid 
         {
             string ReturnVal = "";
@@ -195,7 +195,7 @@ namespace ECMPS.Checks.MonitorPlanChecks
             return ReturnVal;
         }
 
-        public static string MONPLAN8(cCategory Category, ref bool Log)
+        public string MONPLAN8(cCategory Category, ref bool Log)
         //Initialize Variables
         {
             string ReturnVal = "";
@@ -217,7 +217,7 @@ namespace ECMPS.Checks.MonitorPlanChecks
             return ReturnVal;
         }
 
-        public static string MONPLAN9(cCategory category, ref bool log)
+        public string MONPLAN9(cCategory category, ref bool log)
         // Monitoring Plan Has Actively Reporting Units
         {
             string returnVal = "";
@@ -302,7 +302,7 @@ namespace ECMPS.Checks.MonitorPlanChecks
             return returnVal;
         }
 
-        public static string MONPLAN10(cCategory Category, ref bool Log)
+        public string MONPLAN10(cCategory Category, ref bool Log)
         //Determine If Monitor Plan Can Be Submitted
         {
             string ReturnVal = "";
@@ -330,19 +330,19 @@ namespace ECMPS.Checks.MonitorPlanChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MONPLAN11(cCategory category, ref bool log)
+        public string MONPLAN11(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                MpParameters.MatsRequiredCheck = false;
-                MpParameters.MatsEvaluationBeginDate = null;
+                mpParams.MatsRequiredCheck = false;
+                mpParams.MatsEvaluationBeginDate = null;
 
                 DateTime? monitorMethodEarliestDate = null;
                 {
                     VwMpMonitorMethodRow mpMonitorMethodRow
-                      = MpParameters.MpMethodRecords.FindEarliestRow
+                      = mpParams.MpMethodRecords.FindEarliestRow
                         (
                           new cFilterCondition("PARAMETER_CD", "HGRE,HGRH,HCLRE,HCLRH,HFRE,HFRH,SO2RE,SO2RH", eFilterConditionStringCompare.InList)
                         );
@@ -350,14 +350,14 @@ namespace ECMPS.Checks.MonitorPlanChecks
                     if (mpMonitorMethodRow != null)
                     {
                         monitorMethodEarliestDate = mpMonitorMethodRow.BeginDate;
-                        MpParameters.MatsRequiredCheck = true;
+                        mpParams.MatsRequiredCheck = true;
                     }
                 }
 
                 DateTime? supplementalMethodEarliestDate = null;
                 {
                     MATSMethodDataParameter matsMpSupplementalComplianceMethodRow
-                      = MpParameters.MatsMpSupplementalComplianceMethodRecords.FindEarliestRow();
+                      = mpParams.MatsMpSupplementalComplianceMethodRecords.FindEarliestRow();
 
                     if (matsMpSupplementalComplianceMethodRow != null)
                     {
@@ -368,7 +368,7 @@ namespace ECMPS.Checks.MonitorPlanChecks
                 DateTime? matsRuleComplianceDate = null;
                 {
                     VwSystemParameterRow systemParameterRow
-                      = (MpParameters.SystemParameterLookupTable != null) ? MpParameters.SystemParameterLookupTable.FindRow(new cFilterCondition("SYS_PARAM_NAME", "MATS_RULE")) : null;
+                      = (mpParams.SystemParameterLookupTable != null) ? mpParams.SystemParameterLookupTable.FindRow(new cFilterCondition("SYS_PARAM_NAME", "MATS_RULE")) : null;
 
                     if (systemParameterRow != null)
                     {
@@ -380,29 +380,29 @@ namespace ECMPS.Checks.MonitorPlanChecks
                 // Set MatsEvaluationBeginDate
                 if ((supplementalMethodEarliestDate != null) && (monitorMethodEarliestDate != null))
                 {
-                    MpParameters.MatsEvaluationBeginDate = (supplementalMethodEarliestDate < monitorMethodEarliestDate) ? supplementalMethodEarliestDate : monitorMethodEarliestDate;
+                    mpParams.MatsEvaluationBeginDate = (supplementalMethodEarliestDate < monitorMethodEarliestDate) ? supplementalMethodEarliestDate : monitorMethodEarliestDate;
                 }
                 else if (supplementalMethodEarliestDate != null)
                 {
-                    MpParameters.MatsEvaluationBeginDate = supplementalMethodEarliestDate;
+                    mpParams.MatsEvaluationBeginDate = supplementalMethodEarliestDate;
                 }
                 else if (monitorMethodEarliestDate != null)
                 {
-                    MpParameters.MatsEvaluationBeginDate = monitorMethodEarliestDate;
+                    mpParams.MatsEvaluationBeginDate = monitorMethodEarliestDate;
                 }
 
 
                 // Override MatsEvaluationBeginDate if it is after the MATS compliance date.
-                if ((matsRuleComplianceDate != null) && ((MpParameters.MatsEvaluationBeginDate == null) || (MpParameters.MatsEvaluationBeginDate > matsRuleComplianceDate)))
+                if ((matsRuleComplianceDate != null) && ((mpParams.MatsEvaluationBeginDate == null) || (mpParams.MatsEvaluationBeginDate > matsRuleComplianceDate)))
                 {
-                    MpParameters.MatsEvaluationBeginDate = matsRuleComplianceDate;
+                    mpParams.MatsEvaluationBeginDate = matsRuleComplianceDate;
                 }
 
 
                 // Override MatsEvaluationBeginDate if it exists and is prior to the evaluation begin date.
-                if ((MpParameters.MatsEvaluationBeginDate != null) && (MpParameters.MatsEvaluationBeginDate < MpParameters.EvaluationBeginDate))
+                if ((mpParams.MatsEvaluationBeginDate != null) && (mpParams.MatsEvaluationBeginDate < mpParams.EvaluationBeginDate))
                 {
-                    MpParameters.MatsEvaluationBeginDate = MpParameters.EvaluationBeginDate;
+                    mpParams.MatsEvaluationBeginDate = mpParams.EvaluationBeginDate;
                 }
             }
             catch (Exception ex)
@@ -419,15 +419,15 @@ namespace ECMPS.Checks.MonitorPlanChecks
         /// <param name="category">The category object running the check.</param>
         /// <param name="log">obsolete</param>
         /// <returns>The error string if an error occurs.</returns>
-        public static string MONPLAN12(cCategory category, ref bool log)
+        public string MONPLAN12(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                MpParameters.EvaluationBeginDate = category.CheckEngine.EvalDefaultedBeganDate;
-                MpParameters.EvaluationEndDate = category.CheckEngine.EvalDefaultedEndedDate;
-                MpParameters.MaximumFutureDate = category.CheckEngine.MaximumFutureDate;
+                mpParams.EvaluationBeginDate = category.CheckEngine.EvalDefaultedBeganDate;
+                mpParams.EvaluationEndDate = category.CheckEngine.EvalDefaultedEndedDate;
+                mpParams.MaximumFutureDate = category.CheckEngine.MaximumFutureDate;
             }
             catch (Exception ex)
             {
@@ -445,19 +445,19 @@ namespace ECMPS.Checks.MonitorPlanChecks
         /// <param name="category">The category object running the check.</param>
         /// <param name="log">obsolete</param>
         /// <returns></returns>
-        public static string MONPLAN13(cCategory category, ref bool log)
+        public string MONPLAN13(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-               MpParameters.ProgramIsOzoneSeasonList = "";
+               mpParams.ProgramIsOzoneSeasonList = "";
 
-                foreach (ProgramCodeRow programCodeRow in MpParameters.ProgramCodeTable)
+                foreach (ProgramCodeRow programCodeRow in mpParams.ProgramCodeTable)
                 {
                     if (programCodeRow.OsInd == 1)
                     {
-                        MpParameters.ProgramIsOzoneSeasonList = MpParameters.ProgramIsOzoneSeasonList.ListAdd(programCodeRow.PrgCd);
+                        mpParams.ProgramIsOzoneSeasonList = mpParams.ProgramIsOzoneSeasonList.ListAdd(programCodeRow.PrgCd);
                     }
                 }
             }

@@ -62,7 +62,7 @@ namespace ECMPS.Checks.ImportChecks
         #endregion
 
 		#region IMPORT 1-10
-		public static string IMPORT1( cCategory Category, ref bool Log )
+		public string IMPORT1( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -102,7 +102,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT2( cCategory Category, ref bool Log )
+        public string IMPORT2( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -129,7 +129,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT3( cCategory Category, ref bool Log )
+        public string IMPORT3( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -155,7 +155,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT4( cCategory Category, ref bool Log )
+        public string IMPORT4( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -185,7 +185,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT5( cCategory Category, ref bool Log )
+        public string IMPORT5( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -219,7 +219,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT6( cCategory Category, ref bool Log )
+        public string IMPORT6( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -262,7 +262,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT7( cCategory Category, ref bool Log )
+        public string IMPORT7( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -299,7 +299,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT8( cCategory Category, ref bool Log )
+        public string IMPORT8( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -338,7 +338,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT9( cCategory Category, ref bool Log )
+        public string IMPORT9( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -379,7 +379,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT10( cCategory Category, ref bool Log )
+        public string IMPORT10( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
             string sExtraneousSpanFields = "";
@@ -436,7 +436,7 @@ namespace ECMPS.Checks.ImportChecks
 		#endregion
 
 		#region IMPORT 11-20
-		public static string IMPORT11( cCategory Category, ref bool Log )
+		public string IMPORT11( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -458,7 +458,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT12( cCategory Category, ref bool Log )
+        public string IMPORT12( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -488,7 +488,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT13( cCategory Category, ref bool Log )
+        public string IMPORT13( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -540,7 +540,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT14( cCategory Category, ref bool Log )
+        public string IMPORT14( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -556,7 +556,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT15( cCategory Category, ref bool Log )
+        public string IMPORT15( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -572,7 +572,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT16( cCategory Category, ref bool Log )
+        public string IMPORT16( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -770,7 +770,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT17( cCategory Category, ref bool Log )
+        public string IMPORT17( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -849,7 +849,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT18( cCategory Category, ref bool Log )
+        public string IMPORT18( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -979,7 +979,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT19( cCategory Category, ref bool Log )
+        public string IMPORT19( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1021,7 +1021,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT20( cCategory Category, ref bool Log )
+        public string IMPORT20( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1053,7 +1053,7 @@ namespace ECMPS.Checks.ImportChecks
 		#endregion
 
 		#region IMPORT 21-30
-		public static string IMPORT21( cCategory Category, ref bool Log )
+		public string IMPORT21( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1144,7 +1144,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT22( cCategory Category, ref bool Log )
+        public string IMPORT22( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1239,7 +1239,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT23( cCategory Category, ref bool Log )
+        public string IMPORT23( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1292,7 +1292,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT24( cCategory Category, ref bool Log )
+        public string IMPORT24( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1320,7 +1320,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT25( cCategory Category, ref bool Log )
+        public string IMPORT25( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1356,7 +1356,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT26( cCategory Category, ref bool Log )
+        public string IMPORT26( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1372,7 +1372,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT27( cCategory Category, ref bool Log )
+        public string IMPORT27( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1388,7 +1388,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT28( cCategory Category, ref bool Log )
+        public string IMPORT28( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1404,7 +1404,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT29( cCategory Category, ref bool Log )
+        public string IMPORT29( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1431,7 +1431,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT30( cCategory Category, ref bool Log )
+        public string IMPORT30( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1492,7 +1492,7 @@ namespace ECMPS.Checks.ImportChecks
 		#endregion
 
 		#region IMPORT 31-40
-		public static string IMPORT31( cCategory Category, ref bool Log )
+		public string IMPORT31( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1531,7 +1531,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT32( cCategory Category, ref bool Log )
+        public string IMPORT32( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1574,7 +1574,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT33( cCategory Category, ref bool Log )
+        public string IMPORT33( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1619,7 +1619,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT34( cCategory Category, ref bool Log )
+        public string IMPORT34( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1638,7 +1638,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT35( cCategory Category, ref bool Log )
+        public string IMPORT35( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1715,7 +1715,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT36( cCategory Category, ref bool Log )
+        public string IMPORT36( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1758,7 +1758,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-        public static string IMPORT37( cCategory Category, ref bool Log )
+        public string IMPORT37( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 
@@ -1780,7 +1780,7 @@ namespace ECMPS.Checks.ImportChecks
             return ReturnVal;
         }
 
-		public static string IMPORT38(cCategory Category, ref bool Log)
+		public string IMPORT38(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -1808,7 +1808,7 @@ namespace ECMPS.Checks.ImportChecks
 		
 		#endregion
 
-		private static void MissingSystemsCheck( cCategory Category, string sMissingSystemsParameterName, bool bLTFFCheck )
+		private void MissingSystemsCheck( cCategory Category, string sMissingSystemsParameterName, bool bLTFFCheck )
         {
             string sMissingSystems = null, sInvalidLTFFSystems = null;
             string sSysID = "", sORISCode = "", sUnitStack = "", sListItem = "";
@@ -1888,7 +1888,7 @@ namespace ECMPS.Checks.ImportChecks
             }
         }
 
-        private static void MissingComponentsCheck( cCategory Category, string sMissingComponentsParameterName )
+        private void MissingComponentsCheck( cCategory Category, string sMissingComponentsParameterName )
         {
             string sMissingComponents = null;
             string sCompID = "", sORISCode = "", sUnitStack = "", sListItem = "";
@@ -1930,7 +1930,7 @@ namespace ECMPS.Checks.ImportChecks
             }
         }
 
-        private static void MissingFormulasCheck( cCategory Category, string sMissingFormulasParameterName )
+        private void MissingFormulasCheck( cCategory Category, string sMissingFormulasParameterName )
         {
             string sMissingFormulas = null;
             string sFormulaID = "", sORISCode = "", sUnitStack = "", sListItem;
@@ -1972,7 +1972,7 @@ namespace ECMPS.Checks.ImportChecks
             }
         }
 
-        public static string _template( cCategory Category, ref bool Log )
+        public string _template( cCategory Category, ref bool Log )
         {
             string ReturnVal = "";
 

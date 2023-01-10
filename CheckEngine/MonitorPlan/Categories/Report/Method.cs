@@ -38,12 +38,14 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "MONITOR_METHOD";
     }
 
+    public cMethod(){}
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cMethod GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cMethod GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cMethod Category;
       string ErrorMessage = "";

@@ -931,7 +931,7 @@ namespace ECMPS.Checks.MethodChecks
 
 		private enum eMethod12SearchType { AllRecords, AtLeastOneRecord }
 
-		private static bool Method12_Helper(cCategory category, DataView unitStackConfigurationRecords, DataView facilityMethodRecords,
+		private bool Method12_Helper(cCategory category, DataView unitStackConfigurationRecords, DataView facilityMethodRecords,
 											string parameterCd, string methodCdCondition, eMethod12SearchType searchType,
 											DateTime evalBeginDate, int evalBeginHour, DateTime evalEndDate, int evalEndHour)
 		{
@@ -2114,8 +2114,8 @@ namespace ECMPS.Checks.MethodChecks
 								dvMonSysRecords.RowFilter = sMonSysFilter;
 							}
                             
-                            MpParameters.RequiredSystemForMethod = RequiredSystemForMethod;
-                            MpParameters.IncompleteSystemForMethod = IncompleteSystemForMethod;
+                            mpParams.RequiredSystemForMethod = RequiredSystemForMethod;
+                            mpParams.IncompleteSystemForMethod = IncompleteSystemForMethod;
 
                             if (RequiredSystemForMethod != "" && IncompleteSystemForMethod == "")
 								Category.CheckCatalogResult = "C";
@@ -2214,27 +2214,27 @@ namespace ECMPS.Checks.MethodChecks
 
 			try
 			{
-				string MethodCd = MpParameters.CurrentMethod.MethodCd;
-				string ParameterCd = MpParameters.CurrentMethod.ParameterCd;
+				string MethodCd = mpParams.CurrentMethod.MethodCd;
+				string ParameterCd = mpParams.CurrentMethod.ParameterCd;
 
-				DateTime? EvalEndDateHour = MpParameters.MethodEvaluationEndDate.AddHours(MpParameters.MethodEvaluationEndHour);
-				DateTime? EvalBeginDateHour = MpParameters.MethodEvaluationBeginDate.AddHours(MpParameters.MethodEvaluationBeginHour);
+				DateTime? EvalEndDateHour = mpParams.MethodEvaluationEndDate.AddHours(mpParams.MethodEvaluationEndHour);
+				DateTime? EvalBeginDateHour = mpParams.MethodEvaluationBeginDate.AddHours(mpParams.MethodEvaluationBeginHour);
 
 				//DataView dvMonSysRecords = MpReportParameters.MonitorSystemRecords.SourceView;
 
-				if (MpParameters.MethodParameterValid.Default(false) && MpParameters.MethodMethodCodeValid.Default(false) && MpParameters.MethodDatesAndHoursConsistent.Default(false))
+				if (mpParams.MethodParameterValid.Default(false) && mpParams.MethodMethodCodeValid.Default(false) && mpParams.MethodDatesAndHoursConsistent.Default(false))
 				{
 					//Find formula in cross check table
 					//Using FindRows b/c FindRow does not support the multi-dimensional array FilterCondition
 					//should only find 1 row
-					DataView ParameterMethodToFormulaView = cRowFilter.FindRows(MpParameters.ParameterAndMethodAndLocationToFormulaCrosscheck.SourceView,
+					DataView ParameterMethodToFormulaView = cRowFilter.FindRows(mpParams.ParameterAndMethodAndLocationToFormulaCrosscheck.SourceView,
 						new cFilterCondition[][] 
                         {new cFilterCondition[]
                             {
                             // Array of defined values
                             new cFilterCondition("Parameter_cd", ParameterCd),
                             new cFilterCondition("Method_cd", MethodCd),
-                            new cFilterCondition("Location_type_list", MpParameters.LocationType, eFilterConditionStringCompare.ListHas)
+                            new cFilterCondition("Location_type_list", mpParams.LocationType, eFilterConditionStringCompare.ListHas)
                             },
                         new cFilterCondition[]
                          {
@@ -2249,7 +2249,7 @@ namespace ECMPS.Checks.MethodChecks
 
 						if (drParameterMethodToFormula["System_type_list"].AsString() == null)
 						{ //use Monitor Formula
-							DataView MonitorFormulaView = cRowFilter.FindRows(MpParameters.FormulaRecords.SourceView,
+							DataView MonitorFormulaView = cRowFilter.FindRows(mpParams.FormulaRecords.SourceView,
 							  new cFilterCondition[]
                                     {
                                     new cFilterCondition("Parameter_cd", ParameterCd),
@@ -2260,15 +2260,15 @@ namespace ECMPS.Checks.MethodChecks
 							if (MonitorFormulaView.Count <= 0)
 							{
 								//set missing
-								MpParameters.MissingFormulaForMethod = ParameterCd + " " + drParameterMethodToFormula["Formula_list"].AsString();
+								mpParams.MissingFormulaForMethod = ParameterCd + " " + drParameterMethodToFormula["Formula_list"].AsString();
 								Category.CheckCatalogResult = drParameterMethodToFormula["Not_found_result"].AsString();
 							}
 							else
 							{
-								if (!CheckForHourRangeCovered(Category, MonitorFormulaView, MpParameters.MethodEvaluationBeginDate.Default(DateTime.MinValue), MpParameters.MethodEvaluationBeginHour.Default(0), MpParameters.MethodEvaluationEndDate.Default(DateTime.MaxValue), MpParameters.MethodEvaluationEndHour.Default(23)))
+								if (!CheckForHourRangeCovered(Category, MonitorFormulaView, mpParams.MethodEvaluationBeginDate.Default(DateTime.MinValue), mpParams.MethodEvaluationBeginHour.Default(0), mpParams.MethodEvaluationEndDate.Default(DateTime.MaxValue), mpParams.MethodEvaluationEndHour.Default(23)))
 								{
 									//set missing
-									MpParameters.MissingFormulaForMethod = ParameterCd + " " + drParameterMethodToFormula["Formula_list"].AsString();
+									mpParams.MissingFormulaForMethod = ParameterCd + " " + drParameterMethodToFormula["Formula_list"].AsString();
 									Category.CheckCatalogResult = "B";
 								}
 							}
@@ -2276,7 +2276,7 @@ namespace ECMPS.Checks.MethodChecks
 
 						else
 						{
-							DateTime EcmpsMpBeginDate = MpParameters.EcmpsMpBeginDate.Default(DateTime.MinValue);
+							DateTime EcmpsMpBeginDate = mpParams.EcmpsMpBeginDate.Default(DateTime.MinValue);
 
 							DateTime? FormulaRangeBeginDateHour = null;
 
@@ -2292,7 +2292,7 @@ namespace ECMPS.Checks.MethodChecks
 								FormulaRangeBeginDateHour = EvalBeginDateHour;
 							}
 
-							DataView MonitorSystemView = cRowFilter.FindRows(MpParameters.MonitorSystemRecords.SourceView,
+							DataView MonitorSystemView = cRowFilter.FindRows(mpParams.MonitorSystemRecords.SourceView,
 								new cFilterCondition[]
                                     {
                                          new cFilterCondition("Sys_type_cd",  drParameterMethodToFormula["System_type_list"].AsString(), eFilterConditionStringCompare.InList),
@@ -2308,7 +2308,7 @@ namespace ECMPS.Checks.MethodChecks
 								cActiveRowHourRanges activeRanges
 								  = cActiveRowHourRanges.Create(MonitorSystemView,
 																FormulaRangeBeginDateHour,
-																MpParameters.MethodEvaluationEndDate.Default(DateTime.MaxValue),
+																mpParams.MethodEvaluationEndDate.Default(DateTime.MaxValue),
 																ref errorMessage);
 
 								bool overlapExists = false;
@@ -2331,7 +2331,7 @@ namespace ECMPS.Checks.MethodChecks
 									DataView SystemMonitorFormulaView;
 									{
 										SystemMonitorFormulaView
-										  = cRowFilter.FindActiveRows(MpParameters.FormulaRecords.SourceView,
+										  = cRowFilter.FindActiveRows(mpParams.FormulaRecords.SourceView,
 																	  FormulaRangeBeginDateHour.Default(DateTime.MinValue),
 																	  EvalEndDateHour.Default(DateTime.MaxValue),
 																	  new cFilterCondition[] 
@@ -2341,7 +2341,7 @@ namespace ECMPS.Checks.MethodChecks
 										if (SystemMonitorFormulaView.Count == 0)
 										{
 											//missing
-											MpParameters.MissingFormulaForMethod = ParameterCd + " " + drParameterMethodToFormula["Formula_list"].AsString();
+											mpParams.MissingFormulaForMethod = ParameterCd + " " + drParameterMethodToFormula["Formula_list"].AsString();
 											Category.CheckCatalogResult = drParameterMethodToFormula["Not_found_result"].AsString();
 
 										}
@@ -2358,7 +2358,7 @@ namespace ECMPS.Checks.MethodChecks
 																			  ))
 												{
 													//missing
-													MpParameters.MissingFormulaForMethod = ParameterCd + " " + drParameterMethodToFormula["Formula_list"].AsString();
+													mpParams.MissingFormulaForMethod = ParameterCd + " " + drParameterMethodToFormula["Formula_list"].AsString();
 													Category.CheckCatalogResult = "B";
 												}
 											}
@@ -3985,7 +3985,7 @@ namespace ECMPS.Checks.MethodChecks
 														new cFilterCondition[] 
                                         { 
                                         new cFilterCondition("PARAMETER_CD", "NOX"),
-                                        new cFilterCondition("PRG_CD", MpParameters.ProgramIsOzoneSeasonList, eFilterConditionStringCompare.InList),
+                                        new cFilterCondition("PRG_CD", mpParams.ProgramIsOzoneSeasonList, eFilterConditionStringCompare.InList),
                                         new cFilterCondition("REQUIRED_IND", 1, eFilterDataType.Integer),
                                         new cFilterCondition("CLASS", "A,B", eFilterConditionStringCompare.InList),
                                         //UMCB Date check for less than Evaluation End and not null
@@ -4357,14 +4357,14 @@ namespace ECMPS.Checks.MethodChecks
 			try
 			{
         /* Initialize Output Parameers */
-        MpParameters.OverlappingParameterList = null;
+        mpParams.OverlappingParameterList = null;
 
         /* Perform check if dates are consistent */
-        if (MpParameters.MethodDatesAndHoursConsistent.Default(false))
+        if (mpParams.MethodDatesAndHoursConsistent.Default(false))
         {
           /* Find Equivalent Parameter Codes for Current Parameter */
           CheckDataView<MethodParameterEquivalentCrosscheckRow> crosscheckView 
-            = MpParameters.MethodParameterEquivalentCrosscheck.FindRows(new cFilterCondition("ParameterCode", MpParameters.CurrentMethod.ParameterCd));
+            = mpParams.MethodParameterEquivalentCrosscheck.FindRows(new cFilterCondition("ParameterCode", mpParams.CurrentMethod.ParameterCd));
 
           /* Perform check if equivalent parameters exist */
           if (crosscheckView.Count > 0)
@@ -4376,14 +4376,14 @@ namespace ECMPS.Checks.MethodChecks
 
               string equivalentCd = crosscheckRow.EquivalentCode;
 
-              DateTime methodEvaluationBeginDateHour = MpParameters.MethodEvaluationBeginDate.Value.AddHours(MpParameters.MethodEvaluationBeginHour.Value);
-              DateTime methodEvaluationEndDateHour = MpParameters.MethodEvaluationEndDate.Value.AddHours(MpParameters.MethodEvaluationEndHour.Value);
+              DateTime methodEvaluationBeginDateHour = mpParams.MethodEvaluationBeginDate.Value.AddHours(mpParams.MethodEvaluationBeginHour.Value);
+              DateTime methodEvaluationEndDateHour = mpParams.MethodEvaluationEndDate.Value.AddHours(mpParams.MethodEvaluationEndHour.Value);
 
               CheckDataView<VwMonitorMethodRow> equivalentMethodView
-                = MpParameters.MethodRecords.FindRows
+                = mpParams.MethodRecords.FindRows
                   (
                     new cFilterCondition("PARAMETER_CD", equivalentCd),
-                    new cFilterCondition("BEGIN_DATEHOUR", MpParameters.CurrentMethod.BeginDatehour, eFilterDataType.DateBegan, eFilterConditionRelativeCompare.GreaterThanOrEqual),
+                    new cFilterCondition("BEGIN_DATEHOUR", mpParams.CurrentMethod.BeginDatehour, eFilterDataType.DateBegan, eFilterConditionRelativeCompare.GreaterThanOrEqual),
                     new cFilterCondition("BEGIN_DATEHOUR", methodEvaluationEndDateHour, eFilterDataType.DateBegan, eFilterConditionRelativeCompare.LessThanOrEqual),
                     new cFilterCondition("END_DATEHOUR", methodEvaluationBeginDateHour, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.GreaterThanOrEqual) // Handles null, on or after
                   );
@@ -4391,14 +4391,14 @@ namespace ECMPS.Checks.MethodChecks
               /* Append the equivalent parameter code to OverlappingParameterList if at least one method was found */
               if (equivalentMethodView.Count > 0)
               {
-                MpParameters.OverlappingParameterList = MpParameters.OverlappingParameterList.ListAdd(equivalentCd);
+                mpParams.OverlappingParameterList = mpParams.OverlappingParameterList.ListAdd(equivalentCd);
               }
             }
 
             /* Return result if overlapping parameters where found */
-            if (MpParameters.OverlappingParameterList != null)
+            if (mpParams.OverlappingParameterList != null)
             {
-              MpParameters.OverlappingParameterList = MpParameters.OverlappingParameterList.FormatList();
+              mpParams.OverlappingParameterList = mpParams.OverlappingParameterList.FormatList();
               category.CheckCatalogResult = "A";
             }
           }
@@ -4424,38 +4424,38 @@ namespace ECMPS.Checks.MethodChecks
 
             try
             {
-                MpParameters.FuelsWithMissingDefaults = "";
-                MpParameters.FuelsWithIncompleteDefaults = "";
+                mpParams.FuelsWithMissingDefaults = "";
+                mpParams.FuelsWithIncompleteDefaults = "";
 
-                if ((MpParameters.MethodDatesAndHoursConsistent == true) && (MpParameters.CurrentMethod.SubDataCd.InList("FSP75,FSP75C")))
+                if ((mpParams.MethodDatesAndHoursConsistent == true) && (mpParams.CurrentMethod.SubDataCd.InList("FSP75,FSP75C")))
                 {
                     /* Get primary and secondary fuels */
                     CheckDataView<VwLocationFuelRow> locationFuelRecords 
-                        = MpParameters.LocationFuelRecords.FindRows(new cFilterCondition("INDICATOR_CD", "P,S", eFilterConditionStringCompare.InList),
-                                                                    new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, MpParameters.MethodEvaluationEndDate.Value, eNullDateDefault.Min),
-                                                                    new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, MpParameters.MethodEvaluationBeginDate.Value, eNullDateDefault.Max));
+                        = mpParams.LocationFuelRecords.FindRows(new cFilterCondition("INDICATOR_CD", "P,S", eFilterConditionStringCompare.InList),
+                                                                    new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, mpParams.MethodEvaluationEndDate.Value, eNullDateDefault.Min),
+                                                                    new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, mpParams.MethodEvaluationBeginDate.Value, eNullDateDefault.Max));
 
                     /* Process each primary and secondary fueld */
                     foreach (VwLocationFuelRow locationFuelRecord in locationFuelRecords)
                     {
                         /* Locate ECMPS fuel rows using the unit fuel */
-                        CheckDataView<FuelCodeRow> fuelCodeLookupTable = MpParameters.FuelCodeLookupTable.FindRows(new cFilterCondition("UNIT_FUEL_CD", locationFuelRecord.FuelCd));
+                        CheckDataView<FuelCodeRow> fuelCodeLookupTable = mpParams.FuelCodeLookupTable.FindRows(new cFilterCondition("UNIT_FUEL_CD", locationFuelRecord.FuelCd));
 
                         if (fuelCodeLookupTable.Count == 0)
                         {
-                            MpParameters.FuelsWithMissingDefaults = MpParameters.FuelsWithMissingDefaults.ListAdd(locationFuelRecord.FuelCd);
+                            mpParams.FuelsWithMissingDefaults = mpParams.FuelsWithMissingDefaults.ListAdd(locationFuelRecord.FuelCd);
                         }
                         else
                         {
                             MethodParameterToMaximumDefaultParameterToComponentTypeRow crosscheckRecord
-                                = MpParameters.MethodParameterToMaximumDefaultParameterLookupTable.FindRow(new cFilterCondition("MethodParameterCode", MpParameters.CurrentMethod.ParameterCd),
+                                = mpParams.MethodParameterToMaximumDefaultParameterLookupTable.FindRow(new cFilterCondition("MethodParameterCode", mpParams.CurrentMethod.ParameterCd),
                                                                                                            new cFilterCondition("ComponentTypeCode", null));
 
                             if (crosscheckRecord != null)
                             {
                                 DateTime rangeBeginDateHour;
                                 {
-                                    rangeBeginDateHour = MpParameters.MethodEvaluationBeginDate.Value.AddHours(MpParameters.MethodEvaluationBeginHour.Value);
+                                    rangeBeginDateHour = mpParams.MethodEvaluationBeginDate.Value.AddHours(mpParams.MethodEvaluationBeginHour.Value);
 
                                     if (locationFuelRecord.BeginDate.Default(DateTime.MinValue).AddHours(23) > rangeBeginDateHour)
                                         rangeBeginDateHour = locationFuelRecord.BeginDate.Default(DateTime.MinValue).AddHours(23);
@@ -4463,7 +4463,7 @@ namespace ECMPS.Checks.MethodChecks
 
                                 DateTime rangeEndDateHour;
                                 {
-                                    rangeEndDateHour = MpParameters.MethodEvaluationEndDate.Value.AddHours(MpParameters.MethodEvaluationEndHour.Value);
+                                    rangeEndDateHour = mpParams.MethodEvaluationEndDate.Value.AddHours(mpParams.MethodEvaluationEndHour.Value);
 
                                     if (locationFuelRecord.EndDate.Default(DateTime.MaxValue) < rangeEndDateHour)
                                         rangeEndDateHour = locationFuelRecord.EndDate.Default(DateTime.MaxValue);
@@ -4473,7 +4473,7 @@ namespace ECMPS.Checks.MethodChecks
 
                                 /* Locate default records  */
                                 CheckDataView<VwMonitorDefaultRow> defaultRecords
-                                    = MpParameters.DefaultRecords.FindRows(new cFilterCondition("DEFAULT_PURPOSE_CD", "MD"),
+                                    = mpParams.DefaultRecords.FindRows(new cFilterCondition("DEFAULT_PURPOSE_CD", "MD"),
                                                                            new cFilterCondition("PARAMETER_CD", crosscheckRecord.DefaultParameterCode, eFilterConditionStringCompare.InList),
                                                                            new cFilterCondition("FUEL_CD", defaultFuelList, eFilterConditionStringCompare.InList),
                                                                            new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual, rangeEndDateHour, eNullDateDefault.Min),
@@ -4481,34 +4481,34 @@ namespace ECMPS.Checks.MethodChecks
 
                                 if (defaultRecords.Count == 0)
                                 {
-                                    MpParameters.FuelsWithMissingDefaults = MpParameters.FuelsWithMissingDefaults.ListAdd(locationFuelRecord.FuelCd);
+                                    mpParams.FuelsWithMissingDefaults = mpParams.FuelsWithMissingDefaults.ListAdd(locationFuelRecord.FuelCd);
                                 }
                                 else
                                 {
                                     if (!CheckForHourRangeCovered(category, defaultRecords.SourceView, rangeBeginDateHour, rangeEndDateHour))
                                     {
-                                        MpParameters.FuelsWithIncompleteDefaults = MpParameters.FuelsWithIncompleteDefaults.ListAdd(locationFuelRecord.FuelCd);
+                                        mpParams.FuelsWithIncompleteDefaults = mpParams.FuelsWithIncompleteDefaults.ListAdd(locationFuelRecord.FuelCd);
                                     }
                                 }
                             }
                         }
                     }
 
-                    if ((MpParameters.FuelsWithMissingDefaults != "") && (MpParameters.FuelsWithIncompleteDefaults != ""))
+                    if ((mpParams.FuelsWithMissingDefaults != "") && (mpParams.FuelsWithIncompleteDefaults != ""))
                     {
                         category.CheckCatalogResult = "A";
                     }
-                    else if (MpParameters.FuelsWithMissingDefaults != "")
+                    else if (mpParams.FuelsWithMissingDefaults != "")
                     {
                         category.CheckCatalogResult = "B";
                     }
-                    else if (MpParameters.FuelsWithIncompleteDefaults != "")
+                    else if (mpParams.FuelsWithIncompleteDefaults != "")
                     {
                         category.CheckCatalogResult = "C";
                     }
 
-                    MpParameters.FuelsWithMissingDefaults = MpParameters.FuelsWithMissingDefaults.FormatList();
-                    MpParameters.FuelsWithIncompleteDefaults = MpParameters.FuelsWithIncompleteDefaults.FormatList();
+                    mpParams.FuelsWithMissingDefaults = mpParams.FuelsWithMissingDefaults.FormatList();
+                    mpParams.FuelsWithIncompleteDefaults = mpParams.FuelsWithIncompleteDefaults.FormatList();
                 }
             }
             catch (Exception ex)

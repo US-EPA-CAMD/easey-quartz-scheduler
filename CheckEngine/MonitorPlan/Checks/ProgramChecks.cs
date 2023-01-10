@@ -53,8 +53,8 @@ namespace ECMPS.Checks.ProgramChecks
 
             try
             {
-                DateTime evaluationBeganDate = MpParameters.EvaluationBeginDate.Value;
-                DateTime evaluationEndedDate = MpParameters.EvaluationEndDate.Value;
+                DateTime evaluationBeganDate = mpParams.EvaluationBeginDate.Value;
+                DateTime evaluationEndedDate = mpParams.EvaluationEndDate.Value;
 
                 DataRowView currentProgram = (DataRowView)category.GetCheckParameter("Current_Program").ParameterValue;
                 DataRowView currentMonitoringPlanConfiguration = category.GetCheckParameter("Current_Monitoring_Plan_Configuration").AsDataRowView();
@@ -67,34 +67,34 @@ namespace ECMPS.Checks.ProgramChecks
 
                 if (umcbDate.HasValue)
                 {
-                    MpParameters.CurrentProgramActive = true;
+                    mpParams.CurrentProgramActive = true;
 
                     if ((umcbDate.Value > category.CheckEngine.NowDate) ||
                         (endDate.Default(DateTime.MaxValue) < evaluationBeganDate) ||
                         (endRptPeriodId.HasValue &&
                           (cReportingPeriod.GetReportingPeriod(endRptPeriodId.Value).EndedDate < umcbDate.Value)))
                     {
-                        MpParameters.CurrentProgramActive = false;
+                        mpParams.CurrentProgramActive = false;
                     }
 
                     /* Special logic for MATS odd opt in */
-                    else if ((MpParameters.CurrentProgram.PrgCd == "MATS") && (MpParameters.MatsEvaluationBeginDate != null))
+                    else if ((mpParams.CurrentProgram.PrgCd == "MATS") && (mpParams.MatsEvaluationBeginDate != null))
                     {
                         /* Inactive if program end date is on or before MATS evaluation begin date */
-                        if (endDate.HasValue && (endDate <= MpParameters.MatsEvaluationBeginDate))
+                        if (endDate.HasValue && (endDate <= mpParams.MatsEvaluationBeginDate))
                         {
-                            MpParameters.CurrentProgramActive = false;
+                            mpParams.CurrentProgramActive = false;
                         }
 
                         /* Inactive if evaluation end date is on or before MATS evaluation begin date */
-                        else if (MpParameters.EvaluationEndDate <= MpParameters.MatsEvaluationBeginDate)
+                        else if (mpParams.EvaluationEndDate <= mpParams.MatsEvaluationBeginDate)
                         {
-                            MpParameters.CurrentProgramActive = false;
+                            mpParams.CurrentProgramActive = false;
                         }
                     }
 
 
-                    if (MpParameters.CurrentProgramActive == true)
+                    if (mpParams.CurrentProgramActive == true)
                     {
                         // Set Program Evaluation Begin Date
                         if (erbDate.HasValue && (erbDate.Value > evaluationBeganDate))
@@ -110,9 +110,9 @@ namespace ECMPS.Checks.ProgramChecks
                             category.SetCheckParameter("Program_Evaluation_Begin_Date", evaluationBeganDate, eParameterDataType.Date);
                         }
 
-                        if (MpParameters.CurrentProgram.PrgCd == "MATS" && MpParameters.MatsRequiredCheck == true && MpParameters.MatsEvaluationBeginDate > MpParameters.ProgramEvaluationBeginDate)
+                        if (mpParams.CurrentProgram.PrgCd == "MATS" && mpParams.MatsRequiredCheck == true && mpParams.MatsEvaluationBeginDate > mpParams.ProgramEvaluationBeginDate)
                         {
-                            MpParameters.ProgramEvaluationBeginDate = MpParameters.MatsEvaluationBeginDate;
+                            mpParams.ProgramEvaluationBeginDate = mpParams.MatsEvaluationBeginDate;
                         }
 
                         // Set Program Evaluation End Date
@@ -170,70 +170,70 @@ namespace ECMPS.Checks.ProgramChecks
 
             try
             {
-                MpParameters.CurrentProgramParameterActive = true;
-                MpParameters.ProgramParameterEvaluationBeginDate = null;
-                MpParameters.ProgramParameterEvaluationEndDate = null;
+                mpParams.CurrentProgramParameterActive = true;
+                mpParams.ProgramParameterEvaluationBeginDate = null;
+                mpParams.ProgramParameterEvaluationEndDate = null;
 
                 /* Inactive if current program is inactive */
-                if (MpParameters.CurrentProgramActive.Default(false) == false)
+                if (mpParams.CurrentProgramActive.Default(false) == false)
                 {
-                    MpParameters.CurrentProgramParameterActive = false;
+                    mpParams.CurrentProgramParameterActive = false;
                 }
 
                 /* Inactive if parameter begin date is on or after program evaluation end date */
-                else if (MpParameters.CurrentProgramParameter.ParamBeginDate >= MpParameters.ProgramEvaluationEndDate)
+                else if (mpParams.CurrentProgramParameter.ParamBeginDate >= mpParams.ProgramEvaluationEndDate)
                 {
-                    MpParameters.CurrentProgramParameterActive = false;
+                    mpParams.CurrentProgramParameterActive = false;
                 }
 
                 /* Inactive if parameter end date exists and is on or before the program evaluation begin date */
-                else if ((MpParameters.CurrentProgramParameter.ParamEndDate != null) && (MpParameters.CurrentProgramParameter.ParamEndDate <= MpParameters.ProgramEvaluationBeginDate))
+                else if ((mpParams.CurrentProgramParameter.ParamEndDate != null) && (mpParams.CurrentProgramParameter.ParamEndDate <= mpParams.ProgramEvaluationBeginDate))
                 {
-                    MpParameters.CurrentProgramParameterActive = false;
+                    mpParams.CurrentProgramParameterActive = false;
                 }
 
                 /* Special logic for MATS odd opt in */
-                else if ((MpParameters.CurrentProgramParameter.PrgCd == "MATS") && (MpParameters.MatsEvaluationBeginDate != null))
+                else if ((mpParams.CurrentProgramParameter.PrgCd == "MATS") && (mpParams.MatsEvaluationBeginDate != null))
                 {
                     /* Inactive if program evalution end date is on or before MATS evaluation begin date */
-                    if (MpParameters.ProgramEvaluationEndDate <= MpParameters.MatsEvaluationBeginDate)
+                    if (mpParams.ProgramEvaluationEndDate <= mpParams.MatsEvaluationBeginDate)
                     {
-                        MpParameters.CurrentProgramParameterActive = false;
+                        mpParams.CurrentProgramParameterActive = false;
                     }
 
                     /* Inactive if parameter end date exists and is on or before MATS evaluation begin date */
-                    else if ((MpParameters.CurrentProgramParameter.ParamEndDate != null) && (MpParameters.CurrentProgramParameter.ParamEndDate <= MpParameters.MatsEvaluationBeginDate))
+                    else if ((mpParams.CurrentProgramParameter.ParamEndDate != null) && (mpParams.CurrentProgramParameter.ParamEndDate <= mpParams.MatsEvaluationBeginDate))
                     {
-                        MpParameters.CurrentProgramParameterActive = false;
+                        mpParams.CurrentProgramParameterActive = false;
                     }
                 }
 
                 /* Set Current Program Parameter Begin and End Dates if Current Program Parameter is active */
-                if (MpParameters.CurrentProgramParameterActive.Default(false) == true)
+                if (mpParams.CurrentProgramParameterActive.Default(false) == true)
                 {
                     // Set ProgramParameterEvaluationBeginDate
                     {
-                        if (MpParameters.ProgramEvaluationBeginDate > MpParameters.CurrentProgramParameter.ParamBeginDate)
-                            MpParameters.ProgramParameterEvaluationBeginDate = MpParameters.ProgramEvaluationBeginDate;
+                        if (mpParams.ProgramEvaluationBeginDate > mpParams.CurrentProgramParameter.ParamBeginDate)
+                            mpParams.ProgramParameterEvaluationBeginDate = mpParams.ProgramEvaluationBeginDate;
                         else
-                            MpParameters.ProgramParameterEvaluationBeginDate = MpParameters.CurrentProgramParameter.ParamBeginDate;
+                            mpParams.ProgramParameterEvaluationBeginDate = mpParams.CurrentProgramParameter.ParamBeginDate;
 
-                        if ((MpParameters.CurrentProgramParameter.PrgCd == "MATS") && (MpParameters.MatsEvaluationBeginDate != null) &&
-                            (MpParameters.MatsEvaluationBeginDate > MpParameters.ProgramParameterEvaluationBeginDate))
-                            MpParameters.ProgramParameterEvaluationBeginDate = MpParameters.MatsEvaluationBeginDate;
+                        if ((mpParams.CurrentProgramParameter.PrgCd == "MATS") && (mpParams.MatsEvaluationBeginDate != null) &&
+                            (mpParams.MatsEvaluationBeginDate > mpParams.ProgramParameterEvaluationBeginDate))
+                            mpParams.ProgramParameterEvaluationBeginDate = mpParams.MatsEvaluationBeginDate;
                     }
 
                     // Set ProgramParameterEvaluationEndDate
                     {
-                        if ((MpParameters.CurrentProgramParameter.ParamEndDate == null) || (MpParameters.ProgramEvaluationEndDate < MpParameters.CurrentProgramParameter.ParamEndDate))
-                            MpParameters.ProgramParameterEvaluationEndDate = MpParameters.ProgramEvaluationEndDate;
+                        if ((mpParams.CurrentProgramParameter.ParamEndDate == null) || (mpParams.ProgramEvaluationEndDate < mpParams.CurrentProgramParameter.ParamEndDate))
+                            mpParams.ProgramParameterEvaluationEndDate = mpParams.ProgramEvaluationEndDate;
                         else
-                            MpParameters.ProgramParameterEvaluationEndDate = MpParameters.CurrentProgramParameter.ParamEndDate;
+                            mpParams.ProgramParameterEvaluationEndDate = mpParams.CurrentProgramParameter.ParamEndDate;
                     }
                 }
                 else
                 {
-                    MpParameters.CurrentProgramParameterActive = false;
+                    mpParams.CurrentProgramParameterActive = false;
                 }
             }
             catch (Exception ex)
@@ -258,12 +258,12 @@ namespace ECMPS.Checks.ProgramChecks
             try
             {
                 //logic block
-                if (MpParameters.CurrentProgramParameter.RequiredInd.AsBoolean(false)
-                    && (MpParameters.CurrentProgramParameter.PrgCd != "MATS")
-                    && (MpParameters.CurrentProgramParameter.PrgCd != "NSPS4T")
-                    && MpParameters.CurrentProgramParameter.Class.NotInList("N,NA,NB"))
+                if (mpParams.CurrentProgramParameter.RequiredInd.AsBoolean(false)
+                    && (mpParams.CurrentProgramParameter.PrgCd != "MATS")
+                    && (mpParams.CurrentProgramParameter.PrgCd != "NSPS4T")
+                    && mpParams.CurrentProgramParameter.Class.NotInList("N,NA,NB"))
                 {
-                    if (MpParameters.CurrentProgramParameterActive.Default(false))
+                    if (mpParams.CurrentProgramParameterActive.Default(false))
                     {
                         eTimespanCoverageState resultType = eTimespanCoverageState.None;
                         string methodParameterList;
@@ -273,37 +273,37 @@ namespace ECMPS.Checks.ProgramChecks
                         {
                             string programMethodParameterDescription;
 
-                            Program11_GetProgramParameterToMethodParameterValues(MpParameters.CurrentProgramParameter.ParameterCd,
+                            Program11_GetProgramParameterToMethodParameterValues(mpParams.CurrentProgramParameter.ParameterCd,
                                                                                  out methodParameterList,
                                                                                  out programMethodParameterDescription);
 
-                            Program11_GetProgramParameterToLocationTypeValues(MpParameters.CurrentProgramParameter.ParameterCd,
+                            Program11_GetProgramParameterToLocationTypeValues(mpParams.CurrentProgramParameter.ParameterCd,
                                                                               out commonTypeList,
                                                                               out multipleTypeList);
 
-                            Program11_GetProgramParameterToMethodCodeValues(MpParameters.CurrentProgramParameter.ParameterCd,
+                            Program11_GetProgramParameterToMethodCodeValues(mpParams.CurrentProgramParameter.ParameterCd,
                                                                               out methodCodeList);
 
-                            Program11_GetProgramParameterToSeverityValue(MpParameters.CurrentProgramParameter.ParameterCd,
+                            Program11_GetProgramParameterToSeverityValue(mpParams.CurrentProgramParameter.ParameterCd,
                                                                          out severityCd);
 
                             ProgramMethodParameterDescription.SetValue(programMethodParameterDescription, category);
                         }
 
 
-                        string unitMonLocId = MpParameters.CurrentProgramParameter.MonLocId;
+                        string unitMonLocId = mpParams.CurrentProgramParameter.MonLocId;
 
                         CheckDataView<VwMonitorMethodRow> unitAndCommonMethodRecords;
                         {
                             string unitCommonMonLocList = Program11_UnitStackConfigurationMonLocList(unitMonLocId,
-                                                                                                     MpParameters.ProgramParameterEvaluationBeginDate.AsBeginDateTime(),
-                                                                                                     MpParameters.ProgramParameterEvaluationEndDate.AsEndDateTime(),
+                                                                                                     mpParams.ProgramParameterEvaluationBeginDate.AsBeginDateTime(),
+                                                                                                     mpParams.ProgramParameterEvaluationEndDate.AsEndDateTime(),
                                                                                                      commonTypeList);
 
                             //matches current unit PLUS associated common stacks
                             unitAndCommonMethodRecords
-                                = MpParameters.FacilityMethodRecords.FindActiveRows(MpParameters.ProgramParameterEvaluationBeginDate.AsBeginDateTime(),
-                                                                                    MpParameters.ProgramParameterEvaluationEndDate.AsEndDateTime(),
+                                = mpParams.FacilityMethodRecords.FindActiveRows(mpParams.ProgramParameterEvaluationBeginDate.AsBeginDateTime(),
+                                                                                    mpParams.ProgramParameterEvaluationEndDate.AsEndDateTime(),
                                                                                     new cFilterCondition[]
                                                                                     {
                                                                                         new cFilterCondition("MON_LOC_ID", unitCommonMonLocList, eFilterConditionStringCompare.InList),
@@ -319,12 +319,12 @@ namespace ECMPS.Checks.ProgramChecks
 
                         if ((unitAndCommonMethodRecords.Count == 0) || !CheckForHourRangeCovered(category,
                                                                                            unitAndCommonMethodRecords.SourceView,
-                                                                                           MpParameters.ProgramParameterEvaluationBeginDate.AsBeginDateTime(), 23,
-                                                                                           MpParameters.ProgramParameterEvaluationEndDate.AsEndDateTime(), 0))
+                                                                                           mpParams.ProgramParameterEvaluationBeginDate.AsBeginDateTime(), 23,
+                                                                                           mpParams.ProgramParameterEvaluationEndDate.AsEndDateTime(), 0))
                         {
                             if (!Program11_UnitStackConfigurationExists(unitMonLocId,
-                                                                        MpParameters.ProgramParameterEvaluationBeginDate.AsBeginDateTime(),
-                                                                        MpParameters.ProgramParameterEvaluationEndDate.AsEndDateTime(),
+                                                                        mpParams.ProgramParameterEvaluationBeginDate.AsBeginDateTime(),
+                                                                        mpParams.ProgramParameterEvaluationEndDate.AsEndDateTime(),
                                                                         multipleTypeList))
                             {
                                 if (unitAndCommonMethodRecords.Count == 0)
@@ -344,13 +344,13 @@ namespace ECMPS.Checks.ProgramChecks
                                     if (unitAndCommonMethodRecords.Count == 0)
                                     {
                                         missingUnitAndCommonMethodRangeList = new cHourRangeCollection();
-                                        missingUnitAndCommonMethodRangeList.Add(MpParameters.ProgramParameterEvaluationBeginDate.AsBeginDateTime(), 23,
-                                                                                MpParameters.ProgramParameterEvaluationEndDate.AsEndDateTime(), 0);
+                                        missingUnitAndCommonMethodRangeList.Add(mpParams.ProgramParameterEvaluationBeginDate.AsBeginDateTime(), 23,
+                                                                                mpParams.ProgramParameterEvaluationEndDate.AsEndDateTime(), 0);
                                     }
                                     else
                                         missingUnitAndCommonMethodRangeList = GetMethodGaps(unitAndCommonMethodRecords,
-                                                                                            MpParameters.ProgramParameterEvaluationBeginDate.AsBeginDateTime().Date.AddHours(23),
-                                                                                            MpParameters.ProgramParameterEvaluationEndDate.AsEndDateTime().Date);
+                                                                                            mpParams.ProgramParameterEvaluationBeginDate.AsBeginDateTime().Date.AddHours(23),
+                                                                                            mpParams.ProgramParameterEvaluationEndDate.AsEndDateTime().Date);
                                 }
 
 
@@ -379,7 +379,7 @@ namespace ECMPS.Checks.ProgramChecks
 
                                         /* Determine USC rows for multiple locations that are active during this gap */
                                         multipleConfigurationRecordsForMissingRange
-                                            = MpParameters.UnitStackConfigurationRecords.FindActiveRows(missingMethodHourRange.BeganDate, missingMethodHourRange.EndedDate,
+                                            = mpParams.UnitStackConfigurationRecords.FindActiveRows(missingMethodHourRange.BeganDate, missingMethodHourRange.EndedDate,
                                                                                                         new cFilterCondition("MON_LOC_ID", unitMonLocId),
                                                                                                         new cFilterCondition("STACK_NAME", multipleTypeList, eFilterConditionStringCompare.InList, 0, 2));
 
@@ -417,7 +417,7 @@ namespace ECMPS.Checks.ProgramChecks
 
                                                 /* Get the methods that are active for the stack or pipe during the search hour range */
                                                 multipleMethodRecordsForMissingRange
-                                                    = MpParameters.FacilityMethodRecords.FindActiveRowsByHour(completeRangeBeginHour, completeRangeEndHour,
+                                                    = mpParams.FacilityMethodRecords.FindActiveRowsByHour(completeRangeBeginHour, completeRangeEndHour,
                                                                                                               new cFilterCondition[]
                                                                                                               {
                                                                                                               new cFilterCondition("MON_LOC_ID", unitStackConfigurationRow.StackPipeMonLocId),
@@ -472,7 +472,7 @@ namespace ECMPS.Checks.ProgramChecks
                         //result block
                         if (resultType == eTimespanCoverageState.Missing)
                         {
-                            if (MpParameters.MatsRequiredCheck == true || MpParameters.CurrentProgramParameter.ParameterCd.NotInList("HG,HCL,HF"))
+                            if (mpParams.MatsRequiredCheck == true || mpParams.CurrentProgramParameter.ParameterCd.NotInList("HG,HCL,HF"))
                             {
                                 if (severityCd == "NONCRIT")
                                 {
@@ -544,22 +544,22 @@ namespace ECMPS.Checks.ProgramChecks
             try
             {
                 /* Only perform the body of this check for required MATS parameter where the unit is affected by MATS */
-                if ((MpParameters.CurrentProgram.PrgCd == "MATS") && (MpParameters.CurrentProgram.Class == "A"))
+                if ((mpParams.CurrentProgram.PrgCd == "MATS") && (mpParams.CurrentProgram.Class == "A"))
                 {
-                    if (MpParameters.CurrentProgramActive.Default(true))
+                    if (mpParams.CurrentProgramActive.Default(true))
                     {
                         /* Get list with unit MON_LOC_ID and associated active MON_LOC_ID */
                         string monLocIdList
-                            = Program11_UnitStackConfigurationMonLocList(MpParameters.CurrentProgram.MonLocId,
-                                                                         MpParameters.ProgramEvaluationBeginDate.AsBeginDateTime(),
-                                                                         MpParameters.ProgramEvaluationEndDate.AsEndDateTime(),
+                            = Program11_UnitStackConfigurationMonLocList(mpParams.CurrentProgram.MonLocId,
+                                                                         mpParams.ProgramEvaluationBeginDate.AsBeginDateTime(),
+                                                                         mpParams.ProgramEvaluationEndDate.AsEndDateTime(),
                                                                          "CS", "MS");
 
                         /* Locate MONITOR_METHOD rows for the associated MON_LOC_ID and Method Parameters */
                         DataView methodView
-                            = cRowFilter.FindActiveRows(MpParameters.CombinedFacilityMethodRecords.SourceView,
-                                                        MpParameters.ProgramEvaluationBeginDate.AsBeginDateTime(),
-                                                        MpParameters.ProgramEvaluationEndDate.AsEndDateTime(),
+                            = cRowFilter.FindActiveRows(mpParams.CombinedFacilityMethodRecords.SourceView,
+                                                        mpParams.ProgramEvaluationBeginDate.AsBeginDateTime(),
+                                                        mpParams.ProgramEvaluationEndDate.AsEndDateTime(),
                                                         new cFilterCondition[]
                                                         {
                                                             new cFilterCondition("MON_LOC_ID", monLocIdList, eFilterConditionStringCompare.InList),
@@ -575,8 +575,8 @@ namespace ECMPS.Checks.ProgramChecks
                         /* Produce result if methods do not span the Program Parameter evaluation period */
                         else if (!CheckForHourRangeCovered(category,
                                                            methodView,
-                                                           MpParameters.ProgramEvaluationBeginDate.AsBeginDateTime(), 23,
-                                                           MpParameters.ProgramEvaluationEndDate.AsEndDateTime(), 0))
+                                                           mpParams.ProgramEvaluationBeginDate.AsBeginDateTime(), 23,
+                                                           mpParams.ProgramEvaluationEndDate.AsEndDateTime(), 0))
                         {
                             category.CheckCatalogResult = "B";
                         }
@@ -624,21 +624,21 @@ namespace ECMPS.Checks.ProgramChecks
 
             try
             {
-                MpParameters.Nsps4tMethodParameterDescription = null;
+                mpParams.Nsps4tMethodParameterDescription = null;
 
                 /* Only perform the body of this check for required NSPS4T parameter where the unit is affected by NSPS4T */
-                if ((MpParameters.CurrentProgramParameter.PrgCd == "NSPS4T") &&
-                    (MpParameters.CurrentProgramParameter.Class == "A") &&
-                    (MpParameters.CurrentProgramParameter.RequiredInd == 1))
+                if ((mpParams.CurrentProgramParameter.PrgCd == "NSPS4T") &&
+                    (mpParams.CurrentProgramParameter.Class == "A") &&
+                    (mpParams.CurrentProgramParameter.RequiredInd == 1))
                 {
                     /* Only perform the check if the NSPS4T parameter is active for the evaluation period */
-                    if (MpParameters.CurrentProgramParameterActive.Default(true))
+                    if (mpParams.CurrentProgramParameterActive.Default(true))
                     {
                         /* Dereference widely used check parameter values */
-                        DateTime evaluationBeginDate = MpParameters.ProgramParameterEvaluationBeginDate.Value;
-                        DateTime evaluationEndDate = MpParameters.ProgramParameterEvaluationEndDate.Value;
-                        string unitMonLocId = MpParameters.CurrentProgramParameter.MonLocId;
-                        int unitId = MpParameters.CurrentProgramParameter.UnitId.Value;
+                        DateTime evaluationBeginDate = mpParams.ProgramParameterEvaluationBeginDate.Value;
+                        DateTime evaluationEndDate = mpParams.ProgramParameterEvaluationEndDate.Value;
+                        string unitMonLocId = mpParams.CurrentProgramParameter.MonLocId;
+                        int unitId = mpParams.CurrentProgramParameter.UnitId.Value;
 
 
                         /* Get Method Parameter list and description for current Program Parameter row */
@@ -646,21 +646,21 @@ namespace ECMPS.Checks.ProgramChecks
                         {
                             string programMethodParameterDescription;
 
-                            Program11_GetProgramParameterToMethodParameterValues(MpParameters.CurrentProgramParameter.ParameterCd, out methodParameterList, out programMethodParameterDescription);
-                            MpParameters.Nsps4tMethodParameterDescription = programMethodParameterDescription;
+                            Program11_GetProgramParameterToMethodParameterValues(mpParams.CurrentProgramParameter.ParameterCd, out methodParameterList, out programMethodParameterDescription);
+                            mpParams.Nsps4tMethodParameterDescription = programMethodParameterDescription;
                         }
 
 
                         /* Get the Unit Stack Configuration rows for the unit */
                         CheckDataView<VwUnitStackConfigurationRow> unitStackConfigurationView
-                            = MpParameters.UnitStackConfigurationRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate, new cFilterCondition("UNIT_ID", unitId));
+                            = mpParams.UnitStackConfigurationRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate, new cFilterCondition("UNIT_ID", unitId));
 
                         /* Check Monitor Methods for the unit */
                         string monLocList = unitMonLocId
                                           + (unitStackConfigurationView.Count > 0 ? "," + ColumnToDatalist(unitStackConfigurationView.SourceView, "Stack_Pipe_Mon_Loc_Id") : "");
 
                         CheckDataView<VwMonitorMethodRow> facilityMethodRecords
-                            = MpParameters.FacilityMethodRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate,
+                            = mpParams.FacilityMethodRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate,
                                                                                 new cFilterCondition("MON_LOC_ID", monLocList, eFilterConditionStringCompare.InList),
                                                                                 new cFilterCondition("PARAMETER_CD", methodParameterList, eFilterConditionStringCompare.InList));
 
@@ -679,7 +679,7 @@ namespace ECMPS.Checks.ProgramChecks
                         {
                             /* Get methods at unit to determine whether any gaps exist that stacks and pipes are covering. */
                             facilityMethodRecords
-                                = MpParameters.FacilityMethodRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate,
+                                = mpParams.FacilityMethodRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate,
                                                                                     new cFilterCondition("UNIT_ID", unitId),
                                                                                     new cFilterCondition("PARAMETER_CD", methodParameterList, eFilterConditionStringCompare.InList));
 
@@ -708,7 +708,7 @@ namespace ECMPS.Checks.ProgramChecks
                                 {
                                     /* Determine USC rows that are active during this gap */
                                     unitStackConfigurationView
-                                        = MpParameters.UnitStackConfigurationRecords.FindActiveRows(missingMethodHourRange.BeganDate, missingMethodHourRange.EndedDate, new cFilterCondition("UNIT_ID", unitId));
+                                        = mpParams.UnitStackConfigurationRecords.FindActiveRows(missingMethodHourRange.BeganDate, missingMethodHourRange.EndedDate, new cFilterCondition("UNIT_ID", unitId));
 
                                     /* Loop through USC that are active for this gap */
                                     foreach (VwUnitStackConfigurationRow unitStackConfigurationRow in unitStackConfigurationView)
@@ -724,7 +724,7 @@ namespace ECMPS.Checks.ProgramChecks
 
                                         /* Get the methods that are active for the stack or pipe during the search hour range */
                                         facilityMethodRecords
-                                            = MpParameters.FacilityMethodRecords.FindActiveRowsByHour(rangeBeginHour, rangeEndHour,
+                                            = mpParams.FacilityMethodRecords.FindActiveRowsByHour(rangeBeginHour, rangeEndHour,
                                                                                                       new cFilterCondition("STACK_PIPE_ID", unitStackConfigurationRow.StackPipeId),
                                                                                                       new cFilterCondition("PARAMETER_CD", methodParameterList, eFilterConditionStringCompare.InList));
 
@@ -800,21 +800,21 @@ namespace ECMPS.Checks.ProgramChecks
 
             try
             {
-                MpParameters.Nsps4tMethodParameterDescription = null;
+                mpParams.Nsps4tMethodParameterDescription = null;
 
                 /* Only perform the body of this check for required NSPS4T parameter where the unit is affected by NSPS4T */
-                if ((MpParameters.CurrentProgramParameter.PrgCd == "NSPS4T") &&
-                    (MpParameters.CurrentProgramParameter.Class == "A") &&
-                    (MpParameters.CurrentProgramParameter.RequiredInd == 1))
+                if ((mpParams.CurrentProgramParameter.PrgCd == "NSPS4T") &&
+                    (mpParams.CurrentProgramParameter.Class == "A") &&
+                    (mpParams.CurrentProgramParameter.RequiredInd == 1))
                 {
                     /* Only perform the check if the NSPS4T parameter is active for the evaluation period */
-                    if (MpParameters.CurrentProgramParameterActive.Default(true))
+                    if (mpParams.CurrentProgramParameterActive.Default(true))
                     {
                         /* Dereference widely used check parameter values */
-                        DateTime evaluationBeginDate = MpParameters.ProgramParameterEvaluationBeginDate.Value;
-                        DateTime evaluationEndDate = MpParameters.ProgramParameterEvaluationEndDate.Value;
-                        string unitMonLocId = MpParameters.CurrentProgramParameter.MonLocId;
-                        int unitId = MpParameters.CurrentProgramParameter.UnitId.Value;
+                        DateTime evaluationBeginDate = mpParams.ProgramParameterEvaluationBeginDate.Value;
+                        DateTime evaluationEndDate = mpParams.ProgramParameterEvaluationEndDate.Value;
+                        string unitMonLocId = mpParams.CurrentProgramParameter.MonLocId;
+                        int unitId = mpParams.CurrentProgramParameter.UnitId.Value;
 
                         /* Widely Used Result Sets*/
                         CheckDataView<VwUnitStackConfigurationRow> unitStackConfigurationView;
@@ -824,19 +824,19 @@ namespace ECMPS.Checks.ProgramChecks
                         {
                             string programMethodParameterDescription;
 
-                            Program11_GetProgramParameterToMethodParameterValues(MpParameters.CurrentProgramParameter.ParameterCd, out methodParameterList, out programMethodParameterDescription);
-                            MpParameters.Nsps4tMethodParameterDescription = programMethodParameterDescription;
+                            Program11_GetProgramParameterToMethodParameterValues(mpParams.CurrentProgramParameter.ParameterCd, out methodParameterList, out programMethodParameterDescription);
+                            mpParams.Nsps4tMethodParameterDescription = programMethodParameterDescription;
                         }
 
                         /* Get the Unit Stack Configuration rows for the unit */
                         unitStackConfigurationView
-                            = MpParameters.UnitStackConfigurationRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate, new cFilterCondition("UNIT_ID", unitId));
+                            = mpParams.UnitStackConfigurationRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate, new cFilterCondition("UNIT_ID", unitId));
 
                         /* If Unit Stack Configuration rows are not found, this is a single unit configuration */
                         if (unitStackConfigurationView.Count == 0)
                         {
                             CheckDataView<VwMonitorMethodRow> facilityMethodRecords
-                                = MpParameters.FacilityMethodRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate,
+                                = mpParams.FacilityMethodRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate,
                                                                                     new cFilterCondition("UNIT_ID", unitId),
                                                                                     new cFilterCondition("PARAMETER_CD", methodParameterList, eFilterConditionStringCompare.InList));
 
@@ -876,7 +876,7 @@ namespace ECMPS.Checks.ProgramChecks
                                 foreach (VwUnitStackConfigurationRow unitStackConfigurationRow in unitStackConfigurationView)
                                 {
                                     CheckDataView<VwMonitorMethodRow> facilityMethodRecords
-                                        = MpParameters.FacilityMethodRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate,
+                                        = mpParams.FacilityMethodRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate,
                                                         new cFilterCondition("STACK_PIPE_ID", unitStackConfigurationRow.StackPipeId),
                                                         new cFilterCondition("PARAMETER_CD", methodParameterList, eFilterConditionStringCompare.InList));
 
@@ -923,7 +923,7 @@ namespace ECMPS.Checks.ProgramChecks
                                 string monLocIdList = BuildNsps4tMonLocIdList(false, unitMonLocId, unitStackConfigurationView);
 
                                 CheckDataView<VwMonitorMethodRow> facilityMethodRecords
-                                    = MpParameters.FacilityMethodRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate,
+                                    = mpParams.FacilityMethodRecords.FindActiveRows(evaluationBeginDate, evaluationEndDate,
                                                                                         new cFilterCondition("MON_LOC_ID", monLocIdList, eFilterConditionStringCompare.InList),
                                                                                         new cFilterCondition("PARAMETER_CD", methodParameterList, eFilterConditionStringCompare.InList));
 
@@ -999,7 +999,7 @@ namespace ECMPS.Checks.ProgramChecks
                                         rangeEndHour = hourRangeStartDates[startHourDex + 1].AddHours(-1);  // Get the hour before the next start hour
 
                                         facilityMethodRecords
-                                            = MpParameters.FacilityMethodRecords.FindActiveRowsByHour(rangeStartHour, rangeEndHour,
+                                            = mpParams.FacilityMethodRecords.FindActiveRowsByHour(rangeStartHour, rangeEndHour,
                                                                                                       new cFilterCondition("UNIT_ID", unitId),
                                                                                                       new cFilterCondition("PARAMETER_CD", methodParameterList, eFilterConditionStringCompare.InList));
 
@@ -1016,7 +1016,7 @@ namespace ECMPS.Checks.ProgramChecks
 
                                             /* Get USC to include in method check */
                                             unitStackConfigurationView
-                                                = MpParameters.UnitStackConfigurationRecords.FindRows(new cFilterCondition("UNIT_ID", unitId),
+                                                = mpParams.UnitStackConfigurationRecords.FindRows(new cFilterCondition("UNIT_ID", unitId),
                                                                                                       new cFilterCondition("BEGIN_DATE", beginUscCompare, rangeStartHour.Date, eNullDateDefault.Min),
                                                                                                       new cFilterCondition("END_DATE", endUscCompare, rangeEndHour.Date, eNullDateDefault.Max));
 
@@ -1024,7 +1024,7 @@ namespace ECMPS.Checks.ProgramChecks
                                             monLocIdList = BuildNsps4tMonLocIdList(false, unitMonLocId, unitStackConfigurationView);
 
                                             facilityMethodRecords
-                                                = MpParameters.FacilityMethodRecords.FindActiveRowsByHour(rangeStartHour, rangeEndHour,
+                                                = mpParams.FacilityMethodRecords.FindActiveRowsByHour(rangeStartHour, rangeEndHour,
                                                                                                           new cFilterCondition("MON_LOC_ID", monLocIdList, eFilterConditionStringCompare.InList),
                                                                                                           new cFilterCondition("PARAMETER_CD", methodParameterList, eFilterConditionStringCompare.InList));
 
@@ -1094,11 +1094,11 @@ namespace ECMPS.Checks.ProgramChecks
             try
             {
                 /* Only perform the body of this check for required ARP parameter where the program is active */
-                if (MpParameters.CurrentProgram.PrgCd == "ARP" && MpParameters.CurrentProgramActive == true)
+                if (mpParams.CurrentProgram.PrgCd == "ARP" && mpParams.CurrentProgramActive == true)
                 {
-                    if (MpParameters.CurrentLocation.ComrOpDate.HasValue && (MpParameters.CurrentLocation.ComrOpDate.Value.Year > 1984))
+                    if (mpParams.CurrentLocation.ComrOpDate.HasValue && (mpParams.CurrentLocation.ComrOpDate.Value.Year > 1984))
                     {
-                        CheckDataView<VwLocationUnitTypeRow> unitTypeRecords = MpParameters.LocationUnitTypeRecords.FindRows(
+                        CheckDataView<VwLocationUnitTypeRow> unitTypeRecords = mpParams.LocationUnitTypeRecords.FindRows(
                             new cFilterCondition[]
                             {
                             new cFilterCondition("UNIT_TYPE_CD", "CC,CT", eFilterConditionStringCompare.InList),
@@ -1108,7 +1108,7 @@ namespace ECMPS.Checks.ProgramChecks
 
                         if (unitTypeRecords.Count > 0)
                         {
-                            CheckDataView<VwLocationControlRow> controlRecords = MpParameters.LocationControlRecords.FindRows(
+                            CheckDataView<VwLocationControlRow> controlRecords = mpParams.LocationControlRecords.FindRows(
                                 new cFilterCondition[]
                                 {
                                 new cFilterCondition("ce_param", "NOX"),
@@ -1338,7 +1338,7 @@ namespace ECMPS.Checks.ProgramChecks
         {
             DataRowView crossCheckRow;
 
-            if (cRowFilter.FindRow(MpParameters.CrosscheckProgramparametertomethodparameter.SourceView,
+            if (cRowFilter.FindRow(mpParams.CrosscheckProgramparametertomethodparameter.SourceView,
                                    new cFilterCondition[] { new cFilterCondition("ProgramParameterCd", programParameterCd) },
                                    out crossCheckRow))
             {
@@ -1365,7 +1365,7 @@ namespace ECMPS.Checks.ProgramChecks
         {
             DataRowView crossCheckRow;
 
-            if (cRowFilter.FindRow(MpParameters.CrosscheckProgramparametertolocationtype.SourceView,
+            if (cRowFilter.FindRow(mpParams.CrosscheckProgramparametertolocationtype.SourceView,
                                    new cFilterCondition[] { new cFilterCondition("ProgramParameterCd", programParameterCd) },
                                    out crossCheckRow))
             {
@@ -1390,7 +1390,7 @@ namespace ECMPS.Checks.ProgramChecks
         {
             DataRowView crossCheckRow;
 
-            if (cRowFilter.FindRow(MpParameters.CrosscheckProgramparametertomethodcode.SourceView,
+            if (cRowFilter.FindRow(mpParams.CrosscheckProgramparametertomethodcode.SourceView,
                                    new cFilterCondition[] { new cFilterCondition("ProgramParameterCd", programParameterCd) },
                                    out crossCheckRow))
             {
@@ -1413,7 +1413,7 @@ namespace ECMPS.Checks.ProgramChecks
         {
             DataRowView crossCheckRow;
 
-            if (cRowFilter.FindRow(MpParameters.CrosscheckProgramparametertoseverity.SourceView,
+            if (cRowFilter.FindRow(mpParams.CrosscheckProgramparametertoseverity.SourceView,
                                    new cFilterCondition[] { new cFilterCondition("ProgramParameterCd", programParameterCd) },
                                    out crossCheckRow))
             {
@@ -1458,7 +1458,7 @@ namespace ECMPS.Checks.ProgramChecks
                 DataView unitStackConfigurationView;
                 {
                     unitStackConfigurationView
-                      = cRowFilter.FindActiveRows(MpParameters.UnitStackConfigurationRecords.SourceView,
+                      = cRowFilter.FindActiveRows(mpParams.UnitStackConfigurationRecords.SourceView,
                                                   dateRangeBegin,
                                                   dateRangeEnd,
                                                   new cFilterCondition[]
@@ -1509,7 +1509,7 @@ namespace ECMPS.Checks.ProgramChecks
                 DataView unitStackConfigurationView;
                 {
                     unitStackConfigurationView
-                      = cRowFilter.FindActiveRows(MpParameters.UnitStackConfigurationRecords.SourceView,
+                      = cRowFilter.FindActiveRows(mpParams.UnitStackConfigurationRecords.SourceView,
                                                   dateRangeBegin,
                                                   dateRangeEnd,
                                                   new cFilterCondition[]
@@ -1559,7 +1559,7 @@ namespace ECMPS.Checks.ProgramChecks
                 DataView unitStackConfigurationView;
                 {
                     unitStackConfigurationView
-                      = cRowFilter.FindActiveRows(MpParameters.UnitStackConfigurationRecords.SourceView,
+                      = cRowFilter.FindActiveRows(mpParams.UnitStackConfigurationRecords.SourceView,
                                                   opHour.Date,
                                                   new cFilterCondition[]
                                         {
@@ -1590,7 +1590,7 @@ namespace ECMPS.Checks.ProgramChecks
 
             DataView unitStackConfigurationView;
             {
-                unitStackConfigurationView = cRowFilter.FindActiveRows(MpParameters.UnitStackConfigurationRecords.SourceView,
+                unitStackConfigurationView = cRowFilter.FindActiveRows(mpParams.UnitStackConfigurationRecords.SourceView,
                                                                        ProgramParameterEvaluationBeginDate.AsBeginDateTime(),
                                                                        ProgramParameterEvaluationEndDate.AsEndDateTime(),
                                                                        ARowFilterList);
@@ -1620,7 +1620,7 @@ namespace ECMPS.Checks.ProgramChecks
     /// <param name="unitStackConfigurationRecords">The current Unit Stack Configuration DataRowView potentially limited by location type.</param>
     /// <param name="facilityMethodRecords">The current Facility Method DataRowView potentially limited by parameter or potentially method.</param>
     /// <param name="category">The check category object.</param>
-    public static void ProgramMethodCheck(DataRowView currentProgram,
+    public void ProgramMethodCheck(DataRowView currentProgram,
                                           DataView unitStackConfigurationRecords,
                                           DataView facilityMethodRecords,
                                           cCategory category)
@@ -1783,7 +1783,7 @@ namespace ECMPS.Checks.ProgramChecks
     /// <param name="unitMonLocId">The unit MON_LOC_ID.</param>
     /// <param name="unitStackConfigurationForPrgEval">The appropriate unit stack configuration rows.</param>
     /// <returns></returns>
-    private static string ProgramMethodCheck_GetMonLocList(bool unitAndCommonOnly,
+    private string ProgramMethodCheck_GetMonLocList(bool unitAndCommonOnly,
                                                            string unitMonLocId,
                                                            DataView unitStackConfigurationForPrgEval)
     {
@@ -1816,7 +1816,7 @@ namespace ECMPS.Checks.ProgramChecks
     /// </summary>
     /// <param name="unitStackConfigurationForPrgEval">The view containing the Unit Stack Configuration rows.</param>
     /// <returns>True if multiple stack and pipes exist.</returns>
-    private static bool ProgramMethodCheck_HasMultiple(DataView unitStackConfigurationForPrgEval)
+    private bool ProgramMethodCheck_HasMultiple(DataView unitStackConfigurationForPrgEval)
     {
       DataView unitStackConfigurationView 
         = cRowFilter.FindRows(unitStackConfigurationForPrgEval,
@@ -1839,7 +1839,7 @@ namespace ECMPS.Checks.ProgramChecks
     /// <param name="multipleStackMethod">The count of the MS in the USC that have methods.</param>
     /// <param name="multiplePipeCount">The count of MP in the Unit Stack Configuration view.</param>
     /// <param name="multiplePipeMethod">The count of the MP in the USC that have methods.</param>
-    private static void ProgramMethodCheck_MultipleCounts(DataView unitStackConfigurationMpCountView,
+    private void ProgramMethodCheck_MultipleCounts(DataView unitStackConfigurationMpCountView,
                                                           DataView facilityMethodView,
                                                           out int multipleStackCount,
                                                           out int multipleStackMethod,
@@ -1885,7 +1885,7 @@ namespace ECMPS.Checks.ProgramChecks
     /// <param name="unitStackConfigurationView">he appropriate unit stack configuration rows.</param>
     /// <param name="facilityMethodView">he appropriate facility method rows.</param>
     /// <returns>True when either unit or common stack method was found.</returns>
-    private static bool ProgramMethodCheck_UnitCommonMethodExists(string unitMonLocId,
+    private bool ProgramMethodCheck_UnitCommonMethodExists(string unitMonLocId,
                                                                   DataView unitStackConfigurationView,
                                                                   DataView facilityMethodView)
     {
@@ -1949,7 +1949,7 @@ namespace ECMPS.Checks.ProgramChecks
 		/// <param name="category">The calling check category object.</param>
 		/// <param name="log">The log messages flag.</param>
 		/// <returns>Returns formatted exception information.</returns>
-		public static string PROGRAM2(cCategory category, ref bool log)
+		public string PROGRAM2(cCategory category, ref bool log)
 		{
 		  string returnVal = "";
 
@@ -1989,7 +1989,7 @@ namespace ECMPS.Checks.ProgramChecks
 		/// <param name="category">The calling check category object.</param>
 		/// <param name="log">The log messages flag.</param>
 		/// <returns>Returns formatted exception information.</returns>
-		public static string PROGRAM3(cCategory category, ref bool log)
+		public string PROGRAM3(cCategory category, ref bool log)
 		{
 		  string returnVal = "";
 
@@ -2030,7 +2030,7 @@ namespace ECMPS.Checks.ProgramChecks
 		/// <param name="category">The calling check category object.</param>
 		/// <param name="log">The log messages flag.</param>
 		/// <returns>Returns formatted exception information.</returns>
-		public static string PROGRAM5(cCategory category, ref bool log)
+		public string PROGRAM5(cCategory category, ref bool log)
 		{
 		  string returnVal = "";
 
@@ -2078,7 +2078,7 @@ namespace ECMPS.Checks.ProgramChecks
 		/// <param name="category">The calling check category object.</param>
 		/// <param name="log">The log messages flag.</param>
 		/// <returns>Returns formatted exception information.</returns>
-		public static string PROGRAM6(cCategory category, ref bool log)
+		public string PROGRAM6(cCategory category, ref bool log)
 		{
 		  string returnVal = "";
 
@@ -2119,7 +2119,7 @@ namespace ECMPS.Checks.ProgramChecks
 		/// <param name="category">The calling check category object.</param>
 		/// <param name="log">The log messages flag.</param>
 		/// <returns>Returns formatted exception information.</returns>
-		public static string PROGRAM8(cCategory category, ref bool log)
+		public string PROGRAM8(cCategory category, ref bool log)
 		{
 		  string returnVal = "";
 
@@ -2160,7 +2160,7 @@ namespace ECMPS.Checks.ProgramChecks
 		/// <param name="category">The calling check category object.</param>
 		/// <param name="log">The log messages flag.</param>
 		/// <returns>Returns formatted exception information.</returns>
-		public static string PROGRAM9(cCategory category, ref bool log)
+		public string PROGRAM9(cCategory category, ref bool log)
 		{
 		  string returnVal = "";
 
@@ -2199,7 +2199,7 @@ namespace ECMPS.Checks.ProgramChecks
 
 		#region Replaced
 
-		public static string PROGRAM2_old(cCategory category, ref bool log)
+		public string PROGRAM2_old(cCategory category, ref bool log)
 		// Required Methods Reported for ARP Affected Units
 		{
 		  string ReturnVal = "";
@@ -2329,7 +2329,7 @@ namespace ECMPS.Checks.ProgramChecks
 		  return ReturnVal;
 		}
 
-		public static string PROGRAM3_old(cCategory Category, ref bool Log)
+		public string PROGRAM3_old(cCategory Category, ref bool Log)
 		// Required Methods Reported for NBP Affected Units
 		{
 		  string ReturnVal = "";
@@ -2417,7 +2417,7 @@ namespace ECMPS.Checks.ProgramChecks
 		  return ReturnVal;
 		}
 
-		public static string PROGRAM5_old(cCategory Category, ref bool Log)
+		public string PROGRAM5_old(cCategory Category, ref bool Log)
 		// Required OP Methods Reported for ARP Affected Units
 		{
 		  string ReturnVal = "";
@@ -2458,7 +2458,7 @@ namespace ECMPS.Checks.ProgramChecks
 		  return ReturnVal;
 		}
 
-		public static string PROGRAM6_old(cCategory Category, ref bool Log)
+		public string PROGRAM6_old(cCategory Category, ref bool Log)
 		// Required Methods Reported for CAIRSO2 Affected Units
 		{
 		  string ReturnVal = "";
@@ -2546,7 +2546,7 @@ namespace ECMPS.Checks.ProgramChecks
 		  return ReturnVal;
 		}
 
-		public static string PROGRAM8_old(cCategory Category, ref bool Log)
+		public string PROGRAM8_old(cCategory Category, ref bool Log)
 		// Required Methods Reported for RGGI Affected Units
 		{
 		  string ReturnVal = "";
@@ -2596,7 +2596,7 @@ namespace ECMPS.Checks.ProgramChecks
 
 		private enum eMethodStatus { Missing, Incomplete, Complete };
 
-		private static eMethodStatus DetermineMethodStatus(string AParameterCodeList,
+		private eMethodStatus DetermineMethodStatus(string AParameterCodeList,
 														   string AMethodCodeList,
 														   bool AOrParameterAndMethod,
 														   bool AIncludePipe,
@@ -2673,7 +2673,7 @@ namespace ECMPS.Checks.ProgramChecks
 
 		private enum eUnitCommonMethodStatus { Missing, Incomplete, Complete };
 
-		private static eUnitCommonMethodStatus DeterimeUnitCommonMethodStatus(string AParameterCodeList,
+		private eUnitCommonMethodStatus DeterimeUnitCommonMethodStatus(string AParameterCodeList,
 																			  string AMethodCodeList,
 																			  bool AOrParameterAndMethod,
 																			  bool AIncludePipe,
@@ -2752,7 +2752,7 @@ namespace ECMPS.Checks.ProgramChecks
 
 		private enum eMultipleMethodStatus { NoMultiple, Missing, Incomplete, None };
 
-		private static eMultipleMethodStatus DeterimeMultipleMethodStatus(string AParameterCodeList,
+		private eMultipleMethodStatus DeterimeMultipleMethodStatus(string AParameterCodeList,
 																		  bool AIncludePipe,
 																		  DateTime AProgramEvalBeganDate,
 																		  DateTime AProgramEvalEndedDate,
@@ -2836,7 +2836,7 @@ namespace ECMPS.Checks.ProgramChecks
 
 		#region Cancelled
 
-		public static string PROGRAM7(cCategory Category, ref bool Log)
+		public string PROGRAM7(cCategory Category, ref bool Log)
 		// Required Methods Reported for CAMR Affected Units
 		{
 		  string ReturnVal = "";

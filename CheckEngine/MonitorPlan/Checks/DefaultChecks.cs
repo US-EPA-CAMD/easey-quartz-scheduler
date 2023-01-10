@@ -60,7 +60,7 @@ namespace ECMPS.Checks.DefaultChecks
 
 		# region default
 
-		public static string DEFAULT37(cCategory Category, ref bool Log) //Default Active Status
+		public string DEFAULT37(cCategory Category, ref bool Log) //Default Active Status
 		{
 			string ReturnVal = "";
 			try
@@ -83,7 +83,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT38(cCategory Category, ref bool Log) //Default Dates and Hours Consistent
+		public string DEFAULT38(cCategory Category, ref bool Log) //Default Dates and Hours Consistent
 		{
 			string ReturnVal = "";
 			try
@@ -101,7 +101,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT39(cCategory Category, ref bool Log) //Default Begin Date Valid
+		public string DEFAULT39(cCategory Category, ref bool Log) //Default Begin Date Valid
 		{
 			string ReturnVal = "";
 			try
@@ -114,7 +114,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT40(cCategory Category, ref bool Log) //Default Begin Hour Valid
+		public string DEFAULT40(cCategory Category, ref bool Log) //Default Begin Hour Valid
 		{
 			string ReturnVal = "";
 			try
@@ -127,7 +127,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT41(cCategory Category, ref bool Log) //Default End Date Valid
+		public string DEFAULT41(cCategory Category, ref bool Log) //Default End Date Valid
 		{
 			string ReturnVal = "";
 			try
@@ -140,7 +140,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT42(cCategory Category, ref bool Log) //Default End Hour Valid
+		public string DEFAULT42(cCategory Category, ref bool Log) //Default End Hour Valid
 		{
 			string ReturnVal = "";
 			try
@@ -153,7 +153,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT47(cCategory Category, ref bool Log) //Default Parameter Code Valid
+		public string DEFAULT47(cCategory Category, ref bool Log) //Default Parameter Code Valid
 		{
 			string ReturnVal = "";
 			try
@@ -219,7 +219,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT48(cCategory Category, ref bool Log) //Default Operating Condition Code Valid
+		public string DEFAULT48(cCategory Category, ref bool Log) //Default Operating Condition Code Valid
 		{
 			string ReturnVal = "";
 			try
@@ -259,7 +259,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT49(cCategory Category, ref bool Log) //Default Value Valid
+		public string DEFAULT49(cCategory Category, ref bool Log) //Default Value Valid
 		{
 			string ReturnVal = "";
 			try
@@ -438,7 +438,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT50(cCategory Category, ref bool Log) //Default Units of Measure Code Valid
+		public string DEFAULT50(cCategory Category, ref bool Log) //Default Units of Measure Code Valid
 		{
 			string ReturnVal = "";
 			try
@@ -493,7 +493,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT51(cCategory Category, ref bool Log) //Default Purpose Code Valid
+		public string DEFAULT51(cCategory Category, ref bool Log) //Default Purpose Code Valid
 		{
 			string ReturnVal = "";
 			try
@@ -541,7 +541,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT52(cCategory Category, ref bool Log) //Default Source Code Valid
+		public string DEFAULT52(cCategory Category, ref bool Log) //Default Source Code Valid
 		{
 			string ReturnVal = "";
 			try
@@ -589,7 +589,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT53(cCategory Category, ref bool Log) //Default Fuel Code Valid
+		public string DEFAULT53(cCategory Category, ref bool Log) //Default Fuel Code Valid
 		{
 			string ReturnVal = "";
 			try
@@ -692,7 +692,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT54(cCategory Category, ref bool Log) //Generic LME Default Emission Rate Valid
+		public string DEFAULT54(cCategory Category, ref bool Log) //Generic LME Default Emission Rate Valid
 		{
 			string ReturnVal = "";
 			try
@@ -814,7 +814,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT56(cCategory Category, ref bool Log) //NOXR LME Default Consistent with Controls and Unit Type
+		public string DEFAULT56(cCategory Category, ref bool Log) //NOXR LME Default Consistent with Controls and Unit Type
 		{
 			string ReturnVal = "";
 			try
@@ -874,7 +874,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT58(cCategory Category, ref bool Log) //Default Fuel Type Consistent with Unit Fuel
+		public string DEFAULT58(cCategory Category, ref bool Log) //Default Fuel Type Consistent with Unit Fuel
 		{
 			string ReturnVal = "";
 			try
@@ -921,7 +921,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT73(cCategory Category, ref bool Log) //NOXR LME Defaults Consistent
+		public string DEFAULT73(cCategory Category, ref bool Log) //NOXR LME Defaults Consistent
 		{
 			string ReturnVal = "";
 			try
@@ -992,7 +992,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT74(cCategory Category, ref bool Log) //Overlapping Default Records
+		public string DEFAULT74(cCategory Category, ref bool Log) //Overlapping Default Records
 		{
 			string ReturnVal = "";
 			try
@@ -1044,7 +1044,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT75(cCategory Category, ref bool Log) //Default Value Consistent with Maximum Value
+		public string DEFAULT75(cCategory Category, ref bool Log) //Default Value Consistent with Maximum Value
 		{
 			string ReturnVal = "";
 			try
@@ -1205,7 +1205,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT95(cCategory Category, ref bool Log) //Duplicate Default Records
+		public string DEFAULT95(cCategory Category, ref bool Log) //Duplicate Default Records
 		{
 			string ReturnVal = "";
 			try
@@ -1253,7 +1253,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT98(cCategory Category, ref bool Log) //Default Group ID Valid
+		public string DEFAULT98(cCategory Category, ref bool Log) //Default Group ID Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1278,7 +1278,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT99(cCategory Category, ref bool Log) //Required Missing Data Default for NOXR LME Default
+		public string DEFAULT99(cCategory Category, ref bool Log) //Required Missing Data Default for NOXR LME Default
 		{
 			string ReturnVal = "";
 			try
@@ -1325,7 +1325,7 @@ namespace ECMPS.Checks.DefaultChecks
 
 		# region waf
 
-		public static string DEFAULT78(cCategory Category, ref bool Log) //Rectangular Duct WAF Duct Width at Test Location Valid
+		public string DEFAULT78(cCategory Category, ref bool Log) //Rectangular Duct WAF Duct Width at Test Location Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1343,7 +1343,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT79(cCategory Category, ref bool Log) //Rectangular Duct WAF Duct Depth at Test Location Valid
+		public string DEFAULT79(cCategory Category, ref bool Log) //Rectangular Duct WAF Duct Depth at Test Location Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1360,7 +1360,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT80(cCategory Category, ref bool Log) //Rectangular Duct WAF Value Valid
+		public string DEFAULT80(cCategory Category, ref bool Log) //Rectangular Duct WAF Value Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1389,7 +1389,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT81(cCategory Category, ref bool Log) //Rectangular Duct WAF Method of Determination Valid
+		public string DEFAULT81(cCategory Category, ref bool Log) //Rectangular Duct WAF Method of Determination Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1415,7 +1415,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT82(cCategory Category, ref bool Log) //Rectangular Duct WAF Effective Date Valid
+		public string DEFAULT82(cCategory Category, ref bool Log) //Rectangular Duct WAF Effective Date Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1446,7 +1446,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT83(cCategory Category, ref bool Log) //Rectangular Duct WAF Effective Hour Valid
+		public string DEFAULT83(cCategory Category, ref bool Log) //Rectangular Duct WAF Effective Hour Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1460,7 +1460,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT84(cCategory Category, ref bool Log) //Rectangular Duct WAF End Date Valid
+		public string DEFAULT84(cCategory Category, ref bool Log) //Rectangular Duct WAF End Date Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1486,7 +1486,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT85(cCategory Category, ref bool Log) //Rectangular Duct WAF End Hour Valid
+		public string DEFAULT85(cCategory Category, ref bool Log) //Rectangular Duct WAF End Hour Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1499,7 +1499,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT86(cCategory Category, ref bool Log) //Rectangular Duct WAF Determination Date Valid
+		public string DEFAULT86(cCategory Category, ref bool Log) //Rectangular Duct WAF Determination Date Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1522,7 +1522,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT87(cCategory Category, ref bool Log) //Rectangular Duct WAF Number of WAF Test Runs Valid
+		public string DEFAULT87(cCategory Category, ref bool Log) //Rectangular Duct WAF Number of WAF Test Runs Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1549,7 +1549,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT88(cCategory Category, ref bool Log) //Rectangular Duct WAF Number of Method 1 Traverse Points in WAF Test Valid
+		public string DEFAULT88(cCategory Category, ref bool Log) //Rectangular Duct WAF Number of Method 1 Traverse Points in WAF Test Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1578,7 +1578,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT89(cCategory Category, ref bool Log) //Rectangular Duct WAF Number of Test Ports in WAF Test Valid
+		public string DEFAULT89(cCategory Category, ref bool Log) //Rectangular Duct WAF Number of Test Ports in WAF Test Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1602,7 +1602,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT90(cCategory Category, ref bool Log) //Rectangular Duct WAF Number of Method 1 Traverse Points in Reference Flow Rata Test Valid
+		public string DEFAULT90(cCategory Category, ref bool Log) //Rectangular Duct WAF Number of Method 1 Traverse Points in Reference Flow Rata Test Valid
 		{
 			string ReturnVal = "";
 			try
@@ -1629,7 +1629,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT91(cCategory Category, ref bool Log) //WAF Dates and Hours Consistent
+		public string DEFAULT91(cCategory Category, ref bool Log) //WAF Dates and Hours Consistent
 		{
 			string ReturnVal = "";
 			try
@@ -1649,7 +1649,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT92(cCategory Category, ref bool Log) //WAF Active Status
+		public string DEFAULT92(cCategory Category, ref bool Log) //WAF Active Status
 		{
 			string ReturnVal = "";
 			try
@@ -1674,7 +1674,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT93(cCategory Category, ref bool Log) //Flow System reported for WAF Record 
+		public string DEFAULT93(cCategory Category, ref bool Log) //Flow System reported for WAF Record 
 		{
 			string ReturnVal = "";
 			try
@@ -1701,7 +1701,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT96(cCategory Category, ref bool Log) //Duplicate WAF Records
+		public string DEFAULT96(cCategory Category, ref bool Log) //Duplicate WAF Records
 		{
 			string ReturnVal = "";
 			try
@@ -1737,7 +1737,7 @@ namespace ECMPS.Checks.DefaultChecks
 			}
 			return ReturnVal;
 		}
-		public static string DEFAULT97(cCategory Category, ref bool Log) //WAF Record Consistent with Stack Shape
+		public string DEFAULT97(cCategory Category, ref bool Log) //WAF Record Consistent with Stack Shape
 		{
 			string ReturnVal = "";
 			try

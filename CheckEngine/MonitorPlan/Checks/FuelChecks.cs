@@ -28,7 +28,7 @@ namespace ECMPS.Checks.FuelChecks
 
         }
 
-        public static string FUEL39(cCategory Category, ref bool Log) //Fuel Active Status
+        public string FUEL39(cCategory Category, ref bool Log) //Fuel Active Status
         {
             string ReturnVal = "";
 
@@ -48,7 +48,7 @@ namespace ECMPS.Checks.FuelChecks
             return ReturnVal;
         }
 
-        public static string FUEL40(cCategory Category, ref bool Log) //Unit Fuel Demonstration GCV Valid
+        public string FUEL40(cCategory Category, ref bool Log) //Unit Fuel Demonstration GCV Valid
         {
             string ReturnVal = "";
 
@@ -91,7 +91,7 @@ namespace ECMPS.Checks.FuelChecks
             return ReturnVal;
         }
 
-        public static string FUEL41(cCategory Category, ref bool Log) //Unit Fuel Demonstration SO2 Valid
+        public string FUEL41(cCategory Category, ref bool Log) //Unit Fuel Demonstration SO2 Valid
         {
             string ReturnVal = "";
 
@@ -134,7 +134,7 @@ namespace ECMPS.Checks.FuelChecks
             return ReturnVal;
         }
 
-        public static string FUEL42(cCategory Category, ref bool Log) //Unit Fuel Begin Date Valid
+        public string FUEL42(cCategory Category, ref bool Log) //Unit Fuel Begin Date Valid
         {
             string ReturnVal = "";
 
@@ -161,7 +161,7 @@ namespace ECMPS.Checks.FuelChecks
             return ReturnVal;
         }
 
-        public static string FUEL43(cCategory Category, ref bool Log) //Unit Fuel End Date Valid
+        public string FUEL43(cCategory Category, ref bool Log) //Unit Fuel End Date Valid
         {
             string ReturnVal = "";
 
@@ -177,7 +177,7 @@ namespace ECMPS.Checks.FuelChecks
             return ReturnVal;
         }
 
-        public static string FUEL44(cCategory Category, ref bool Log) //Fuel Dates Consistent
+        public string FUEL44(cCategory Category, ref bool Log) //Fuel Dates Consistent
         {
             string ReturnVal = "";
 
@@ -192,7 +192,7 @@ namespace ECMPS.Checks.FuelChecks
             return ReturnVal;
         }
 
-        public static string FUEL45(cCategory Category, ref bool Log) //Unit Fuel Code Valid
+        public string FUEL45(cCategory Category, ref bool Log) //Unit Fuel Code Valid
         {
             string ReturnVal = "";
 
@@ -232,7 +232,7 @@ namespace ECMPS.Checks.FuelChecks
             return ReturnVal;
         }
 
-        public static string FUEL46(cCategory Category, ref bool Log) //Fuel Consistent With Unit Type
+        public string FUEL46(cCategory Category, ref bool Log) //Fuel Consistent With Unit Type
         {
 
             string ReturnVal = "";
@@ -267,7 +267,7 @@ namespace ECMPS.Checks.FuelChecks
             return ReturnVal;
         }
 
-        public static string FUEL48(cCategory Category, ref bool Log) //Fuel Demonstration Methods Consistent with Method
+        public string FUEL48(cCategory Category, ref bool Log) //Fuel Demonstration Methods Consistent with Method
         {
             string ReturnVal = "";
 
@@ -338,7 +338,7 @@ namespace ECMPS.Checks.FuelChecks
             return ReturnVal;
         }
 
-        public static string FUEL49(cCategory Category, ref bool Log) //Ozone Season Indicator Valid
+        public string FUEL49(cCategory Category, ref bool Log) //Ozone Season Indicator Valid
         {
             string ReturnVal = "";
 
@@ -364,7 +364,7 @@ namespace ECMPS.Checks.FuelChecks
             return ReturnVal;
         }
 
-        public static string FUEL51(cCategory Category, ref bool Log) // Primary/Secondary Code Valid
+        public string FUEL51(cCategory Category, ref bool Log) // Primary/Secondary Code Valid
         {
             string ReturnVal = "";
 
@@ -395,7 +395,7 @@ namespace ECMPS.Checks.FuelChecks
             return ReturnVal;
         }
 
-        public static string FUEL52(cCategory Category, ref bool Log) // Duplicate UnitFuel Records
+        public string FUEL52(cCategory Category, ref bool Log) // Duplicate UnitFuel Records
         {
             string ReturnVal = "";
 

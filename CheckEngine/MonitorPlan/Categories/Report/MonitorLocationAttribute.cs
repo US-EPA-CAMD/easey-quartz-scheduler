@@ -41,12 +41,14 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "MONITOR_LOCATION_ATTRIBUTE";
     }
 
+    public cMonitorLocationAttribute(){}
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cMonitorLocationAttribute GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cMonitorLocationAttribute GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cMonitorLocationAttribute Category;
       string ErrorMessage = "";

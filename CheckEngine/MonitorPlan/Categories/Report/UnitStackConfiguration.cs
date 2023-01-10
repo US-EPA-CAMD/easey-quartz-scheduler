@@ -40,12 +40,14 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "UNIT_STACK_CONFIGURATION";
     }
 
+    public cUnitStackConfiguration(){}
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cUnitStackConfiguration GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cUnitStackConfiguration GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cUnitStackConfiguration Category;
       string ErrorMessage = "";

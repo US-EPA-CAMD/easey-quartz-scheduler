@@ -17,19 +17,18 @@ namespace ECMPS.Checks.Mp.Parameters
     using ECMPS.Checks.CheckEngine.SpecialParameterClasses;
     using ECMPS.Checks.TypeUtilities;
     
-    
     /// Parameter class for the Mp process
     public sealed class MpParameters
     {
         
         // Storage field for property 'Process'
-        private static cProcess _process;
+        private cProcess _process;
         
         // Storage field for property 'Category'
-        private static cCategory _category;
+        private cCategory _category;
         
         /// The process object for the current evaluation process.  Set by the actual process during initialization.
-        public static cProcess Process
+        public cProcess Process
         {
             get
             {
@@ -38,7 +37,7 @@ namespace ECMPS.Checks.Mp.Parameters
         }
         
         /// The current category object set at the beginning of the category's processing of checks and nulled at the end of the processing.
-        public static cCategory Category
+        public cCategory Category
         {
             get
             {
@@ -53,56 +52,56 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates if location has an invalid location evaluation period.
         /// </summary>
-        public static bool? AbortLocationEvaluation
+        public bool? AbortLocationEvaluation
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Abort_Location_Evaluation")));
+                return ((bool?)(GetCheckParameter("Abort_Location_Evaluation")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Abort_Location_Evaluation", value);
+                SetCheckParameter("Abort_Location_Evaluation", value);
             }
         }
         
         /// <summary>
         /// Indicates if the unit is affected by a program.
         /// </summary>
-        public static bool? AffectedUnit
+        public bool? AffectedUnit
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Affected_Unit")));
+                return ((bool?)(GetCheckParameter("Affected_Unit")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Affected_Unit", value);
+                SetCheckParameter("Affected_Unit", value);
             }
         }
         
         /// <summary>
         /// Shows Active/Inactive Status for a Component
         /// </summary>
-        public static bool? AnalyzerRangeActive
+        public bool? AnalyzerRangeActive
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Analyzer_Range_Active")));
+                return ((bool?)(GetCheckParameter("Analyzer_Range_Active")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Analyzer_Range_Active", value);
+                SetCheckParameter("Analyzer_Range_Active", value);
             }
         }
         
         /// <summary>
         /// A lookup table of Analyzer Range Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AnalyzerRangeCodeRow> AnalyzerRangeCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AnalyzerRangeCodeRow> AnalyzerRangeCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Analyzer_Range_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Analyzer_Range_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -116,11 +115,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Analyzer_Range_Code_Lookup_Table", null);
+                    SetCheckParameter("Analyzer_Range_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Analyzer_Range_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Analyzer_Range_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -128,131 +127,131 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Analyzer Range Code is valid.
         /// </summary>
-        public static bool? AnalyzerRangeCodeValid
+        public bool? AnalyzerRangeCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Analyzer_Range_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Analyzer_Range_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Analyzer_Range_Code_Valid", value);
+                SetCheckParameter("Analyzer_Range_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Start Date and Hour is prior to the End Date and Hour for Analyzer Range.
         /// </summary>
-        public static bool? AnalyzerRangeDatesAndHoursConsistent
+        public bool? AnalyzerRangeDatesAndHoursConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Analyzer_Range_Dates_and_Hours_Consistent")));
+                return ((bool?)(GetCheckParameter("Analyzer_Range_Dates_and_Hours_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Analyzer_Range_Dates_and_Hours_Consistent", value);
+                SetCheckParameter("Analyzer_Range_Dates_and_Hours_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the value reported is Valid.
         /// </summary>
-        public static bool? AnalyzerRangeEndDateValid
+        public bool? AnalyzerRangeEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Analyzer_Range_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Analyzer_Range_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Analyzer_Range_End_Date_Valid", value);
+                SetCheckParameter("Analyzer_Range_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the value reported is valid.
         /// </summary>
-        public static bool? AnalyzerRangeEndHourValid
+        public bool? AnalyzerRangeEndHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Analyzer_Range_End_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Analyzer_Range_End_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Analyzer_Range_End_Hour_Valid", value);
+                SetCheckParameter("Analyzer_Range_End_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// The first date that the Analyzer Range is active during an evaluation period.
         /// </summary>
-        public static DateTime? AnalyzerRangeEvaluationBeginDate
+        public DateTime? AnalyzerRangeEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Analyzer_Range_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Analyzer_Range_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Analyzer_Range_Evaluation_Begin_Date", value);
+                SetCheckParameter("Analyzer_Range_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The first hour that the Analyzer Range is active during an evaluation period.
         /// </summary>
-        public static int? AnalyzerRangeEvaluationBeginHour
+        public int? AnalyzerRangeEvaluationBeginHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Analyzer_Range_Evaluation_Begin_Hour")));
+                return ((int?)(GetCheckParameter("Analyzer_Range_Evaluation_Begin_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Analyzer_Range_Evaluation_Begin_Hour", value);
+                SetCheckParameter("Analyzer_Range_Evaluation_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// The last date that the Analyzer Range is active during an evaluation period.
         /// </summary>
-        public static DateTime? AnalyzerRangeEvaluationEndDate
+        public DateTime? AnalyzerRangeEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Analyzer_Range_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Analyzer_Range_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Analyzer_Range_Evaluation_End_Date", value);
+                SetCheckParameter("Analyzer_Range_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// The last hour that the Analyzer Range is active during an evaluation period.
         /// </summary>
-        public static int? AnalyzerRangeEvaluationEndHour
+        public int? AnalyzerRangeEvaluationEndHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Analyzer_Range_Evaluation_End_Hour")));
+                return ((int?)(GetCheckParameter("Analyzer_Range_Evaluation_End_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Analyzer_Range_Evaluation_End_Hour", value);
+                SetCheckParameter("Analyzer_Range_Evaluation_End_Hour", value);
             }
         }
         
         /// <summary>
         /// A collection of records for all Analyzer Range records for the component with the associated component information.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwAnalyzerRangeRow> AnalyzerRangeRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwAnalyzerRangeRow> AnalyzerRangeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Analyzer_Range_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Analyzer_Range_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -266,11 +265,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Analyzer_Range_Records", null);
+                    SetCheckParameter("Analyzer_Range_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Analyzer_Range_Records", value.SourceView);
+                    SetCheckParameter("Analyzer_Range_Records", value.SourceView);
                 }
             }
         }
@@ -278,101 +277,101 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Analyzer Range Start Date is Valid.
         /// </summary>
-        public static bool? AnalyzerRangeStartDateValid
+        public bool? AnalyzerRangeStartDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Analyzer_Range_Start_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Analyzer_Range_Start_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Analyzer_Range_Start_Date_Valid", value);
+                SetCheckParameter("Analyzer_Range_Start_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Analyzer Range Start Hour is Valid.
         /// </summary>
-        public static bool? AnalyzerRangeStartHourValid
+        public bool? AnalyzerRangeStartHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Analyzer_Range_Start_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Analyzer_Range_Start_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Analyzer_Range_Start_Hour_Valid", value);
+                SetCheckParameter("Analyzer_Range_Start_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// A method that is required for a formula.
         /// </summary>
-        public static string AppropriateMethodForFormula
+        public string AppropriateMethodForFormula
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Appropriate_Method_For_Formula")));
+                return ((string)(GetCheckParameter("Appropriate_Method_For_Formula")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Appropriate_Method_For_Formula", value);
+                SetCheckParameter("Appropriate_Method_For_Formula", value);
             }
         }
         
         /// <summary>
         /// A system type or component type and basis that is appropriate for a formula.
         /// </summary>
-        public static string AppropriateSystemOrComponentForFormula
+        public string AppropriateSystemOrComponentForFormula
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Appropriate_System_or_Component_for_Formula")));
+                return ((string)(GetCheckParameter("Appropriate_System_or_Component_for_Formula")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Appropriate_System_or_Component_for_Formula", value);
+                SetCheckParameter("Appropriate_System_or_Component_for_Formula", value);
             }
         }
         
         /// <summary>
         /// The first date that the Location Attribute record is active during an evaluation period.
         /// </summary>
-        public static DateTime? AttributeEvaluationBeginDate
+        public DateTime? AttributeEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Attribute_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Attribute_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Attribute_Evaluation_Begin_Date", value);
+                SetCheckParameter("Attribute_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The last date that the Location Attribute record is active during an evaluation period.
         /// </summary>
-        public static DateTime? AttributeEvaluationEndDate
+        public DateTime? AttributeEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Attribute_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Attribute_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Attribute_Evaluation_End_Date", value);
+                SetCheckParameter("Attribute_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// A lookup table of Bypass Approach Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.BypassApproachCodeRow> BypassApproachCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.BypassApproachCodeRow> BypassApproachCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Bypass_Approach_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Bypass_Approach_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -386,11 +385,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Bypass_Approach_Code_Lookup_Table", null);
+                    SetCheckParameter("Bypass_Approach_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Bypass_Approach_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Bypass_Approach_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -398,26 +397,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The recalculated Average Percent Value in the Monitoring Qualification Percent record.
         /// </summary>
-        public static decimal? CalculatedAveragePercentValue
+        public decimal? CalculatedAveragePercentValue
         {
             get
             {
-                return ((decimal?)(MpParameters.GetCheckParameter("Calculated_Average_Percent_Value")));
+                return ((decimal?)(GetCheckParameter("Calculated_Average_Percent_Value")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Calculated_Average_Percent_Value", value);
+                SetCheckParameter("Calculated_Average_Percent_Value", value);
             }
         }
         
         /// <summary>
         /// Combines Method Records and MATS (Supplemental) Method Records into a single set.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckMp.Function.CombinedMethods> CombinedFacilityMethodRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.CheckMp.Function.CombinedMethods> CombinedFacilityMethodRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Combined_Facility_Method_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Combined_Facility_Method_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -431,11 +430,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Combined_Facility_Method_Records", null);
+                    SetCheckParameter("Combined_Facility_Method_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Combined_Facility_Method_Records", value.SourceView);
+                    SetCheckParameter("Combined_Facility_Method_Records", value.SourceView);
                 }
             }
         }
@@ -443,26 +442,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Shows Active/Inactive Status for a Component
         /// </summary>
-        public static bool? ComponentActive
+        public bool? ComponentActive
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Component_Active")));
+                return ((bool?)(GetCheckParameter("Component_Active")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Component_Active", value);
+                SetCheckParameter("Component_Active", value);
             }
         }
         
         /// <summary>
         /// Analyzer Range Records linked to the component.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AnalyzerRangeRow> ComponentAnalyzerRangeRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AnalyzerRangeRow> ComponentAnalyzerRangeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Component_Analyzer_Range_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Component_Analyzer_Range_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -476,11 +475,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Component_Analyzer_Range_Records", null);
+                    SetCheckParameter("Component_Analyzer_Range_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Component_Analyzer_Range_Records", value.SourceView);
+                    SetCheckParameter("Component_Analyzer_Range_Records", value.SourceView);
                 }
             }
         }
@@ -488,131 +487,131 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the value reported in the field is valid.
         /// </summary>
-        public static bool? ComponentBasisCodeValid
+        public bool? ComponentBasisCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Component_Basis_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Component_Basis_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Component_Basis_Code_Valid", value);
+                SetCheckParameter("Component_Basis_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the value in the field is valid.
         /// </summary>
-        public static bool? ComponentComponentTypeValid
+        public bool? ComponentComponentTypeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Component_Component_Type_Valid")));
+                return ((bool?)(GetCheckParameter("Component_Component_Type_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Component_Component_Type_Valid", value);
+                SetCheckParameter("Component_Component_Type_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Start Date and Hour is prior to the End Date and Hour in every System Component record for the Component.
         /// </summary>
-        public static bool? ComponentDatesAndHoursConsistent
+        public bool? ComponentDatesAndHoursConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Component_Dates_and_Hours_Consistent")));
+                return ((bool?)(GetCheckParameter("Component_Dates_and_Hours_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Component_Dates_and_Hours_Consistent", value);
+                SetCheckParameter("Component_Dates_and_Hours_Consistent", value);
             }
         }
         
         /// <summary>
         /// The first date that the component is active during an evaluation period.
         /// </summary>
-        public static DateTime? ComponentEvaluationBeginDate
+        public DateTime? ComponentEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Component_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Component_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Component_Evaluation_Begin_Date", value);
+                SetCheckParameter("Component_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The first hour that the component is active during an evaluation period.
         /// </summary>
-        public static int? ComponentEvaluationBeginHour
+        public int? ComponentEvaluationBeginHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Component_Evaluation_Begin_Hour")));
+                return ((int?)(GetCheckParameter("Component_Evaluation_Begin_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Component_Evaluation_Begin_Hour", value);
+                SetCheckParameter("Component_Evaluation_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// The last date that the component is active during an evaluation period.
         /// </summary>
-        public static DateTime? ComponentEvaluationEndDate
+        public DateTime? ComponentEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Component_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Component_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Component_Evaluation_End_Date", value);
+                SetCheckParameter("Component_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// The last hour that the component is active during an evaluation period.
         /// </summary>
-        public static int? ComponentEvaluationEndHour
+        public int? ComponentEvaluationEndHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Component_Evaluation_End_Hour")));
+                return ((int?)(GetCheckParameter("Component_Evaluation_End_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Component_Evaluation_End_Hour", value);
+                SetCheckParameter("Component_Evaluation_End_Hour", value);
             }
         }
         
         /// <summary>
         /// The emission parameter monitored by the component.
         /// </summary>
-        public static string ComponentParameterCode
+        public string ComponentParameterCode
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Component_Parameter_Code")));
+                return ((string)(GetCheckParameter("Component_Parameter_Code")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Component_Parameter_Code", value);
+                SetCheckParameter("Component_Parameter_Code", value);
             }
         }
         
         /// <summary>
         /// Component Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwComponentRow> ComponentRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwComponentRow> ComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -626,11 +625,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Component_Records", null);
+                    SetCheckParameter("Component_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Component_Records", value.SourceView);
+                    SetCheckParameter("Component_Records", value.SourceView);
                 }
             }
         }
@@ -638,11 +637,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Appropriate Sample Acquisition Method Codes for Component Type and Basis.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ComponentTypeAndBasisToSampleAcquisitionMethodRow> ComponentTypeAndBasisToSampleAcquisitionMethodCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ComponentTypeAndBasisToSampleAcquisitionMethodRow> ComponentTypeAndBasisToSampleAcquisitionMethodCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Component_Type_And_Basis_To_Sample_Acquisition_Method_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Component_Type_And_Basis_To_Sample_Acquisition_Method_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -656,11 +655,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Component_Type_And_Basis_To_Sample_Acquisition_Method_Cross_Check_Table", null);
+                    SetCheckParameter("Component_Type_And_Basis_To_Sample_Acquisition_Method_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Component_Type_And_Basis_To_Sample_Acquisition_Method_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Component_Type_And_Basis_To_Sample_Acquisition_Method_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -668,11 +667,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// List of appropriate span methods for component type and span scale.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ComponentTypeAndSpanScaleToSpanMethodRow> ComponentTypeAndSpanScaleToSpanMethodCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ComponentTypeAndSpanScaleToSpanMethodRow> ComponentTypeAndSpanScaleToSpanMethodCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Component_Type_And_Span_Scale_To_Span_Method_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Component_Type_And_Span_Scale_To_Span_Method_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -686,11 +685,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Component_Type_And_Span_Scale_To_Span_Method_Cross_Check_Table", null);
+                    SetCheckParameter("Component_Type_And_Span_Scale_To_Span_Method_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Component_Type_And_Span_Scale_To_Span_Method_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Component_Type_And_Span_Scale_To_Span_Method_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -698,11 +697,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// A lookup table of Component Type Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ComponentTypeCodeRow> ComponentTypeCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ComponentTypeCodeRow> ComponentTypeCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Component_Type_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Component_Type_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -716,11 +715,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Component_Type_Code_Lookup_Table", null);
+                    SetCheckParameter("Component_Type_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Component_Type_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Component_Type_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -728,26 +727,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the control is active.
         /// </summary>
-        public static bool? ControlActiveStatus
+        public bool? ControlActiveStatus
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Control_Active_Status")));
+                return ((bool?)(GetCheckParameter("Control_Active_Status")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Control_Active_Status", value);
+                SetCheckParameter("Control_Active_Status", value);
             }
         }
         
         /// <summary>
         /// Control Code Lookup Table
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ControlCodeRow> ControlCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ControlCodeRow> ControlCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Control_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Control_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -761,11 +760,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Control_Code_Lookup_Table", null);
+                    SetCheckParameter("Control_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Control_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Control_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -773,101 +772,101 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Control Code reported is Valid.
         /// </summary>
-        public static bool? ControlCodeValid
+        public bool? ControlCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Control_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Control_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Control_Code_Valid", value);
+                SetCheckParameter("Control_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Date on which evaluation period ends for the control record.
         /// </summary>
-        public static DateTime? ControlEvaluationEndDate
+        public DateTime? ControlEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Control_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Control_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Control_Evaluation_End_Date", value);
+                SetCheckParameter("Control_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// Date on which evaluation period begins for the control record.
         /// </summary>
-        public static DateTime? ControlEvaluationStartDate
+        public DateTime? ControlEvaluationStartDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Control_Evaluation_Start_Date")));
+                return ((DateTime?)(GetCheckParameter("Control_Evaluation_Start_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Control_Evaluation_Start_Date", value);
+                SetCheckParameter("Control_Evaluation_Start_Date", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Control Dates reported are Consistent.
         /// </summary>
-        public static bool? ControlInstallDateConsistentWithRetireDate
+        public bool? ControlInstallDateConsistentWithRetireDate
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Control_Install_Date_Consistent_With_Retire_Date")));
+                return ((bool?)(GetCheckParameter("Control_Install_Date_Consistent_With_Retire_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Control_Install_Date_Consistent_With_Retire_Date", value);
+                SetCheckParameter("Control_Install_Date_Consistent_With_Retire_Date", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Control Install Date reported is Valid.
         /// </summary>
-        public static bool? ControlInstallDateValid
+        public bool? ControlInstallDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Control_Install_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Control_Install_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Control_Install_Date_Valid", value);
+                SetCheckParameter("Control_Install_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Control Parameter Code reported is Valid.
         /// </summary>
-        public static bool? ControlParameterCodeValid
+        public bool? ControlParameterCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Control_Parameter_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Control_Parameter_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Control_Parameter_Code_Valid", value);
+                SetCheckParameter("Control_Parameter_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Control records with control info included.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.UnitControlRow> ControlRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.UnitControlRow> ControlRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Control_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Control_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -881,11 +880,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Control_Records", null);
+                    SetCheckParameter("Control_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Control_Records", value.SourceView);
+                    SetCheckParameter("Control_Records", value.SourceView);
                 }
             }
         }
@@ -893,26 +892,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether the Control Retire Date reported is Valid.
         /// </summary>
-        public static bool? ControlRetireDateValid
+        public bool? ControlRetireDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Control_Retire_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Control_Retire_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Control_Retire_Date_Valid", value);
+                SetCheckParameter("Control_Retire_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// List of appropriate unit types for the control equipment.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ControlToUnitTypeCrossCheckTableRow> ControlToUnitTypeCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ControlToUnitTypeCrossCheckTableRow> ControlToUnitTypeCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Control_to_Unit_Type_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Control_to_Unit_Type_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -926,11 +925,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Control_to_Unit_Type_Cross_Check_Table", null);
+                    SetCheckParameter("Control_to_Unit_Type_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Control_to_Unit_Type_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Control_to_Unit_Type_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -938,11 +937,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Contains the cross check table that ties MATS Supplemental Compliance Parameters to valid Methods.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.MatsSupplementalComplianceParameterToMethodRow> CrosscheckMatssupplementalcomplianceparametertomethod
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.MatsSupplementalComplianceParameterToMethodRow> CrosscheckMatssupplementalcomplianceparametertomethod
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("CrossCheck_MatsSupplementalComplianceParameterToMethod")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("CrossCheck_MatsSupplementalComplianceParameterToMethod")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -956,11 +955,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("CrossCheck_MatsSupplementalComplianceParameterToMethod", null);
+                    SetCheckParameter("CrossCheck_MatsSupplementalComplianceParameterToMethod", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("CrossCheck_MatsSupplementalComplianceParameterToMethod", value.SourceView);
+                    SetCheckParameter("CrossCheck_MatsSupplementalComplianceParameterToMethod", value.SourceView);
                 }
             }
         }
@@ -968,11 +967,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// This parameter contains the Program Parameter to Location Type cross check table.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ProgramParameterToLocationTypeRow> CrosscheckProgramparametertolocationtype
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ProgramParameterToLocationTypeRow> CrosscheckProgramparametertolocationtype
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("CrossCheck_ProgramParameterToLocationType")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("CrossCheck_ProgramParameterToLocationType")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -986,11 +985,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("CrossCheck_ProgramParameterToLocationType", null);
+                    SetCheckParameter("CrossCheck_ProgramParameterToLocationType", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("CrossCheck_ProgramParameterToLocationType", value.SourceView);
+                    SetCheckParameter("CrossCheck_ProgramParameterToLocationType", value.SourceView);
                 }
             }
         }
@@ -998,11 +997,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// This parameter contains the Program Parameter to Method Code cross check table.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ProgramParameterToMethodCodeRow> CrosscheckProgramparametertomethodcode
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ProgramParameterToMethodCodeRow> CrosscheckProgramparametertomethodcode
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("CrossCheck_ProgramParameterToMethodCode")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("CrossCheck_ProgramParameterToMethodCode")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1016,11 +1015,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("CrossCheck_ProgramParameterToMethodCode", null);
+                    SetCheckParameter("CrossCheck_ProgramParameterToMethodCode", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("CrossCheck_ProgramParameterToMethodCode", value.SourceView);
+                    SetCheckParameter("CrossCheck_ProgramParameterToMethodCode", value.SourceView);
                 }
             }
         }
@@ -1028,11 +1027,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// This parameter contains the Program Parameter to Method Parameter cross check table.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ProgramParameterToMethodParameterRow> CrosscheckProgramparametertomethodparameter
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ProgramParameterToMethodParameterRow> CrosscheckProgramparametertomethodparameter
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("CrossCheck_ProgramParameterToMethodParameter")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("CrossCheck_ProgramParameterToMethodParameter")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1046,11 +1045,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("CrossCheck_ProgramParameterToMethodParameter", null);
+                    SetCheckParameter("CrossCheck_ProgramParameterToMethodParameter", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("CrossCheck_ProgramParameterToMethodParameter", value.SourceView);
+                    SetCheckParameter("CrossCheck_ProgramParameterToMethodParameter", value.SourceView);
                 }
             }
         }
@@ -1058,11 +1057,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// This parameter contains the Program Parameter to Severity cross check table.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ProgramParameterToSeverityRow> CrosscheckProgramparametertoseverity
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ProgramParameterToSeverityRow> CrosscheckProgramparametertoseverity
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("CrossCheck_ProgramParameterToSeverity")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("CrossCheck_ProgramParameterToSeverity")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1076,11 +1075,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("CrossCheck_ProgramParameterToSeverity", null);
+                    SetCheckParameter("CrossCheck_ProgramParameterToSeverity", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("CrossCheck_ProgramParameterToSeverity", value.SourceView);
+                    SetCheckParameter("CrossCheck_ProgramParameterToSeverity", value.SourceView);
                 }
             }
         }
@@ -1088,11 +1087,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// List of information for the Current record in Analyzer Range.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwAnalyzerRangeRow CurrentAnalyzerRange
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwAnalyzerRangeRow CurrentAnalyzerRange
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Analyzer_Range")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Analyzer_Range")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1106,11 +1105,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Analyzer_Range", null);
+                    SetCheckParameter("Current_Analyzer_Range", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Analyzer_Range", value.SourceRow);
+                    SetCheckParameter("Current_Analyzer_Range", value.SourceRow);
                 }
             }
         }
@@ -1118,56 +1117,56 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Contains the current begin date and hour combined into a single date element.
         /// </summary>
-        public static DateTime? CurrentBeginDateAndHour
+        public DateTime? CurrentBeginDateAndHour
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Current_Begin_Date_and_Hour")));
+                return ((DateTime?)(GetCheckParameter("Current_Begin_Date_and_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Current_Begin_Date_and_Hour", value);
+                SetCheckParameter("Current_Begin_Date_and_Hour", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Begin Hour for the current record is valid.
         /// </summary>
-        public static bool? CurrentBeginDateAndHourValid
+        public bool? CurrentBeginDateAndHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Current_Begin_Date_And_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Current_Begin_Date_And_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Current_Begin_Date_And_Hour_Valid", value);
+                SetCheckParameter("Current_Begin_Date_And_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Begin Date for the current record is valid.
         /// </summary>
-        public static bool? CurrentBeginDateValid
+        public bool? CurrentBeginDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Current_Begin_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Current_Begin_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Current_Begin_Date_Valid", value);
+                SetCheckParameter("Current_Begin_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// List of information for the Current record in Component.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwComponentRow CurrentComponent
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwComponentRow CurrentComponent
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Component")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Component")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1181,11 +1180,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Component", null);
+                    SetCheckParameter("Current_Component", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Component", value.SourceRow);
+                    SetCheckParameter("Current_Component", value.SourceRow);
                 }
             }
         }
@@ -1193,11 +1192,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The current control record being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.Table.UnitControlRow CurrentControl
+        public ECMPS.Checks.Data.Ecmps.Dbo.Table.UnitControlRow CurrentControl
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Control")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Control")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1211,11 +1210,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Control", null);
+                    SetCheckParameter("Current_Control", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Control", value.SourceRow);
+                    SetCheckParameter("Current_Control", value.SourceRow);
                 }
             }
         }
@@ -1223,26 +1222,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether the current record's begin date and hour and end date and hour are valid and that the begin date and hour is before the end date and hour.
         /// </summary>
-        public static bool? CurrentDatesAndHoursConsistent
+        public bool? CurrentDatesAndHoursConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Current_Dates_And_Hours_Consistent")));
+                return ((bool?)(GetCheckParameter("Current_Dates_And_Hours_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Current_Dates_And_Hours_Consistent", value);
+                SetCheckParameter("Current_Dates_And_Hours_Consistent", value);
             }
         }
         
         /// <summary>
         /// Collection of Data Elements for the Default being evaluated (values from Monitor_Default)
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorDefaultRow CurrentDefault
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorDefaultRow CurrentDefault
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Default")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Default")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1256,11 +1255,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Default", null);
+                    SetCheckParameter("Current_Default", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Default", value.SourceRow);
+                    SetCheckParameter("Current_Default", value.SourceRow);
                 }
             }
         }
@@ -1268,56 +1267,56 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Contains the current end date and hour combined into a single date element.
         /// </summary>
-        public static DateTime? CurrentEndDateAndHour
+        public DateTime? CurrentEndDateAndHour
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Current_End_Date_and_Hour")));
+                return ((DateTime?)(GetCheckParameter("Current_End_Date_and_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Current_End_Date_and_Hour", value);
+                SetCheckParameter("Current_End_Date_and_Hour", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the End Hour for the current record is valid.
         /// </summary>
-        public static bool? CurrentEndDateAndHourValid
+        public bool? CurrentEndDateAndHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Current_End_Date_And_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Current_End_Date_And_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Current_End_Date_And_Hour_Valid", value);
+                SetCheckParameter("Current_End_Date_And_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the End Date for the current record is valid.
         /// </summary>
-        public static bool? CurrentEndDateValid
+        public bool? CurrentEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Current_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Current_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Current_End_Date_Valid", value);
+                SetCheckParameter("Current_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// List/Collection of information for the formula being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorFormulaRow CurrentFormula
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorFormulaRow CurrentFormula
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Formula")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Formula")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1331,11 +1330,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Formula", null);
+                    SetCheckParameter("Current_Formula", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Formula", value.SourceRow);
+                    SetCheckParameter("Current_Formula", value.SourceRow);
                 }
             }
         }
@@ -1343,11 +1342,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Collection of Data Elements for the Fuel being evaluated (values from Unit_Fuel)
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationFuelRow CurrentFuel
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationFuelRow CurrentFuel
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Fuel")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Fuel")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1361,11 +1360,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Fuel", null);
+                    SetCheckParameter("Current_Fuel", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Fuel", value.SourceRow);
+                    SetCheckParameter("Current_Fuel", value.SourceRow);
                 }
             }
         }
@@ -1373,11 +1372,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Collection of Data Elements for the Fuel Flow Record being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.Table.SystemFuelFlowRow CurrentFuelFlow
+        public ECMPS.Checks.Data.Ecmps.Dbo.Table.SystemFuelFlowRow CurrentFuelFlow
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Fuel_Flow")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Fuel_Flow")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1391,11 +1390,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Fuel_Flow", null);
+                    SetCheckParameter("Current_Fuel_Flow", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Fuel_Flow", value.SourceRow);
+                    SetCheckParameter("Current_Fuel_Flow", value.SourceRow);
                 }
             }
         }
@@ -1403,11 +1402,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Collection of Data Elements for the Load being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLoadRow CurrentLoad
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLoadRow CurrentLoad
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Load")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Load")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1421,11 +1420,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Load", null);
+                    SetCheckParameter("Current_Load", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Load", value.SourceRow);
+                    SetCheckParameter("Current_Load", value.SourceRow);
                 }
             }
         }
@@ -1433,11 +1432,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The monitor location being evaluated including linked stack information (active/retire date) and unit information (non load based indicator).
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationRow CurrentLocation
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationRow CurrentLocation
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Location")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Location")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1451,11 +1450,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Location", null);
+                    SetCheckParameter("Current_Location", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Location", value.SourceRow);
+                    SetCheckParameter("Current_Location", value.SourceRow);
                 }
             }
         }
@@ -1463,11 +1462,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Monitor Location Attribute record.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationAttributeRow CurrentLocationAttribute
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationAttributeRow CurrentLocationAttribute
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Location_Attribute")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Location_Attribute")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1481,11 +1480,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Location_Attribute", null);
+                    SetCheckParameter("Current_Location_Attribute", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Location_Attribute", value.SourceRow);
+                    SetCheckParameter("Current_Location_Attribute", value.SourceRow);
                 }
             }
         }
@@ -1493,11 +1492,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Collection of Data Elements for the Method being evaluated (values from Monitor_Method)
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorMethodRow CurrentMethod
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorMethodRow CurrentMethod
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Method")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Method")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1511,11 +1510,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Method", null);
+                    SetCheckParameter("Current_Method", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Method", value.SourceRow);
+                    SetCheckParameter("Current_Method", value.SourceRow);
                 }
             }
         }
@@ -1523,26 +1522,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether the method code for the current record is valid.
         /// </summary>
-        public static bool? CurrentMethodValid
+        public bool? CurrentMethodValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Current_Method_Valid")));
+                return ((bool?)(GetCheckParameter("Current_Method_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Current_Method_Valid", value);
+                SetCheckParameter("Current_Method_Valid", value);
             }
         }
         
         /// <summary>
         /// Collection of Data Elements for the MonitoringPlanComment being evaluated 
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorPlanCommentRow CurrentMonitoringPlanComment
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorPlanCommentRow CurrentMonitoringPlanComment
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Monitoring_Plan_Comment")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Monitoring_Plan_Comment")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1556,11 +1555,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Monitoring_Plan_Comment", null);
+                    SetCheckParameter("Current_Monitoring_Plan_Comment", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Monitoring_Plan_Comment", value.SourceRow);
+                    SetCheckParameter("Current_Monitoring_Plan_Comment", value.SourceRow);
                 }
             }
         }
@@ -1568,11 +1567,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// List providing all Monitoring Plan Configuration information for the current Monitoring Plan.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorPlanRow CurrentMonitoringPlanConfiguration
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorPlanRow CurrentMonitoringPlanConfiguration
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Monitoring_Plan_Configuration")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Monitoring_Plan_Configuration")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1586,11 +1585,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Monitoring_Plan_Configuration", null);
+                    SetCheckParameter("Current_Monitoring_Plan_Configuration", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Monitoring_Plan_Configuration", value.SourceRow);
+                    SetCheckParameter("Current_Monitoring_Plan_Configuration", value.SourceRow);
                 }
             }
         }
@@ -1598,26 +1597,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether the parameter code is valid for the current record.
         /// </summary>
-        public static bool? CurrentParameterValid
+        public bool? CurrentParameterValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Current_Parameter_Valid")));
+                return ((bool?)(GetCheckParameter("Current_Parameter_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Current_Parameter_Valid", value);
+                SetCheckParameter("Current_Parameter_Valid", value);
             }
         }
         
         /// <summary>
         /// This is a list/collection of information about the program being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationProgramRow CurrentProgram
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationProgramRow CurrentProgram
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Program")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Program")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1631,11 +1630,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Program", null);
+                    SetCheckParameter("Current_Program", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Program", value.SourceRow);
+                    SetCheckParameter("Current_Program", value.SourceRow);
                 }
             }
         }
@@ -1643,26 +1642,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates if current Unit Program record is active.
         /// </summary>
-        public static bool? CurrentProgramActive
+        public bool? CurrentProgramActive
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Current_Program_Active")));
+                return ((bool?)(GetCheckParameter("Current_Program_Active")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Current_Program_Active", value);
+                SetCheckParameter("Current_Program_Active", value);
             }
         }
         
         /// <summary>
         /// A data row contiaining a specific PROGRAM_PARAMETER row.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckMp.Function.UnitProgramParameter CurrentProgramParameter
+        public ECMPS.Checks.Data.Ecmps.CheckMp.Function.UnitProgramParameter CurrentProgramParameter
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Program_Parameter")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Program_Parameter")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1676,11 +1675,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Program_Parameter", null);
+                    SetCheckParameter("Current_Program_Parameter", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Program_Parameter", value.SourceRow);
+                    SetCheckParameter("Current_Program_Parameter", value.SourceRow);
                 }
             }
         }
@@ -1688,26 +1687,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether the current Unit Program Parameter record is active.
         /// </summary>
-        public static bool? CurrentProgramParameterActive
+        public bool? CurrentProgramParameterActive
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Current_Program_Parameter_Active")));
+                return ((bool?)(GetCheckParameter("Current_Program_Parameter_Active")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Current_Program_Parameter_Active", value);
+                SetCheckParameter("Current_Program_Parameter_Active", value);
             }
         }
         
         /// <summary>
         /// This is a list/collection of information about the Qualification Record being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpQualificationRow CurrentQualification
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpQualificationRow CurrentQualification
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Qualification")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Qualification")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1721,11 +1720,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Qualification", null);
+                    SetCheckParameter("Current_Qualification", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Qualification", value.SourceRow);
+                    SetCheckParameter("Current_Qualification", value.SourceRow);
                 }
             }
         }
@@ -1733,15 +1732,15 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates if current Monitor Qualification record is active.
         /// </summary>
-        public static bool? CurrentQualificationActive
+        public bool? CurrentQualificationActive
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Current_Qualification_Active")));
+                return ((bool?)(GetCheckParameter("Current_Qualification_Active")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Current_Qualification_Active", value);
+                SetCheckParameter("Current_Qualification_Active", value);
             }
         }
         
@@ -1750,11 +1749,11 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///Set in the Monitor Qualification LEE Category.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckMp.Function.MonitorQualificationLEEParameter CurrentQualificationLee
+        public ECMPS.Checks.Data.Ecmps.CheckMp.Function.MonitorQualificationLEEParameter CurrentQualificationLee
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Qualification_LEE")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Qualification_LEE")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1768,11 +1767,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Qualification_LEE", null);
+                    SetCheckParameter("Current_Qualification_LEE", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Qualification_LEE", value.SourceRow);
+                    SetCheckParameter("Current_Qualification_LEE", value.SourceRow);
                 }
             }
         }
@@ -1780,11 +1779,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// This is a list/collection of information about the Qualification LME Record being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorQualificationLmeRow CurrentQualificationLme
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorQualificationLmeRow CurrentQualificationLme
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Qualification_LME")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Qualification_LME")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1798,11 +1797,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Qualification_LME", null);
+                    SetCheckParameter("Current_Qualification_LME", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Qualification_LME", value.SourceRow);
+                    SetCheckParameter("Current_Qualification_LME", value.SourceRow);
                 }
             }
         }
@@ -1810,11 +1809,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The Monitoring Qualification Percent Record being evaluated along with associated Monitor Qualification data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorQualificationPctRow CurrentQualificationPercent
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorQualificationPctRow CurrentQualificationPercent
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Qualification_Percent")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Qualification_Percent")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1828,11 +1827,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Qualification_Percent", null);
+                    SetCheckParameter("Current_Qualification_Percent", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Qualification_Percent", value.SourceRow);
+                    SetCheckParameter("Current_Qualification_Percent", value.SourceRow);
                 }
             }
         }
@@ -1840,11 +1839,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Collection of Data Elements for the span being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSpanRow CurrentSpan
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSpanRow CurrentSpan
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Span")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Span")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1858,11 +1857,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Span", null);
+                    SetCheckParameter("Current_Span", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Span", value.SourceRow);
+                    SetCheckParameter("Current_Span", value.SourceRow);
                 }
             }
         }
@@ -1870,11 +1869,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Collection of Data Elements for the Monitoring System being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow CurrentSystem
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow CurrentSystem
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_System")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_System")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1888,11 +1887,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_System", null);
+                    SetCheckParameter("Current_System", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_System", value.SourceRow);
+                    SetCheckParameter("Current_System", value.SourceRow);
                 }
             }
         }
@@ -1900,11 +1899,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The Monitor_System_Component being evaluated, including the fields for the associated component record.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow CurrentSystemComponent
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow CurrentSystemComponent
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_System_Component")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_System_Component")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1918,11 +1917,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_System_Component", null);
+                    SetCheckParameter("Current_System_Component", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_System_Component", value.SourceRow);
+                    SetCheckParameter("Current_System_Component", value.SourceRow);
                 }
             }
         }
@@ -1930,11 +1929,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Data related to the unit being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLocationRow CurrentUnit
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLocationRow CurrentUnit
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Unit")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Unit")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1948,11 +1947,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Unit", null);
+                    SetCheckParameter("Current_Unit", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Unit", value.SourceRow);
+                    SetCheckParameter("Current_Unit", value.SourceRow);
                 }
             }
         }
@@ -1960,11 +1959,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The Current Unit Capacity record information.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.Table.UnitCapacityRow CurrentUnitCapacity
+        public ECMPS.Checks.Data.Ecmps.Dbo.Table.UnitCapacityRow CurrentUnitCapacity
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Unit_Capacity")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Unit_Capacity")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1978,11 +1977,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Unit_Capacity", null);
+                    SetCheckParameter("Current_Unit_Capacity", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Unit_Capacity", value.SourceRow);
+                    SetCheckParameter("Current_Unit_Capacity", value.SourceRow);
                 }
             }
         }
@@ -1990,11 +1989,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The Unit Stack Configuration record being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.Table.UnitStackConfigurationRow CurrentUnitStackConfiguration
+        public ECMPS.Checks.Data.Ecmps.Dbo.Table.UnitStackConfigurationRow CurrentUnitStackConfiguration
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_Unit_Stack_Configuration")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Unit_Stack_Configuration")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2008,11 +2007,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_Unit_Stack_Configuration", null);
+                    SetCheckParameter("Current_Unit_Stack_Configuration", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_Unit_Stack_Configuration", value.SourceRow);
+                    SetCheckParameter("Current_Unit_Stack_Configuration", value.SourceRow);
                 }
             }
         }
@@ -2020,11 +2019,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Collection of Data Elements for the WAF being evaluated (values from RECT_DUCT_WAF).
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwRectDuctWafRow CurrentWaf
+        public ECMPS.Checks.Data.Ecmps.Dbo.View.VwRectDuctWafRow CurrentWaf
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("Current_WAF")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_WAF")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2038,11 +2037,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Current_WAF", null);
+                    SetCheckParameter("Current_WAF", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Current_WAF", value.SourceRow);
+                    SetCheckParameter("Current_WAF", value.SourceRow);
                 }
             }
         }
@@ -2050,146 +2049,146 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Default is active during the Evaluation Period.
         /// </summary>
-        public static bool? DefaultActiveStatus
+        public bool? DefaultActiveStatus
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Default_Active_Status")));
+                return ((bool?)(GetCheckParameter("Default_Active_Status")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Active_Status", value);
+                SetCheckParameter("Default_Active_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates if monitor default start date and hour is prior to end date and hour.
         /// </summary>
-        public static bool? DefaultDatesAndHoursConsistent
+        public bool? DefaultDatesAndHoursConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Default_Dates_and_Hours_Consistent")));
+                return ((bool?)(GetCheckParameter("Default_Dates_and_Hours_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Dates_and_Hours_Consistent", value);
+                SetCheckParameter("Default_Dates_and_Hours_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Default End Date is valid.
         /// </summary>
-        public static bool? DefaultEndDateValid
+        public bool? DefaultEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Default_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Default_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_End_Date_Valid", value);
+                SetCheckParameter("Default_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Default End Hour is valid.
         /// </summary>
-        public static bool? DefaultEndHourValid
+        public bool? DefaultEndHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Default_End_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Default_End_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_End_Hour_Valid", value);
+                SetCheckParameter("Default_End_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// The date on which the Evaluation Period begins for the Default Record.
         /// </summary>
-        public static DateTime? DefaultEvaluationBeginDate
+        public DateTime? DefaultEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Default_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Default_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Evaluation_Begin_Date", value);
+                SetCheckParameter("Default_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The hour in which the Evaluation Period begins for the Default Record.
         /// </summary>
-        public static int? DefaultEvaluationBeginHour
+        public int? DefaultEvaluationBeginHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Default_Evaluation_Begin_Hour")));
+                return ((int?)(GetCheckParameter("Default_Evaluation_Begin_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Evaluation_Begin_Hour", value);
+                SetCheckParameter("Default_Evaluation_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// The date on which the Evaluation Period ends for the Default Record.
         /// </summary>
-        public static DateTime? DefaultEvaluationEndDate
+        public DateTime? DefaultEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Default_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Default_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Evaluation_End_Date", value);
+                SetCheckParameter("Default_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// The hour in which the Evaluation Period ends for the Default Record.
         /// </summary>
-        public static int? DefaultEvaluationEndHour
+        public int? DefaultEvaluationEndHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Default_Evaluation_End_Hour")));
+                return ((int?)(GetCheckParameter("Default_Evaluation_End_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Evaluation_End_Hour", value);
+                SetCheckParameter("Default_Evaluation_End_Hour", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Default Fuel Code is Valid.
         /// </summary>
-        public static bool? DefaultFuelCodeValid
+        public bool? DefaultFuelCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Default_Fuel_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Default_Fuel_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Fuel_Code_Valid", value);
+                SetCheckParameter("Default_Fuel_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Links Default Parameter, Boiler Type, and Fuel Type to Default Value for generic default emission rates.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.DefaultParameterBoilerTypeAndFuelTypeToDefaultValueRow> DefaultParameterBoilerTypeAndFuelTypeToDefaultValueCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.DefaultParameterBoilerTypeAndFuelTypeToDefaultValueRow> DefaultParameterBoilerTypeAndFuelTypeToDefaultValueCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Default_Parameter,_Boiler_Type,_And_Fuel_Type_To_Default_Value_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Default_Parameter,_Boiler_Type,_And_Fuel_Type_To_Default_Value_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2203,11 +2202,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Default_Parameter,_Boiler_Type,_And_Fuel_Type_To_Default_Value_Cross_Check_Table", null);
+                    SetCheckParameter("Default_Parameter,_Boiler_Type,_And_Fuel_Type_To_Default_Value_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Default_Parameter,_Boiler_Type,_And_Fuel_Type_To_Default_Value_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Default_Parameter,_Boiler_Type,_And_Fuel_Type_To_Default_Value_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -2215,15 +2214,15 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Default Parameter Code Valid.
         /// </summary>
-        public static bool? DefaultParameterCodeValid
+        public bool? DefaultParameterCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Default_Parameter_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Default_Parameter_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Parameter_Code_Valid", value);
+                SetCheckParameter("Default_Parameter_Code_Valid", value);
             }
         }
         
@@ -2232,11 +2231,11 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///Display: Column 1 only.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ParameterToCategoryRow> DefaultParameterList
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ParameterToCategoryRow> DefaultParameterList
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Default_Parameter_List")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Default_Parameter_List")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2250,11 +2249,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Default_Parameter_List", null);
+                    SetCheckParameter("Default_Parameter_List", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Default_Parameter_List", value.SourceView);
+                    SetCheckParameter("Default_Parameter_List", value.SourceView);
                 }
             }
         }
@@ -2262,11 +2261,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// List of DefaultPurposeCodes appropriate for the ParameterCode.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.DefaultParameterToPurposeRow> DefaultParameterToPurposeCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.DefaultParameterToPurposeRow> DefaultParameterToPurposeCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Default_Parameter_To_Purpose_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Default_Parameter_To_Purpose_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2280,11 +2279,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Default_Parameter_To_Purpose_Cross_Check_Table", null);
+                    SetCheckParameter("Default_Parameter_To_Purpose_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Default_Parameter_To_Purpose_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Default_Parameter_To_Purpose_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -2292,11 +2291,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// List of DefaultSourceCodes appropriate for the ParameterCode.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.DefaultParameterToSourceOfValueRow> DefaultParameterToSourceOfValueCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.DefaultParameterToSourceOfValueRow> DefaultParameterToSourceOfValueCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Default_Parameter_To_Source_Of_Value_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Default_Parameter_To_Source_Of_Value_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2310,11 +2309,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Default_Parameter_To_Source_Of_Value_Cross_Check_Table", null);
+                    SetCheckParameter("Default_Parameter_To_Source_Of_Value_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Default_Parameter_To_Source_Of_Value_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Default_Parameter_To_Source_Of_Value_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -2322,11 +2321,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// A lookup table of Default Purpose Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.DefaultPurposeCodeRow> DefaultPurposeCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.DefaultPurposeCodeRow> DefaultPurposeCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Default_Purpose_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Default_Purpose_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2340,11 +2339,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Default_Purpose_Code_Lookup_Table", null);
+                    SetCheckParameter("Default_Purpose_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Default_Purpose_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Default_Purpose_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -2352,26 +2351,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Default Purpose Code is Valid.
         /// </summary>
-        public static bool? DefaultPurposeCodeValid
+        public bool? DefaultPurposeCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Default_Purpose_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Default_Purpose_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Purpose_Code_Valid", value);
+                SetCheckParameter("Default_Purpose_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Default records with default info included.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorDefaultRow> DefaultRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorDefaultRow> DefaultRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Default_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Default_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2385,11 +2384,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Default_Records", null);
+                    SetCheckParameter("Default_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Default_Records", value.SourceView);
+                    SetCheckParameter("Default_Records", value.SourceView);
                 }
             }
         }
@@ -2397,11 +2396,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// A lookup table of Default Source Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.DefaultSourceCodeRow> DefaultSourceCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.DefaultSourceCodeRow> DefaultSourceCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Default_Source_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Default_Source_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2415,11 +2414,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Default_Source_Code_Lookup_Table", null);
+                    SetCheckParameter("Default_Source_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Default_Source_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Default_Source_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -2427,101 +2426,101 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Default Source Code is Valid.
         /// </summary>
-        public static bool? DefaultSourceCodeValid
+        public bool? DefaultSourceCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Default_Source_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Default_Source_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Source_Code_Valid", value);
+                SetCheckParameter("Default_Source_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Default Start Date is valid.
         /// </summary>
-        public static bool? DefaultStartDateValid
+        public bool? DefaultStartDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Default_Start_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Default_Start_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Start_Date_Valid", value);
+                SetCheckParameter("Default_Start_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Default Start Hour is valid.
         /// </summary>
-        public static bool? DefaultStartHourValid
+        public bool? DefaultStartHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Default_Start_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Default_Start_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Start_Hour_Valid", value);
+                SetCheckParameter("Default_Start_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// The unit fuel represented by the fuel code in the monitoring default record.
         /// </summary>
-        public static string DefaultUnitFuel
+        public string DefaultUnitFuel
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Default_Unit_Fuel")));
+                return ((string)(GetCheckParameter("Default_Unit_Fuel")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Unit_Fuel", value);
+                SetCheckParameter("Default_Unit_Fuel", value);
             }
         }
         
         /// <summary>
         /// Indicates if the Default Value is Valid.
         /// </summary>
-        public static bool? DefaultValueValid
+        public bool? DefaultValueValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Default_Value_Valid")));
+                return ((bool?)(GetCheckParameter("Default_Value_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Default_Value_Valid", value);
+                SetCheckParameter("Default_Value_Valid", value);
             }
         }
         
         /// <summary>
         /// The date when new rules for ECMPS go into effect for the MP evaluation.
         /// </summary>
-        public static DateTime? EcmpsMpBeginDate
+        public DateTime? EcmpsMpBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("ECMPS_MP_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("ECMPS_MP_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("ECMPS_MP_Begin_Date", value);
+                SetCheckParameter("ECMPS_MP_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// All quarterly emissions file record for the configuration whose emissions files is being evaluated.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemEmissionsRow> EmissionsFileRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemEmissionsRow> EmissionsFileRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Emissions_File_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Emissions_File_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2535,11 +2534,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Emissions_File_Records", null);
+                    SetCheckParameter("Emissions_File_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Emissions_File_Records", value.SourceView);
+                    SetCheckParameter("Emissions_File_Records", value.SourceView);
                 }
             }
         }
@@ -2547,15 +2546,15 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicator of whether we should continue to evaluate this monitoring plan.  The value is set in the MONPLAN cataegory and is checked in the MP process immediately after that category.
         /// </summary>
-        public static bool? EvaluateMonitoringPlan
+        public bool? EvaluateMonitoringPlan
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Evaluate_Monitoring_Plan")));
+                return ((bool?)(GetCheckParameter("Evaluate_Monitoring_Plan")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Evaluate_Monitoring_Plan", value);
+                SetCheckParameter("Evaluate_Monitoring_Plan", value);
             }
         }
         
@@ -2564,15 +2563,15 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///This is the parameter value that replaces directly accessing the Evaluation Begin Date property of the Check Engine object.
         /// </summary>
-        public static DateTime? EvaluationBeginDate
+        public DateTime? EvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Evaluation_Begin_Date", value);
+                SetCheckParameter("Evaluation_Begin_Date", value);
             }
         }
         
@@ -2581,26 +2580,26 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///This is the parameter value that replaces directly accessing the Evaluation EndDate property of the Check Engine object.
         /// </summary>
-        public static DateTime? EvaluationEndDate
+        public DateTime? EvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Evaluation_End_Date", value);
+                SetCheckParameter("Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// Load records for all of a facility's locations that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLoadRow> FacilityLoadRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLoadRow> FacilityLoadRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Facility_Load_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_Load_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2614,11 +2613,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Facility_Load_Records", null);
+                    SetCheckParameter("Facility_Load_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Facility_Load_Records", value.SourceView);
+                    SetCheckParameter("Facility_Load_Records", value.SourceView);
                 }
             }
         }
@@ -2626,11 +2625,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The monitor location attribute records for all of a facility's locations that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationAttributeRow> FacilityLocationAttributeRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationAttributeRow> FacilityLocationAttributeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Facility_Location_Attribute_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_Location_Attribute_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2644,11 +2643,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Facility_Location_Attribute_Records", null);
+                    SetCheckParameter("Facility_Location_Attribute_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Facility_Location_Attribute_Records", value.SourceView);
+                    SetCheckParameter("Facility_Location_Attribute_Records", value.SourceView);
                 }
             }
         }
@@ -2656,11 +2655,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The monitor location records for the facility of the records being evaluated.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLocationRow> FacilityLocationRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLocationRow> FacilityLocationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Facility_Location_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_Location_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2674,11 +2673,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Facility_Location_Records", null);
+                    SetCheckParameter("Facility_Location_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Facility_Location_Records", value.SourceView);
+                    SetCheckParameter("Facility_Location_Records", value.SourceView);
                 }
             }
         }
@@ -2686,11 +2685,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The Method records for all of a facility's locations that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorMethodRow> FacilityMethodRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorMethodRow> FacilityMethodRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Facility_Method_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_Method_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2704,11 +2703,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Facility_Method_Records", null);
+                    SetCheckParameter("Facility_Method_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Facility_Method_Records", value.SourceView);
+                    SetCheckParameter("Facility_Method_Records", value.SourceView);
                 }
             }
         }
@@ -2716,11 +2715,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The Monitor Qualification records for all of a facility's locations that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorQualificationRow> FacilityQualificationRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorQualificationRow> FacilityQualificationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Facility_Qualification_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_Qualification_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2734,11 +2733,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Facility_Qualification_Records", null);
+                    SetCheckParameter("Facility_Qualification_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Facility_Qualification_Records", value.SourceView);
+                    SetCheckParameter("Facility_Qualification_Records", value.SourceView);
                 }
             }
         }
@@ -2746,11 +2745,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The System records for all of a facility's locations that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow> FacilitySystemRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow> FacilitySystemRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Facility_System_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_System_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2764,11 +2763,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Facility_System_Records", null);
+                    SetCheckParameter("Facility_System_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Facility_System_Records", value.SourceView);
+                    SetCheckParameter("Facility_System_Records", value.SourceView);
                 }
             }
         }
@@ -2776,11 +2775,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The unit stack configuration records for all of a facility's locations that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> FacilityUnitStackConfigurationRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> FacilityUnitStackConfigurationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Facility_Unit_Stack_Configuration_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_Unit_Stack_Configuration_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2794,11 +2793,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Facility_Unit_Stack_Configuration_Records", null);
+                    SetCheckParameter("Facility_Unit_Stack_Configuration_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Facility_Unit_Stack_Configuration_Records", value.SourceView);
+                    SetCheckParameter("Facility_Unit_Stack_Configuration_Records", value.SourceView);
                 }
             }
         }
@@ -2806,71 +2805,71 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The first ECMPS Reporting Period for the related facility.
         /// </summary>
-        public static int? FirstEcmpsReportingPeriod
+        public int? FirstEcmpsReportingPeriod
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("First_ECMPS_Reporting_Period")));
+                return ((int?)(GetCheckParameter("First_ECMPS_Reporting_Period")));
             }
             set
             {
-                MpParameters.SetCheckParameter("First_ECMPS_Reporting_Period", value);
+                SetCheckParameter("First_ECMPS_Reporting_Period", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not Flow Span value reported is Valid.
         /// </summary>
-        public static bool? FlowSpanValueValid
+        public bool? FlowSpanValueValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Flow_Span_Value_Valid")));
+                return ((bool?)(GetCheckParameter("Flow_Span_Value_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Flow_Span_Value_Valid", value);
+                SetCheckParameter("Flow_Span_Value_Valid", value);
             }
         }
         
         /// <summary>
         /// This indicates if an active flow system is present.
         /// </summary>
-        public static bool? FlowSystemActivePresent
+        public bool? FlowSystemActivePresent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Flow_System_Active_Present")));
+                return ((bool?)(GetCheckParameter("Flow_System_Active_Present")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Flow_System_Active_Present", value);
+                SetCheckParameter("Flow_System_Active_Present", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Formula is active during the Evaluation Period.
         /// </summary>
-        public static bool? FormulaActiveStatus
+        public bool? FormulaActiveStatus
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Formula_Active_Status")));
+                return ((bool?)(GetCheckParameter("Formula_Active_Status")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Formula_Active_Status", value);
+                SetCheckParameter("Formula_Active_Status", value);
             }
         }
         
         /// <summary>
         /// A lookup table of Equation Codes with the associated Parameter Code.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.EquationCodeRow> FormulaCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.EquationCodeRow> FormulaCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Formula_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Formula_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2884,11 +2883,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Formula_Code_Lookup_Table", null);
+                    SetCheckParameter("Formula_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Formula_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Formula_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -2896,11 +2895,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Links formula codes to the f-factors parameters that are factors in the formula.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FormulaCodeToFFactorParameterRow> FormulaCodeToFFactorParameterCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FormulaCodeToFFactorParameterRow> FormulaCodeToFFactorParameterCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Formula_Code_To_F-factor_Parameter_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Formula_Code_To_F-factor_Parameter_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2914,11 +2913,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Formula_Code_To_F-factor_Parameter_Cross_Check_Table", null);
+                    SetCheckParameter("Formula_Code_To_F-factor_Parameter_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Formula_Code_To_F-factor_Parameter_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Formula_Code_To_F-factor_Parameter_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -2926,131 +2925,131 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether Formula Equation Code is valid.
         /// </summary>
-        public static bool? FormulaCodeValid
+        public bool? FormulaCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Formula_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Formula_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Formula_Code_Valid", value);
+                SetCheckParameter("Formula_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Start Date and Hour are prior to the End Date and Hour for the Formula.
         /// </summary>
-        public static bool? FormulaDatesAndHoursConsistent
+        public bool? FormulaDatesAndHoursConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Formula_Dates_and_Hours_Consistent")));
+                return ((bool?)(GetCheckParameter("Formula_Dates_and_Hours_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Formula_Dates_and_Hours_Consistent", value);
+                SetCheckParameter("Formula_Dates_and_Hours_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Formula End Date is Valid
         /// </summary>
-        public static bool? FormulaEndDateValid
+        public bool? FormulaEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Formula_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Formula_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Formula_End_Date_Valid", value);
+                SetCheckParameter("Formula_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Formula End Hour is Valid
         /// </summary>
-        public static bool? FormulaEndHourValid
+        public bool? FormulaEndHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Formula_End_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Formula_End_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Formula_End_Hour_Valid", value);
+                SetCheckParameter("Formula_End_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// The first date that the formula is active during an evaluation period.
         /// </summary>
-        public static DateTime? FormulaEvaluationBeginDate
+        public DateTime? FormulaEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Formula_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Formula_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Formula_Evaluation_Begin_Date", value);
+                SetCheckParameter("Formula_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The first hour that the formula is active during an evaluation period.
         /// </summary>
-        public static int? FormulaEvaluationBeginHour
+        public int? FormulaEvaluationBeginHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Formula_Evaluation_Begin_Hour")));
+                return ((int?)(GetCheckParameter("Formula_Evaluation_Begin_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Formula_Evaluation_Begin_Hour", value);
+                SetCheckParameter("Formula_Evaluation_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// The last date that the formula is active during an evaluation period.
         /// </summary>
-        public static DateTime? FormulaEvaluationEndDate
+        public DateTime? FormulaEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Formula_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Formula_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Formula_Evaluation_End_Date", value);
+                SetCheckParameter("Formula_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// The last hour that the formula is active during an evaluation period.
         /// </summary>
-        public static int? FormulaEvaluationEndHour
+        public int? FormulaEvaluationEndHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Formula_Evaluation_End_Hour")));
+                return ((int?)(GetCheckParameter("Formula_Evaluation_End_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Formula_Evaluation_End_Hour", value);
+                SetCheckParameter("Formula_Evaluation_End_Hour", value);
             }
         }
         
         /// <summary>
         /// Links formula parameter and component type and basis to required formula code.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FormulaParameterAndComponentTypeAndBasisToFormulaCodeRow> FormulaParameterAndComponentTypeAndBasisToFormulaCodeCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FormulaParameterAndComponentTypeAndBasisToFormulaCodeRow> FormulaParameterAndComponentTypeAndBasisToFormulaCodeCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Formula_Parameter_And_Component_Type_And_Basis_To_Formula_Code_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Formula_Parameter_And_Component_Type_And_Basis_To_Formula_Code_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3064,11 +3063,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Formula_Parameter_And_Component_Type_And_Basis_To_Formula_Code_Cross_Check_Table", null);
+                    SetCheckParameter("Formula_Parameter_And_Component_Type_And_Basis_To_Formula_Code_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Formula_Parameter_And_Component_Type_And_Basis_To_Formula_Code_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Formula_Parameter_And_Component_Type_And_Basis_To_Formula_Code_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -3078,11 +3077,11 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///Display: Column 1 only.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ParameterToCategoryRow> FormulaParameterList
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ParameterToCategoryRow> FormulaParameterList
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Formula_Parameter_List")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Formula_Parameter_List")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3096,11 +3095,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Formula_Parameter_List", null);
+                    SetCheckParameter("Formula_Parameter_List", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Formula_Parameter_List", value.SourceView);
+                    SetCheckParameter("Formula_Parameter_List", value.SourceView);
                 }
             }
         }
@@ -3108,26 +3107,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Formula Parameter Code is valid.
         /// </summary>
-        public static bool? FormulaParameterValid
+        public bool? FormulaParameterValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Formula_Parameter_Valid")));
+                return ((bool?)(GetCheckParameter("Formula_Parameter_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Formula_Parameter_Valid", value);
+                SetCheckParameter("Formula_Parameter_Valid", value);
             }
         }
         
         /// <summary>
         /// Formula records with formula info included
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorFormulaRow> FormulaRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorFormulaRow> FormulaRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Formula_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Formula_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3141,11 +3140,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Formula_Records", null);
+                    SetCheckParameter("Formula_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Formula_Records", value.SourceView);
+                    SetCheckParameter("Formula_Records", value.SourceView);
                 }
             }
         }
@@ -3153,41 +3152,41 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates if the Formula Start Date is Valid.
         /// </summary>
-        public static bool? FormulaStartDateValid
+        public bool? FormulaStartDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Formula_Start_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Formula_Start_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Formula_Start_Date_Valid", value);
+                SetCheckParameter("Formula_Start_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Formula Start Hour is Valid.
         /// </summary>
-        public static bool? FormulaStartHourValid
+        public bool? FormulaStartHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Formula_Start_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Formula_Start_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Formula_Start_Hour_Valid", value);
+                SetCheckParameter("Formula_Start_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// Cross check for formula codes with required Method Parameter and Code combinations.  The crosscheck will have a row for each valid Method Parameer and Code combination for a formula.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FormulaToRequiredMethodRow> FormulaToRequiredMethodCrosscheck
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FormulaToRequiredMethodRow> FormulaToRequiredMethodCrosscheck
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Formula_to_Required_Method_Crosscheck")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Formula_to_Required_Method_Crosscheck")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3201,11 +3200,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Formula_to_Required_Method_Crosscheck", null);
+                    SetCheckParameter("Formula_to_Required_Method_Crosscheck", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Formula_to_Required_Method_Crosscheck", value.SourceView);
+                    SetCheckParameter("Formula_to_Required_Method_Crosscheck", value.SourceView);
                 }
             }
         }
@@ -3213,11 +3212,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Contains rows for each formula code with required fuels.  If for a formula one of a list of fuels is required, the cross check will contain a row for each fuel in the list.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FormulaToRequiredUnitFuelRow> FormulaToRequiredUnitFuelCrosscheck
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FormulaToRequiredUnitFuelRow> FormulaToRequiredUnitFuelCrosscheck
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Formula_to_Required_Unit_Fuel_Crosscheck")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Formula_to_Required_Unit_Fuel_Crosscheck")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3231,11 +3230,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Formula_to_Required_Unit_Fuel_Crosscheck", null);
+                    SetCheckParameter("Formula_to_Required_Unit_Fuel_Crosscheck", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Formula_to_Required_Unit_Fuel_Crosscheck", value.SourceView);
+                    SetCheckParameter("Formula_to_Required_Unit_Fuel_Crosscheck", value.SourceView);
                 }
             }
         }
@@ -3243,41 +3242,41 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Fuel is active during the Evaluation Period.
         /// </summary>
-        public static bool? FuelActiveStatus
+        public bool? FuelActiveStatus
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Fuel_Active_Status")));
+                return ((bool?)(GetCheckParameter("Fuel_Active_Status")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Active_Status", value);
+                SetCheckParameter("Fuel_Active_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Fuel Begin Date reported is Valid.
         /// </summary>
-        public static bool? FuelBeginDateValid
+        public bool? FuelBeginDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Fuel_Begin_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Fuel_Begin_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Begin_Date_Valid", value);
+                SetCheckParameter("Fuel_Begin_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// A lookup table of Fuel codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.FuelCodeRow> FuelCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.FuelCodeRow> FuelCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Fuel_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3291,11 +3290,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Fuel_Code_Lookup_Table", null);
+                    SetCheckParameter("Fuel_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Fuel_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -3303,11 +3302,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// List of minimum and maximum moisture defautl values by fuel code.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelCodeToMinimumAndMaximumMoistureDefaultValueRow> FuelCodeToMinimumAndMaximumMoistureDefaultCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelCodeToMinimumAndMaximumMoistureDefaultValueRow> FuelCodeToMinimumAndMaximumMoistureDefaultCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Fuel_Code_To_Minimum_And_Maximum_Moisture_Default_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Code_To_Minimum_And_Maximum_Moisture_Default_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3321,11 +3320,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Fuel_Code_To_Minimum_And_Maximum_Moisture_Default_Cross_Check_Table", null);
+                    SetCheckParameter("Fuel_Code_To_Minimum_And_Maximum_Moisture_Default_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Fuel_Code_To_Minimum_And_Maximum_Moisture_Default_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Code_To_Minimum_And_Maximum_Moisture_Default_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -3333,41 +3332,41 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Fuell Code is valid for the Monitoring Location.
         /// </summary>
-        public static bool? FuelCodeValid
+        public bool? FuelCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Fuel_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Fuel_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Code_Valid", value);
+                SetCheckParameter("Fuel_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Inidcates whether or not the Fuel Dates are Consistent.
         /// </summary>
-        public static bool? FuelDatesConsistent
+        public bool? FuelDatesConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Fuel_Dates_Consistent")));
+                return ((bool?)(GetCheckParameter("Fuel_Dates_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Dates_Consistent", value);
+                SetCheckParameter("Fuel_Dates_Consistent", value);
             }
         }
         
         /// <summary>
         /// A lookup table of demonstration methods associated with fuel properties.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.DemMethodCodeRow> FuelDemonstrationMethodLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.DemMethodCodeRow> FuelDemonstrationMethodLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Fuel_Demonstration_Method_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Demonstration_Method_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3381,11 +3380,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Fuel_Demonstration_Method_Lookup_Table", null);
+                    SetCheckParameter("Fuel_Demonstration_Method_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Fuel_Demonstration_Method_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Demonstration_Method_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -3393,176 +3392,176 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Fuel End Date is Valid.
         /// </summary>
-        public static bool? FuelEndDateValid
+        public bool? FuelEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Fuel_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Fuel_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_End_Date_Valid", value);
+                SetCheckParameter("Fuel_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Date on which evaluation period begins for Fuel.
         /// </summary>
-        public static DateTime? FuelEvaluationBeginDate
+        public DateTime? FuelEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Fuel_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Fuel_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Evaluation_Begin_Date", value);
+                SetCheckParameter("Fuel_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// Date on which evaluation period ends for Fuel.
         /// </summary>
-        public static DateTime? FuelEvaluationEndDate
+        public DateTime? FuelEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Fuel_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Fuel_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Evaluation_End_Date", value);
+                SetCheckParameter("Fuel_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Fuel Flow Record is active during the Evaluation Period.
         /// </summary>
-        public static bool? FuelFlowActiveStatus
+        public bool? FuelFlowActiveStatus
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Fuel_Flow_Active_Status")));
+                return ((bool?)(GetCheckParameter("Fuel_Flow_Active_Status")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Flow_Active_Status", value);
+                SetCheckParameter("Fuel_Flow_Active_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Fuel Flow Dates and Hours reported are Consistent.
         /// </summary>
-        public static bool? FuelFlowDatesAndHoursConsistent
+        public bool? FuelFlowDatesAndHoursConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Fuel_Flow_Dates_and_Hours_Consistent")));
+                return ((bool?)(GetCheckParameter("Fuel_Flow_Dates_and_Hours_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Flow_Dates_and_Hours_Consistent", value);
+                SetCheckParameter("Fuel_Flow_Dates_and_Hours_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Fuel Flow End Date reported is Valid.
         /// </summary>
-        public static bool? FuelFlowEndDateValid
+        public bool? FuelFlowEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Fuel_Flow_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Fuel_Flow_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Flow_End_Date_Valid", value);
+                SetCheckParameter("Fuel_Flow_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whehter or not the Fuel Flow End Hour reported is Valid.
         /// </summary>
-        public static bool? FuelFlowEndHourValid
+        public bool? FuelFlowEndHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Fuel_Flow_End_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Fuel_Flow_End_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Flow_End_Hour_Valid", value);
+                SetCheckParameter("Fuel_Flow_End_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// Fuel Flow Evaluation End Date
         /// </summary>
-        public static DateTime? FuelFlowEvaluationEndDate
+        public DateTime? FuelFlowEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Fuel_Flow_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Fuel_Flow_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Flow_Evaluation_End_Date", value);
+                SetCheckParameter("Fuel_Flow_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// Fuel Flow Evaluation End Hour
         /// </summary>
-        public static DateTime? FuelFlowEvaluationEndHour
+        public DateTime? FuelFlowEvaluationEndHour
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Fuel_Flow_Evaluation_End_Hour")));
+                return ((DateTime?)(GetCheckParameter("Fuel_Flow_Evaluation_End_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Flow_Evaluation_End_Hour", value);
+                SetCheckParameter("Fuel_Flow_Evaluation_End_Hour", value);
             }
         }
         
         /// <summary>
         /// Fuel Flow Evaluation Start Date
         /// </summary>
-        public static DateTime? FuelFlowEvaluationStartDate
+        public DateTime? FuelFlowEvaluationStartDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Fuel_Flow_Evaluation_Start_Date")));
+                return ((DateTime?)(GetCheckParameter("Fuel_Flow_Evaluation_Start_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Flow_Evaluation_Start_Date", value);
+                SetCheckParameter("Fuel_Flow_Evaluation_Start_Date", value);
             }
         }
         
         /// <summary>
         /// Fuel Flow Evaluation Start Hour
         /// </summary>
-        public static int? FuelFlowEvaluationStartHour
+        public int? FuelFlowEvaluationStartHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Fuel_Flow_Evaluation_Start_Hour")));
+                return ((int?)(GetCheckParameter("Fuel_Flow_Evaluation_Start_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Flow_Evaluation_Start_Hour", value);
+                SetCheckParameter("Fuel_Flow_Evaluation_Start_Hour", value);
             }
         }
         
         /// <summary>
         /// Fuel Flow Maximum Rate Source Code Lookup Table
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MaxRateSourceCodeRow> FuelFlowMaximumRateSourceCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MaxRateSourceCodeRow> FuelFlowMaximumRateSourceCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Fuel_Flow_Maximum_Rate_Source_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Flow_Maximum_Rate_Source_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3576,11 +3575,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Fuel_Flow_Maximum_Rate_Source_Code_Lookup_Table", null);
+                    SetCheckParameter("Fuel_Flow_Maximum_Rate_Source_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Fuel_Flow_Maximum_Rate_Source_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Flow_Maximum_Rate_Source_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -3588,11 +3587,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Fuel Flow Records for the system.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.SystemFuelFlowRow> FuelFlowRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.SystemFuelFlowRow> FuelFlowRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Fuel_Flow_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Flow_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3606,11 +3605,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Fuel_Flow_Records", null);
+                    SetCheckParameter("Fuel_Flow_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Fuel_Flow_Records", value.SourceView);
+                    SetCheckParameter("Fuel_Flow_Records", value.SourceView);
                 }
             }
         }
@@ -3618,56 +3617,56 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Fuel Flow Start Date reported is Valid.
         /// </summary>
-        public static bool? FuelFlowStartDateValid
+        public bool? FuelFlowStartDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Fuel_Flow_Start_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Fuel_Flow_Start_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Flow_Start_Date_Valid", value);
+                SetCheckParameter("Fuel_Flow_Start_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Fuel Flow Start Hour reported is Valid.
         /// </summary>
-        public static bool? FuelFlowStartHourValid
+        public bool? FuelFlowStartHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Fuel_Flow_Start_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Fuel_Flow_Start_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Flow_Start_Hour_Valid", value);
+                SetCheckParameter("Fuel_Flow_Start_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// The fuel group associated with the fuel code in the Unit Fuel record.
         /// </summary>
-        public static string FuelGroup
+        public string FuelGroup
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Fuel_Group")));
+                return ((string)(GetCheckParameter("Fuel_Group")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuel_Group", value);
+                SetCheckParameter("Fuel_Group", value);
             }
         }
         
         /// <summary>
         /// A lookup table of Fuel Indicator Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.IndicatorCodeRow> FuelIndicatorCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.IndicatorCodeRow> FuelIndicatorCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Fuel_Indicator_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Indicator_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3681,11 +3680,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Fuel_Indicator_Code_Lookup_Table", null);
+                    SetCheckParameter("Fuel_Indicator_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Fuel_Indicator_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Indicator_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -3693,416 +3692,416 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// List of primary and secondary fuels that have defaults, but the defaults do not cover the period of the method with FSP75 or FSP75C.
         /// </summary>
-        public static string FuelsWithIncompleteDefaults
+        public string FuelsWithIncompleteDefaults
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Fuels_with_Incomplete_Defaults")));
+                return ((string)(GetCheckParameter("Fuels_with_Incomplete_Defaults")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuels_with_Incomplete_Defaults", value);
+                SetCheckParameter("Fuels_with_Incomplete_Defaults", value);
             }
         }
         
         /// <summary>
         /// Contains a list of primary or secondary fuels with missing defaults.
         /// </summary>
-        public static string FuelsWithMissingDefaults
+        public string FuelsWithMissingDefaults
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Fuels_with_Missing_Defaults")));
+                return ((string)(GetCheckParameter("Fuels_with_Missing_Defaults")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Fuels_with_Missing_Defaults", value);
+                SetCheckParameter("Fuels_with_Missing_Defaults", value);
             }
         }
         
         /// <summary>
         /// List of required component types that were not linked to the system for the entire evaluation period.
         /// </summary>
-        public static string IncompleteComponentsForSystem
+        public string IncompleteComponentsForSystem
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Incomplete_Components_for_System")));
+                return ((string)(GetCheckParameter("Incomplete_Components_for_System")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Incomplete_Components_for_System", value);
+                SetCheckParameter("Incomplete_Components_for_System", value);
             }
         }
         
         /// <summary>
         /// A list of default parameters that are required for the current formula but do not span the entire evaluation period.
         /// </summary>
-        public static string IncompleteDefaultForFormula
+        public string IncompleteDefaultForFormula
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Incomplete_Default_for_Formula")));
+                return ((string)(GetCheckParameter("Incomplete_Default_for_Formula")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Incomplete_Default_for_Formula", value);
+                SetCheckParameter("Incomplete_Default_for_Formula", value);
             }
         }
         
         /// <summary>
         /// A list of parameters of default records that are required for the current method but do not span the entire evaluation period.
         /// </summary>
-        public static string IncompleteDefaultForMethod
+        public string IncompleteDefaultForMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Incomplete_Default_for_Method")));
+                return ((string)(GetCheckParameter("Incomplete_Default_for_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Incomplete_Default_for_Method", value);
+                SetCheckParameter("Incomplete_Default_for_Method", value);
             }
         }
         
         /// <summary>
         /// A list of parameters of default records that are required for the current system but do not span the entire evaluation period.
         /// </summary>
-        public static string IncompleteDefaultForSystem
+        public string IncompleteDefaultForSystem
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Incomplete_Default_for_System")));
+                return ((string)(GetCheckParameter("Incomplete_Default_for_System")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Incomplete_Default_for_System", value);
+                SetCheckParameter("Incomplete_Default_for_System", value);
             }
         }
         
         /// <summary>
         /// A list of fuel codes of default records that are required for the current method but do not span the entire evaluation period.
         /// </summary>
-        public static string IncompleteDefaultFuelForMethod
+        public string IncompleteDefaultFuelForMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Incomplete_Default_Fuel_for_Method")));
+                return ((string)(GetCheckParameter("Incomplete_Default_Fuel_for_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Incomplete_Default_Fuel_for_Method", value);
+                SetCheckParameter("Incomplete_Default_Fuel_for_Method", value);
             }
         }
         
         /// <summary>
         /// A list of required formula parameter + equation code for a system component that are not present during the entire evaluation period.
         /// </summary>
-        public static bool? IncompleteFormulaForComponent
+        public bool? IncompleteFormulaForComponent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Incomplete_Formula_for_Component")));
+                return ((bool?)(GetCheckParameter("Incomplete_Formula_for_Component")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Incomplete_Formula_for_Component", value);
+                SetCheckParameter("Incomplete_Formula_for_Component", value);
             }
         }
         
         /// <summary>
         /// A required fuelflow system that is not active during the entire evaluation period.
         /// </summary>
-        public static string IncompleteFuelSystemForMethod
+        public string IncompleteFuelSystemForMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Incomplete_Fuel_System_For_Method")));
+                return ((string)(GetCheckParameter("Incomplete_Fuel_System_For_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Incomplete_Fuel_System_For_Method", value);
+                SetCheckParameter("Incomplete_Fuel_System_For_Method", value);
             }
         }
         
         /// <summary>
         /// List of fuels with Appendix E or PEMS systems that is not active during the entire evaluation period.
         /// </summary>
-        public static string IncompleteNoxSystemForMethod
+        public string IncompleteNoxSystemForMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Incomplete_Nox_System_For_Method")));
+                return ((string)(GetCheckParameter("Incomplete_Nox_System_For_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Incomplete_Nox_System_For_Method", value);
+                SetCheckParameter("Incomplete_Nox_System_For_Method", value);
             }
         }
         
         /// <summary>
         /// A list of Qual Type Codes for monitoring qualifications that are required for the current method but do not span the evaluation period.
         /// </summary>
-        public static string IncompleteQualificationForMethod
+        public string IncompleteQualificationForMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Incomplete_Qualification_for_Method")));
+                return ((string)(GetCheckParameter("Incomplete_Qualification_for_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Incomplete_Qualification_for_Method", value);
+                SetCheckParameter("Incomplete_Qualification_for_Method", value);
             }
         }
         
         /// <summary>
         /// A required system type for a monitor method that does not span the method evaluation period.
         /// </summary>
-        public static string IncompleteSystemForMethod
+        public string IncompleteSystemForMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Incomplete_System_for_Method")));
+                return ((string)(GetCheckParameter("Incomplete_System_for_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Incomplete_System_for_Method", value);
+                SetCheckParameter("Incomplete_System_for_Method", value);
             }
         }
         
         /// <summary>
         /// Indicates if this is the first time a unit has reported a Monitor Qualification record for the particular QualificationTypeCode.
         /// </summary>
-        public static bool? InitialQualification
+        public bool? InitialQualification
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Initial_Qualification")));
+                return ((bool?)(GetCheckParameter("Initial_Qualification")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Initial_Qualification", value);
+                SetCheckParameter("Initial_Qualification", value);
             }
         }
         
         /// <summary>
         /// A list of default parameters required when using fuel-specific missing data or bypass approach whose values are not equal to the MPC/MER/MPF in correspoding span record.
         /// </summary>
-        public static string InvalidMaximumDefault
+        public string InvalidMaximumDefault
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Invalid_Maximum_Default")));
+                return ((string)(GetCheckParameter("Invalid_Maximum_Default")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Invalid_Maximum_Default", value);
+                SetCheckParameter("Invalid_Maximum_Default", value);
             }
         }
         
         /// <summary>
         /// Fuels inappropriate for methodology.
         /// </summary>
-        public static string InvalidMethodFuel
+        public string InvalidMethodFuel
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Invalid_Method_Fuel")));
+                return ((string)(GetCheckParameter("Invalid_Method_Fuel")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Invalid_Method_Fuel", value);
+                SetCheckParameter("Invalid_Method_Fuel", value);
             }
         }
         
         /// <summary>
         /// A list of method parameters not using CEM/AMS methods when another parameter is using a CEM method.
         /// </summary>
-        public static string InvalidParametersForCemMethod
+        public string InvalidParametersForCemMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Invalid_Parameters_for_CEM_Method")));
+                return ((string)(GetCheckParameter("Invalid_Parameters_for_CEM_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Invalid_Parameters_for_CEM_Method", value);
+                SetCheckParameter("Invalid_Parameters_for_CEM_Method", value);
             }
         }
         
         /// <summary>
         /// A list of method parameters not using LME methods when another parameter is using a LME method.
         /// </summary>
-        public static string InvalidParametersForLmeMethod
+        public string InvalidParametersForLmeMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Invalid_Parameters_for_LME_Method")));
+                return ((string)(GetCheckParameter("Invalid_Parameters_for_LME_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Invalid_Parameters_for_LME_Method", value);
+                SetCheckParameter("Invalid_Parameters_for_LME_Method", value);
             }
         }
         
         /// <summary>
         /// Unit Type inappropriate for the Control.
         /// </summary>
-        public static string InvalidUnitTypeForControl
+        public string InvalidUnitTypeForControl
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Invalid_Unit_Type_for_Control")));
+                return ((string)(GetCheckParameter("Invalid_Unit_Type_for_Control")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Invalid_Unit_Type_for_Control", value);
+                SetCheckParameter("Invalid_Unit_Type_for_Control", value);
             }
         }
         
         /// <summary>
         /// Load Active Status for the location.
         /// </summary>
-        public static bool? LoadActiveStatus
+        public bool? LoadActiveStatus
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Load_Active_Status")));
+                return ((bool?)(GetCheckParameter("Load_Active_Status")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Load_Active_Status", value);
+                SetCheckParameter("Load_Active_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Load Dates and Hours are Consistent.
         /// </summary>
-        public static bool? LoadDatesAndHoursConsistent
+        public bool? LoadDatesAndHoursConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Load_Dates_And_Hours_Consistent")));
+                return ((bool?)(GetCheckParameter("Load_Dates_And_Hours_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Load_Dates_And_Hours_Consistent", value);
+                SetCheckParameter("Load_Dates_And_Hours_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Load End Date is Valid.
         /// </summary>
-        public static bool? LoadEndDateValid
+        public bool? LoadEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Load_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Load_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Load_End_Date_Valid", value);
+                SetCheckParameter("Load_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Load End Hour is Valid.
         /// </summary>
-        public static bool? LoadEndHourValid
+        public bool? LoadEndHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Load_End_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Load_End_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Load_End_Hour_Valid", value);
+                SetCheckParameter("Load_End_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// The last date on which there should be an evaluation of the Load Record.
         /// </summary>
-        public static DateTime? LoadEvaluationEndDate
+        public DateTime? LoadEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Load_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Load_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Load_Evaluation_End_Date", value);
+                SetCheckParameter("Load_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// The last hour on which there should be an evaluation of the Load Record.
         /// </summary>
-        public static int? LoadEvaluationEndHour
+        public int? LoadEvaluationEndHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Load_Evaluation_End_Hour")));
+                return ((int?)(GetCheckParameter("Load_Evaluation_End_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Load_Evaluation_End_Hour", value);
+                SetCheckParameter("Load_Evaluation_End_Hour", value);
             }
         }
         
         /// <summary>
         /// The first date on which there should be an evaluation of the Load Record.
         /// </summary>
-        public static DateTime? LoadEvaluationStartDate
+        public DateTime? LoadEvaluationStartDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Load_Evaluation_Start_Date")));
+                return ((DateTime?)(GetCheckParameter("Load_Evaluation_Start_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Load_Evaluation_Start_Date", value);
+                SetCheckParameter("Load_Evaluation_Start_Date", value);
             }
         }
         
         /// <summary>
         /// The first hour on which there should be an evaluation of the Load Record.
         /// </summary>
-        public static int? LoadEvaluationStartHour
+        public int? LoadEvaluationStartHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Load_Evaluation_Start_Hour")));
+                return ((int?)(GetCheckParameter("Load_Evaluation_Start_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Load_Evaluation_Start_Hour", value);
+                SetCheckParameter("Load_Evaluation_Start_Hour", value);
             }
         }
         
         /// <summary>
         /// This indicator indicates if this location must perform load level analysis. 
         /// </summary>
-        public static bool? LoadLevelsRequired
+        public bool? LoadLevelsRequired
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Load_Levels_Required")));
+                return ((bool?)(GetCheckParameter("Load_Levels_Required")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Load_Levels_Required", value);
+                SetCheckParameter("Load_Levels_Required", value);
             }
         }
         
         /// <summary>
         /// Load records for current location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLoadRow> LoadRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLoadRow> LoadRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Load_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Load_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4116,11 +4115,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Load_Records", null);
+                    SetCheckParameter("Load_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Load_Records", value.SourceView);
+                    SetCheckParameter("Load_Records", value.SourceView);
                 }
             }
         }
@@ -4128,56 +4127,56 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Load Start Date reported is Valid.
         /// </summary>
-        public static bool? LoadStartDateValid
+        public bool? LoadStartDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Load_Start_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Load_Start_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Load_Start_Date_Valid", value);
+                SetCheckParameter("Load_Start_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Load Start Hour reported is Valid.
         /// </summary>
-        public static bool? LoadStartHourValid
+        public bool? LoadStartHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Load_Start_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Load_Start_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Load_Start_Hour_Valid", value);
+                SetCheckParameter("Load_Start_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// Shows Active/Inactive Status for a Location
         /// </summary>
-        public static bool? LocationActive
+        public bool? LocationActive
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Location_Active")));
+                return ((bool?)(GetCheckParameter("Location_Active")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Location_Active", value);
+                SetCheckParameter("Location_Active", value);
             }
         }
         
         /// <summary>
         /// A collection of records for all Analyzer Range records for the location with the associated component information.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AnalyzerRangeRow> LocationAnalyzerRangeRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AnalyzerRangeRow> LocationAnalyzerRangeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Location_Analyzer_Range_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Analyzer_Range_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4191,11 +4190,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Location_Analyzer_Range_Records", null);
+                    SetCheckParameter("Location_Analyzer_Range_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Location_Analyzer_Range_Records", value.SourceView);
+                    SetCheckParameter("Location_Analyzer_Range_Records", value.SourceView);
                 }
             }
         }
@@ -4203,26 +4202,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Location Attribute End Date is valid for the location.
         /// </summary>
-        public static bool? LocationAttributeEndDateValid
+        public bool? LocationAttributeEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Location_Attribute_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Location_Attribute_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Location_Attribute_End_Date_Valid", value);
+                SetCheckParameter("Location_Attribute_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// The monitor location attribute records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorLocationAttributeRow> LocationAttributeRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorLocationAttributeRow> LocationAttributeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Location_Attribute_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Attribute_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4236,11 +4235,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Location_Attribute_Records", null);
+                    SetCheckParameter("Location_Attribute_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Location_Attribute_Records", value.SourceView);
+                    SetCheckParameter("Location_Attribute_Records", value.SourceView);
                 }
             }
         }
@@ -4248,41 +4247,41 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates if the location reporting a location attribute record is a stack, a unit not linked to a stack, or a unit with a flow monitor.
         /// </summary>
-        public static bool? LocationAttributeRecordValid
+        public bool? LocationAttributeRecordValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Location_Attribute_Record_Valid")));
+                return ((bool?)(GetCheckParameter("Location_Attribute_Record_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Location_Attribute_Record_Valid", value);
+                SetCheckParameter("Location_Attribute_Record_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Location Attribute Start Date is valid for the location.
         /// </summary>
-        public static bool? LocationAttributeStartDateValid
+        public bool? LocationAttributeStartDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Location_Attribute_Start_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Location_Attribute_Start_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Location_Attribute_Start_Date_Valid", value);
+                SetCheckParameter("Location_Attribute_Start_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Unit Capacity records for the location or all units linked to the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationCapacityRow> LocationCapacityRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationCapacityRow> LocationCapacityRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Location_Capacity_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Capacity_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4296,11 +4295,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Location_Capacity_Records", null);
+                    SetCheckParameter("Location_Capacity_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Location_Capacity_Records", value.SourceView);
+                    SetCheckParameter("Location_Capacity_Records", value.SourceView);
                 }
             }
         }
@@ -4312,11 +4311,11 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///For a stack or pipe, this is the Unit Control records for all units linked to the stack or pipe via Unit Stack Configuration records.  The  InstallDate for the location control record should be the later of the InstallDate in the Unit Control record and the StartDate in the Unit Stack Configuration record.  The  RetireDate for the location control record should be the earlier of the RetireDate in the Unit Control record and the EndDate in the Unit Stack Configuration record.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationControlRow> LocationControlRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationControlRow> LocationControlRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Location_Control_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Control_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4330,11 +4329,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Location_Control_Records", null);
+                    SetCheckParameter("Location_Control_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Location_Control_Records", value.SourceView);
+                    SetCheckParameter("Location_Control_Records", value.SourceView);
                 }
             }
         }
@@ -4342,45 +4341,45 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates if location attribute start date is prior to end date.
         /// </summary>
-        public static bool? LocationDatesConsistent
+        public bool? LocationDatesConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Location_Dates_Consistent")));
+                return ((bool?)(GetCheckParameter("Location_Dates_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Location_Dates_Consistent", value);
+                SetCheckParameter("Location_Dates_Consistent", value);
             }
         }
         
         /// <summary>
         /// The first date that the monitor location is active during an evaluation period.
         /// </summary>
-        public static DateTime? LocationEvaluationBeginDate
+        public DateTime? LocationEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Location_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Location_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Location_Evaluation_Begin_Date", value);
+                SetCheckParameter("Location_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The last date that the monitor location is active during an evaluation period.
         /// </summary>
-        public static DateTime? LocationEvaluationEndDate
+        public DateTime? LocationEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Location_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Location_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Location_Evaluation_End_Date", value);
+                SetCheckParameter("Location_Evaluation_End_Date", value);
             }
         }
         
@@ -4391,11 +4390,11 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///For a stack or pipe, this is the Unit Fuel records for all units linked to the stack or pipe via Unit Stack Configuration records.  The  StartDate for the location fuel record should be the later of the StartDate in the Unit Fuel record and the StartDate in the Unit Stack Configuration record.  The  EndDate for the location fuel record should be the earlier of the EndDate in the Unit Fuel record and the EndDate in the Unit Stack Configuration record.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationFuelRow> LocationFuelRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationFuelRow> LocationFuelRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Location_Fuel_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Fuel_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4409,11 +4408,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Location_Fuel_Records", null);
+                    SetCheckParameter("Location_Fuel_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Location_Fuel_Records", value.SourceView);
+                    SetCheckParameter("Location_Fuel_Records", value.SourceView);
                 }
             }
         }
@@ -4421,11 +4420,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The parameter contains all Program Parameter rows associated with a location and includes UP_ID, UNIT_ID PRG_CODE, CLASS, EMISSION_RECORDING_BEGIN_DATE, UNIT_MONITOR_CERT_BEGIN_DATE and END_DATE columns from the parent UNIT_PROGRAM row.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckMp.Function.LocationProgramParameter> LocationProgramParameterRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.CheckMp.Function.LocationProgramParameter> LocationProgramParameterRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Location_Program_Parameter_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Program_Parameter_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4439,11 +4438,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Location_Program_Parameter_Records", null);
+                    SetCheckParameter("Location_Program_Parameter_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Location_Program_Parameter_Records", value.SourceView);
+                    SetCheckParameter("Location_Program_Parameter_Records", value.SourceView);
                 }
             }
         }
@@ -4455,11 +4454,11 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///For a stack or pipe, this is the Unit Program records for all units linked to the stack or pipe via Unit Stack Configuration records.  The  UnitMonitorCertStartDate for the location program record should be the later of the UnitMonitorCertStartDate in the Unit Program record and the StartDate in the Unit Stack Configuration record.  The  EndDate for the location program record should be the earlier of the EndDate in the Unit Program record and the EndDate in the Unit Stack Configuration record.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationProgramRow> LocationProgramRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationProgramRow> LocationProgramRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Location_Program_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Program_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4473,11 +4472,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Location_Program_Records", null);
+                    SetCheckParameter("Location_Program_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Location_Program_Records", value.SourceView);
+                    SetCheckParameter("Location_Program_Records", value.SourceView);
                 }
             }
         }
@@ -4489,11 +4488,11 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///For a stack or pipe, this is the Unit Reporting Frequency records for all units linked to the stack or pipe via Unit Stack Configuration records.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationReportingFrequencyRow> LocationReportingFrequencyRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationReportingFrequencyRow> LocationReportingFrequencyRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Location_Reporting_Frequency_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Reporting_Frequency_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4507,11 +4506,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Location_Reporting_Frequency_Records", null);
+                    SetCheckParameter("Location_Reporting_Frequency_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Location_Reporting_Frequency_Records", value.SourceView);
+                    SetCheckParameter("Location_Reporting_Frequency_Records", value.SourceView);
                 }
             }
         }
@@ -4519,11 +4518,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// System Component Records at location with associated component data.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> LocationSystemComponentRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> LocationSystemComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Location_System_Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_System_Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4537,11 +4536,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Location_System_Component_Records", null);
+                    SetCheckParameter("Location_System_Component_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Location_System_Component_Records", value.SourceView);
+                    SetCheckParameter("Location_System_Component_Records", value.SourceView);
                 }
             }
         }
@@ -4549,11 +4548,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// System Fuel Flow Records for location with associated system data.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.SystemFuelFlowRow> LocationSystemFuelFlowRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.SystemFuelFlowRow> LocationSystemFuelFlowRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Location_System_Fuel_Flow_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_System_Fuel_Flow_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4567,11 +4566,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Location_System_Fuel_Flow_Records", null);
+                    SetCheckParameter("Location_System_Fuel_Flow_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Location_System_Fuel_Flow_Records", value.SourceView);
+                    SetCheckParameter("Location_System_Fuel_Flow_Records", value.SourceView);
                 }
             }
         }
@@ -4579,11 +4578,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// All test summary records associated with the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow> LocationTestRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow> LocationTestRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Location_Test_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Test_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4597,11 +4596,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Location_Test_Records", null);
+                    SetCheckParameter("Location_Test_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Location_Test_Records", value.SourceView);
+                    SetCheckParameter("Location_Test_Records", value.SourceView);
                 }
             }
         }
@@ -4611,41 +4610,41 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///Generated in Location object.
         /// </summary>
-        public static string LocationType
+        public string LocationType
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Location_Type")));
+                return ((string)(GetCheckParameter("Location_Type")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Location_Type", value);
+                SetCheckParameter("Location_Type", value);
             }
         }
         
         /// <summary>
         /// Plugin to indicate whether location is a unit, common stack, multiple stack, common pipe, or multiple pipe.
         /// </summary>
-        public static string LocationTypeDescription
+        public string LocationTypeDescription
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Location_Type_Description")));
+                return ((string)(GetCheckParameter("Location_Type_Description")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Location_Type_Description", value);
+                SetCheckParameter("Location_Type_Description", value);
             }
         }
         
         /// <summary>
         /// Unit Type records for the unit or all the units linked to a stack or pipe.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationUnitTypeRow> LocationUnitTypeRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationUnitTypeRow> LocationUnitTypeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Location_Unit_Type_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Unit_Type_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4659,11 +4658,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Location_Unit_Type_Records", null);
+                    SetCheckParameter("Location_Unit_Type_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Location_Unit_Type_Records", value.SourceView);
+                    SetCheckParameter("Location_Unit_Type_Records", value.SourceView);
                 }
             }
         }
@@ -4673,11 +4672,11 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///Set in the Monitor Location category.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckMp.Function.MatsCombinedMethod> MatsCombinedMethodRecordsByLocation
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.CheckMp.Function.MatsCombinedMethod> MatsCombinedMethodRecordsByLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("MATS_Combined_Method_Records_By_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_Combined_Method_Records_By_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4691,11 +4690,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("MATS_Combined_Method_Records_By_Location", null);
+                    SetCheckParameter("MATS_Combined_Method_Records_By_Location", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("MATS_Combined_Method_Records_By_Location", value.SourceView);
+                    SetCheckParameter("MATS_Combined_Method_Records_By_Location", value.SourceView);
                 }
             }
         }
@@ -4705,26 +4704,26 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///This date is the late of the EvaluationBeginDate and the date the MATS program began.
         /// </summary>
-        public static DateTime? MatsEvaluationBeginDate
+        public DateTime? MatsEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("MATS_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("MATS_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("MATS_Evaluation_Begin_Date", value);
+                SetCheckParameter("MATS_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// Contains the MATS Method Code lookup table.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.MatsMethodCodeRow> MatsMethodCodeLookup
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.MatsMethodCodeRow> MatsMethodCodeLookup
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("MATS_Method_Code_Lookup")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_Method_Code_Lookup")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4738,11 +4737,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("MATS_Method_Code_Lookup", null);
+                    SetCheckParameter("MATS_Method_Code_Lookup", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("MATS_Method_Code_Lookup", value.SourceView);
+                    SetCheckParameter("MATS_Method_Code_Lookup", value.SourceView);
                 }
             }
         }
@@ -4750,11 +4749,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Contains the MATS Method Parameter Code lookup table.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.MatsMethodParameterCodeRow> MatsMethodParameterCodeLookup
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.MatsMethodParameterCodeRow> MatsMethodParameterCodeLookup
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("MATS_Method_Parameter_Code_Lookup")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_Method_Parameter_Code_Lookup")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4768,11 +4767,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("MATS_Method_Parameter_Code_Lookup", null);
+                    SetCheckParameter("MATS_Method_Parameter_Code_Lookup", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("MATS_Method_Parameter_Code_Lookup", value.SourceView);
+                    SetCheckParameter("MATS_Method_Parameter_Code_Lookup", value.SourceView);
                 }
             }
         }
@@ -4780,11 +4779,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Contains the MATS Supplemental Compliance Method Records for the current MP.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckMp.Function.MATSMethodDataParameter> MatsMpSupplementalComplianceMethodRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.CheckMp.Function.MATSMethodDataParameter> MatsMpSupplementalComplianceMethodRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("MATS_MP_Supplemental_Compliance_Method_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_MP_Supplemental_Compliance_Method_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4798,11 +4797,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("MATS_MP_Supplemental_Compliance_Method_Records", null);
+                    SetCheckParameter("MATS_MP_Supplemental_Compliance_Method_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("MATS_MP_Supplemental_Compliance_Method_Records", value.SourceView);
+                    SetCheckParameter("MATS_MP_Supplemental_Compliance_Method_Records", value.SourceView);
                 }
             }
         }
@@ -4812,26 +4811,26 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///Boolean value indicating whether a MATS required method exists.
         /// </summary>
-        public static bool? MatsRequiredCheck
+        public bool? MatsRequiredCheck
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("MATS_Required_Check")));
+                return ((bool?)(GetCheckParameter("MATS_Required_Check")));
             }
             set
             {
-                MpParameters.SetCheckParameter("MATS_Required_Check", value);
+                SetCheckParameter("MATS_Required_Check", value);
             }
         }
         
         /// <summary>
         /// Contains the MATS Supplemental Compliance Method Record currently being processed.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckMp.Function.MATSMethodDataParameter MatsSupplementalComplianceMethodRecord
+        public ECMPS.Checks.Data.Ecmps.CheckMp.Function.MATSMethodDataParameter MatsSupplementalComplianceMethodRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(MpParameters.GetCheckParameter("MATS_Supplemental_Compliance_Method_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_Supplemental_Compliance_Method_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4845,11 +4844,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("MATS_Supplemental_Compliance_Method_Record", null);
+                    SetCheckParameter("MATS_Supplemental_Compliance_Method_Record", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("MATS_Supplemental_Compliance_Method_Record", value.SourceRow);
+                    SetCheckParameter("MATS_Supplemental_Compliance_Method_Record", value.SourceRow);
                 }
             }
         }
@@ -4857,101 +4856,101 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Maximum default value for parameter and units of measure.
         /// </summary>
-        public static decimal? MaximumDefaultValue
+        public decimal? MaximumDefaultValue
         {
             get
             {
-                return ((decimal?)(MpParameters.GetCheckParameter("Maximum_Default_Value")));
+                return ((decimal?)(GetCheckParameter("Maximum_Default_Value")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Maximum_Default_Value", value);
+                SetCheckParameter("Maximum_Default_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates the furthest date in the future expected in an evaluation.
         /// </summary>
-        public static DateTime? MaximumFutureDate
+        public DateTime? MaximumFutureDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Maximum_Future_Date")));
+                return ((DateTime?)(GetCheckParameter("Maximum_Future_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Maximum_Future_Date", value);
+                SetCheckParameter("Maximum_Future_Date", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Maximum Load Units of Measure is Valid.
         /// </summary>
-        public static bool? MaximumLoadUnitsOfMeasureValid
+        public bool? MaximumLoadUnitsOfMeasureValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Maximum_Load_Units_Of_Measure_Valid")));
+                return ((bool?)(GetCheckParameter("Maximum_Load_Units_Of_Measure_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Maximum_Load_Units_Of_Measure_Valid", value);
+                SetCheckParameter("Maximum_Load_Units_Of_Measure_Valid", value);
             }
         }
         
         /// <summary>
         /// Maximum span value for component type and units of measure.
         /// </summary>
-        public static decimal? MaximumSpanValue
+        public decimal? MaximumSpanValue
         {
             get
             {
-                return ((decimal?)(MpParameters.GetCheckParameter("Maximum_Span_Value")));
+                return ((decimal?)(GetCheckParameter("Maximum_Span_Value")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Maximum_Span_Value", value);
+                SetCheckParameter("Maximum_Span_Value", value);
             }
         }
         
         /// <summary>
         /// Shows Active/Inactive Status for a Method
         /// </summary>
-        public static bool? MethodActive
+        public bool? MethodActive
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Method_Active")));
+                return ((bool?)(GetCheckParameter("Method_Active")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_Active", value);
+                SetCheckParameter("Method_Active", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the value reported for the field is valid.
         /// </summary>
-        public static bool? MethodBypassApproachCodeValid
+        public bool? MethodBypassApproachCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Method_Bypass_Approach_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Method_Bypass_Approach_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_Bypass_Approach_Code_Valid", value);
+                SetCheckParameter("Method_Bypass_Approach_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// A lookup table of Method Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MethodCodeRow> MethodCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MethodCodeRow> MethodCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Method_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Method_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4965,11 +4964,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Method_Code_Lookup_Table", null);
+                    SetCheckParameter("Method_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Method_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Method_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -4977,131 +4976,131 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates if monitor method start date and hour is prior to end date and hour.
         /// </summary>
-        public static bool? MethodDatesAndHoursConsistent
+        public bool? MethodDatesAndHoursConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Method_Dates_and_Hours_Consistent")));
+                return ((bool?)(GetCheckParameter("Method_Dates_and_Hours_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_Dates_and_Hours_Consistent", value);
+                SetCheckParameter("Method_Dates_and_Hours_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Method End Date is valid.
         /// </summary>
-        public static bool? MethodEndDateValid
+        public bool? MethodEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Method_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Method_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_End_Date_Valid", value);
+                SetCheckParameter("Method_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Method End Hour is valid.
         /// </summary>
-        public static bool? MethodEndHourValid
+        public bool? MethodEndHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Method_End_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Method_End_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_End_Hour_Valid", value);
+                SetCheckParameter("Method_End_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// The first date that the monitor method is active during an evaluation period.
         /// </summary>
-        public static DateTime? MethodEvaluationBeginDate
+        public DateTime? MethodEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Method_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Method_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_Evaluation_Begin_Date", value);
+                SetCheckParameter("Method_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The first hour that the monitor method is active during an evaluation period.
         /// </summary>
-        public static int? MethodEvaluationBeginHour
+        public int? MethodEvaluationBeginHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Method_Evaluation_Begin_Hour")));
+                return ((int?)(GetCheckParameter("Method_Evaluation_Begin_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_Evaluation_Begin_Hour", value);
+                SetCheckParameter("Method_Evaluation_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// The last date that the monitor method is active during an evaluation period.
         /// </summary>
-        public static DateTime? MethodEvaluationEndDate
+        public DateTime? MethodEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Method_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Method_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_Evaluation_End_Date", value);
+                SetCheckParameter("Method_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// The last hour that the monitor method is active during an evaluation period.
         /// </summary>
-        public static int? MethodEvaluationEndHour
+        public int? MethodEvaluationEndHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Method_Evaluation_End_Hour")));
+                return ((int?)(GetCheckParameter("Method_Evaluation_End_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_Evaluation_End_Hour", value);
+                SetCheckParameter("Method_Evaluation_End_Hour", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Method Method Code reported is valid.
         /// </summary>
-        public static bool? MethodMethodCodeValid
+        public bool? MethodMethodCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Method_Method_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Method_Method_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_Method_Code_Valid", value);
+                SetCheckParameter("Method_Method_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Method Parameter Equivalent cross check table.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.MethodParameterEquivalentCrosscheckRow> MethodParameterEquivalentCrosscheck
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.MethodParameterEquivalentCrosscheckRow> MethodParameterEquivalentCrosscheck
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Method_Parameter_Equivalent_Crosscheck")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Method_Parameter_Equivalent_Crosscheck")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5115,11 +5114,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Method_Parameter_Equivalent_Crosscheck", null);
+                    SetCheckParameter("Method_Parameter_Equivalent_Crosscheck", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Method_Parameter_Equivalent_Crosscheck", value.SourceView);
+                    SetCheckParameter("Method_Parameter_Equivalent_Crosscheck", value.SourceView);
                 }
             }
         }
@@ -5129,11 +5128,11 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///Display: Column 1 only.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ParameterToCategoryRow> MethodParameterList
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ParameterToCategoryRow> MethodParameterList
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Method_Parameter_List")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Method_Parameter_List")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5147,11 +5146,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Method_Parameter_List", null);
+                    SetCheckParameter("Method_Parameter_List", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Method_Parameter_List", value.SourceView);
+                    SetCheckParameter("Method_Parameter_List", value.SourceView);
                 }
             }
         }
@@ -5159,11 +5158,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Links method parameter codes to default parameter codes and span component types for fuel-specific missing data.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.MethodParameterToMaximumDefaultParameterToComponentTypeRow> MethodParameterToMaximumDefaultParameterLookupTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.MethodParameterToMaximumDefaultParameterToComponentTypeRow> MethodParameterToMaximumDefaultParameterLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Method_Parameter_To_Maximum_Default_Parameter_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Method_Parameter_To_Maximum_Default_Parameter_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5177,11 +5176,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Method_Parameter_To_Maximum_Default_Parameter_Lookup_Table", null);
+                    SetCheckParameter("Method_Parameter_To_Maximum_Default_Parameter_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Method_Parameter_To_Maximum_Default_Parameter_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Method_Parameter_To_Maximum_Default_Parameter_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -5189,26 +5188,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Method Parameter reported is valid
         /// </summary>
-        public static bool? MethodParameterValid
+        public bool? MethodParameterValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Method_Parameter_Valid")));
+                return ((bool?)(GetCheckParameter("Method_Parameter_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_Parameter_Valid", value);
+                SetCheckParameter("Method_Parameter_Valid", value);
             }
         }
         
         /// <summary>
         /// Records for Methods at Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorMethodRow> MethodRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorMethodRow> MethodRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Method_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Method_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5222,11 +5221,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Method_Records", null);
+                    SetCheckParameter("Method_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Method_Records", value.SourceView);
+                    SetCheckParameter("Method_Records", value.SourceView);
                 }
             }
         }
@@ -5234,56 +5233,56 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Method Start Date is valid.
         /// </summary>
-        public static bool? MethodStartDateValid
+        public bool? MethodStartDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Method_Start_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Method_Start_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_Start_Date_Valid", value);
+                SetCheckParameter("Method_Start_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Method Start Hour is valid.
         /// </summary>
-        public static bool? MethodStartHourValid
+        public bool? MethodStartHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Method_Start_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Method_Start_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_Start_Hour_Valid", value);
+                SetCheckParameter("Method_Start_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Method Substitute Date Code reported is valid.
         /// </summary>
-        public static bool? MethodSubstituteDataCodeValid
+        public bool? MethodSubstituteDataCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Method_Substitute_Data_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Method_Substitute_Data_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Method_Substitute_Data_Code_Valid", value);
+                SetCheckParameter("Method_Substitute_Data_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Appropriate Substitute Data Codes for Method and Method Parameter.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.MethodToSubstituteDataCodeRow> MethodToSubstituteDataCodeCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.MethodToSubstituteDataCodeRow> MethodToSubstituteDataCodeCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Method_To_Substitute_Data_Code_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Method_To_Substitute_Data_Code_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5297,11 +5296,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Method_To_Substitute_Data_Code_Cross_Check_Table", null);
+                    SetCheckParameter("Method_To_Substitute_Data_Code_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Method_To_Substitute_Data_Code_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Method_To_Substitute_Data_Code_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -5311,11 +5310,11 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///Filter: System Type Code is not null.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.MethodParameterToMethodToSystemTypeRow> MethodToSystemTypeCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.MethodParameterToMethodToSystemTypeRow> MethodToSystemTypeCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Method_to_System_Type_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Method_to_System_Type_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5329,11 +5328,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Method_to_System_Type_Cross_Check_Table", null);
+                    SetCheckParameter("Method_to_System_Type_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Method_to_System_Type_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Method_to_System_Type_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -5341,296 +5340,296 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Minimum default value for parameter and units of measure.
         /// </summary>
-        public static decimal? MinimumDefaultValue
+        public decimal? MinimumDefaultValue
         {
             get
             {
-                return ((decimal?)(MpParameters.GetCheckParameter("Minimum_Default_Value")));
+                return ((decimal?)(GetCheckParameter("Minimum_Default_Value")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Minimum_Default_Value", value);
+                SetCheckParameter("Minimum_Default_Value", value);
             }
         }
         
         /// <summary>
         /// The minimum span value for component type and unit type.
         /// </summary>
-        public static decimal? MinimumSpanValue
+        public decimal? MinimumSpanValue
         {
             get
             {
-                return ((decimal?)(MpParameters.GetCheckParameter("Minimum_Span_Value")));
+                return ((decimal?)(GetCheckParameter("Minimum_Span_Value")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Minimum_Span_Value", value);
+                SetCheckParameter("Minimum_Span_Value", value);
             }
         }
         
         /// <summary>
         /// List of required component types that were not linked to the system.
         /// </summary>
-        public static string MissingComponentsForSystem
+        public string MissingComponentsForSystem
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Missing_Components_for_System")));
+                return ((string)(GetCheckParameter("Missing_Components_for_System")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Components_for_System", value);
+                SetCheckParameter("Missing_Components_for_System", value);
             }
         }
         
         /// <summary>
         /// A list of default parameters that are required for a given formula but are not present.
         /// </summary>
-        public static string MissingDefaultForFormula
+        public string MissingDefaultForFormula
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Missing_Default_for_Formula")));
+                return ((string)(GetCheckParameter("Missing_Default_for_Formula")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Default_for_Formula", value);
+                SetCheckParameter("Missing_Default_for_Formula", value);
             }
         }
         
         /// <summary>
         /// A list of default parameter that are required for the current method but are not found in the default table.
         /// </summary>
-        public static string MissingDefaultForMethod
+        public string MissingDefaultForMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Missing_Default_for_Method")));
+                return ((string)(GetCheckParameter("Missing_Default_for_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Default_for_Method", value);
+                SetCheckParameter("Missing_Default_for_Method", value);
             }
         }
         
         /// <summary>
         /// A list of default parameter that are required for the current system but are not found in the default table.
         /// </summary>
-        public static string MissingDefaultForSystem
+        public string MissingDefaultForSystem
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Missing_Default_for_System")));
+                return ((string)(GetCheckParameter("Missing_Default_for_System")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Default_for_System", value);
+                SetCheckParameter("Missing_Default_for_System", value);
             }
         }
         
         /// <summary>
         /// The required default parameter that is missing for the system and component type.
         /// </summary>
-        public static string MissingDefaultForSystemAndComponent
+        public string MissingDefaultForSystemAndComponent
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Missing_Default_For_System_And_Component")));
+                return ((string)(GetCheckParameter("Missing_Default_For_System_And_Component")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Default_For_System_And_Component", value);
+                SetCheckParameter("Missing_Default_For_System_And_Component", value);
             }
         }
         
         /// <summary>
         /// A list of default fuel codes that are required for the current method but are not found in the default table.
         /// </summary>
-        public static string MissingDefaultFuelForMethod
+        public string MissingDefaultFuelForMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Missing_Default_Fuel_for_Method")));
+                return ((string)(GetCheckParameter("Missing_Default_Fuel_for_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Default_Fuel_for_Method", value);
+                SetCheckParameter("Missing_Default_Fuel_for_Method", value);
             }
         }
         
         /// <summary>
         /// A list of required formula parameter + equation code that are missing for a system component.
         /// </summary>
-        public static bool? MissingFormulaForComponent
+        public bool? MissingFormulaForComponent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Missing_Formula_for_Component")));
+                return ((bool?)(GetCheckParameter("Missing_Formula_for_Component")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Formula_for_Component", value);
+                SetCheckParameter("Missing_Formula_for_Component", value);
             }
         }
         
         /// <summary>
         /// A list of required formula parameter + equation code that are missing for a method.
         /// </summary>
-        public static string MissingFormulaForMethod
+        public string MissingFormulaForMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Missing_Formula_For_Method")));
+                return ((string)(GetCheckParameter("Missing_Formula_For_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Formula_For_Method", value);
+                SetCheckParameter("Missing_Formula_For_Method", value);
             }
         }
         
         /// <summary>
         /// A list of required formula parameter + equation code that are missing for a system.
         /// </summary>
-        public static string MissingFormulaForSystem
+        public string MissingFormulaForSystem
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Missing_Formula_For_System")));
+                return ((string)(GetCheckParameter("Missing_Formula_For_System")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Formula_For_System", value);
+                SetCheckParameter("Missing_Formula_For_System", value);
             }
         }
         
         /// <summary>
         /// A required fuelflow system this is missing.
         /// </summary>
-        public static string MissingFuelSystemForMethod
+        public string MissingFuelSystemForMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Missing_Fuel_System_For_Method")));
+                return ((string)(GetCheckParameter("Missing_Fuel_System_For_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Fuel_System_For_Method", value);
+                SetCheckParameter("Missing_Fuel_System_For_Method", value);
             }
         }
         
         /// <summary>
         /// A list of maximum default parameters not found in monitor default records for the location during the evaluation period that required when using fuel-specific missing data or bypass approach.
         /// </summary>
-        public static string MissingMaximumDefault
+        public string MissingMaximumDefault
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Missing_Maximum_Default")));
+                return ((string)(GetCheckParameter("Missing_Maximum_Default")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Maximum_Default", value);
+                SetCheckParameter("Missing_Maximum_Default", value);
             }
         }
         
         /// <summary>
         /// List of missing method parameters NOXR and HI when NOX/NOXR Method is reported.
         /// </summary>
-        public static string MissingMethodsForNoxNoxrMethod
+        public string MissingMethodsForNoxNoxrMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Missing_Methods_for_NOX_NOXR_Method")));
+                return ((string)(GetCheckParameter("Missing_Methods_for_NOX_NOXR_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Methods_for_NOX_NOXR_Method", value);
+                SetCheckParameter("Missing_Methods_for_NOX_NOXR_Method", value);
             }
         }
         
         /// <summary>
         /// List of fuels without Appendix E or PEMS systems.
         /// </summary>
-        public static string MissingNoxSystemForMethod
+        public string MissingNoxSystemForMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Missing_Nox_System_For_Method")));
+                return ((string)(GetCheckParameter("Missing_Nox_System_For_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Nox_System_For_Method", value);
+                SetCheckParameter("Missing_Nox_System_For_Method", value);
             }
         }
         
         /// <summary>
         /// A list of Qual Type Codes that are required for the current method but are not found in the monitoring qualification table.
         /// </summary>
-        public static string MissingQualificationForMethod
+        public string MissingQualificationForMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Missing_Qualification_for_Method")));
+                return ((string)(GetCheckParameter("Missing_Qualification_for_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Missing_Qualification_for_Method", value);
+                SetCheckParameter("Missing_Qualification_for_Method", value);
             }
         }
         
         /// <summary>
         /// Indicates which moisture default missing data parameter is required.
         /// </summary>
-        public static string MoistureDefaultParameter
+        public string MoistureDefaultParameter
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Moisture_Default_Parameter")));
+                return ((string)(GetCheckParameter("Moisture_Default_Parameter")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Moisture_Default_Parameter", value);
+                SetCheckParameter("Moisture_Default_Parameter", value);
             }
         }
         
         /// <summary>
         /// Indicates if a minimum moisture default is required if an HI formula has moisture as a factor and moisture method comes from a moisture system.
         /// </summary>
-        public static bool? MoistureDefaultRequired
+        public bool? MoistureDefaultRequired
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Moisture_Default_Required")));
+                return ((bool?)(GetCheckParameter("Moisture_Default_Required")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Moisture_Default_Required", value);
+                SetCheckParameter("Moisture_Default_Required", value);
             }
         }
         
         /// <summary>
         /// Set to true if formula has moisture as a factor.
         /// </summary>
-        public static bool? MoistureMethodRequired
+        public bool? MoistureMethodRequired
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Moisture_Method_Required")));
+                return ((bool?)(GetCheckParameter("Moisture_Method_Required")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Moisture_Method_Required", value);
+                SetCheckParameter("Moisture_Method_Required", value);
             }
         }
         
         /// <summary>
         /// Records for MonitoringPlanComments at Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorPlanCommentRow> MonitoringPlanCommentRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorPlanCommentRow> MonitoringPlanCommentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Monitoring_Plan_Comment_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitoring_Plan_Comment_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5644,11 +5643,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Monitoring_Plan_Comment_Records", null);
+                    SetCheckParameter("Monitoring_Plan_Comment_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Monitoring_Plan_Comment_Records", value.SourceView);
+                    SetCheckParameter("Monitoring_Plan_Comment_Records", value.SourceView);
                 }
             }
         }
@@ -5656,11 +5655,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// All Unit Op Status Records for the units in the monitoring plan.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitOpStatusRow> MonitoringPlanOpStatusRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitOpStatusRow> MonitoringPlanOpStatusRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Monitoring_Plan_Op_Status_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitoring_Plan_Op_Status_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5674,11 +5673,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Monitoring_Plan_Op_Status_Records", null);
+                    SetCheckParameter("Monitoring_Plan_Op_Status_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Monitoring_Plan_Op_Status_Records", value.SourceView);
+                    SetCheckParameter("Monitoring_Plan_Op_Status_Records", value.SourceView);
                 }
             }
         }
@@ -5686,11 +5685,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Program records for the units in the Monitoring Plan.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpUnitProgramRow> MonitoringPlanProgramList
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpUnitProgramRow> MonitoringPlanProgramList
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Monitoring_Plan_Program_List")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitoring_Plan_Program_List")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5704,11 +5703,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Monitoring_Plan_Program_List", null);
+                    SetCheckParameter("Monitoring_Plan_Program_List", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Monitoring_Plan_Program_List", value.SourceView);
+                    SetCheckParameter("Monitoring_Plan_Program_List", value.SourceView);
                 }
             }
         }
@@ -5716,161 +5715,161 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Monitor Plan Comment Begin Date is Valid.
         /// </summary>
-        public static bool? MonitorPlanCommentBeginDateValid
+        public bool? MonitorPlanCommentBeginDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Monitor_Plan_Comment_Begin_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Monitor_Plan_Comment_Begin_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Monitor_Plan_Comment_Begin_Date_Valid", value);
+                SetCheckParameter("Monitor_Plan_Comment_Begin_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Monitor Plan Comment End Date is Valid.
         /// </summary>
-        public static bool? MonitorPlanCommentEndDateValid
+        public bool? MonitorPlanCommentEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Monitor_Plan_Comment_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Monitor_Plan_Comment_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Monitor_Plan_Comment_End_Date_Valid", value);
+                SetCheckParameter("Monitor_Plan_Comment_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates in the BeginDate in the Monitor Qualification record is valid.
         /// </summary>
-        public static bool? MonitorQualificationBeginDateValid
+        public bool? MonitorQualificationBeginDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Monitor_Qualification_Begin_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Monitor_Qualification_Begin_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Monitor_Qualification_Begin_Date_Valid", value);
+                SetCheckParameter("Monitor_Qualification_Begin_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the BeginDate and EndDate in the Monitor Qualification record are consistent
         /// </summary>
-        public static bool? MonitorQualificationDatesConsistent
+        public bool? MonitorQualificationDatesConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Monitor_Qualification_Dates_Consistent")));
+                return ((bool?)(GetCheckParameter("Monitor_Qualification_Dates_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Monitor_Qualification_Dates_Consistent", value);
+                SetCheckParameter("Monitor_Qualification_Dates_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates in the EndDate in the Monitor Qualification record is valid.
         /// </summary>
-        public static bool? MonitorQualificationEndDateValid
+        public bool? MonitorQualificationEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Monitor_Qualification_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Monitor_Qualification_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Monitor_Qualification_End_Date_Valid", value);
+                SetCheckParameter("Monitor_Qualification_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the QualificationYear in the Monitor Qualification Percent record is valid.
         /// </summary>
-        public static bool? MonitorQualificationPercentQualificationYearValid
+        public bool? MonitorQualificationPercentQualificationYearValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Monitor_Qualification_Percent_Qualification_Year_Valid")));
+                return ((bool?)(GetCheckParameter("Monitor_Qualification_Percent_Qualification_Year_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Monitor_Qualification_Percent_Qualification_Year_Valid", value);
+                SetCheckParameter("Monitor_Qualification_Percent_Qualification_Year_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the Yr1QualificationDataYear in the Monitor Qualification Percent record is valid.
         /// </summary>
-        public static bool? MonitorQualificationPercentYr1QualificationDataYearValid
+        public bool? MonitorQualificationPercentYr1QualificationDataYearValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Monitor_Qualification_Percent_Yr1_Qualification_Data_Year_Valid")));
+                return ((bool?)(GetCheckParameter("Monitor_Qualification_Percent_Yr1_Qualification_Data_Year_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Monitor_Qualification_Percent_Yr1_Qualification_Data_Year_Valid", value);
+                SetCheckParameter("Monitor_Qualification_Percent_Yr1_Qualification_Data_Year_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the Yr2QualificationDataYear in the Monitor Qualification Percent record is valid.
         /// </summary>
-        public static bool? MonitorQualificationPercentYr2QualificationDataYearValid
+        public bool? MonitorQualificationPercentYr2QualificationDataYearValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Monitor_Qualification_Percent_Yr2_Qualification_Data_Year_Valid")));
+                return ((bool?)(GetCheckParameter("Monitor_Qualification_Percent_Yr2_Qualification_Data_Year_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Monitor_Qualification_Percent_Yr2_Qualification_Data_Year_Valid", value);
+                SetCheckParameter("Monitor_Qualification_Percent_Yr2_Qualification_Data_Year_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the Yr3QualificationDataYear in the Monitor Qualification Percent record is valid.
         /// </summary>
-        public static bool? MonitorQualificationPercentYr3QualificationDataYearValid
+        public bool? MonitorQualificationPercentYr3QualificationDataYearValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Monitor_Qualification_Percent_Yr3_Qualification_Data_Year_Valid")));
+                return ((bool?)(GetCheckParameter("Monitor_Qualification_Percent_Yr3_Qualification_Data_Year_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Monitor_Qualification_Percent_Yr3_Qualification_Data_Year_Valid", value);
+                SetCheckParameter("Monitor_Qualification_Percent_Yr3_Qualification_Data_Year_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the Qualification Type is valid.
         /// </summary>
-        public static bool? MonitorQualificationValid
+        public bool? MonitorQualificationValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Monitor_Qualification_Valid")));
+                return ((bool?)(GetCheckParameter("Monitor_Qualification_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Monitor_Qualification_Valid", value);
+                SetCheckParameter("Monitor_Qualification_Valid", value);
             }
         }
         
         /// <summary>
         /// System Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow> MonitorSystemRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow> MonitorSystemRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Monitor_System_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_System_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5884,11 +5883,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Monitor_System_Records", null);
+                    SetCheckParameter("Monitor_System_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Monitor_System_Records", value.SourceView);
+                    SetCheckParameter("Monitor_System_Records", value.SourceView);
                 }
             }
         }
@@ -5896,26 +5895,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Plugin for Span Value validity check.
         /// </summary>
-        public static string MpcMec
+        public string MpcMec
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("MPC_MEC")));
+                return ((string)(GetCheckParameter("MPC_MEC")));
             }
             set
             {
-                MpParameters.SetCheckParameter("MPC_MEC", value);
+                SetCheckParameter("MPC_MEC", value);
             }
         }
         
         /// <summary>
         /// Data view containing the monitor plan location information for a particular monitoring plan.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationRow> MpLocations
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationRow> MpLocations
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("MP_Locations")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MP_Locations")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5929,11 +5928,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("MP_Locations", null);
+                    SetCheckParameter("MP_Locations", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("MP_Locations", value.SourceView);
+                    SetCheckParameter("MP_Locations", value.SourceView);
                 }
             }
         }
@@ -5943,11 +5942,11 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///This parameter was originally used in Emissions but will also now be used in Monitoring Plan checks.  For Monitoring Plan checks it will include all the methods in the Monitoring Plan being evaluated.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow> MpMethodRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow> MpMethodRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("MP_Method_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MP_Method_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5961,11 +5960,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("MP_Method_Records", null);
+                    SetCheckParameter("MP_Method_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("MP_Method_Records", value.SourceView);
+                    SetCheckParameter("MP_Method_Records", value.SourceView);
                 }
             }
         }
@@ -5973,11 +5972,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The Unit Stack Configuration records where the unit and stack/pipe are both part of a specific monitoring plan.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> MpUnitStackConfigurationRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> MpUnitStackConfigurationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("MP_Unit_Stack_Configuration_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MP_Unit_Stack_Configuration_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5991,11 +5990,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("MP_Unit_Stack_Configuration_Records", null);
+                    SetCheckParameter("MP_Unit_Stack_Configuration_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("MP_Unit_Stack_Configuration_Records", value.SourceView);
+                    SetCheckParameter("MP_Unit_Stack_Configuration_Records", value.SourceView);
                 }
             }
         }
@@ -6003,56 +6002,56 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Non Load Based Indicator for a location
         /// </summary>
-        public static int? NonLoadBasedIndicator
+        public int? NonLoadBasedIndicator
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Non_Load_Based_Indicator")));
+                return ((int?)(GetCheckParameter("Non_Load_Based_Indicator")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Non_Load_Based_Indicator", value);
+                SetCheckParameter("Non_Load_Based_Indicator", value);
             }
         }
         
         /// <summary>
         /// Indicates whether an Inappropriate NOXG Default is Reported when NOXU Reported for Any Hour.
         /// </summary>
-        public static bool? NoxgNoxuDefaultsConsistent
+        public bool? NoxgNoxuDefaultsConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("NOXG/NOXU_Defaults_Consistent")));
+                return ((bool?)(GetCheckParameter("NOXG/NOXU_Defaults_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("NOXG/NOXU_Defaults_Consistent", value);
+                SetCheckParameter("NOXG/NOXU_Defaults_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates if the LME unit reports NOX.
         /// </summary>
-        public static bool? NoxLmeUnit
+        public bool? NoxLmeUnit
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("NOX_LME_Unit")));
+                return ((bool?)(GetCheckParameter("NOX_LME_Unit")));
             }
             set
             {
-                MpParameters.SetCheckParameter("NOX_LME_Unit", value);
+                SetCheckParameter("NOX_LME_Unit", value);
             }
         }
         
         /// <summary>
         /// Cross-check table that defines Part 75 defaults for NOX maximum potential concentration based on fuel and unit type.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.NoxMpcToFuelCategoryAndUnitTypeRow> NoxMpcToFuelCategoryAndUnitType
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.NoxMpcToFuelCategoryAndUnitTypeRow> NoxMpcToFuelCategoryAndUnitType
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("NOX_MPC_to_Fuel_Category_and_Unit_Type")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("NOX_MPC_to_Fuel_Category_and_Unit_Type")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6066,11 +6065,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("NOX_MPC_to_Fuel_Category_and_Unit_Type", null);
+                    SetCheckParameter("NOX_MPC_to_Fuel_Category_and_Unit_Type", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("NOX_MPC_to_Fuel_Category_and_Unit_Type", value.SourceView);
+                    SetCheckParameter("NOX_MPC_to_Fuel_Category_and_Unit_Type", value.SourceView);
                 }
             }
         }
@@ -6078,71 +6077,71 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// NOX System Type Code.
         /// </summary>
-        public static string NoxSystemType
+        public string NoxSystemType
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Nox_System_Type")));
+                return ((string)(GetCheckParameter("Nox_System_Type")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Nox_System_Type", value);
+                SetCheckParameter("Nox_System_Type", value);
             }
         }
 
         /// <summary>
         /// The method parameter description for the Current NSPS4T Program Parameter record.
         /// </summary>
-        public static string Nsps4tMethodParameterDescription
+        public string Nsps4tMethodParameterDescription
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("NSPS4T_Method_Parameter_Description")));
+                return ((string)(GetCheckParameter("NSPS4T_Method_Parameter_Description")));
             }
             set
             {
-                MpParameters.SetCheckParameter("NSPS4T_Method_Parameter_Description", value);
+                SetCheckParameter("NSPS4T_Method_Parameter_Description", value);
             }
         }
 
         /// <summary>
         /// Indicates if a formula requires an O2 value.
         /// </summary>
-        public static bool? O2ComponentRequired
+        public bool? O2ComponentRequired
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("O2_Component_Required")));
+                return ((bool?)(GetCheckParameter("O2_Component_Required")));
             }
             set
             {
-                MpParameters.SetCheckParameter("O2_Component_Required", value);
+                SetCheckParameter("O2_Component_Required", value);
             }
         }
         
         /// <summary>
         /// Contains the list of overlapping parameter values determined in a check.
         /// </summary>
-        public static string OverlappingParameterList
+        public string OverlappingParameterList
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Overlapping_Parameter_List")));
+                return ((string)(GetCheckParameter("Overlapping_Parameter_List")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Overlapping_Parameter_List", value);
+                SetCheckParameter("Overlapping_Parameter_List", value);
             }
         }
         
         /// <summary>
         /// Contains the cross check that link the method and parameter codes for a method to the list of allowable formula codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CrossCheck.Table.ParameterMethodToFormulaRow> ParameterAndMethodAndLocationToFormulaCrosscheck
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.CrossCheck.Table.ParameterMethodToFormulaRow> ParameterAndMethodAndLocationToFormulaCrosscheck
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Parameter_And_Method_And_Location_To_Formula_Crosscheck")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Parameter_And_Method_And_Location_To_Formula_Crosscheck")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6156,11 +6155,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Parameter_And_Method_And_Location_To_Formula_Crosscheck", null);
+                    SetCheckParameter("Parameter_And_Method_And_Location_To_Formula_Crosscheck", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Parameter_And_Method_And_Location_To_Formula_Crosscheck", value.SourceView);
+                    SetCheckParameter("Parameter_And_Method_And_Location_To_Formula_Crosscheck", value.SourceView);
                 }
             }
         }
@@ -6170,11 +6169,11 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///Display: Columns 1 and 2 only.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.MethodParameterToMethodToSystemTypeRow> ParameterToMethodCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.MethodParameterToMethodToSystemTypeRow> ParameterToMethodCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Parameter_to_Method_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Parameter_to_Method_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6188,11 +6187,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Parameter_to_Method_Cross_Check_Table", null);
+                    SetCheckParameter("Parameter_to_Method_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Parameter_to_Method_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Parameter_to_Method_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -6200,11 +6199,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Lists all combinations of valid Parameter Codes and  Units of Measure codes with min and max values.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ParameterUomRow> ParameterUnitsOfMeasureLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ParameterUomRow> ParameterUnitsOfMeasureLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6218,11 +6217,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table", null);
+                    SetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -6232,26 +6231,26 @@ namespace ECMPS.Checks.Mp.Parameters
         ///
         ///
         /// </summary>
-        public static bool? Post2008FlowSystemPresent
+        public bool? Post2008FlowSystemPresent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Post2008_Flow_System_Present")));
+                return ((bool?)(GetCheckParameter("Post2008_Flow_System_Present")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Post2008_Flow_System_Present", value);
+                SetCheckParameter("Post2008_Flow_System_Present", value);
             }
         }
         
         /// <summary>
         /// Contains the program code information needed to produce program list for checks.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.ProgramCodeRow> ProgramCodeTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.ProgramCodeRow> ProgramCodeTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Program_Code_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Program_Code_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6265,11 +6264,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Program_Code_Table", null);
+                    SetCheckParameter("Program_Code_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Program_Code_Table", value.SourceView);
+                    SetCheckParameter("Program_Code_Table", value.SourceView);
                 }
             }
         }
@@ -6277,101 +6276,101 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The first date that the Program is active during an evaluation period.
         /// </summary>
-        public static DateTime? ProgramEvaluationBeginDate
+        public DateTime? ProgramEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Program_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Program_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Program_Evaluation_Begin_Date", value);
+                SetCheckParameter("Program_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The last date that the Program is active during an evaluation period.
         /// </summary>
-        public static DateTime? ProgramEvaluationEndDate
+        public DateTime? ProgramEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Program_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Program_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Program_Evaluation_End_Date", value);
+                SetCheckParameter("Program_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// Contains a list of ozone season program codes.
         /// </summary>
-        public static string ProgramIsOzoneSeasonList
+        public string ProgramIsOzoneSeasonList
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Program_is_Ozone_Season_List")));
+                return ((string)(GetCheckParameter("Program_is_Ozone_Season_List")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Program_is_Ozone_Season_List", value);
+                SetCheckParameter("Program_is_Ozone_Season_List", value);
             }
         }
         
         /// <summary>
         /// The method parameter description for the Current Program parameter record.
         /// </summary>
-        public static string ProgramMethodParameterDescription
+        public string ProgramMethodParameterDescription
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Program_Method_Parameter_Description")));
+                return ((string)(GetCheckParameter("Program_Method_Parameter_Description")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Program_Method_Parameter_Description", value);
+                SetCheckParameter("Program_Method_Parameter_Description", value);
             }
         }
         
         /// <summary>
         /// Indicates the evaluation begin date for a Unit Program Parameter record.
         /// </summary>
-        public static DateTime? ProgramParameterEvaluationBeginDate
+        public DateTime? ProgramParameterEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Program_Parameter_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Program_Parameter_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Program_Parameter_Evaluation_Begin_Date", value);
+                SetCheckParameter("Program_Parameter_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// Indicates the evaluation end date for a Unit Program Parmeter record.
         /// </summary>
-        public static DateTime? ProgramParameterEvaluationEndDate
+        public DateTime? ProgramParameterEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Program_Parameter_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Program_Parameter_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Program_Parameter_Evaluation_End_Date", value);
+                SetCheckParameter("Program_Parameter_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// The QA Supplemental Data records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataRow> QaSupplementalDataRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataRow> QaSupplementalDataRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("QA_Supplemental_Data_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("QA_Supplemental_Data_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6385,11 +6384,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("QA_Supplemental_Data_Records", null);
+                    SetCheckParameter("QA_Supplemental_Data_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("QA_Supplemental_Data_Records", value.SourceView);
+                    SetCheckParameter("QA_Supplemental_Data_Records", value.SourceView);
                 }
             }
         }
@@ -6397,86 +6396,86 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates in QualificationTypeCode in Monitor Qualification record is approrpriate for the fuels burned.
         /// </summary>
-        public static bool? QualificationConsistentWithFuel
+        public bool? QualificationConsistentWithFuel
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Qualification_Consistent_with_Fuel")));
+                return ((bool?)(GetCheckParameter("Qualification_Consistent_with_Fuel")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Qualification_Consistent_with_Fuel", value);
+                SetCheckParameter("Qualification_Consistent_with_Fuel", value);
             }
         }
         
         /// <summary>
         /// Indicates in QualificationTypeCode in Monitor Qualification record is approrpriate for non-load based units.
         /// </summary>
-        public static bool? QualificationConsistentWithNonLoadBasedIndicator
+        public bool? QualificationConsistentWithNonLoadBasedIndicator
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Qualification_Consistent_with_Non_Load_Based_Indicator")));
+                return ((bool?)(GetCheckParameter("Qualification_Consistent_with_Non_Load_Based_Indicator")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Qualification_Consistent_with_Non_Load_Based_Indicator", value);
+                SetCheckParameter("Qualification_Consistent_with_Non_Load_Based_Indicator", value);
             }
         }
         
         /// <summary>
         /// Indicates in QualificationTypeCode in Monitor Qualification record is approrpriate for the program and reporting frequency.
         /// </summary>
-        public static bool? QualificationConsistentWithProgramAndReportingFrequency
+        public bool? QualificationConsistentWithProgramAndReportingFrequency
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Qualification_Consistent_with_Program_and_Reporting_Frequency")));
+                return ((bool?)(GetCheckParameter("Qualification_Consistent_with_Program_and_Reporting_Frequency")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Qualification_Consistent_with_Program_and_Reporting_Frequency", value);
+                SetCheckParameter("Qualification_Consistent_with_Program_and_Reporting_Frequency", value);
             }
         }
         
         /// <summary>
         /// The last date that the monitor qualification record is active during an evaluation period.
         /// </summary>
-        public static DateTime? QualificationEvaluationEndDate
+        public DateTime? QualificationEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Qualification_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Qualification_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Qualification_Evaluation_End_Date", value);
+                SetCheckParameter("Qualification_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// The first date that the monitor qualification record is active during an evaluation period.
         /// </summary>
-        public static DateTime? QualificationEvaluationStartDate
+        public DateTime? QualificationEvaluationStartDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Qualification_Evaluation_Start_Date")));
+                return ((DateTime?)(GetCheckParameter("Qualification_Evaluation_Start_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Qualification_Evaluation_Start_Date", value);
+                SetCheckParameter("Qualification_Evaluation_Start_Date", value);
             }
         }
         
         /// <summary>
         /// QualificationLEE Records at Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckMp.Function.MonitorQualificationLEEParameter> QualificationleeRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.CheckMp.Function.MonitorQualificationLEEParameter> QualificationleeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("QualificationLEE_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("QualificationLEE_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6490,11 +6489,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("QualificationLEE_Records", null);
+                    SetCheckParameter("QualificationLEE_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("QualificationLEE_Records", value.SourceView);
+                    SetCheckParameter("QualificationLEE_Records", value.SourceView);
                 }
             }
         }
@@ -6502,11 +6501,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Contains the Qualification Lee Test Type Code lookup table.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQualLeeTestTypeCdRow> QualificationLeeTestTypeCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQualLeeTestTypeCdRow> QualificationLeeTestTypeCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Qualification_Lee_Test_Type_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Qualification_Lee_Test_Type_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6520,11 +6519,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Qualification_Lee_Test_Type_Code_Lookup_Table", null);
+                    SetCheckParameter("Qualification_Lee_Test_Type_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Qualification_Lee_Test_Type_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Qualification_Lee_Test_Type_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -6532,11 +6531,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Qualification LME Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorQualificationLmeRow> QualificationlmeRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorQualificationLmeRow> QualificationlmeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("QualificationLME_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("QualificationLME_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6550,11 +6549,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("QualificationLME_Records", null);
+                    SetCheckParameter("QualificationLME_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("QualificationLME_Records", value.SourceView);
+                    SetCheckParameter("QualificationLME_Records", value.SourceView);
                 }
             }
         }
@@ -6562,11 +6561,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Qualification Percent Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorQualificationPctRow> QualificationPercentRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorQualificationPctRow> QualificationPercentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Qualification_Percent_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Qualification_Percent_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6580,11 +6579,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Qualification_Percent_Records", null);
+                    SetCheckParameter("Qualification_Percent_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Qualification_Percent_Records", value.SourceView);
+                    SetCheckParameter("Qualification_Percent_Records", value.SourceView);
                 }
             }
         }
@@ -6592,11 +6591,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Qualification Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorQualificationRow> QualificationRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorQualificationRow> QualificationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Qualification_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Qualification_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6610,11 +6609,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Qualification_Records", null);
+                    SetCheckParameter("Qualification_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Qualification_Records", value.SourceView);
+                    SetCheckParameter("Qualification_Records", value.SourceView);
                 }
             }
         }
@@ -6622,26 +6621,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The System Type required for the Monitor Qualification.
         /// </summary>
-        public static string QualificationSystemType
+        public string QualificationSystemType
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Qualification_System_Type")));
+                return ((string)(GetCheckParameter("Qualification_System_Type")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Qualification_System_Type", value);
+                SetCheckParameter("Qualification_System_Type", value);
             }
         }
         
         /// <summary>
         /// A lookup table of Qualification Type Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.QualTypeCodeRow> QualificationTypeCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.QualTypeCodeRow> QualificationTypeCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Qualification_Type_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Qualification_Type_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6655,11 +6654,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Qualification_Type_Code_Lookup_Table", null);
+                    SetCheckParameter("Qualification_Type_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Qualification_Type_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Qualification_Type_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -6667,206 +6666,206 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates if the Qualification Type is valid.
         /// </summary>
-        public static bool? QualificationTypeCodeValid
+        public bool? QualificationTypeCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Qualification_Type_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Qualification_Type_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Qualification_Type_Code_Valid", value);
+                SetCheckParameter("Qualification_Type_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// This determines if location must report range of operation.
         /// </summary>
-        public static bool? RangeOfOperationRequired
+        public bool? RangeOfOperationRequired
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Range_of_Operation_Required")));
+                return ((bool?)(GetCheckParameter("Range_of_Operation_Required")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Range_of_Operation_Required", value);
+                SetCheckParameter("Range_of_Operation_Required", value);
             }
         }
         
         /// <summary>
         /// This indicates whether or not the Rectangular Duct WAFBeginDate is Valid.
         /// </summary>
-        public static bool? RectangularDuctWafEffectiveDateValid
+        public bool? RectangularDuctWafEffectiveDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Rectangular_Duct_WAF_Effective_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Rectangular_Duct_WAF_Effective_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Rectangular_Duct_WAF_Effective_Date_Valid", value);
+                SetCheckParameter("Rectangular_Duct_WAF_Effective_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// This indicates whether or not the WAFBeginHour is valid.
         /// </summary>
-        public static bool? RectangularDuctWafEffectiveHourValid
+        public bool? RectangularDuctWafEffectiveHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Rectangular_Duct_WAF_Effective_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Rectangular_Duct_WAF_Effective_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Rectangular_Duct_WAF_Effective_Hour_Valid", value);
+                SetCheckParameter("Rectangular_Duct_WAF_Effective_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// This indicates whether or not the Rectangular Duct WAFEndDate is Valid.
         /// </summary>
-        public static bool? RectangularDuctWafEndDateValid
+        public bool? RectangularDuctWafEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Rectangular_Duct_WAF_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Rectangular_Duct_WAF_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Rectangular_Duct_WAF_End_Date_Valid", value);
+                SetCheckParameter("Rectangular_Duct_WAF_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// This indicates whether or not the Rectangular Duct WAFEndHour is Valid.
         /// </summary>
-        public static bool? RectangularDuctWafEndHourValid
+        public bool? RectangularDuctWafEndHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Rectangular_Duct_WAF_End_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Rectangular_Duct_WAF_End_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Rectangular_Duct_WAF_End_Hour_Valid", value);
+                SetCheckParameter("Rectangular_Duct_WAF_End_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// This indicates whether or not the Rectangular Duct WAF Number of Method 1 Traverse Points in WAF Test is valid.
         /// </summary>
-        public static bool? RectangularDuctWafNumberOfMethod1TraversePointsInWafTestValid
+        public bool? RectangularDuctWafNumberOfMethod1TraversePointsInWafTestValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Rectangular_Duct_WAF_Number_of_Method_1_Traverse_Points_in_WAF_Test_Valid")));
+                return ((bool?)(GetCheckParameter("Rectangular_Duct_WAF_Number_of_Method_1_Traverse_Points_in_WAF_Test_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Rectangular_Duct_WAF_Number_of_Method_1_Traverse_Points_in_WAF_Test_Valid", value);
+                SetCheckParameter("Rectangular_Duct_WAF_Number_of_Method_1_Traverse_Points_in_WAF_Test_Valid", value);
             }
         }
         
         /// <summary>
         /// Identifies the maximum value fieldname associated with a default minimum value.
         /// </summary>
-        public static string RelatedMaximum
+        public string RelatedMaximum
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Related_Maximum")));
+                return ((string)(GetCheckParameter("Related_Maximum")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Related_Maximum", value);
+                SetCheckParameter("Related_Maximum", value);
             }
         }
         
         /// <summary>
         /// Indicates if there is a DAHS component reported for a system.
         /// </summary>
-        public static bool? RequiredDahsReportedForSystem
+        public bool? RequiredDahsReportedForSystem
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Required_DAHS_Reported_for_System")));
+                return ((bool?)(GetCheckParameter("Required_DAHS_Reported_for_System")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Required_DAHS_Reported_for_System", value);
+                SetCheckParameter("Required_DAHS_Reported_for_System", value);
             }
         }
         
         /// <summary>
         /// Indicates if the required non-DAHS components were reported.
         /// </summary>
-        public static bool? RequiredNonDahsComponentsReportedForSystem
+        public bool? RequiredNonDahsComponentsReportedForSystem
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Required_Non_DAHS_Components_Reported_For_System")));
+                return ((bool?)(GetCheckParameter("Required_Non_DAHS_Components_Reported_For_System")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Required_Non_DAHS_Components_Reported_For_System", value);
+                SetCheckParameter("Required_Non_DAHS_Components_Reported_For_System", value);
             }
         }
         
         /// <summary>
         /// Indicates if system requires a probe component.
         /// </summary>
-        public static bool? RequiredProbe
+        public bool? RequiredProbe
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Required_Probe")));
+                return ((bool?)(GetCheckParameter("Required_Probe")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Required_Probe", value);
+                SetCheckParameter("Required_Probe", value);
             }
         }
         
         /// <summary>
         /// Incidates if Component Type and Analyzer Range Code is consistent with Span Parameter and Scale for non Dual range spans.
         /// </summary>
-        public static bool? RequiredSpanReportedForComponentTypeAndAnalyzerRange
+        public bool? RequiredSpanReportedForComponentTypeAndAnalyzerRange
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Required_Span_Reported_for_Component_Type_and_Analyzer_Range")));
+                return ((bool?)(GetCheckParameter("Required_Span_Reported_for_Component_Type_and_Analyzer_Range")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Required_Span_Reported_for_Component_Type_and_Analyzer_Range", value);
+                SetCheckParameter("Required_Span_Reported_for_Component_Type_and_Analyzer_Range", value);
             }
         }
         
         /// <summary>
         /// A required system type for a monitor method that is either missing or duplicate.
         /// </summary>
-        public static string RequiredSystemForMethod
+        public string RequiredSystemForMethod
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Required_System_For_Method")));
+                return ((string)(GetCheckParameter("Required_System_For_Method")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Required_System_For_Method", value);
+                SetCheckParameter("Required_System_For_Method", value);
             }
         }
         
         /// <summary>
         /// Lookup table of sample acquistion method codes
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AcquisitionMethodCodeRow> SampleAcquisitionMethodCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AcquisitionMethodCodeRow> SampleAcquisitionMethodCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Sample_Acquisition_Method_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Sample_Acquisition_Method_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6880,11 +6879,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Sample_Acquisition_Method_Code_Lookup_Table", null);
+                    SetCheckParameter("Sample_Acquisition_Method_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Sample_Acquisition_Method_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Sample_Acquisition_Method_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -6892,206 +6891,206 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates if the LME unit reports SO2.
         /// </summary>
-        public static bool? So2LmeUnit
+        public bool? So2LmeUnit
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("SO2_LME_Unit")));
+                return ((bool?)(GetCheckParameter("SO2_LME_Unit")));
             }
             set
             {
-                MpParameters.SetCheckParameter("SO2_LME_Unit", value);
+                SetCheckParameter("SO2_LME_Unit", value);
             }
         }
         
         /// <summary>
         /// Shows Active/Inactive Status for a Span
         /// </summary>
-        public static bool? SpanActiveStatus
+        public bool? SpanActiveStatus
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Span_Active_Status")));
+                return ((bool?)(GetCheckParameter("Span_Active_Status")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_Active_Status", value);
+                SetCheckParameter("Span_Active_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Span Component Type Code reported is Valid.
         /// </summary>
-        public static bool? SpanComponentTypeCodeValid
+        public bool? SpanComponentTypeCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Span_Component_Type_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Span_Component_Type_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_Component_Type_Code_Valid", value);
+                SetCheckParameter("Span_Component_Type_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether Span Dates and Hours are Consistent.
         /// </summary>
-        public static bool? SpanDatesAndHoursConsistent
+        public bool? SpanDatesAndHoursConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Span_Dates_and_Hours_Consistent")));
+                return ((bool?)(GetCheckParameter("Span_Dates_and_Hours_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_Dates_and_Hours_Consistent", value);
+                SetCheckParameter("Span_Dates_and_Hours_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates whether Default High Range Value is Valid.
         /// </summary>
-        public static bool? SpanDefaultHighRangeValueValid
+        public bool? SpanDefaultHighRangeValueValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Span_Default_High_Range_Value_Valid")));
+                return ((bool?)(GetCheckParameter("Span_Default_High_Range_Value_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_Default_High_Range_Value_Valid", value);
+                SetCheckParameter("Span_Default_High_Range_Value_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not Span End Date Valid.
         /// </summary>
-        public static bool? SpanEndDateValid
+        public bool? SpanEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Span_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Span_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_End_Date_Valid", value);
+                SetCheckParameter("Span_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not Span End Hour Valid.
         /// </summary>
-        public static bool? SpanEndHourValid
+        public bool? SpanEndHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Span_End_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Span_End_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_End_Hour_Valid", value);
+                SetCheckParameter("Span_End_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// The first date that the span is active during an evaluation period.
         /// </summary>
-        public static DateTime? SpanEvaluationBeginDate
+        public DateTime? SpanEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Span_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Span_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_Evaluation_Begin_Date", value);
+                SetCheckParameter("Span_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The first hour that the span is active during an evaluation period.
         /// </summary>
-        public static int? SpanEvaluationBeginHour
+        public int? SpanEvaluationBeginHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Span_Evaluation_Begin_Hour")));
+                return ((int?)(GetCheckParameter("Span_Evaluation_Begin_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_Evaluation_Begin_Hour", value);
+                SetCheckParameter("Span_Evaluation_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// The last date that the span is active during an evaluation period.
         /// </summary>
-        public static DateTime? SpanEvaluationEndDate
+        public DateTime? SpanEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Span_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Span_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_Evaluation_End_Date", value);
+                SetCheckParameter("Span_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// The last hour that the span is active during an evaluation period.
         /// </summary>
-        public static int? SpanEvaluationEndHour
+        public int? SpanEvaluationEndHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("Span_Evaluation_End_Hour")));
+                return ((int?)(GetCheckParameter("Span_Evaluation_End_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_Evaluation_End_Hour", value);
+                SetCheckParameter("Span_Evaluation_End_Hour", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Full Scale Range Value reported is Valid.
         /// </summary>
-        public static bool? SpanFullScaleRangeValueValid
+        public bool? SpanFullScaleRangeValueValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Span_Full_Scale_Range_Value_Valid")));
+                return ((bool?)(GetCheckParameter("Span_Full_Scale_Range_Value_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_Full_Scale_Range_Value_Valid", value);
+                SetCheckParameter("Span_Full_Scale_Range_Value_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the MEC (Maximum Expected Concentration) is valid.
         /// </summary>
-        public static bool? SpanMecValueValid
+        public bool? SpanMecValueValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Span_MEC_Value_Valid")));
+                return ((bool?)(GetCheckParameter("Span_MEC_Value_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_MEC_Value_Valid", value);
+                SetCheckParameter("Span_MEC_Value_Valid", value);
             }
         }
         
         /// <summary>
         /// A lookup table of Span Method Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.SpanMethodCodeRow> SpanMethodCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.SpanMethodCodeRow> SpanMethodCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Span_Method_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Span_Method_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7105,11 +7104,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Span_Method_Code_Lookup_Table", null);
+                    SetCheckParameter("Span_Method_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Span_Method_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Span_Method_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -7117,26 +7116,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the MPC (Maximum Potential Concentration) is valid.
         /// </summary>
-        public static bool? SpanMpcValueValid
+        public bool? SpanMpcValueValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Span_MPC_Value_Valid")));
+                return ((bool?)(GetCheckParameter("Span_MPC_Value_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_MPC_Value_Valid", value);
+                SetCheckParameter("Span_MPC_Value_Valid", value);
             }
         }
         
         /// <summary>
         /// Span Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorSpanRow> SpanRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorSpanRow> SpanRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Span_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Span_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7150,11 +7149,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Span_Records", null);
+                    SetCheckParameter("Span_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Span_Records", value.SourceView);
+                    SetCheckParameter("Span_Records", value.SourceView);
                 }
             }
         }
@@ -7162,116 +7161,116 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Span Scale Code reported is Valid.
         /// </summary>
-        public static bool? SpanScaleCodeValid
+        public bool? SpanScaleCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Span_Scale_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Span_Scale_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_Scale_Code_Valid", value);
+                SetCheckParameter("Span_Scale_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Span Start Date is valid.
         /// </summary>
-        public static bool? SpanStartDateValid
+        public bool? SpanStartDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Span_Start_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Span_Start_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_Start_Date_Valid", value);
+                SetCheckParameter("Span_Start_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Span Start Hour is Valid.
         /// </summary>
-        public static bool? SpanStartHourValid
+        public bool? SpanStartHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Span_Start_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Span_Start_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_Start_Hour_Valid", value);
+                SetCheckParameter("Span_Start_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not Span Value is Valid
         /// </summary>
-        public static bool? SpanValueValid
+        public bool? SpanValueValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Span_Value_Valid")));
+                return ((bool?)(GetCheckParameter("Span_Value_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Span_Value_Valid", value);
+                SetCheckParameter("Span_Value_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Stack Active Date is Valid.
         /// </summary>
-        public static bool? StackActiveDateValid
+        public bool? StackActiveDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Stack_Active_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Stack_Active_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Stack_Active_Date_Valid", value);
+                SetCheckParameter("Stack_Active_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the location attributes for the current location should include stack information.
         /// </summary>
-        public static bool? StackInformationRequired
+        public bool? StackInformationRequired
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Stack_Information_Required")));
+                return ((bool?)(GetCheckParameter("Stack_Information_Required")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Stack_Information_Required", value);
+                SetCheckParameter("Stack_Information_Required", value);
             }
         }
         
         /// <summary>
         /// Indicates if StackPipeID is valid.
         /// </summary>
-        public static bool? StackPipeIdFormatValid
+        public bool? StackPipeIdFormatValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Stack_Pipe_ID_Format_Valid")));
+                return ((bool?)(GetCheckParameter("Stack_Pipe_ID_Format_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Stack_Pipe_ID_Format_Valid", value);
+                SetCheckParameter("Stack_Pipe_ID_Format_Valid", value);
             }
         }
         
         /// <summary>
         /// Stack/pipe records associated with facility.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwStackPipeRow> StackPipeRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwStackPipeRow> StackPipeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Stack_Pipe_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Stack_Pipe_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7285,11 +7284,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Stack_Pipe_Records", null);
+                    SetCheckParameter("Stack_Pipe_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Stack_Pipe_Records", value.SourceView);
+                    SetCheckParameter("Stack_Pipe_Records", value.SourceView);
                 }
             }
         }
@@ -7297,26 +7296,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Stack Retire Date is Valid.
         /// </summary>
-        public static bool? StackRetireDateValid
+        public bool? StackRetireDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Stack_Retire_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Stack_Retire_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Stack_Retire_Date_Valid", value);
+                SetCheckParameter("Stack_Retire_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Lookup table of substitute data approach codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.SubstituteDataCodeRow> SubstituteDataCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.SubstituteDataCodeRow> SubstituteDataCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Substitute_Data_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Substitute_Data_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7330,11 +7329,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Substitute_Data_Code_Lookup_Table", null);
+                    SetCheckParameter("Substitute_Data_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Substitute_Data_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Substitute_Data_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -7342,26 +7341,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Shows Active/Inactive Status for a System
         /// </summary>
-        public static bool? SystemActive
+        public bool? SystemActive
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Active")));
+                return ((bool?)(GetCheckParameter("System_Active")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Active", value);
+                SetCheckParameter("System_Active", value);
             }
         }
         
         /// <summary>
         /// A collection of records for all Analyzer Range records for components in the system with the associated component information.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwAnalyzerRangeRow> SystemAnalyzerRangeRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwAnalyzerRangeRow> SystemAnalyzerRangeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("System_Analyzer_Range_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Analyzer_Range_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7375,11 +7374,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("System_Analyzer_Range_Records", null);
+                    SetCheckParameter("System_Analyzer_Range_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("System_Analyzer_Range_Records", value.SourceView);
+                    SetCheckParameter("System_Analyzer_Range_Records", value.SourceView);
                 }
             }
         }
@@ -7387,131 +7386,131 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates if component is active in a system during the evaluation period.
         /// </summary>
-        public static bool? SystemComponentActive
+        public bool? SystemComponentActive
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Component_Active")));
+                return ((bool?)(GetCheckParameter("System_Component_Active")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Component_Active", value);
+                SetCheckParameter("System_Component_Active", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the System Component Start Date and Start Hour are before the System Component End Date and End Hour.
         /// </summary>
-        public static bool? SystemComponentDatesAndHoursConsistent
+        public bool? SystemComponentDatesAndHoursConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Component_Dates_and_Hours_Consistent")));
+                return ((bool?)(GetCheckParameter("System_Component_Dates_and_Hours_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Component_Dates_and_Hours_Consistent", value);
+                SetCheckParameter("System_Component_Dates_and_Hours_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates if the value reported for the field is valid.
         /// </summary>
-        public static bool? SystemComponentEndDateValid
+        public bool? SystemComponentEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Component_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("System_Component_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Component_End_Date_Valid", value);
+                SetCheckParameter("System_Component_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the value in the field is valid.
         /// </summary>
-        public static bool? SystemComponentEndHourValid
+        public bool? SystemComponentEndHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Component_End_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("System_Component_End_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Component_End_Hour_Valid", value);
+                SetCheckParameter("System_Component_End_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// The first date that the system component is active during an evaluation period.
         /// </summary>
-        public static DateTime? SystemComponentEvaluationBeginDate
+        public DateTime? SystemComponentEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("System_Component_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("System_Component_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Component_Evaluation_Begin_Date", value);
+                SetCheckParameter("System_Component_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The first hour that the system component is active during an evaluation period.
         /// </summary>
-        public static int? SystemComponentEvaluationBeginHour
+        public int? SystemComponentEvaluationBeginHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("System_Component_Evaluation_Begin_Hour")));
+                return ((int?)(GetCheckParameter("System_Component_Evaluation_Begin_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Component_Evaluation_Begin_Hour", value);
+                SetCheckParameter("System_Component_Evaluation_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// The last date that the system component is active during an evaluation period.
         /// </summary>
-        public static DateTime? SystemComponentEvaluationEndDate
+        public DateTime? SystemComponentEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("System_Component_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("System_Component_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Component_Evaluation_End_Date", value);
+                SetCheckParameter("System_Component_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// The last hour that the system component is active during an evaluation period.
         /// </summary>
-        public static int? SystemComponentEvaluationEndHour
+        public int? SystemComponentEvaluationEndHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("System_Component_Evaluation_End_Hour")));
+                return ((int?)(GetCheckParameter("System_Component_Evaluation_End_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Component_Evaluation_End_Hour", value);
+                SetCheckParameter("System_Component_Evaluation_End_Hour", value);
             }
         }
         
         /// <summary>
         /// The Monitor_System_Component records linked to the current component including the fields from the associated system record.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> SystemComponentRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> SystemComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("System_Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7525,11 +7524,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("System_Component_Records", null);
+                    SetCheckParameter("System_Component_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("System_Component_Records", value.SourceView);
+                    SetCheckParameter("System_Component_Records", value.SourceView);
                 }
             }
         }
@@ -7537,71 +7536,71 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates if component type is appropriate for system.
         /// </summary>
-        public static bool? SystemComponentRecordValid
+        public bool? SystemComponentRecordValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Component_Record_Valid")));
+                return ((bool?)(GetCheckParameter("System_Component_Record_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Component_Record_Valid", value);
+                SetCheckParameter("System_Component_Record_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the value in the System Component Start Date field is valid.
         /// </summary>
-        public static bool? SystemComponentStartDateValid
+        public bool? SystemComponentStartDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Component_Start_Date_Valid")));
+                return ((bool?)(GetCheckParameter("System_Component_Start_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Component_Start_Date_Valid", value);
+                SetCheckParameter("System_Component_Start_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the value in this field is valid.
         /// </summary>
-        public static bool? SystemComponentStartHourValid
+        public bool? SystemComponentStartHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Component_Start_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("System_Component_Start_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Component_Start_Hour_Valid", value);
+                SetCheckParameter("System_Component_Start_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates ifsystem start date and hour is prior to end date and hour.
         /// </summary>
-        public static bool? SystemDatesAndHoursConsistent
+        public bool? SystemDatesAndHoursConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Dates_and_Hours_Consistent")));
+                return ((bool?)(GetCheckParameter("System_Dates_and_Hours_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Dates_and_Hours_Consistent", value);
+                SetCheckParameter("System_Dates_and_Hours_Consistent", value);
             }
         }
         
         /// <summary>
         /// A lookup table of System Designation codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.SystemDesignationCodeRow> SystemDesignationCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.SystemDesignationCodeRow> SystemDesignationCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("System_Designation_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Designation_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7615,11 +7614,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("System_Designation_Code_Lookup_Table", null);
+                    SetCheckParameter("System_Designation_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("System_Designation_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("System_Designation_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -7627,131 +7626,131 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the System Parameter Code is valid.
         /// </summary>
-        public static bool? SystemDesignationCodeValid
+        public bool? SystemDesignationCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Designation_Code_Valid")));
+                return ((bool?)(GetCheckParameter("System_Designation_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Designation_Code_Valid", value);
+                SetCheckParameter("System_Designation_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the System End Date is valid.
         /// </summary>
-        public static bool? SystemEndDateValid
+        public bool? SystemEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("System_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_End_Date_Valid", value);
+                SetCheckParameter("System_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the System End Hour is valid.
         /// </summary>
-        public static bool? SystemEndHourValid
+        public bool? SystemEndHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_End_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("System_End_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_End_Hour_Valid", value);
+                SetCheckParameter("System_End_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// The first date that the monitor system is active during an evaluation period.
         /// </summary>
-        public static DateTime? SystemEvaluationBeginDate
+        public DateTime? SystemEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("System_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("System_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Evaluation_Begin_Date", value);
+                SetCheckParameter("System_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The first hour that the monitor system is active during an evaluation period.
         /// </summary>
-        public static int? SystemEvaluationBeginHour
+        public int? SystemEvaluationBeginHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("System_Evaluation_Begin_Hour")));
+                return ((int?)(GetCheckParameter("System_Evaluation_Begin_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Evaluation_Begin_Hour", value);
+                SetCheckParameter("System_Evaluation_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// The last date that the monitor system is active during an evaluation period.
         /// </summary>
-        public static DateTime? SystemEvaluationEndDate
+        public DateTime? SystemEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("System_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("System_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Evaluation_End_Date", value);
+                SetCheckParameter("System_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// The last hour that the monitor system is active during an evaluation period.
         /// </summary>
-        public static int? SystemEvaluationEndHour
+        public int? SystemEvaluationEndHour
         {
             get
             {
-                return ((int?)(MpParameters.GetCheckParameter("System_Evaluation_End_Hour")));
+                return ((int?)(GetCheckParameter("System_Evaluation_End_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Evaluation_End_Hour", value);
+                SetCheckParameter("System_Evaluation_End_Hour", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the System Parameter Code is valid.
         /// </summary>
-        public static bool? SystemFuelCodeValid
+        public bool? SystemFuelCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Fuel_Code_Valid")));
+                return ((bool?)(GetCheckParameter("System_Fuel_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Fuel_Code_Valid", value);
+                SetCheckParameter("System_Fuel_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// System Fuel Flow and associated system data for the current system.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpSystemFuelFlowRow> SystemFuelFlowRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpSystemFuelFlowRow> SystemFuelFlowRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("System_Fuel_Flow_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Fuel_Flow_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7765,11 +7764,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("System_Fuel_Flow_Records", null);
+                    SetCheckParameter("System_Fuel_Flow_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("System_Fuel_Flow_Records", value.SourceView);
+                    SetCheckParameter("System_Fuel_Flow_Records", value.SourceView);
                 }
             }
         }
@@ -7777,26 +7776,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The emissions parameter measured by the system.
         /// </summary>
-        public static string SystemParameterCode
+        public string SystemParameterCode
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("System_Parameter_Code")));
+                return ((string)(GetCheckParameter("System_Parameter_Code")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Parameter_Code", value);
+                SetCheckParameter("System_Parameter_Code", value);
             }
         }
         
         /// <summary>
         /// Lookup table that stores system-wide values.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwSystemParameterRow> SystemParameterLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwSystemParameterRow> SystemParameterLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("System_Parameter_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Parameter_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7810,11 +7809,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("System_Parameter_Lookup_Table", null);
+                    SetCheckParameter("System_Parameter_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("System_Parameter_Lookup_Table", value.SourceView);
+                    SetCheckParameter("System_Parameter_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -7822,56 +7821,56 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates if the system record is active and has a valid system type.
         /// </summary>
-        public static bool? SystemRecordValid
+        public bool? SystemRecordValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Record_Valid")));
+                return ((bool?)(GetCheckParameter("System_Record_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Record_Valid", value);
+                SetCheckParameter("System_Record_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the System Start Date is valid.
         /// </summary>
-        public static bool? SystemStartDateValid
+        public bool? SystemStartDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Start_Date_Valid")));
+                return ((bool?)(GetCheckParameter("System_Start_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Start_Date_Valid", value);
+                SetCheckParameter("System_Start_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the System Start Hour is valid.
         /// </summary>
-        public static bool? SystemStartHourValid
+        public bool? SystemStartHourValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Start_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("System_Start_Hour_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Start_Hour_Valid", value);
+                SetCheckParameter("System_Start_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// All Monitor_System_Component records for the current system including the fields from the associated component record.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> SystemSystemComponentRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> SystemSystemComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("System_System_Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_System_Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7885,11 +7884,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("System_System_Component_Records", null);
+                    SetCheckParameter("System_System_Component_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("System_System_Component_Records", value.SourceView);
+                    SetCheckParameter("System_System_Component_Records", value.SourceView);
                 }
             }
         }
@@ -7897,26 +7896,26 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the System Type Code is valid.
         /// </summary>
-        public static bool? SystemTypeCodeValid
+        public bool? SystemTypeCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("System_Type_Code_Valid")));
+                return ((bool?)(GetCheckParameter("System_Type_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Type_Code_Valid", value);
+                SetCheckParameter("System_Type_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// A lookup table of System Type codes and their associated Parameter codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.SystemTypeCodeRow> SystemTypeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.SystemTypeCodeRow> SystemTypeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("System_Type_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Type_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7930,11 +7929,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("System_Type_Lookup_Table", null);
+                    SetCheckParameter("System_Type_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("System_Type_Lookup_Table", value.SourceView);
+                    SetCheckParameter("System_Type_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -7942,11 +7941,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Required component types in systems.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.SystemTypeToComponentTypeRow> SystemTypeToComponentTypeCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.SystemTypeToComponentTypeRow> SystemTypeToComponentTypeCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("System_Type_To_Component_Type_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Type_To_Component_Type_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7960,11 +7959,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("System_Type_To_Component_Type_Cross_Check_Table", null);
+                    SetCheckParameter("System_Type_To_Component_Type_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("System_Type_To_Component_Type_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("System_Type_To_Component_Type_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -7972,11 +7971,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Links system type to required formula parameters.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.SystemTypeToFormulaParameterRow> SystemTypeToFormulaParameterCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.SystemTypeToFormulaParameterRow> SystemTypeToFormulaParameterCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("System_Type_To_Formula_Parameter_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Type_To_Formula_Parameter_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7990,11 +7989,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("System_Type_To_Formula_Parameter_Cross_Check_Table", null);
+                    SetCheckParameter("System_Type_To_Formula_Parameter_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("System_Type_To_Formula_Parameter_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("System_Type_To_Formula_Parameter_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -8002,11 +8001,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Links system type code to fuel group code.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.SystemTypeToFuelGroupRow> SystemTypeToFuelGroupCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.SystemTypeToFuelGroupRow> SystemTypeToFuelGroupCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("System_Type_To_Fuel_Group_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Type_To_Fuel_Group_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8020,11 +8019,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("System_Type_To_Fuel_Group_Cross_Check_Table", null);
+                    SetCheckParameter("System_Type_To_Fuel_Group_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("System_Type_To_Fuel_Group_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("System_Type_To_Fuel_Group_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -8032,11 +8031,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Optional component types in system.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.SystemTypeToOptionalComponentTypeRow> SystemTypeToOptionalComponentTypeCrossCheckTable
+        public CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.SystemTypeToOptionalComponentTypeRow> SystemTypeToOptionalComponentTypeCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("System_Type_to_Optional_Component_Type_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Type_to_Optional_Component_Type_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8050,11 +8049,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("System_Type_to_Optional_Component_Type_Cross_Check_Table", null);
+                    SetCheckParameter("System_Type_to_Optional_Component_Type_Cross_Check_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("System_Type_to_Optional_Component_Type_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("System_Type_to_Optional_Component_Type_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -8062,116 +8061,116 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The unit fuel represented by the system fuel code in the monitoring system record.
         /// </summary>
-        public static string SystemUnitFuel
+        public string SystemUnitFuel
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("System_Unit_Fuel")));
+                return ((string)(GetCheckParameter("System_Unit_Fuel")));
             }
             set
             {
-                MpParameters.SetCheckParameter("System_Unit_Fuel", value);
+                SetCheckParameter("System_Unit_Fuel", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Unit Capacity Begin Date is Valid.
         /// </summary>
-        public static bool? UnitCapacityBeginDateValid
+        public bool? UnitCapacityBeginDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Unit_Capacity_Begin_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Unit_Capacity_Begin_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Unit_Capacity_Begin_Date_Valid", value);
+                SetCheckParameter("Unit_Capacity_Begin_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Unit Capacity Start and End Dates are Consistent.
         /// </summary>
-        public static bool? UnitCapacityDatesConsistent
+        public bool? UnitCapacityDatesConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Unit_Capacity_Dates_Consistent")));
+                return ((bool?)(GetCheckParameter("Unit_Capacity_Dates_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Unit_Capacity_Dates_Consistent", value);
+                SetCheckParameter("Unit_Capacity_Dates_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Unit Capacity End Date reported is Valid.
         /// </summary>
-        public static bool? UnitCapacityEndDateValid
+        public bool? UnitCapacityEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Unit_Capacity_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Unit_Capacity_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Unit_Capacity_End_Date_Valid", value);
+                SetCheckParameter("Unit_Capacity_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// The date on which the evaluation period begins for the Unit Capacity Record.
         /// </summary>
-        public static DateTime? UnitCapacityEvaluationBeginDate
+        public DateTime? UnitCapacityEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Unit_Capacity_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Unit_Capacity_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Unit_Capacity_Evaluation_Begin_Date", value);
+                SetCheckParameter("Unit_Capacity_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The date on which the evaluation period ends for the Unit Capacity Record.
         /// </summary>
-        public static DateTime? UnitCapacityEvaluationEndDate
+        public DateTime? UnitCapacityEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("Unit_Capacity_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Unit_Capacity_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Unit_Capacity_Evaluation_End_Date", value);
+                SetCheckParameter("Unit_Capacity_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Unit Capacity Record is Active.
         /// </summary>
-        public static bool? UnitCapacityRecordActive
+        public bool? UnitCapacityRecordActive
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Unit_Capacity_Record_Active")));
+                return ((bool?)(GetCheckParameter("Unit_Capacity_Record_Active")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Unit_Capacity_Record_Active", value);
+                SetCheckParameter("Unit_Capacity_Record_Active", value);
             }
         }
         
         /// <summary>
         /// List of all UNIT_CAPACITY records linked to the location (unit).
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.UnitCapacityRow> UnitCapacityRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.UnitCapacityRow> UnitCapacityRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Unit_Capacity_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Unit_Capacity_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8185,11 +8184,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Unit_Capacity_Records", null);
+                    SetCheckParameter("Unit_Capacity_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Unit_Capacity_Records", value.SourceView);
+                    SetCheckParameter("Unit_Capacity_Records", value.SourceView);
                 }
             }
         }
@@ -8197,71 +8196,71 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether the Unit Fuel DemGCV reported is Valid.
         /// </summary>
-        public static bool? UnitFuelDemonstrationGcvValid
+        public bool? UnitFuelDemonstrationGcvValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Unit_Fuel_Demonstration_GCV_Valid")));
+                return ((bool?)(GetCheckParameter("Unit_Fuel_Demonstration_GCV_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Unit_Fuel_Demonstration_GCV_Valid", value);
+                SetCheckParameter("Unit_Fuel_Demonstration_GCV_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Unit Fuel DemSO2 reported is Valid.
         /// </summary>
-        public static bool? UnitFuelDemonstrationSo2Valid
+        public bool? UnitFuelDemonstrationSo2Valid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Unit_Fuel_Demonstration_So2_Valid")));
+                return ((bool?)(GetCheckParameter("Unit_Fuel_Demonstration_So2_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Unit_Fuel_Demonstration_So2_Valid", value);
+                SetCheckParameter("Unit_Fuel_Demonstration_So2_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Ozone Season is consistent with Primary/Secondary Indicator reported.
         /// </summary>
-        public static bool? UnitFuelOzoneSeasonIndicatorValid
+        public bool? UnitFuelOzoneSeasonIndicatorValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Unit_Fuel_Ozone_Season_Indicator_Valid")));
+                return ((bool?)(GetCheckParameter("Unit_Fuel_Ozone_Season_Indicator_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Unit_Fuel_Ozone_Season_Indicator_Valid", value);
+                SetCheckParameter("Unit_Fuel_Ozone_Season_Indicator_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if Unit Fuel Primary/Secondary Indicator Code is valid.
         /// </summary>
-        public static bool? UnitFuelPrimarySecondaryIndicatorCodeValid
+        public bool? UnitFuelPrimarySecondaryIndicatorCodeValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Unit_Fuel_Primary_Secondary_Indicator_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Unit_Fuel_Primary_Secondary_Indicator_Code_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Unit_Fuel_Primary_Secondary_Indicator_Code_Valid", value);
+                SetCheckParameter("Unit_Fuel_Primary_Secondary_Indicator_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// All monitor systems for a unit and all stack/pipes linked to the unit
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitMonitorSystemRow> UnitMonitorSystemRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitMonitorSystemRow> UnitMonitorSystemRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Unit_Monitor_System_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Unit_Monitor_System_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8275,11 +8274,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Unit_Monitor_System_Records", null);
+                    SetCheckParameter("Unit_Monitor_System_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Unit_Monitor_System_Records", value.SourceView);
+                    SetCheckParameter("Unit_Monitor_System_Records", value.SourceView);
                 }
             }
         }
@@ -8287,11 +8286,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Operating Status records which apply to the unit.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitOpStatusRow> UnitOperatingStatusRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitOpStatusRow> UnitOperatingStatusRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Unit_Operating_Status_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Unit_Operating_Status_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8305,11 +8304,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Unit_Operating_Status_Records", null);
+                    SetCheckParameter("Unit_Operating_Status_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Unit_Operating_Status_Records", value.SourceView);
+                    SetCheckParameter("Unit_Operating_Status_Records", value.SourceView);
                 }
             }
         }
@@ -8317,11 +8316,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Unit Program Exemption records which apply to the unit.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitProgramExemptionRow> UnitProgramExemptionRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitProgramExemptionRow> UnitProgramExemptionRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Unit_Program_Exemption_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Unit_Program_Exemption_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8335,11 +8334,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Unit_Program_Exemption_Records", null);
+                    SetCheckParameter("Unit_Program_Exemption_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Unit_Program_Exemption_Records", value.SourceView);
+                    SetCheckParameter("Unit_Program_Exemption_Records", value.SourceView);
                 }
             }
         }
@@ -8347,11 +8346,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// A lookup table of Units of Measure Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.UnitsOfMeasureCodeRow> UnitsOfMeasureCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.UnitsOfMeasureCodeRow> UnitsOfMeasureCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Units_of_Measure_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Units_of_Measure_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8365,11 +8364,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Units_of_Measure_Code_Lookup_Table", null);
+                    SetCheckParameter("Units_of_Measure_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Units_of_Measure_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Units_of_Measure_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -8377,11 +8376,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// The Unit Stack Configuration records for all of a facility's locations that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> UnitStackConfigurationRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> UnitStackConfigurationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Unit_Stack_Configuration_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Unit_Stack_Configuration_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8395,11 +8394,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Unit_Stack_Configuration_Records", null);
+                    SetCheckParameter("Unit_Stack_Configuration_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Unit_Stack_Configuration_Records", value.SourceView);
+                    SetCheckParameter("Unit_Stack_Configuration_Records", value.SourceView);
                 }
             }
         }
@@ -8407,56 +8406,56 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Indicates whether or not the Unit Stack Configuration End Date is Valid.
         /// </summary>
-        public static bool? UnitStackEndDateValid
+        public bool? UnitStackEndDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Unit_Stack_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Unit_Stack_End_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Unit_Stack_End_Date_Valid", value);
+                SetCheckParameter("Unit_Stack_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Unit Stack Configuration Start Date is Valid.
         /// </summary>
-        public static bool? UnitStackStartDateValid
+        public bool? UnitStackStartDateValid
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("Unit_Stack_Start_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Unit_Stack_Start_Date_Valid")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Unit_Stack_Start_Date_Valid", value);
+                SetCheckParameter("Unit_Stack_Start_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// A list of System, Component, and Formula IDs for the location that have been deleted from the MP, but have been reported in EM or QA data.
         /// </summary>
-        public static string UnusedIds
+        public string UnusedIds
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Unused_IDs")));
+                return ((string)(GetCheckParameter("Unused_IDs")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Unused_IDs", value);
+                SetCheckParameter("Unused_IDs", value);
             }
         }
         
         /// <summary>
         /// All Used Identifier Records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUsedIdentifierRow> UsedIdentifierRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUsedIdentifierRow> UsedIdentifierRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("Used_Identifier_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Used_Identifier_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8470,11 +8469,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("Used_Identifier_Records", null);
+                    SetCheckParameter("Used_Identifier_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("Used_Identifier_Records", value.SourceView);
+                    SetCheckParameter("Used_Identifier_Records", value.SourceView);
                 }
             }
         }
@@ -8482,116 +8481,116 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Contains a list of the valid locations to use in a response plugin.
         /// </summary>
-        public static string ValidLocationTypes
+        public string ValidLocationTypes
         {
             get
             {
-                return ((string)(MpParameters.GetCheckParameter("Valid_Location_Types")));
+                return ((string)(GetCheckParameter("Valid_Location_Types")));
             }
             set
             {
-                MpParameters.SetCheckParameter("Valid_Location_Types", value);
+                SetCheckParameter("Valid_Location_Types", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the WAF is active during the Evaluation Period.
         /// </summary>
-        public static bool? WafActiveStatus
+        public bool? WafActiveStatus
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("WAF_Active_Status")));
+                return ((bool?)(GetCheckParameter("WAF_Active_Status")));
             }
             set
             {
-                MpParameters.SetCheckParameter("WAF_Active_Status", value);
+                SetCheckParameter("WAF_Active_Status", value);
             }
         }
         
         /// <summary>
         /// This indicates whether or not the WAF Dates and Hours are consistent.
         /// </summary>
-        public static bool? WafDatesAndHoursConsistent
+        public bool? WafDatesAndHoursConsistent
         {
             get
             {
-                return ((bool?)(MpParameters.GetCheckParameter("WAF_Dates_and_Hours_Consistent")));
+                return ((bool?)(GetCheckParameter("WAF_Dates_and_Hours_Consistent")));
             }
             set
             {
-                MpParameters.SetCheckParameter("WAF_Dates_and_Hours_Consistent", value);
+                SetCheckParameter("WAF_Dates_and_Hours_Consistent", value);
             }
         }
         
         /// <summary>
         /// The first date that the WAF is active during an evaluation period.
         /// </summary>
-        public static DateTime? WafEvaluationBeginDate
+        public DateTime? WafEvaluationBeginDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("WAF_Evaluation_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("WAF_Evaluation_Begin_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("WAF_Evaluation_Begin_Date", value);
+                SetCheckParameter("WAF_Evaluation_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The first hour that the WAF is active during an evaluation period.
         /// </summary>
-        public static DateTime? WafEvaluationBeginHour
+        public DateTime? WafEvaluationBeginHour
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("WAF_Evaluation_Begin_Hour")));
+                return ((DateTime?)(GetCheckParameter("WAF_Evaluation_Begin_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("WAF_Evaluation_Begin_Hour", value);
+                SetCheckParameter("WAF_Evaluation_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// The last date that the WAF is active during an evaluation period.
         /// </summary>
-        public static DateTime? WafEvaluationEndDate
+        public DateTime? WafEvaluationEndDate
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("WAF_Evaluation_End_Date")));
+                return ((DateTime?)(GetCheckParameter("WAF_Evaluation_End_Date")));
             }
             set
             {
-                MpParameters.SetCheckParameter("WAF_Evaluation_End_Date", value);
+                SetCheckParameter("WAF_Evaluation_End_Date", value);
             }
         }
         
         /// <summary>
         /// The last hour that the WAF is active during an evaluation period.
         /// </summary>
-        public static DateTime? WafEvaluationEndHour
+        public DateTime? WafEvaluationEndHour
         {
             get
             {
-                return ((DateTime?)(MpParameters.GetCheckParameter("WAF_Evaluation_End_Hour")));
+                return ((DateTime?)(GetCheckParameter("WAF_Evaluation_End_Hour")));
             }
             set
             {
-                MpParameters.SetCheckParameter("WAF_Evaluation_End_Hour", value);
+                SetCheckParameter("WAF_Evaluation_End_Hour", value);
             }
         }
         
         /// <summary>
         /// A list of WAF Method Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.WafMethodCodeRow> WafMethodCodeLookupTable
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.WafMethodCodeRow> WafMethodCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("WAF_Method_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("WAF_Method_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8605,11 +8604,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("WAF_Method_Code_Lookup_Table", null);
+                    SetCheckParameter("WAF_Method_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("WAF_Method_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("WAF_Method_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -8617,11 +8616,11 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// All WAF records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwRectDuctWafRow> WafRecords
+        public CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwRectDuctWafRow> WafRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(MpParameters.GetCheckParameter("WAF_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("WAF_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8635,11 +8634,11 @@ namespace ECMPS.Checks.Mp.Parameters
             {
                 if ((value == null))
                 {
-                    MpParameters.SetCheckParameter("WAF_Records", null);
+                    SetCheckParameter("WAF_Records", null);
                 }
                 else
                 {
-                    MpParameters.SetCheckParameter("WAF_Records", value.SourceView);
+                    SetCheckParameter("WAF_Records", value.SourceView);
                 }
             }
         }
@@ -8649,20 +8648,20 @@ namespace ECMPS.Checks.Mp.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <returns>Returns the requested check parameter as an object if it exists, and as a null if it does not.</returns>
-        public static object GetCheckParameter(string parameterId)
+        public object GetCheckParameter(string parameterId)
         {
             cLegacyCheckParameter checkParameter;
-            if (((MpParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                checkParameter = MpParameters.Category.GetCheckParameter(parameterId);
+                checkParameter = Category.GetCheckParameter(parameterId);
             }
             else
             {
-                if (((MpParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    checkParameter = MpParameters.Process.GetCheckParameter(parameterId);
+                    checkParameter = Process.GetCheckParameter(parameterId);
                 }
                 else
                 {
@@ -8684,19 +8683,19 @@ namespace ECMPS.Checks.Mp.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <param name="parameterValue">The value to which to set the parameter.</param>
-        public static void SetCheckParameter(string parameterId, object parameterValue)
+        public void SetCheckParameter(string parameterId, object parameterValue)
         {
-            if (((MpParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                MpParameters.Category.SetCheckParameter(parameterId, parameterValue);
+                Category.SetCheckParameter(parameterId, parameterValue);
             }
             else
             {
-                if (((MpParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    MpParameters.Process.SetCheckParameter(parameterId, parameterValue);
+                    Process.SetCheckParameter(parameterId, parameterValue);
                 }
             }
         }
@@ -8704,20 +8703,20 @@ namespace ECMPS.Checks.Mp.Parameters
         /// <summary>
         /// Initializes the values in the check parameter object.
         /// </summary>
-        public static void Init(cProcess process)
+        public void Init(cProcess process)
         {
-            MpParameters._process = process;
-            MpParameters.Category = null;
-            MpParameters.RegisterParameters();
+            _process = process;
+            Category = null;
+            RegisterParameters();
         }
         
         /// <summary>
         /// Registers each check parameter.
         /// </summary>
-        public static void RegisterParameters()
+        public void RegisterParameters()
         {
-            if (((MpParameters.Process == null) 
-                        || (MpParameters.Process.ProcessParameters == null)))
+            if (((Process == null) 
+                        || (Process.ProcessParameters == null)))
             {
                 return;
             }

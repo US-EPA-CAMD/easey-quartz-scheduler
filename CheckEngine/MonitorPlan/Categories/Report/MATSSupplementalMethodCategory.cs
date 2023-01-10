@@ -25,6 +25,8 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "MATS_METHOD_DATA";
     }
 
+    public cMATSSupplementalMethodCategory(){}
+
     #endregion
 
 
@@ -43,9 +45,9 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cMATSSupplementalMethodCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cMATSSupplementalMethodCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
 	  cMATSSupplementalMethodCategory Category;
       string ErrorMessage = "";

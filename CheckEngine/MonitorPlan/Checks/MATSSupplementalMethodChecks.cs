@@ -39,28 +39,28 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 		/// <param name="category">The category object running the check.</param>
 		/// <param name="log">obsolete</param>
 		/// <returns>The error string if an error occurs.</returns>
-		public static string MATSMTH1(cCategory Category, ref bool Log)
+		public string MATSMTH1(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
 			try
 			{
-				MpParameters.CurrentBeginDateValid = false;
+				mpParams.CurrentBeginDateValid = false;
 
-				if (MpParameters.MatsSupplementalComplianceMethodRecord.BeginDate == null)
+				if (mpParams.MatsSupplementalComplianceMethodRecord.BeginDate == null)
 				{
 					Category.CheckCatalogResult = "A";
 				}
-				else if ((MpParameters.MatsEvaluationBeginDate != null) && (MpParameters.MatsSupplementalComplianceMethodRecord.BeginDate < MpParameters.MatsEvaluationBeginDate))
+				else if ((mpParams.MatsEvaluationBeginDate != null) && (mpParams.MatsSupplementalComplianceMethodRecord.BeginDate < mpParams.MatsEvaluationBeginDate))
 				{
 					Category.CheckCatalogResult = "B";
 				}
-				else if ((MpParameters.MaximumFutureDate != null) && (MpParameters.MatsSupplementalComplianceMethodRecord.BeginDate > MpParameters.MaximumFutureDate))
+				else if ((mpParams.MaximumFutureDate != null) && (mpParams.MatsSupplementalComplianceMethodRecord.BeginDate > mpParams.MaximumFutureDate))
 				{
 					Category.CheckCatalogResult = "C";
 				}
 				else
-					MpParameters.CurrentBeginDateValid = true;
+					mpParams.CurrentBeginDateValid = true;
 			}
 			catch (Exception ex)
 			{
@@ -76,27 +76,27 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 		/// <param name="category">The category object running the check.</param>
 		/// <param name="log">obsolete</param>
 		/// <returns>The error string if an error occurs.</returns>
-		public static string MATSMTH2(cCategory Category, ref bool Log)
+		public string MATSMTH2(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
 			try
 			{
-				MpParameters.CurrentBeginDateAndHour = null;
-				MpParameters.CurrentBeginDateAndHourValid = false;
+				mpParams.CurrentBeginDateAndHour = null;
+				mpParams.CurrentBeginDateAndHourValid = false;
 
-				if (MpParameters.MatsSupplementalComplianceMethodRecord.BeginHour == null)
+				if (mpParams.MatsSupplementalComplianceMethodRecord.BeginHour == null)
 				{
 					Category.CheckCatalogResult = "A";
 				}
-				else if (MpParameters.MatsSupplementalComplianceMethodRecord.BeginHour < 0 || MpParameters.MatsSupplementalComplianceMethodRecord.BeginHour > 23)
+				else if (mpParams.MatsSupplementalComplianceMethodRecord.BeginHour < 0 || mpParams.MatsSupplementalComplianceMethodRecord.BeginHour > 23)
 				{
 					Category.CheckCatalogResult = "B";
 				}
-				else if (MpParameters.CurrentBeginDateValid.Default(false))
+				else if (mpParams.CurrentBeginDateValid.Default(false))
 				{
-					MpParameters.CurrentBeginDateAndHour = MpParameters.MatsSupplementalComplianceMethodRecord.BeginDate.Value.AddHours((int)MpParameters.MatsSupplementalComplianceMethodRecord.BeginHour.Value);
-					MpParameters.CurrentBeginDateAndHourValid = true;
+					mpParams.CurrentBeginDateAndHour = mpParams.MatsSupplementalComplianceMethodRecord.BeginDate.Value.AddHours((int)mpParams.MatsSupplementalComplianceMethodRecord.BeginHour.Value);
+					mpParams.CurrentBeginDateAndHourValid = true;
 				}
 
 			}
@@ -114,30 +114,30 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 		/// <param name="category">The category object running the check.</param>
 		/// <param name="log">obsolete</param>
 		/// <returns>The error string if an error occurs.</returns>
-		public static string MATSMTH3(cCategory Category, ref bool Log)
+		public string MATSMTH3(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
 			try
 			{
-				MpParameters.CurrentEndDateValid = false;
+				mpParams.CurrentEndDateValid = false;
 
-				if (MpParameters.MatsSupplementalComplianceMethodRecord.EndDate != null)
-					if ((MpParameters.MatsEvaluationBeginDate != null) && (MpParameters.MatsSupplementalComplianceMethodRecord.EndDate < MpParameters.MatsEvaluationBeginDate))
+				if (mpParams.MatsSupplementalComplianceMethodRecord.EndDate != null)
+					if ((mpParams.MatsEvaluationBeginDate != null) && (mpParams.MatsSupplementalComplianceMethodRecord.EndDate < mpParams.MatsEvaluationBeginDate))
 					{
 						Category.CheckCatalogResult = "A";
 					}
-					else if ((MpParameters.MaximumFutureDate != null) && (MpParameters.MatsSupplementalComplianceMethodRecord.EndDate > MpParameters.MaximumFutureDate))
+					else if ((mpParams.MaximumFutureDate != null) && (mpParams.MatsSupplementalComplianceMethodRecord.EndDate > mpParams.MaximumFutureDate))
 					{
 						Category.CheckCatalogResult = "B";
 					}
 					else
 					{
-						MpParameters.CurrentEndDateValid = true;
+						mpParams.CurrentEndDateValid = true;
 					}
 				else
 				{
-					MpParameters.CurrentEndDateValid = true;
+					mpParams.CurrentEndDateValid = true;
 				}
 			}
 			catch (Exception ex)
@@ -154,40 +154,40 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 		/// <param name="category">The category object running the check.</param>
 		/// <param name="log">obsolete</param>
 		/// <returns>The error string if an error occurs.</returns>
-		public static string MATSMTH4(cCategory Category, ref bool Log)
+		public string MATSMTH4(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
 			try
 			{
-				MpParameters.CurrentEndDateAndHour = null;
-				MpParameters.CurrentEndDateAndHourValid = false;
+				mpParams.CurrentEndDateAndHour = null;
+				mpParams.CurrentEndDateAndHourValid = false;
 
-				if (MpParameters.MatsSupplementalComplianceMethodRecord.EndHour != null)
+				if (mpParams.MatsSupplementalComplianceMethodRecord.EndHour != null)
 				{
-					if (MpParameters.MatsSupplementalComplianceMethodRecord.EndDate == null)
+					if (mpParams.MatsSupplementalComplianceMethodRecord.EndDate == null)
 					{
 						Category.CheckCatalogResult = "A";
 					}
-					else if (MpParameters.MatsSupplementalComplianceMethodRecord.EndHour < 0 || MpParameters.MatsSupplementalComplianceMethodRecord.EndHour > 23)
+					else if (mpParams.MatsSupplementalComplianceMethodRecord.EndHour < 0 || mpParams.MatsSupplementalComplianceMethodRecord.EndHour > 23)
 					{
 						Category.CheckCatalogResult = "B";
 					}
-					else if (MpParameters.CurrentEndDateValid.Default(false))
+					else if (mpParams.CurrentEndDateValid.Default(false))
 					{
-						MpParameters.CurrentEndDateAndHour = MpParameters.MatsSupplementalComplianceMethodRecord.EndDate.Value.AddHours((int)MpParameters.MatsSupplementalComplianceMethodRecord.EndHour.Value);
-						MpParameters.CurrentEndDateAndHourValid = true;
+						mpParams.CurrentEndDateAndHour = mpParams.MatsSupplementalComplianceMethodRecord.EndDate.Value.AddHours((int)mpParams.MatsSupplementalComplianceMethodRecord.EndHour.Value);
+						mpParams.CurrentEndDateAndHourValid = true;
 					}
 				}
 				else
-					if (MpParameters.MatsSupplementalComplianceMethodRecord.EndDate != null)
+					if (mpParams.MatsSupplementalComplianceMethodRecord.EndDate != null)
 					{
 						Category.CheckCatalogResult = "C";
 					}
-					else if (MpParameters.CurrentEndDateValid.Default(false))
+					else if (mpParams.CurrentEndDateValid.Default(false))
 					{
-						MpParameters.CurrentEndDateAndHour = null;
-						MpParameters.CurrentEndDateAndHourValid = true;
+						mpParams.CurrentEndDateAndHour = null;
+						mpParams.CurrentEndDateAndHourValid = true;
 					}
 
 
@@ -206,22 +206,22 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 		/// <param name="category">The category object running the check.</param>
 		/// <param name="log">obsolete</param>
 		/// <returns>The error string if an error occurs.</returns>
-		public static string MATSMTH5(cCategory Category, ref bool Log)
+		public string MATSMTH5(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
 			try
 			{
-				MpParameters.CurrentDatesAndHoursConsistent = false;
-				if (MpParameters.CurrentBeginDateAndHourValid.Default(false) && MpParameters.CurrentEndDateAndHourValid.Default(false))
+				mpParams.CurrentDatesAndHoursConsistent = false;
+				if (mpParams.CurrentBeginDateAndHourValid.Default(false) && mpParams.CurrentEndDateAndHourValid.Default(false))
 				{
-					if (MpParameters.CurrentEndDateAndHour != null && MpParameters.CurrentBeginDateAndHour > MpParameters.CurrentEndDateAndHour)
+					if (mpParams.CurrentEndDateAndHour != null && mpParams.CurrentBeginDateAndHour > mpParams.CurrentEndDateAndHour)
 					{
 						Category.CheckCatalogResult = "A";
 					}
 					else
 					{
-						MpParameters.CurrentDatesAndHoursConsistent = true;
+						mpParams.CurrentDatesAndHoursConsistent = true;
 					}
 				}
 			}
@@ -239,26 +239,26 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 		/// <param name="category">The category object running the check.</param>
 		/// <param name="log">obsolete</param>
 		/// <returns>The error string if an error occurs.</returns>
-		public static string MATSMTH6(cCategory Category, ref bool Log)
+		public string MATSMTH6(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
 			try
 			{
-				MpParameters.CurrentParameterValid = false;
-				if (MpParameters.MatsSupplementalComplianceMethodRecord.MatsMethodParameterCd == null)
+				mpParams.CurrentParameterValid = false;
+				if (mpParams.MatsSupplementalComplianceMethodRecord.MatsMethodParameterCd == null)
 				{
 					Category.CheckCatalogResult = "A";
 				}
 				else
 				{
-					if (!LookupCodeExists(MpParameters.MatsSupplementalComplianceMethodRecord.MatsMethodParameterCd, "MATS_METHOD_PARAMETER_CD", MpParameters.MatsMethodParameterCodeLookup.SourceView))
+					if (!LookupCodeExists(mpParams.MatsSupplementalComplianceMethodRecord.MatsMethodParameterCd, "MATS_METHOD_PARAMETER_CD", mpParams.MatsMethodParameterCodeLookup.SourceView))
 					{
 						Category.CheckCatalogResult = "B";
 					}
 					else
 					{
-						MpParameters.CurrentParameterValid = true;
+						mpParams.CurrentParameterValid = true;
 					}
 				}
 			}
@@ -276,27 +276,27 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 		/// <param name="category">The category object running the check.</param>
 		/// <param name="log">obsolete</param>
 		/// <returns>The error string if an error occurs.</returns>
-		public static string MATSMTH7(cCategory Category, ref bool Log)
+		public string MATSMTH7(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
 			try
 			{
 				{
-					MpParameters.CurrentMethodValid = false;
-					if (MpParameters.MatsSupplementalComplianceMethodRecord.MatsMethodCd == null)
+					mpParams.CurrentMethodValid = false;
+					if (mpParams.MatsSupplementalComplianceMethodRecord.MatsMethodCd == null)
 					{
 						Category.CheckCatalogResult = "A";
 					}
 					else
 					{
-						if (!LookupCodeExists(MpParameters.MatsSupplementalComplianceMethodRecord.MatsMethodCd, "MATS_METHOD_CD", MpParameters.MatsMethodCodeLookup.SourceView))
+						if (!LookupCodeExists(mpParams.MatsSupplementalComplianceMethodRecord.MatsMethodCd, "MATS_METHOD_CD", mpParams.MatsMethodCodeLookup.SourceView))
 						{
 							Category.CheckCatalogResult = "B";
 						}
 						else
 						{
-							MpParameters.CurrentMethodValid = true;
+							mpParams.CurrentMethodValid = true;
 						}
 					}
 				}
@@ -315,19 +315,19 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 		/// <param name="category">The category object running the check.</param>
 		/// <param name="log">obsolete</param>
 		/// <returns>The error string if an error occurs.</returns>
-		public static string MATSMTH8(cCategory Category, ref bool Log)
+		public string MATSMTH8(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
 			try
 			{
-				if (MpParameters.CurrentMethodValid.Default(false) && MpParameters.CurrentParameterValid.Default(false))
+				if (mpParams.CurrentMethodValid.Default(false) && mpParams.CurrentParameterValid.Default(false))
 				{
 					sFilterPair[] MATSCrossCheckFilter = new sFilterPair[2];
-					MATSCrossCheckFilter[0].Set("ParameterCode", MpParameters.MatsSupplementalComplianceMethodRecord.MatsMethodParameterCd);
-					MATSCrossCheckFilter[1].Set("MethodCode", MpParameters.MatsSupplementalComplianceMethodRecord.MatsMethodCd);
+					MATSCrossCheckFilter[0].Set("ParameterCode", mpParams.MatsSupplementalComplianceMethodRecord.MatsMethodParameterCd);
+					MATSCrossCheckFilter[1].Set("MethodCode", mpParams.MatsSupplementalComplianceMethodRecord.MatsMethodCd);
 
-					DataView MATSCrossCheckView = FindRows(MpParameters.CrosscheckMatssupplementalcomplianceparametertomethod.SourceView, MATSCrossCheckFilter);
+					DataView MATSCrossCheckView = FindRows(mpParams.CrosscheckMatssupplementalcomplianceparametertomethod.SourceView, MATSCrossCheckFilter);
 					if (MATSCrossCheckView.Count == 0)
 					{
 						Category.CheckCatalogResult = "A";
@@ -348,7 +348,7 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 		/// <param name="category">The category object running the check.</param>
 		/// <param name="log">obsolete</param>
 		/// <returns>The error string if an error occurs.</returns>
-		public static string MATSMTH9(cCategory Category, ref bool Log)
+		public string MATSMTH9(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -356,17 +356,17 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 			{
 				sFilterPair[] MATSCombinedRecordsFilter = new sFilterPair[3];
 				MATSCombinedRecordsFilter[0].Set("PARAMETER_GROUP", "HG");
-				MATSCombinedRecordsFilter[1].Set("BEGIN_DATEHOUR", MpParameters.EvaluationEndDate.Default(DateTime.MaxValue), eFilterDataType.DateBegan, eFilterPairRelativeCompare.LessThanOrEqual);
-				MATSCombinedRecordsFilter[2].Set("END_DATEHOUR", MpParameters.MatsEvaluationBeginDate, eFilterDataType.DateEnded, eFilterPairRelativeCompare.GreaterThanOrEqual);
-				DataView MATSCombinedRecordsView = FindRows(MpParameters.MatsCombinedMethodRecordsByLocation.SourceView, MATSCombinedRecordsFilter);
+				MATSCombinedRecordsFilter[1].Set("BEGIN_DATEHOUR", mpParams.EvaluationEndDate.Default(DateTime.MaxValue), eFilterDataType.DateBegan, eFilterPairRelativeCompare.LessThanOrEqual);
+				MATSCombinedRecordsFilter[2].Set("END_DATEHOUR", mpParams.MatsEvaluationBeginDate, eFilterDataType.DateEnded, eFilterPairRelativeCompare.GreaterThanOrEqual);
+				DataView MATSCombinedRecordsView = FindRows(mpParams.MatsCombinedMethodRecordsByLocation.SourceView, MATSCombinedRecordsFilter);
 
 				if (MATSCombinedRecordsView.Count > 0)
 				//span check
 				{
 					if (!CheckForHourRangeCovered(Category, MATSCombinedRecordsView,
 					"BEGIN_DATEHOUR", "END_DATEHOUR",
-					MpParameters.MatsEvaluationBeginDate.Default(DateTime.MinValue).AddHours(23),
-					MpParameters.EvaluationEndDate.Default(DateTime.MaxValue)))
+					mpParams.MatsEvaluationBeginDate.Default(DateTime.MinValue).AddHours(23),
+					mpParams.EvaluationEndDate.Default(DateTime.MaxValue)))
 					{
 						Category.CheckCatalogResult = "B";
 					}
@@ -386,7 +386,7 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 		/// <param name="category">The category object running the check.</param>
 		/// <param name="log">obsolete</param>
 		/// <returns>The error string if an error occurs.</returns>
-		public static string MATSMTH10(cCategory Category, ref bool Log)
+		public string MATSMTH10(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -394,17 +394,17 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 			{
 				sFilterPair[] MATSCombinedRecordsFilter = new sFilterPair[3];
 				MATSCombinedRecordsFilter[0].Set("PARAMETER_GROUP", "HCL");
-				MATSCombinedRecordsFilter[1].Set("BEGIN_DATEHOUR", MpParameters.EvaluationEndDate.Default(DateTime.MaxValue), eFilterDataType.DateBegan, eFilterPairRelativeCompare.LessThanOrEqual);
-				MATSCombinedRecordsFilter[2].Set("END_DATEHOUR", MpParameters.MatsEvaluationBeginDate, eFilterDataType.DateEnded, eFilterPairRelativeCompare.GreaterThanOrEqual);
-				DataView MATSCombinedRecordsView = FindRows(MpParameters.MatsCombinedMethodRecordsByLocation.SourceView, MATSCombinedRecordsFilter);
+				MATSCombinedRecordsFilter[1].Set("BEGIN_DATEHOUR", mpParams.EvaluationEndDate.Default(DateTime.MaxValue), eFilterDataType.DateBegan, eFilterPairRelativeCompare.LessThanOrEqual);
+				MATSCombinedRecordsFilter[2].Set("END_DATEHOUR", mpParams.MatsEvaluationBeginDate, eFilterDataType.DateEnded, eFilterPairRelativeCompare.GreaterThanOrEqual);
+				DataView MATSCombinedRecordsView = FindRows(mpParams.MatsCombinedMethodRecordsByLocation.SourceView, MATSCombinedRecordsFilter);
 
 				if (MATSCombinedRecordsView.Count > 0)
 				{
 					//span check
 					if (!CheckForHourRangeCovered(Category, MATSCombinedRecordsView,
 					"BEGIN_DATEHOUR", "END_DATEHOUR",
-					MpParameters.MatsEvaluationBeginDate.Default(DateTime.MinValue).AddHours(23),
-					MpParameters.EvaluationEndDate.Default(DateTime.MaxValue)))
+					mpParams.MatsEvaluationBeginDate.Default(DateTime.MinValue).AddHours(23),
+					mpParams.EvaluationEndDate.Default(DateTime.MaxValue)))
 					{
 						Category.CheckCatalogResult = "B";
 					}
@@ -429,7 +429,7 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 		/// <param name="category">The category object running the check.</param>
 		/// <param name="log">obsolete</param>
 		/// <returns>The error string if an error occurs.</returns>
-		public static string MATSMTH11(cCategory Category, ref bool Log)
+		public string MATSMTH11(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -437,17 +437,17 @@ namespace ECMPS.Checks.MATSSupplementalMethodChecks
 			{
 				sFilterPair[] MATSCombinedRecordsFilter = new sFilterPair[3];
 				MATSCombinedRecordsFilter[0].Set("PARAMETER_GROUP", "HF");
-				MATSCombinedRecordsFilter[1].Set("BEGIN_DATEHOUR", MpParameters.EvaluationEndDate.Default(DateTime.MaxValue), eFilterDataType.DateBegan, eFilterPairRelativeCompare.LessThanOrEqual);
-				MATSCombinedRecordsFilter[2].Set("END_DATEHOUR", MpParameters.MatsEvaluationBeginDate, eFilterDataType.DateEnded, eFilterPairRelativeCompare.GreaterThanOrEqual);
-				DataView MATSCombinedRecordsView = FindRows(MpParameters.MatsCombinedMethodRecordsByLocation.SourceView, MATSCombinedRecordsFilter);
+				MATSCombinedRecordsFilter[1].Set("BEGIN_DATEHOUR", mpParams.EvaluationEndDate.Default(DateTime.MaxValue), eFilterDataType.DateBegan, eFilterPairRelativeCompare.LessThanOrEqual);
+				MATSCombinedRecordsFilter[2].Set("END_DATEHOUR", mpParams.MatsEvaluationBeginDate, eFilterDataType.DateEnded, eFilterPairRelativeCompare.GreaterThanOrEqual);
+				DataView MATSCombinedRecordsView = FindRows(mpParams.MatsCombinedMethodRecordsByLocation.SourceView, MATSCombinedRecordsFilter);
 
 				if (MATSCombinedRecordsView.Count > 0)
 				//span check
 				{
 					if (!CheckForHourRangeCovered(Category, MATSCombinedRecordsView,
 					"BEGIN_DATEHOUR", "END_DATEHOUR",
-					MpParameters.MatsEvaluationBeginDate.Default(DateTime.MinValue).AddHours(23),
-					MpParameters.EvaluationEndDate.Default(DateTime.MaxValue)))
+					mpParams.MatsEvaluationBeginDate.Default(DateTime.MinValue).AddHours(23),
+					mpParams.EvaluationEndDate.Default(DateTime.MaxValue)))
 					{
 						Category.CheckCatalogResult = "B";
 					}

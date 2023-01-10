@@ -29,17 +29,17 @@ namespace ECMPS.Checks.UnitCapacityChecks
 
     #endregion
 
-    public static string CAPACITY1(cCategory Category, ref bool Log)
+    public  string CAPACITY1(cCategory Category, ref bool Log)
     {
       return Check_ConsistentDateRange(Category, "Unit_Capacity_Dates_Consistent", "Current_Unit_Capacity", "Unit_Capacity_Begin_Date_Valid", "Unit_Capacity_End_Date_Valid");
     }
 
-    public static string CAPACITY2(cCategory Category, ref bool Log)
+    public  string CAPACITY2(cCategory Category, ref bool Log)
     {
       return Check_ValidEndDate(Category, "Unit_Capacity_End_Date_Valid", "Current_Unit_Capacity", "End_Date", "A", "CAPACITY2");
     }
 
-    public static string CAPACITY3(cCategory Category, ref bool Log)
+    public  string CAPACITY3(cCategory Category, ref bool Log)
     {
       string ReturnVal = "";
 
@@ -61,7 +61,7 @@ namespace ECMPS.Checks.UnitCapacityChecks
       return ReturnVal;
     }
 
-    public static string CAPACITY4(cCategory Category, ref bool Log)
+    public  string CAPACITY4(cCategory Category, ref bool Log)
     {
       string ReturnVal = "";
 
@@ -82,7 +82,7 @@ namespace ECMPS.Checks.UnitCapacityChecks
       return ReturnVal;
     }
 
-    public static string CAPACITY5(cCategory Category, ref bool Log)
+    public  string CAPACITY5(cCategory Category, ref bool Log)
     {
       string ReturnVal = "";
 
@@ -109,7 +109,7 @@ namespace ECMPS.Checks.UnitCapacityChecks
       return ReturnVal;
     }
 
-    public static string CAPACITY6(cCategory Category, ref bool Log)
+    public  string CAPACITY6(cCategory Category, ref bool Log)
     {
       string ReturnVal = "";
 
@@ -156,7 +156,7 @@ namespace ECMPS.Checks.UnitCapacityChecks
     }
 
     /*
-    public static string CAPACITY_template( cCategory Category, ref bool Log )
+    public  string CAPACITY_template( cCategory Category, ref bool Log )
     {
         string ReturnVal = "";
 
