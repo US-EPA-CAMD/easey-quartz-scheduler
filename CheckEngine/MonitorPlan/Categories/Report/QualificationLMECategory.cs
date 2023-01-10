@@ -40,12 +40,14 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "MONITOR_QUALIFICATION_LME";
     }
 
+    public cQualificationLMECategory(){}
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cQualificationLMECategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cQualificationLMECategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cQualificationLMECategory Category;
       string ErrorMessage = "";

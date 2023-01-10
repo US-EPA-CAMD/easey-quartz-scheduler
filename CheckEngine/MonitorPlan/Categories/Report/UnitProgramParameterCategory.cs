@@ -33,17 +33,19 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "UNIT_PROGRAM_PARAMETER";
     }
 
+    public cUnitProgramParameterCategory(){}
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
     /// <summary>
     /// Returns an initialized Unit Program Parameter Category
     /// </summary>
     /// <param name="unitProgramCategory">The parent Unit Program Category object.</param>
     /// <returns></returns>
-    public static cUnitProgramParameterCategory GetInitialized(cUnitProgram unitProgramCategory)
+    public  cUnitProgramParameterCategory GetInitialized(cUnitProgram unitProgramCategory)
     {
       cUnitProgramParameterCategory result;
 

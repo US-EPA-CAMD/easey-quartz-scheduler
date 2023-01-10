@@ -42,7 +42,7 @@ namespace ECMPS.Checks.FormulaChecks
 
         }
 
-		public static string FORMULA1(cCategory Category, ref bool Log) //Formula Start Date Valid
+		public string FORMULA1(cCategory Category, ref bool Log) //Formula Start Date Valid
 		{
 			string ReturnVal = "";
 
@@ -56,7 +56,7 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA2(cCategory Category, ref bool Log) //Formula Start Hour Valid
+		public string FORMULA2(cCategory Category, ref bool Log) //Formula Start Hour Valid
 		{
 			string ReturnVal = "";
 
@@ -70,7 +70,7 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA3(cCategory Category, ref bool Log) //Formula End Date Valid
+		public string FORMULA3(cCategory Category, ref bool Log) //Formula End Date Valid
 		{
 			string ReturnVal = "";
 
@@ -85,7 +85,7 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA4(cCategory Category, ref bool Log) //Formula End Hour Valid
+		public string FORMULA4(cCategory Category, ref bool Log) //Formula End Hour Valid
 		{
 			string ReturnVal = "";
 
@@ -99,7 +99,7 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA5(cCategory Category, ref bool Log) //Formula Dates and Hours Consistent
+		public string FORMULA5(cCategory Category, ref bool Log) //Formula Dates and Hours Consistent
 		{
 			string ReturnVal = "";
 
@@ -119,7 +119,7 @@ namespace ECMPS.Checks.FormulaChecks
 
 		}
 
-		public static string FORMULA6(cCategory Category, ref bool Log) //Formula Active Status
+		public string FORMULA6(cCategory Category, ref bool Log) //Formula Active Status
 		{
 			string ReturnVal = "";
 
@@ -145,7 +145,7 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA7(cCategory Category, ref bool Log) //Formula ID Valid
+		public string FORMULA7(cCategory Category, ref bool Log) //Formula ID Valid
 		{
 			string ReturnVal = "";
 
@@ -176,7 +176,7 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA8(cCategory Category, ref bool Log) //Formula Parameter Code Valid
+		public string FORMULA8(cCategory Category, ref bool Log) //Formula Parameter Code Valid
 		{
 			string ReturnVal = "";
 
@@ -232,7 +232,7 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA9(cCategory Category, ref bool Log) //Formula Code Valid
+		public string FORMULA9(cCategory Category, ref bool Log) //Formula Code Valid
 		{
 			string ReturnVal = "";
 
@@ -342,13 +342,13 @@ namespace ECMPS.Checks.FormulaChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-		public static string FORMULA10(cCategory category, ref bool log) //Formula Text Valid
+		public string FORMULA10(cCategory category, ref bool log) //Formula Text Valid
 		{
 			string returnVal = "";
 
 			try
 			{
-                VwMonitorFormulaRow currentFormula = MpParameters.CurrentFormula;
+                VwMonitorFormulaRow currentFormula = mpParams.CurrentFormula;
 
                 if (string.IsNullOrWhiteSpace(currentFormula.FormulaEquation) && currentFormula.EquationCd.InList("N-GAS,N-OIL") && (currentFormula.EndDate == null))
                 {
@@ -364,7 +364,7 @@ namespace ECMPS.Checks.FormulaChecks
 		}
 
 
-		public static string FORMULA11(cCategory Category, ref bool Log) //Heat Input Apportionment/Summary Formula Valid
+		public string FORMULA11(cCategory Category, ref bool Log) //Heat Input Apportionment/Summary Formula Valid
 		{
 			string ReturnVal = "";
 
@@ -477,19 +477,19 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA12(cCategory Category, ref bool Log) //Formula Parameter and Code Consisent with Method
+		public string FORMULA12(cCategory Category, ref bool Log) //Formula Parameter and Code Consisent with Method
 		{
 			string ReturnVal = "";
 
 			try
 			{
-				if (MpParameters.FormulaParameterValid.Default(false) && MpParameters.FormulaCodeValid.Default(false))
+				if (mpParams.FormulaParameterValid.Default(false) && mpParams.FormulaCodeValid.Default(false))
 				{
 					DataView formulaToRequiredMethodRows
-				= cRowFilter.FindRows(MpParameters.FormulaToRequiredMethodCrosscheck.SourceView,
+				= cRowFilter.FindRows(mpParams.FormulaToRequiredMethodCrosscheck.SourceView,
 											 new cFilterCondition[] 
                                        {
-                                         new cFilterCondition("FormulaCode", MpParameters.CurrentFormula.EquationCd, eFilterConditionStringCompare.Equals)
+                                         new cFilterCondition("FormulaCode", mpParams.CurrentFormula.EquationCd, eFilterConditionStringCompare.Equals)
                                        });
 					if (formulaToRequiredMethodRows.Count > 0)
 					{
@@ -500,15 +500,15 @@ namespace ECMPS.Checks.FormulaChecks
 						foreach (DataRowView formulaToMethodRow in formulaToRequiredMethodRows)
 						{
 							DataView methodRecordsMatch =
-									  cRowFilter.FindActiveRows(MpParameters.MethodRecords.SourceView,
-														MpParameters.FormulaEvaluationBeginDate.Default(DateTime.MinValue), MpParameters.FormulaEvaluationBeginHour.Default(0),
-														MpParameters.FormulaEvaluationEndDate.Default(DateTime.MaxValue), MpParameters.FormulaEvaluationEndHour.Default(0),
+									  cRowFilter.FindActiveRows(mpParams.MethodRecords.SourceView,
+														mpParams.FormulaEvaluationBeginDate.Default(DateTime.MinValue), mpParams.FormulaEvaluationBeginHour.Default(0),
+														mpParams.FormulaEvaluationEndDate.Default(DateTime.MaxValue), mpParams.FormulaEvaluationEndHour.Default(0),
 														"BEGIN_DATE", "BEGIN_HOUR",
 														"END_DATE", "END_HOUR",
 														false,
 												 new cFilterCondition[] 
                                        {
-                                         new cFilterCondition("MON_LOC_ID", MpParameters.CurrentFormula.MonLocId, eFilterConditionStringCompare.Equals),
+                                         new cFilterCondition("MON_LOC_ID", mpParams.CurrentFormula.MonLocId, eFilterConditionStringCompare.Equals),
 										 new cFilterCondition("PARAMETER_CD", formulaToMethodRow["MethodParameter"].AsString(), eFilterConditionStringCompare.Equals),
 										 new cFilterCondition("METHOD_CD", formulaToMethodRow["MethodCode"].AsString(), eFilterConditionStringCompare.Equals)
                                        });
@@ -525,15 +525,15 @@ namespace ECMPS.Checks.FormulaChecks
 						{
 							//Set AppropriateMethodForFormula to the list of MethodParameter/MethodCode in the located crosscheck records.
 							//Parameter1/Method1), (Parameter2/Method2) ...
-							MpParameters.AppropriateMethodForFormula = appropriateMethod;
+							mpParams.AppropriateMethodForFormula = appropriateMethod;
 							Category.CheckCatalogResult = "A";
 						}
 						else
 						{
 							//Locate records in the FormulaToRequiredUnitFuelCrosscheck
-							DataView formulaToUnitFuelRows = cRowFilter.FindRows(MpParameters.FormulaToRequiredUnitFuelCrosscheck.SourceView,
+							DataView formulaToUnitFuelRows = cRowFilter.FindRows(mpParams.FormulaToRequiredUnitFuelCrosscheck.SourceView,
 									new cFilterCondition[] 
-                                       {new cFilterCondition("FormulaCode", MpParameters.CurrentFormula.EquationCd, eFilterConditionStringCompare.Equals)
+                                       {new cFilterCondition("FormulaCode", mpParams.CurrentFormula.EquationCd, eFilterConditionStringCompare.Equals)
 									   });
 							if (formulaToUnitFuelRows.Count > 0)
 							{
@@ -542,9 +542,9 @@ namespace ECMPS.Checks.FormulaChecks
 								foreach (DataRowView formulaUnitFuelRow in formulaToUnitFuelRows)
 								{
 									//	Locate records in LocationFuelRecords (datetime begin/end dates)
-									DataView locationFuelMatch = cRowFilter.FindActiveRows(MpParameters.LocationFuelRecords.SourceView,
-															MpParameters.FormulaEvaluationBeginDate.Default(DateTime.MinValue).AddHours(MpParameters.FormulaEvaluationBeginHour.Default(0)),
-															MpParameters.FormulaEvaluationEndDate.Default(DateTime.MaxValue).AddHours(MpParameters.FormulaEvaluationEndHour.Default(0)),
+									DataView locationFuelMatch = cRowFilter.FindActiveRows(mpParams.LocationFuelRecords.SourceView,
+															mpParams.FormulaEvaluationBeginDate.Default(DateTime.MinValue).AddHours(mpParams.FormulaEvaluationBeginHour.Default(0)),
+															mpParams.FormulaEvaluationEndDate.Default(DateTime.MaxValue).AddHours(mpParams.FormulaEvaluationEndHour.Default(0)),
 															"BEGIN_DATE", 
 															"END_DATE",
 															false,
@@ -573,7 +573,7 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA13(cCategory Category, ref bool Log) //Formula Parameter and Code Consisent with System
+		public string FORMULA13(cCategory Category, ref bool Log) //Formula Parameter and Code Consisent with System
 		{
 			string ReturnVal = "";
 
@@ -744,7 +744,7 @@ namespace ECMPS.Checks.FormulaChecks
 					}
 					else if (FormulaCode == "N-GAS")
                     {
-                        if (MpParameters.CurrentFormula.EndDate == null)
+                        if (mpParams.CurrentFormula.EndDate == null)
                         {
                             DateTime formulaEvaluationBeginHour = FormulaEvaluationBeginDate.AddHours(FormulaEvaluationBeginHour);
                             DateTime formulaEvaluationEndHour = FormulaEvaluationEndDate.AddHours(FormulaEvaluationEndHour);
@@ -761,7 +761,7 @@ namespace ECMPS.Checks.FormulaChecks
 					}
 					else if (FormulaCode == "N-OIL")
 					{
-                        if (MpParameters.CurrentFormula.EndDate == null)
+                        if (mpParams.CurrentFormula.EndDate == null)
                         {
                             DateTime formulaEvaluationBeginHour = FormulaEvaluationBeginDate.AddHours(FormulaEvaluationBeginHour);
                             DateTime formulaEvaluationEndHour = FormulaEvaluationEndDate.AddHours(FormulaEvaluationEndHour);
@@ -1008,7 +1008,7 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA14(cCategory Category, ref bool Log) //Formula Code Consistent with Fuel
+		public string FORMULA14(cCategory Category, ref bool Log) //Formula Code Consistent with Fuel
 		{
 			string ReturnVal = "";
 
@@ -1060,7 +1060,7 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA15(cCategory Category, ref bool Log) //Required H2O Method Reported for Formula
+		public string FORMULA15(cCategory Category, ref bool Log) //Required H2O Method Reported for Formula
 		{
 			string ReturnVal = "";
 
@@ -1115,7 +1115,7 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA16(cCategory Category, ref bool Log) //Required Formula Reported for F-Factor Formula
+		public string FORMULA16(cCategory Category, ref bool Log) //Required Formula Reported for F-Factor Formula
 		{
 			string ReturnVal = "";
 
@@ -1181,7 +1181,7 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA17(cCategory Category, ref bool Log) //determines if a minimum O2 and H2O default values are reported for HI formulas
+		public string FORMULA17(cCategory Category, ref bool Log) //determines if a minimum O2 and H2O default values are reported for HI formulas
 		{
 			string ReturnVal = "";
 
@@ -1244,7 +1244,7 @@ namespace ECMPS.Checks.FormulaChecks
 			return ReturnVal;
 		}
 
-		public static string FORMULA18(cCategory Category, ref bool Log) //Duplicate Formula Records
+		public string FORMULA18(cCategory Category, ref bool Log) //Duplicate Formula Records
 		{
 			string ReturnVal = "";
 
@@ -1282,27 +1282,27 @@ namespace ECMPS.Checks.FormulaChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string FORMULA19(cCategory category, ref bool log)
+        public string FORMULA19(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (MpParameters.CurrentFormula.ParameterCd.InList("HGRE,HCLRE,HFRE,SO2RE,HGRH,HCLRH,HFRH,SO2RH"))
+                if (mpParams.CurrentFormula.ParameterCd.InList("HGRE,HCLRE,HFRE,SO2RE,HGRH,HCLRH,HFRH,SO2RH"))
                 {
-                    if (MpParameters.CurrentFormula.EquationCd == "MS-1")
+                    if (mpParams.CurrentFormula.EquationCd == "MS-1")
                     {
                         int methodCount =
-                            MpParameters.MethodRecords.CountRows
+                            mpParams.MethodRecords.CountRows
                             (
                                 new cFilterCondition[]
                                 {
-                                    new cFilterCondition("PARAMETER_CD", MpParameters.CurrentFormula.ParameterCd),
+                                    new cFilterCondition("PARAMETER_CD", mpParams.CurrentFormula.ParameterCd),
                                     new cFilterCondition("METHOD_CD", "CALC"),
                                     new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual, 
-                                                         MpParameters.FormulaEvaluationEndDate.Value.AddHours(MpParameters.FormulaEvaluationEndHour.Value)),
+                                                         mpParams.FormulaEvaluationEndDate.Value.AddHours(mpParams.FormulaEvaluationEndHour.Value)),
                                     new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual, 
-                                                         MpParameters.FormulaEvaluationBeginDate.Value.AddHours(MpParameters.FormulaEvaluationBeginHour.Value), 
+                                                         mpParams.FormulaEvaluationBeginDate.Value.AddHours(mpParams.FormulaEvaluationBeginHour.Value), 
                                                          eNullDateDefault.Max)
                                 }
                             );
@@ -1311,21 +1311,21 @@ namespace ECMPS.Checks.FormulaChecks
                         {
                             category.CheckCatalogResult = "A";
                         }
-                        else if (MpParameters.LocationType != "US")
+                        else if (mpParams.LocationType != "US")
                         {
                             category.CheckCatalogResult = "B";
                         }
                         else
                         {
                             int configCount =
-                                MpParameters.UnitStackConfigurationRecords.CountRows
+                                mpParams.UnitStackConfigurationRecords.CountRows
                                 (
                                     new cFilterCondition[]
                                     {
-                                        new cFilterCondition("MON_LOC_ID", MpParameters.CurrentFormula.MonLocId),
+                                        new cFilterCondition("MON_LOC_ID", mpParams.CurrentFormula.MonLocId),
                                         new cFilterCondition("STACK_NAME", "MS", eFilterConditionStringCompare.BeginsWith, true),
-                                        new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, MpParameters.FormulaEvaluationEndDate.Value),
-                                        new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, MpParameters.FormulaEvaluationBeginDate.Value, eNullDateDefault.Max)
+                                        new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, mpParams.FormulaEvaluationEndDate.Value),
+                                        new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, mpParams.FormulaEvaluationBeginDate.Value, eNullDateDefault.Max)
                                     }
                                 );
 
@@ -1354,21 +1354,21 @@ namespace ECMPS.Checks.FormulaChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string FORMULA20(cCategory category, ref bool log)
+        public string FORMULA20(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                MpParameters.ValidLocationTypes = "";
+                mpParams.ValidLocationTypes = "";
 
-                if (MpParameters.FormulaCodeValid == true)
+                if (mpParams.FormulaCodeValid == true)
                 {
-                    if (MpParameters.CurrentFormula.EquationCd == "MS-2")
+                    if (mpParams.CurrentFormula.EquationCd == "MS-2")
                     {
-                        if (MpParameters.LocationType != "MS")
+                        if (mpParams.LocationType != "MS")
                         {
-                            MpParameters.ValidLocationTypes = "multiple stacks";
+                            mpParams.ValidLocationTypes = "multiple stacks";
                             category.CheckCatalogResult = "A";
                         }
                     }
@@ -1400,7 +1400,7 @@ namespace ECMPS.Checks.FormulaChecks
         /// <param name="monitorSystemRecords">The monitor system records to search.</param>
         /// <param name="monitorSystemComponentRecords">The monitor system component records to check.</param>
         /// <returns>The list of start dates.</returns>
-        public static DistinctHourRanges GetDistinctHourRanges(DateTime evaluationBeginHour, DateTime evaluationEndHour,
+        public DistinctHourRanges GetDistinctHourRanges(DateTime evaluationBeginHour, DateTime evaluationEndHour,
                                                             CheckDataView<VwMonitorSystemRow> monitorSystemRecords,
                                                             CheckDataView<VwMonitorSystemComponentRow> monitorSystemComponentRecords)
         {
@@ -1431,14 +1431,14 @@ namespace ECMPS.Checks.FormulaChecks
         /// <param name="systemTypeFilterCondition"></param>
         /// <param name="componentTypeFilterCondition"></param>
         /// <returns></returns>
-        public static bool SystemsSpanWithMultipleComponents(DateTime formulaEvaluationBeginHour, DateTime formulaEvaluationEndHour, 
+        public bool SystemsSpanWithMultipleComponents(DateTime formulaEvaluationBeginHour, DateTime formulaEvaluationEndHour, 
                                                              cFilterCondition systemTypeFilterCondition, cFilterCondition componentTypeFilterCondition)
         {
             bool result = true;
             
             // Get filtered Monitor System records
             CheckDataView<VwMonitorSystemRow> monitorSystemRecords 
-                = MpParameters.MonitorSystemRecords.FindActiveRowsByHour(formulaEvaluationBeginHour, formulaEvaluationEndHour, systemTypeFilterCondition);
+                = mpParams.MonitorSystemRecords.FindActiveRowsByHour(formulaEvaluationBeginHour, formulaEvaluationEndHour, systemTypeFilterCondition);
 
             // Get list of MonSysId for filtered Monitor System records
             cFilterCondition monSysIdCondition;
@@ -1457,7 +1457,7 @@ namespace ECMPS.Checks.FormulaChecks
 
             // Get filtered Monitor System Component records
             CheckDataView<VwMonitorSystemComponentRow> monitorSystemComponentRecords 
-                = MpParameters.LocationSystemComponentRecords.FindActiveRowsByHour(formulaEvaluationBeginHour, formulaEvaluationEndHour, monSysIdCondition, componentTypeFilterCondition);
+                = mpParams.LocationSystemComponentRecords.FindActiveRowsByHour(formulaEvaluationBeginHour, formulaEvaluationEndHour, monSysIdCondition, componentTypeFilterCondition);
 
             // Get distinct list of date ranges for the filtered Monitor System and Monitor System Component records.
             // Should produce ranges that span the evaluation period and the active systems and components should not change within the ranges.
@@ -1481,7 +1481,7 @@ namespace ECMPS.Checks.FormulaChecks
                         {
                             monSysIdCondition = new cFilterCondition("MON_SYS_ID", monitorSystemRow.MonSysId);
                             monitorSystemComponentRecords
-                                = MpParameters.LocationSystemComponentRecords.FindActiveRowsByHour(formulaEvaluationBeginHour, formulaEvaluationEndHour, monSysIdCondition, componentTypeFilterCondition);
+                                = mpParams.LocationSystemComponentRecords.FindActiveRowsByHour(formulaEvaluationBeginHour, formulaEvaluationEndHour, monSysIdCondition, componentTypeFilterCondition);
                             componentCount = 0;
 
                             foreach (VwMonitorSystemComponentRow monitorSystemComponentRow in monitorSystemComponentRecords)

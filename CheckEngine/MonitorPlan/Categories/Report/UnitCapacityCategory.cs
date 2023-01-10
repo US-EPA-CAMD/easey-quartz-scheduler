@@ -40,13 +40,14 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "UNIT_CAPACITY";
     }
 
+    public cUnitCapacityCategory(){}
 
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cUnitCapacityCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cUnitCapacityCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cUnitCapacityCategory Category;
       string ErrorMessage = "";
