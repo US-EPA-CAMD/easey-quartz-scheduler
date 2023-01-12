@@ -30,6 +30,8 @@ namespace ECMPS.Checks.OtherQAEvaluation
 		#endregion
 
 
+
+
 		#region Public Fields
 
 		String QAIDs;
@@ -38,6 +40,23 @@ namespace ECMPS.Checks.OtherQAEvaluation
 
 
 		#region Base Class Overrides
+
+		/// <summary>
+        /// This method initializes the class containing static properties enabling strongly typed access to the parameters used by the process.
+        /// </summary>
+        protected override void InitStaticParameterClass()
+        {
+            qaParams.Init(this);
+        }
+
+        /// <summary>
+        /// Allows the setting of the current category for which parameters will be set.
+        /// </summary>
+        /// <param name="category"></param>
+        public override void SetStaticParameterCategory(cCategory category)
+        {
+            qaParams.Category = category;
+        }
 
 		/// <summary>
 		/// Loads the Check Procedure delegates needed for a process code.
@@ -55,6 +74,7 @@ namespace ECMPS.Checks.OtherQAEvaluation
 																		   "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
 				Checks[35] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
 																   "ECMPS.Checks.CertEventChecks.cCertEventChecks").Unwrap();
+				Checks[35].setQaParamsForCheck(ref qaParams);
 				Checks[36] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
 																   "ECMPS.Checks.TEEChecks.cTEEChecks").Unwrap();
 
@@ -530,23 +550,6 @@ namespace ECMPS.Checks.OtherQAEvaluation
 		/// The Update ECMPS Status Additional value for the items(s) for which the update will occur..
 		/// </summary>
 		protected override string DbUpdate_EcmpsStatusOtherField { get { return mCheckEngine.ChkSessionId; } }
-
-		/// <summary>
-		/// This method initializes the class containing  properties enabling strongly typed access to the parameters used by the process.
-		/// </summary>
-		protected override void InitParameterClass()
-		{
-			qaParams.Init(this);
-		}
-
-		/// <summary>
-		/// Allows the setting of the current category for which parameters will be set.
-		/// </summary>
-		/// <param name="category"></param>
-		public override void SetParameterCategory(cCategory category)
-		{
-			qaParams.Category = category;
-		}
 
 		#endregion
 

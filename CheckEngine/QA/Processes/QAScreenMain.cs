@@ -42,6 +42,23 @@ namespace ECMPS.Checks.QAScreenEvaluation
     #region Base Class Overrides
 
     /// <summary>
+    /// This method initializes the class containing static properties enabling strongly typed access to the parameters used by the process.
+    /// </summary>
+    protected override void InitStaticParameterClass()
+    {
+        qaParams.Init(this);
+    }
+
+    /// <summary>
+    /// Allows the setting of the current category for which parameters will be set.
+    /// </summary>
+    /// <param name="category"></param>
+    public override void SetStaticParameterCategory(cCategory category)
+    {
+        qaParams.Category = category;
+    }
+
+    /// <summary>
     /// Loads the Check Procedure delegates needed for a process code.
     /// </summary>
     /// <param name="checksDllPath">The path of the checks DLLs.</param>
@@ -2232,23 +2249,6 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
       LoadCrossChecks();
     }
-
-    /// <summary>
-    /// This method initializes the class containing  properties enabling strongly typed access to the parameters used by the process.
-    /// </summary>
-    protected override void InitParameterClass()
-    {
-            qaParams.Init(this);
-        }
-
-    /// <summary>
-    /// Allows the setting of the current category for which parameters will be set.
-    /// </summary>
-    /// <param name="category"></param>
-    public override void SetParameterCategory(cCategory category)
-    {
-            qaParams.Category = category;
-        }
 
     #endregion
 

@@ -64,6 +64,23 @@ namespace ECMPS.Checks.QAEvaluation
         #region Abstract Overrides
 
         /// <summary>
+        /// This method initializes the class containing static properties enabling strongly typed access to the parameters used by the process.
+        /// </summary>
+        protected override void InitStaticParameterClass()
+        {
+            qaParams.Init(this);
+        }
+
+        /// <summary>
+        /// Allows the setting of the current category for which parameters will be set.
+        /// </summary>
+        /// <param name="category"></param>
+        public override void SetStaticParameterCategory(cCategory category)
+        {
+            qaParams.Category = category;
+        }
+
+        /// <summary>
         /// Loads the Check Procedure delegates needed for a process code.
         /// </summary>
         /// <param name="checksDllPath">The path of the checks DLLs.</param>
@@ -77,10 +94,14 @@ namespace ECMPS.Checks.QAEvaluation
             {
                 Checks[21] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.LinearityChecks.cLinearityChecks").Unwrap();
+                Checks[21].setQaParamsForCheck(ref qaParams);
                 Checks[22] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.RATAChecks.cRATAChecks").Unwrap();
+                Checks[22].setQaParamsForCheck(ref qaParams);
                 Checks[23] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.CalibrationChecks.cCalibrationChecks").Unwrap();
+                Checks[23].setQaParamsForCheck(ref qaParams);
+
                 Checks[24] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.FlowLoadReferenceChecks.cFlowLoadReferenceChecks").Unwrap();
                 Checks[25] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
@@ -89,12 +110,16 @@ namespace ECMPS.Checks.QAEvaluation
                                                                    "ECMPS.Checks.CycleTimeChecks.cCycleTimeChecks").Unwrap();
                 Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
+                Checks[27].setQaParamsForCheck(ref qaParams);
+
                 Checks[29] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.OOCChecks.cOOCChecks").Unwrap();
                 Checks[30] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.FFACC_Checks.cFFACC_Checks").Unwrap();
+                Checks[30].setQaParamsForCheck(ref qaParams);
                 Checks[31] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.FFACCTTChecks.cFFACCTTChecks").Unwrap();
+                Checks[31].setQaParamsForCheck(ref qaParams);
                 Checks[32] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.FF2LBASChecks.cFF2LBASChecks").Unwrap();
                 Checks[33] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
@@ -120,12 +145,14 @@ namespace ECMPS.Checks.QAEvaluation
                                                                            true, 0, null,
                                                                            constructorArgements,
                                                                            null, null).Unwrap();
+                    Checks[53].setQaParamsForCheck(ref qaParams);
 
                     Checks[54] = (cPgvpChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                            "ECMPS.Checks.TestChecks.cPgvpChecks",
                                                                            true, 0, null,
                                                                            constructorArgements,
                                                                            null, null).Unwrap();
+                    Checks[54].setQaParamsForCheck(ref qaParams);
                 }
 
                 result = true;
@@ -637,7 +664,7 @@ namespace ECMPS.Checks.QAEvaluation
             cRATA RATA;
             cCheckParameterBands RATAChecks = GetCheckBands("RATA");
 
-            RATA = new cRATA(mCheckEngine, QA, MonitorLocationId, TestSummaryId);
+            RATA = new cRATA(mCheckEngine, QA, MonitorLocationId, TestSummaryId, ref qaParams);
             RATA.SetCheckBands(RATAChecks);
 
             RunResult = RATA.ProcessChecks();
@@ -4175,23 +4202,6 @@ namespace ECMPS.Checks.QAEvaluation
             {
                 System.Diagnostics.Debug.WriteLine("cQAMain.InitSourceData failed: " + ex.Message);
             }
-        }
-
-        /// <summary>
-        /// This method initializes the class containing  properties enabling strongly typed access to the parameters used by the process.
-        /// </summary>
-        protected override void InitParameterClass()
-        {
-            qaParams.Init(this);
-        }
-
-        /// <summary>
-        /// Allows the setting of the current category for which parameters will be set.
-        /// </summary>
-        /// <param name="category"></param>
-        public override void SetParameterCategory(cCategory category)
-        {
-            qaParams.Category = category;
         }
 
         #endregion

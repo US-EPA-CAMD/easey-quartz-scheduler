@@ -20,6 +20,8 @@ namespace ECMPS.Checks.QAEvaluation
     private string mTestSumID;
     private string mSystemID;
 
+    private QaParameters qaParameters;
+
     //private long mUnitID;
     //private string mStackPipeID;
 
@@ -28,9 +30,11 @@ namespace ECMPS.Checks.QAEvaluation
 
     #region Constructors
 
-    public cRATA(cCheckEngine CheckEngine, cQAMain QA, string MonitorLocationID, string TestSumID)
+    public cRATA(cCheckEngine CheckEngine, cQAMain QA, string MonitorLocationID, string TestSumID, ref QaParameters qaParams)
       : base(QA, "RATA")
     {
+      qaParameters = qaParams;
+
       InitializeCurrent(MonitorLocationID, TestSumID);
 
       mMonitorLocationID = MonitorLocationID;
@@ -162,8 +166,7 @@ namespace ECMPS.Checks.QAEvaluation
         qaProcess.SystemParameterLookupTable.LegacySetValue(Process.SourceData.Tables["SystemParameter"].DefaultView, this);
       }
 
-      qaParams.ApsCodeLookupTable = new CheckDataView<ApsCodeRow>(Process.SourceData.Tables["ApsCode"].DefaultView);
-
+      qaParameters.ApsCodeLookupTable = new CheckDataView<ApsCodeRow>(Process.SourceData.Tables["ApsCode"].DefaultView);
     }
 
     protected override void SetRecordIdentifier()
