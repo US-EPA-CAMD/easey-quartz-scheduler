@@ -24,7 +24,7 @@ namespace ECMPS.Checks.QAEvaluation
     {
 
         #region Constructors
-
+        private QaParameters qaParams = new QaParameters();
         public cQAMain(cCheckEngine checkEngine)
             : base(checkEngine)
         {
@@ -487,14 +487,14 @@ namespace ECMPS.Checks.QAEvaluation
                                             NewRow["LIN_SUM_ID"] = LinearitySummaryId;
                                         }
                                         if (QA.GetCheckParameter("Linearity_Summary_Mean_Reference_Value").ParameterValue != null)
-                                            NewRow["CALC_MEAN_REF_VALUE"] = QaParameters.LinearitySummaryMeanReferenceValue.DbValue();
+                                            NewRow["CALC_MEAN_REF_VALUE"] = qaParams.LinearitySummaryMeanReferenceValue.DbValue();
                                         if (QA.GetCheckParameter("Linearity_Summary_Mean_Measured_Value").ParameterValue != null)
-                                            NewRow["CALC_MEAN_MEASURED_VALUE"] = QaParameters.LinearitySummaryMeanMeasuredValue.DbValue();
+                                            NewRow["CALC_MEAN_MEASURED_VALUE"] = qaParams.LinearitySummaryMeanMeasuredValue.DbValue();
                                         if (QA.GetCheckParameter("Linearity_Summary_APS_Indicator").ParameterValue != null)
-                                            NewRow["CALC_APS_IND"] = QaParameters.LinearitySummaryApsIndicator.DbValue();
+                                            NewRow["CALC_APS_IND"] = qaParams.LinearitySummaryApsIndicator.DbValue();
                                         if (QA.GetCheckParameter("Linearity_Summary_Percent_Error").ParameterValue != null)
 
-                                            NewRow["CALC_PERCENT_ERROR"] = QaParameters.LinearitySummaryPercentError.DbValue();
+                                            NewRow["CALC_PERCENT_ERROR"] = qaParams.LinearitySummaryPercentError.DbValue();
 
                                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
@@ -552,7 +552,7 @@ namespace ECMPS.Checks.QAEvaluation
                         }
 
                         if (QA.GetCheckParameter("Test_Span_Value").ParameterValue != null)
-                            NewRow["CALC_SPAN_VALUE"] = QaParameters.TestSpanValue.DbValue();
+                            NewRow["CALC_SPAN_VALUE"] = qaParams.TestSpanValue.DbValue();
 
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                         QA.mCalculatedTestSummary.Rows.Add(NewRow);
@@ -4182,7 +4182,7 @@ namespace ECMPS.Checks.QAEvaluation
         /// </summary>
         protected override void InitStaticParameterClass()
         {
-            QaParameters.Init(this);
+            qaParams.Init(this);
         }
 
         /// <summary>
@@ -4191,7 +4191,7 @@ namespace ECMPS.Checks.QAEvaluation
         /// <param name="category"></param>
         public override void SetStaticParameterCategory(cCategory category)
         {
-            QaParameters.Category = category;
+            qaParams.Category = category;
         }
 
         #endregion

@@ -23,8 +23,8 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
     #region Constructors
     string mCategoryCd;
-
-    public cQAScreenMain(cCheckEngine CheckEngine, string CategoryCd)
+    private QaParameters qaParams = new QaParameters();
+        public cQAScreenMain(cCheckEngine CheckEngine, string CategoryCd)
       : base(CheckEngine)
     {
       mCategoryCd = CategoryCd;
@@ -2238,8 +2238,8 @@ namespace ECMPS.Checks.QAScreenEvaluation
     /// </summary>
     protected override void InitStaticParameterClass()
     {
-      QaParameters.Init(this);
-    }
+            qaParams.Init(this);
+        }
 
     /// <summary>
     /// Allows the setting of the current category for which parameters will be set.
@@ -2247,8 +2247,8 @@ namespace ECMPS.Checks.QAScreenEvaluation
     /// <param name="category"></param>
     public override void SetStaticParameterCategory(cCategory category)
     {
-      QaParameters.Category = category;
-    }
+            qaParams.Category = category;
+        }
 
     #endregion
 

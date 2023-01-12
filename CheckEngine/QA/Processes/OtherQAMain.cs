@@ -19,6 +19,8 @@ namespace ECMPS.Checks.OtherQAEvaluation
 
 		#region Constructors
 
+		private QaParameters qaParams = new QaParameters();
+
 		public cOtherQAMain(cCheckEngine CheckEngine)
 			: base(CheckEngine, "OTHERQA")
 		{
@@ -534,7 +536,7 @@ namespace ECMPS.Checks.OtherQAEvaluation
 		/// </summary>
 		protected override void InitStaticParameterClass()
 		{
-			QaParameters.Init(this);
+			qaParams.Init(this);
 		}
 
 		/// <summary>
@@ -543,7 +545,7 @@ namespace ECMPS.Checks.OtherQAEvaluation
 		/// <param name="category"></param>
 		public override void SetStaticParameterCategory(cCategory category)
 		{
-			QaParameters.Category = category;
+			qaParams.Category = category;
 		}
 
 		#endregion
