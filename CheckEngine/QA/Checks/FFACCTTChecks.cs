@@ -35,7 +35,7 @@ namespace ECMPS.Checks.FFACCTTChecks
 
         #region FFACCTT Checks
         
-        public static string FFACCTT1(cCategory Category, ref bool Log)
+        public  string FFACCTT1(cCategory Category, ref bool Log)
         //Transmitter Transducer Test Component Type Valid
         {
             string ReturnVal = "";
@@ -69,7 +69,7 @@ namespace ECMPS.Checks.FFACCTTChecks
             return ReturnVal;
         }
         
-        public static string FFACCTT2(cCategory Category, ref bool Log)
+        public  string FFACCTT2(cCategory Category, ref bool Log)
         //Aborted Transmitter Transducer Test Check
         {
             string ReturnVal = "";
@@ -88,7 +88,7 @@ namespace ECMPS.Checks.FFACCTTChecks
             return ReturnVal;
         }
 
-        public static string FFACCTT3(cCategory Category, ref bool Log)
+        public  string FFACCTT3(cCategory Category, ref bool Log)
         //Transmitter Transducer Test Reason Code Valid
         {
             string ReturnVal = "";
@@ -126,7 +126,7 @@ namespace ECMPS.Checks.FFACCTTChecks
         }
 
         
-        public static string FFACCTT4(cCategory Category, ref bool Log)
+        public  string FFACCTT4(cCategory Category, ref bool Log)
         //Identification of Previously Reported Test or Number for Transmitter Transducer Test
         {
             string ReturnVal = "";
@@ -209,7 +209,7 @@ namespace ECMPS.Checks.FFACCTTChecks
             return ReturnVal;
         }
 
-        public static string FFACCTT5(cCategory Category, ref bool Log)
+        public  string FFACCTT5(cCategory Category, ref bool Log)
         //Low Level Accuracy Valid
         {
             string ReturnVal = "";
@@ -254,7 +254,7 @@ namespace ECMPS.Checks.FFACCTTChecks
 
             return ReturnVal;
         }
-        public static string FFACCTT6(cCategory Category, ref bool Log)
+        public  string FFACCTT6(cCategory Category, ref bool Log)
         //Low Level Accuracy Specification Code Valid
         {
             string ReturnVal = "";
@@ -291,7 +291,7 @@ namespace ECMPS.Checks.FFACCTTChecks
             return ReturnVal;
         }
 
-        public static string FFACCTT7(cCategory Category, ref bool Log)
+        public  string FFACCTT7(cCategory Category, ref bool Log)
         //Mid Level Accuracy Valid
         {
             string ReturnVal = "";
@@ -337,7 +337,7 @@ namespace ECMPS.Checks.FFACCTTChecks
             return ReturnVal;
         }
 
-        public static string FFACCTT8(cCategory Category, ref bool Log)
+        public  string FFACCTT8(cCategory Category, ref bool Log)
         //Mid Level Accuracy Specification Code Valid
         {
             string ReturnVal = "";
@@ -374,7 +374,7 @@ namespace ECMPS.Checks.FFACCTTChecks
             return ReturnVal;
         }
 
-        public static string FFACCTT9(cCategory Category, ref bool Log)
+        public  string FFACCTT9(cCategory Category, ref bool Log)
         //High Level Accuracy Valid
         {
             string ReturnVal = "";
@@ -421,7 +421,7 @@ namespace ECMPS.Checks.FFACCTTChecks
             return ReturnVal;
         }
 
-        public static string FFACCTT10(cCategory Category, ref bool Log)
+        public  string FFACCTT10(cCategory Category, ref bool Log)
         //High Level Accuracy Specification Code Valid
         {
             string ReturnVal = "";
@@ -458,7 +458,7 @@ namespace ECMPS.Checks.FFACCTTChecks
             return ReturnVal;
         }
 
-        public static string FFACCTT11(cCategory Category, ref bool Log)
+        public  string FFACCTT11(cCategory Category, ref bool Log)
         //Transmitter Transducer Test Result Code Valid 
         {
             string ReturnVal = "";
@@ -496,7 +496,7 @@ namespace ECMPS.Checks.FFACCTTChecks
             return ReturnVal;
         }
 
-        public static string FFACCTT12(cCategory Category, ref bool Log)
+        public  string FFACCTT12(cCategory Category, ref bool Log)
         //Transmitter Transducer Test Component ID Valid
         {
             string ReturnVal = "";
@@ -518,7 +518,7 @@ namespace ECMPS.Checks.FFACCTTChecks
             return ReturnVal;
         }
 
-        public static string FFACCTT13(cCategory Category, ref bool Log)
+        public  string FFACCTT13(cCategory Category, ref bool Log)
         //Duplicate Transmitter Transducer Test
         {
             string ReturnVal = "";
@@ -578,20 +578,20 @@ namespace ECMPS.Checks.FFACCTTChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string FFACCTT14(cCategory category, ref bool log)
+        public  string FFACCTT14(cCategory category, ref bool log)
         {
             string returnVal = ""; ;
 
             try
             {
-                if ((QaParameters.CurrentTransmitterTransducerTest.TestNum != null) && (QaParameters.CurrentTransmitterTransducerTest.EndDate >= new DateTime(2021, 10, 1)))
+                if ((qaParams.CurrentTransmitterTransducerTest.TestNum != null) && (qaParams.CurrentTransmitterTransducerTest.EndDate >= new DateTime(2021, 10, 1)))
                 {
                     int count;
 
-                    count = QaParameters.LocationTestRecords.FindRows
+                    count = qaParams.LocationTestRecords.FindRows
                             (
                                 new cFilterCondition("TEST_TYPE_CD", "FFACC"),
-                                new cFilterCondition("TEST_NUM", QaParameters.CurrentTransmitterTransducerTest.TestNum)
+                                new cFilterCondition("TEST_NUM", qaParams.CurrentTransmitterTransducerTest.TestNum)
                             ).Count;
 
                     if (count > 0)
@@ -600,10 +600,10 @@ namespace ECMPS.Checks.FFACCTTChecks
                     }
                     else
                     {
-                        count = QaParameters.QaSupplementalDataRecords.FindRows
+                        count = qaParams.QaSupplementalDataRecords.FindRows
                                 (
                                     new cFilterCondition("TEST_TYPE_CD", "FFACC"),
-                                    new cFilterCondition("TEST_NUM", QaParameters.CurrentTransmitterTransducerTest.TestNum)
+                                    new cFilterCondition("TEST_NUM", qaParams.CurrentTransmitterTransducerTest.TestNum)
                                 ).Count;
 
                         if (count > 0)

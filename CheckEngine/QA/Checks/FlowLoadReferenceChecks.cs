@@ -38,7 +38,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
 
 
         #region Flow to Load Reference Checks
-        public static string F2LREF1(cCategory Category, ref bool Log)
+        public  string F2LREF1(cCategory Category, ref bool Log)
         //System Type Valid
         {
             string ReturnVal = "";
@@ -68,7 +68,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF2(cCategory Category, ref bool Log)
+        public  string F2LREF2(cCategory Category, ref bool Log)
         //Identification of Previously Reported Test or Test Number for Flow to Load Reference Data
         {
             string ReturnVal = "";
@@ -215,7 +215,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF3(cCategory Category, ref bool Log)
+        public  string F2LREF3(cCategory Category, ref bool Log)
         //Flow to Load Reference Data RATA Test Number Valid            
         {
             string ReturnVal = "";
@@ -239,7 +239,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF4(cCategory Category, ref bool Log)
+        public  string F2LREF4(cCategory Category, ref bool Log)
         //Flow to Load Reference Data Operating Level Code Valid
         {
             string ReturnVal = "";
@@ -301,7 +301,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF5(cCategory Category, ref bool Log)
+        public  string F2LREF5(cCategory Category, ref bool Log)
         //Flow to Load Reference Data Methodology Valid
         {
             string ReturnVal = "";
@@ -339,7 +339,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF6(cCategory Category, ref bool Log)
+        public  string F2LREF6(cCategory Category, ref bool Log)
         //Flow to Load Reference Data Calc Separate Reference Indicator Valid
         {
             string ReturnVal = "";
@@ -368,7 +368,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF7(cCategory Category, ref bool Log)
+        public  string F2LREF7(cCategory Category, ref bool Log)
         //Flow to Load Reference Data Average Hourly Heat Input Rate Valid
         {
             string ReturnVal = "";
@@ -396,7 +396,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF8(cCategory Category, ref bool Log)
+        public  string F2LREF8(cCategory Category, ref bool Log)
         //Flow to Load Reference Data Reference RATA Valid
         {
             string ReturnVal = "";
@@ -493,7 +493,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
 
             return ReturnVal;
         }
-        public static string F2LREF9(cCategory Category, ref bool Log)
+        public  string F2LREF9(cCategory Category, ref bool Log)
         //Calculate Flow to Load Reference Data Values
         {
             string ReturnVal = "";
@@ -810,7 +810,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF10(cCategory Category, ref bool Log)
+        public  string F2LREF10(cCategory Category, ref bool Log)
         //Flow to Load Reference Data Average Reference Method Flow Valid
         {
             string ReturnVal = "";
@@ -848,7 +848,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF11(cCategory Category, ref bool Log)
+        public  string F2LREF11(cCategory Category, ref bool Log)
         //Flow to Load Reference Data Average Gross Unit Load Valid
         {
             string ReturnVal = "";
@@ -900,7 +900,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF12(cCategory Category, ref bool Log)
+        public  string F2LREF12(cCategory Category, ref bool Log)
         //Flow to Load Reference Data Reference Flow to Load Ratio Valid
         {
             string ReturnVal = "";
@@ -941,7 +941,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF13(cCategory Category, ref bool Log)
+        public  string F2LREF13(cCategory Category, ref bool Log)
         //Flow to Load Reference Data Reference Gross Heat Rate Valid
         {
             string ReturnVal = "";
@@ -982,7 +982,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF14(cCategory Category, ref bool Log)
+        public  string F2LREF14(cCategory Category, ref bool Log)
         //Duplicate Flow to Load Reference Data
         {
             string ReturnVal = "";
@@ -1034,7 +1034,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF15(cCategory Category, ref bool Log)
+        public  string F2LREF15(cCategory Category, ref bool Log)
         //System ID Valid
         {
             string ReturnVal = "";
@@ -1053,7 +1053,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
             return ReturnVal;
         }
 
-        public static string F2LREF16(cCategory Category, ref bool Log)
+        public  string F2LREF16(cCategory Category, ref bool Log)
         //Calculate Flow-to-Load Reference Data
         {
             string ReturnVal = "";

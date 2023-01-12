@@ -4178,9 +4178,9 @@ namespace ECMPS.Checks.QAEvaluation
         }
 
         /// <summary>
-        /// This method initializes the class containing static properties enabling strongly typed access to the parameters used by the process.
+        /// This method initializes the class containing  properties enabling strongly typed access to the parameters used by the process.
         /// </summary>
-        protected override void InitStaticParameterClass()
+        protected override void InitParameterClass()
         {
             qaParams.Init(this);
         }
@@ -4189,7 +4189,7 @@ namespace ECMPS.Checks.QAEvaluation
         /// Allows the setting of the current category for which parameters will be set.
         /// </summary>
         /// <param name="category"></param>
-        public override void SetStaticParameterCategory(cCategory category)
+        public override void SetParameterCategory(cCategory category)
         {
             qaParams.Category = category;
         }

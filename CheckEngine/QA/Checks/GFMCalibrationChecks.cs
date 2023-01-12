@@ -45,7 +45,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
 
         #region GFMCalibrationChecks Checks
 
-        public static string GFMCAL1(cCategory Category, ref bool Log)
+        public  string GFMCAL1(cCategory Category, ref bool Log)
         //Initialize GFM Calibration Test Variables
         {
             string ReturnVal = "";
@@ -65,7 +65,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL2(cCategory Category, ref bool Log)
+        public  string GFMCAL2(cCategory Category, ref bool Log)
         //GFM Cal Test Component Type Valid  
         {
             string ReturnVal = "";
@@ -95,7 +95,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL3(cCategory Category, ref bool Log)
+        public  string GFMCAL3(cCategory Category, ref bool Log)
         //Identification of Previously Reported Test or Test Number for GFM Cal Test
         {
             string ReturnVal = "";
@@ -181,7 +181,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL4(cCategory Category, ref bool Log)
+        public  string GFMCAL4(cCategory Category, ref bool Log)
         //GFM Cal Test Reason Code Valid
         {
             string ReturnVal = "";
@@ -213,7 +213,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL5(cCategory Category, ref bool Log)
+        public  string GFMCAL5(cCategory Category, ref bool Log)
         //Reference Calibration Factor Y Valid
         {
             string ReturnVal = "";
@@ -246,7 +246,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL6(cCategory Category, ref bool Log)
+        public  string GFMCAL6(cCategory Category, ref bool Log)
         //Calibration Factor Y Valid
         {
             string ReturnVal = "";
@@ -269,7 +269,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL7(cCategory Category, ref bool Log)
+        public  string GFMCAL7(cCategory Category, ref bool Log)
         //Percent Calibration Change Valid
         {
             string ReturnVal = "";
@@ -302,7 +302,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL8(cCategory Category, ref bool Log)
+        public  string GFMCAL8(cCategory Category, ref bool Log)
         //Concurrent GFM Cal Tests
         {
             string ReturnVal = "";
@@ -352,7 +352,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL9(cCategory Category, ref bool Log)
+        public  string GFMCAL9(cCategory Category, ref bool Log)
         //Level Code Valid
         {
             string ReturnVal = "";
@@ -405,7 +405,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL10(cCategory Category, ref bool Log)
+        public  string GFMCAL10(cCategory Category, ref bool Log)
         //Sample Rate Valid
         {
             string ReturnVal = "";
@@ -428,7 +428,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL11(cCategory Category, ref bool Log)
+        public  string GFMCAL11(cCategory Category, ref bool Log)
         //Calibration Factor for Level Valid
         {
             string ReturnVal = "";
@@ -468,7 +468,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL12(cCategory Category, ref bool Log)
+        public  string GFMCAL12(cCategory Category, ref bool Log)
         //Number Of Levels Valid
         {
             string ReturnVal = "";
@@ -498,7 +498,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL13(cCategory Category, ref bool Log)
+        public  string GFMCAL13(cCategory Category, ref bool Log)
         //GFM Cal Test Load Levels Valid
         {
             string ReturnVal = "";
@@ -520,7 +520,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL14(cCategory Category, ref bool Log)
+        public  string GFMCAL14(cCategory Category, ref bool Log)
         //Determine Reference Calibration Factor Y
         {
             string ReturnVal = "";
@@ -580,7 +580,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL15(cCategory Category, ref bool Log)
+        public  string GFMCAL15(cCategory Category, ref bool Log)
         //Calibration Factor Y Consistent with Reported Value
         {
             string ReturnVal = "";
@@ -627,7 +627,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL16(cCategory Category, ref bool Log)
+        public  string GFMCAL16(cCategory Category, ref bool Log)
         //Percent Calibration Change Consistent with Reported Value
         {
             string ReturnVal = "";
@@ -682,7 +682,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL17(cCategory Category, ref bool Log)
+        public  string GFMCAL17(cCategory Category, ref bool Log)
         //Determine GFM Calibration Test Result
         {
             string ReturnVal = "";
@@ -730,7 +730,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL18(cCategory Category, ref bool Log)
+        public  string GFMCAL18(cCategory Category, ref bool Log)
         //Component ID Valid
         {
             string ReturnVal = "";
@@ -749,7 +749,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL19(cCategory Category, ref bool Log)
+        public  string GFMCAL19(cCategory Category, ref bool Log)
         //Duplicate GFM Cal Test
         {
             string ReturnVal = "";
@@ -794,7 +794,7 @@ namespace ECMPS.Checks.GFMCalibrationChecks
             return ReturnVal;
         }
 
-        public static string GFMCAL20(cCategory Category, ref bool Log)
+        public  string GFMCAL20(cCategory Category, ref bool Log)
         //Duplicate GFM Cal Test Run
         {
             string ReturnVal = "";

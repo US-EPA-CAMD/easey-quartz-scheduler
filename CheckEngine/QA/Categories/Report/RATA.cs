@@ -162,7 +162,7 @@ namespace ECMPS.Checks.QAEvaluation
         qaProcess.SystemParameterLookupTable.LegacySetValue(Process.SourceData.Tables["SystemParameter"].DefaultView, this);
       }
 
-      QaParameters.ApsCodeLookupTable = new CheckDataView<ApsCodeRow>(Process.SourceData.Tables["ApsCode"].DefaultView);
+      qaParams.ApsCodeLookupTable = new CheckDataView<ApsCodeRow>(Process.SourceData.Tables["ApsCode"].DefaultView);
 
     }
 

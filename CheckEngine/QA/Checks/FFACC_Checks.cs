@@ -34,7 +34,7 @@ namespace ECMPS.Checks.FFACC_Checks
 
         #region FFACC Checks
 
-        public static string FFACC1(cCategory Category, ref bool Log)
+        public  string FFACC1(cCategory Category, ref bool Log)
         //Accuracy Test Component Check
         {
             string ReturnVal = "";
@@ -64,7 +64,7 @@ namespace ECMPS.Checks.FFACC_Checks
             return ReturnVal;
         }
 
-        public static string FFACC2(cCategory Category, ref bool Log)
+        public  string FFACC2(cCategory Category, ref bool Log)
         //Aborted Accuracy Test Check
         {
             string ReturnVal = "";
@@ -94,7 +94,7 @@ namespace ECMPS.Checks.FFACC_Checks
             return ReturnVal;
         }
 
-        public static string FFACC3(cCategory Category, ref bool Log)
+        public  string FFACC3(cCategory Category, ref bool Log)
         //Identification of Previously Reported Test or Number for Fuel Flowmeter Accuracy Test
         {
             string ReturnVal = "";
@@ -174,7 +174,7 @@ namespace ECMPS.Checks.FFACC_Checks
             return ReturnVal;
         }
 
-        public static string FFACC4(cCategory Category, ref bool Log)
+        public  string FFACC4(cCategory Category, ref bool Log)
         //Accuracy Test Reinstallation Date Valid  
         {
             string ReturnVal = "";
@@ -219,7 +219,7 @@ namespace ECMPS.Checks.FFACC_Checks
             return ReturnVal;
         }
 
-        public static string FFACC5(cCategory Category, ref bool Log)
+        public  string FFACC5(cCategory Category, ref bool Log)
         //Accuracy Test Reinstallation Hour Valid
         {
             string ReturnVal = "";
@@ -246,7 +246,7 @@ namespace ECMPS.Checks.FFACC_Checks
             return ReturnVal;
         }
 
-        public static string FFACC6(cCategory Category, ref bool Log)
+        public  string FFACC6(cCategory Category, ref bool Log)
         //Accuracy Test Reason Code Valid
         {
             string ReturnVal = "";
@@ -279,7 +279,7 @@ namespace ECMPS.Checks.FFACC_Checks
             return ReturnVal;
         }
 
-        public static string FFACC7(cCategory Category, ref bool Log)
+        public  string FFACC7(cCategory Category, ref bool Log)
         //Accuracy Test Method Code Valid
         {
             string ReturnVal = "";
@@ -313,7 +313,7 @@ namespace ECMPS.Checks.FFACC_Checks
             return ReturnVal;
         }
 
-        public static string FFACC8(cCategory Category, ref bool Log)
+        public  string FFACC8(cCategory Category, ref bool Log)
         //Accuracy Test Low Fuel Accuracy Valid
         {
             string ReturnVal = "";
@@ -336,7 +336,7 @@ namespace ECMPS.Checks.FFACC_Checks
             return ReturnVal;
         }
 
-        public static string FFACC9(cCategory Category, ref bool Log)
+        public  string FFACC9(cCategory Category, ref bool Log)
         //Accuracy Test Mid Fuel Accuracy Valid
         {
             string ReturnVal = "";
@@ -359,7 +359,7 @@ namespace ECMPS.Checks.FFACC_Checks
             return ReturnVal;
         }
 
-        public static string FFACC10(cCategory Category, ref bool Log)
+        public  string FFACC10(cCategory Category, ref bool Log)
         //Accuracy Test High Fuel Accuracy Valid
         {
             string ReturnVal = "";
@@ -382,7 +382,7 @@ namespace ECMPS.Checks.FFACC_Checks
             return ReturnVal;
         }
 
-        public static string FFACC11(cCategory Category, ref bool Log)
+        public  string FFACC11(cCategory Category, ref bool Log)
         //Accuracy Test Result Code Valid 
         {
             string ReturnVal = "";
@@ -431,7 +431,7 @@ namespace ECMPS.Checks.FFACC_Checks
 
             return ReturnVal;
         }
-        public static string FFACC12(cCategory Category, ref bool Log)
+        public  string FFACC12(cCategory Category, ref bool Log)
         //Accuracy Test Component ID Valid
         {
             string ReturnVal = "";
@@ -457,7 +457,7 @@ namespace ECMPS.Checks.FFACC_Checks
             return ReturnVal;
         }
 
-        public static string FFACC13(cCategory Category, ref bool Log)
+        public  string FFACC13(cCategory Category, ref bool Log)
         //Duplicate Fuel Flowmeter Accuracy Test
         {
             string ReturnVal = "";
@@ -517,20 +517,20 @@ namespace ECMPS.Checks.FFACC_Checks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string FFACC14(cCategory category, ref bool log)
+        public  string FFACC14(cCategory category, ref bool log)
         {
             string returnVal = ""; ;
 
             try
             {
-                if ((QaParameters.CurrentAccuracyTest.TestNum != null) && (QaParameters.CurrentAccuracyTest.EndDate >= new DateTime(2021, 10, 1)))
+                if ((qaParams.CurrentAccuracyTest.TestNum != null) && (qaParams.CurrentAccuracyTest.EndDate >= new DateTime(2021, 10, 1)))
                 {
                     int count;
 
-                    count = QaParameters.LocationTestRecords.FindRows
+                    count = qaParams.LocationTestRecords.FindRows
                             (
                                 new cFilterCondition("TEST_TYPE_CD", "FFACCTT"),
-                                new cFilterCondition("TEST_NUM", QaParameters.CurrentAccuracyTest.TestNum)
+                                new cFilterCondition("TEST_NUM", qaParams.CurrentAccuracyTest.TestNum)
                             ).Count;
 
                     if (count > 0)
@@ -539,10 +539,10 @@ namespace ECMPS.Checks.FFACC_Checks
                     }
                     else
                     {
-                        count = QaParameters.QaSupplementalDataRecords.FindRows
+                        count = qaParams.QaSupplementalDataRecords.FindRows
                                 (
                                     new cFilterCondition("TEST_TYPE_CD", "FFACCTT"),
-                                    new cFilterCondition("TEST_NUM", QaParameters.CurrentAccuracyTest.TestNum)
+                                    new cFilterCondition("TEST_NUM", qaParams.CurrentAccuracyTest.TestNum)
                                 ).Count;
 
                         if (count > 0)

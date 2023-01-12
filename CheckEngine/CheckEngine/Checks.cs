@@ -8,6 +8,7 @@ using ECMPS.Checks.TypeUtilities;
 using ECMPS.Definitions.Extensions;
 
 using ECMPS.Checks.Mp.Parameters;
+using ECMPS.Checks.Qa.Parameters;
 
 namespace ECMPS.Checks.CheckEngine
 {
@@ -129,6 +130,12 @@ namespace ECMPS.Checks.CheckEngine
 		/// </summary>
 		public MpParameters mpParams;
 
+
+		/// <summary>
+		/// reference to mpParams for all current checks
+		/// </summary>
+		public QaParameters qaParams;
+
 		/// <summary>
 		/// setMpParamsForCheck
 		/// </summary>
@@ -137,6 +144,18 @@ namespace ECMPS.Checks.CheckEngine
 		public void setMpParamsForCheck(ref MpParameters paramObj){
 			mpParams = paramObj;
 		}
+
+
+		/// <summary>
+		/// setQaParamsForCheck
+		/// </summary>
+		/// <param name="paramObj"></param>
+		/// <returns></returns>
+		public void setQaParamsForCheck(ref QaParameters paramObj)
+		{
+			qaParams = paramObj;
+		}
+
 
 		/// <summary>
 		/// Returns the list of Check Procedures for the current checks object.

@@ -43,7 +43,7 @@ namespace ECMPS.Checks.FF2LBASChecks
 
         #region FF2LBASChecks Checks
 
-        public static string FF2LBAS1(cCategory Category, ref bool Log)
+        public  string FF2LBAS1(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline System Type Valid
         {
             string ReturnVal = "";
@@ -74,7 +74,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS2(cCategory Category, ref bool Log)
+        public  string FF2LBAS2(cCategory Category, ref bool Log)
         //Identification of Previously Reported Test or Test Number for Fuel Flow to Load Baseline Data
         {
             string ReturnVal = "";
@@ -141,7 +141,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS3(cCategory Category, ref bool Log)
+        public  string FF2LBAS3(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Accuracy Test Number Valid
         {
             string ReturnVal = "";
@@ -217,7 +217,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS4(cCategory Category, ref bool Log)
+        public  string FF2LBAS4(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Method Valid
         {
             string ReturnVal = "";
@@ -250,7 +250,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS5(cCategory Category, ref bool Log)
+        public  string FF2LBAS5(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Duration Valid
         {
             string ReturnVal = "";
@@ -294,7 +294,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS6(cCategory Category, ref bool Log)
+        public  string FF2LBAS6(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline PEI Test Number Valid
         {
             string ReturnVal = "";
@@ -383,7 +383,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS7(cCategory Category, ref bool Log)
+        public  string FF2LBAS7(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Average Load Valid
         {
             string ReturnVal = "";
@@ -437,7 +437,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS8(cCategory Category, ref bool Log)
+        public  string FF2LBAS8(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Avg Hourly Heat Input Rate Valid
         {
             string ReturnVal = "";
@@ -464,7 +464,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS9(cCategory Category, ref bool Log)
+        public  string FF2LBAS9(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Heat Input Rate Consistent with Maximum Heat Input
         {
             string ReturnVal = "";
@@ -557,7 +557,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS10(cCategory Category, ref bool Log)
+        public  string FF2LBAS10(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Average Fuel Flow Rate Valid
         {
             string ReturnVal = "";
@@ -583,7 +583,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS11(cCategory Category, ref bool Log)
+        public  string FF2LBAS11(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Begin Time Valid
         {
             string ReturnVal = "";
@@ -619,7 +619,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS12(cCategory Category, ref bool Log)
+        public  string FF2LBAS12(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Number of Hours Excluded Cofiring Valid
         {
             string ReturnVal = "";
@@ -640,7 +640,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS13(cCategory Category, ref bool Log)
+        public  string FF2LBAS13(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Number of Hours Excluded Ramping Valid
         {
             string ReturnVal = "";
@@ -661,7 +661,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS14(cCategory Category, ref bool Log)
+        public  string FF2LBAS14(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Number of Hours Excluded Low Range Valid
         {
             string ReturnVal = "";
@@ -700,7 +700,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS15(cCategory Category, ref bool Log)
+        public  string FF2LBAS15(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Base Fuel Flow to Load UOM Valid
         {
             string ReturnVal = "";
@@ -762,7 +762,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS16(cCategory Category, ref bool Log)
+        public  string FF2LBAS16(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Base GHR UOM Valid
         {
             string ReturnVal = "";
@@ -822,7 +822,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS17(cCategory Category, ref bool Log)
+        public  string FF2LBAS17(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline Fuel Flow to Load Ratio Valid
         {
             string ReturnVal = "";
@@ -863,7 +863,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS18(cCategory Category, ref bool Log)
+        public  string FF2LBAS18(cCategory Category, ref bool Log)
         //Fuel Flow to Load Baseline GHR Valid
         {
             string ReturnVal = "";
@@ -910,7 +910,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS19(cCategory Category, ref bool Log)
+        public  string FF2LBAS19(cCategory Category, ref bool Log)
         //System ID Valid
         {
             string ReturnVal = "";
@@ -930,7 +930,7 @@ namespace ECMPS.Checks.FF2LBASChecks
             return ReturnVal;
         }
 
-        public static string FF2LBAS20(cCategory Category, ref bool Log)
+        public  string FF2LBAS20(cCategory Category, ref bool Log)
         //Duplicate Fuel Flow to Load Baseline Data
         {
             string ReturnVal = "";
@@ -986,7 +986,7 @@ namespace ECMPS.Checks.FF2LBASChecks
         }
         
         /*
-        public static string FF2LBAS-(cCategory Category, ref bool Log)
+        public  string FF2LBAS-(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 

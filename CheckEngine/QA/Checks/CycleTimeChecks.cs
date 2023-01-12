@@ -45,7 +45,7 @@ namespace ECMPS.Checks.CycleTimeChecks
 
         #region Cycle Time Checks
 
-        public static string CYCLE1(cCategory Category, ref bool Log)
+        public  string CYCLE1(cCategory Category, ref bool Log)
         //Initialize Cycle Time Test Variables
         {
             string ReturnVal = "";
@@ -74,7 +74,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE2(cCategory Category, ref bool Log)
+        public  string CYCLE2(cCategory Category, ref bool Log)
         //Component Type Valid
         {
             string ReturnVal = "";
@@ -104,7 +104,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE3(cCategory Category, ref bool Log)
+        public  string CYCLE3(cCategory Category, ref bool Log)
         //Aborted Cycle Time Test Not Evaluated
         {
             string ReturnVal = "";
@@ -129,7 +129,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE4(cCategory Category, ref bool Log)
+        public  string CYCLE4(cCategory Category, ref bool Log)
         //Cycle Time Test Test Reason Code Valid
         {
             string ReturnVal = "";
@@ -160,7 +160,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE5(cCategory Category, ref bool Log)
+        public  string CYCLE5(cCategory Category, ref bool Log)
         //Identification of Previously Reported Test or Test Number for Cycle Time Test
         {
             string ReturnVal = "";
@@ -245,7 +245,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE6(cCategory Category, ref bool Log)
+        public  string CYCLE6(cCategory Category, ref bool Log)
         //Cycle Time Injection Begin Time Valid
         {
             string ReturnVal = "";
@@ -279,7 +279,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE7(cCategory Category, ref bool Log)
+        public  string CYCLE7(cCategory Category, ref bool Log)
         //Cycle Time Injection End Time Valid
         {
             string ReturnVal = "";
@@ -344,7 +344,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE8(cCategory Category, ref bool Log)
+        public  string CYCLE8(cCategory Category, ref bool Log)
         //Cycle Time Injection Calibration Gas Value Valid
         {
             string ReturnVal = "";
@@ -376,7 +376,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE9(cCategory Category, ref bool Log)
+        public  string CYCLE9(cCategory Category, ref bool Log)
         //Calibration Gas Value Consistent with Span
         {
             string ReturnVal = "";
@@ -426,7 +426,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE10(cCategory Category, ref bool Log)
+        public  string CYCLE10(cCategory Category, ref bool Log)
         //Cycle Time Injection Begin Monitor Value Valid
         {
             string ReturnVal = "";
@@ -445,7 +445,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE11(cCategory Category, ref bool Log)
+        public  string CYCLE11(cCategory Category, ref bool Log)
         //Cycle Time Injection End Monitor Value Valid
         {
             string ReturnVal = "";
@@ -488,7 +488,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE12(cCategory Category, ref bool Log)
+        public  string CYCLE12(cCategory Category, ref bool Log)
         //Cycle Time Injection Injection Cycle Time Valid
         {
             string ReturnVal = "";
@@ -543,7 +543,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE13(cCategory Category, ref bool Log)
+        public  string CYCLE13(cCategory Category, ref bool Log)
         //Cycle Time Test Begin Time Consistent with Injection Times
         {
             string ReturnVal = "";
@@ -577,7 +577,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE14(cCategory Category, ref bool Log)
+        public  string CYCLE14(cCategory Category, ref bool Log)
         //Cycle Time Test End Time Consistent with Injection Times
         {
             string ReturnVal = "";
@@ -611,7 +611,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE15(cCategory Category, ref bool Log)
+        public  string CYCLE15(cCategory Category, ref bool Log)
         //Calibration Gas Value Consistent with Gas Level
         {
             string ReturnVal = "";
@@ -639,7 +639,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE16(cCategory Category, ref bool Log)
+        public  string CYCLE16(cCategory Category, ref bool Log)
         //Correct Number of Cycle Time Injections
         {
             string ReturnVal = "";
@@ -662,7 +662,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE17(cCategory Category, ref bool Log)
+        public  string CYCLE17(cCategory Category, ref bool Log)
         //Cycle Time Test Total Cycle Time Valid
         {
             string ReturnVal = "";
@@ -704,7 +704,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE18(cCategory Category, ref bool Log)
+        public  string CYCLE18(cCategory Category, ref bool Log)
         //Cycle Time Test Test Result Code Valid
         {
             string ReturnVal = "";
@@ -747,7 +747,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE19(cCategory Category, ref bool Log)
+        public  string CYCLE19(cCategory Category, ref bool Log)
         //Duplicate Cycle Time Test
         {
             string ReturnVal = "";
@@ -800,7 +800,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
         
-        public static string CYCLE20(cCategory Category, ref bool Log)
+        public  string CYCLE20(cCategory Category, ref bool Log)
         //Duplicate Cycle Time Injection
         {
             string ReturnVal = "";
@@ -832,7 +832,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE21(cCategory Category, ref bool Log)
+        public  string CYCLE21(cCategory Category, ref bool Log)
         //Cycle Time Injection Gas Level Code Valid
         {
             string ReturnVal = "";
@@ -859,7 +859,7 @@ namespace ECMPS.Checks.CycleTimeChecks
             return ReturnVal;
         }
 
-        public static string CYCLE22(cCategory Category, ref bool Log)
+        public  string CYCLE22(cCategory Category, ref bool Log)
         //Component ID Valid
         {
             string ReturnVal = "";
