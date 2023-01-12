@@ -23,13 +23,13 @@ namespace ECMPS.Checks.QaImport.Parameters
     {
         
         // Storage field for property 'Process'
-        private static cProcess _process;
+        private  cProcess _process;
         
         // Storage field for property 'Category'
-        private static cCategory _category;
+        private  cCategory _category;
         
         /// The process object for the current evaluation process.  Set by the actual process during initialization.
-        public static cProcess Process
+        public  cProcess Process
         {
             get
             {
@@ -38,7 +38,7 @@ namespace ECMPS.Checks.QaImport.Parameters
         }
         
         /// The current category object set at the beginning of the category's processing of checks and nulled at the end of the processing.
-        public static cCategory Category
+        public  cCategory Category
         {
             get
             {
@@ -53,11 +53,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// Component Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwComponentRow> ComponentRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwComponentRow> ComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -71,11 +71,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Component_Records", null);
+                    SetCheckParameter("Component_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Component_Records", value.SourceView);
+                    SetCheckParameter("Component_Records", value.SourceView);
                 }
             }
         }
@@ -83,11 +83,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// The current RATA Summary record in the workspace.
         /// </summary>
-        public static ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaRatasummaryRow CurrentWorkspaceRataSummary
+        public  ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaRatasummaryRow CurrentWorkspaceRataSummary
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaImportParameters.GetCheckParameter("Current_Workspace_RATA_Summary")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Workspace_RATA_Summary")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -101,11 +101,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Current_Workspace_RATA_Summary", null);
+                    SetCheckParameter("Current_Workspace_RATA_Summary", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Current_Workspace_RATA_Summary", value.SourceRow);
+                    SetCheckParameter("Current_Workspace_RATA_Summary", value.SourceRow);
                 }
             }
         }
@@ -113,11 +113,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// The current Test Summary record in the workspace.
         /// </summary>
-        public static ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaTestsummaryRow CurrentWorkspaceTestSummary
+        public  ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaTestsummaryRow CurrentWorkspaceTestSummary
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaImportParameters.GetCheckParameter("Current_Workspace_Test_Summary")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Workspace_Test_Summary")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -131,11 +131,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Current_Workspace_Test_Summary", null);
+                    SetCheckParameter("Current_Workspace_Test_Summary", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Current_Workspace_Test_Summary", value.SourceRow);
+                    SetCheckParameter("Current_Workspace_Test_Summary", value.SourceRow);
                 }
             }
         }
@@ -143,71 +143,71 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// A list of fields reported in the RATA summary record not appropriate for the system type.
         /// </summary>
-        public static string ExtraneousRataSummaryFields
+        public  string ExtraneousRataSummaryFields
         {
             get
             {
-                return ((string)(QaImportParameters.GetCheckParameter("Extraneous_RATA_Summary_Fields")));
+                return ((string)(GetCheckParameter("Extraneous_RATA_Summary_Fields")));
             }
             set
             {
-                QaImportParameters.SetCheckParameter("Extraneous_RATA_Summary_Fields", value);
+                SetCheckParameter("Extraneous_RATA_Summary_Fields", value);
             }
         }
         
         /// <summary>
         /// A list of fields reported in the test summary record not appropriate for the test type.
         /// </summary>
-        public static string ExtraneousTestSummaryFields
+        public  string ExtraneousTestSummaryFields
         {
             get
             {
-                return ((string)(QaImportParameters.GetCheckParameter("Extraneous_Test_Summary_Fields")));
+                return ((string)(GetCheckParameter("Extraneous_Test_Summary_Fields")));
             }
             set
             {
-                QaImportParameters.SetCheckParameter("Extraneous_Test_Summary_Fields", value);
+                SetCheckParameter("Extraneous_Test_Summary_Fields", value);
             }
         }
         
         /// <summary>
         /// A list of children tables that are not appropriate for the test type in the current test summary record in the workspace.
         /// </summary>
-        public static string InappropriateQaChildren
+        public  string InappropriateQaChildren
         {
             get
             {
-                return ((string)(QaImportParameters.GetCheckParameter("Inappropriate_QA_Children")));
+                return ((string)(GetCheckParameter("Inappropriate_QA_Children")));
             }
             set
             {
-                QaImportParameters.SetCheckParameter("Inappropriate_QA_Children", value);
+                SetCheckParameter("Inappropriate_QA_Children", value);
             }
         }
         
         /// <summary>
         /// A list of locations in the QA file that are incorrectly identified as a unit or stack/pipe.
         /// </summary>
-        public static string InvalidQaLocations
+        public  string InvalidQaLocations
         {
             get
             {
-                return ((string)(QaImportParameters.GetCheckParameter("Invalid_QA_Locations")));
+                return ((string)(GetCheckParameter("Invalid_QA_Locations")));
             }
             set
             {
-                QaImportParameters.SetCheckParameter("Invalid_QA_Locations", value);
+                SetCheckParameter("Invalid_QA_Locations", value);
             }
         }
         
         /// <summary>
         /// The monitor locations in the monitor plan including linked stack information (active/retire date) and unit information (non load based indicator).
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckImp.Function.Locations> LocationRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckImp.Function.Locations> LocationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Location_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -221,11 +221,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Location_Records", null);
+                    SetCheckParameter("Location_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Location_Records", value.SourceView);
+                    SetCheckParameter("Location_Records", value.SourceView);
                 }
             }
         }
@@ -233,71 +233,71 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// A list of identifying fields whose values in the incoming test record that are not equal to the values in the existing test record for the same location, test type, and test number.
         /// </summary>
-        public static string MismatchedTestFields
+        public  string MismatchedTestFields
         {
             get
             {
-                return ((string)(QaImportParameters.GetCheckParameter("Mismatched_Test_Fields")));
+                return ((string)(GetCheckParameter("Mismatched_Test_Fields")));
             }
             set
             {
-                QaImportParameters.SetCheckParameter("Mismatched_Test_Fields", value);
+                SetCheckParameter("Mismatched_Test_Fields", value);
             }
         }
         
         /// <summary>
         /// A list of ComponentIDs in the workspace that are not present in the production database.
         /// </summary>
-        public static string MissingQaComponents
+        public  string MissingQaComponents
         {
             get
             {
-                return ((string)(QaImportParameters.GetCheckParameter("Missing_QA_Components")));
+                return ((string)(GetCheckParameter("Missing_QA_Components")));
             }
             set
             {
-                QaImportParameters.SetCheckParameter("Missing_QA_Components", value);
+                SetCheckParameter("Missing_QA_Components", value);
             }
         }
         
         /// <summary>
         /// A list of UnitStackPipeIDs in the workspace that are not present in the production database.
         /// </summary>
-        public static string MissingQaLocations
+        public  string MissingQaLocations
         {
             get
             {
-                return ((string)(QaImportParameters.GetCheckParameter("Missing_QA_Locations")));
+                return ((string)(GetCheckParameter("Missing_QA_Locations")));
             }
             set
             {
-                QaImportParameters.SetCheckParameter("Missing_QA_Locations", value);
+                SetCheckParameter("Missing_QA_Locations", value);
             }
         }
         
         /// <summary>
         /// A list of SystemIDs in the workspace that are not present in the production database.
         /// </summary>
-        public static string MissingQaSystems
+        public  string MissingQaSystems
         {
             get
             {
-                return ((string)(QaImportParameters.GetCheckParameter("Missing_QA_Systems")));
+                return ((string)(GetCheckParameter("Missing_QA_Systems")));
             }
             set
             {
-                QaImportParameters.SetCheckParameter("Missing_QA_Systems", value);
+                SetCheckParameter("Missing_QA_Systems", value);
             }
         }
         
         /// <summary>
         /// System Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow> MonitorSystemRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow> MonitorSystemRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Monitor_System_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_System_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -311,11 +311,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Monitor_System_Records", null);
+                    SetCheckParameter("Monitor_System_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Monitor_System_Records", value.SourceView);
+                    SetCheckParameter("Monitor_System_Records", value.SourceView);
                 }
             }
         }
@@ -323,11 +323,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// The component records in the ECMPS database.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckImp.Function.Components> ProductionComponentRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckImp.Function.Components> ProductionComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Production_Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Production_Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -341,11 +341,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Production_Component_Records", null);
+                    SetCheckParameter("Production_Component_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Production_Component_Records", value.SourceView);
+                    SetCheckParameter("Production_Component_Records", value.SourceView);
                 }
             }
         }
@@ -353,11 +353,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// The monitor method records in the ECMPS database.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckImp.Function.Methods> ProductionMonitorMethodRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckImp.Function.Methods> ProductionMonitorMethodRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Production_Monitor_Method_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Production_Monitor_Method_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -371,11 +371,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Production_Monitor_Method_Records", null);
+                    SetCheckParameter("Production_Monitor_Method_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Production_Monitor_Method_Records", value.SourceView);
+                    SetCheckParameter("Production_Monitor_Method_Records", value.SourceView);
                 }
             }
         }
@@ -383,11 +383,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// The monitor system records in the ECMPS database.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckImp.Function.Systems> ProductionMonitorSystemRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckImp.Function.Systems> ProductionMonitorSystemRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Production_Monitor_System_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Production_Monitor_System_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -401,11 +401,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Production_Monitor_System_Records", null);
+                    SetCheckParameter("Production_Monitor_System_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Production_Monitor_System_Records", value.SourceView);
+                    SetCheckParameter("Production_Monitor_System_Records", value.SourceView);
                 }
             }
         }
@@ -413,11 +413,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Test Summary records in ECMPS database
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckImp.Function.Tests> ProductionTestSummaryRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckImp.Function.Tests> ProductionTestSummaryRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Production_Test_Summary_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Production_Test_Summary_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -431,11 +431,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Production_Test_Summary_Records", null);
+                    SetCheckParameter("Production_Test_Summary_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Production_Test_Summary_Records", value.SourceView);
+                    SetCheckParameter("Production_Test_Summary_Records", value.SourceView);
                 }
             }
         }
@@ -443,11 +443,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// The QA Supplemental Data records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataRow> QaSupplementalDataRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataRow> QaSupplementalDataRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("QA_Supplemental_Data_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("QA_Supplemental_Data_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -461,11 +461,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("QA_Supplemental_Data_Records", null);
+                    SetCheckParameter("QA_Supplemental_Data_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("QA_Supplemental_Data_Records", value.SourceView);
+                    SetCheckParameter("QA_Supplemental_Data_Records", value.SourceView);
                 }
             }
         }
@@ -473,26 +473,26 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// The location type associated with the current workspace test.
         /// </summary>
-        public static string TestLocationType
+        public  string TestLocationType
         {
             get
             {
-                return ((string)(QaImportParameters.GetCheckParameter("Test_Location_Type")));
+                return ((string)(GetCheckParameter("Test_Location_Type")));
             }
             set
             {
-                QaImportParameters.SetCheckParameter("Test_Location_Type", value);
+                SetCheckParameter("Test_Location_Type", value);
             }
         }
         
         /// <summary>
         /// All Appendix E Correlation Summary records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaAecorrtestsummaryRow> WorkspaceAeCorrSummaryRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaAecorrtestsummaryRow> WorkspaceAeCorrSummaryRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_AE_Corr_Summary_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_AE_Corr_Summary_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -506,11 +506,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_AE_Corr_Summary_Records", null);
+                    SetCheckParameter("Workspace_AE_Corr_Summary_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_AE_Corr_Summary_Records", value.SourceView);
+                    SetCheckParameter("Workspace_AE_Corr_Summary_Records", value.SourceView);
                 }
             }
         }
@@ -518,11 +518,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Air Emission Testing records in the workspace
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaAiremissiontestingRow> WorkspaceAiremissiontestingRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaAiremissiontestingRow> WorkspaceAiremissiontestingRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_AirEmissionTesting_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_AirEmissionTesting_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -536,11 +536,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_AirEmissionTesting_Records", null);
+                    SetCheckParameter("Workspace_AirEmissionTesting_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_AirEmissionTesting_Records", value.SourceView);
+                    SetCheckParameter("Workspace_AirEmissionTesting_Records", value.SourceView);
                 }
             }
         }
@@ -548,11 +548,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Appendix E Heat Input from Gas records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaAeHiGasRow> WorkspaceAppendixEHeatInputFromGasRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaAeHiGasRow> WorkspaceAppendixEHeatInputFromGasRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Appendix_E_Heat_Input_From_Gas_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Appendix_E_Heat_Input_From_Gas_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -566,11 +566,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Appendix_E_Heat_Input_From_Gas_Records", null);
+                    SetCheckParameter("Workspace_Appendix_E_Heat_Input_From_Gas_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Appendix_E_Heat_Input_From_Gas_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Appendix_E_Heat_Input_From_Gas_Records", value.SourceView);
                 }
             }
         }
@@ -578,11 +578,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Appendix E Heat Input from Oil records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaAeHiOilRow> WorkspaceAppendixEHeatInputFromOilRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaAeHiOilRow> WorkspaceAppendixEHeatInputFromOilRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Appendix_E_Heat_Input_From_Oil_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Appendix_E_Heat_Input_From_Oil_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -596,11 +596,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Appendix_E_Heat_Input_From_Oil_Records", null);
+                    SetCheckParameter("Workspace_Appendix_E_Heat_Input_From_Oil_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Appendix_E_Heat_Input_From_Oil_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Appendix_E_Heat_Input_From_Oil_Records", value.SourceView);
                 }
             }
         }
@@ -608,11 +608,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Calibration Injection records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaCalibrationinjectionRow> WorkspaceCalibrationInjectionRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaCalibrationinjectionRow> WorkspaceCalibrationInjectionRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Calibration_Injection_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Calibration_Injection_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -626,11 +626,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Calibration_Injection_Records", null);
+                    SetCheckParameter("Workspace_Calibration_Injection_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Calibration_Injection_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Calibration_Injection_Records", value.SourceView);
                 }
             }
         }
@@ -638,11 +638,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// The component records and associated data in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaComponentsRow> WorkspaceComponentRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaComponentsRow> WorkspaceComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -656,11 +656,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Component_Records", null);
+                    SetCheckParameter("Workspace_Component_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Component_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Component_Records", value.SourceView);
                 }
             }
         }
@@ -668,11 +668,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Cycle Time Summary records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaCycletimesummaryRow> WorkspaceCycleTimeSummaryRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaCycletimesummaryRow> WorkspaceCycleTimeSummaryRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Cycle_Time_Summary_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Cycle_Time_Summary_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -686,11 +686,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Cycle_Time_Summary_Records", null);
+                    SetCheckParameter("Workspace_Cycle_Time_Summary_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Cycle_Time_Summary_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Cycle_Time_Summary_Records", value.SourceView);
                 }
             }
         }
@@ -698,11 +698,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Flow RATA Run records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaFlowratarunRow> WorkspaceFlowRataRunRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaFlowratarunRow> WorkspaceFlowRataRunRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Flow_RATA_Run_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Flow_RATA_Run_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -716,11 +716,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Flow_RATA_Run_Records", null);
+                    SetCheckParameter("Workspace_Flow_RATA_Run_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Flow_RATA_Run_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Flow_RATA_Run_Records", value.SourceView);
                 }
             }
         }
@@ -728,11 +728,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Flow to Load Check records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaFlowtoloadcheckRow> WorkspaceFlowToLoadCheckRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaFlowtoloadcheckRow> WorkspaceFlowToLoadCheckRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Flow_to_Load_Check_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Flow_to_Load_Check_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -746,11 +746,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Flow_to_Load_Check_Records", null);
+                    SetCheckParameter("Workspace_Flow_to_Load_Check_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Flow_to_Load_Check_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Flow_to_Load_Check_Records", value.SourceView);
                 }
             }
         }
@@ -758,11 +758,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Flow to Load Reference records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaFlowtoloadreferenceRow> WorkspaceFlowToLoadReferenceRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaFlowtoloadreferenceRow> WorkspaceFlowToLoadReferenceRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Flow_to_Load_Reference_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Flow_to_Load_Reference_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -776,11 +776,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Flow_to_Load_Reference_Records", null);
+                    SetCheckParameter("Workspace_Flow_to_Load_Reference_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Flow_to_Load_Reference_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Flow_to_Load_Reference_Records", value.SourceView);
                 }
             }
         }
@@ -788,11 +788,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Fuel Flowmeter Accuracy records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaFuelflowmeteraccuracyRow> WorkspaceFuelFlowmeterAccuracyRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaFuelflowmeteraccuracyRow> WorkspaceFuelFlowmeterAccuracyRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Fuel_Flowmeter_Accuracy_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Fuel_Flowmeter_Accuracy_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -806,11 +806,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Fuel_Flowmeter_Accuracy_Records", null);
+                    SetCheckParameter("Workspace_Fuel_Flowmeter_Accuracy_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Fuel_Flowmeter_Accuracy_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Fuel_Flowmeter_Accuracy_Records", value.SourceView);
                 }
             }
         }
@@ -818,11 +818,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Fuelflow to Load Baseline records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaFuelflowtoloadbaselineRow> WorkspaceFuelflowToLoadBaselineRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaFuelflowtoloadbaselineRow> WorkspaceFuelflowToLoadBaselineRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Fuelflow_to_Load_Baseline_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Fuelflow_to_Load_Baseline_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -836,11 +836,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Fuelflow_to_Load_Baseline_Records", null);
+                    SetCheckParameter("Workspace_Fuelflow_to_Load_Baseline_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Fuelflow_to_Load_Baseline_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Fuelflow_to_Load_Baseline_Records", value.SourceView);
                 }
             }
         }
@@ -848,11 +848,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Fuelflow to Load Test records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaFuelflowtoloadtestRow> WorkspaceFuelflowToLoadTestRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaFuelflowtoloadtestRow> WorkspaceFuelflowToLoadTestRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Fuelflow_to_Load_Test_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Fuelflow_to_Load_Test_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -866,11 +866,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Fuelflow_to_Load_Test_Records", null);
+                    SetCheckParameter("Workspace_Fuelflow_to_Load_Test_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Fuelflow_to_Load_Test_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Fuelflow_to_Load_Test_Records", value.SourceView);
                 }
             }
         }
@@ -878,11 +878,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// Linearity Summary records associated with Test Type Codes of HGLINE and HGSI3
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaHgtestsummaryRow> WorkspaceHgSummaryRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaHgtestsummaryRow> WorkspaceHgSummaryRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Hg_Summary_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Hg_Summary_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -896,11 +896,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Hg_Summary_Records", null);
+                    SetCheckParameter("Workspace_Hg_Summary_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Hg_Summary_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Hg_Summary_Records", value.SourceView);
                 }
             }
         }
@@ -908,11 +908,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Linearity Summary records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaLinearitysummaryRow> WorkspaceLinearitySummaryRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaLinearitysummaryRow> WorkspaceLinearitySummaryRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Linearity_Summary_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Linearity_Summary_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -926,11 +926,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Linearity_Summary_Records", null);
+                    SetCheckParameter("Workspace_Linearity_Summary_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Linearity_Summary_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Linearity_Summary_Records", value.SourceView);
                 }
             }
         }
@@ -938,11 +938,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// Location records in the workspace tables
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaLocationsRow> WorkspaceLocationRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaLocationsRow> WorkspaceLocationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Location_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Location_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -956,11 +956,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Location_Records", null);
+                    SetCheckParameter("Workspace_Location_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Location_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Location_Records", value.SourceView);
                 }
             }
         }
@@ -968,11 +968,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Online Offline Calibration records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaOnoffcalibrationRow> WorkspaceOnlineOfflineCalibrationRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaOnoffcalibrationRow> WorkspaceOnlineOfflineCalibrationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Online_Offline_Calibration_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Online_Offline_Calibration_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -986,11 +986,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Online_Offline_Calibration_Records", null);
+                    SetCheckParameter("Workspace_Online_Offline_Calibration_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Online_Offline_Calibration_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Online_Offline_Calibration_Records", value.SourceView);
                 }
             }
         }
@@ -998,11 +998,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Protocol Gas records in the workspace tables
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaProtocolgasRow> WorkspaceProtocolgasRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaProtocolgasRow> WorkspaceProtocolgasRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_ProtocolGas_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_ProtocolGas_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1016,11 +1016,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_ProtocolGas_Records", null);
+                    SetCheckParameter("Workspace_ProtocolGas_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_ProtocolGas_Records", value.SourceView);
+                    SetCheckParameter("Workspace_ProtocolGas_Records", value.SourceView);
                 }
             }
         }
@@ -1028,11 +1028,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All RATA records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaRataRow> WorkspaceRataRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaRataRow> WorkspaceRataRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_RATA_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_RATA_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1046,11 +1046,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_RATA_Records", null);
+                    SetCheckParameter("Workspace_RATA_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_RATA_Records", value.SourceView);
+                    SetCheckParameter("Workspace_RATA_Records", value.SourceView);
                 }
             }
         }
@@ -1058,11 +1058,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All system identifiers in workspace TestSummary and QACertEvent tables or Emissions tables
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaSystemsRow> WorkspaceSystemRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaSystemsRow> WorkspaceSystemRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_System_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_System_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1076,11 +1076,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_System_Records", null);
+                    SetCheckParameter("Workspace_System_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_System_Records", value.SourceView);
+                    SetCheckParameter("Workspace_System_Records", value.SourceView);
                 }
             }
         }
@@ -1088,11 +1088,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Test Qualification records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaTestqualificationRow> WorkspaceTestQualificationRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaTestqualificationRow> WorkspaceTestQualificationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Test_Qualification_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Test_Qualification_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1106,11 +1106,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Test_Qualification_Records", null);
+                    SetCheckParameter("Workspace_Test_Qualification_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Test_Qualification_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Test_Qualification_Records", value.SourceView);
                 }
             }
         }
@@ -1118,11 +1118,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Test Summary records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaTestsummaryRow> WorkspaceTestSummaryRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaTestsummaryRow> WorkspaceTestSummaryRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Test_Summary_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Test_Summary_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1136,11 +1136,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Test_Summary_Records", null);
+                    SetCheckParameter("Workspace_Test_Summary_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Test_Summary_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Test_Summary_Records", value.SourceView);
                 }
             }
         }
@@ -1148,11 +1148,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Transmitter Transducer records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaTransaccuracyRow> WorkspaceTransmitterTransducerRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaTransaccuracyRow> WorkspaceTransmitterTransducerRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Transmitter_Transducer_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Transmitter_Transducer_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1166,11 +1166,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Transmitter_Transducer_Records", null);
+                    SetCheckParameter("Workspace_Transmitter_Transducer_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Transmitter_Transducer_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Transmitter_Transducer_Records", value.SourceView);
                 }
             }
         }
@@ -1178,11 +1178,11 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// All Unit Default Test records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaUnitdefaulttestRow> WorkspaceUnitDefaultTestRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.QaUnitdefaulttestRow> WorkspaceUnitDefaultTestRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaImportParameters.GetCheckParameter("Workspace_Unit_Default_Test_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Unit_Default_Test_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1196,11 +1196,11 @@ namespace ECMPS.Checks.QaImport.Parameters
             {
                 if ((value == null))
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Unit_Default_Test_Records", null);
+                    SetCheckParameter("Workspace_Unit_Default_Test_Records", null);
                 }
                 else
                 {
-                    QaImportParameters.SetCheckParameter("Workspace_Unit_Default_Test_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Unit_Default_Test_Records", value.SourceView);
                 }
             }
         }
@@ -1210,20 +1210,20 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <returns>Returns the requested check parameter as an object if it exists, and as a null if it does not.</returns>
-        public static object GetCheckParameter(string parameterId)
+        public  object GetCheckParameter(string parameterId)
         {
             cLegacyCheckParameter checkParameter;
-            if (((QaImportParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                checkParameter = QaImportParameters.Category.GetCheckParameter(parameterId);
+                checkParameter = Category.GetCheckParameter(parameterId);
             }
             else
             {
-                if (((QaImportParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    checkParameter = QaImportParameters.Process.GetCheckParameter(parameterId);
+                    checkParameter = Process.GetCheckParameter(parameterId);
                 }
                 else
                 {
@@ -1245,19 +1245,19 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <param name="parameterValue">The value to which to set the parameter.</param>
-        public static void SetCheckParameter(string parameterId, object parameterValue)
+        public  void SetCheckParameter(string parameterId, object parameterValue)
         {
-            if (((QaImportParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                QaImportParameters.Category.SetCheckParameter(parameterId, parameterValue);
+                Category.SetCheckParameter(parameterId, parameterValue);
             }
             else
             {
-                if (((QaImportParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    QaImportParameters.Process.SetCheckParameter(parameterId, parameterValue);
+                    Process.SetCheckParameter(parameterId, parameterValue);
                 }
             }
         }
@@ -1265,20 +1265,20 @@ namespace ECMPS.Checks.QaImport.Parameters
         /// <summary>
         /// Initializes the values in the check parameter object.
         /// </summary>
-        public static void Init(cProcess process)
+        public  void Init(cProcess process)
         {
-            QaImportParameters._process = process;
-            QaImportParameters.Category = null;
-            QaImportParameters.RegisterParameters();
+            _process = process;
+            Category = null;
+            RegisterParameters();
         }
         
         /// <summary>
         /// Registers each check parameter.
         /// </summary>
-        public static void RegisterParameters()
+        public  void RegisterParameters()
         {
-            if (((QaImportParameters.Process == null) 
-                        || (QaImportParameters.Process.ProcessParameters == null)))
+            if (((Process == null) 
+                        || (Process.ProcessParameters == null)))
             {
                 return;
             }
