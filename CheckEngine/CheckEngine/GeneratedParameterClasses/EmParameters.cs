@@ -23,13 +23,13 @@ namespace ECMPS.Checks.Em.Parameters
     {
         
         // Storage field for property 'Process'
-        private static cProcess _process;
+        private  cProcess _process;
         
         // Storage field for property 'Category'
-        private static cCategory _category;
+        private  cCategory _category;
         
         /// The process object for the current evaluation process.  Set by the actual process during initialization.
-        public static cProcess Process
+        public  cProcess Process
         {
             get
             {
@@ -38,7 +38,7 @@ namespace ECMPS.Checks.Em.Parameters
         }
         
         /// The current category object set at the beginning of the category's processing of checks and nulled at the end of the processing.
-        public static cCategory Category
+        public  cCategory Category
         {
             get
             {
@@ -53,30 +53,30 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Normally false, this boolean variable is set to true if the hourly checks process needs to be aborted, e.g. monitoring plan is not active during the current period
         /// </summary>
-        public static bool? AbortHourlyChecks
+        public  bool? AbortHourlyChecks
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Abort_Hourly_Checks")));
+                return ((bool?)(GetCheckParameter("Abort_Hourly_Checks")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Abort_Hourly_Checks", value);
+                SetCheckParameter("Abort_Hourly_Checks", value);
             }
         }
         
         /// <summary>
         /// Contains the year/qtr information when Missing Op data is the result for Accuracy Status.
         /// </summary>
-        public static string AccuracyMissingOpDataInfo
+        public  string AccuracyMissingOpDataInfo
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Accuracy_Missing_Op_Data_Info")));
+                return ((string)(GetCheckParameter("Accuracy_Missing_Op_Data_Info")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Accuracy_Missing_Op_Data_Info", value);
+                SetCheckParameter("Accuracy_Missing_Op_Data_Info", value);
             }
         }
         
@@ -85,11 +85,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///FFACC or FFACCTT tests.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> AccuracyTestRecordsByLocationForQaStatus
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> AccuracyTestRecordsByLocationForQaStatus
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Accuracy_Test_Records_By_Location_For_QA_Status")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Accuracy_Test_Records_By_Location_For_QA_Status")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -103,11 +103,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Accuracy_Test_Records_By_Location_For_QA_Status", null);
+                    SetCheckParameter("Accuracy_Test_Records_By_Location_For_QA_Status", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Accuracy_Test_Records_By_Location_For_QA_Status", value.SourceView);
+                    SetCheckParameter("Accuracy_Test_Records_By_Location_For_QA_Status", value.SourceView);
                 }
             }
         }
@@ -115,26 +115,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates whether or not all values are available for performing the current Heat Input Calculation
         /// </summary>
-        public static bool? AllRequiredHeatInputCalculationElements
+        public  bool? AllRequiredHeatInputCalculationElements
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("All_Required_Heat_Input_Calculation_Elements")));
+                return ((bool?)(GetCheckParameter("All_Required_Heat_Input_Calculation_Elements")));
             }
             set
             {
-                EmParameters.SetCheckParameter("All_Required_Heat_Input_Calculation_Elements", value);
+                SetCheckParameter("All_Required_Heat_Input_Calculation_Elements", value);
             }
         }
         
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Invalid Prior linearity test for the alternate range.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow AlternateInvalidLinearityRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow AlternateInvalidLinearityRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Alternate_Invalid_Linearity_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Alternate_Invalid_Linearity_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -148,11 +148,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Alternate_Invalid_Linearity_Record", null);
+                    SetCheckParameter("Alternate_Invalid_Linearity_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Alternate_Invalid_Linearity_Record", value.SourceRow);
+                    SetCheckParameter("Alternate_Invalid_Linearity_Record", value.SourceRow);
                 }
             }
         }
@@ -160,26 +160,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Invalid Prior RATA test for the alternate system.
         /// </summary>
-        public static bool? AlternateInvalidRataRecord
+        public  bool? AlternateInvalidRataRecord
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Alternate_Invalid_RATA_Record")));
+                return ((bool?)(GetCheckParameter("Alternate_Invalid_RATA_Record")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Alternate_Invalid_RATA_Record", value);
+                SetCheckParameter("Alternate_Invalid_RATA_Record", value);
             }
         }
         
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Prior linearity test for the alternate range.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow AlternateLinearityRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow AlternateLinearityRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Alternate_Linearity_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Alternate_Linearity_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -193,11 +193,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Alternate_Linearity_Record", null);
+                    SetCheckParameter("Alternate_Linearity_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Alternate_Linearity_Record", value.SourceRow);
+                    SetCheckParameter("Alternate_Linearity_Record", value.SourceRow);
                 }
             }
         }
@@ -205,11 +205,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Prior RATA test for the alternate system.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow AlternateRataRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow AlternateRataRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Alternate_RATA_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Alternate_RATA_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -223,11 +223,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Alternate_RATA_Record", null);
+                    SetCheckParameter("Alternate_RATA_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Alternate_RATA_Record", value.SourceRow);
+                    SetCheckParameter("Alternate_RATA_Record", value.SourceRow);
                 }
             }
         }
@@ -235,11 +235,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the analyzer range records for a monitoring plan, filter to a particular component id.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpAnalyzerRangeRow> AnalyzerRangeRecordsByComponent
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpAnalyzerRangeRow> AnalyzerRangeRecordsByComponent
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Analyzer_Range_Records_by_Component")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Analyzer_Range_Records_by_Component")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -253,11 +253,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Analyzer_Range_Records_by_Component", null);
+                    SetCheckParameter("Analyzer_Range_Records_by_Component", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Analyzer_Range_Records_by_Component", value.SourceView);
+                    SetCheckParameter("Analyzer_Range_Records_by_Component", value.SourceView);
                 }
             }
         }
@@ -266,11 +266,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// The Analyzer Range Records By Hour and Location
         ///
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpAnalyzerRangeRow> AnalyzerRangeRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpAnalyzerRangeRow> AnalyzerRangeRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Analyzer_Range_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Analyzer_Range_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -284,11 +284,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Analyzer_Range_Records_By_Hour_Location", null);
+                    SetCheckParameter("Analyzer_Range_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Analyzer_Range_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Analyzer_Range_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -296,311 +296,311 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The recalculate YTD value for BCO2.
         /// </summary>
-        public static decimal? AnnualBco2CalculatedValue
+        public  decimal? AnnualBco2CalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Annual_BCO2_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("Annual_BCO2_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Annual_BCO2_Calculated_Value", value);
+                SetCheckParameter("Annual_BCO2_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated year-to-date value for CO2 Mass.
         /// </summary>
-        public static decimal? AnnualCo2mCalculatedValue
+        public  decimal? AnnualCo2mCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Annual_CO2M_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("Annual_CO2M_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Annual_CO2M_Calculated_Value", value);
+                SetCheckParameter("Annual_CO2M_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated year-to-date value for total heat input.
         /// </summary>
-        public static decimal? AnnualHitCalculatedValue
+        public  decimal? AnnualHitCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Annual_HIT_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("Annual_HIT_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Annual_HIT_Calculated_Value", value);
+                SetCheckParameter("Annual_HIT_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated year-to-date value for NOx Mass.
         /// </summary>
-        public static decimal? AnnualNoxmCalculatedValue
+        public  decimal? AnnualNoxmCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Annual_NOXM_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("Annual_NOXM_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Annual_NOXM_Calculated_Value", value);
+                SetCheckParameter("Annual_NOXM_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated year-to-date value for NOx Rate.
         /// </summary>
-        public static decimal? AnnualNoxrCalculatedValue
+        public  decimal? AnnualNoxrCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Annual_NOXR_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("Annual_NOXR_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Annual_NOXR_Calculated_Value", value);
+                SetCheckParameter("Annual_NOXR_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated year-to-date value for total operating hours.
         /// </summary>
-        public static int? AnnualOphoursCalculatedValue
+        public  int? AnnualOphoursCalculatedValue
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Annual_OPHOURS_Calculated_Value")));
+                return ((int?)(GetCheckParameter("Annual_OPHOURS_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Annual_OPHOURS_Calculated_Value", value);
+                SetCheckParameter("Annual_OPHOURS_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated year-to-date value for total operating time.
         /// </summary>
-        public static decimal? AnnualOptimeCalculatedValue
+        public  decimal? AnnualOptimeCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Annual_OPTIME_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("Annual_OPTIME_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Annual_OPTIME_Calculated_Value", value);
+                SetCheckParameter("Annual_OPTIME_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates if the units in the configuration report annually (as opposed to the ozone season only).
         /// </summary>
-        public static bool? AnnualReportingRequirement
+        public  bool? AnnualReportingRequirement
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Annual_Reporting_Requirement")));
+                return ((bool?)(GetCheckParameter("Annual_Reporting_Requirement")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Annual_Reporting_Requirement", value);
+                SetCheckParameter("Annual_Reporting_Requirement", value);
             }
         }
         
         /// <summary>
         /// The recalculated year-to-date value for SO2 Mass.
         /// </summary>
-        public static decimal? AnnualSo2MassCalculatedValue
+        public  decimal? AnnualSo2MassCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Annual_SO2_Mass_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("Annual_SO2_Mass_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Annual_SO2_Mass_Calculated_Value", value);
+                SetCheckParameter("Annual_SO2_Mass_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// Heat Input value calculated using Appendix D, wheter from a gas source or oil source
         /// </summary>
-        public static decimal? AppECalcHi
+        public  decimal? AppECalcHi
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("App_E_Calc_Hi")));
+                return ((decimal?)(GetCheckParameter("App_E_Calc_Hi")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Calc_Hi", value);
+                SetCheckParameter("App_E_Calc_Hi", value);
             }
         }
         
         /// <summary>
         /// Indicates which segment number should have been reported in the NOx Rate record for the current fuel source
         /// </summary>
-        public static int? AppECalcSegmentNum
+        public  int? AppECalcSegmentNum
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("App_E_Calc_Segment_Num")));
+                return ((int?)(GetCheckParameter("App_E_Calc_Segment_Num")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Calc_Segment_Num", value);
+                SetCheckParameter("App_E_Calc_Segment_Num", value);
             }
         }
         
         /// <summary>
         /// The calculated value for NOx Rate  from a single Fuel Flow Record using the specified formula
         /// </summary>
-        public static bool? AppECalculatedNoxRateForSource
+        public  bool? AppECalculatedNoxRateForSource
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("App_E_Calculated_Nox_Rate_For_Source")));
+                return ((bool?)(GetCheckParameter("App_E_Calculated_Nox_Rate_For_Source")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Calculated_Nox_Rate_For_Source", value);
+                SetCheckParameter("App_E_Calculated_Nox_Rate_For_Source", value);
             }
         }
         
         /// <summary>
         /// Indicates if Appendix E NOx emissions rate needs to be calculated for unit with apportioned heat input.
         /// </summary>
-        public static bool? AppEChecksNeeded
+        public  bool? AppEChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("App_E_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("App_E_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Checks_Needed", value);
+                SetCheckParameter("App_E_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the constant fuel mix method of reporting is in effect for an Appendix E Site
         /// </summary>
-        public static bool? AppEConstantFuelMix
+        public  bool? AppEConstantFuelMix
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("App_E_Constant_Fuel_Mix")));
+                return ((bool?)(GetCheckParameter("App_E_Constant_Fuel_Mix")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Constant_Fuel_Mix", value);
+                SetCheckParameter("App_E_Constant_Fuel_Mix", value);
             }
         }
         
         /// <summary>
         /// Contains the four values for heat input from the most recent Appendix E Correlation tests. This array contains four decimal values
         /// </summary>
-        public static decimal? AppECorrelationHeatInputArray
+        public  decimal? AppECorrelationHeatInputArray
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("App_E_Correlation_Heat_Input_Array")));
+                return ((decimal?)(GetCheckParameter("App_E_Correlation_Heat_Input_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Correlation_Heat_Input_Array", value);
+                SetCheckParameter("App_E_Correlation_Heat_Input_Array", value);
             }
         }
         
         /// <summary>
         /// Contains the four values for NOx Rate from the most recent Appendix E Correlation tests. This array contains four decimal values
         /// </summary>
-        public static decimal? AppECorrelationNoxRateArray
+        public  decimal? AppECorrelationNoxRateArray
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("App_E_Correlation_Nox_Rate_Array")));
+                return ((decimal?)(GetCheckParameter("App_E_Correlation_Nox_Rate_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Correlation_Nox_Rate_Array", value);
+                SetCheckParameter("App_E_Correlation_Nox_Rate_Array", value);
             }
         }
         
         /// <summary>
         /// FuelCode associated with the DHV or HPFF record for NOX rate
         /// </summary>
-        public static string AppEFuelCode
+        public  string AppEFuelCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("App_E_Fuel_Code")));
+                return ((string)(GetCheckParameter("App_E_Fuel_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Fuel_Code", value);
+                SetCheckParameter("App_E_Fuel_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates whether an active Appendix D Method for either Heat Input, SO2, or CO2 is active during the current hour
         /// </summary>
-        public static bool? AppendixDMethodActive
+        public  bool? AppendixDMethodActive
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Appendix_D_Method_Active")));
+                return ((bool?)(GetCheckParameter("Appendix_D_Method_Active")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Appendix_D_Method_Active", value);
+                SetCheckParameter("Appendix_D_Method_Active", value);
             }
         }
         
         /// <summary>
         /// Contains the year/qtr information when Missing Op data is the result for Appendix E Status.
         /// </summary>
-        public static string AppendixEMissingOpDataInfo
+        public  string AppendixEMissingOpDataInfo
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Appendix_E_Missing_Op_Data_Info")));
+                return ((string)(GetCheckParameter("Appendix_E_Missing_Op_Data_Info")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Appendix_E_Missing_Op_Data_Info", value);
+                SetCheckParameter("Appendix_E_Missing_Op_Data_Info", value);
             }
         }
         
         /// <summary>
         /// Indicates if a record requires the Appendix E Status Evaluation.
         /// </summary>
-        public static bool? AppendixEStatusRequired
+        public  bool? AppendixEStatusRequired
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Appendix_E_Status_Required")));
+                return ((bool?)(GetCheckParameter("Appendix_E_Status_Required")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Appendix_E_Status_Required", value);
+                SetCheckParameter("Appendix_E_Status_Required", value);
             }
         }
         
         /// <summary>
         /// All appendix E test summary records for the location.  Used by the QA Status evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> AppendixETestRecordsByLocationForQaStatus
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> AppendixETestRecordsByLocationForQaStatus
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Appendix_E_Test_Records_By_Location_For_QA_Status")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Appendix_E_Test_Records_By_Location_For_QA_Status")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -614,11 +614,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Appendix_E_Test_Records_By_Location_For_QA_Status", null);
+                    SetCheckParameter("Appendix_E_Test_Records_By_Location_For_QA_Status", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Appendix_E_Test_Records_By_Location_For_QA_Status", value.SourceView);
+                    SetCheckParameter("Appendix_E_Test_Records_By_Location_For_QA_Status", value.SourceView);
                 }
             }
         }
@@ -626,300 +626,300 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// NOXE Monitoring System ID reported in the NOXR DHV or HPFF record.
         /// </summary>
-        public static string AppENoxeSystemId
+        public  string AppENoxeSystemId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("App_E_NOXE_System_ID")));
+                return ((string)(GetCheckParameter("App_E_NOXE_System_ID")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_NOXE_System_ID", value);
+                SetCheckParameter("App_E_NOXE_System_ID", value);
             }
         }
         
         /// <summary>
         /// The MonitoringSystemID of the NOXE system reported in the NOXR DHV or HPFF record.
         /// </summary>
-        public static string AppENoxeSystemIdentifier
+        public  string AppENoxeSystemIdentifier
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("App_E_NOXE_System_Identifier")));
+                return ((string)(GetCheckParameter("App_E_NOXE_System_Identifier")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_NOXE_System_Identifier", value);
+                SetCheckParameter("App_E_NOXE_System_Identifier", value);
             }
         }
         
         /// <summary>
         /// The NOx maximum emission rate for the fuel in the NOXR DHV or HPFF record.
         /// </summary>
-        public static decimal? AppENoxMer
+        public  decimal? AppENoxMer
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("App_E_NOx_MER")));
+                return ((decimal?)(GetCheckParameter("App_E_NOx_MER")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_NOx_MER", value);
+                SetCheckParameter("App_E_NOx_MER", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Monitoring System reported in the gas fuel source HourlyParamFuelFlow record for Appendix E NOX Rate is valid
         /// </summary>
-        public static bool? AppENoxrMonSysIsValid
+        public  bool? AppENoxrMonSysIsValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("App_E_Noxr_Mon_Sys_Is_Valid")));
+                return ((bool?)(GetCheckParameter("App_E_Noxr_Mon_Sys_Is_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Noxr_Mon_Sys_Is_Valid", value);
+                SetCheckParameter("App_E_Noxr_Mon_Sys_Is_Valid", value);
             }
         }
         
         /// <summary>
         /// OperatingConditionCode reported in the DHV or HPFF record for NOX rate
         /// </summary>
-        public static string AppEOpCode
+        public  string AppEOpCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("App_E_Op_Code")));
+                return ((string)(GetCheckParameter("App_E_Op_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Op_Code", value);
+                SetCheckParameter("App_E_Op_Code", value);
             }
         }
         
         /// <summary>
         /// AdjustedHourlyValue reported in the DHV or HPFF record for NOX rate
         /// </summary>
-        public static decimal? AppEReportedValue
+        public  decimal? AppEReportedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("App_E_Reported_Value")));
+                return ((decimal?)(GetCheckParameter("App_E_Reported_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Reported_Value", value);
+                SetCheckParameter("App_E_Reported_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the methodology for determining NOXR under Appendix E is from a single fuel source, multiple fuel sources, or a constant mix
         /// </summary>
-        public static string AppEReportingMethod
+        public  string AppEReportingMethod
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("App_E_Reporting_Method")));
+                return ((string)(GetCheckParameter("App_E_Reporting_Method")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Reporting_Method", value);
+                SetCheckParameter("App_E_Reporting_Method", value);
             }
         }
         
         /// <summary>
         /// SegmentNumber value reported in the DHV or HPFF record for NOX rate
         /// </summary>
-        public static int? AppESegmentNumber
+        public  int? AppESegmentNumber
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("App_E_Segment_Number")));
+                return ((int?)(GetCheckParameter("App_E_Segment_Number")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Segment_Number", value);
+                SetCheckParameter("App_E_Segment_Number", value);
             }
         }
         
         /// <summary>
         /// The total number of segments in the relevant Appendix E Correlation Test used for evaluating Appendix E NOx rate
         /// </summary>
-        public static int? AppESegmentTotal
+        public  int? AppESegmentTotal
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("App_E_Segment_Total")));
+                return ((int?)(GetCheckParameter("App_E_Segment_Total")));
             }
             set
             {
-                EmParameters.SetCheckParameter("App_E_Segment_Total", value);
+                SetCheckParameter("App_E_Segment_Total", value);
             }
         }
         
         /// <summary>
         /// The Component ID that will be evaluated during the Linearity and Daily Calibration QA Status evaluations.
         /// </summary>
-        public static string ApplicableComponentId
+        public  string ApplicableComponentId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Applicable_Component_ID")));
+                return ((string)(GetCheckParameter("Applicable_Component_ID")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Applicable_Component_ID", value);
+                SetCheckParameter("Applicable_Component_ID", value);
             }
         }
         
         /// <summary>
         /// The comma delimited list of System IDs being evaluated in the RATA Status evaluation.
         /// </summary>
-        public static string ApplicableSystemIdList
+        public  string ApplicableSystemIdList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Applicable_System_ID_List")));
+                return ((string)(GetCheckParameter("Applicable_System_ID_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Applicable_System_ID_List", value);
+                SetCheckParameter("Applicable_System_ID_List", value);
             }
         }
         
         /// <summary>
         /// The System IDs that will be evaluated during the Linearity QA Status evaluation.
         /// </summary>
-        public static string ApplicableSystemIds
+        public  string ApplicableSystemIds
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Applicable_System_IDs")));
+                return ((string)(GetCheckParameter("Applicable_System_IDs")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Applicable_System_IDs", value);
+                SetCheckParameter("Applicable_System_IDs", value);
             }
         }
         
         /// <summary>
         /// The CurrentReportingPeriodTotal in the BCO2 Summary Value record.
         /// </summary>
-        public static decimal? Bco2QuarterlyReportedValue
+        public  decimal? Bco2QuarterlyReportedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("BCO2_Quarterly_Reported_Value")));
+                return ((decimal?)(GetCheckParameter("BCO2_Quarterly_Reported_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("BCO2_Quarterly_Reported_Value", value);
+                SetCheckParameter("BCO2_Quarterly_Reported_Value", value);
             }
         }
         
         /// <summary>
         /// The unadjusted CO2 mass emissions that was recalculated by the software.
         /// </summary>
-        public static decimal? CalcCo2Unadj
+        public  decimal? CalcCo2Unadj
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calc_CO2_Unadj")));
+                return ((decimal?)(GetCheckParameter("Calc_CO2_Unadj")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calc_CO2_Unadj", value);
+                SetCheckParameter("Calc_CO2_Unadj", value);
             }
         }
         
         /// <summary>
         /// The amount of carbon burned during the day for the fuel as recalculated by the software.
         /// </summary>
-        public static decimal? CalcFuelCarbonBurned
+        public  decimal? CalcFuelCarbonBurned
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calc_Fuel_Carbon_Burned")));
+                return ((decimal?)(GetCheckParameter("Calc_Fuel_Carbon_Burned")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calc_Fuel_Carbon_Burned", value);
+                SetCheckParameter("Calc_Fuel_Carbon_Burned", value);
             }
         }
         
         /// <summary>
         /// The total daily emissions for CO2M determined by FSA as recalculated by the software.
         /// </summary>
-        public static decimal? CalcTde
+        public  decimal? CalcTde
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calc_TDE")));
+                return ((decimal?)(GetCheckParameter("Calc_TDE")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calc_TDE", value);
+                SetCheckParameter("Calc_TDE", value);
             }
         }
         
         /// <summary>
         /// The amount of carbon burned during the day for the location as recalculated by the software.
         /// </summary>
-        public static decimal? CalcTotalCarbonBurned
+        public  decimal? CalcTotalCarbonBurned
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calc_Total_Carbon_Burned")));
+                return ((decimal?)(GetCheckParameter("Calc_Total_Carbon_Burned")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calc_Total_Carbon_Burned", value);
+                SetCheckParameter("Calc_Total_Carbon_Burned", value);
             }
         }
         
         /// <summary>
         /// Indicates if the apportioned or summed HI can be recalculated.
         /// </summary>
-        public static bool? CalculateApportionedHi
+        public  bool? CalculateApportionedHi
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Calculate_Apportioned_HI")));
+                return ((bool?)(GetCheckParameter("Calculate_Apportioned_HI")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculate_Apportioned_HI", value);
+                SetCheckParameter("Calculate_Apportioned_HI", value);
             }
         }
         
         /// <summary>
         /// Indicates if CO2M TDE should be calculated.  Used for levelling.
         /// </summary>
-        public static bool? CalculateCo2mTde
+        public  bool? CalculateCo2mTde
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Calculate_CO2M_TDE")));
+                return ((bool?)(GetCheckParameter("Calculate_CO2M_TDE")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculate_CO2M_TDE", value);
+                SetCheckParameter("Calculate_CO2M_TDE", value);
             }
         }
         
         /// <summary>
         /// Contains the Common Stack Load Range calculated using the hourly load and the active maximum load.
         /// </summary>
-        public static int? CalculatedCsLoadRange
+        public  int? CalculatedCsLoadRange
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Calculated_CS_Load_Range")));
+                return ((int?)(GetCheckParameter("Calculated_CS_Load_Range")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_CS_Load_Range", value);
+                SetCheckParameter("Calculated_CS_Load_Range", value);
             }
         }
         
@@ -929,15 +929,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///Field to be updated: Current DHV Record.CalcPctDiluent
         ///
         /// </summary>
-        public static decimal? CalculatedDiluentForCo2
+        public  decimal? CalculatedDiluentForCo2
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculated_Diluent_for_CO2")));
+                return ((decimal?)(GetCheckParameter("Calculated_Diluent_for_CO2")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Diluent_for_CO2", value);
+                SetCheckParameter("Calculated_Diluent_for_CO2", value);
             }
         }
         
@@ -946,15 +946,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcPctDiluent
         /// </summary>
-        public static decimal? CalculatedDiluentForCo2c
+        public  decimal? CalculatedDiluentForCo2c
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculated_Diluent_for_CO2C")));
+                return ((decimal?)(GetCheckParameter("Calculated_Diluent_for_CO2C")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Diluent_for_CO2C", value);
+                SetCheckParameter("Calculated_Diluent_for_CO2C", value);
             }
         }
         
@@ -963,15 +963,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcPctDiluent
         /// </summary>
-        public static decimal? CalculatedDiluentForHi
+        public  decimal? CalculatedDiluentForHi
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculated_Diluent_for_HI")));
+                return ((decimal?)(GetCheckParameter("Calculated_Diluent_for_HI")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Diluent_for_HI", value);
+                SetCheckParameter("Calculated_Diluent_for_HI", value);
             }
         }
         
@@ -980,105 +980,105 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcPctDiluent
         /// </summary>
-        public static decimal? CalculatedDiluentForNoxr
+        public  decimal? CalculatedDiluentForNoxr
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculated_Diluent_for_NOXR")));
+                return ((decimal?)(GetCheckParameter("Calculated_Diluent_for_NOXR")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Diluent_for_NOXR", value);
+                SetCheckParameter("Calculated_Diluent_for_NOXR", value);
             }
         }
         
         /// <summary>
         /// Used as the result of the MS-1 calculation.
         /// </summary>
-        public static string CalculatedFlowWeightedHcl
+        public  string CalculatedFlowWeightedHcl
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Calculated_Flow_Weighted_HCL")));
+                return ((string)(GetCheckParameter("Calculated_Flow_Weighted_HCL")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Flow_Weighted_HCL", value);
+                SetCheckParameter("Calculated_Flow_Weighted_HCL", value);
             }
         }
         
         /// <summary>
         /// Used as the result of the MS-1 calculation.
         /// </summary>
-        public static string CalculatedFlowWeightedHf
+        public  string CalculatedFlowWeightedHf
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Calculated_Flow_Weighted_HF")));
+                return ((string)(GetCheckParameter("Calculated_Flow_Weighted_HF")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Flow_Weighted_HF", value);
+                SetCheckParameter("Calculated_Flow_Weighted_HF", value);
             }
         }
         
         /// <summary>
         /// Used as the result of the MS-1 calculation.
         /// </summary>
-        public static string CalculatedFlowWeightedHg
+        public  string CalculatedFlowWeightedHg
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Calculated_Flow_Weighted_Hg")));
+                return ((string)(GetCheckParameter("Calculated_Flow_Weighted_Hg")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Flow_Weighted_Hg", value);
+                SetCheckParameter("Calculated_Flow_Weighted_Hg", value);
             }
         }
         
         /// <summary>
         /// Used as the result of the MS-1 calculation.
         /// </summary>
-        public static string CalculatedFlowWeightedSo2
+        public  string CalculatedFlowWeightedSo2
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Calculated_Flow_Weighted_SO2")));
+                return ((string)(GetCheckParameter("Calculated_Flow_Weighted_SO2")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Flow_Weighted_SO2", value);
+                SetCheckParameter("Calculated_Flow_Weighted_SO2", value);
             }
         }
         
         /// <summary>
         /// Contains the Load Range calculated using the hourly load and the active maximum load.
         /// </summary>
-        public static int? CalculatedLoadRange
+        public  int? CalculatedLoadRange
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Calculated_Load_Range")));
+                return ((int?)(GetCheckParameter("Calculated_Load_Range")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Load_Range", value);
+                SetCheckParameter("Calculated_Load_Range", value);
             }
         }
         
         /// <summary>
         /// Contains the MATS MS Load calculated and used to check the reported value.
         /// </summary>
-        public static int? CalculatedMatsMsLoad
+        public  int? CalculatedMatsMsLoad
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Calculated_MATS_MS_Load")));
+                return ((int?)(GetCheckParameter("Calculated_MATS_MS_Load")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_MATS_MS_Load", value);
+                SetCheckParameter("Calculated_MATS_MS_Load", value);
             }
         }
         
@@ -1087,15 +1087,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcPctMoisture
         /// </summary>
-        public static decimal? CalculatedMoistureForCo2
+        public  decimal? CalculatedMoistureForCo2
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculated_Moisture_for_CO2")));
+                return ((decimal?)(GetCheckParameter("Calculated_Moisture_for_CO2")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Moisture_for_CO2", value);
+                SetCheckParameter("Calculated_Moisture_for_CO2", value);
             }
         }
         
@@ -1104,15 +1104,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcPctMoisture
         /// </summary>
-        public static decimal? CalculatedMoistureForCo2c
+        public  decimal? CalculatedMoistureForCo2c
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculated_Moisture_for_CO2C")));
+                return ((decimal?)(GetCheckParameter("Calculated_Moisture_for_CO2C")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Moisture_for_CO2C", value);
+                SetCheckParameter("Calculated_Moisture_for_CO2C", value);
             }
         }
         
@@ -1121,15 +1121,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcPctMoisture
         /// </summary>
-        public static decimal? CalculatedMoistureForHi
+        public  decimal? CalculatedMoistureForHi
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculated_Moisture_for_HI")));
+                return ((decimal?)(GetCheckParameter("Calculated_Moisture_for_HI")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Moisture_for_HI", value);
+                SetCheckParameter("Calculated_Moisture_for_HI", value);
             }
         }
         
@@ -1138,15 +1138,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcPctMoisture
         /// </summary>
-        public static decimal? CalculatedMoistureForNox
+        public  decimal? CalculatedMoistureForNox
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculated_Moisture_for_NOX")));
+                return ((decimal?)(GetCheckParameter("Calculated_Moisture_for_NOX")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Moisture_for_NOX", value);
+                SetCheckParameter("Calculated_Moisture_for_NOX", value);
             }
         }
         
@@ -1155,15 +1155,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcPctMoisture
         /// </summary>
-        public static decimal? CalculatedMoistureForNoxr
+        public  decimal? CalculatedMoistureForNoxr
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculated_Moisture_for_NOXR")));
+                return ((decimal?)(GetCheckParameter("Calculated_Moisture_for_NOXR")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Moisture_for_NOXR", value);
+                SetCheckParameter("Calculated_Moisture_for_NOXR", value);
             }
         }
         
@@ -1172,15 +1172,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcPctMoisture
         /// </summary>
-        public static decimal? CalculatedMoistureForSo2
+        public  decimal? CalculatedMoistureForSo2
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculated_Moisture_for_SO2")));
+                return ((decimal?)(GetCheckParameter("Calculated_Moisture_for_SO2")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Moisture_for_SO2", value);
+                SetCheckParameter("Calculated_Moisture_for_SO2", value);
             }
         }
         
@@ -1189,15 +1189,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in the emission report evaluation, and also used to store calculated values.
         /// </summary>
-        public static int? CalculatedSystemIntegrityApsIndicator
+        public  int? CalculatedSystemIntegrityApsIndicator
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Calculated_System_Integrity_APS_Indicator")));
+                return ((int?)(GetCheckParameter("Calculated_System_Integrity_APS_Indicator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_System_Integrity_APS_Indicator", value);
+                SetCheckParameter("Calculated_System_Integrity_APS_Indicator", value);
             }
         }
         
@@ -1206,15 +1206,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in emission report evaluation and in the saving of calculated values.
         /// </summary>
-        public static decimal? CalculatedSystemIntegrityError
+        public  decimal? CalculatedSystemIntegrityError
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculated_System_Integrity_Error")));
+                return ((decimal?)(GetCheckParameter("Calculated_System_Integrity_Error")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_System_Integrity_Error", value);
+                SetCheckParameter("Calculated_System_Integrity_Error", value);
             }
         }
         
@@ -1224,15 +1224,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///The calculated adjusted value resulting from the use of an equation.
         ///
         /// </summary>
-        public static decimal? CalculatedUnadjustedValue
+        public  decimal? CalculatedUnadjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculated_Unadjusted_Value")));
+                return ((decimal?)(GetCheckParameter("Calculated_Unadjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Unadjusted_Value", value);
+                SetCheckParameter("Calculated_Unadjusted_Value", value);
             }
         }
         
@@ -1241,30 +1241,30 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///The value is initialized to null and updated by subsequent checks.
         /// </summary>
-        public static string CalculatedWeeklyTestSummaryResult
+        public  string CalculatedWeeklyTestSummaryResult
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Calculated_Weekly_Test_Summary_Result")));
+                return ((string)(GetCheckParameter("Calculated_Weekly_Test_Summary_Result")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculated_Weekly_Test_Summary_Result", value);
+                SetCheckParameter("Calculated_Weekly_Test_Summary_Result", value);
             }
         }
         
         /// <summary>
         /// Indicates if NOx Mass should be calculated from apportioned (or summed) heat input.
         /// </summary>
-        public static bool? CalculateNoxmFromApportionedHi
+        public  bool? CalculateNoxmFromApportionedHi
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Calculate_NOXM_From_Apportioned_HI")));
+                return ((bool?)(GetCheckParameter("Calculate_NOXM_From_Apportioned_HI")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculate_NOXM_From_Apportioned_HI", value);
+                SetCheckParameter("Calculate_NOXM_From_Apportioned_HI", value);
             }
         }
         
@@ -1274,15 +1274,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///The concentration to use in an equation.
         ///
         /// </summary>
-        public static decimal? CalculationConcentration
+        public  decimal? CalculationConcentration
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculation_Concentration")));
+                return ((decimal?)(GetCheckParameter("Calculation_Concentration")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculation_Concentration", value);
+                SetCheckParameter("Calculation_Concentration", value);
             }
         }
         
@@ -1292,15 +1292,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///Indicates whether the concentration to use in an equation was substituted.
         ///
         /// </summary>
-        public static bool? CalculationConcentrationSubstituted
+        public  bool? CalculationConcentrationSubstituted
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Calculation_Concentration_Substituted")));
+                return ((bool?)(GetCheckParameter("Calculation_Concentration_Substituted")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculation_Concentration_Substituted", value);
+                SetCheckParameter("Calculation_Concentration_Substituted", value);
             }
         }
         
@@ -1309,15 +1309,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///The conversion factor (K) to use in an equation.
         /// </summary>
-        public static decimal? CalculationConversionFactor
+        public  decimal? CalculationConversionFactor
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculation_Conversion_Factor")));
+                return ((decimal?)(GetCheckParameter("Calculation_Conversion_Factor")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculation_Conversion_Factor", value);
+                SetCheckParameter("Calculation_Conversion_Factor", value);
             }
         }
         
@@ -1327,15 +1327,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///The diluent to use in an equation.
         ///
         /// </summary>
-        public static decimal? CalculationDiluent
+        public  decimal? CalculationDiluent
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculation_Diluent")));
+                return ((decimal?)(GetCheckParameter("Calculation_Diluent")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculation_Diluent", value);
+                SetCheckParameter("Calculation_Diluent", value);
             }
         }
         
@@ -1345,15 +1345,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///Indicates whether the concentration to use in an equation was substituted.
         ///
         /// </summary>
-        public static bool? CalculationDiluentSubstituted
+        public  bool? CalculationDiluentSubstituted
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Calculation_Diluent_Substituted")));
+                return ((bool?)(GetCheckParameter("Calculation_Diluent_Substituted")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculation_Diluent_Substituted", value);
+                SetCheckParameter("Calculation_Diluent_Substituted", value);
             }
         }
         
@@ -1363,15 +1363,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///The flow to use in an equation.
         ///
         /// </summary>
-        public static decimal? CalculationFlow
+        public  decimal? CalculationFlow
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculation_Flow")));
+                return ((decimal?)(GetCheckParameter("Calculation_Flow")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculation_Flow", value);
+                SetCheckParameter("Calculation_Flow", value);
             }
         }
         
@@ -1380,15 +1380,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates whether the flow to use in an equation was substituted.
         /// </summary>
-        public static bool? CalculationFlowSubstituted
+        public  bool? CalculationFlowSubstituted
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Calculation_Flow_Substituted")));
+                return ((bool?)(GetCheckParameter("Calculation_Flow_Substituted")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculation_Flow_Substituted", value);
+                SetCheckParameter("Calculation_Flow_Substituted", value);
             }
         }
         
@@ -1398,15 +1398,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///The moisture to use in an equation.
         ///
         /// </summary>
-        public static decimal? CalculationMoisture
+        public  decimal? CalculationMoisture
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Calculation_Moisture")));
+                return ((decimal?)(GetCheckParameter("Calculation_Moisture")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculation_Moisture", value);
+                SetCheckParameter("Calculation_Moisture", value);
             }
         }
         
@@ -1416,105 +1416,105 @@ namespace ECMPS.Checks.Em.Parameters
         ///Indicates whether the concentration to use in an equation was substituted.
         ///
         /// </summary>
-        public static bool? CalculationMoistureSubstituted
+        public  bool? CalculationMoistureSubstituted
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Calculation_Moisture_Substituted")));
+                return ((bool?)(GetCheckParameter("Calculation_Moisture_Substituted")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Calculation_Moisture_Substituted", value);
+                SetCheckParameter("Calculation_Moisture_Substituted", value);
             }
         }
         
         /// <summary>
         /// Indicates that Common Stack Load Range value checking should occur.
         /// </summary>
-        public static bool? CheckCsLoadRangeValue
+        public  bool? CheckCsLoadRangeValue
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Check_CS_Load_Range_Value")));
+                return ((bool?)(GetCheckParameter("Check_CS_Load_Range_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Check_CS_Load_Range_Value", value);
+                SetCheckParameter("Check_CS_Load_Range_Value", value);
             }
         }
         
         /// <summary>
         /// Dummy parameter used by the Hourly QA Status checks to cause the Ignored test checks to fire last.
         /// </summary>
-        public static bool? CheckForIgnoredFlowRata
+        public  bool? CheckForIgnoredFlowRata
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Check_For_Ignored_FLOW_RATA")));
+                return ((bool?)(GetCheckParameter("Check_For_Ignored_FLOW_RATA")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Check_For_Ignored_FLOW_RATA", value);
+                SetCheckParameter("Check_For_Ignored_FLOW_RATA", value);
             }
         }
         
         /// <summary>
         /// Dummy parameter used by the Hourly QA Status checks to cause the Ignored test checks to fire last.
         /// </summary>
-        public static bool? CheckForIgnoredLinearity
+        public  bool? CheckForIgnoredLinearity
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Check_For_Ignored_Linearity")));
+                return ((bool?)(GetCheckParameter("Check_For_Ignored_Linearity")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Check_For_Ignored_Linearity", value);
+                SetCheckParameter("Check_For_Ignored_Linearity", value);
             }
         }
         
         /// <summary>
         /// Indicates that Load Range value checking should occur.
         /// </summary>
-        public static bool? CheckLoadRangeValue
+        public  bool? CheckLoadRangeValue
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Check_Load_Range_Value")));
+                return ((bool?)(GetCheckParameter("Check_Load_Range_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Check_Load_Range_Value", value);
+                SetCheckParameter("Check_Load_Range_Value", value);
             }
         }
         
         /// <summary>
         /// This variable sums the Appendix D CO2 Mass calculations from all fuel sources
         /// </summary>
-        public static decimal? Co2AppDAccumulator
+        public  decimal? Co2AppDAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Co2_App_D_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Co2_App_D_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Co2_App_D_Accumulator", value);
+                SetCheckParameter("Co2_App_D_Accumulator", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the active method at the current location for CO2 is Appendix D
         /// </summary>
-        public static bool? Co2AppDMethodActiveForHour
+        public  bool? Co2AppDMethodActiveForHour
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_App_D_Method_Active_For_Hour")));
+                return ((bool?)(GetCheckParameter("CO2_App_D_Method_Active_For_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_App_D_Method_Active_For_Hour", value);
+                SetCheckParameter("CO2_App_D_Method_Active_For_Hour", value);
             }
         }
         
@@ -1523,15 +1523,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? Co2CalculatedAdjustedValue
+        public  decimal? Co2CalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("CO2_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("CO2_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Calculated_Adjusted_Value", value);
+                SetCheckParameter("CO2_Calculated_Adjusted_Value", value);
             }
         }
         
@@ -1539,11 +1539,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// The CO2 Concentration Derived Hourly Records By Hour and Location
         ///
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueCo2cRow> Co2cDerivedHourlyRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueCo2cRow> Co2cDerivedHourlyRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Co2c_Derived_Hourly_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Co2c_Derived_Hourly_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1557,11 +1557,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Co2c_Derived_Hourly_Records_By_Hour_Location", null);
+                    SetCheckParameter("Co2c_Derived_Hourly_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Co2c_Derived_Hourly_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Co2c_Derived_Hourly_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -1569,15 +1569,15 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Flag to indicate whether all CO2 Conc Derived Hourly checks passed or failed
         /// </summary>
-        public static bool? Co2cDerivedHourlyStatus
+        public  bool? Co2cDerivedHourlyStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2C_Derived_Hourly_Status")));
+                return ((bool?)(GetCheckParameter("CO2C_Derived_Hourly_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2C_Derived_Hourly_Status", value);
+                SetCheckParameter("CO2C_Derived_Hourly_Status", value);
             }
         }
         
@@ -1586,45 +1586,45 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? Co2cDhvCalculatedAdjustedValue
+        public  decimal? Co2cDhvCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("CO2C_DHV_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("CO2C_DHV_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2C_DHV_Calculated_Adjusted_Value", value);
+                SetCheckParameter("CO2C_DHV_Calculated_Adjusted_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates whether there is a CO2 Mass Method for the current hour identifed as a CEMs Method
         /// </summary>
-        public static bool? Co2CemMethodActiveForHour
+        public  bool? Co2CemMethodActiveForHour
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_CEM_Method_Active_For_Hour")));
+                return ((bool?)(GetCheckParameter("CO2_CEM_Method_Active_For_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_CEM_Method_Active_For_Hour", value);
+                SetCheckParameter("CO2_CEM_Method_Active_For_Hour", value);
             }
         }
         
         /// <summary>
         /// Indicates whether an CO2C DHV record has a measured MODC.
         /// </summary>
-        public static bool? Co2cHasMeasuredDhvModc
+        public  bool? Co2cHasMeasuredDhvModc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2C_Has_Measured_DHV_MODC")));
+                return ((bool?)(GetCheckParameter("CO2C_Has_Measured_DHV_MODC")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2C_Has_Measured_DHV_MODC", value);
+                SetCheckParameter("CO2C_Has_Measured_DHV_MODC", value);
             }
         }
         
@@ -1633,15 +1633,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current MHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? Co2cMhvCalculatedAdjustedValue
+        public  decimal? Co2cMhvCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("CO2C_MHV_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("CO2C_MHV_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2C_MHV_Calculated_Adjusted_Value", value);
+                SetCheckParameter("CO2C_MHV_Calculated_Adjusted_Value", value);
             }
         }
         
@@ -1650,15 +1650,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the MHV CO2C MODC value used in calcultion checks to determine whether CO2C was substituted and is set in the CO2C section of HOURMHV-8.
         /// </summary>
-        public static string Co2cMhvModc
+        public  string Co2cMhvModc
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("CO2C_MHV_MODC")));
+                return ((string)(GetCheckParameter("CO2C_MHV_MODC")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2C_MHV_MODC", value);
+                SetCheckParameter("CO2C_MHV_MODC", value);
             }
         }
         
@@ -1666,11 +1666,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// The CO2 Concentration Monitor Hourly Records By Hour and Location
         ///
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueCo2cRow> Co2cMonitorHourlyRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueCo2cRow> Co2cMonitorHourlyRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Co2c_Monitor_Hourly_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Co2c_Monitor_Hourly_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1684,11 +1684,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Co2c_Monitor_Hourly_Records_By_Hour_Location", null);
+                    SetCheckParameter("Co2c_Monitor_Hourly_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Co2c_Monitor_Hourly_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Co2c_Monitor_Hourly_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -1696,105 +1696,105 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// A code that references an equation in MonitoringFormulaData that will be used for calculations for the current record (specific to Parameter CO2)
         /// </summary>
-        public static bool? Co2ConcCemEquationCode
+        public  bool? Co2ConcCemEquationCode
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_Conc_Cem_Equation_Code")));
+                return ((bool?)(GetCheckParameter("CO2_Conc_Cem_Equation_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Conc_Cem_Equation_Code", value);
+                SetCheckParameter("CO2_Conc_Cem_Equation_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates the need to perform CO2 concentration checks in suppor of CO2 Mass Calculations
         /// </summary>
-        public static bool? Co2ConcChecksNeededForCo2MassCalc
+        public  bool? Co2ConcChecksNeededForCo2MassCalc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_Conc_Checks_Needed_For_CO2_Mass_Calc")));
+                return ((bool?)(GetCheckParameter("CO2_Conc_Checks_Needed_For_CO2_Mass_Calc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Conc_Checks_Needed_For_CO2_Mass_Calc", value);
+                SetCheckParameter("CO2_Conc_Checks_Needed_For_CO2_Mass_Calc", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the CO2 Concentration Checks must be run in support of the current Heat Input Calculation
         /// </summary>
-        public static bool? Co2ConcChecksNeededForHeatInput
+        public  bool? Co2ConcChecksNeededForHeatInput
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_Conc_Checks_Needed_for_Heat_Input")));
+                return ((bool?)(GetCheckParameter("CO2_Conc_Checks_Needed_for_Heat_Input")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Conc_Checks_Needed_for_Heat_Input", value);
+                SetCheckParameter("CO2_Conc_Checks_Needed_for_Heat_Input", value);
             }
         }
         
         /// <summary>
         /// Flag to indicate whether or not it is necessary to perform SO2 Derived Hourly checks at this location for the current hour
         /// </summary>
-        public static bool? Co2ConcDerivedChecksNeeded
+        public  bool? Co2ConcDerivedChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_Conc_Derived_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("CO2_Conc_Derived_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Conc_Derived_Checks_Needed", value);
+                SetCheckParameter("CO2_Conc_Derived_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// The number of CO2 Concentration DerivedHourlyValueData records reported during the current hour
         /// </summary>
-        public static int? Co2ConcDerivedHourlyCount
+        public  int? Co2ConcDerivedHourlyCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("CO2_Conc_Derived_Hourly_Count")));
+                return ((int?)(GetCheckParameter("CO2_Conc_Derived_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Conc_Derived_Hourly_Count", value);
+                SetCheckParameter("CO2_Conc_Derived_Hourly_Count", value);
             }
         }
         
         /// <summary>
         /// Flag to indicate whether or not it is necessary to perform CO2 Conc Monitor Hourly checks at this location for the current hour
         /// </summary>
-        public static bool? Co2ConcMonitorChecksNeeded
+        public  bool? Co2ConcMonitorChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_Conc_Monitor_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("CO2_Conc_Monitor_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Conc_Monitor_Checks_Needed", value);
+                SetCheckParameter("CO2_Conc_Monitor_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// The number of CO2 Concentration MonitorHourlyValueData records reported during the current hour
         /// </summary>
-        public static int? Co2ConcMonitorHourlyCount
+        public  int? Co2ConcMonitorHourlyCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("CO2_Conc_Monitor_Hourly_Count")));
+                return ((int?)(GetCheckParameter("CO2_Conc_Monitor_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Conc_Monitor_Hourly_Count", value);
+                SetCheckParameter("CO2_Conc_Monitor_Hourly_Count", value);
             }
         }
         
@@ -1803,15 +1803,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current MHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? Co2cSdCalculatedAdjustedValue
+        public  decimal? Co2cSdCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("CO2C_SD_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("CO2C_SD_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2C_SD_Calculated_Adjusted_Value", value);
+                SetCheckParameter("CO2C_SD_Calculated_Adjusted_Value", value);
             }
         }
         
@@ -1819,11 +1819,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// The CO2 and CO2M Derived Hourly Records By Hour and Location
         ///
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueCo2Row> Co2DerivedHourlyRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueCo2Row> Co2DerivedHourlyRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("CO2_Derived_Hourly_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("CO2_Derived_Hourly_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1837,11 +1837,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("CO2_Derived_Hourly_Records_By_Hour_Location", null);
+                    SetCheckParameter("CO2_Derived_Hourly_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("CO2_Derived_Hourly_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("CO2_Derived_Hourly_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -1849,30 +1849,30 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// indicates whether or not the CO2 Derived Hourly Value checks were all run successfully
         /// </summary>
-        public static bool? Co2DerivedHourlyStatus
+        public  bool? Co2DerivedHourlyStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_Derived_Hourly_Status")));
+                return ((bool?)(GetCheckParameter("CO2_Derived_Hourly_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Derived_Hourly_Status", value);
+                SetCheckParameter("CO2_Derived_Hourly_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not CO2 Diluent Checks must be run in support of the NOx Rate Calculation
         /// </summary>
-        public static bool? Co2DiluentChecksNeededForNoxRateCalc
+        public  bool? Co2DiluentChecksNeededForNoxRateCalc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_Diluent_Checks_Needed_For_Nox_Rate_Calc")));
+                return ((bool?)(GetCheckParameter("CO2_Diluent_Checks_Needed_For_Nox_Rate_Calc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Diluent_Checks_Needed_For_Nox_Rate_Calc", value);
+                SetCheckParameter("CO2_Diluent_Checks_Needed_For_Nox_Rate_Calc", value);
             }
         }
         
@@ -1881,15 +1881,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates whether CO2 Diluent values are needed to support the reporting of MATS parameters.
         /// </summary>
-        public static bool? Co2DiluentNeededForMats
+        public  bool? Co2DiluentNeededForMats
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_Diluent_Needed_for_MATS")));
+                return ((bool?)(GetCheckParameter("CO2_Diluent_Needed_for_MATS")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Diluent_Needed_for_MATS", value);
+                SetCheckParameter("CO2_Diluent_Needed_for_MATS", value);
             }
         }
         
@@ -1898,30 +1898,30 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates whether CO2 Diluent values are needed to support the calculation of MATS parameters.
         /// </summary>
-        public static bool? Co2DiluentNeededForMatsCalculation
+        public  bool? Co2DiluentNeededForMatsCalculation
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_Diluent_Needed_for_MATS_Calculation")));
+                return ((bool?)(GetCheckParameter("CO2_Diluent_Needed_for_MATS_Calculation")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Diluent_Needed_for_MATS_Calculation", value);
+                SetCheckParameter("CO2_Diluent_Needed_for_MATS_Calculation", value);
             }
         }
         
         /// <summary>
         /// Indicates if active CO2 Monitor Method entries for the current configuration during the current hour uses fuel-specific missing data approach
         /// </summary>
-        public static bool? Co2FuelSpecificMissingData
+        public  bool? Co2FuelSpecificMissingData
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_Fuel_Specific_Missing_Data")));
+                return ((bool?)(GetCheckParameter("CO2_Fuel_Specific_Missing_Data")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Fuel_Specific_Missing_Data", value);
+                SetCheckParameter("CO2_Fuel_Specific_Missing_Data", value);
             }
         }
         
@@ -1930,60 +1930,60 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///This parameter is initialized to false in HOUROP-3 and set to true in HOURAD-37.
         /// </summary>
-        public static bool? Co2HpffExists
+        public  bool? Co2HpffExists
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_HPFF_Exists")));
+                return ((bool?)(GetCheckParameter("CO2_HPFF_Exists")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_HPFF_Exists", value);
+                SetCheckParameter("CO2_HPFF_Exists", value);
             }
         }
         
         /// <summary>
         /// A code that references an equation in MonitoringFormulaData that will be used for calculations for the current record (specific to Parameter CO2)
         /// </summary>
-        public static bool? Co2MassCemEquationCode
+        public  bool? Co2MassCemEquationCode
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_Mass_CEM_Equation_Code")));
+                return ((bool?)(GetCheckParameter("CO2_Mass_CEM_Equation_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Mass_CEM_Equation_Code", value);
+                SetCheckParameter("CO2_Mass_CEM_Equation_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the CO2 Mass Rate Derived Hourly Value Checks must be run for the current hour
         /// </summary>
-        public static bool? Co2MassDerivedChecksNeeded
+        public  bool? Co2MassDerivedChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_Mass_Derived_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("CO2_Mass_Derived_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Mass_Derived_Checks_Needed", value);
+                SetCheckParameter("CO2_Mass_Derived_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// The number of records returned in the CO2 Mass record
         /// </summary>
-        public static bool? Co2MassDerivedHourlyCount
+        public  bool? Co2MassDerivedHourlyCount
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_Mass_Derived_Hourly_Count")));
+                return ((bool?)(GetCheckParameter("CO2_Mass_Derived_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Mass_Derived_Hourly_Count", value);
+                SetCheckParameter("CO2_Mass_Derived_Hourly_Count", value);
             }
         }
         
@@ -1992,26 +1992,26 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? Co2mCalculatedAdjustedValue
+        public  decimal? Co2mCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("CO2M_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("CO2M_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2M_Calculated_Adjusted_Value", value);
+                SetCheckParameter("CO2M_Calculated_Adjusted_Value", value);
             }
         }
         
         /// <summary>
         /// Daily Emission Records for Day and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDailyEmissionRow> Co2mDailyEmissionRecordsForDayLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDailyEmissionRow> Co2mDailyEmissionRecordsForDayLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("CO2M_Daily_Emission_Records_For_Day_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("CO2M_Daily_Emission_Records_For_Day_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2025,11 +2025,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("CO2M_Daily_Emission_Records_For_Day_Location", null);
+                    SetCheckParameter("CO2M_Daily_Emission_Records_For_Day_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("CO2M_Daily_Emission_Records_For_Day_Location", value.SourceView);
+                    SetCheckParameter("CO2M_Daily_Emission_Records_For_Day_Location", value.SourceView);
                 }
             }
         }
@@ -2037,56 +2037,56 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates whether or not the CO2M Derived Hourly Value Checks must be run for the current hour
         /// </summary>
-        public static bool? Co2mDerivedChecksNeeded
+        public  bool? Co2mDerivedChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2M_Derived_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("CO2M_Derived_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2M_Derived_Checks_Needed", value);
+                SetCheckParameter("CO2M_Derived_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// indicates whether or not the CO2M Derived Hourly Value checks were all run successfully
         /// </summary>
-        public static bool? Co2mDerivedHourlyStatus
+        public  bool? Co2mDerivedHourlyStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2M_Derived_Hourly_Status")));
+                return ((bool?)(GetCheckParameter("CO2M_Derived_Hourly_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2M_Derived_Hourly_Status", value);
+                SetCheckParameter("CO2M_Derived_Hourly_Status", value);
             }
         }
         
         /// <summary>
         /// Method Code of active CO2 Monitor Method entries for the current configuration during the current hour
         /// </summary>
-        public static string Co2MethodCode
+        public  string Co2MethodCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("CO2_Method_Code")));
+                return ((string)(GetCheckParameter("CO2_Method_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Method_Code", value);
+                SetCheckParameter("CO2_Method_Code", value);
             }
         }
         
         /// <summary>
         /// The CO2 Monitor Method Records By Hour Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodCo2Row> Co2MonitorMethodRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodCo2Row> Co2MonitorMethodRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("CO2_Monitor_Method_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("CO2_Monitor_Method_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2100,11 +2100,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("CO2_Monitor_Method_Records_By_Hour_Location", null);
+                    SetCheckParameter("CO2_Monitor_Method_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("CO2_Monitor_Method_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("CO2_Monitor_Method_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -2112,11 +2112,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// CO2 Monitor Span Records By Hour and Location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSpanRow> Co2MonitorSpanRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSpanRow> Co2MonitorSpanRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("CO2_Monitor_Span_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("CO2_Monitor_Span_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2130,11 +2130,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("CO2_Monitor_Span_Records_By_Hour_Location", null);
+                    SetCheckParameter("CO2_Monitor_Span_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("CO2_Monitor_Span_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("CO2_Monitor_Span_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -2142,11 +2142,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// CO2N Monitor Default Records for NFS fuel By Hour and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorDefaultCo2nNfsRow> Co2nMonitorDefaultRecordsForNfsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorDefaultCo2nNfsRow> Co2nMonitorDefaultRecordsForNfsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Co2n_Monitor_Default_Records_For_Nfs_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Co2n_Monitor_Default_Records_For_Nfs_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2160,11 +2160,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Co2n_Monitor_Default_Records_For_Nfs_By_Hour_Location", null);
+                    SetCheckParameter("Co2n_Monitor_Default_Records_For_Nfs_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Co2n_Monitor_Default_Records_For_Nfs_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Co2n_Monitor_Default_Records_For_Nfs_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -2172,71 +2172,71 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates if a CO2 RATA is required.
         /// </summary>
-        public static bool? Co2RataRequired
+        public  bool? Co2RataRequired
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("CO2_RATA_Required")));
+                return ((bool?)(GetCheckParameter("CO2_RATA_Required")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_RATA_Required", value);
+                SetCheckParameter("CO2_RATA_Required", value);
             }
         }
         
         /// <summary>
         /// The first quarter in the current year of the reporting period when CO2 method was active for the location.
         /// </summary>
-        public static int? Co2StartQuarter
+        public  int? Co2StartQuarter
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("CO2_Start_Quarter")));
+                return ((int?)(GetCheckParameter("CO2_Start_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CO2_Start_Quarter", value);
+                SetCheckParameter("CO2_Start_Quarter", value);
             }
         }
         
         /// <summary>
         /// Indicates if Missing Data MODCs are allowed in the MHV record.
         /// </summary>
-        public static bool? CompleteMhvRecordNeeded
+        public  bool? CompleteMhvRecordNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Complete_MHV_Record_Needed")));
+                return ((bool?)(GetCheckParameter("Complete_MHV_Record_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Complete_MHV_Record_Needed", value);
+                SetCheckParameter("Complete_MHV_Record_Needed", value);
             }
         }
         
         /// <summary>
         /// Constains the system operating supplemental data for system and reporting period combinations.
         /// </summary>
-        public static Dictionary<string, ComponentOperatingSupplementalData>[] ComponentOperatingSuppDataDictionaryArray
+        public  Dictionary<string, ComponentOperatingSupplementalData>[] ComponentOperatingSuppDataDictionaryArray
         {
             get
             {
-                return ((Dictionary<string, ComponentOperatingSupplementalData>[])(EmParameters.GetCheckParameter("Component_Operating_Supp_Data_Dictionary_Array")));
+                return ((Dictionary<string, ComponentOperatingSupplementalData>[])(GetCheckParameter("Component_Operating_Supp_Data_Dictionary_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Component_Operating_Supp_Data_Dictionary_Array", value);
+                SetCheckParameter("Component_Operating_Supp_Data_Dictionary_Array", value);
             }
         }
         
         /// <summary>
         /// The Component Operating Supplemental Data records for the current location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.ComponentOpSuppData> ComponentOperatingSuppDataRecordsForMpAndYear
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.ComponentOpSuppData> ComponentOperatingSuppDataRecordsForMpAndYear
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Component_Operating_Supp_Data_Records_for_MP_and_Year")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Component_Operating_Supp_Data_Records_for_MP_and_Year")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2250,11 +2250,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Component_Operating_Supp_Data_Records_for_MP_and_Year", null);
+                    SetCheckParameter("Component_Operating_Supp_Data_Records_for_MP_and_Year", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Component_Operating_Supp_Data_Records_for_MP_and_Year", value.SourceView);
+                    SetCheckParameter("Component_Operating_Supp_Data_Records_for_MP_and_Year", value.SourceView);
                 }
             }
         }
@@ -2262,11 +2262,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The component record currently being audited.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpComponentRow ComponentRecordForAudit
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpComponentRow ComponentRecordForAudit
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Component_Record_for_Audit")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Component_Record_for_Audit")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2280,11 +2280,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Component_Record_for_Audit", null);
+                    SetCheckParameter("Component_Record_for_Audit", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Component_Record_for_Audit", value.SourceRow);
+                    SetCheckParameter("Component_Record_for_Audit", value.SourceRow);
                 }
             }
         }
@@ -2292,11 +2292,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Component Records By Location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpComponentRow> ComponentRecordsByLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpComponentRow> ComponentRecordsByLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Component_Records_By_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Component_Records_By_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2310,11 +2310,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Component_Records_By_Location", null);
+                    SetCheckParameter("Component_Records_By_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Component_Records_By_Location", value.SourceView);
+                    SetCheckParameter("Component_Records_By_Location", value.SourceView);
                 }
             }
         }
@@ -2322,101 +2322,101 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the sum of recalculated heat input rate for all monitored locations in the monitoring plan during the current hour
         /// </summary>
-        public static decimal? ConfigHeatinputAccumulator
+        public  decimal? ConfigHeatinputAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Config_HeatInput_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Config_HeatInput_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Config_HeatInput_Accumulator", value);
+                SetCheckParameter("Config_HeatInput_Accumulator", value);
             }
         }
         
         /// <summary>
         /// Contains the sum of recalculated total heat input for all monitored locations in the monitoring plan during the current hour
         /// </summary>
-        public static decimal? ConfigHeatinputtimesoptimeAccumulator
+        public  decimal? ConfigHeatinputtimesoptimeAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Config_HeatInputTimesOpTime_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Config_HeatInputTimesOpTime_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Config_HeatInputTimesOpTime_Accumulator", value);
+                SetCheckParameter("Config_HeatInputTimesOpTime_Accumulator", value);
             }
         }
         
         /// <summary>
         /// Contains the sum of recalculated NOx Rate times heat input for all monitored locations in the monitoring plan during the current hour
         /// </summary>
-        public static decimal? ConfigNoxratetimesheatinputAccumulator
+        public  decimal? ConfigNoxratetimesheatinputAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Config_NOxRateTimesHeatInput_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Config_NOxRateTimesHeatInput_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Config_NOxRateTimesHeatInput_Accumulator", value);
+                SetCheckParameter("Config_NOxRateTimesHeatInput_Accumulator", value);
             }
         }
         
         /// <summary>
         /// The sum of the NOx emission rate times operating time at all multiple stacks wher the NOx emission rate is measured.
         /// </summary>
-        public static decimal? ConfigNoxratetimesoptimeAccumulator
+        public  decimal? ConfigNoxratetimesoptimeAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Config_NOxRateTimesOptime_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Config_NOxRateTimesOptime_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Config_NOxRateTimesOptime_Accumulator", value);
+                SetCheckParameter("Config_NOxRateTimesOptime_Accumulator", value);
             }
         }
         
         /// <summary>
         /// The total operating time at all multiple stacks where the NOx emission rate is determined.
         /// </summary>
-        public static decimal? ConfigOptimeAccumulator
+        public  decimal? ConfigOptimeAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Config_Optime_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Config_Optime_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Config_Optime_Accumulator", value);
+                SetCheckParameter("Config_Optime_Accumulator", value);
             }
         }
         
         /// <summary>
         /// Indicates whether a configuration change occured for the current emission report.
         /// </summary>
-        public static bool? ConfigurationChangeOccuredDurringQuarter
+        public  bool? ConfigurationChangeOccuredDurringQuarter
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Configuration_Change_Occured_Durring_Quarter")));
+                return ((bool?)(GetCheckParameter("Configuration_Change_Occured_Durring_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Configuration_Change_Occured_Durring_Quarter", value);
+                SetCheckParameter("Configuration_Change_Occured_Durring_Quarter", value);
             }
         }
         
         /// <summary>
         /// All quarterly emissions file record for any location in the configuration whose emissions file is being evaluated.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemEmissionsRow> ConfigurationEmissionsFile
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemEmissionsRow> ConfigurationEmissionsFile
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Configuration_Emissions_File")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Configuration_Emissions_File")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2430,11 +2430,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Configuration_Emissions_File", null);
+                    SetCheckParameter("Configuration_Emissions_File", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Configuration_Emissions_File", value.SourceView);
+                    SetCheckParameter("Configuration_Emissions_File", value.SourceView);
                 }
             }
         }
@@ -2442,26 +2442,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The number of fuels combusted at the common pipes in the configuration for the hour.
         /// </summary>
-        public static int? CpFuelCount
+        public  int? CpFuelCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("CP_Fuel_Count")));
+                return ((int?)(GetCheckParameter("CP_Fuel_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("CP_Fuel_Count", value);
+                SetCheckParameter("CP_Fuel_Count", value);
             }
         }
         
         /// <summary>
         /// This parameter contains the Test Type to Required Test Code cross check table.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.TestTypeToRequiredTestCodeRow> CrosscheckTesttypetorequiredtestcode
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.TestTypeToRequiredTestCodeRow> CrosscheckTesttypetorequiredtestcode
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("CrossCheck_TestTypeToRequiredTestCode")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("CrossCheck_TestTypeToRequiredTestCode")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -2475,11 +2475,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("CrossCheck_TestTypeToRequiredTestCode", null);
+                    SetCheckParameter("CrossCheck_TestTypeToRequiredTestCode", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("CrossCheck_TestTypeToRequiredTestCode", value.SourceView);
+                    SetCheckParameter("CrossCheck_TestTypeToRequiredTestCode", value.SourceView);
                 }
             }
         }
@@ -2487,30 +2487,30 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Stores the current accuracy test status as part of the Appendix D status checks.
         /// </summary>
-        public static string CurrentAccuracyStatus
+        public  string CurrentAccuracyStatus
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_Accuracy_Status")));
+                return ((string)(GetCheckParameter("Current_Accuracy_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Accuracy_Status", value);
+                SetCheckParameter("Current_Accuracy_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates what Analyzer Range is being used for a given Monitor Hourly record.  Used by the Linearity Status and Daily Calibration Status checks.
         /// </summary>
-        public static string CurrentAnalyzerRangeUsed
+        public  string CurrentAnalyzerRangeUsed
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_Analyzer_Range_Used")));
+                return ((string)(GetCheckParameter("Current_Analyzer_Range_Used")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Analyzer_Range_Used", value);
+                SetCheckParameter("Current_Analyzer_Range_Used", value);
             }
         }
         
@@ -2519,15 +2519,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Stored in Calc_APPE_Status in HFF record.
         /// </summary>
-        public static string CurrentAppendixDStatus
+        public  string CurrentAppendixDStatus
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_Appendix_D_Status")));
+                return ((string)(GetCheckParameter("Current_Appendix_D_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Appendix_D_Status", value);
+                SetCheckParameter("Current_Appendix_D_Status", value);
             }
         }
         
@@ -2536,26 +2536,26 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Stored in Calc_APPE_Status in DHV or HPFF record.
         /// </summary>
-        public static string CurrentAppendixEStatus
+        public  string CurrentAppendixEStatus
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_Appendix_E_Status")));
+                return ((string)(GetCheckParameter("Current_Appendix_E_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Appendix_E_Status", value);
+                SetCheckParameter("Current_Appendix_E_Status", value);
             }
         }
         
         /// <summary>
         /// The HourlyParamFuelFlow record identifier for checks that are common to both gas and oil fuel sources
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyParamFuelFlowRow CurrentAppENoxrRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyParamFuelFlowRow CurrentAppENoxrRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_App_E_Noxr_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_App_E_Noxr_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2569,11 +2569,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_App_E_Noxr_Record", null);
+                    SetCheckParameter("Current_App_E_Noxr_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_App_E_Noxr_Record", value.SourceRow);
+                    SetCheckParameter("Current_App_E_Noxr_Record", value.SourceRow);
                 }
             }
         }
@@ -2581,11 +2581,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Summary Value record with Parameter Code BCO2.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentBco2SummaryValueRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentBco2SummaryValueRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_BCO2_Summary_Value_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_BCO2_Summary_Value_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2599,11 +2599,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_BCO2_Summary_Value_Record", null);
+                    SetCheckParameter("Current_BCO2_Summary_Value_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_BCO2_Summary_Value_Record", value.SourceRow);
+                    SetCheckParameter("Current_BCO2_Summary_Value_Record", value.SourceRow);
                 }
             }
         }
@@ -2611,26 +2611,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The average value of the previous and subsequent measured hour before and measured hour after for CO2C in the DHV records.
         /// </summary>
-        public static decimal? CurrentCo2cDhvHbhaValue
+        public  decimal? CurrentCo2cDhvHbhaValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_CO2C_DHV_HBHA_Value")));
+                return ((decimal?)(GetCheckParameter("Current_CO2C_DHV_HBHA_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_CO2C_DHV_HBHA_Value", value);
+                SetCheckParameter("Current_CO2C_DHV_HBHA_Value", value);
             }
         }
         
         /// <summary>
         /// The Derived Hourly Value Record associated with CO2 Mass for the current hour
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueCo2Row CurrentCo2ConcDerivedHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueCo2Row CurrentCo2ConcDerivedHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_CO2_Conc_Derived_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_CO2_Conc_Derived_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2644,11 +2644,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_CO2_Conc_Derived_Hourly_Record", null);
+                    SetCheckParameter("Current_CO2_Conc_Derived_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_CO2_Conc_Derived_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_CO2_Conc_Derived_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -2656,11 +2656,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Refers to the MonitorHourlyValueData record associated with CO2 Concentration for missing data when there are two CO2C MHV records for the current hour 
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueCo2cRow CurrentCo2ConcMissingDataMonitorHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueCo2cRow CurrentCo2ConcMissingDataMonitorHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_CO2_Conc_Missing_Data_Monitor_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_CO2_Conc_Missing_Data_Monitor_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2674,11 +2674,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_CO2_Conc_Missing_Data_Monitor_Hourly_Record", null);
+                    SetCheckParameter("Current_CO2_Conc_Missing_Data_Monitor_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_CO2_Conc_Missing_Data_Monitor_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_CO2_Conc_Missing_Data_Monitor_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -2686,11 +2686,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Refers to the MonitorHourlyValueData record associated with CO2 Concentration for the current hour
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueCo2cRow CurrentCo2ConcMonitorHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueCo2cRow CurrentCo2ConcMonitorHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_CO2_Conc_Monitor_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_CO2_Conc_Monitor_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2704,11 +2704,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_CO2_Conc_Monitor_Hourly_Record", null);
+                    SetCheckParameter("Current_CO2_Conc_Monitor_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_CO2_Conc_Monitor_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_CO2_Conc_Monitor_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -2716,11 +2716,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Daily Emission Data record associated with CO2 Mass for the current hour
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDailyEmissionRow CurrentCo2MassDailyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDailyEmissionRow CurrentCo2MassDailyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_CO2_Mass_Daily_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_CO2_Mass_Daily_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2734,11 +2734,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_CO2_Mass_Daily_Record", null);
+                    SetCheckParameter("Current_CO2_Mass_Daily_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_CO2_Mass_Daily_Record", value.SourceRow);
+                    SetCheckParameter("Current_CO2_Mass_Daily_Record", value.SourceRow);
                 }
             }
         }
@@ -2746,11 +2746,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The CO2M record from SummaryValueData for this location for the reporting period.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentCo2SummaryValueRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentCo2SummaryValueRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_CO2_Summary_Value_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_CO2_Summary_Value_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2764,11 +2764,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_CO2_Summary_Value_Record", null);
+                    SetCheckParameter("Current_CO2_Summary_Value_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_CO2_Summary_Value_Record", value.SourceRow);
+                    SetCheckParameter("Current_CO2_Summary_Value_Record", value.SourceRow);
                 }
             }
         }
@@ -2776,11 +2776,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Daily Test Summary and Daily Calibration record for the daily calibration test being evaluated and associated location and component data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.DailyCalibrationTestPeriodData CurrentDailyCalibrationTest
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.DailyCalibrationTestPeriodData CurrentDailyCalibrationTest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Daily_Calibration_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Daily_Calibration_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2794,11 +2794,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Daily_Calibration_Test", null);
+                    SetCheckParameter("Current_Daily_Calibration_Test", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Daily_Calibration_Test", value.SourceRow);
+                    SetCheckParameter("Current_Daily_Calibration_Test", value.SourceRow);
                 }
             }
         }
@@ -2806,26 +2806,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Stores the current daily calibration status throughout the Daily Calibration Status checks.
         /// </summary>
-        public static string CurrentDailyCalStatus
+        public  string CurrentDailyCalStatus
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_Daily_Cal_Status")));
+                return ((string)(GetCheckParameter("Current_Daily_Cal_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Daily_Cal_Status", value);
+                SetCheckParameter("Current_Daily_Cal_Status", value);
             }
         }
         
         /// <summary>
         /// The Daily Test Summary record for the test being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwEmDailyTestSummaryRow CurrentDailyEmissionTest
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwEmDailyTestSummaryRow CurrentDailyEmissionTest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Daily_Emission_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Daily_Emission_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2839,11 +2839,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Daily_Emission_Test", null);
+                    SetCheckParameter("Current_Daily_Emission_Test", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Daily_Emission_Test", value.SourceRow);
+                    SetCheckParameter("Current_Daily_Emission_Test", value.SourceRow);
                 }
             }
         }
@@ -2851,11 +2851,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The DailyFuel record being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDailyFuelRow CurrentDailyFuelRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDailyFuelRow CurrentDailyFuelRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Daily_Fuel_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Daily_Fuel_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2869,11 +2869,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Daily_Fuel_Record", null);
+                    SetCheckParameter("Current_Daily_Fuel_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Daily_Fuel_Record", value.SourceRow);
+                    SetCheckParameter("Current_Daily_Fuel_Record", value.SourceRow);
                 }
             }
         }
@@ -2881,26 +2881,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The current operating date and hour combined.    
         /// </summary>
-        public static DateTime? CurrentDateHour
+        public  DateTime? CurrentDateHour
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("Current_Date_Hour")));
+                return ((DateTime?)(GetCheckParameter("Current_Date_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Date_Hour", value);
+                SetCheckParameter("Current_Date_Hour", value);
             }
         }
         
         /// <summary>
         /// The current HPFF DENSOIL record being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyParamFuelFlowRow CurrentDensityRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyParamFuelFlowRow CurrentDensityRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Density_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Density_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2914,11 +2914,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Density_Record", null);
+                    SetCheckParameter("Current_Density_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Density_Record", value.SourceRow);
+                    SetCheckParameter("Current_Density_Record", value.SourceRow);
                 }
             }
         }
@@ -2926,41 +2926,41 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The calculated adjusted value for NOXR based on MODC Code.
         /// </summary>
-        public static decimal? CurrentDhvCalculatedAdjustedValue
+        public  decimal? CurrentDhvCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_DHV_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("Current_DHV_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_DHV_Calculated_Adjusted_Value", value);
+                SetCheckParameter("Current_DHV_Calculated_Adjusted_Value", value);
             }
         }
         
         /// <summary>
         /// The ParameterCode in the default table for the missing data maximum or minimum default value (as applicable)  associated with the current DHV record being evaluated.
         /// </summary>
-        public static decimal? CurrentDhvDefaultParameter
+        public  decimal? CurrentDhvDefaultParameter
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_DHV_Default_Parameter")));
+                return ((decimal?)(GetCheckParameter("Current_DHV_Default_Parameter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_DHV_Default_Parameter", value);
+                SetCheckParameter("Current_DHV_Default_Parameter", value);
             }
         }
         
         /// <summary>
         /// The Monitor Formula record for the FormulaID in the DHV record being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorFormulaRow CurrentDhvFormulaRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorFormulaRow CurrentDhvFormulaRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_DHV_Formula_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_DHV_Formula_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2974,11 +2974,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_DHV_Formula_Record", null);
+                    SetCheckParameter("Current_DHV_Formula_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_DHV_Formula_Record", value.SourceRow);
+                    SetCheckParameter("Current_DHV_Formula_Record", value.SourceRow);
                 }
             }
         }
@@ -2986,86 +2986,86 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates if the current DHV being evaluated uses fuel specific missing data.
         /// </summary>
-        public static bool? CurrentDhvFuelSpecificHour
+        public  bool? CurrentDhvFuelSpecificHour
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Current_DHV_Fuel_Specific_Hour")));
+                return ((bool?)(GetCheckParameter("Current_DHV_Fuel_Specific_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_DHV_Fuel_Specific_Hour", value);
+                SetCheckParameter("Current_DHV_Fuel_Specific_Hour", value);
             }
         }
         
         /// <summary>
         /// The average value of the previous and subsequent measured hour before and measured hour after.
         /// </summary>
-        public static decimal? CurrentDhvHbhaValue
+        public  decimal? CurrentDhvHbhaValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_DHV_HBHA_Value")));
+                return ((decimal?)(GetCheckParameter("Current_DHV_HBHA_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_DHV_HBHA_Value", value);
+                SetCheckParameter("Current_DHV_HBHA_Value", value);
             }
         }
         
         /// <summary>
         /// The maximum or minimum value (as applicable) from the span or default table for the parameter for the current DHV record being evaluated.
         /// </summary>
-        public static decimal? CurrentDhvMaxMinValue
+        public  decimal? CurrentDhvMaxMinValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_DHV_Max_Min_Value")));
+                return ((decimal?)(GetCheckParameter("Current_DHV_Max_Min_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_DHV_Max_Min_Value", value);
+                SetCheckParameter("Current_DHV_Max_Min_Value", value);
             }
         }
         
         /// <summary>
         /// The monitoring methodology used to determine the emissions or heat input value.
         /// </summary>
-        public static string CurrentDhvMethod
+        public  string CurrentDhvMethod
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_DHV_Method")));
+                return ((string)(GetCheckParameter("Current_DHV_Method")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_DHV_Method", value);
+                SetCheckParameter("Current_DHV_Method", value);
             }
         }
         
         /// <summary>
         /// The FuelCode in the default record which contains the maximum or minimum value of the parameter in the DHV record.
         /// </summary>
-        public static string CurrentDhvMissingDataFuel
+        public  string CurrentDhvMissingDataFuel
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_DHV_Missing_Data_Fuel")));
+                return ((string)(GetCheckParameter("Current_DHV_Missing_Data_Fuel")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_DHV_Missing_Data_Fuel", value);
+                SetCheckParameter("Current_DHV_Missing_Data_Fuel", value);
             }
         }
         
         /// <summary>
         /// The Monitor System record for the MonitoringSystemID in the DHV record being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemRow CurrentDhvMonSysRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemRow CurrentDhvMonSysRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_DHV_Mon_Sys_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_DHV_Mon_Sys_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3079,11 +3079,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_DHV_Mon_Sys_Record", null);
+                    SetCheckParameter("Current_DHV_Mon_Sys_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_DHV_Mon_Sys_Record", value.SourceRow);
+                    SetCheckParameter("Current_DHV_Mon_Sys_Record", value.SourceRow);
                 }
             }
         }
@@ -3091,41 +3091,41 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The equation code to calculate emissions or heat input from multiple fuels for AD or AE.
         /// </summary>
-        public static string CurrentDhvMultipleFuelEquationCode
+        public  string CurrentDhvMultipleFuelEquationCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_DHV_Multiple_Fuel_Equation_Code")));
+                return ((string)(GetCheckParameter("Current_DHV_Multiple_Fuel_Equation_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_DHV_Multiple_Fuel_Equation_Code", value);
+                SetCheckParameter("Current_DHV_Multiple_Fuel_Equation_Code", value);
             }
         }
         
         /// <summary>
         /// Identifies the parameter and moisture basis of the current DHV record being evaluated.
         /// </summary>
-        public static string CurrentDhvParameter
+        public  string CurrentDhvParameter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_DHV_Parameter")));
+                return ((string)(GetCheckParameter("Current_DHV_Parameter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_DHV_Parameter", value);
+                SetCheckParameter("Current_DHV_Parameter", value);
             }
         }
         
         /// <summary>
         /// The current DHV record being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow CurrentDhvRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow CurrentDhvRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_DHV_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_DHV_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3139,11 +3139,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_DHV_Record", null);
+                    SetCheckParameter("Current_DHV_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_DHV_Record", value.SourceRow);
+                    SetCheckParameter("Current_DHV_Record", value.SourceRow);
                 }
             }
         }
@@ -3151,41 +3151,41 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates if the value in the DHV record can be recalculated.
         /// </summary>
-        public static bool? CurrentDhvRecordValid
+        public  bool? CurrentDhvRecordValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Current_DHV_Record_Valid")));
+                return ((bool?)(GetCheckParameter("Current_DHV_Record_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_DHV_Record_Valid", value);
+                SetCheckParameter("Current_DHV_Record_Valid", value);
             }
         }
         
         /// <summary>
         /// The valid SystemTypeCode associated with the current DHV record being evaluated.
         /// </summary>
-        public static string CurrentDhvSystemType
+        public  string CurrentDhvSystemType
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_DHV_System_Type")));
+                return ((string)(GetCheckParameter("Current_DHV_System_Type")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_DHV_System_Type", value);
+                SetCheckParameter("Current_DHV_System_Type", value);
             }
         }
         
         /// <summary>
         /// Collection of Data Elements for the EmissionComment being evaluated and contained in the Hourly Submission Comment table.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlySubmissionCommentRow CurrentEmissionComment
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlySubmissionCommentRow CurrentEmissionComment
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Emission_Comment")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Emission_Comment")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3199,11 +3199,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Emission_Comment", null);
+                    SetCheckParameter("Current_Emission_Comment", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Emission_Comment", value.SourceRow);
+                    SetCheckParameter("Current_Emission_Comment", value.SourceRow);
                 }
             }
         }
@@ -3211,26 +3211,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Stack, Pipe, or Unit
         /// </summary>
-        public static string CurrentEntityType
+        public  string CurrentEntityType
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_Entity_Type")));
+                return ((string)(GetCheckParameter("Current_Entity_Type")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Entity_Type", value);
+                SetCheckParameter("Current_Entity_Type", value);
             }
         }
         
         /// <summary>
         /// The Stack Flow record being evaluated for the Current Date and Current Hour
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueFlowRow CurrentFlowMonitorHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueFlowRow CurrentFlowMonitorHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Flow_Monitor_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Flow_Monitor_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3244,11 +3244,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Flow_Monitor_Hourly_Record", null);
+                    SetCheckParameter("Current_Flow_Monitor_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Flow_Monitor_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_Flow_Monitor_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -3256,11 +3256,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The current flow-to-load check for the current hour.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow CurrentFlowToLoadStatusCheck
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow CurrentFlowToLoadStatusCheck
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Flow_to_Load_Status_Check")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Flow_to_Load_Status_Check")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3274,11 +3274,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Flow_to_Load_Status_Check", null);
+                    SetCheckParameter("Current_Flow_to_Load_Status_Check", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Flow_to_Load_Status_Check", value.SourceRow);
+                    SetCheckParameter("Current_Flow_to_Load_Status_Check", value.SourceRow);
                 }
             }
         }
@@ -3286,11 +3286,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The current HourlyFuelFlowData record.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyFuelFlowRow CurrentFuelFlowRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyFuelFlowRow CurrentFuelFlowRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Fuel_Flow_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Fuel_Flow_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3304,11 +3304,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Fuel_Flow_Record", null);
+                    SetCheckParameter("Current_Fuel_Flow_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Fuel_Flow_Record", value.SourceRow);
+                    SetCheckParameter("Current_Fuel_Flow_Record", value.SourceRow);
                 }
             }
         }
@@ -3316,26 +3316,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Fuel Group of the Fuel Flow record being evaluated (OIL or GAS)
         /// </summary>
-        public static string CurrentFuelGroup
+        public  string CurrentFuelGroup
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_Fuel_Group")));
+                return ((string)(GetCheckParameter("Current_Fuel_Group")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Fuel_Group", value);
+                SetCheckParameter("Current_Fuel_Group", value);
             }
         }
         
         /// <summary>
         /// The current HPFF GCV record being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyParamFuelFlowRow CurrentGcvRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyParamFuelFlowRow CurrentGcvRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_GCV_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_GCV_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3349,11 +3349,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_GCV_Record", null);
+                    SetCheckParameter("Current_GCV_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_GCV_Record", value.SourceRow);
+                    SetCheckParameter("Current_GCV_Record", value.SourceRow);
                 }
             }
         }
@@ -3361,11 +3361,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The record in DerivedHourlyValueData with parameter "H2O" currently being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueH2oRow CurrentH2oDerivedHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueH2oRow CurrentH2oDerivedHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_H2O_Derived_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_H2O_Derived_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3379,11 +3379,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_H2O_Derived_Hourly_Record", null);
+                    SetCheckParameter("Current_H2O_Derived_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_H2O_Derived_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_H2O_Derived_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -3391,26 +3391,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The average value of the previous and subsequent measured hour before and measured hour after for H2O in the DHV records.
         /// </summary>
-        public static decimal? CurrentH2oDhvHbhaValue
+        public  decimal? CurrentH2oDhvHbhaValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_H2O_DHV_HBHA_Value")));
+                return ((decimal?)(GetCheckParameter("Current_H2O_DHV_HBHA_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_H2O_DHV_HBHA_Value", value);
+                SetCheckParameter("Current_H2O_DHV_HBHA_Value", value);
             }
         }
         
         /// <summary>
         /// The record in MonitorHourlyValueData with parameter "H2O" currently being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueH2oRow CurrentH2oMonitorHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueH2oRow CurrentH2oMonitorHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_H2O_Monitor_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_H2O_Monitor_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3424,11 +3424,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_H2O_Monitor_Hourly_Record", null);
+                    SetCheckParameter("Current_H2O_Monitor_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_H2O_Monitor_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_H2O_Monitor_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -3436,11 +3436,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The DerivedHourlyValue record reported for HI or HIT for the current location during the current hour
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueHiRow CurrentHeatInputDerivedHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueHiRow CurrentHeatInputDerivedHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Heat_Input_Derived_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Heat_Input_Derived_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3454,11 +3454,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Heat_Input_Derived_Hourly_Record", null);
+                    SetCheckParameter("Current_Heat_Input_Derived_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Heat_Input_Derived_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_Heat_Input_Derived_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -3466,11 +3466,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The DerivedHourlyValue record reported for the current location during the current hour used to report apportioned or summed heat input.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow CurrentHiApportionmentRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow CurrentHiApportionmentRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_HI_Apportionment_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_HI_Apportionment_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3484,11 +3484,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_HI_Apportionment_Record", null);
+                    SetCheckParameter("Current_HI_Apportionment_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_HI_Apportionment_Record", value.SourceRow);
+                    SetCheckParameter("Current_HI_Apportionment_Record", value.SourceRow);
                 }
             }
         }
@@ -3496,26 +3496,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Identifies the location type of the location in the MP configuration for which HI is being apportioned or summed.
         /// </summary>
-        public static string CurrentHiEntityType
+        public  string CurrentHiEntityType
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_HI_Entity_Type")));
+                return ((string)(GetCheckParameter("Current_HI_Entity_Type")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_HI_Entity_Type", value);
+                SetCheckParameter("Current_HI_Entity_Type", value);
             }
         }
         
         /// <summary>
         /// The HIT record from SummaryValueData for this location for the reporting period.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentHiSummaryValueRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentHiSummaryValueRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_HI_Summary_Value_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_HI_Summary_Value_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3529,11 +3529,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_HI_Summary_Value_Record", null);
+                    SetCheckParameter("Current_HI_Summary_Value_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_HI_Summary_Value_Record", value.SourceRow);
+                    SetCheckParameter("Current_HI_Summary_Value_Record", value.SourceRow);
                 }
             }
         }
@@ -3541,26 +3541,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Defines whether H2O Inclusive Checks should work with the MonitorHourlyValueData table or the DerivedHourlyValueData table
         /// </summary>
-        public static object CurrentHourlyH2oTableReference
+        public  object CurrentHourlyH2oTableReference
         {
             get
             {
-                return ((object)(EmParameters.GetCheckParameter("Current_Hourly_H2O_Table_Reference")));
+                return ((object)(GetCheckParameter("Current_Hourly_H2O_Table_Reference")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Hourly_H2O_Table_Reference", value);
+                SetCheckParameter("Current_Hourly_H2O_Table_Reference", value);
             }
         }
         
         /// <summary>
         /// The OperatingTime field in the HourlyOperatingData table for the Current Hour
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow CurrentHourlyOpRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow CurrentHourlyOpRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Hourly_Op_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Hourly_Op_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3574,11 +3574,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Hourly_Op_Record", null);
+                    SetCheckParameter("Current_Hourly_Op_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Hourly_Op_Record", value.SourceRow);
+                    SetCheckParameter("Current_Hourly_Op_Record", value.SourceRow);
                 }
             }
         }
@@ -3586,11 +3586,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The current hourly record (MHV or DHV) record to be used for the RATA Status evaluation.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow CurrentHourlyRecordForRataStatus
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow CurrentHourlyRecordForRataStatus
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Hourly_Record_for_RATA_Status")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Hourly_Record_for_RATA_Status")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3604,11 +3604,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Hourly_Record_for_RATA_Status", null);
+                    SetCheckParameter("Current_Hourly_Record_for_RATA_Status", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Hourly_Record_for_RATA_Status", value.SourceRow);
+                    SetCheckParameter("Current_Hourly_Record_for_RATA_Status", value.SourceRow);
                 }
             }
         }
@@ -3618,26 +3618,26 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Stored in Calc_Line_Status in MHV record.
         /// </summary>
-        public static string CurrentLinearityStatus
+        public  string CurrentLinearityStatus
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_Linearity_Status")));
+                return ((string)(GetCheckParameter("Current_Linearity_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Linearity_Status", value);
+                SetCheckParameter("Current_Linearity_Status", value);
             }
         }
         
         /// <summary>
         /// The current record being evaluated in the HourlyOperatingData table for the LME unit.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow CurrentLmeHourlyOpRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow CurrentLmeHourlyOpRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_LME_Hourly_Op_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_LME_Hourly_Op_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3651,11 +3651,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_LME_Hourly_Op_Record", null);
+                    SetCheckParameter("Current_LME_Hourly_Op_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_LME_Hourly_Op_Record", value.SourceRow);
+                    SetCheckParameter("Current_LME_Hourly_Op_Record", value.SourceRow);
                 }
             }
         }
@@ -3663,26 +3663,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The number of locations associated with the current monitoring plan
         /// </summary>
-        public static int? CurrentLocationCount
+        public  int? CurrentLocationCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Current_Location_Count")));
+                return ((int?)(GetCheckParameter("Current_Location_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Location_Count", value);
+                SetCheckParameter("Current_Location_Count", value);
             }
         }
         
         /// <summary>
         /// The current long term fuel flow record being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemLongTermFuelFlowRow CurrentLtffRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemLongTermFuelFlowRow CurrentLtffRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_LTFF_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_LTFF_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3696,11 +3696,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_LTFF_Record", null);
+                    SetCheckParameter("Current_LTFF_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_LTFF_Record", value.SourceRow);
+                    SetCheckParameter("Current_LTFF_Record", value.SourceRow);
                 }
             }
         }
@@ -3708,191 +3708,191 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Constains the Maximum Load Value for the current hour and locations.
         /// </summary>
-        public static int? CurrentMaximumLoadValue
+        public  int? CurrentMaximumLoadValue
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Current_Maximum_Load_Value")));
+                return ((int?)(GetCheckParameter("Current_Maximum_Load_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Maximum_Load_Value", value);
+                SetCheckParameter("Current_Maximum_Load_Value", value);
             }
         }
         
         /// <summary>
         /// The Data and Maps hourly measure code for the derived value being calculated.
         /// </summary>
-        public static string CurrentMeasureCode
+        public  string CurrentMeasureCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_Measure_Code")));
+                return ((string)(GetCheckParameter("Current_Measure_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Measure_Code", value);
+                SetCheckParameter("Current_Measure_Code", value);
             }
         }
         
         /// <summary>
         /// The calculated adjusted value for SO2C, NOXC, and FLOW based on MODC Code.
         /// </summary>
-        public static decimal? CurrentMhvCalculatedAdjustedValue
+        public  decimal? CurrentMhvCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_MHV_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("Current_MHV_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_Calculated_Adjusted_Value", value);
+                SetCheckParameter("Current_MHV_Calculated_Adjusted_Value", value);
             }
         }
         
         /// <summary>
         /// The valid ComponentTypeCode associated with the current MHV record being evaluated.
         /// </summary>
-        public static string CurrentMhvComponentType
+        public  string CurrentMhvComponentType
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_MHV_Component_Type")));
+                return ((string)(GetCheckParameter("Current_MHV_Component_Type")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_Component_Type", value);
+                SetCheckParameter("Current_MHV_Component_Type", value);
             }
         }
         
         /// <summary>
         /// The ParameterCode in the default table for the missing data maximum or minimum default value (as applicable)  associated with the current MHV record being evaluated.
         /// </summary>
-        public static string CurrentMhvDefaultParameter
+        public  string CurrentMhvDefaultParameter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_MHV_Default_Parameter")));
+                return ((string)(GetCheckParameter("Current_MHV_Default_Parameter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_Default_Parameter", value);
+                SetCheckParameter("Current_MHV_Default_Parameter", value);
             }
         }
         
         /// <summary>
         /// Contains information about duplicate MHV records.
         /// </summary>
-        public static string CurrentMhvDuplicate
+        public  string CurrentMhvDuplicate
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_MHV_Duplicate")));
+                return ((string)(GetCheckParameter("Current_MHV_Duplicate")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_Duplicate", value);
+                SetCheckParameter("Current_MHV_Duplicate", value);
             }
         }
         
         /// <summary>
         /// Contains the delimited list of fields that should be empty but contain reported values.
         /// </summary>
-        public static string CurrentMhvExtraneousFields
+        public  string CurrentMhvExtraneousFields
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_MHV_Extraneous_Fields")));
+                return ((string)(GetCheckParameter("Current_MHV_Extraneous_Fields")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_Extraneous_Fields", value);
+                SetCheckParameter("Current_MHV_Extraneous_Fields", value);
             }
         }
         
         /// <summary>
         /// Indicates if the current MHV being evaluated uses fuel specific missing data.
         /// </summary>
-        public static bool? CurrentMhvFuelSpecificHour
+        public  bool? CurrentMhvFuelSpecificHour
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Current_MHV_Fuel_Specific_Hour")));
+                return ((bool?)(GetCheckParameter("Current_MHV_Fuel_Specific_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_Fuel_Specific_Hour", value);
+                SetCheckParameter("Current_MHV_Fuel_Specific_Hour", value);
             }
         }
         
         /// <summary>
         /// The average value of the previous and subsequent hour before and hour after.
         /// </summary>
-        public static decimal? CurrentMhvHbhaValue
+        public  decimal? CurrentMhvHbhaValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_MHV_HBHA_Value")));
+                return ((decimal?)(GetCheckParameter("Current_MHV_HBHA_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_HBHA_Value", value);
+                SetCheckParameter("Current_MHV_HBHA_Value", value);
             }
         }
         
         /// <summary>
         /// The maximum or minimum value (as applicable) from the span or default table for the parameter for the current MHV record being evaluated.
         /// </summary>
-        public static decimal? CurrentMhvMaxMinValue
+        public  decimal? CurrentMhvMaxMinValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_MHV_Max_Min_Value")));
+                return ((decimal?)(GetCheckParameter("Current_MHV_Max_Min_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_Max_Min_Value", value);
+                SetCheckParameter("Current_MHV_Max_Min_Value", value);
             }
         }
         
         /// <summary>
         /// Contains information about missing MHV records.
         /// </summary>
-        public static string CurrentMhvMissing
+        public  string CurrentMhvMissing
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_MHV_Missing")));
+                return ((string)(GetCheckParameter("Current_MHV_Missing")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_Missing", value);
+                SetCheckParameter("Current_MHV_Missing", value);
             }
         }
         
         /// <summary>
         /// The FuelCode in the default record which contains the maximum or minimum value of the parameter in the MHV record.
         /// </summary>
-        public static string CurrentMhvMissingDataFuel
+        public  string CurrentMhvMissingDataFuel
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_MHV_Missing_Data_Fuel")));
+                return ((string)(GetCheckParameter("Current_MHV_Missing_Data_Fuel")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_Missing_Data_Fuel", value);
+                SetCheckParameter("Current_MHV_Missing_Data_Fuel", value);
             }
         }
         
         /// <summary>
         /// The Monitor System record for the MonitoringSystemID in the MHV record being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemRow CurrentMhvMonSysRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemRow CurrentMhvMonSysRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_MHV_Mon_Sys_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_MHV_Mon_Sys_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3906,11 +3906,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_MHV_Mon_Sys_Record", null);
+                    SetCheckParameter("Current_MHV_Mon_Sys_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_MHV_Mon_Sys_Record", value.SourceRow);
+                    SetCheckParameter("Current_MHV_Mon_Sys_Record", value.SourceRow);
                 }
             }
         }
@@ -3918,56 +3918,56 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Identifies the parameter and moisture basis of the current MHV record being evaluated.
         /// </summary>
-        public static string CurrentMhvParameter
+        public  string CurrentMhvParameter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_MHV_Parameter")));
+                return ((string)(GetCheckParameter("Current_MHV_Parameter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_Parameter", value);
+                SetCheckParameter("Current_MHV_Parameter", value);
             }
         }
         
         /// <summary>
         /// Identifies the parameter and moisture basis of the current MHV record being evaluated.
         /// </summary>
-        public static string CurrentMhvParameterDescription
+        public  string CurrentMhvParameterDescription
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_MHV_Parameter_Description")));
+                return ((string)(GetCheckParameter("Current_MHV_Parameter_Description")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_Parameter_Description", value);
+                SetCheckParameter("Current_MHV_Parameter_Description", value);
             }
         }
         
         /// <summary>
         /// Inidicates whether the parameter value reported with a record is valid.
         /// </summary>
-        public static bool? CurrentMhvParameterStatus
+        public  bool? CurrentMhvParameterStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Current_MHV_Parameter_Status")));
+                return ((bool?)(GetCheckParameter("Current_MHV_Parameter_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_Parameter_Status", value);
+                SetCheckParameter("Current_MHV_Parameter_Status", value);
             }
         }
         
         /// <summary>
         /// The current MHV record being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueRow CurrentMhvRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueRow CurrentMhvRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_MHV_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_MHV_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -3981,11 +3981,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_MHV_Record", null);
+                    SetCheckParameter("Current_MHV_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_MHV_Record", value.SourceRow);
+                    SetCheckParameter("Current_MHV_Record", value.SourceRow);
                 }
             }
         }
@@ -3993,41 +3993,41 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The component type and scale of the span record which contains the maximum value of the parameter in the MHV record.
         /// </summary>
-        public static string CurrentMhvSpanDescription
+        public  string CurrentMhvSpanDescription
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_MHV_Span_Description")));
+                return ((string)(GetCheckParameter("Current_MHV_Span_Description")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_Span_Description", value);
+                SetCheckParameter("Current_MHV_Span_Description", value);
             }
         }
         
         /// <summary>
         /// The valid SystemTypeCode associated with the current MHV record being evaluated.
         /// </summary>
-        public static string CurrentMhvSystemType
+        public  string CurrentMhvSystemType
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_MHV_System_Type")));
+                return ((string)(GetCheckParameter("Current_MHV_System_Type")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_MHV_System_Type", value);
+                SetCheckParameter("Current_MHV_System_Type", value);
             }
         }
         
         /// <summary>
         /// The MonitoringPlan record for which hourly data is currently being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorPlanRow CurrentMonitoringPlanRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorPlanRow CurrentMonitoringPlanRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Monitoring_Plan_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Monitoring_Plan_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4041,11 +4041,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Monitoring_Plan_Record", null);
+                    SetCheckParameter("Current_Monitoring_Plan_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Monitoring_Plan_Record", value.SourceRow);
+                    SetCheckParameter("Current_Monitoring_Plan_Record", value.SourceRow);
                 }
             }
         }
@@ -4055,41 +4055,41 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in emission report as set by the main processing loop.
         /// </summary>
-        public static string CurrentMonitorLocationId
+        public  string CurrentMonitorLocationId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_Monitor_Location_Id")));
+                return ((string)(GetCheckParameter("Current_Monitor_Location_Id")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Monitor_Location_Id", value);
+                SetCheckParameter("Current_Monitor_Location_Id", value);
             }
         }
         
         /// <summary>
         /// The position of the current Monitor Plan Location record in the list of locations for a monitoring plan.
         /// </summary>
-        public static int? CurrentMonitorPlanLocationPostion
+        public  int? CurrentMonitorPlanLocationPostion
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Current_Monitor_Plan_Location_Postion")));
+                return ((int?)(GetCheckParameter("Current_Monitor_Plan_Location_Postion")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Monitor_Plan_Location_Postion", value);
+                SetCheckParameter("Current_Monitor_Plan_Location_Postion", value);
             }
         }
         
         /// <summary>
         /// The current location in the current monitoring plan.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwCeMpMonitorLocationRow CurrentMonitorPlanLocationRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwCeMpMonitorLocationRow CurrentMonitorPlanLocationRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Monitor_Plan_Location_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Monitor_Plan_Location_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4103,11 +4103,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Monitor_Plan_Location_Record", null);
+                    SetCheckParameter("Current_Monitor_Plan_Location_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Monitor_Plan_Location_Record", value.SourceRow);
+                    SetCheckParameter("Current_Monitor_Plan_Location_Record", value.SourceRow);
                 }
             }
         }
@@ -4115,26 +4115,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The month of the BeginDate in the Hourly Op Data record being evaluated.
         /// </summary>
-        public static string CurrentMonth
+        public  string CurrentMonth
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_Month")));
+                return ((string)(GetCheckParameter("Current_Month")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Month", value);
+                SetCheckParameter("Current_Month", value);
             }
         }
         
         /// <summary>
         /// The DerivedHourlyValue record associated with NOx Mass for the current location during the current date and hour when NOX Mass is calculated from apportioned or summed heat input.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow CurrentNoxApportionmentBasedRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow CurrentNoxApportionmentBasedRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_NOX_Apportionment_Based_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_NOX_Apportionment_Based_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4148,11 +4148,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_NOX_Apportionment_Based_Record", null);
+                    SetCheckParameter("Current_NOX_Apportionment_Based_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_NOX_Apportionment_Based_Record", value.SourceRow);
+                    SetCheckParameter("Current_NOX_Apportionment_Based_Record", value.SourceRow);
                 }
             }
         }
@@ -4160,11 +4160,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The current NOx Concentration record from MonitorHourlyValueData for this location at the Current Hour
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueRow CurrentNoxConcMonitorHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueRow CurrentNoxConcMonitorHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Nox_Conc_Monitor_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Nox_Conc_Monitor_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4178,11 +4178,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Nox_Conc_Monitor_Hourly_Record", null);
+                    SetCheckParameter("Current_Nox_Conc_Monitor_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Nox_Conc_Monitor_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_Nox_Conc_Monitor_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -4193,26 +4193,26 @@ namespace ECMPS.Checks.Em.Parameters
         ///Field to be updated: Current MHV Record.ApplicableBiasAdjustmentFactor
         ///
         /// </summary>
-        public static decimal? CurrentNoxcSystemBaf
+        public  decimal? CurrentNoxcSystemBaf
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_NOXC_System_BAF")));
+                return ((decimal?)(GetCheckParameter("Current_NOXC_System_BAF")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_NOXC_System_BAF", value);
+                SetCheckParameter("Current_NOXC_System_BAF", value);
             }
         }
         
         /// <summary>
         /// The DerivedHourlyValue record with parameter NOX or NOXM for the current location during the current date and hour
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueNoxRow CurrentNoxMassDerivedHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueNoxRow CurrentNoxMassDerivedHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_NOx_Mass_Derived_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_NOx_Mass_Derived_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4226,11 +4226,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_NOx_Mass_Derived_Hourly_Record", null);
+                    SetCheckParameter("Current_NOx_Mass_Derived_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_NOx_Mass_Derived_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_NOx_Mass_Derived_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -4238,11 +4238,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The active Monitor Method record for the Current Facility/Unit during the current date and hour for NOx Mass calculations
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodNoxRow CurrentNoxMassMonitorMethodRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodNoxRow CurrentNoxMassMonitorMethodRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_NOx_Mass_Monitor_Method_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_NOx_Mass_Monitor_Method_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4256,11 +4256,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_NOx_Mass_Monitor_Method_Record", null);
+                    SetCheckParameter("Current_NOx_Mass_Monitor_Method_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_NOx_Mass_Monitor_Method_Record", value.SourceRow);
+                    SetCheckParameter("Current_NOx_Mass_Monitor_Method_Record", value.SourceRow);
                 }
             }
         }
@@ -4268,11 +4268,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The NOXM record from SummaryValueData for this location for the reporting period.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentNoxMassSummaryValueRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentNoxMassSummaryValueRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_NOX_Mass_Summary_Value_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_NOX_Mass_Summary_Value_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4286,11 +4286,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_NOX_Mass_Summary_Value_Record", null);
+                    SetCheckParameter("Current_NOX_Mass_Summary_Value_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_NOX_Mass_Summary_Value_Record", value.SourceRow);
+                    SetCheckParameter("Current_NOX_Mass_Summary_Value_Record", value.SourceRow);
                 }
             }
         }
@@ -4298,11 +4298,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The NOXR record from SummaryValueData for this location for the reporting period.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpSummaryValueRow CurrentNoxRateSummaryValueRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpSummaryValueRow CurrentNoxRateSummaryValueRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_NOX_Rate_Summary_Value_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_NOX_Rate_Summary_Value_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4316,11 +4316,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_NOX_Rate_Summary_Value_Record", null);
+                    SetCheckParameter("Current_NOX_Rate_Summary_Value_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_NOX_Rate_Summary_Value_Record", value.SourceRow);
+                    SetCheckParameter("Current_NOX_Rate_Summary_Value_Record", value.SourceRow);
                 }
             }
         }
@@ -4328,11 +4328,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// the DerivedHourlyValueData record currently being evaluated with parameter NOXR
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueNoxrRow CurrentNoxrDerivedHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueNoxrRow CurrentNoxrDerivedHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_NoxR_Derived_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_NoxR_Derived_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4346,11 +4346,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_NoxR_Derived_Hourly_Record", null);
+                    SetCheckParameter("Current_NoxR_Derived_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_NoxR_Derived_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_NoxR_Derived_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -4358,45 +4358,45 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The average value of the  NOx emission rate during the previous and subsequent measured hour before and measured hour after.
         /// </summary>
-        public static decimal? CurrentNoxrHbhaValue
+        public  decimal? CurrentNoxrHbhaValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_NOXR_HBHA_Value")));
+                return ((decimal?)(GetCheckParameter("Current_NOXR_HBHA_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_NOXR_HBHA_Value", value);
+                SetCheckParameter("Current_NOXR_HBHA_Value", value);
             }
         }
         
         /// <summary>
         /// Stores the Method Code for the MonitoringMethod record that is active for NOx Emission Rate during the current time period
         /// </summary>
-        public static string CurrentNoxrMethodCode
+        public  string CurrentNoxrMethodCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_NOxR_Method_Code")));
+                return ((string)(GetCheckParameter("Current_NOxR_Method_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_NOxR_Method_Code", value);
+                SetCheckParameter("Current_NOxR_Method_Code", value);
             }
         }
         
         /// <summary>
         /// Used for HOURMHV-30 result pluging and indicates the problem max value source.
         /// </summary>
-        public static string CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription
+        public  string CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_NOxR_Primary_Or_Primary_Bypass_MHV_Max_Value_Description")));
+                return ((string)(GetCheckParameter("Current_NOxR_Primary_Or_Primary_Bypass_MHV_Max_Value_Description")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_NOxR_Primary_Or_Primary_Bypass_MHV_Max_Value_Description", value);
+                SetCheckParameter("Current_NOxR_Primary_Or_Primary_Bypass_MHV_Max_Value_Description", value);
             }
         }
         
@@ -4405,11 +4405,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///MODC 47 and 48 are used with combined-cycle turbines with primary and primary bypass stacks reported as systems in a single stack.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.NoxrPrimaryAndPrimaryBypassMhv CurrentNoxrPrimaryOrPrimaryBypassMhvRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.NoxrPrimaryAndPrimaryBypassMhv CurrentNoxrPrimaryOrPrimaryBypassMhvRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_NOXR_Primary_Or_Primary_Bypass_MHV_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_NOXR_Primary_Or_Primary_Bypass_MHV_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4423,11 +4423,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_NOXR_Primary_Or_Primary_Bypass_MHV_Record", null);
+                    SetCheckParameter("Current_NOXR_Primary_Or_Primary_Bypass_MHV_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_NOXR_Primary_Or_Primary_Bypass_MHV_Record", value.SourceRow);
+                    SetCheckParameter("Current_NOXR_Primary_Or_Primary_Bypass_MHV_Record", value.SourceRow);
                 }
             }
         }
@@ -4438,41 +4438,41 @@ namespace ECMPS.Checks.Em.Parameters
         ///Field to be updated: Current DHV Record.ApplicableBiasAdjustmentFactor
         ///
         /// </summary>
-        public static decimal? CurrentNoxSystemBaf
+        public  decimal? CurrentNoxSystemBaf
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_NOX_System_Baf")));
+                return ((decimal?)(GetCheckParameter("Current_NOX_System_Baf")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_NOX_System_Baf", value);
+                SetCheckParameter("Current_NOX_System_Baf", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the NOX system in the current NOXR DerivedHourlyValueData record is valid.
         /// </summary>
-        public static bool? CurrentNoxSystemStatus
+        public  bool? CurrentNoxSystemStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Current_NOX_System_Status")));
+                return ((bool?)(GetCheckParameter("Current_NOX_System_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_NOX_System_Status", value);
+                SetCheckParameter("Current_NOX_System_Status", value);
             }
         }
         
         /// <summary>
         /// The record in MonitorHourlyValueData with parameter "O2C" and Moisture Basis of "D" or null with a missing data MODC when there is also a measured data record.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueRow CurrentO2DryMissingDataMonitorHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueRow CurrentO2DryMissingDataMonitorHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_O2_Dry_Missing_Data_Monitor_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_O2_Dry_Missing_Data_Monitor_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4486,11 +4486,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_O2_Dry_Missing_Data_Monitor_Hourly_Record", null);
+                    SetCheckParameter("Current_O2_Dry_Missing_Data_Monitor_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_O2_Dry_Missing_Data_Monitor_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_O2_Dry_Missing_Data_Monitor_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -4498,11 +4498,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The record in MonitorHourlyValueData with parameter "O2" and Moisture Basis of "D" currently being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueO2DryRow CurrentO2DryMonitorHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueO2DryRow CurrentO2DryMonitorHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_O2_Dry_Monitor_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_O2_Dry_Monitor_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4516,11 +4516,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_O2_Dry_Monitor_Hourly_Record", null);
+                    SetCheckParameter("Current_O2_Dry_Monitor_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_O2_Dry_Monitor_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_O2_Dry_Monitor_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -4528,11 +4528,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The record in MonitorHourlyValueData with parameter "O2C" and Moisture Basis of "W" or null with a missing data MODC when there is also a measured data record.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueRow CurrentO2WetMissingDataMonitorHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueRow CurrentO2WetMissingDataMonitorHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_O2_Wet_Missing_Data_Monitor_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_O2_Wet_Missing_Data_Monitor_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4546,11 +4546,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_O2_Wet_Missing_Data_Monitor_Hourly_Record", null);
+                    SetCheckParameter("Current_O2_Wet_Missing_Data_Monitor_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_O2_Wet_Missing_Data_Monitor_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_O2_Wet_Missing_Data_Monitor_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -4558,11 +4558,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The record in MonitorHourlyValueData with parameter "O2" and Moisture Basis of "w" currently being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueO2WetRow CurrentO2WetMonitorHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueO2WetRow CurrentO2WetMonitorHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_O2_Wet_Monitor_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_O2_Wet_Monitor_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4576,11 +4576,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_O2_Wet_Monitor_Hourly_Record", null);
+                    SetCheckParameter("Current_O2_Wet_Monitor_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_O2_Wet_Monitor_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_O2_Wet_Monitor_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -4588,15 +4588,15 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The current operating date.  This parameter is set by the process and not a check.
         /// </summary>
-        public static DateTime? CurrentOperatingDate
+        public  DateTime? CurrentOperatingDate
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("Current_Operating_Date")));
+                return ((DateTime?)(GetCheckParameter("Current_Operating_Date")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Operating_Date", value);
+                SetCheckParameter("Current_Operating_Date", value);
             }
         }
         
@@ -4605,56 +4605,56 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///This parameter is set by the process and not a check.
         /// </summary>
-        public static DateTime? CurrentOperatingDatehour
+        public  DateTime? CurrentOperatingDatehour
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("Current_Operating_DateHour")));
+                return ((DateTime?)(GetCheckParameter("Current_Operating_DateHour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Operating_DateHour", value);
+                SetCheckParameter("Current_Operating_DateHour", value);
             }
         }
         
         /// <summary>
         /// The current operating hour.  This parameter is set by the process and not a check.
         /// </summary>
-        public static int? CurrentOperatingHour
+        public  int? CurrentOperatingHour
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Current_Operating_Hour")));
+                return ((int?)(GetCheckParameter("Current_Operating_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Operating_Hour", value);
+                SetCheckParameter("Current_Operating_Hour", value);
             }
         }
         
         /// <summary>
         /// The portion of the hour (in the range [0.0, 1.0] ) that the current location was operating during the hour currently being evaluated.  The value comes from the Operating Time of the Current Hourly Op Record
         /// </summary>
-        public static decimal? CurrentOperatingTime
+        public  decimal? CurrentOperatingTime
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_Operating_Time")));
+                return ((decimal?)(GetCheckParameter("Current_Operating_Time")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Operating_Time", value);
+                SetCheckParameter("Current_Operating_Time", value);
             }
         }
         
         /// <summary>
         /// The OPHOURS record from SummaryValueData for this location for the reporting period.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentOpHoursSummaryValueRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentOpHoursSummaryValueRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Op_Hours_Summary_Value_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Op_Hours_Summary_Value_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4668,11 +4668,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Op_Hours_Summary_Value_Record", null);
+                    SetCheckParameter("Current_Op_Hours_Summary_Value_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Op_Hours_Summary_Value_Record", value.SourceRow);
+                    SetCheckParameter("Current_Op_Hours_Summary_Value_Record", value.SourceRow);
                 }
             }
         }
@@ -4680,11 +4680,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The OPTIME record from SummaryValueData for this location for the reporting period.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentOpTimeSummaryValueRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentOpTimeSummaryValueRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Op_Time_Summary_Value_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Op_Time_Summary_Value_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4698,11 +4698,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Op_Time_Summary_Value_Record", null);
+                    SetCheckParameter("Current_Op_Time_Summary_Value_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Op_Time_Summary_Value_Record", value.SourceRow);
+                    SetCheckParameter("Current_Op_Time_Summary_Value_Record", value.SourceRow);
                 }
             }
         }
@@ -4710,120 +4710,120 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Stores the current PEI test status as part of the Appendix D status checks.
         /// </summary>
-        public static string CurrentPeiStatus
+        public  string CurrentPeiStatus
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_PEI_Status")));
+                return ((string)(GetCheckParameter("Current_PEI_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_PEI_Status", value);
+                SetCheckParameter("Current_PEI_Status", value);
             }
         }
         
         /// <summary>
         /// Stores the current RATA status throughout the RATA Status checks.
         /// </summary>
-        public static string CurrentRataStatus
+        public  string CurrentRataStatus
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Current_RATA_Status")));
+                return ((string)(GetCheckParameter("Current_RATA_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_RATA_Status", value);
+                SetCheckParameter("Current_RATA_Status", value);
             }
         }
         
         /// <summary>
         /// The Current Reporting Period (or the reporting period for the first day) being evaluated for emissions.
         /// </summary>
-        public static int? CurrentReportingPeriod
+        public  int? CurrentReportingPeriod
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Current_Reporting_Period")));
+                return ((int?)(GetCheckParameter("Current_Reporting_Period")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Reporting_Period", value);
+                SetCheckParameter("Current_Reporting_Period", value);
             }
         }
         
         /// <summary>
         /// A date value without a time component that indicates the first day of the current quarter
         /// </summary>
-        public static DateTime? CurrentReportingPeriodBeginDate
+        public  DateTime? CurrentReportingPeriodBeginDate
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("Current_Reporting_Period_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Current_Reporting_Period_Begin_Date")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Reporting_Period_Begin_Date", value);
+                SetCheckParameter("Current_Reporting_Period_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// A date/time value indicating the first hour of the current quarter.
         /// </summary>
-        public static DateTime? CurrentReportingPeriodBeginHour
+        public  DateTime? CurrentReportingPeriodBeginHour
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("Current_Reporting_Period_Begin_Hour")));
+                return ((DateTime?)(GetCheckParameter("Current_Reporting_Period_Begin_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Reporting_Period_Begin_Hour", value);
+                SetCheckParameter("Current_Reporting_Period_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// A date value without a time component that indicates the last day of the current quarter.
         /// </summary>
-        public static DateTime? CurrentReportingPeriodEndDate
+        public  DateTime? CurrentReportingPeriodEndDate
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("Current_Reporting_Period_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Current_Reporting_Period_End_Date")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Reporting_Period_End_Date", value);
+                SetCheckParameter("Current_Reporting_Period_End_Date", value);
             }
         }
         
         /// <summary>
         /// A date/time value indicating the last hour of the current quarter.
         /// </summary>
-        public static DateTime? CurrentReportingPeriodEndHour
+        public  DateTime? CurrentReportingPeriodEndHour
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("Current_Reporting_Period_End_Hour")));
+                return ((DateTime?)(GetCheckParameter("Current_Reporting_Period_End_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Reporting_Period_End_Hour", value);
+                SetCheckParameter("Current_Reporting_Period_End_Hour", value);
             }
         }
         
         /// <summary>
         /// The object representing the current reporting period.
         /// </summary>
-        public static cReportingPeriod CurrentReportingPeriodObject
+        public  cReportingPeriod CurrentReportingPeriodObject
         {
             get
             {
-                return ((cReportingPeriod)(EmParameters.GetCheckParameter("Current_Reporting_Period_Object")));
+                return ((cReportingPeriod)(GetCheckParameter("Current_Reporting_Period_Object")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Reporting_Period_Object", value);
+                SetCheckParameter("Current_Reporting_Period_Object", value);
             }
         }
         
@@ -4832,41 +4832,41 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Set from Category.CheckEngine.RptPeriodBeganQuarter
         /// </summary>
-        public static int? CurrentReportingPeriodQuarter
+        public  int? CurrentReportingPeriodQuarter
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Current_Reporting_Period_Quarter")));
+                return ((int?)(GetCheckParameter("Current_Reporting_Period_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Reporting_Period_Quarter", value);
+                SetCheckParameter("Current_Reporting_Period_Quarter", value);
             }
         }
         
         /// <summary>
         /// The year of the Current Reporting Period (or the reporting period for the first day) being evaluated for emissions.
         /// </summary>
-        public static int? CurrentReportingPeriodYear
+        public  int? CurrentReportingPeriodYear
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Current_Reporting_Period_Year")));
+                return ((int?)(GetCheckParameter("Current_Reporting_Period_Year")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Reporting_Period_Year", value);
+                SetCheckParameter("Current_Reporting_Period_Year", value);
             }
         }
         
         /// <summary>
         /// The current HourlyParamFuelFlow record for SO2 for the current fuel flow system in the current hour
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyParamFuelFlowRow CurrentSo2HpffRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyParamFuelFlowRow CurrentSo2HpffRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_SO2_HPFF_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_SO2_HPFF_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4880,11 +4880,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_SO2_HPFF_Record", null);
+                    SetCheckParameter("Current_SO2_HPFF_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_SO2_HPFF_Record", value.SourceRow);
+                    SetCheckParameter("Current_SO2_HPFF_Record", value.SourceRow);
                 }
             }
         }
@@ -4892,11 +4892,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The current SO2 Concentration record from MonitorHourlyValueData for this location at the Current Hour
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueSo2cRow CurrentSo2MonitorHourlyRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueSo2cRow CurrentSo2MonitorHourlyRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_SO2_Monitor_Hourly_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_SO2_Monitor_Hourly_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4910,11 +4910,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_SO2_Monitor_Hourly_Record", null);
+                    SetCheckParameter("Current_SO2_Monitor_Hourly_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_SO2_Monitor_Hourly_Record", value.SourceRow);
+                    SetCheckParameter("Current_SO2_Monitor_Hourly_Record", value.SourceRow);
                 }
             }
         }
@@ -4922,11 +4922,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The SO2M record from SummaryValueData for this location for the reporting period.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentSo2SummaryValueRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow CurrentSo2SummaryValueRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_SO2_Summary_Value_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_SO2_Summary_Value_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4940,11 +4940,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_SO2_Summary_Value_Record", null);
+                    SetCheckParameter("Current_SO2_Summary_Value_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_SO2_Summary_Value_Record", value.SourceRow);
+                    SetCheckParameter("Current_SO2_Summary_Value_Record", value.SourceRow);
                 }
             }
         }
@@ -4954,26 +4954,26 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current MHV Record.ApplicableBiasAdjustmentFactor
         /// </summary>
-        public static decimal? CurrentSo2SystemBaf
+        public  decimal? CurrentSo2SystemBaf
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Current_SO2_System_BAF")));
+                return ((decimal?)(GetCheckParameter("Current_SO2_System_BAF")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_SO2_System_BAF", value);
+                SetCheckParameter("Current_SO2_System_BAF", value);
             }
         }
         
         /// <summary>
         /// The current HourlyParamFuelFlow record for SULFUR for the current fuel flow system in the current hour
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyParamFuelFlowRow CurrentSulfurRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyParamFuelFlowRow CurrentSulfurRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Sulfur_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Sulfur_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -4987,11 +4987,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Sulfur_Record", null);
+                    SetCheckParameter("Current_Sulfur_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Sulfur_Record", value.SourceRow);
+                    SetCheckParameter("Current_Sulfur_Record", value.SourceRow);
                 }
             }
         }
@@ -4999,45 +4999,45 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The number of units associated with the current monitoring plan.
         /// </summary>
-        public static int? CurrentUnitCount
+        public  int? CurrentUnitCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Current_Unit_Count")));
+                return ((int?)(GetCheckParameter("Current_Unit_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Unit_Count", value);
+                SetCheckParameter("Current_Unit_Count", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the current unit participates in the Acid Rain Program
         /// </summary>
-        public static bool? CurrentUnitIsArp
+        public  bool? CurrentUnitIsArp
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Current_Unit_Is_Arp")));
+                return ((bool?)(GetCheckParameter("Current_Unit_Is_Arp")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Unit_Is_Arp", value);
+                SetCheckParameter("Current_Unit_Is_Arp", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the current unit is defined as a Peaking Unit
         /// </summary>
-        public static bool? CurrentUnitIsPeaking
+        public  bool? CurrentUnitIsPeaking
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Current_Unit_is_Peaking")));
+                return ((bool?)(GetCheckParameter("Current_Unit_is_Peaking")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Current_Unit_is_Peaking", value);
+                SetCheckParameter("Current_Unit_is_Peaking", value);
             }
         }
         
@@ -5067,11 +5067,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.WeeklySystemIntegrity CurrentWeeklySystemIntegrityTest
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.WeeklySystemIntegrity CurrentWeeklySystemIntegrityTest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Weekly_System_Integrity_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Weekly_System_Integrity_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -5085,11 +5085,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Weekly_System_Integrity_Test", null);
+                    SetCheckParameter("Current_Weekly_System_Integrity_Test", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Weekly_System_Integrity_Test", value.SourceRow);
+                    SetCheckParameter("Current_Weekly_System_Integrity_Test", value.SourceRow);
                 }
             }
         }
@@ -5123,11 +5123,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///* COMPONENT_ID
         ///
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.WeeklyTestSummary CurrentWeeklyTestSummary
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.WeeklyTestSummary CurrentWeeklyTestSummary
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Current_Weekly_Test_Summary")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Weekly_Test_Summary")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -5141,11 +5141,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Current_Weekly_Test_Summary", null);
+                    SetCheckParameter("Current_Weekly_Test_Summary", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Current_Weekly_Test_Summary", value.SourceRow);
+                    SetCheckParameter("Current_Weekly_Test_Summary", value.SourceRow);
                 }
             }
         }
@@ -5155,15 +5155,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current Daily Calibration Test.CalcOnlineOfflineInd
         /// </summary>
-        public static int? DailyCalCalcOnlineInd
+        public  int? DailyCalCalcOnlineInd
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Daily_Cal_Calc_Online_Ind")));
+                return ((int?)(GetCheckParameter("Daily_Cal_Calc_Online_Ind")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Calc_Online_Ind", value);
+                SetCheckParameter("Daily_Cal_Calc_Online_Ind", value);
             }
         }
         
@@ -5172,165 +5172,165 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current Daily Calibration Test.CalcTestResultCd
         /// </summary>
-        public static string DailyCalCalcResult
+        public  string DailyCalCalcResult
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Daily_Cal_Calc_Result")));
+                return ((string)(GetCheckParameter("Daily_Cal_Calc_Result")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Calc_Result", value);
+                SetCheckParameter("Daily_Cal_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// Indicates if the component tested in the daily calibration test has a valid component type.
         /// </summary>
-        public static bool? DailyCalComponentTypeValid
+        public  bool? DailyCalComponentTypeValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Daily_Cal_Component_Type_Valid")));
+                return ((bool?)(GetCheckParameter("Daily_Cal_Component_Type_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Component_Type_Valid", value);
+                SetCheckParameter("Daily_Cal_Component_Type_Valid", value);
             }
         }
         
         /// <summary>
         /// The date of the earliest failed injection in a daily calibration test.
         /// </summary>
-        public static DateTime? DailyCalFailDate
+        public  DateTime? DailyCalFailDate
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("Daily_Cal_Fail_Date")));
+                return ((DateTime?)(GetCheckParameter("Daily_Cal_Fail_Date")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Fail_Date", value);
+                SetCheckParameter("Daily_Cal_Fail_Date", value);
             }
         }
         
         /// <summary>
         /// The hour of the earliest failed injection in a daily calibration test.
         /// </summary>
-        public static int? DailyCalFailHour
+        public  int? DailyCalFailHour
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Daily_Cal_Fail_Hour")));
+                return ((int?)(GetCheckParameter("Daily_Cal_Fail_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Fail_Hour", value);
+                SetCheckParameter("Daily_Cal_Fail_Hour", value);
             }
         }
         
         /// <summary>
         /// Indicates whether Daily Calibration Supp Data exists and was loaded for the previous quarter.
         /// </summary>
-        public static bool? DailyCalibrationSuppDataExists
+        public  bool? DailyCalibrationSuppDataExists
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Daily_Calibration_Supp_Data_Exists")));
+                return ((bool?)(GetCheckParameter("Daily_Calibration_Supp_Data_Exists")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Calibration_Supp_Data_Exists", value);
+                SetCheckParameter("Daily_Calibration_Supp_Data_Exists", value);
             }
         }
         
         /// <summary>
         /// Indicates if all the injection times of a daily calibration test are valid.
         /// </summary>
-        public static bool? DailyCalInjectionTimesValid
+        public  bool? DailyCalInjectionTimesValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Daily_Cal_Injection_Times_Valid")));
+                return ((bool?)(GetCheckParameter("Daily_Cal_Injection_Times_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Injection_Times_Valid", value);
+                SetCheckParameter("Daily_Cal_Injection_Times_Valid", value);
             }
         }
         
         /// <summary>
         /// The date that the PGVP rule was published.
         /// </summary>
-        public static DateTime? DailyCalPgvpRuleDate
+        public  DateTime? DailyCalPgvpRuleDate
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("Daily_Cal_PGVP_Rule_Date")));
+                return ((DateTime?)(GetCheckParameter("Daily_Cal_PGVP_Rule_Date")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_PGVP_Rule_Date", value);
+                SetCheckParameter("Daily_Cal_PGVP_Rule_Date", value);
             }
         }
         
         /// <summary>
         /// Indicates if span scale of a test is a valid code.
         /// </summary>
-        public static bool? DailyCalSpanScaleValid
+        public  bool? DailyCalSpanScaleValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Daily_Cal_Span_Scale_Valid")));
+                return ((bool?)(GetCheckParameter("Daily_Cal_Span_Scale_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Span_Scale_Valid", value);
+                SetCheckParameter("Daily_Cal_Span_Scale_Valid", value);
             }
         }
         
         /// <summary>
         /// The span value for the component type of the test according to the monitoring plan.
         /// </summary>
-        public static decimal? DailyCalSpanValue
+        public  decimal? DailyCalSpanValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Daily_Cal_Span_Value")));
+                return ((decimal?)(GetCheckParameter("Daily_Cal_Span_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Span_Value", value);
+                SetCheckParameter("Daily_Cal_Span_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates if an MHV record requires the Daily Calibration Status Evaluation.
         /// </summary>
-        public static bool? DailyCalStatusRequired
+        public  bool? DailyCalStatusRequired
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Daily_Cal_Status_Required")));
+                return ((bool?)(GetCheckParameter("Daily_Cal_Status_Required")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Status_Required", value);
+                SetCheckParameter("Daily_Cal_Status_Required", value);
             }
         }
         
         /// <summary>
         /// Indicates that the upscale gas level code of a daily calibration test is valid.
         /// </summary>
-        public static bool? DailyCalUpscaleGasLevelValid
+        public  bool? DailyCalUpscaleGasLevelValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Daily_Cal_Upscale_Gas_Level_Valid")));
+                return ((bool?)(GetCheckParameter("Daily_Cal_Upscale_Gas_Level_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Upscale_Gas_Level_Valid", value);
+                SetCheckParameter("Daily_Cal_Upscale_Gas_Level_Valid", value);
             }
         }
         
@@ -5339,15 +5339,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current Daily Calibration Test.CalcUpscaleAPSInd
         /// </summary>
-        public static int? DailyCalUpscaleInjectionCalcApsIndicator
+        public  int? DailyCalUpscaleInjectionCalcApsIndicator
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Daily_Cal_Upscale_Injection_Calc_APS_Indicator")));
+                return ((int?)(GetCheckParameter("Daily_Cal_Upscale_Injection_Calc_APS_Indicator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Upscale_Injection_Calc_APS_Indicator", value);
+                SetCheckParameter("Daily_Cal_Upscale_Injection_Calc_APS_Indicator", value);
             }
         }
         
@@ -5356,30 +5356,30 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current Daily Calibration Test.CalcUpscaleCalError
         /// </summary>
-        public static decimal? DailyCalUpscaleInjectionCalcResult
+        public  decimal? DailyCalUpscaleInjectionCalcResult
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Daily_Cal_Upscale_Injection_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("Daily_Cal_Upscale_Injection_Calc_Result")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Upscale_Injection_Calc_Result", value);
+                SetCheckParameter("Daily_Cal_Upscale_Injection_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// Indicates if the upscale injection time of a daily calibration test is valid.
         /// </summary>
-        public static bool? DailyCalUpscaleInjectionTimeValid
+        public  bool? DailyCalUpscaleInjectionTimeValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Daily_Cal_Upscale_Injection_Time_Valid")));
+                return ((bool?)(GetCheckParameter("Daily_Cal_Upscale_Injection_Time_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Upscale_Injection_Time_Valid", value);
+                SetCheckParameter("Daily_Cal_Upscale_Injection_Time_Valid", value);
             }
         }
         
@@ -5388,15 +5388,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current Daily Calibration Test.CalcZeroAPSInd
         /// </summary>
-        public static int? DailyCalZeroInjectionCalcApsIndicator
+        public  int? DailyCalZeroInjectionCalcApsIndicator
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Daily_Cal_Zero_Injection_Calc_APS_Indicator")));
+                return ((int?)(GetCheckParameter("Daily_Cal_Zero_Injection_Calc_APS_Indicator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Zero_Injection_Calc_APS_Indicator", value);
+                SetCheckParameter("Daily_Cal_Zero_Injection_Calc_APS_Indicator", value);
             }
         }
         
@@ -5405,266 +5405,266 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current Daily Calibration Test.CalcZeroCalError
         /// </summary>
-        public static decimal? DailyCalZeroInjectionCalcResult
+        public  decimal? DailyCalZeroInjectionCalcResult
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Daily_Cal_Zero_Injection_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("Daily_Cal_Zero_Injection_Calc_Result")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Cal_Zero_Injection_Calc_Result", value);
+                SetCheckParameter("Daily_Cal_Zero_Injection_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// Dummy variable for leveling in the Daily Inteference Check Status category.
         /// </summary>
-        public static bool? DailyIntNoPriorTestCheckIndicator
+        public  bool? DailyIntNoPriorTestCheckIndicator
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Daily_Int_No_Prior_Test_Check_Indicator")));
+                return ((bool?)(GetCheckParameter("Daily_Int_No_Prior_Test_Check_Indicator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Int_No_Prior_Test_Check_Indicator", value);
+                SetCheckParameter("Daily_Int_No_Prior_Test_Check_Indicator", value);
             }
         }
         
         /// <summary>
         /// Indicator that a daily interference status check should be performed during the current hour.
         /// </summary>
-        public static bool? DailyIntStatusRequired
+        public  bool? DailyIntStatusRequired
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Daily_Int_Status_Required")));
+                return ((bool?)(GetCheckParameter("Daily_Int_Status_Required")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Int_Status_Required", value);
+                SetCheckParameter("Daily_Int_Status_Required", value);
             }
         }
         
         /// <summary>
         /// This contains the result to use for Daily Interference checks.
         /// </summary>
-        public static string DailyIntStatusResult
+        public  string DailyIntStatusResult
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Daily_Int_Status_Result")));
+                return ((string)(GetCheckParameter("Daily_Int_Status_Result")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Int_Status_Result", value);
+                SetCheckParameter("Daily_Int_Status_Result", value);
             }
         }
         
         /// <summary>
         /// The total operating time for the day for the location.
         /// </summary>
-        public static decimal? DailyOpTime
+        public  decimal? DailyOpTime
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Daily_Op_Time")));
+                return ((decimal?)(GetCheckParameter("Daily_Op_Time")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Daily_Op_Time", value);
+                SetCheckParameter("Daily_Op_Time", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the AdjustedHourlyValue in the current DerivedHourlyValueData record is valid.
         /// </summary>
-        public static bool? DerivedHourlyAdjustedValueStatus
+        public  bool? DerivedHourlyAdjustedValueStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Derived_Hourly_Adjusted_Value_Status")));
+                return ((bool?)(GetCheckParameter("Derived_Hourly_Adjusted_Value_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Derived_Hourly_Adjusted_Value_Status", value);
+                SetCheckParameter("Derived_Hourly_Adjusted_Value_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not to check all Derived Hourly records for a given hour
         /// </summary>
-        public static bool? DerivedHourlyChecksNeeded
+        public  bool? DerivedHourlyChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Derived_Hourly_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("Derived_Hourly_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Derived_Hourly_Checks_Needed", value);
+                SetCheckParameter("Derived_Hourly_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the AdjustedHourlyValue in the DHV record for MODC 40 is valid.
         /// </summary>
-        public static bool? DerivedHourlyDefaultStatus
+        public  bool? DerivedHourlyDefaultStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Derived_Hourly_Default_Status")));
+                return ((bool?)(GetCheckParameter("Derived_Hourly_Default_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Derived_Hourly_Default_Status", value);
+                SetCheckParameter("Derived_Hourly_Default_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the current equation code is valid for the formula in the DHV record.
         /// </summary>
-        public static bool? DerivedHourlyEquationStatus
+        public  bool? DerivedHourlyEquationStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Derived_Hourly_Equation_Status")));
+                return ((bool?)(GetCheckParameter("Derived_Hourly_Equation_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Derived_Hourly_Equation_Status", value);
+                SetCheckParameter("Derived_Hourly_Equation_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the FormulaID in the current DerivedHourlyValueData record is valid.
         /// </summary>
-        public static bool? DerivedHourlyFormulaStatus
+        public  bool? DerivedHourlyFormulaStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Derived_Hourly_Formula_Status")));
+                return ((bool?)(GetCheckParameter("Derived_Hourly_Formula_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Derived_Hourly_Formula_Status", value);
+                SetCheckParameter("Derived_Hourly_Formula_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the use of the Missing Data Status MODCs were appropriate.
         /// </summary>
-        public static bool? DerivedHourlyMissingDataStatus
+        public  bool? DerivedHourlyMissingDataStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Derived_Hourly_Missing_Data_Status")));
+                return ((bool?)(GetCheckParameter("Derived_Hourly_Missing_Data_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Derived_Hourly_Missing_Data_Status", value);
+                SetCheckParameter("Derived_Hourly_Missing_Data_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the MODCCode in the current DerivedHourlyValueData record is valid.
         /// </summary>
-        public static bool? DerivedHourlyModcStatus
+        public  bool? DerivedHourlyModcStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Derived_Hourly_Modc_Status")));
+                return ((bool?)(GetCheckParameter("Derived_Hourly_Modc_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Derived_Hourly_Modc_Status", value);
+                SetCheckParameter("Derived_Hourly_Modc_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not extraneous fields in the current DerivedHourlyValueData record are null.
         /// </summary>
-        public static bool? DerivedHourlyNullStatus
+        public  bool? DerivedHourlyNullStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Derived_Hourly_Null_Status")));
+                return ((bool?)(GetCheckParameter("Derived_Hourly_Null_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Derived_Hourly_Null_Status", value);
+                SetCheckParameter("Derived_Hourly_Null_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the PercentAvailable in the current DerivedHourlyValueData record is valid.
         /// </summary>
-        public static bool? DerivedHourlyPmaStatus
+        public  bool? DerivedHourlyPmaStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Derived_Hourly_Pma_Status")));
+                return ((bool?)(GetCheckParameter("Derived_Hourly_Pma_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Derived_Hourly_Pma_Status", value);
+                SetCheckParameter("Derived_Hourly_Pma_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the MonitoringSystemID in the current DerivedHourlyValueData record is valid.
         /// </summary>
-        public static bool? DerivedHourlySystemStatus
+        public  bool? DerivedHourlySystemStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Derived_Hourly_System_Status")));
+                return ((bool?)(GetCheckParameter("Derived_Hourly_System_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Derived_Hourly_System_Status", value);
+                SetCheckParameter("Derived_Hourly_System_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the UnadjustedHourlyValue in the current DerivedHourlyValueData record is consistent with the recalculated value.
         /// </summary>
-        public static bool? DerivedHourlyUnadjustedCalculationStatus
+        public  bool? DerivedHourlyUnadjustedCalculationStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Derived_Hourly_Unadjusted_Calculation_Status")));
+                return ((bool?)(GetCheckParameter("Derived_Hourly_Unadjusted_Calculation_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Derived_Hourly_Unadjusted_Calculation_Status", value);
+                SetCheckParameter("Derived_Hourly_Unadjusted_Calculation_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the UnadjustedHourlyValue in the current DerivedHourlyValueData record is valid.
         /// </summary>
-        public static bool? DerivedHourlyUnadjustedValueStatus
+        public  bool? DerivedHourlyUnadjustedValueStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Derived_Hourly_Unadjusted_Value_Status")));
+                return ((bool?)(GetCheckParameter("Derived_Hourly_Unadjusted_Value_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Derived_Hourly_Unadjusted_Value_Status", value);
+                SetCheckParameter("Derived_Hourly_Unadjusted_Value_Status", value);
             }
         }
         
         /// <summary>
         /// The Derived Hourly Value Records for the reporting period for a monitoring configuration.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow> DerivedHourlyValueRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow> DerivedHourlyValueRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Derived_Hourly_Value_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Derived_Hourly_Value_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5678,11 +5678,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Derived_Hourly_Value_Records", null);
+                    SetCheckParameter("Derived_Hourly_Value_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Derived_Hourly_Value_Records", value.SourceView);
+                    SetCheckParameter("Derived_Hourly_Value_Records", value.SourceView);
                 }
             }
         }
@@ -5690,30 +5690,30 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The CO2 or O2 Concentration value to be used in the Heat Input Calculation
         /// </summary>
-        public static decimal? DiluentForHeatInput
+        public  decimal? DiluentForHeatInput
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Diluent_For_Heat_Input")));
+                return ((decimal?)(GetCheckParameter("Diluent_For_Heat_Input")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Diluent_For_Heat_Input", value);
+                SetCheckParameter("Diluent_For_Heat_Input", value);
             }
         }
         
         /// <summary>
         /// Indicates whther or not a component is a dual range analyzer.  Used in the Linearity Status checks.
         /// </summary>
-        public static bool? DualRangeStatus
+        public  bool? DualRangeStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Dual_Range_Status")));
+                return ((bool?)(GetCheckParameter("Dual_Range_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Dual_Range_Status", value);
+                SetCheckParameter("Dual_Range_Status", value);
             }
         }
         
@@ -5722,26 +5722,26 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///This is used by the Hourly QA Status checks.
         /// </summary>
-        public static DateTime? EarliestLocationReportDate
+        public  DateTime? EarliestLocationReportDate
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("Earliest_Location_Report_Date")));
+                return ((DateTime?)(GetCheckParameter("Earliest_Location_Report_Date")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Earliest_Location_Report_Date", value);
+                SetCheckParameter("Earliest_Location_Report_Date", value);
             }
         }
         
         /// <summary>
         /// Records for EmissionComments for monitoring plan.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlySubmissionCommentRow> EmissionCommentRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlySubmissionCommentRow> EmissionCommentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Emission_Comment_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Emission_Comment_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5755,11 +5755,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Emission_Comment_Records", null);
+                    SetCheckParameter("Emission_Comment_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Emission_Comment_Records", value.SourceView);
+                    SetCheckParameter("Emission_Comment_Records", value.SourceView);
                 }
             }
         }
@@ -5767,11 +5767,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// All quarterly emissions file record for the configuration whose emissions files is being evaluated.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemEmissionsRow> EmissionsFileRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemEmissionsRow> EmissionsFileRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Emissions_File_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Emissions_File_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5785,11 +5785,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Emissions_File_Records", null);
+                    SetCheckParameter("Emissions_File_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Emissions_File_Records", value.SourceView);
+                    SetCheckParameter("Emissions_File_Records", value.SourceView);
                 }
             }
         }
@@ -5797,15 +5797,15 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// A list of parameters for which the quarterly reported values are different from the calculated value but within the tolerance.
         /// </summary>
-        public static string EmissionsToleranceDeviators
+        public  string EmissionsToleranceDeviators
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Emissions_Tolerance_Deviators")));
+                return ((string)(GetCheckParameter("Emissions_Tolerance_Deviators")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Emissions_Tolerance_Deviators", value);
+                SetCheckParameter("Emissions_Tolerance_Deviators", value);
             }
         }
         
@@ -5816,11 +5816,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///For a stack or pipe, this is the Unit Program records for all units linked to the stack or pipe via Unit Stack Configuration records.  The  UnitMonitorCertStartDate for the location program record should be the later of the UnitMonitorCertStartDate in the Unit Program record and the StartDate in the Unit Stack Configuration record.  The  EndDate for the location program record should be the earlier of the EndDate in the Unit Program record and the EndDate in the Unit Stack Configuration record.  (This is the Emissions version of Location Program Records
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationProgramRow> EmLocationProgramRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationProgramRow> EmLocationProgramRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("EM_Location_Program_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("EM_Location_Program_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5834,11 +5834,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("EM_Location_Program_Records", null);
+                    SetCheckParameter("EM_Location_Program_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("EM_Location_Program_Records", value.SourceView);
+                    SetCheckParameter("EM_Location_Program_Records", value.SourceView);
                 }
             }
         }
@@ -5846,71 +5846,71 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The calculated result for the daily test.
         /// </summary>
-        public static string EmTestCalcResult
+        public  string EmTestCalcResult
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("EM_Test_Calc_Result")));
+                return ((string)(GetCheckParameter("EM_Test_Calc_Result")));
             }
             set
             {
-                EmParameters.SetCheckParameter("EM_Test_Calc_Result", value);
+                SetCheckParameter("EM_Test_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported date of a daily emission test is valid.
         /// </summary>
-        public static bool? EmTestDateValid
+        public  bool? EmTestDateValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("EM_Test_Date_Valid")));
+                return ((bool?)(GetCheckParameter("EM_Test_Date_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("EM_Test_Date_Valid", value);
+                SetCheckParameter("EM_Test_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported hour of a daily emission test is valid.
         /// </summary>
-        public static bool? EmTestHourValid
+        public  bool? EmTestHourValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("EM_Test_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("EM_Test_Hour_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("EM_Test_Hour_Valid", value);
+                SetCheckParameter("EM_Test_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported minute of a daily emission test is valid.
         /// </summary>
-        public static bool? EmTestMinuteValid
+        public  bool? EmTestMinuteValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("EM_Test_Minute_Valid")));
+                return ((bool?)(GetCheckParameter("EM_Test_Minute_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("EM_Test_Minute_Valid", value);
+                SetCheckParameter("EM_Test_Minute_Valid", value);
             }
         }
         
         /// <summary>
         /// Contains the UNIT_STACK_CONFIGURATION records for the locations associated with a specific emission report ( for both the MP and reporting period ).
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpUnitStackConfigurationRow> EmUnitStackConfigurationRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpUnitStackConfigurationRow> EmUnitStackConfigurationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("EM_Unit_Stack_Configuration_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("EM_Unit_Stack_Configuration_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5924,11 +5924,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("EM_Unit_Stack_Configuration_Records", null);
+                    SetCheckParameter("EM_Unit_Stack_Configuration_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("EM_Unit_Stack_Configuration_Records", value.SourceView);
+                    SetCheckParameter("EM_Unit_Stack_Configuration_Records", value.SourceView);
                 }
             }
         }
@@ -5936,146 +5936,146 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Dummy parameter used to sort the checks for FLOW Rata Status
         /// </summary>
-        public static bool? EvaluateMultiLevelRata
+        public  bool? EvaluateMultiLevelRata
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Evaluate_Multi_Level_RATA")));
+                return ((bool?)(GetCheckParameter("Evaluate_Multi_Level_RATA")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Evaluate_Multi_Level_RATA", value);
+                SetCheckParameter("Evaluate_Multi_Level_RATA", value);
             }
         }
         
         /// <summary>
         /// Indicates if the upscale injection in the daily calibration test should be evaluated.
         /// </summary>
-        public static bool? EvaluateUpscaleInjection
+        public  bool? EvaluateUpscaleInjection
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Evaluate_Upscale_Injection")));
+                return ((bool?)(GetCheckParameter("Evaluate_Upscale_Injection")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Evaluate_Upscale_Injection", value);
+                SetCheckParameter("Evaluate_Upscale_Injection", value);
             }
         }
         
         /// <summary>
         /// Indicates if the zero injection in the daily calibration test should be evaluated.
         /// </summary>
-        public static bool? EvaluateZeroInjection
+        public  bool? EvaluateZeroInjection
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Evaluate_Zero_Injection")));
+                return ((bool?)(GetCheckParameter("Evaluate_Zero_Injection")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Evaluate_Zero_Injection", value);
+                SetCheckParameter("Evaluate_Zero_Injection", value);
             }
         }
         
         /// <summary>
         /// Text used in error message to indicate when tests expire.
         /// </summary>
-        public static string ExpirationText
+        public  string ExpirationText
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Expiration_Text")));
+                return ((string)(GetCheckParameter("Expiration_Text")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Expiration_Text", value);
+                SetCheckParameter("Expiration_Text", value);
             }
         }
         
         /// <summary>
         /// A list of systems or fuels with their most recent 3-level RATAs, Appendix E tests, or LME Unit Default tests expired at the end of the current reporting period.
         /// </summary>
-        public static string ExpiredSystems
+        public  string ExpiredSystems
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Expired_Systems")));
+                return ((string)(GetCheckParameter("Expired_Systems")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Expired_Systems", value);
+                SetCheckParameter("Expired_Systems", value);
             }
         }
         
         /// <summary>
         /// A list of systems or fuels with their most recent 3-level RATAs, Appendix E tests, or LME Unit Default tests expired at the end of the current reporting period.
         /// </summary>
-        public static string ExpiringSystems
+        public  string ExpiringSystems
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Expiring_Systems")));
+                return ((string)(GetCheckParameter("Expiring_Systems")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Expiring_Systems", value);
+                SetCheckParameter("Expiring_Systems", value);
             }
         }
         
         /// <summary>
         /// A highest active SO2R F23 default for the hour.
         /// </summary>
-        public static decimal? F23DefaultMaxValue
+        public  decimal? F23DefaultMaxValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("F23_Default_Max_Value")));
+                return ((decimal?)(GetCheckParameter("F23_Default_Max_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F23_Default_Max_Value", value);
+                SetCheckParameter("F23_Default_Max_Value", value);
             }
         }
         
         /// <summary>
         /// A lowest active SO2R F23 default for the hour.
         /// </summary>
-        public static decimal? F23DefaultMinValue
+        public  decimal? F23DefaultMinValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("F23_Default_Min_Value")));
+                return ((decimal?)(GetCheckParameter("F23_Default_Min_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F23_Default_Min_Value", value);
+                SetCheckParameter("F23_Default_Min_Value", value);
             }
         }
         
         /// <summary>
         /// A default value to be used for SO2R in F23 calculations.
         /// </summary>
-        public static decimal? F23DefaultValue
+        public  decimal? F23DefaultValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("F23_Default_Value")));
+                return ((decimal?)(GetCheckParameter("F23_Default_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F23_Default_Value", value);
+                SetCheckParameter("F23_Default_Value", value);
             }
         }
         
         /// <summary>
         /// The SO2R F23 Monitor Default records by a specific hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorDefaultSo2rF23Row> F23MonitorDefaultRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorDefaultSo2rF23Row> F23MonitorDefaultRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("F23_Monitor_Default_Records_by_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("F23_Monitor_Default_Records_by_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6089,11 +6089,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("F23_Monitor_Default_Records_by_Hour_Location", null);
+                    SetCheckParameter("F23_Monitor_Default_Records_by_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("F23_Monitor_Default_Records_by_Hour_Location", value.SourceView);
+                    SetCheckParameter("F23_Monitor_Default_Records_by_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -6101,11 +6101,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the Flow-to-Load Check rows associated with a particular monitoring plan.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> F2lCheckRecordsForQaStatus
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> F2lCheckRecordsForQaStatus
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("F2L_Check_Records_For_QA_Status")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("F2L_Check_Records_For_QA_Status")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6119,11 +6119,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("F2L_Check_Records_For_QA_Status", null);
+                    SetCheckParameter("F2L_Check_Records_For_QA_Status", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("F2L_Check_Records_For_QA_Status", value.SourceView);
+                    SetCheckParameter("F2L_Check_Records_For_QA_Status", value.SourceView);
                 }
             }
         }
@@ -6131,11 +6131,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains QA Certification Event Records with an event code of '312', which is for flow-to-load.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow> F2lQaCertificationEventRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow> F2lQaCertificationEventRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("F2L_QA_Certification_Event_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("F2L_QA_Certification_Event_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6149,11 +6149,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("F2L_QA_Certification_Event_Records", null);
+                    SetCheckParameter("F2L_QA_Certification_Event_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("F2L_QA_Certification_Event_Records", value.SourceView);
+                    SetCheckParameter("F2L_QA_Certification_Event_Records", value.SourceView);
                 }
             }
         }
@@ -6161,11 +6161,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the earliest valid required test (RATA) for a flow-to-load check.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow F2lStatusEarliestValidRequiredTest
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow F2lStatusEarliestValidRequiredTest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("F2L_Status_Earliest_Valid_Required_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("F2L_Status_Earliest_Valid_Required_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -6179,11 +6179,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("F2L_Status_Earliest_Valid_Required_Test", null);
+                    SetCheckParameter("F2L_Status_Earliest_Valid_Required_Test", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("F2L_Status_Earliest_Valid_Required_Test", value.SourceRow);
+                    SetCheckParameter("F2L_Status_Earliest_Valid_Required_Test", value.SourceRow);
                 }
             }
         }
@@ -6191,41 +6191,41 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates that the most recent QA Cert Event row for Flow-to-Load requires a performing an Abbreviated Flow-to-Load
         /// </summary>
-        public static bool? F2lStatusEventRequiresAbbreviatedCheck
+        public  bool? F2lStatusEventRequiresAbbreviatedCheck
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("F2L_Status_Event_Requires_Abbreviated_Check")));
+                return ((bool?)(GetCheckParameter("F2L_Status_Event_Requires_Abbreviated_Check")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F2L_Status_Event_Requires_Abbreviated_Check", value);
+                SetCheckParameter("F2L_Status_Event_Requires_Abbreviated_Check", value);
             }
         }
         
         /// <summary>
         /// Indicates that the most recent QA Cert Event row for Flow-to-Load requires a performing a RATA.
         /// </summary>
-        public static bool? F2lStatusEventRequiresRata
+        public  bool? F2lStatusEventRequiresRata
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("F2L_Status_Event_Requires_Rata")));
+                return ((bool?)(GetCheckParameter("F2L_Status_Event_Requires_Rata")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F2L_Status_Event_Requires_Rata", value);
+                SetCheckParameter("F2L_Status_Event_Requires_Rata", value);
             }
         }
         
         /// <summary>
         /// The data row contains the most recent RATA after a flow-to-load check and before the current hour.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow F2lStatusInterveningRata
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow F2lStatusInterveningRata
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("F2L_Status_Intervening_Rata")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("F2L_Status_Intervening_Rata")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -6239,11 +6239,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("F2L_Status_Intervening_Rata", null);
+                    SetCheckParameter("F2L_Status_Intervening_Rata", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("F2L_Status_Intervening_Rata", value.SourceRow);
+                    SetCheckParameter("F2L_Status_Intervening_Rata", value.SourceRow);
                 }
             }
         }
@@ -6251,71 +6251,71 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains list of missing operating quarters needed to count conditional data hours.
         /// </summary>
-        public static string F2lStatusMissingOpDataInfo
+        public  string F2lStatusMissingOpDataInfo
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("F2L_Status_Missing_Op_Data_Info")));
+                return ((string)(GetCheckParameter("F2L_Status_Missing_Op_Data_Info")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F2L_Status_Missing_Op_Data_Info", value);
+                SetCheckParameter("F2L_Status_Missing_Op_Data_Info", value);
             }
         }
         
         /// <summary>
         /// This parameter contains the most recent QA operating quarter before the 'current' hour.  The quarter is stored as null if the quarter is not set, -1 if an error occurred while setting the quarter, and the year multiplied by 4 plus the quarter minus 1 if the quarter was set.
         /// </summary>
-        public static int? F2lStatusPriorTestRequiredQuarter
+        public  int? F2lStatusPriorTestRequiredQuarter
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("F2L_Status_Prior_Test_Required_Quarter")));
+                return ((int?)(GetCheckParameter("F2L_Status_Prior_Test_Required_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F2L_Status_Prior_Test_Required_Quarter", value);
+                SetCheckParameter("F2L_Status_Prior_Test_Required_Quarter", value);
             }
         }
         
         /// <summary>
         /// Contains a list of quarters that are missing 
         /// </summary>
-        public static string F2lStatusPriorTestRequiredQuarterMissingOpData
+        public  string F2lStatusPriorTestRequiredQuarterMissingOpData
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("F2L_Status_Prior_Test_Required_Quarter_Missing_Op_Data")));
+                return ((string)(GetCheckParameter("F2L_Status_Prior_Test_Required_Quarter_Missing_Op_Data")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F2L_Status_Prior_Test_Required_Quarter_Missing_Op_Data", value);
+                SetCheckParameter("F2L_Status_Prior_Test_Required_Quarter_Missing_Op_Data", value);
             }
         }
         
         /// <summary>
         /// This parameter indeicates whether the most recent QA operating quarter before the 'current' hour was determined using System Op Supp Data, not location-level Op Supp Data.  The value is null if the quarter was not set.
         /// </summary>
-        public static bool? F2lStatusPriorTestRequiredQuarterSetFromSystem
+        public  bool? F2lStatusPriorTestRequiredQuarterSetFromSystem
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("F2L_Status_Prior_Test_Required_Quarter_Set_From_System")));
+                return ((bool?)(GetCheckParameter("F2L_Status_Prior_Test_Required_Quarter_Set_From_System")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F2L_Status_Prior_Test_Required_Quarter_Set_From_System", value);
+                SetCheckParameter("F2L_Status_Prior_Test_Required_Quarter_Set_From_System", value);
             }
         }
         
         /// <summary>
         /// Contains the most recent Flow-to-Load QA Cert Event row after a particular flow-to-load check and before the current hour.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow F2lStatusQaCertEvent
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow F2lStatusQaCertEvent
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("F2L_Status_Qa_Cert_Event ")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("F2L_Status_Qa_Cert_Event ")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -6329,11 +6329,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("F2L_Status_Qa_Cert_Event ", null);
+                    SetCheckParameter("F2L_Status_Qa_Cert_Event ", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("F2L_Status_Qa_Cert_Event ", value.SourceRow);
+                    SetCheckParameter("F2L_Status_Qa_Cert_Event ", value.SourceRow);
                 }
             }
         }
@@ -6341,86 +6341,86 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates whether flow-to-load status checks must run.
         /// </summary>
-        public static bool? F2lStatusRequired
+        public  bool? F2lStatusRequired
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("F2L_Status_Required")));
+                return ((bool?)(GetCheckParameter("F2L_Status_Required")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F2L_Status_Required", value);
+                SetCheckParameter("F2L_Status_Required", value);
             }
         }
         
         /// <summary>
         /// This contains the result to use for Flow-to-Load Status checks.
         /// </summary>
-        public static string F2lStatusResult
+        public  string F2lStatusResult
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("F2L_Status_Result")));
+                return ((string)(GetCheckParameter("F2L_Status_Result")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F2L_Status_Result", value);
+                SetCheckParameter("F2L_Status_Result", value);
             }
         }
         
         /// <summary>
         /// In some cases the Flow-to-Load Status checks can determine the result for each hour once.  This dictionary will contain the system id if the checks have determined whether a single result applies to every hour.  If the lookup value is null then a single result does not apply to every hour, otherwise the lookup value is the flow-to-load check for every hour.
         /// </summary>
-        public static object F2lStatusSystemCheckDictionary
+        public  object F2lStatusSystemCheckDictionary
         {
             get
             {
-                return ((object)(EmParameters.GetCheckParameter("F2L_Status_System_Check_Dictionary")));
+                return ((object)(GetCheckParameter("F2L_Status_System_Check_Dictionary")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F2L_Status_System_Check_Dictionary", value);
+                SetCheckParameter("F2L_Status_System_Check_Dictionary", value);
             }
         }
         
         /// <summary>
         /// In some cases the Flow-to-Load Status checks can determine the missing op data for each hour once.  This dictionary will contain the system id if the checks have determined whether a single set of missing op data applies to every hour.  If the lookup value is null then a single set does not apply to every hour, otherwise the lookup value icontains the missing op data for every hour.
         /// </summary>
-        public static object F2lStatusSystemMissingOpDictionary
+        public  object F2lStatusSystemMissingOpDictionary
         {
             get
             {
-                return ((object)(EmParameters.GetCheckParameter("F2L_Status_System_Missing_Op_Dictionary")));
+                return ((object)(GetCheckParameter("F2L_Status_System_Missing_Op_Dictionary")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F2L_Status_System_Missing_Op_Dictionary", value);
+                SetCheckParameter("F2L_Status_System_Missing_Op_Dictionary", value);
             }
         }
         
         /// <summary>
         /// In some cases the Flow-to-Load Status checks can determine the result for each hour once.  This dictionary will contain the system id if the checks have determined whether a single result applies to every hour.  If the lookup value is null then a single result does not apply to every hour, otherwise the lookup value is the result for every hour.
         /// </summary>
-        public static object F2lStatusSystemResultDictionary
+        public  object F2lStatusSystemResultDictionary
         {
             get
             {
-                return ((object)(EmParameters.GetCheckParameter("F2L_Status_System_Result_Dictionary")));
+                return ((object)(GetCheckParameter("F2L_Status_System_Result_Dictionary")));
             }
             set
             {
-                EmParameters.SetCheckParameter("F2L_Status_System_Result_Dictionary", value);
+                SetCheckParameter("F2L_Status_System_Result_Dictionary", value);
             }
         }
         
         /// <summary>
         /// The monitor location records for the facility of the records being evaluated.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLocationRow> FacilityLocationRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLocationRow> FacilityLocationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Facility_Location_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_Location_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6434,11 +6434,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Facility_Location_Records", null);
+                    SetCheckParameter("Facility_Location_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Facility_Location_Records", value.SourceView);
+                    SetCheckParameter("Facility_Location_Records", value.SourceView);
                 }
             }
         }
@@ -6446,11 +6446,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Operating Supp Data Records for the facility
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpOpSuppDataRow> FacilityOperatingSuppDataRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpOpSuppDataRow> FacilityOperatingSuppDataRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Facility_Operating_Supp_Data_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_Operating_Supp_Data_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6464,11 +6464,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Facility_Operating_Supp_Data_Records", null);
+                    SetCheckParameter("Facility_Operating_Supp_Data_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Facility_Operating_Supp_Data_Records", value.SourceView);
+                    SetCheckParameter("Facility_Operating_Supp_Data_Records", value.SourceView);
                 }
             }
         }
@@ -6476,11 +6476,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// List of all UNIT_FUEL records for the facility.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationFuelRow> FacilityUnitFuelRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationFuelRow> FacilityUnitFuelRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Facility_Unit_Fuel_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_Unit_Fuel_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6494,11 +6494,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Facility_Unit_Fuel_Records", null);
+                    SetCheckParameter("Facility_Unit_Fuel_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Facility_Unit_Fuel_Records", value.SourceView);
+                    SetCheckParameter("Facility_Unit_Fuel_Records", value.SourceView);
                 }
             }
         }
@@ -6506,180 +6506,180 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The maximum value allowed for an FC FACTOR
         /// </summary>
-        public static decimal? FcFactorMaximum
+        public  decimal? FcFactorMaximum
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Fc_Factor_Maximum")));
+                return ((decimal?)(GetCheckParameter("Fc_Factor_Maximum")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Fc_Factor_Maximum", value);
+                SetCheckParameter("Fc_Factor_Maximum", value);
             }
         }
         
         /// <summary>
         /// The minimum value allowed for an FC FACTOR
         /// </summary>
-        public static decimal? FcFactorMinimum
+        public  decimal? FcFactorMinimum
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Fc_Factor_Minimum")));
+                return ((decimal?)(GetCheckParameter("Fc_Factor_Minimum")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Fc_Factor_Minimum", value);
+                SetCheckParameter("Fc_Factor_Minimum", value);
             }
         }
         
         /// <summary>
         /// Indicates if an Fc Factor is needed in a NOXR, HI, or CO2C calculation.
         /// </summary>
-        public static bool? FcFactorNeeded
+        public  bool? FcFactorNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("FC_Factor_Needed")));
+                return ((bool?)(GetCheckParameter("FC_Factor_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FC_Factor_Needed", value);
+                SetCheckParameter("FC_Factor_Needed", value);
             }
         }
 
         /// <summary>
         /// Indicates whether the Unit Fuel records associated with locations in the monitoring plan for a emission report all span the emissiion reports quarter.
         /// </summary>
-        public static bool? FcValicationSpansQuarter
+        public  bool? FcValicationSpansQuarter
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Fc_Valication_Spans_Quarter")));
+                return ((bool?)(GetCheckParameter("Fc_Valication_Spans_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Fc_Valication_Spans_Quarter", value);
+                SetCheckParameter("Fc_Valication_Spans_Quarter", value);
             }
         }
         
         /// <summary>
         /// Contains an array with an element for each location in which the elements contain a unique comma delimited list of primary fuels for the lcoation.
         /// </summary>
-        public static FcValidationInfo[] FcValidationInfoByLocationArray
+        public  FcValidationInfo[] FcValidationInfoByLocationArray
         {
             get
             {
-                return ((FcValidationInfo[])(EmParameters.GetCheckParameter("Fc_Validation_Info_By_Location_Array")));
+                return ((FcValidationInfo[])(GetCheckParameter("Fc_Validation_Info_By_Location_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Fc_Validation_Info_By_Location_Array", value);
+                SetCheckParameter("Fc_Validation_Info_By_Location_Array", value);
             }
         }
         
         /// <summary>
         /// The maximum value allowed in the expected range for FD Factor
         /// </summary>
-        public static decimal? FdFactorMaximum
+        public  decimal? FdFactorMaximum
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Fd_Factor_Maximum")));
+                return ((decimal?)(GetCheckParameter("Fd_Factor_Maximum")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Fd_Factor_Maximum", value);
+                SetCheckParameter("Fd_Factor_Maximum", value);
             }
         }
         
         /// <summary>
         /// The minimum value allowed in the expected range for FD Factor
         /// </summary>
-        public static decimal? FdFactorMinimum
+        public  decimal? FdFactorMinimum
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Fd_Factor_Minimum")));
+                return ((decimal?)(GetCheckParameter("Fd_Factor_Minimum")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Fd_Factor_Minimum", value);
+                SetCheckParameter("Fd_Factor_Minimum", value);
             }
         }
         
         /// <summary>
         /// Indicates if an Fd Factor is needed in a NOXR, HI, or CO2C calculation.
         /// </summary>
-        public static bool? FdFactorNeeded
+        public  bool? FdFactorNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("FD_Factor_Needed")));
+                return ((bool?)(GetCheckParameter("FD_Factor_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FD_Factor_Needed", value);
+                SetCheckParameter("FD_Factor_Needed", value);
             }
         }
         
         /// <summary>
         /// The first year/quarter to use for the FF2L extension checking for Accuracy status determination as part of the Appendix D status evaluation.
         /// </summary>
-        public static string Ff2lAccuracyBeginYearQuarter
+        public  string Ff2lAccuracyBeginYearQuarter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("FF2L_Accuracy_Begin_Year_Quarter")));
+                return ((string)(GetCheckParameter("FF2L_Accuracy_Begin_Year_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FF2L_Accuracy_Begin_Year_Quarter", value);
+                SetCheckParameter("FF2L_Accuracy_Begin_Year_Quarter", value);
             }
         }
         
         /// <summary>
         /// The latest accuracy test end date, installation date, and PEI date for all components in the system for determining FF2L test eligibility for extending the accuracy test deadline.
         /// </summary>
-        public static DateTime? Ff2lAccuracyCheckDate
+        public  DateTime? Ff2lAccuracyCheckDate
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("FF2L_Accuracy_Check_Date")));
+                return ((DateTime?)(GetCheckParameter("FF2L_Accuracy_Check_Date")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FF2L_Accuracy_Check_Date", value);
+                SetCheckParameter("FF2L_Accuracy_Check_Date", value);
             }
         }
         
         /// <summary>
         /// Indicates of the fuel flow component record is eligible to extend the accuracy test expiration date using fuel flow to load tests.
         /// </summary>
-        public static bool? Ff2lAccuracyEligible
+        public  bool? Ff2lAccuracyEligible
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("FF2L_Accuracy_Eligible")));
+                return ((bool?)(GetCheckParameter("FF2L_Accuracy_Eligible")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FF2L_Accuracy_Eligible", value);
+                SetCheckParameter("FF2L_Accuracy_Eligible", value);
             }
         }
         
         /// <summary>
         /// The last year/quarter to use for the FF2L extension checking for Accuracy status determination as part of the Appendix D status evaluation.
         /// </summary>
-        public static string Ff2lAccuracyEndYearQuarter
+        public  string Ff2lAccuracyEndYearQuarter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("FF2L_Accuracy_End_Year_Quarter")));
+                return ((string)(GetCheckParameter("FF2L_Accuracy_End_Year_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FF2L_Accuracy_End_Year_Quarter", value);
+                SetCheckParameter("FF2L_Accuracy_End_Year_Quarter", value);
             }
         }
         
@@ -6687,11 +6687,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// All fuel flow to load baseline data (FF2LBAS) records for the location.  Used by the QA Status evaluation.
         ///
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> Ff2lBaselineRecordsByLocationForQaStatus
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> Ff2lBaselineRecordsByLocationForQaStatus
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("FF2L_Baseline_Records_By_Location_For_QA_Status")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("FF2L_Baseline_Records_By_Location_For_QA_Status")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6705,11 +6705,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("FF2L_Baseline_Records_By_Location_For_QA_Status", null);
+                    SetCheckParameter("FF2L_Baseline_Records_By_Location_For_QA_Status", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("FF2L_Baseline_Records_By_Location_For_QA_Status", value.SourceView);
+                    SetCheckParameter("FF2L_Baseline_Records_By_Location_For_QA_Status", value.SourceView);
                 }
             }
         }
@@ -6717,90 +6717,90 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The first year/quarter to use for the FF2L extension checking for PEI status determination as part of the Appendix D status evaluation.
         /// </summary>
-        public static string Ff2lPeiBeginYearQuarter
+        public  string Ff2lPeiBeginYearQuarter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("FF2L_PEI_Begin_Year_Quarter")));
+                return ((string)(GetCheckParameter("FF2L_PEI_Begin_Year_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FF2L_PEI_Begin_Year_Quarter", value);
+                SetCheckParameter("FF2L_PEI_Begin_Year_Quarter", value);
             }
         }
         
         /// <summary>
         /// The latest accuracy test end date, installation date, and PEI date for all components in the system for determining FF2L test eligibility for extending the PEI deadline.
         /// </summary>
-        public static DateTime? Ff2lPeiCheckDate
+        public  DateTime? Ff2lPeiCheckDate
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("FF2L_PEI_Check_Date")));
+                return ((DateTime?)(GetCheckParameter("FF2L_PEI_Check_Date")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FF2L_PEI_Check_Date", value);
+                SetCheckParameter("FF2L_PEI_Check_Date", value);
             }
         }
         
         /// <summary>
         /// Indicates of the fuel flow component record is eligible to extend the PEI test expiration date using fuel flow to load tests.
         /// </summary>
-        public static bool? Ff2lPeiEligible
+        public  bool? Ff2lPeiEligible
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("FF2L_PEI_Eligible")));
+                return ((bool?)(GetCheckParameter("FF2L_PEI_Eligible")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FF2L_PEI_Eligible", value);
+                SetCheckParameter("FF2L_PEI_Eligible", value);
             }
         }
         
         /// <summary>
         /// The last year/quarter to use for the FF2L extension checking for PEI status determination as part of the Appendix D status evaluation.
         /// </summary>
-        public static string Ff2lPeiEndYearQuarter
+        public  string Ff2lPeiEndYearQuarter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("FF2L_PEI_End_Year_Quarter")));
+                return ((string)(GetCheckParameter("FF2L_PEI_End_Year_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FF2L_PEI_End_Year_Quarter", value);
+                SetCheckParameter("FF2L_PEI_End_Year_Quarter", value);
             }
         }
 
         /// <summary>
         /// The year and quarter list for which  fuel-flow-to-load tests are missing in the Appendix D status analysis.
         /// </summary>
-        public static string Ff2lProblemQuarterList
+        public  string Ff2lProblemQuarterList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("FF2L_Problem_Quarter_List")));
+                return ((string)(GetCheckParameter("FF2L_Problem_Quarter_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FF2L_Problem_Quarter_List", value);
+                SetCheckParameter("FF2L_Problem_Quarter_List", value);
             }
         }
         
         /// <summary>
         /// The TestNumber list of invalid Fuel-Flow-to-Load Tests in the Appendix D Status analysis.
         /// </summary>
-        public static string Ff2lProblemTestnumList
+        public  string Ff2lProblemTestnumList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("FF2L_Problem_TestNum_List")));
+                return ((string)(GetCheckParameter("FF2L_Problem_TestNum_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FF2L_Problem_TestNum_List", value);
+                SetCheckParameter("FF2L_Problem_TestNum_List", value);
             }
         }
         
@@ -6809,11 +6809,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///FF2LTST tests.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> Ff2lTestRecordsByLocationForQaStatus
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> Ff2lTestRecordsByLocationForQaStatus
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("FF2L_Test_Records_By_Location_For_QA_Status")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("FF2L_Test_Records_By_Location_For_QA_Status")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6827,11 +6827,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("FF2L_Test_Records_By_Location_For_QA_Status", null);
+                    SetCheckParameter("FF2L_Test_Records_By_Location_For_QA_Status", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("FF2L_Test_Records_By_Location_For_QA_Status", value.SourceView);
+                    SetCheckParameter("FF2L_Test_Records_By_Location_For_QA_Status", value.SourceView);
                 }
             }
         }
@@ -6839,11 +6839,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Cross Check table storing expected minimum and maximum values for F-Factors
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FFactorRangeChecksRow> FFactorRangeCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FFactorRangeChecksRow> FFactorRangeCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("F-factor_Range_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("F-factor_Range_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6857,11 +6857,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("F-factor_Range_Cross_Check_Table", null);
+                    SetCheckParameter("F-factor_Range_Cross_Check_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("F-factor_Range_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("F-factor_Range_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -6869,86 +6869,86 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the factor multiplied by the result of the MATS rate formula to produce the the actual RE or RH values.
         /// </summary>
-        public static decimal? FinalConversionFactor
+        public  decimal? FinalConversionFactor
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Final_Conversion_Factor")));
+                return ((decimal?)(GetCheckParameter("Final_Conversion_Factor")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Final_Conversion_Factor", value);
+                SetCheckParameter("Final_Conversion_Factor", value);
             }
         }
         
         /// <summary>
         /// The date of the first hourly operating data record for the location.
         /// </summary>
-        public static DateTime? FirstDayOfOperation
+        public  DateTime? FirstDayOfOperation
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("First_Day_of_Operation")));
+                return ((DateTime?)(GetCheckParameter("First_Day_of_Operation")));
             }
             set
             {
-                EmParameters.SetCheckParameter("First_Day_of_Operation", value);
+                SetCheckParameter("First_Day_of_Operation", value);
             }
         }
         
         /// <summary>
         /// Reporting Period object representing the ECMPS First Reporitng Period of a facility.
         /// </summary>
-        public static object FirstEcmpsReportingPeriodObject
+        public  object FirstEcmpsReportingPeriodObject
         {
             get
             {
-                return ((object)(EmParameters.GetCheckParameter("First_ECMPS_Reporting_Period_Object")));
+                return ((object)(GetCheckParameter("First_ECMPS_Reporting_Period_Object")));
             }
             set
             {
-                EmParameters.SetCheckParameter("First_ECMPS_Reporting_Period_Object", value);
+                SetCheckParameter("First_ECMPS_Reporting_Period_Object", value);
             }
         }
         
         /// <summary>
         /// The hour of the first hourly operating data record for the location.
         /// </summary>
-        public static int? FirstHourOfOperation
+        public  int? FirstHourOfOperation
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("First_Hour_of_Operation")));
+                return ((int?)(GetCheckParameter("First_Hour_of_Operation")));
             }
             set
             {
-                EmParameters.SetCheckParameter("First_Hour_of_Operation", value);
+                SetCheckParameter("First_Hour_of_Operation", value);
             }
         }
         
         /// <summary>
         /// Contains a list of Monitor System Component records for the current flow MHV record, that did not report a Component Id because the source is using Flow Averaging with multiple components.  The list contains the components used in the averaging.
         /// </summary>
-        public static List<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow> FlowAveragingComponentList
+        public  List<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow> FlowAveragingComponentList
         {
             get
             {
-                return ((List<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow>)(EmParameters.GetCheckParameter("Flow_Averaging_Component_List")));
+                return ((List<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow>)(GetCheckParameter("Flow_Averaging_Component_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Flow_Averaging_Component_List", value);
+                SetCheckParameter("Flow_Averaging_Component_List", value);
             }
         }
         
         /// <summary>
         /// Contains the Monitor System Component record for one of two X-Pattern Flow monitoing systems  for the current flow MHV record.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow FlowAveragingComponentRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow FlowAveragingComponentRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Flow_Averaging_Component_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Flow_Averaging_Component_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -6962,11 +6962,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Flow_Averaging_Component_Record", null);
+                    SetCheckParameter("Flow_Averaging_Component_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Flow_Averaging_Component_Record", value.SourceRow);
+                    SetCheckParameter("Flow_Averaging_Component_Record", value.SourceRow);
                 }
             }
         }
@@ -6976,15 +6976,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current MHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? FlowCalculatedAdjustedValue
+        public  decimal? FlowCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("FLOW_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("FLOW_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FLOW_Calculated_Adjusted_Value", value);
+                SetCheckParameter("FLOW_Calculated_Adjusted_Value", value);
             }
         }
         
@@ -6993,56 +6993,56 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///This parameter is initialized to false in the HourOp-3 and used in HourOp-43.  HourOp-43.  Initially, only MatsHod-1 resets the value of this parameter to true. 
         /// </summary>
-        public static bool? FlowMhvOptionallyAllowed
+        public  bool? FlowMhvOptionallyAllowed
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Flow_MHV_Optionally_Allowed")));
+                return ((bool?)(GetCheckParameter("Flow_MHV_Optionally_Allowed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Flow_MHV_Optionally_Allowed", value);
+                SetCheckParameter("Flow_MHV_Optionally_Allowed", value);
             }
         }
         
         /// <summary>
         /// flag to indicate whether or not checks for Stack Flow Monitored Hourly Data need to run
         /// </summary>
-        public static bool? FlowMonitorHourlyChecksNeeded
+        public  bool? FlowMonitorHourlyChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Flow_Monitor_Hourly_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("Flow_Monitor_Hourly_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Flow_Monitor_Hourly_Checks_Needed", value);
+                SetCheckParameter("Flow_Monitor_Hourly_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// the number of MonitorHourlyValueData records in the current hour that have the parameter_cd = "FLOW"
         /// </summary>
-        public static int? FlowMonitorHourlyCount
+        public  int? FlowMonitorHourlyCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Flow_Monitor_Hourly_Count")));
+                return ((int?)(GetCheckParameter("Flow_Monitor_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Flow_Monitor_Hourly_Count", value);
+                SetCheckParameter("Flow_Monitor_Hourly_Count", value);
             }
         }
         
         /// <summary>
         /// The Flow Monitor Hourly Value Records By Hour and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueFlowRow> FlowMonitorHourlyValueRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueFlowRow> FlowMonitorHourlyValueRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Flow_Monitor_Hourly_Value_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Flow_Monitor_Hourly_Value_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7056,11 +7056,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Flow_Monitor_Hourly_Value_Records_By_Hour_Location", null);
+                    SetCheckParameter("Flow_Monitor_Hourly_Value_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Flow_Monitor_Hourly_Value_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Flow_Monitor_Hourly_Value_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -7068,30 +7068,30 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Flag to indicate whether or not Part 75 Flow checks are needed. 
         /// </summary>
-        public static bool? FlowNeededForPart75
+        public  bool? FlowNeededForPart75
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Flow_Needed_For_Part_75")));
+                return ((bool?)(GetCheckParameter("Flow_Needed_For_Part_75")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Flow_Needed_For_Part_75", value);
+                SetCheckParameter("Flow_Needed_For_Part_75", value);
             }
         }
         
         /// <summary>
         /// Indicates that the Flow system has a special FLOWEXP RATA exemption.
         /// </summary>
-        public static bool? FlowRataExemption
+        public  bool? FlowRataExemption
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Flow_RATA_Exemption")));
+                return ((bool?)(GetCheckParameter("Flow_RATA_Exemption")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Flow_RATA_Exemption", value);
+                SetCheckParameter("Flow_RATA_Exemption", value);
             }
         }
         
@@ -7100,41 +7100,41 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Each array element represents a location in the current emission report and contains a comma delimited list of MON_SYS_ID.
         /// </summary>
-        public static string FlowSystemIdArray
+        public  string FlowSystemIdArray
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("FLOW_System_ID_Array")));
+                return ((string)(GetCheckParameter("FLOW_System_ID_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FLOW_System_ID_Array", value);
+                SetCheckParameter("FLOW_System_ID_Array", value);
             }
         }
         
         /// <summary>
         /// Contains a comma delimited list of cylinder ids with the last id in a multiple id list separated by "AND".
         /// </summary>
-        public static string FormattedCylinderIdList
+        public  string FormattedCylinderIdList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Formatted_Cylinder_Id_List")));
+                return ((string)(GetCheckParameter("Formatted_Cylinder_Id_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Formatted_Cylinder_Id_List", value);
+                SetCheckParameter("Formatted_Cylinder_Id_List", value);
             }
         }
         
         /// <summary>
         /// A lookup table of Fuel codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.FuelCodeRow> FuelCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.FuelCodeRow> FuelCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Fuel_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7148,11 +7148,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Fuel_Code_Lookup_Table", null);
+                    SetCheckParameter("Fuel_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Fuel_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -7160,11 +7160,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// A single Monitor System Component Record that is being evaluated for Appendix D status purposes.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow FuelFlowComponentRecordToCheck
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow FuelFlowComponentRecordToCheck
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Fuel_Flow_Component_Record_to_Check")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Fuel_Flow_Component_Record_to_Check")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -7178,11 +7178,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Fuel_Flow_Component_Record_to_Check", null);
+                    SetCheckParameter("Fuel_Flow_Component_Record_to_Check", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Fuel_Flow_Component_Record_to_Check", value.SourceRow);
+                    SetCheckParameter("Fuel_Flow_Component_Record_to_Check", value.SourceRow);
                 }
             }
         }
@@ -7190,11 +7190,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// All active fuel records for a given location and day.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationFuelRow> FuelRecordsByDateAndLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationFuelRow> FuelRecordsByDateAndLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Fuel_Records_By_Date_and_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Records_By_Date_and_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7208,11 +7208,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Fuel_Records_By_Date_and_Location", null);
+                    SetCheckParameter("Fuel_Records_By_Date_and_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Fuel_Records_By_Date_and_Location", value.SourceView);
+                    SetCheckParameter("Fuel_Records_By_Date_and_Location", value.SourceView);
                 }
             }
         }
@@ -7220,11 +7220,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Unit Fuel Records By Hour and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationFuelRow> FuelRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationFuelRow> FuelRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Fuel_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7238,11 +7238,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Fuel_Records_By_Hour_Location", null);
+                    SetCheckParameter("Fuel_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Fuel_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Fuel_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -7250,26 +7250,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// A list of FuelCodes in the HFF record for each location and hour.
         /// </summary>
-        public static string FuelsUsedList
+        public  string FuelsUsedList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Fuels_Used_List")));
+                return ((string)(GetCheckParameter("Fuels_Used_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Fuels_Used_List", value);
+                SetCheckParameter("Fuels_Used_List", value);
             }
         }
         
         /// <summary>
         /// Establishes minimum and maximum possible values for oil density by fuel type
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeRealityChecksForDensityRow> FuelTypeRealityChecksForDensityCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeRealityChecksForDensityRow> FuelTypeRealityChecksForDensityCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Fuel_Type_Reality_Checks_For_Density_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Type_Reality_Checks_For_Density_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7283,11 +7283,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Reality_Checks_For_Density_Cross_Check_Table", null);
+                    SetCheckParameter("Fuel_Type_Reality_Checks_For_Density_Cross_Check_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Reality_Checks_For_Density_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Type_Reality_Checks_For_Density_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -7295,11 +7295,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Table defining minimum and maximum expected FC FACTOR values for different fuel types.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeRealityChecksForFcFactorRow> FuelTypeRealityChecksForFcFactorCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeRealityChecksForFcFactorRow> FuelTypeRealityChecksForFcFactorCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Fuel_Type_Reality_Checks_For_Fc_Factor_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Type_Reality_Checks_For_Fc_Factor_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7313,11 +7313,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Reality_Checks_For_Fc_Factor_Cross_Check_Table", null);
+                    SetCheckParameter("Fuel_Type_Reality_Checks_For_Fc_Factor_Cross_Check_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Reality_Checks_For_Fc_Factor_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Type_Reality_Checks_For_Fc_Factor_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -7325,11 +7325,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Establishes minimum and maximum possible values for GCV by fuel type
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeRealityChecksForGcvRow> FuelTypeRealityChecksForGcvCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeRealityChecksForGcvRow> FuelTypeRealityChecksForGcvCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Fuel_Type_Reality_Checks_for_GCV_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Type_Reality_Checks_for_GCV_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7343,11 +7343,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Reality_Checks_for_GCV_Cross_Check_Table", null);
+                    SetCheckParameter("Fuel_Type_Reality_Checks_for_GCV_Cross_Check_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Reality_Checks_for_GCV_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Type_Reality_Checks_for_GCV_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -7355,11 +7355,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Minimum and Maximum allowed values for Sulfur Content by fuel type - critical error levels
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeRealityChecksForSulfurRow> FuelTypeRealityChecksForSulfurContentCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeRealityChecksForSulfurRow> FuelTypeRealityChecksForSulfurContentCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Fuel_Type_Reality_Checks_For_Sulfur_Content_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Type_Reality_Checks_For_Sulfur_Content_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7373,11 +7373,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Reality_Checks_For_Sulfur_Content_Cross_Check_Table", null);
+                    SetCheckParameter("Fuel_Type_Reality_Checks_For_Sulfur_Content_Cross_Check_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Reality_Checks_For_Sulfur_Content_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Type_Reality_Checks_For_Sulfur_Content_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -7385,11 +7385,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Establishes minimum and maximum Density values by fuel type - used for generating a non-critical error message
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeWarningLevelsForDensityRow> FuelTypeWarningLevelsForDensityCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeWarningLevelsForDensityRow> FuelTypeWarningLevelsForDensityCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Fuel_Type_Warning_Levels_For_Density_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Type_Warning_Levels_For_Density_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7403,11 +7403,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Warning_Levels_For_Density_Cross_Check_Table", null);
+                    SetCheckParameter("Fuel_Type_Warning_Levels_For_Density_Cross_Check_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Warning_Levels_For_Density_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Type_Warning_Levels_For_Density_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -7415,11 +7415,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Establishes minimum and maximum GCV values by fuel type - used for generating a non-critical error message
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeWarningLevelsForGcvRow> FuelTypeWarningLevelsForGcvCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeWarningLevelsForGcvRow> FuelTypeWarningLevelsForGcvCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Fuel_Type_Warning_Levels_for_GCV_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Type_Warning_Levels_for_GCV_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7433,11 +7433,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Warning_Levels_for_GCV_Cross_Check_Table", null);
+                    SetCheckParameter("Fuel_Type_Warning_Levels_for_GCV_Cross_Check_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Warning_Levels_for_GCV_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Type_Warning_Levels_for_GCV_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -7445,11 +7445,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Minimum and Maximum expected values for Sulfur Content associated with a fuel type - warning levels
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeWarningLevelsForSulfurRow> FuelTypeWarningLevelsForSulfurContentCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelTypeWarningLevelsForSulfurRow> FuelTypeWarningLevelsForSulfurContentCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Fuel_Type_Warning_Levels_For_Sulfur_Content_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Type_Warning_Levels_For_Sulfur_Content_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7463,11 +7463,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Warning_Levels_For_Sulfur_Content_Cross_Check_Table", null);
+                    SetCheckParameter("Fuel_Type_Warning_Levels_For_Sulfur_Content_Cross_Check_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Fuel_Type_Warning_Levels_For_Sulfur_Content_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Type_Warning_Levels_For_Sulfur_Content_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -7475,56 +7475,56 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The maximum value allowed for an FW FACTOR
         /// </summary>
-        public static decimal? FwFactorMaximum
+        public  decimal? FwFactorMaximum
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Fw_Factor_Maximum")));
+                return ((decimal?)(GetCheckParameter("Fw_Factor_Maximum")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Fw_Factor_Maximum", value);
+                SetCheckParameter("Fw_Factor_Maximum", value);
             }
         }
         
         /// <summary>
         /// The minimum value allowed for an FW FACTOR
         /// </summary>
-        public static decimal? FwFactorMinimum
+        public  decimal? FwFactorMinimum
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Fw_Factor_Minimum")));
+                return ((decimal?)(GetCheckParameter("Fw_Factor_Minimum")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Fw_Factor_Minimum", value);
+                SetCheckParameter("Fw_Factor_Minimum", value);
             }
         }
         
         /// <summary>
         /// Indicates if an Fw Factor is needed in a NOXR calculation.
         /// </summary>
-        public static bool? FwFactorNeeded
+        public  bool? FwFactorNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("FW_Factor_Needed")));
+                return ((bool?)(GetCheckParameter("FW_Factor_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("FW_Factor_Needed", value);
+                SetCheckParameter("FW_Factor_Needed", value);
             }
         }
         
         /// <summary>
         /// Lookup table of PGVP Gas Type Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.GasTypeCodeRow> GasTypeCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.GasTypeCodeRow> GasTypeCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Gas_Type_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Gas_Type_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7538,11 +7538,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Gas_Type_Code_Lookup_Table", null);
+                    SetCheckParameter("Gas_Type_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Gas_Type_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Gas_Type_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -7550,150 +7550,150 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates if LME records should be generated.
         /// </summary>
-        public static bool? GenerateLme
+        public  bool? GenerateLme
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Generate_LME")));
+                return ((bool?)(GetCheckParameter("Generate_LME")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Generate_LME", value);
+                SetCheckParameter("Generate_LME", value);
             }
         }
         
         /// <summary>
         /// The calculated H2O Percentage based on an equation code and O2 Monitored Values
         /// </summary>
-        public static decimal? H2oCalculatedPercent
+        public  decimal? H2oCalculatedPercent
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("H2o_Calculated_Percent")));
+                return ((decimal?)(GetCheckParameter("H2o_Calculated_Percent")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2o_Calculated_Percent", value);
+                SetCheckParameter("H2o_Calculated_Percent", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not a valid H2O Calculation was performed based on the H2O CEM Equation code and Monitored O2 values.  Note - the calculation may not have matched the reported value -- this parameter simply indicates whether or not it was possible to perform the calculation
         /// </summary>
-        public static bool? H2oCalculationStatus
+        public  bool? H2oCalculationStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("H2o_Calculation_Status")));
+                return ((bool?)(GetCheckParameter("H2o_Calculation_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2o_Calculation_Status", value);
+                SetCheckParameter("H2o_Calculation_Status", value);
             }
         }
         
         /// <summary>
         /// A code that references an equation in MonitoringFormulaData that will be used for calculations for the current record (specific to Parameter H2O)
         /// </summary>
-        public static bool? H2oCemEquationCode
+        public  bool? H2oCemEquationCode
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("H2o_Cem_Equation_Code")));
+                return ((bool?)(GetCheckParameter("H2o_Cem_Equation_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2o_Cem_Equation_Code", value);
+                SetCheckParameter("H2o_Cem_Equation_Code", value);
             }
         }
         
         /// <summary>
         /// A highest active H2O default for the hour.
         /// </summary>
-        public static decimal? H2oDefaultMaxValue
+        public  decimal? H2oDefaultMaxValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("H2O_Default_Max_Value")));
+                return ((decimal?)(GetCheckParameter("H2O_Default_Max_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_Default_Max_Value", value);
+                SetCheckParameter("H2O_Default_Max_Value", value);
             }
         }
         
         /// <summary>
         /// A lowest active H2O default for the hour.
         /// </summary>
-        public static decimal? H2oDefaultMinValue
+        public  decimal? H2oDefaultMinValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("H2O_Default_Min_Value")));
+                return ((decimal?)(GetCheckParameter("H2O_Default_Min_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_Default_Min_Value", value);
+                SetCheckParameter("H2O_Default_Min_Value", value);
             }
         }
         
         /// <summary>
         /// A default value to be used for %H2O in calculations.
         /// </summary>
-        public static decimal? H2oDefaultValue
+        public  decimal? H2oDefaultValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("H2O_Default_Value")));
+                return ((decimal?)(GetCheckParameter("H2O_Default_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_Default_Value", value);
+                SetCheckParameter("H2O_Default_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not Derived Hourly H20 checks are needed  to support the current calculation
         /// </summary>
-        public static bool? H2oDerivedHourlyChecksNeeded
+        public  bool? H2oDerivedHourlyChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("H2O_Derived_Hourly_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("H2O_Derived_Hourly_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_Derived_Hourly_Checks_Needed", value);
+                SetCheckParameter("H2O_Derived_Hourly_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// the number of DerivedHourlyValueData records in the current hour that have the parameter_cd = "H2O"
         /// </summary>
-        public static int? H2oDerivedHourlyCount
+        public  int? H2oDerivedHourlyCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("H2O_Derived_Hourly_Count")));
+                return ((int?)(GetCheckParameter("H2O_Derived_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_Derived_Hourly_Count", value);
+                SetCheckParameter("H2O_Derived_Hourly_Count", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not all DHV checks have passed for the current H2O record
         /// </summary>
-        public static bool? H2oDerivedHourlyStatus
+        public  bool? H2oDerivedHourlyStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("H2O_Derived_Hourly_Status")));
+                return ((bool?)(GetCheckParameter("H2O_Derived_Hourly_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_Derived_Hourly_Status", value);
+                SetCheckParameter("H2O_Derived_Hourly_Status", value);
             }
         }
         
@@ -7702,15 +7702,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? H2oDhvCalculatedAdjustedValue
+        public  decimal? H2oDhvCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("H2O_DHV_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("H2O_DHV_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_DHV_Calculated_Adjusted_Value", value);
+                SetCheckParameter("H2O_DHV_Calculated_Adjusted_Value", value);
             }
         }
         
@@ -7719,60 +7719,60 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the DHV H2O MODC value used in calcultion checks to determine whether H2O was substituted and set in the H2O section of HOURDHV-13.
         /// </summary>
-        public static string H2oDhvModc
+        public  string H2oDhvModc
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("H2O_DHV_MODC")));
+                return ((string)(GetCheckParameter("H2O_DHV_MODC")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_DHV_MODC", value);
+                SetCheckParameter("H2O_DHV_MODC", value);
             }
         }
         
         /// <summary>
         /// Indicates if active H2O Monitor Method entries for the current configuration during the current hour uses fuel-specific missing data approach
         /// </summary>
-        public static bool? H2oFuelSpecificMissingData
+        public  bool? H2oFuelSpecificMissingData
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("H2O_Fuel_Specific_Missing_Data")));
+                return ((bool?)(GetCheckParameter("H2O_Fuel_Specific_Missing_Data")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_Fuel_Specific_Missing_Data", value);
+                SetCheckParameter("H2O_Fuel_Specific_Missing_Data", value);
             }
         }
         
         /// <summary>
         /// Indicates whether an H2O DHV record has a measured MODC.
         /// </summary>
-        public static bool? H2oHasMeasuredDhvModc
+        public  bool? H2oHasMeasuredDhvModc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("H2O_Has_Measured_DHV_MODC")));
+                return ((bool?)(GetCheckParameter("H2O_Has_Measured_DHV_MODC")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_Has_Measured_DHV_MODC", value);
+                SetCheckParameter("H2O_Has_Measured_DHV_MODC", value);
             }
         }
         
         /// <summary>
         /// Defines the Method Code for the H2O Method that is active during the current hour
         /// </summary>
-        public static string H2oMethodCode
+        public  string H2oMethodCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("H2O_Method_Code")));
+                return ((string)(GetCheckParameter("H2O_Method_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_Method_Code", value);
+                SetCheckParameter("H2O_Method_Code", value);
             }
         }
         
@@ -7781,15 +7781,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current MHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? H2oMhvCalculatedAdjustedValue
+        public  decimal? H2oMhvCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("H2O_MHV_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("H2O_MHV_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_MHV_Calculated_Adjusted_Value", value);
+                SetCheckParameter("H2O_MHV_Calculated_Adjusted_Value", value);
             }
         }
         
@@ -7798,71 +7798,71 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the MHV H2O MODC value used in calcultion checks to determine whether H2O was substituted and set in the H2O section of HOURMHV-8.
         /// </summary>
-        public static string H2oMhvModc
+        public  string H2oMhvModc
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("H2O_MHV_MODC")));
+                return ((string)(GetCheckParameter("H2O_MHV_MODC")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_MHV_MODC", value);
+                SetCheckParameter("H2O_MHV_MODC", value);
             }
         }
         
         /// <summary>
         /// Indicates if the maximum or minimum H2O value is used for missing data.
         /// </summary>
-        public static string H2oMissingDataApproach
+        public  string H2oMissingDataApproach
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("H2O_Missing_Data_Approach")));
+                return ((string)(GetCheckParameter("H2O_Missing_Data_Approach")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_Missing_Data_Approach", value);
+                SetCheckParameter("H2O_Missing_Data_Approach", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not Monitor Hourly H20 checks are needed  to support the current calculation
         /// </summary>
-        public static bool? H2oMonitorHourlyChecksNeeded
+        public  bool? H2oMonitorHourlyChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("H2O_Monitor_Hourly_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("H2O_Monitor_Hourly_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_Monitor_Hourly_Checks_Needed", value);
+                SetCheckParameter("H2O_Monitor_Hourly_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// the number of MonitorHourlyValueData records in the current hour that have the parameter_cd = "H2O"
         /// </summary>
-        public static int? H2oMonitorHourlyCount
+        public  int? H2oMonitorHourlyCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("H2O_Monitor_Hourly_Count")));
+                return ((int?)(GetCheckParameter("H2O_Monitor_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_Monitor_Hourly_Count", value);
+                SetCheckParameter("H2O_Monitor_Hourly_Count", value);
             }
         }
         
         /// <summary>
         /// The H2O Monitor Method records for a specific hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodH2oRow> H2oMonitorMethodRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodH2oRow> H2oMonitorMethodRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("H2O_Monitor_Method_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("H2O_Monitor_Method_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7876,11 +7876,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("H2O_Monitor_Method_Records_By_Hour_Location", null);
+                    SetCheckParameter("H2O_Monitor_Method_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("H2O_Monitor_Method_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("H2O_Monitor_Method_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -7888,135 +7888,135 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Reports the current effective H2O Percentage, regardless of whether it comes from a Monitor Hourly record or a Derived Hourly record
         /// </summary>
-        public static decimal? H2oReportedValue
+        public  decimal? H2oReportedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("H2O_Reported_Value")));
+                return ((decimal?)(GetCheckParameter("H2O_Reported_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("H2O_Reported_Value", value);
+                SetCheckParameter("H2O_Reported_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the current Monitoring Method for Heat Input is Appendix D
         /// </summary>
-        public static bool? HeatInputAppDMethodActiveForHour
+        public  bool? HeatInputAppDMethodActiveForHour
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Heat_Input_App_D_Method_Active_For_Hour")));
+                return ((bool?)(GetCheckParameter("Heat_Input_App_D_Method_Active_For_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Heat_Input_App_D_Method_Active_For_Hour", value);
+                SetCheckParameter("Heat_Input_App_D_Method_Active_For_Hour", value);
             }
         }
         
         /// <summary>
         /// The Equation Code associated with the formula record for the current Heat Input calculation
         /// </summary>
-        public static string HeatInputCemEquationCode
+        public  string HeatInputCemEquationCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Heat_Input_CEM_Equation_Code")));
+                return ((string)(GetCheckParameter("Heat_Input_CEM_Equation_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Heat_Input_CEM_Equation_Code", value);
+                SetCheckParameter("Heat_Input_CEM_Equation_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the current Monitoring Method for Heat Input is CEMs
         /// </summary>
-        public static bool? HeatInputCemMethodActiveForHour
+        public  bool? HeatInputCemMethodActiveForHour
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Heat_Input_CEM_Method_Active_For_Hour")));
+                return ((bool?)(GetCheckParameter("Heat_Input_CEM_Method_Active_For_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Heat_Input_CEM_Method_Active_For_Hour", value);
+                SetCheckParameter("Heat_Input_CEM_Method_Active_For_Hour", value);
             }
         }
         
         /// <summary>
         /// Indicates that NOx Mass is being calculated based on heat input, therefore heat input checks must be run in support of NOx Mass for the current hour
         /// </summary>
-        public static bool? HeatInputChecksNeededForNoxMassCalc
+        public  bool? HeatInputChecksNeededForNoxMassCalc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Heat_Input_Checks_Needed_for_NOx_Mass_Calc")));
+                return ((bool?)(GetCheckParameter("Heat_Input_Checks_Needed_for_NOx_Mass_Calc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Heat_Input_Checks_Needed_for_NOx_Mass_Calc", value);
+                SetCheckParameter("Heat_Input_Checks_Needed_for_NOx_Mass_Calc", value);
             }
         }
         
         /// <summary>
         /// Flag to indicate whether or not it is necessary to perform HI Derived Hourly checks at this location for the current hour
         /// </summary>
-        public static bool? HeatInputDerivedChecksNeeded
+        public  bool? HeatInputDerivedChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Heat_Input_Derived_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("Heat_Input_Derived_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Heat_Input_Derived_Checks_Needed", value);
+                SetCheckParameter("Heat_Input_Derived_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// refers to the number of DerivedHourlyDataValue records for Heat Input reported for the current location during the current hour
         /// </summary>
-        public static bool? HeatInputDerivedHourlyCount
+        public  bool? HeatInputDerivedHourlyCount
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Heat_Input_Derived_Hourly_Count")));
+                return ((bool?)(GetCheckParameter("Heat_Input_Derived_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Heat_Input_Derived_Hourly_Count", value);
+                SetCheckParameter("Heat_Input_Derived_Hourly_Count", value);
             }
         }
         
         /// <summary>
         /// Indicates if active HI Monitor Method entries for the current configuration during the current hour uses fuel-specific missing data approach
         /// </summary>
-        public static bool? HeatInputFuelSpecificMissingData
+        public  bool? HeatInputFuelSpecificMissingData
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Heat_Input_Fuel_Specific_Missing_Data")));
+                return ((bool?)(GetCheckParameter("Heat_Input_Fuel_Specific_Missing_Data")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Heat_Input_Fuel_Specific_Missing_Data", value);
+                SetCheckParameter("Heat_Input_Fuel_Specific_Missing_Data", value);
             }
         }
         
         /// <summary>
         /// The first quarter in the current year of the reporting period when Heat Input method was active for the location.
         /// </summary>
-        public static string HeatInputStartQuarter
+        public  string HeatInputStartQuarter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Heat_Input_Start_Quarter")));
+                return ((string)(GetCheckParameter("Heat_Input_Start_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Heat_Input_Start_Quarter", value);
+                SetCheckParameter("Heat_Input_Start_Quarter", value);
             }
         }
         
@@ -8025,15 +8025,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current CO2 HPFF Record.CalcParamValFuel
         /// </summary>
-        public static decimal? HffCalcCo2
+        public  decimal? HffCalcCo2
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HFF_Calc_CO2")));
+                return ((decimal?)(GetCheckParameter("HFF_Calc_CO2")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Calc_CO2", value);
+                SetCheckParameter("HFF_Calc_CO2", value);
             }
         }
         
@@ -8042,15 +8042,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current HI HPFF Record.CalcParamValFuel
         /// </summary>
-        public static decimal? HffCalcHiRate
+        public  decimal? HffCalcHiRate
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HFF_Calc_HI_Rate")));
+                return ((decimal?)(GetCheckParameter("HFF_Calc_HI_Rate")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Calc_HI_Rate", value);
+                SetCheckParameter("HFF_Calc_HI_Rate", value);
             }
         }
         
@@ -8059,15 +8059,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current Fuel Flow Record.CalcMassFlowRate
         /// </summary>
-        public static decimal? HffCalcMassOilRate
+        public  decimal? HffCalcMassOilRate
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HFF_Calc_Mass_Oil_Rate")));
+                return ((decimal?)(GetCheckParameter("HFF_Calc_Mass_Oil_Rate")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Calc_Mass_Oil_Rate", value);
+                SetCheckParameter("HFF_Calc_Mass_Oil_Rate", value);
             }
         }
         
@@ -8076,15 +8076,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current SO2 HPFF Record.CalcParamValFuel
         /// </summary>
-        public static decimal? HffCalcSo2
+        public  decimal? HffCalcSo2
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HFF_Calc_SO2")));
+                return ((decimal?)(GetCheckParameter("HFF_Calc_SO2")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Calc_SO2", value);
+                SetCheckParameter("HFF_Calc_SO2", value);
             }
         }
         
@@ -8093,330 +8093,330 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current Fuel Flow Record.CalcVolumetricFlowRate
         /// </summary>
-        public static decimal? HffCalcVolumetricRate
+        public  decimal? HffCalcVolumetricRate
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HFF_Calc_Volumetric_Rate")));
+                return ((decimal?)(GetCheckParameter("HFF_Calc_Volumetric_Rate")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Calc_Volumetric_Rate", value);
+                SetCheckParameter("HFF_Calc_Volumetric_Rate", value);
             }
         }
         
         /// <summary>
         /// The density of oil used to recalculate mass oil flow.
         /// </summary>
-        public static decimal? HffDensity
+        public  decimal? HffDensity
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HFF_Density")));
+                return ((decimal?)(GetCheckParameter("HFF_Density")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Density", value);
+                SetCheckParameter("HFF_Density", value);
             }
         }
         
         /// <summary>
         /// The Fc Factor used to recalculate CO2 mass rate.
         /// </summary>
-        public static decimal? HffFcFactor
+        public  decimal? HffFcFactor
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HFF_Fc_Factor")));
+                return ((decimal?)(GetCheckParameter("HFF_Fc_Factor")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Fc_Factor", value);
+                SetCheckParameter("HFF_Fc_Factor", value);
             }
         }
         
         /// <summary>
         /// The IndicatorCode in the UnitFuel record for the fuel in the HFF record.
         /// </summary>
-        public static string HffFuelIndicatorCode
+        public  string HffFuelIndicatorCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("HFF_Fuel_Indicator_Code")));
+                return ((string)(GetCheckParameter("HFF_Fuel_Indicator_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Fuel_Indicator_Code", value);
+                SetCheckParameter("HFF_Fuel_Indicator_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates if evaluation of the HFF record for an oil fuel was initialized.
         /// </summary>
-        public static bool? HffGasRecordInitialized
+        public  bool? HffGasRecordInitialized
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("HFF_Gas_Record_Initialized")));
+                return ((bool?)(GetCheckParameter("HFF_Gas_Record_Initialized")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Gas_Record_Initialized", value);
+                SetCheckParameter("HFF_Gas_Record_Initialized", value);
             }
         }
         
         /// <summary>
         /// The GCV used to recalculate heat input.
         /// </summary>
-        public static decimal? HffGcv
+        public  decimal? HffGcv
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HFF_GCV")));
+                return ((decimal?)(GetCheckParameter("HFF_GCV")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_GCV", value);
+                SetCheckParameter("HFF_GCV", value);
             }
         }
         
         /// <summary>
         /// Indicates if HFF Mass Oil was calculated (used for leveling)
         /// </summary>
-        public static bool? HffMassOilCalculated
+        public  bool? HffMassOilCalculated
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("HFF_Mass_Oil_Calculated")));
+                return ((bool?)(GetCheckParameter("HFF_Mass_Oil_Calculated")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Mass_Oil_Calculated", value);
+                SetCheckParameter("HFF_Mass_Oil_Calculated", value);
             }
         }
         
         /// <summary>
         /// The parameter in the Monitor Default record representing maximum or minimum Mass oil flow.
         /// </summary>
-        public static string HffMassOilDefaultParameter
+        public  string HffMassOilDefaultParameter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("HFF_Mass_Oil_Default_Parameter")));
+                return ((string)(GetCheckParameter("HFF_Mass_Oil_Default_Parameter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Mass_Oil_Default_Parameter", value);
+                SetCheckParameter("HFF_Mass_Oil_Default_Parameter", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Mass SODC in the HFF record is valid.
         /// </summary>
-        public static bool? HffMassSodcStatus
+        public  bool? HffMassSodcStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("HFF_Mass_SODC_Status")));
+                return ((bool?)(GetCheckParameter("HFF_Mass_SODC_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Mass_SODC_Status", value);
+                SetCheckParameter("HFF_Mass_SODC_Status", value);
             }
         }
         
         /// <summary>
         /// The maximum heat input rate from the unit capacity which should equal the reported heat input rate in the HPFF record when SourceofDataMassCode is equal to 4.
         /// </summary>
-        public static decimal? HffMaxHeatInputForMass
+        public  decimal? HffMaxHeatInputForMass
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HFF_Max_Heat_Input_for_Mass")));
+                return ((decimal?)(GetCheckParameter("HFF_Max_Heat_Input_for_Mass")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Max_Heat_Input_for_Mass", value);
+                SetCheckParameter("HFF_Max_Heat_Input_for_Mass", value);
             }
         }
         
         /// <summary>
         /// The maximum heat input rate from the unit capacity which should equal the reported heat input rate in the HPFF record when SourceofDataVolumetricCode is equal to 4.
         /// </summary>
-        public static decimal? HffMaxHeatInputForVolume
+        public  decimal? HffMaxHeatInputForVolume
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HFF_Max_Heat_Input_for_Volume")));
+                return ((decimal?)(GetCheckParameter("HFF_Max_Heat_Input_for_Volume")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Max_Heat_Input_for_Volume", value);
+                SetCheckParameter("HFF_Max_Heat_Input_for_Volume", value);
             }
         }
         
         /// <summary>
         /// Indicates if evaluation of the HFF record for an oil fuel was initialized.
         /// </summary>
-        public static bool? HffOilRecordInitialized
+        public  bool? HffOilRecordInitialized
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("HFF_Oil_Record_Initialized")));
+                return ((bool?)(GetCheckParameter("HFF_Oil_Record_Initialized")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Oil_Record_Initialized", value);
+                SetCheckParameter("HFF_Oil_Record_Initialized", value);
             }
         }
         
         /// <summary>
         /// The SO2 emission rate of the fuel used to recalculate SO2 mass rate.
         /// </summary>
-        public static decimal? HffSo2EmissionRate
+        public  decimal? HffSo2EmissionRate
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HFF_SO2_Emission_Rate")));
+                return ((decimal?)(GetCheckParameter("HFF_SO2_Emission_Rate")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_SO2_Emission_Rate", value);
+                SetCheckParameter("HFF_SO2_Emission_Rate", value);
             }
         }
         
         /// <summary>
         /// The equation code of the formula used to calculated SO2 for the fuel.
         /// </summary>
-        public static string HffSo2EquationCode
+        public  string HffSo2EquationCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("HFF_SO2_Equation_Code")));
+                return ((string)(GetCheckParameter("HFF_SO2_Equation_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_SO2_Equation_Code", value);
+                SetCheckParameter("HFF_SO2_Equation_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Volumetric SODC in the HFF record is valid.
         /// </summary>
-        public static bool? HffSodcStatus
+        public  bool? HffSodcStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("HFF_SODC_Status")));
+                return ((bool?)(GetCheckParameter("HFF_SODC_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_SODC_Status", value);
+                SetCheckParameter("HFF_SODC_Status", value);
             }
         }
         
         /// <summary>
         /// The sulfur content of the fuel used to recalculate SO2 mass rate.
         /// </summary>
-        public static decimal? HffSulfur
+        public  decimal? HffSulfur
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HFF_Sulfur")));
+                return ((decimal?)(GetCheckParameter("HFF_Sulfur")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Sulfur", value);
+                SetCheckParameter("HFF_Sulfur", value);
             }
         }
         
         /// <summary>
         /// The FuelCode of monitoring system referenced in the HFF record.
         /// </summary>
-        public static string HffSystemFuel
+        public  string HffSystemFuel
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("HFF_System_Fuel")));
+                return ((string)(GetCheckParameter("HFF_System_Fuel")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_System_Fuel", value);
+                SetCheckParameter("HFF_System_Fuel", value);
             }
         }
         
         /// <summary>
         /// The SystemTypeCode of monitoring system reference in the HFF record.
         /// </summary>
-        public static string HffSystemType
+        public  string HffSystemType
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("HFF_System_Type")));
+                return ((string)(GetCheckParameter("HFF_System_Type")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_System_Type", value);
+                SetCheckParameter("HFF_System_Type", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the VolumetricUnitsOfMeasureCode in the HFF record are valid.
         /// </summary>
-        public static bool? HffUomStatus
+        public  bool? HffUomStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("HFF_UOM_Status")));
+                return ((bool?)(GetCheckParameter("HFF_UOM_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_UOM_Status", value);
+                SetCheckParameter("HFF_UOM_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the FuelUsageTime in the current HFF record is valid.
         /// </summary>
-        public static bool? HffUsageTimeStatus
+        public  bool? HffUsageTimeStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("HFF_Usage_Time_Status")));
+                return ((bool?)(GetCheckParameter("HFF_Usage_Time_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Usage_Time_Status", value);
+                SetCheckParameter("HFF_Usage_Time_Status", value);
             }
         }
         
         /// <summary>
         /// The parameter in the Monitor Default record representing maximum or minimum volumetric flow.
         /// </summary>
-        public static string HffVolumetricDefaultParameter
+        public  string HffVolumetricDefaultParameter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("HFF_Volumetric_Default_Parameter")));
+                return ((string)(GetCheckParameter("HFF_Volumetric_Default_Parameter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HFF_Volumetric_Default_Parameter", value);
+                SetCheckParameter("HFF_Volumetric_Default_Parameter", value);
             }
         }
         
         /// <summary>
         /// Adds us Total Heat Input from all fuel flow sources under Appendix D
         /// </summary>
-        public static decimal? HiAppDAccumulator
+        public  decimal? HiAppDAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Hi_App_D_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Hi_App_D_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Hi_App_D_Accumulator", value);
+                SetCheckParameter("Hi_App_D_Accumulator", value);
             }
         }
         
@@ -8425,15 +8425,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? HiCalculatedAdjustedValue
+        public  decimal? HiCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HI_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("HI_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HI_Calculated_Adjusted_Value", value);
+                SetCheckParameter("HI_Calculated_Adjusted_Value", value);
             }
         }
         
@@ -8442,56 +8442,56 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? HiCalculatedApportionedValue
+        public  decimal? HiCalculatedApportionedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("HI_Calculated_Apportioned_Value")));
+                return ((decimal?)(GetCheckParameter("HI_Calculated_Apportioned_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HI_Calculated_Apportioned_Value", value);
+                SetCheckParameter("HI_Calculated_Apportioned_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not all DHV checks have passed for the current HI record
         /// </summary>
-        public static bool? HiDerivedHourlyStatus
+        public  bool? HiDerivedHourlyStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("HI_Derived_Hourly_Status")));
+                return ((bool?)(GetCheckParameter("HI_Derived_Hourly_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HI_Derived_Hourly_Status", value);
+                SetCheckParameter("HI_Derived_Hourly_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates that the system in the HI DHV record has been validated
         /// </summary>
-        public static bool? HiDerivedHourlySystemStatusValidated
+        public  bool? HiDerivedHourlySystemStatusValidated
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("HI_Derived_Hourly_System_Status_Validated")));
+                return ((bool?)(GetCheckParameter("HI_Derived_Hourly_System_Status_Validated")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HI_Derived_Hourly_System_Status_Validated", value);
+                SetCheckParameter("HI_Derived_Hourly_System_Status_Validated", value);
             }
         }
         
         /// <summary>
         /// The Heat Input Derived Hourly Value Records By Hour and Location, for parameter codes that begin with "HI".
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow> HiDerivedHourlyValueRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow> HiDerivedHourlyValueRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("HI_Derived_Hourly_Value_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("HI_Derived_Hourly_Value_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8505,11 +8505,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("HI_Derived_Hourly_Value_Records_By_Hour_Location", null);
+                    SetCheckParameter("HI_Derived_Hourly_Value_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("HI_Derived_Hourly_Value_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("HI_Derived_Hourly_Value_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -8517,15 +8517,15 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Component ID of the high range of a component.
         /// </summary>
-        public static string HighRangeComponentId
+        public  string HighRangeComponentId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("High_Range_Component_ID")));
+                return ((string)(GetCheckParameter("High_Range_Component_ID")));
             }
             set
             {
-                EmParameters.SetCheckParameter("High_Range_Component_ID", value);
+                SetCheckParameter("High_Range_Component_ID", value);
             }
         }
         
@@ -8534,41 +8534,41 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///This parameter is initialized to false in HOUROP-3 and set to true in HOURAD-19.
         /// </summary>
-        public static bool? HiHpffExists
+        public  bool? HiHpffExists
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("HI_HPFF_Exists")));
+                return ((bool?)(GetCheckParameter("HI_HPFF_Exists")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HI_HPFF_Exists", value);
+                SetCheckParameter("HI_HPFF_Exists", value);
             }
         }
         
         /// <summary>
         /// The Data and Maps hourly measure code for HI.
         /// </summary>
-        public static string HiMeasureCode
+        public  string HiMeasureCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("HI_Measure_Code")));
+                return ((string)(GetCheckParameter("HI_Measure_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HI_Measure_Code", value);
+                SetCheckParameter("HI_Measure_Code", value);
             }
         }
         
         /// <summary>
         /// The HI Monitor Method Records By Hour Location: where parameter code starts with "HI" (including "HIT")
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodHiRow> HiMonitorMethodRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodHiRow> HiMonitorMethodRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Hi_Monitor_Method_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Hi_Monitor_Method_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8582,11 +8582,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Hi_Monitor_Method_Records_By_Hour_Location", null);
+                    SetCheckParameter("Hi_Monitor_Method_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Hi_Monitor_Method_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Hi_Monitor_Method_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -8594,41 +8594,41 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Flag to indicate whether or not it is necessary to perform HIT Derived Hourly checks at this location for the current hour
         /// </summary>
-        public static bool? HitDerivedChecksNeeded
+        public  bool? HitDerivedChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("HIT_Derived_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("HIT_Derived_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HIT_Derived_Checks_Needed", value);
+                SetCheckParameter("HIT_Derived_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not all DHV checks have passed for the current HIT record
         /// </summary>
-        public static bool? HitDerivedHourlyStatus
+        public  bool? HitDerivedHourlyStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("HIT_Derived_Hourly_Status")));
+                return ((bool?)(GetCheckParameter("HIT_Derived_Hourly_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HIT_Derived_Hourly_Status", value);
+                SetCheckParameter("HIT_Derived_Hourly_Status", value);
             }
         }
         
         /// <summary>
         /// Contain the Total and April sum of load by location, reporting period, parameter and MODC.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemDhvTotalAndAprilLoadRow> HitDhvLoadSumRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemDhvTotalAndAprilLoadRow> HitDhvLoadSumRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("HIT_DHV_Load_Sum_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("HIT_DHV_Load_Sum_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8642,11 +8642,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("HIT_DHV_Load_Sum_Records", null);
+                    SetCheckParameter("HIT_DHV_Load_Sum_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("HIT_DHV_Load_Sum_Records", value.SourceView);
+                    SetCheckParameter("HIT_DHV_Load_Sum_Records", value.SourceView);
                 }
             }
         }
@@ -8654,26 +8654,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The fieldnames of invalid data in the HIT Summary Value record.
         /// </summary>
-        public static string HitSummaryInvalidFields
+        public  string HitSummaryInvalidFields
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("HIT_Summary_Invalid_Fields")));
+                return ((string)(GetCheckParameter("HIT_Summary_Invalid_Fields")));
             }
             set
             {
-                EmParameters.SetCheckParameter("HIT_Summary_Invalid_Fields", value);
+                SetCheckParameter("HIT_Summary_Invalid_Fields", value);
             }
         }
         
         /// <summary>
         /// Parameter containing a cross check table of the tolerances to use when comparing reported values for emissions data to resutls calculated using associated formulas and measured values.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.HourlyEmissionsTolerancesRow> HourlyEmissionsTolerancesCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.HourlyEmissionsTolerancesRow> HourlyEmissionsTolerancesCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Hourly_Emissions_Tolerances_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Hourly_Emissions_Tolerances_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8687,11 +8687,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Hourly_Emissions_Tolerances_Cross_Check_Table", null);
+                    SetCheckParameter("Hourly_Emissions_Tolerances_Cross_Check_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Hourly_Emissions_Tolerances_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Hourly_Emissions_Tolerances_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -8699,116 +8699,116 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Plugin to identify extraneous fields.
         /// </summary>
-        public static string HourlyExtraneousFields
+        public  string HourlyExtraneousFields
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Hourly_Extraneous_Fields")));
+                return ((string)(GetCheckParameter("Hourly_Extraneous_Fields")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Hourly_Extraneous_Fields", value);
+                SetCheckParameter("Hourly_Extraneous_Fields", value);
             }
         }
         
         /// <summary>
         /// Indicates that a method is active CO2 calculation under Appendix D, therefere HourlyFuelFlowData and HourlyParamFuelFlowData records must be checked.
         /// </summary>
-        public static bool? HourlyFuelFlowChecksNeededForCo2
+        public  bool? HourlyFuelFlowChecksNeededForCo2
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Hourly_Fuel_Flow_Checks_Needed_For_Co2")));
+                return ((bool?)(GetCheckParameter("Hourly_Fuel_Flow_Checks_Needed_For_Co2")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Hourly_Fuel_Flow_Checks_Needed_For_Co2", value);
+                SetCheckParameter("Hourly_Fuel_Flow_Checks_Needed_For_Co2", value);
             }
         }
         
         /// <summary>
         /// Indicates whether HourlyFuelFlowData and HourlyParamFuelFlowData must be analyzed in support of an active method for Appendix D Heat Input.
         /// </summary>
-        public static bool? HourlyFuelFlowChecksNeededForHeatInput
+        public  bool? HourlyFuelFlowChecksNeededForHeatInput
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Hourly_Fuel_Flow_Checks_Needed_For_Heat_Input")));
+                return ((bool?)(GetCheckParameter("Hourly_Fuel_Flow_Checks_Needed_For_Heat_Input")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Hourly_Fuel_Flow_Checks_Needed_For_Heat_Input", value);
+                SetCheckParameter("Hourly_Fuel_Flow_Checks_Needed_For_Heat_Input", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the current SO2 Derived Hourly record is from an Appendix D source, in which case the HourlyFuelFlowData and HourlyParamFuelFlowData checks must be run
         /// </summary>
-        public static bool? HourlyFuelFlowChecksNeededForSo2
+        public  bool? HourlyFuelFlowChecksNeededForSo2
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Hourly_Fuel_Flow_Checks_Needed_For_So2")));
+                return ((bool?)(GetCheckParameter("Hourly_Fuel_Flow_Checks_Needed_For_So2")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Hourly_Fuel_Flow_Checks_Needed_For_So2", value);
+                SetCheckParameter("Hourly_Fuel_Flow_Checks_Needed_For_So2", value);
             }
         }
         
         /// <summary>
         /// Indicates the number of Hourly Fuel Flow Records for gas reported during the current hour
         /// </summary>
-        public static int? HourlyFuelFlowCountForGas
+        public  int? HourlyFuelFlowCountForGas
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Hourly_Fuel_Flow_Count_For_Gas")));
+                return ((int?)(GetCheckParameter("Hourly_Fuel_Flow_Count_For_Gas")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Hourly_Fuel_Flow_Count_For_Gas", value);
+                SetCheckParameter("Hourly_Fuel_Flow_Count_For_Gas", value);
             }
         }
         
         /// <summary>
         /// Indicates the number of Hourly Fuel Flow Records for gas reported during the current hour
         /// </summary>
-        public static int? HourlyFuelFlowCountForOil
+        public  int? HourlyFuelFlowCountForOil
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Hourly_Fuel_Flow_Count_For_Oil")));
+                return ((int?)(GetCheckParameter("Hourly_Fuel_Flow_Count_For_Oil")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Hourly_Fuel_Flow_Count_For_Oil", value);
+                SetCheckParameter("Hourly_Fuel_Flow_Count_For_Oil", value);
             }
         }
         
         /// <summary>
         /// Indicates that this is an Appendix E Site and Hourly Fuel Flow records will be examined for NOX Rate values
         /// </summary>
-        public static bool? HourlyFuelFlowNeededForNoxRateCalc
+        public  bool? HourlyFuelFlowNeededForNoxRateCalc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Hourly_Fuel_Flow_Needed_For_Nox_Rate_Calc")));
+                return ((bool?)(GetCheckParameter("Hourly_Fuel_Flow_Needed_For_Nox_Rate_Calc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Hourly_Fuel_Flow_Needed_For_Nox_Rate_Calc", value);
+                SetCheckParameter("Hourly_Fuel_Flow_Needed_For_Nox_Rate_Calc", value);
             }
         }
         
         /// <summary>
         /// All of the Hourly Fuel Flow records in the emissions file.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyFuelFlowRow> HourlyFuelFlowRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyFuelFlowRow> HourlyFuelFlowRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Hourly_Fuel_Flow_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Hourly_Fuel_Flow_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8822,11 +8822,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Hourly_Fuel_Flow_Records", null);
+                    SetCheckParameter("Hourly_Fuel_Flow_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Hourly_Fuel_Flow_Records", value.SourceView);
+                    SetCheckParameter("Hourly_Fuel_Flow_Records", value.SourceView);
                 }
             }
         }
@@ -8834,11 +8834,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// All of the Hourly Fuel Flow records for a single Hour and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyFuelFlowRow> HourlyFuelFlowRecordsForHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyFuelFlowRow> HourlyFuelFlowRecordsForHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Hourly_Fuel_Flow_Records_For_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Hourly_Fuel_Flow_Records_For_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8852,11 +8852,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Hourly_Fuel_Flow_Records_For_Hour_Location", null);
+                    SetCheckParameter("Hourly_Fuel_Flow_Records_For_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Hourly_Fuel_Flow_Records_For_Hour_Location", value.SourceView);
+                    SetCheckParameter("Hourly_Fuel_Flow_Records_For_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -8864,11 +8864,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// All Hourly Op Data record for the location and the reporting period where OpTime = 0.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow> HourlyNonOperatingDataRecordsForLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow> HourlyNonOperatingDataRecordsForLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Hourly_Non_Operating_Data_Records_for_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Hourly_Non_Operating_Data_Records_for_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8882,11 +8882,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Hourly_Non_Operating_Data_Records_for_Location", null);
+                    SetCheckParameter("Hourly_Non_Operating_Data_Records_for_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Hourly_Non_Operating_Data_Records_for_Location", value.SourceView);
+                    SetCheckParameter("Hourly_Non_Operating_Data_Records_for_Location", value.SourceView);
                 }
             }
         }
@@ -8894,11 +8894,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// All of the Hourly Operating Data records for a single Hour and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow> HourlyOperatingDataRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow> HourlyOperatingDataRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Hourly_Operating_Data_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Hourly_Operating_Data_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8912,11 +8912,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Hourly_Operating_Data_Records_By_Hour_Location", null);
+                    SetCheckParameter("Hourly_Operating_Data_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Hourly_Operating_Data_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Hourly_Operating_Data_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -8924,11 +8924,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// All of the Hourly Operating Data records for all locations in a MP for the reporting period.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow> HourlyOperatingDataRecordsForConfiguration
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow> HourlyOperatingDataRecordsForConfiguration
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Hourly_Operating_Data_Records_for_Configuration")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Hourly_Operating_Data_Records_for_Configuration")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8942,11 +8942,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Hourly_Operating_Data_Records_for_Configuration", null);
+                    SetCheckParameter("Hourly_Operating_Data_Records_for_Configuration", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Hourly_Operating_Data_Records_for_Configuration", value.SourceView);
+                    SetCheckParameter("Hourly_Operating_Data_Records_for_Configuration", value.SourceView);
                 }
             }
         }
@@ -8954,11 +8954,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// All of the Hourly Operating Data records for all locations in an LME MP for the reporting period.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow> HourlyOperatingDataRecordsForLmeConfiguration
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow> HourlyOperatingDataRecordsForLmeConfiguration
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Hourly_Operating_Data_Records_for_LME_Configuration")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Hourly_Operating_Data_Records_for_LME_Configuration")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8972,11 +8972,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Hourly_Operating_Data_Records_for_LME_Configuration", null);
+                    SetCheckParameter("Hourly_Operating_Data_Records_for_LME_Configuration", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Hourly_Operating_Data_Records_for_LME_Configuration", value.SourceView);
+                    SetCheckParameter("Hourly_Operating_Data_Records_for_LME_Configuration", value.SourceView);
                 }
             }
         }
@@ -8984,11 +8984,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// All of the Hourly Operating Data records for a Location where OpTime > 0.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow> HourlyOperatingDataRecordsForLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyOpDataRow> HourlyOperatingDataRecordsForLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Hourly_Operating_Data_Records_for_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Hourly_Operating_Data_Records_for_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9002,11 +9002,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Hourly_Operating_Data_Records_for_Location", null);
+                    SetCheckParameter("Hourly_Operating_Data_Records_for_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Hourly_Operating_Data_Records_for_Location", value.SourceView);
+                    SetCheckParameter("Hourly_Operating_Data_Records_for_Location", value.SourceView);
                 }
             }
         }
@@ -9014,11 +9014,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// All of the Hourly Param Fuel Flow records for the Current Fuel Flow Record
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyParamFuelFlowRow> HourlyParamFuelFlowRecordsForCurrentFuelFlow
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpHrlyParamFuelFlowRow> HourlyParamFuelFlowRecordsForCurrentFuelFlow
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Hourly_Param_Fuel_Flow_Records_For_Current_Fuel_Flow")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Hourly_Param_Fuel_Flow_Records_For_Current_Fuel_Flow")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9032,11 +9032,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Hourly_Param_Fuel_Flow_Records_For_Current_Fuel_Flow", null);
+                    SetCheckParameter("Hourly_Param_Fuel_Flow_Records_For_Current_Fuel_Flow", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Hourly_Param_Fuel_Flow_Records_For_Current_Fuel_Flow", value.SourceView);
+                    SetCheckParameter("Hourly_Param_Fuel_Flow_Records_For_Current_Fuel_Flow", value.SourceView);
                 }
             }
         }
@@ -9044,45 +9044,45 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates if any offline daily calibration tests where ignored.
         /// </summary>
-        public static bool? IgnoredDailyCalibrationTests
+        public  bool? IgnoredDailyCalibrationTests
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Ignored_Daily_Calibration_Tests")));
+                return ((bool?)(GetCheckParameter("Ignored_Daily_Calibration_Tests")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Ignored_Daily_Calibration_Tests", value);
+                SetCheckParameter("Ignored_Daily_Calibration_Tests", value);
             }
         }
         
         /// <summary>
         /// Indicates if any daily interference checks were ignored.
         /// </summary>
-        public static bool? IgnoredDailyInterferenceTests
+        public  bool? IgnoredDailyInterferenceTests
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Ignored_Daily_Interference_Tests")));
+                return ((bool?)(GetCheckParameter("Ignored_Daily_Interference_Tests")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Ignored_Daily_Interference_Tests", value);
+                SetCheckParameter("Ignored_Daily_Interference_Tests", value);
             }
         }
         
         /// <summary>
         /// Indicates if a transmitter transducer test was conducted for a FFM that is not an ORF/NOZ/VENT FFM.
         /// </summary>
-        public static bool? InappropriateTransmitterTransducerTest
+        public  bool? InappropriateTransmitterTransducerTest
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Inappropriate_Transmitter_Transducer_Test")));
+                return ((bool?)(GetCheckParameter("Inappropriate_Transmitter_Transducer_Test")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Inappropriate_Transmitter_Transducer_Test", value);
+                SetCheckParameter("Inappropriate_Transmitter_Transducer_Test", value);
             }
         }
         
@@ -9091,11 +9091,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Note: This parameter is primarily used in emission report status checks for flow, and the 'system' of the initial certification event is usually the system of the MHV record.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> InitialCertificationEventRecord
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> InitialCertificationEventRecord
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Initial_Certification_Event_Record")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Initial_Certification_Event_Record")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9109,11 +9109,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Initial_Certification_Event_Record", null);
+                    SetCheckParameter("Initial_Certification_Event_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Initial_Certification_Event_Record", value.SourceView);
+                    SetCheckParameter("Initial_Certification_Event_Record", value.SourceView);
                 }
             }
         }
@@ -9124,15 +9124,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///Should be set and used with in the same category.  Do not use in the child category of the category in which it is set.  It can be used within two different categories as long is one category is not a descendant of the other.
         ///
         /// </summary>
-        public static bool? InjectionMeasuredValueValid
+        public  bool? InjectionMeasuredValueValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Injection_Measured_Value_Valid")));
+                return ((bool?)(GetCheckParameter("Injection_Measured_Value_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Injection_Measured_Value_Valid", value);
+                SetCheckParameter("Injection_Measured_Value_Valid", value);
             }
         }
         
@@ -9142,41 +9142,41 @@ namespace ECMPS.Checks.Em.Parameters
         ///Should be set and used with in the same category.  Do not use in the child category of the category in which it is set.  It can be used within two different categories as long is one category is not a descendant of the other.
         ///
         /// </summary>
-        public static bool? InjectionReferenceValueValid
+        public  bool? InjectionReferenceValueValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Injection_Reference_Value_Valid")));
+                return ((bool?)(GetCheckParameter("Injection_Reference_Value_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Injection_Reference_Value_Valid", value);
+                SetCheckParameter("Injection_Reference_Value_Valid", value);
             }
         }
         
         /// <summary>
         /// Contains a String List of invalid daily calibration cylinder ids encountered during daily calibration processing.
         /// </summary>
-        public static List<string> InvalidCylinderIdList
+        public  List<string> InvalidCylinderIdList
         {
             get
             {
-                return ((List<string>)(EmParameters.GetCheckParameter("Invalid_Cylinder_Id_List")));
+                return ((List<string>)(GetCheckParameter("Invalid_Cylinder_Id_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Invalid_Cylinder_Id_List", value);
+                SetCheckParameter("Invalid_Cylinder_Id_List", value);
             }
         }
         
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Invalid Prior daily cal test.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDailyCalibrationRow InvalidDailyCalRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDailyCalibrationRow InvalidDailyCalRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Invalid_Daily_Cal_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Invalid_Daily_Cal_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -9190,11 +9190,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Invalid_Daily_Cal_Record", null);
+                    SetCheckParameter("Invalid_Daily_Cal_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Invalid_Daily_Cal_Record", value.SourceRow);
+                    SetCheckParameter("Invalid_Daily_Cal_Record", value.SourceRow);
                 }
             }
         }
@@ -9202,26 +9202,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The TestNumber of an invalid Fuel-Flow-to-Load Test in the Appendix D Status analysis.
         /// </summary>
-        public static string InvalidFf2lTestNumber
+        public  string InvalidFf2lTestNumber
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Invalid_FF2L_Test_Number")));
+                return ((string)(GetCheckParameter("Invalid_FF2L_Test_Number")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Invalid_FF2L_Test_Number", value);
+                SetCheckParameter("Invalid_FF2L_Test_Number", value);
             }
         }
         
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Invalid Prior linearity test.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow InvalidLinearityRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow InvalidLinearityRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Invalid_Linearity_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Invalid_Linearity_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -9235,11 +9235,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Invalid_Linearity_Record", null);
+                    SetCheckParameter("Invalid_Linearity_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Invalid_Linearity_Record", value.SourceRow);
+                    SetCheckParameter("Invalid_Linearity_Record", value.SourceRow);
                 }
             }
         }
@@ -9247,11 +9247,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Invalid Prior RATA test.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow InvalidRataRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow InvalidRataRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Invalid_RATA_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Invalid_RATA_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -9265,11 +9265,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Invalid_RATA_Record", null);
+                    SetCheckParameter("Invalid_RATA_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Invalid_RATA_Record", value.SourceRow);
+                    SetCheckParameter("Invalid_RATA_Record", value.SourceRow);
                 }
             }
         }
@@ -9277,45 +9277,45 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the TestNumber of the test record that is the Invalid Prior RATA or Invalid Prior Multiload RATA.
         /// </summary>
-        public static string InvalidRataTestNumber
+        public  string InvalidRataTestNumber
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Invalid_RATA_Test_Number")));
+                return ((string)(GetCheckParameter("Invalid_RATA_Test_Number")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Invalid_RATA_Test_Number", value);
+                SetCheckParameter("Invalid_RATA_Test_Number", value);
             }
         }
         
         /// <summary>
         /// contains the last failed or aborted Daily Cal for each Component Id and Span Scale combination.
         /// </summary>
-        public static object LastFailedOrAbortedDailyCalObject
+        public  object LastFailedOrAbortedDailyCalObject
         {
             get
             {
-                return ((object)(EmParameters.GetCheckParameter("Last_Failed_Or_Aborted_Daily_Cal_Object")));
+                return ((object)(GetCheckParameter("Last_Failed_Or_Aborted_Daily_Cal_Object")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Last_Failed_Or_Aborted_Daily_Cal_Object", value);
+                SetCheckParameter("Last_Failed_Or_Aborted_Daily_Cal_Object", value);
             }
         }
         
         /// <summary>
         /// Constains the last quality assured value supplemental data for parameter (monitored vs derived) and reporting period combinations.
         /// </summary>
-        public static Dictionary<string, LastQualityAssuredValueSupplementalData>[] LastQualityAssuredValueSuppDataDictionaryArray
+        public  Dictionary<string, LastQualityAssuredValueSupplementalData>[] LastQualityAssuredValueSuppDataDictionaryArray
         {
             get
             {
-                return ((Dictionary<string, LastQualityAssuredValueSupplementalData>[])(EmParameters.GetCheckParameter("Last_Quality_Assured_Value_Supp_Data_Dictionary_Array")));
+                return ((Dictionary<string, LastQualityAssuredValueSupplementalData>[])(GetCheckParameter("Last_Quality_Assured_Value_Supp_Data_Dictionary_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Last_Quality_Assured_Value_Supp_Data_Dictionary_Array", value);
+                SetCheckParameter("Last_Quality_Assured_Value_Supp_Data_Dictionary_Array", value);
             }
         }
         
@@ -9324,26 +9324,26 @@ namespace ECMPS.Checks.Em.Parameters
         ///The most recent test for a given emission hour is the latest test with an end hour that is on or before the current hour.
         ///
         /// </summary>
-        public static cLastDailyInterferenceCheck LatestDailyInterferenceCheckObject
+        public  cLastDailyInterferenceCheck LatestDailyInterferenceCheckObject
         {
             get
             {
-                return ((cLastDailyInterferenceCheck)(EmParameters.GetCheckParameter("Latest_Daily_Interference_Check_Object")));
+                return ((cLastDailyInterferenceCheck)(GetCheckParameter("Latest_Daily_Interference_Check_Object")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Latest_Daily_Interference_Check_Object", value);
+                SetCheckParameter("Latest_Daily_Interference_Check_Object", value);
             }
         }
         
         /// <summary>
         /// All leak check summary records for the location.  Used by the QA Status evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> LeakCheckRecordsByLocationForQaStatus
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> LeakCheckRecordsByLocationForQaStatus
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Leak_Check_Records_By_Location_For_QA_Status")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Leak_Check_Records_By_Location_For_QA_Status")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9357,11 +9357,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Leak_Check_Records_By_Location_For_QA_Status", null);
+                    SetCheckParameter("Leak_Check_Records_By_Location_For_QA_Status", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Leak_Check_Records_By_Location_For_QA_Status", value.SourceView);
+                    SetCheckParameter("Leak_Check_Records_By_Location_For_QA_Status", value.SourceView);
                 }
             }
         }
@@ -9369,146 +9369,146 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the year/qtr information when Missing Op data is the result for Leak Status.
         /// </summary>
-        public static string LeakMissingOpDataInfo
+        public  string LeakMissingOpDataInfo
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Leak_Missing_Op_Data_Info")));
+                return ((string)(GetCheckParameter("Leak_Missing_Op_Data_Info")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Leak_Missing_Op_Data_Info", value);
+                SetCheckParameter("Leak_Missing_Op_Data_Info", value);
             }
         }
         
         /// <summary>
         /// Indicator that a leak status check should be performed during the current hour.
         /// </summary>
-        public static bool? LeakStatusRequired
+        public  bool? LeakStatusRequired
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Leak_Status_Required")));
+                return ((bool?)(GetCheckParameter("Leak_Status_Required")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Leak_Status_Required", value);
+                SetCheckParameter("Leak_Status_Required", value);
             }
         }
         
         /// <summary>
         /// This contains the result to use for Leak Status checks.
         /// </summary>
-        public static string LeakStatusResult
+        public  string LeakStatusResult
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Leak_Status_Result")));
+                return ((string)(GetCheckParameter("Leak_Status_Result")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Leak_Status_Result", value);
+                SetCheckParameter("Leak_Status_Result", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the hourly emissions data being evaluated was reported under legacy (pre-ECMPS) instructions
         /// </summary>
-        public static bool? LegacyDataEvaluation
+        public  bool? LegacyDataEvaluation
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Legacy_Data_Evaluation")));
+                return ((bool?)(GetCheckParameter("Legacy_Data_Evaluation")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Legacy_Data_Evaluation", value);
+                SetCheckParameter("Legacy_Data_Evaluation", value);
             }
         }
         
         /// <summary>
         /// Contains the total number of hours a like-kind monitor was used, usually during a calendar year.  Primarily used to populatee error messages.
         /// </summary>
-        public static int? LikeKindHours
+        public  int? LikeKindHours
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Like_Kind_Hours")));
+                return ((int?)(GetCheckParameter("Like_Kind_Hours")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Like_Kind_Hours", value);
+                SetCheckParameter("Like_Kind_Hours", value);
             }
         }
         
         /// <summary>
         /// Location array contain a boolean indicating whether the corresponding location has reported linearity tests ('LINE') for the locations in the MP and with begin and end dates that intersect the quarter.
         /// </summary>
-        public static Boolean[] LinearityExistsLocationArray
+        public  Boolean[] LinearityExistsLocationArray
         {
             get
             {
-                return ((Boolean[])(EmParameters.GetCheckParameter("Linearity_Exists_Location_Array")));
+                return ((Boolean[])(GetCheckParameter("Linearity_Exists_Location_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Linearity_Exists_Location_Array", value);
+                SetCheckParameter("Linearity_Exists_Location_Array", value);
             }
         }
         
         /// <summary>
         /// Contains the year/qtr information when Missing Op data is the result for Linearity Status.
         /// </summary>
-        public static string LinearityMissingOpDataInfo
+        public  string LinearityMissingOpDataInfo
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Linearity_Missing_Op_Data_Info")));
+                return ((string)(GetCheckParameter("Linearity_Missing_Op_Data_Info")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Linearity_Missing_Op_Data_Info", value);
+                SetCheckParameter("Linearity_Missing_Op_Data_Info", value);
             }
         }
         
         /// <summary>
         /// List of test numbers for linearities that have a begin or end hour that was during a non-op hour for the location.
         /// </summary>
-        public static string LinearityOfflineList
+        public  string LinearityOfflineList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Linearity_Offline_List")));
+                return ((string)(GetCheckParameter("Linearity_Offline_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Linearity_Offline_List", value);
+                SetCheckParameter("Linearity_Offline_List", value);
             }
         }
         
         /// <summary>
         /// Indicates if an MHV record requires the Linearity Status Evaluation.
         /// </summary>
-        public static bool? LinearityStatusRequired
+        public  bool? LinearityStatusRequired
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Linearity_Status_Required")));
+                return ((bool?)(GetCheckParameter("Linearity_Status_Required")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Linearity_Status_Required", value);
+                SetCheckParameter("Linearity_Status_Required", value);
             }
         }
         
         /// <summary>
         /// All linearity test summary records for the location.  Used by the QA Status evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> LinearityTestRecordsByLocationForQaStatus
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> LinearityTestRecordsByLocationForQaStatus
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Linearity_Test_Records_By_Location_For_QA_Status")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Linearity_Test_Records_By_Location_For_QA_Status")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9522,11 +9522,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Linearity_Test_Records_By_Location_For_QA_Status", null);
+                    SetCheckParameter("Linearity_Test_Records_By_Location_For_QA_Status", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Linearity_Test_Records_By_Location_For_QA_Status", value.SourceView);
+                    SetCheckParameter("Linearity_Test_Records_By_Location_For_QA_Status", value.SourceView);
                 }
             }
         }
@@ -9534,101 +9534,101 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates if the monitoring configuration reports LME on an annual basis.
         /// </summary>
-        public static bool? LmeAnnual
+        public  bool? LmeAnnual
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("LME_Annual")));
+                return ((bool?)(GetCheckParameter("LME_Annual")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Annual", value);
+                SetCheckParameter("LME_Annual", value);
             }
         }
         
         /// <summary>
         /// The total load for the LME configuration for April.
         /// </summary>
-        public static decimal? LmeAprilLoad
+        public  decimal? LmeAprilLoad
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_April_Load")));
+                return ((decimal?)(GetCheckParameter("LME_April_Load")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_April_Load", value);
+                SetCheckParameter("LME_April_Load", value);
             }
         }
         
         /// <summary>
         /// An array containing the total opertating time for LME units during April.
         /// </summary>
-        public static decimal? LmeAprilOptime
+        public  decimal? LmeAprilOptime
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_April_OpTime")));
+                return ((decimal?)(GetCheckParameter("LME_April_OpTime")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_April_OpTime", value);
+                SetCheckParameter("LME_April_OpTime", value);
             }
         }
         
         /// <summary>
         /// The total heat input for the hour calcuated for an LME unit.
         /// </summary>
-        public static decimal? LmeCalcHeatInput
+        public  decimal? LmeCalcHeatInput
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_Calc_Heat_Input")));
+                return ((decimal?)(GetCheckParameter("LME_Calc_Heat_Input")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Calc_Heat_Input", value);
+                SetCheckParameter("LME_Calc_Heat_Input", value);
             }
         }
         
         /// <summary>
         /// The total heat input for all common pipes in LME configuration for the month of April.
         /// </summary>
-        public static decimal? LmeCpAprilHeatInput
+        public  decimal? LmeCpAprilHeatInput
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_CP_April_Heat_Input")));
+                return ((decimal?)(GetCheckParameter("LME_CP_April_Heat_Input")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_CP_April_Heat_Input", value);
+                SetCheckParameter("LME_CP_April_Heat_Input", value);
             }
         }
         
         /// <summary>
         /// The total heat input for all common pipes in LME configuration for the reporting period.
         /// </summary>
-        public static decimal? LmeCpTotalHeatInput
+        public  decimal? LmeCpTotalHeatInput
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_CP_Total_Heat_Input")));
+                return ((decimal?)(GetCheckParameter("LME_CP_Total_Heat_Input")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_CP_Total_Heat_Input", value);
+                SetCheckParameter("LME_CP_Total_Heat_Input", value);
             }
         }
         
         /// <summary>
         /// The CO2M, HIT, NOXM and SO2M Derived Hourly Value Records By Hour and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow> LmeDerivedHourlyValueRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueRow> LmeDerivedHourlyValueRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("LME_Derived_Hourly_Value_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("LME_Derived_Hourly_Value_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9642,11 +9642,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("LME_Derived_Hourly_Value_Records_By_Hour_Location", null);
+                    SetCheckParameter("LME_Derived_Hourly_Value_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("LME_Derived_Hourly_Value_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("LME_Derived_Hourly_Value_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -9654,180 +9654,180 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The emissions parameters that have exceeded the number of tons allowed to remain eligible for an LME qualification.
         /// </summary>
-        public static string LmeExceedingParameters
+        public  string LmeExceedingParameters
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("LME_Exceeding_Parameters")));
+                return ((string)(GetCheckParameter("LME_Exceeding_Parameters")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Exceeding_Parameters", value);
+                SetCheckParameter("LME_Exceeding_Parameters", value);
             }
         }
         
         /// <summary>
         /// A list of fuels for which LME NOx Default Tests were used during the reporting period for each location.
         /// </summary>
-        public static string LmeFuelArray
+        public  string LmeFuelArray
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("LME_Fuel_Array")));
+                return ((string)(GetCheckParameter("LME_Fuel_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Fuel_Array", value);
+                SetCheckParameter("LME_Fuel_Array", value);
             }
         }
         
         /// <summary>
         /// The list of FuelCodes burned during the hour for an LME unit.
         /// </summary>
-        public static string LmeFuelCodeList
+        public  string LmeFuelCodeList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("LME_Fuel_Code_List")));
+                return ((string)(GetCheckParameter("LME_Fuel_Code_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Fuel_Code_List", value);
+                SetCheckParameter("LME_Fuel_Code_List", value);
             }
         }
         
         /// <summary>
         /// Indicates if the monitoring configuration reports LME on an annual basis.
         /// </summary>
-        public static bool? LmeGenAnnual
+        public  bool? LmeGenAnnual
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("LME_Gen_Annual")));
+                return ((bool?)(GetCheckParameter("LME_Gen_Annual")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_Annual", value);
+                SetCheckParameter("LME_Gen_Annual", value);
             }
         }
         
         /// <summary>
         /// The total load for the LME configuration for April.
         /// </summary>
-        public static decimal? LmeGenAprilLoad
+        public  decimal? LmeGenAprilLoad
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_Gen_April_Load")));
+                return ((decimal?)(GetCheckParameter("LME_Gen_April_Load")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_April_Load", value);
+                SetCheckParameter("LME_Gen_April_Load", value);
             }
         }
         
         /// <summary>
         /// The total load for each unit in the LME configuration for April.
         /// </summary>
-        public static decimal? LmeGenAprilLoadArray
+        public  decimal? LmeGenAprilLoadArray
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_Gen_April_Load_Array")));
+                return ((decimal?)(GetCheckParameter("LME_Gen_April_Load_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_April_Load_Array", value);
+                SetCheckParameter("LME_Gen_April_Load_Array", value);
             }
         }
         
         /// <summary>
         /// The total operating time for the configuration in April
         /// </summary>
-        public static decimal? LmeGenAprilOptime
+        public  decimal? LmeGenAprilOptime
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_Gen_April_Optime")));
+                return ((decimal?)(GetCheckParameter("LME_Gen_April_Optime")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_April_Optime", value);
+                SetCheckParameter("LME_Gen_April_Optime", value);
             }
         }
         
         /// <summary>
         /// The total heat input for all common pipes in LME configuration for the month of April.
         /// </summary>
-        public static decimal? LmeGenCpAprilHeatInput
+        public  decimal? LmeGenCpAprilHeatInput
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_Gen_CP_April_Heat_Input")));
+                return ((decimal?)(GetCheckParameter("LME_Gen_CP_April_Heat_Input")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_CP_April_Heat_Input", value);
+                SetCheckParameter("LME_Gen_CP_April_Heat_Input", value);
             }
         }
         
         /// <summary>
         /// The total heat input for all common pipes in LME configuration for the reporting period.
         /// </summary>
-        public static decimal? LmeGenCpTotalHeatInput
+        public  decimal? LmeGenCpTotalHeatInput
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_Gen_CP_Total_Heat_Input")));
+                return ((decimal?)(GetCheckParameter("LME_Gen_CP_Total_Heat_Input")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_CP_Total_Heat_Input", value);
+                SetCheckParameter("LME_Gen_CP_Total_Heat_Input", value);
             }
         }
         
         /// <summary>
         /// The fuel code being evaluated in the LME Generate process.
         /// </summary>
-        public static string LmeGenFuelCode
+        public  string LmeGenFuelCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("LME_Gen_Fuel_Code")));
+                return ((string)(GetCheckParameter("LME_Gen_Fuel_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_Fuel_Code", value);
+                SetCheckParameter("LME_Gen_Fuel_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates the HI method for the LME configuration.
         /// </summary>
-        public static string LmeGenHiMethod
+        public  string LmeGenHiMethod
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("LME_Gen_HI_Method")));
+                return ((string)(GetCheckParameter("LME_Gen_HI_Method")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_HI_Method", value);
+                SetCheckParameter("LME_Gen_HI_Method", value);
             }
         }
         
         /// <summary>
         /// Indicates the SubstituteDataCode for the HI method for the LME configuration.
         /// </summary>
-        public static string LmeGenHiSubstituteDataCode
+        public  string LmeGenHiSubstituteDataCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("LME_Gen_HI_Substitute_Data_Code")));
+                return ((string)(GetCheckParameter("LME_Gen_HI_Substitute_Data_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_HI_Substitute_Data_Code", value);
+                SetCheckParameter("LME_Gen_HI_Substitute_Data_Code", value);
             }
         }
         
@@ -9838,206 +9838,206 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///
         /// </summary>
-        public static decimal? LmeGenLtffHeatInput
+        public  decimal? LmeGenLtffHeatInput
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_Gen_LTFF_Heat_Input")));
+                return ((decimal?)(GetCheckParameter("LME_Gen_LTFF_Heat_Input")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_LTFF_Heat_Input", value);
+                SetCheckParameter("LME_Gen_LTFF_Heat_Input", value);
             }
         }
         
         /// <summary>
         /// Indicates if the monitoring configuration reports LME on an ozone-season basis.
         /// </summary>
-        public static bool? LmeGenOs
+        public  bool? LmeGenOs
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("LME_Gen_OS")));
+                return ((bool?)(GetCheckParameter("LME_Gen_OS")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_OS", value);
+                SetCheckParameter("LME_Gen_OS", value);
             }
         }
         
         /// <summary>
         /// The monitoring methods parameters associated with the LME unit.
         /// </summary>
-        public static string LmeGenParameters
+        public  string LmeGenParameters
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("LME_Gen_Parameters")));
+                return ((string)(GetCheckParameter("LME_Gen_Parameters")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_Parameters", value);
+                SetCheckParameter("LME_Gen_Parameters", value);
             }
         }
         
         /// <summary>
         /// The total load for the LME configuration for the reporting period.
         /// </summary>
-        public static decimal? LmeGenTotalLoad
+        public  decimal? LmeGenTotalLoad
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_Gen_Total_Load")));
+                return ((decimal?)(GetCheckParameter("LME_Gen_Total_Load")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_Total_Load", value);
+                SetCheckParameter("LME_Gen_Total_Load", value);
             }
         }
         
         /// <summary>
         /// The total load for each unit in the LME configuration for the reporting period.
         /// </summary>
-        public static decimal? LmeGenTotalLoadArray
+        public  decimal? LmeGenTotalLoadArray
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_Gen_Total_Load_Array")));
+                return ((decimal?)(GetCheckParameter("LME_Gen_Total_Load_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_Total_Load_Array", value);
+                SetCheckParameter("LME_Gen_Total_Load_Array", value);
             }
         }
         
         /// <summary>
         /// The total operating time for the configuration in the reporting period.
         /// </summary>
-        public static decimal? LmeGenTotalOptime
+        public  decimal? LmeGenTotalOptime
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_Gen_Total_Optime")));
+                return ((decimal?)(GetCheckParameter("LME_Gen_Total_Optime")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_Total_Optime", value);
+                SetCheckParameter("LME_Gen_Total_Optime", value);
             }
         }
         
         /// <summary>
         /// Indicates if the LME Hourly Op record has been validated.
         /// </summary>
-        public static bool? LmeGenValidated
+        public  bool? LmeGenValidated
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("LME_Gen_Validated")));
+                return ((bool?)(GetCheckParameter("LME_Gen_Validated")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Gen_Validated", value);
+                SetCheckParameter("LME_Gen_Validated", value);
             }
         }
         
         /// <summary>
         /// Indicates the HI method for a EM file containing LME units (SO2, NOX, CO2).
         /// </summary>
-        public static string LmeHiMethod
+        public  string LmeHiMethod
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("LME_HI_Method")));
+                return ((string)(GetCheckParameter("LME_HI_Method")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_HI_Method", value);
+                SetCheckParameter("LME_HI_Method", value);
             }
         }
         
         /// <summary>
         /// Indicates the SubstituteDataCode for the HI method for the LME configuration.
         /// </summary>
-        public static string LmeHiSubstituteDataCode
+        public  string LmeHiSubstituteDataCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("LME_HI_Substitute_Data_Code")));
+                return ((string)(GetCheckParameter("LME_HI_Substitute_Data_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_HI_Substitute_Data_Code", value);
+                SetCheckParameter("LME_HI_Substitute_Data_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates if the monitoring configuration reports LME on an ozone-season basis.
         /// </summary>
-        public static bool? LmeOs
+        public  bool? LmeOs
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("LME_OS")));
+                return ((bool?)(GetCheckParameter("LME_OS")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_OS", value);
+                SetCheckParameter("LME_OS", value);
             }
         }
         
         /// <summary>
         /// Accumulates the total load for all LME locations in the configuration for the reporting period.
         /// </summary>
-        public static decimal? LmeTotalLoad
+        public  decimal? LmeTotalLoad
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_Total_Load")));
+                return ((decimal?)(GetCheckParameter("LME_Total_Load")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Total_Load", value);
+                SetCheckParameter("LME_Total_Load", value);
             }
         }
         
         /// <summary>
         /// The total operating time for the configuration of LME units during the reporting period.
         /// </summary>
-        public static decimal? LmeTotalOptime
+        public  decimal? LmeTotalOptime
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("LME_Total_Optime")));
+                return ((decimal?)(GetCheckParameter("LME_Total_Optime")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Total_Optime", value);
+                SetCheckParameter("LME_Total_Optime", value);
             }
         }
         
         /// <summary>
         /// The first quarter of the current year when LME data should be reported.
         /// </summary>
-        public static int? LmeYearStartQuarter
+        public  int? LmeYearStartQuarter
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("LME_Year_Start_Quarter")));
+                return ((int?)(GetCheckParameter("LME_Year_Start_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LME_Year_Start_Quarter", value);
+                SetCheckParameter("LME_Year_Start_Quarter", value);
             }
         }
         
         /// <summary>
         /// The monitor location attribute records for the hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationAttributeRow> LocationAttributeRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationAttributeRow> LocationAttributeRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Location_Attribute_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Attribute_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -10051,11 +10051,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Location_Attribute_Records_By_Hour_Location", null);
+                    SetCheckParameter("Location_Attribute_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Location_Attribute_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Location_Attribute_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -10063,11 +10063,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Active Unit Capacity records for the location or all units linked to the location for the hour.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationCapacityRow> LocationCapacityRecordsForHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationCapacityRow> LocationCapacityRecordsForHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Location_Capacity_Records_for_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Capacity_Records_for_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -10081,11 +10081,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Location_Capacity_Records_for_Hour_Location", null);
+                    SetCheckParameter("Location_Capacity_Records_for_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Location_Capacity_Records_for_Hour_Location", value.SourceView);
+                    SetCheckParameter("Location_Capacity_Records_for_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -10093,30 +10093,30 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates the processing and array position for the current location in emission report processing.
         /// </summary>
-        public static int? Locationpos
+        public  int? Locationpos
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("LocationPos")));
+                return ((int?)(GetCheckParameter("LocationPos")));
             }
             set
             {
-                EmParameters.SetCheckParameter("LocationPos", value);
+                SetCheckParameter("LocationPos", value);
             }
         }
         
         /// <summary>
         /// Dictionary with a MON_LOC_ID and array position key-value pair.
         /// </summary>
-        public static Dictionary<string, int> LocationPositionLookup
+        public  Dictionary<string, int> LocationPositionLookup
         {
             get
             {
-                return ((Dictionary<string, int>)(EmParameters.GetCheckParameter("Location_Position_Lookup")));
+                return ((Dictionary<string, int>)(GetCheckParameter("Location_Position_Lookup")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Location_Position_Lookup", value);
+                SetCheckParameter("Location_Position_Lookup", value);
             }
         }
         
@@ -10127,11 +10127,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///For a stack or pipe, this is the Unit Program records for all units linked to the stack or pipe via Unit Stack Configuration records.  The  UnitMonitorCertStartDate for the location program record should be the later of the UnitMonitorCertStartDate in the Unit Program record and the StartDate in the Unit Stack Configuration record.  The  EndDate for the location program record should be the earlier of the EndDate in the Unit Program record and the EndDate in the Unit Stack Configuration record.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationProgramRow> LocationProgramRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationProgramRow> LocationProgramRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Location_Program_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Program_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -10145,11 +10145,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Location_Program_Records", null);
+                    SetCheckParameter("Location_Program_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Location_Program_Records", value.SourceView);
+                    SetCheckParameter("Location_Program_Records", value.SourceView);
                 }
             }
         }
@@ -10161,11 +10161,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///  1) the hourly loop by the Hourly Op Data category, and
         ///  2) the apportionment loop by the Hourly Configuration Evaluation category.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationProgramRow> LocationProgramRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationProgramRow> LocationProgramRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Location_Program_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Program_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -10179,11 +10179,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Location_Program_Records_By_Hour_Location", null);
+                    SetCheckParameter("Location_Program_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Location_Program_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Location_Program_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -10195,11 +10195,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///For a stack or pipe, this is the Unit Reporting Frequency records for all units linked to the stack or pipe via Unit Stack Configuration records.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationReportingFrequencyRow> LocationReportingFrequencyRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationReportingFrequencyRow> LocationReportingFrequencyRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Location_Reporting_Frequency_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Reporting_Frequency_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -10213,11 +10213,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Location_Reporting_Frequency_Records", null);
+                    SetCheckParameter("Location_Reporting_Frequency_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Location_Reporting_Frequency_Records", value.SourceView);
+                    SetCheckParameter("Location_Reporting_Frequency_Records", value.SourceView);
                 }
             }
         }
@@ -10225,26 +10225,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Component ID of the low range of a component.
         /// </summary>
-        public static string LowRangeComponentId
+        public  string LowRangeComponentId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Low_Range_Component_ID")));
+                return ((string)(GetCheckParameter("Low_Range_Component_ID")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Low_Range_Component_ID", value);
+                SetCheckParameter("Low_Range_Component_ID", value);
             }
         }
         
         /// <summary>
         /// The long term fuel flow records for all locations in the configuration.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLongTermFuelFlowRow> LtffRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLongTermFuelFlowRow> LtffRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("LTFF_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("LTFF_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -10258,11 +10258,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("LTFF_Records", null);
+                    SetCheckParameter("LTFF_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("LTFF_Records", value.SourceView);
+                    SetCheckParameter("LTFF_Records", value.SourceView);
                 }
             }
         }
@@ -10270,11 +10270,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The 3 Level System Integrity QA Supplemental records used for QA Status evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> Mats3LevelSystemIntegrityRecordsForQaStatus
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> Mats3LevelSystemIntegrityRecordsForQaStatus
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MATS_3_Level_System_Integrity_Records_for_QA_Status")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_3_Level_System_Integrity_Records_for_QA_Status")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -10288,11 +10288,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_3_Level_System_Integrity_Records_for_QA_Status", null);
+                    SetCheckParameter("MATS_3_Level_System_Integrity_Records_for_QA_Status", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_3_Level_System_Integrity_Records_for_QA_Status", value.SourceView);
+                    SetCheckParameter("MATS_3_Level_System_Integrity_Records_for_QA_Status", value.SourceView);
                 }
             }
         }
@@ -10300,15 +10300,15 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Identifies if breakthrough trap Hg concentration is in valid format for subsequent check.
         /// </summary>
-        public static bool? MatsBtTrapHgValid
+        public  bool? MatsBtTrapHgValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_BT_Trap_Hg_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_BT_Trap_Hg_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_BT_Trap_Hg_Valid", value);
+                SetCheckParameter("MATS_BT_Trap_Hg_Valid", value);
             }
         }
         
@@ -10317,15 +10317,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in Emission Report evaluation, set in MATSTRP-14, and optional parameter for MATSTRP-15 solely to insure MATSTRP-15 runs after MATSTRP 1- through 14.
         /// </summary>
-        public static string MatsCalcHgSystemConcentration
+        public  string MatsCalcHgSystemConcentration
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Calc_Hg_System_Concentration")));
+                return ((string)(GetCheckParameter("MATS_Calc_Hg_System_Concentration")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Calc_Hg_System_Concentration", value);
+                SetCheckParameter("MATS_Calc_Hg_System_Concentration", value);
             }
         }
         
@@ -10334,15 +10334,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///MatsHourlySfsrRatioDeviation
         /// </summary>
-        public static decimal? MatsCalcHourlySfsrRatio
+        public  decimal? MatsCalcHourlySfsrRatio
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("MATS_Calc_Hourly_SFSR_Ratio")));
+                return ((decimal?)(GetCheckParameter("MATS_Calc_Hourly_SFSR_Ratio")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Calc_Hourly_SFSR_Ratio", value);
+                SetCheckParameter("MATS_Calc_Hourly_SFSR_Ratio", value);
             }
         }
         
@@ -10351,15 +10351,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used as plug in for error message result.
         /// </summary>
-        public static string MatsCalcTrainHgConcentration
+        public  string MatsCalcTrainHgConcentration
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Calc_Train_Hg_Concentration")));
+                return ((string)(GetCheckParameter("MATS_Calc_Train_Hg_Concentration")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Calc_Train_Hg_Concentration", value);
+                SetCheckParameter("MATS_Calc_Train_Hg_Concentration", value);
             }
         }
         
@@ -10368,15 +10368,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used as plugin error message result.
         /// </summary>
-        public static decimal? MatsCalcTrainPercentBreakthrough
+        public  decimal? MatsCalcTrainPercentBreakthrough
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("MATS_Calc_Train_Percent_Breakthrough")));
+                return ((decimal?)(GetCheckParameter("MATS_Calc_Train_Percent_Breakthrough")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Calc_Train_Percent_Breakthrough", value);
+                SetCheckParameter("MATS_Calc_Train_Percent_Breakthrough", value);
             }
         }
         
@@ -10385,15 +10385,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used as plugin for error result.
         /// </summary>
-        public static decimal? MatsCalcTrainPercentSpikeRecovery
+        public  decimal? MatsCalcTrainPercentSpikeRecovery
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("MATS_Calc_Train_Percent_Spike_Recovery")));
+                return ((decimal?)(GetCheckParameter("MATS_Calc_Train_Percent_Spike_Recovery")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Calc_Train_Percent_Spike_Recovery", value);
+                SetCheckParameter("MATS_Calc_Train_Percent_Spike_Recovery", value);
             }
         }
         
@@ -10402,15 +10402,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used as plugin in error result.
         /// </summary>
-        public static decimal? MatsCalcTrapAbsoluteDifference
+        public  decimal? MatsCalcTrapAbsoluteDifference
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("MATS_Calc_Trap_Absolute_Difference")));
+                return ((decimal?)(GetCheckParameter("MATS_Calc_Trap_Absolute_Difference")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Calc_Trap_Absolute_Difference", value);
+                SetCheckParameter("MATS_Calc_Trap_Absolute_Difference", value);
             }
         }
         
@@ -10419,15 +10419,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used as plugin in error result.
         /// </summary>
-        public static decimal? MatsCalcTrapPercentDifference
+        public  decimal? MatsCalcTrapPercentDifference
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("MATS_Calc_Trap_Percent_Difference")));
+                return ((decimal?)(GetCheckParameter("MATS_Calc_Trap_Percent_Difference")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Calc_Trap_Percent_Difference", value);
+                SetCheckParameter("MATS_Calc_Trap_Percent_Difference", value);
             }
         }
         
@@ -10436,15 +10436,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the calculated HCLRE or HCLRH value for MATS, which is primarily used to update the calculated value in the MATS Derived Hourly record.
         /// </summary>
-        public static string MatsCalculatedHclRateValue
+        public  string MatsCalculatedHclRateValue
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Calculated_HCl_Rate_Value")));
+                return ((string)(GetCheckParameter("MATS_Calculated_HCl_Rate_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Calculated_HCl_Rate_Value", value);
+                SetCheckParameter("MATS_Calculated_HCl_Rate_Value", value);
             }
         }
         
@@ -10453,15 +10453,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the calculated HFRE or HFRH value for MATS, which is primarily used to update the calculated value in the MATS Derived Hourly record.
         /// </summary>
-        public static string MatsCalculatedHfRateValue
+        public  string MatsCalculatedHfRateValue
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Calculated_HF_Rate_Value")));
+                return ((string)(GetCheckParameter("MATS_Calculated_HF_Rate_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Calculated_HF_Rate_Value", value);
+                SetCheckParameter("MATS_Calculated_HF_Rate_Value", value);
             }
         }
         
@@ -10471,15 +10471,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///Contains the calculated HGRE or HGRH value for MATS, which is primarily used to update the calculated value in the MATS Derived Hourly record.
         ///
         /// </summary>
-        public static string MatsCalculatedHgRateValue
+        public  string MatsCalculatedHgRateValue
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Calculated_Hg_Rate_Value")));
+                return ((string)(GetCheckParameter("MATS_Calculated_Hg_Rate_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Calculated_Hg_Rate_Value", value);
+                SetCheckParameter("MATS_Calculated_Hg_Rate_Value", value);
             }
         }
         
@@ -10488,45 +10488,45 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the calculated SO2RE or SO2RH value for MATS, which is primarily used to update the calculated value in the MATS Derived Hourly record.
         /// </summary>
-        public static string MatsCalculatedSo2RateValue
+        public  string MatsCalculatedSo2RateValue
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Calculated_SO2_Rate_Value")));
+                return ((string)(GetCheckParameter("MATS_Calculated_SO2_Rate_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Calculated_SO2_Rate_Value", value);
+                SetCheckParameter("MATS_Calculated_SO2_Rate_Value", value);
             }
         }
         
         /// <summary>
         /// Dummy parameter used by the Hourly Linearity Status checks to force LINSTAT-7 to run before LINSTAT-6..
         /// </summary>
-        public static bool? MatsCheckForHgsi3Ran
+        public  bool? MatsCheckForHgsi3Ran
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Check_for_HGSI3_Ran")));
+                return ((bool?)(GetCheckParameter("MATS_Check_for_HGSI3_Ran")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Check_for_HGSI3_Ran", value);
+                SetCheckParameter("MATS_Check_for_HGSI3_Ran", value);
             }
         }
         
         /// <summary>
         /// Indicates the date after which daily calibration tests are required for MATS parameters.  Before the date, the lack of a daily calibration test may not indicate an OOC MATS system, because MATS reporting may not have begun when the location first started operating in the first MATS quarter.  The value is pulled from the system parameter table under parameter MATS_RULE DailyCalibrationRequiredDatehour.
         /// </summary>
-        public static DateTime? MatsDailyCalRequiredDatehour
+        public  DateTime? MatsDailyCalRequiredDatehour
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("MATS_Daily_Cal_Required_DateHour")));
+                return ((DateTime?)(GetCheckParameter("MATS_Daily_Cal_Required_DateHour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Daily_Cal_Required_DateHour", value);
+                SetCheckParameter("MATS_Daily_Cal_Required_DateHour", value);
             }
         }
         
@@ -10535,15 +10535,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the list of measured MODC for the current MATS DHV parameter.
         /// </summary>
-        public static string MatsDhvMeasuredModcList
+        public  string MatsDhvMeasuredModcList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_DHV_Measured_MODC_List")));
+                return ((string)(GetCheckParameter("MATS_DHV_Measured_MODC_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_DHV_Measured_MODC_List", value);
+                SetCheckParameter("MATS_DHV_Measured_MODC_List", value);
             }
         }
         
@@ -10552,11 +10552,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the current 'HGRE', 'HGRH', 'HCLRE', 'HCLRH', 'HFRE', 'HFRH', 'SO2RE' or 'SO2RH' MATS Derived Hourly Value record.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSDerivedHourlyValueData MatsDhvRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSDerivedHourlyValueData MatsDhvRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_DHV_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_DHV_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -10570,11 +10570,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_DHV_Record", null);
+                    SetCheckParameter("MATS_DHV_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_DHV_Record", value.SourceRow);
+                    SetCheckParameter("MATS_DHV_Record", value.SourceRow);
                 }
             }
         }
@@ -10584,11 +10584,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'HGRE', 'HGRH', 'HCLRE', 'HCLRH', 'HFRE', 'HFRH', 'SO2RE' and 'SO2RH' MATS Derived Hourly Value records for the current hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSDerivedHourlyValueData> MatsDhvRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSDerivedHourlyValueData> MatsDhvRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MATS_DHV_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_DHV_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -10602,11 +10602,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_DHV_Records_By_Hour_Location", null);
+                    SetCheckParameter("MATS_DHV_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_DHV_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("MATS_DHV_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -10616,15 +10616,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the list of unavailable MODC for the current MATS DHV parameter.
         /// </summary>
-        public static string MatsDhvUnavailableModcList
+        public  string MatsDhvUnavailableModcList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_DHV_Unavailable_MODC_List")));
+                return ((string)(GetCheckParameter("MATS_DHV_Unavailable_MODC_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_DHV_Unavailable_MODC_List", value);
+                SetCheckParameter("MATS_DHV_Unavailable_MODC_List", value);
             }
         }
         
@@ -10633,15 +10633,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the RE equation code that uses H2O.
         /// </summary>
-        public static string MatsEquationCodeWithH2o
+        public  string MatsEquationCodeWithH2o
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Equation_Code_With_H2O")));
+                return ((string)(GetCheckParameter("MATS_Equation_Code_With_H2O")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Equation_Code_With_H2O", value);
+                SetCheckParameter("MATS_Equation_Code_With_H2O", value);
             }
         }
         
@@ -10650,15 +10650,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the RE equation code that does not use H2O.
         /// </summary>
-        public static string MatsEquationCodeWithoutH2o
+        public  string MatsEquationCodeWithoutH2o
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Equation_Code_Without_H2O")));
+                return ((string)(GetCheckParameter("MATS_Equation_Code_Without_H2O")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Equation_Code_Without_H2O", value);
+                SetCheckParameter("MATS_Equation_Code_Without_H2O", value);
             }
         }
         
@@ -10667,26 +10667,26 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates whether MATS is expected for the current hour and location.
         /// </summary>
-        public static bool? MatsExpected
+        public  bool? MatsExpected
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Expected")));
+                return ((bool?)(GetCheckParameter("MATS_Expected")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Expected", value);
+                SetCheckParameter("MATS_Expected", value);
             }
         }
         
         /// <summary>
         /// Set and used in Hourly GFM checks, this parameter contains the sampling train rows active for the hour and component of the current GFM row.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSamplingTrainRecord> MatsGfmSamplingTrainRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSamplingTrainRecord> MatsGfmSamplingTrainRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MATS_GFM_Sampling_Train_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_GFM_Sampling_Train_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -10700,11 +10700,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_GFM_Sampling_Train_Records", null);
+                    SetCheckParameter("MATS_GFM_Sampling_Train_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_GFM_Sampling_Train_Records", value.SourceView);
+                    SetCheckParameter("MATS_GFM_Sampling_Train_Records", value.SourceView);
                 }
             }
         }
@@ -10714,15 +10714,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS HCLC MHV Checks should run.
         /// </summary>
-        public static bool? MatsHclcMhvChecksNeeded
+        public  bool? MatsHclcMhvChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HCLC_MHV_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_HCLC_MHV_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HCLC_MHV_Checks_Needed", value);
+                SetCheckParameter("MATS_HCLC_MHV_Checks_Needed", value);
             }
         }
         
@@ -10731,11 +10731,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'HCLC' Monitor Hourly Value record for the current location that is active for the current hour.  This parameter's value is null if multiple or no active records exist, or if records are not expected.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData MatsHclcMhvRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData MatsHclcMhvRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_HClC_MHV_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_HClC_MHV_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -10749,11 +10749,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_HClC_MHV_Record", null);
+                    SetCheckParameter("MATS_HClC_MHV_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_HClC_MHV_Record", value.SourceRow);
+                    SetCheckParameter("MATS_HClC_MHV_Record", value.SourceRow);
                 }
             }
         }
@@ -10763,15 +10763,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS HCl Concentration is needed.
         /// </summary>
-        public static bool? MatsHclcNeeded
+        public  bool? MatsHclcNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HClC_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_HClC_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HClC_Needed", value);
+                SetCheckParameter("MATS_HClC_Needed", value);
             }
         }
         
@@ -10780,30 +10780,30 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the MATS HCl DHV parameter code which is set in the Derived Hourly category and used in the Calculated Hourly category.
         /// </summary>
-        public static string MatsHclDhvParameter
+        public  string MatsHclDhvParameter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_HCl_DHV_Parameter")));
+                return ((string)(GetCheckParameter("MATS_HCl_DHV_Parameter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HCl_DHV_Parameter", value);
+                SetCheckParameter("MATS_HCl_DHV_Parameter", value);
             }
         }
         
         /// <summary>
         /// Plugin parameter used in emission report evaluations.
         /// </summary>
-        public static string MatsHclDhvParameterDescription
+        public  string MatsHclDhvParameterDescription
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_HCl_DHV_Parameter_Description")));
+                return ((string)(GetCheckParameter("MATS_HCl_DHV_Parameter_Description")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HCl_DHV_Parameter_Description", value);
+                SetCheckParameter("MATS_HCl_DHV_Parameter_Description", value);
             }
         }
         
@@ -10812,11 +10812,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'HCLRE' or 'HCLRH' Derived Hourly record for the current location that is active for the current hour.  This parameter's value is null if multiple or no active records exist, or if 'HCLRE' and 'HCLRH' derived records are not expected.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSDerivedHourlyValueData MatsHclDhvRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSDerivedHourlyValueData MatsHclDhvRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_HCl_DHV_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_HCl_DHV_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -10830,11 +10830,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_HCl_DHV_Record", null);
+                    SetCheckParameter("MATS_HCl_DHV_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_HCl_DHV_Record", value.SourceRow);
+                    SetCheckParameter("MATS_HCl_DHV_Record", value.SourceRow);
                 }
             }
         }
@@ -10844,15 +10844,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates whether the HCl DHV record is valid for calculation purposes.
         /// </summary>
-        public static bool? MatsHclDhvValid
+        public  bool? MatsHclDhvValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HCl_DHV_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_HCl_DHV_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HCl_DHV_Valid", value);
+                SetCheckParameter("MATS_HCl_DHV_Valid", value);
             }
         }
         
@@ -10861,15 +10861,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the Method Code for the current 'HCLRE' or 'HCLRH' Monitor Method record.  This parameter's value is null if MATS HCl Method Record is null.
         /// </summary>
-        public static string MatsHclMethodCode
+        public  string MatsHclMethodCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_HCl_Method_Code")));
+                return ((string)(GetCheckParameter("MATS_HCl_Method_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HCl_Method_Code", value);
+                SetCheckParameter("MATS_HCl_Method_Code", value);
             }
         }
         
@@ -10878,11 +10878,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'HCLRE' or 'HCLRH' Monitor Method record for the current location that is active for the current hour.  This parameter's value is null if multiple or no active records exist, or if 'HCLRE' and 'HCLRH' derived records are not expected.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow MatsHclMethodRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow MatsHclMethodRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_HCl_Method_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_HCl_Method_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -10896,11 +10896,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_HCl_Method_Record", null);
+                    SetCheckParameter("MATS_HCl_Method_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_HCl_Method_Record", value.SourceRow);
+                    SetCheckParameter("MATS_HCl_Method_Record", value.SourceRow);
                 }
             }
         }
@@ -10908,15 +10908,15 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Plugin parameter used in emission report evaluations.
         /// </summary>
-        public static string MatsHclMhvParameterDescription
+        public  string MatsHclMhvParameterDescription
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_HCl_MHV_Parameter_Description")));
+                return ((string)(GetCheckParameter("MATS_HCl_MHV_Parameter_Description")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HCl_MHV_Parameter_Description", value);
+                SetCheckParameter("MATS_HCl_MHV_Parameter_Description", value);
             }
         }
         
@@ -10925,15 +10925,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the Parameter Code for the current 'HCLRE' or 'HCLRH' Monitor Method record.  This parameter's value is null if MATS HCl Method Record is null.
         /// </summary>
-        public static string MatsHclParameterCode
+        public  string MatsHclParameterCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_HCl_Parameter_Code")));
+                return ((string)(GetCheckParameter("MATS_HCl_Parameter_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HCl_Parameter_Code", value);
+                SetCheckParameter("MATS_HCl_Parameter_Code", value);
             }
         }
         
@@ -10942,15 +10942,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS HCLRE DHV Checks should run.
         /// </summary>
-        public static bool? MatsHclreDhvChecksNeeded
+        public  bool? MatsHclreDhvChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HCLRE_DHV_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_HCLRE_DHV_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HCLRE_DHV_Checks_Needed", value);
+                SetCheckParameter("MATS_HCLRE_DHV_Checks_Needed", value);
             }
         }
         
@@ -10959,15 +10959,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS HCLRH DHV Checks should run.
         /// </summary>
-        public static bool? MatsHclrhDhvChecksNeeded
+        public  bool? MatsHclrhDhvChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HCLRH_DHV_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_HCLRH_DHV_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HCLRH_DHV_Checks_Needed", value);
+                SetCheckParameter("MATS_HCLRH_DHV_Checks_Needed", value);
             }
         }
         
@@ -10976,15 +10976,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS HFC MHV Checks should run.
         /// </summary>
-        public static bool? MatsHfcMhvChecksNeeded
+        public  bool? MatsHfcMhvChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HFC_MHV_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_HFC_MHV_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HFC_MHV_Checks_Needed", value);
+                SetCheckParameter("MATS_HFC_MHV_Checks_Needed", value);
             }
         }
         
@@ -10993,11 +10993,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'HFC' Monitor Hourly Value record for the current location that is active for the current hour.  This parameter's value is null if multiple or no active records exist, or if records are not expected.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData MatsHfcMhvRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData MatsHfcMhvRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_HFC_MHV_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_HFC_MHV_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -11011,11 +11011,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_HFC_MHV_Record", null);
+                    SetCheckParameter("MATS_HFC_MHV_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_HFC_MHV_Record", value.SourceRow);
+                    SetCheckParameter("MATS_HFC_MHV_Record", value.SourceRow);
                 }
             }
         }
@@ -11025,15 +11025,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS HF Concentration is needed.
         /// </summary>
-        public static bool? MatsHfcNeeded
+        public  bool? MatsHfcNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HFC_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_HFC_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HFC_Needed", value);
+                SetCheckParameter("MATS_HFC_Needed", value);
             }
         }
         
@@ -11042,30 +11042,30 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the MATS HF DHV parameter code which is set in the Derived Hourly category and used in the Calculated Hourly category.
         /// </summary>
-        public static string MatsHfDhvParameter
+        public  string MatsHfDhvParameter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_HF_DHV_Parameter")));
+                return ((string)(GetCheckParameter("MATS_HF_DHV_Parameter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HF_DHV_Parameter", value);
+                SetCheckParameter("MATS_HF_DHV_Parameter", value);
             }
         }
         
         /// <summary>
         /// Plubin parameter used in emission report evaluations.
         /// </summary>
-        public static string MatsHfDhvParameterDescription
+        public  string MatsHfDhvParameterDescription
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_HF_DHV_Parameter_Description")));
+                return ((string)(GetCheckParameter("MATS_HF_DHV_Parameter_Description")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HF_DHV_Parameter_Description", value);
+                SetCheckParameter("MATS_HF_DHV_Parameter_Description", value);
             }
         }
         
@@ -11074,11 +11074,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'HFRE' or 'HFRH' Derived Hourly record for the current location that is active for the current hour.  This parameter's value is null if multiple or no active records exist, or if 'HFRE' and 'HFRH' derived records are not expected.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSDerivedHourlyValueData MatsHfDhvRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSDerivedHourlyValueData MatsHfDhvRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_HF_DHV_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_HF_DHV_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -11092,11 +11092,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_HF_DHV_Record", null);
+                    SetCheckParameter("MATS_HF_DHV_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_HF_DHV_Record", value.SourceRow);
+                    SetCheckParameter("MATS_HF_DHV_Record", value.SourceRow);
                 }
             }
         }
@@ -11106,15 +11106,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates whether the HF DHV record is valid for calculation purposes.
         /// </summary>
-        public static bool? MatsHfDhvValid
+        public  bool? MatsHfDhvValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HF_DHV_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_HF_DHV_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HF_DHV_Valid", value);
+                SetCheckParameter("MATS_HF_DHV_Valid", value);
             }
         }
         
@@ -11123,15 +11123,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the Method Code for the current 'HFRE' or 'HFRH' Monitor Method record.  This parameter's value is null if MATS HF Method Record is null.
         /// </summary>
-        public static string MatsHfMethodCode
+        public  string MatsHfMethodCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_HF_Method_Code")));
+                return ((string)(GetCheckParameter("MATS_HF_Method_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HF_Method_Code", value);
+                SetCheckParameter("MATS_HF_Method_Code", value);
             }
         }
         
@@ -11140,11 +11140,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'HFRE' or 'HFRH' Monitor Method record for the current location that is active for the current hour.  This parameter's value is null if multiple or no active records exist, or if 'HFRE' and 'HFRH' derived records are not expected.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow MatsHfMethodRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow MatsHfMethodRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_HF_Method_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_HF_Method_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -11158,11 +11158,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_HF_Method_Record", null);
+                    SetCheckParameter("MATS_HF_Method_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_HF_Method_Record", value.SourceRow);
+                    SetCheckParameter("MATS_HF_Method_Record", value.SourceRow);
                 }
             }
         }
@@ -11170,15 +11170,15 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Plugin parameter used in emission report evaluations.
         /// </summary>
-        public static string MatsHfMhvParameterDescription
+        public  string MatsHfMhvParameterDescription
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_HF_MHV_Parameter_Description")));
+                return ((string)(GetCheckParameter("MATS_HF_MHV_Parameter_Description")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HF_MHV_Parameter_Description", value);
+                SetCheckParameter("MATS_HF_MHV_Parameter_Description", value);
             }
         }
         
@@ -11187,15 +11187,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the Parameter Code for the current 'HFRE' or 'HFRH' Monitor Method record.  This parameter's value is null if MATS HF Method Record is null.
         /// </summary>
-        public static string MatsHfParameterCode
+        public  string MatsHfParameterCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_HF_Parameter_Code")));
+                return ((string)(GetCheckParameter("MATS_HF_Parameter_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HF_Parameter_Code", value);
+                SetCheckParameter("MATS_HF_Parameter_Code", value);
             }
         }
         
@@ -11204,15 +11204,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS HFRE DHV Checks should run.
         /// </summary>
-        public static bool? MatsHfreDhvChecksNeeded
+        public  bool? MatsHfreDhvChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HFRE_DHV_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_HFRE_DHV_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HFRE_DHV_Checks_Needed", value);
+                SetCheckParameter("MATS_HFRE_DHV_Checks_Needed", value);
             }
         }
         
@@ -11221,26 +11221,26 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS HFRH DHV Checks should run.
         /// </summary>
-        public static bool? MatsHfrhDhvChecksNeeded
+        public  bool? MatsHfrhDhvChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HFRH_DHV_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_HFRH_DHV_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HFRH_DHV_Checks_Needed", value);
+                SetCheckParameter("MATS_HFRH_DHV_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// Contains an event record located as part of Hg 3-Level Sisytem Integrity processing.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow MatsHg3LevelSiEventRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow MatsHg3LevelSiEventRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_Hg_3_Level_SI_Event_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_Hg_3_Level_SI_Event_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -11254,11 +11254,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_3_Level_SI_Event_Record", null);
+                    SetCheckParameter("MATS_Hg_3_Level_SI_Event_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_3_Level_SI_Event_Record", value.SourceRow);
+                    SetCheckParameter("MATS_Hg_3_Level_SI_Event_Record", value.SourceRow);
                 }
             }
         }
@@ -11266,11 +11266,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains a test record located as part of Hg 3-Level Sisytem Integrity processing.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow MatsHg3LevelSiTestRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow MatsHg3LevelSiTestRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_Hg_3_Level_SI_Test_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_Hg_3_Level_SI_Test_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -11284,11 +11284,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_3_Level_SI_Test_Record", null);
+                    SetCheckParameter("MATS_Hg_3_Level_SI_Test_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_3_Level_SI_Test_Record", value.SourceRow);
+                    SetCheckParameter("MATS_Hg_3_Level_SI_Test_Record", value.SourceRow);
                 }
             }
         }
@@ -11298,15 +11298,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS HGC MHV Checks should run.
         /// </summary>
-        public static bool? MatsHgcMhvChecksNeeded
+        public  bool? MatsHgcMhvChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HGC_MHV_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_HGC_MHV_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HGC_MHV_Checks_Needed", value);
+                SetCheckParameter("MATS_HGC_MHV_Checks_Needed", value);
             }
         }
         
@@ -11315,11 +11315,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'HGC' Monitor Hourly Value record for the current location that is active for the current hour.  This parameter's value is null if multiple or no active records exist, or if records are not expected.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData MatsHgcMhvRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData MatsHgcMhvRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_HgC_MHV_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_HgC_MHV_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -11333,11 +11333,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_HgC_MHV_Record", null);
+                    SetCheckParameter("MATS_HgC_MHV_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_HgC_MHV_Record", value.SourceRow);
+                    SetCheckParameter("MATS_HgC_MHV_Record", value.SourceRow);
                 }
             }
         }
@@ -11347,15 +11347,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS Hg Concentration is needed.
         /// </summary>
-        public static bool? MatsHgcNeeded
+        public  bool? MatsHgcNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HgC_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_HgC_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HgC_Needed", value);
+                SetCheckParameter("MATS_HgC_Needed", value);
             }
         }
         
@@ -11364,30 +11364,30 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the MATS Hg DHV parameter code which is set in the Derived Hourly category and used in the Calculated Hourly category.
         /// </summary>
-        public static string MatsHgDhvParameter
+        public  string MatsHgDhvParameter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Hg_DHV_Parameter")));
+                return ((string)(GetCheckParameter("MATS_Hg_DHV_Parameter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Hg_DHV_Parameter", value);
+                SetCheckParameter("MATS_Hg_DHV_Parameter", value);
             }
         }
         
         /// <summary>
         /// Plugin parameter used in emission report evaluations.
         /// </summary>
-        public static string MatsHgDhvParameterDescription
+        public  string MatsHgDhvParameterDescription
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Hg_DHV_Parameter_Description")));
+                return ((string)(GetCheckParameter("MATS_Hg_DHV_Parameter_Description")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Hg_DHV_Parameter_Description", value);
+                SetCheckParameter("MATS_Hg_DHV_Parameter_Description", value);
             }
         }
         
@@ -11396,11 +11396,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'HGRE' or 'HGRH' Derived Hourly record for the current location that is active for the current hour.  This parameter's value is null if multiple or no active records exist, or if 'HGRE' and 'HGRH' derived records are not expected.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSDerivedHourlyValueData MatsHgDhvRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSDerivedHourlyValueData MatsHgDhvRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_Hg_DHV_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_Hg_DHV_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -11414,11 +11414,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_DHV_Record", null);
+                    SetCheckParameter("MATS_Hg_DHV_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_DHV_Record", value.SourceRow);
+                    SetCheckParameter("MATS_Hg_DHV_Record", value.SourceRow);
                 }
             }
         }
@@ -11428,26 +11428,26 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates whether the Hg DHV record is valid for calculation purposes.
         /// </summary>
-        public static bool? MatsHgDhvValid
+        public  bool? MatsHgDhvValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Hg_DHV_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Hg_DHV_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Hg_DHV_Valid", value);
+                SetCheckParameter("MATS_Hg_DHV_Valid", value);
             }
         }
         
         /// <summary>
         /// Contains an event record located as part of Hg Linearity processing.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow MatsHgLinearityEventRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow MatsHgLinearityEventRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_Hg_Linearity_Event_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_Hg_Linearity_Event_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -11461,11 +11461,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_Linearity_Event_Record", null);
+                    SetCheckParameter("MATS_Hg_Linearity_Event_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_Linearity_Event_Record", value.SourceRow);
+                    SetCheckParameter("MATS_Hg_Linearity_Event_Record", value.SourceRow);
                 }
             }
         }
@@ -11473,11 +11473,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Jg Linearity QA Supplemental records used for QA Status evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> MatsHgLinearityRecordsForQaStatus
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> MatsHgLinearityRecordsForQaStatus
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MATS_Hg_Linearity_Records_for_QA_Status")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_Hg_Linearity_Records_for_QA_Status")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -11491,11 +11491,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_Linearity_Records_for_QA_Status", null);
+                    SetCheckParameter("MATS_Hg_Linearity_Records_for_QA_Status", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_Linearity_Records_for_QA_Status", value.SourceView);
+                    SetCheckParameter("MATS_Hg_Linearity_Records_for_QA_Status", value.SourceView);
                 }
             }
         }
@@ -11503,11 +11503,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains a test record located as part of Hg Linearity processing.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow MatsHgLinearityTestRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow MatsHgLinearityTestRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_Hg_Linearity_Test_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_Hg_Linearity_Test_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -11521,11 +11521,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_Linearity_Test_Record", null);
+                    SetCheckParameter("MATS_Hg_Linearity_Test_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_Linearity_Test_Record", value.SourceRow);
+                    SetCheckParameter("MATS_Hg_Linearity_Test_Record", value.SourceRow);
                 }
             }
         }
@@ -11535,15 +11535,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the Method Code for the current 'HGRE' or 'HGRH' Monitor Method record.  This parameter's value is null if MATS Hg Method Record is null.
         /// </summary>
-        public static string MatsHgMethodCode
+        public  string MatsHgMethodCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Hg_Method_Code")));
+                return ((string)(GetCheckParameter("MATS_Hg_Method_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Hg_Method_Code", value);
+                SetCheckParameter("MATS_Hg_Method_Code", value);
             }
         }
         
@@ -11552,11 +11552,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'HGRE' or 'HGRH' Monitor Method record for the current location that is active for the current hour.  This parameter's value is null if multiple or no active records exist, or if 'HGRE' and 'HGRH' derived records are not expected.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow MatsHgMethodRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow MatsHgMethodRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_Hg_Method_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_Hg_Method_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -11570,11 +11570,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_Method_Record", null);
+                    SetCheckParameter("MATS_Hg_Method_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Hg_Method_Record", value.SourceRow);
+                    SetCheckParameter("MATS_Hg_Method_Record", value.SourceRow);
                 }
             }
         }
@@ -11582,15 +11582,15 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Plugin parameter used in emission report evaluations.
         /// </summary>
-        public static string MatsHgMhvParameterDescription
+        public  string MatsHgMhvParameterDescription
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Hg_MHV_Parameter_Description")));
+                return ((string)(GetCheckParameter("MATS_Hg_MHV_Parameter_Description")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Hg_MHV_Parameter_Description", value);
+                SetCheckParameter("MATS_Hg_MHV_Parameter_Description", value);
             }
         }
         
@@ -11599,15 +11599,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the Parameter Code for the current 'HGRE' or 'HGRH' Monitor Method record.  This parameter's value is null if MATS Hg Method Record is null.
         /// </summary>
-        public static string MatsHgParameterCode
+        public  string MatsHgParameterCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Hg_Parameter_Code")));
+                return ((string)(GetCheckParameter("MATS_Hg_Parameter_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Hg_Parameter_Code", value);
+                SetCheckParameter("MATS_Hg_Parameter_Code", value);
             }
         }
         
@@ -11616,15 +11616,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS HGRE DHV Checks should run.
         /// </summary>
-        public static bool? MatsHgreDhvChecksNeeded
+        public  bool? MatsHgreDhvChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HGRE_DHV_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_HGRE_DHV_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HGRE_DHV_Checks_Needed", value);
+                SetCheckParameter("MATS_HGRE_DHV_Checks_Needed", value);
             }
         }
         
@@ -11633,41 +11633,41 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS HGRH DHV Checks should run.
         /// </summary>
-        public static bool? MatsHgrhDhvChecksNeeded
+        public  bool? MatsHgrhDhvChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_HGRH_DHV_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_HGRH_DHV_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_HGRH_DHV_Checks_Needed", value);
+                SetCheckParameter("MATS_HGRH_DHV_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Component Id for the current Hourly Gas Flow Meter record is not null and matches the Component Id for one of the two Sampling Trains.
         /// </summary>
-        public static bool? MatsHourlyGfmComponentIdValid
+        public  bool? MatsHourlyGfmComponentIdValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Hourly_GFM_Component_Id_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Hourly_GFM_Component_Id_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Hourly_GFM_Component_Id_Valid", value);
+                SetCheckParameter("MATS_Hourly_GFM_Component_Id_Valid", value);
             }
         }
         
         /// <summary>
         /// MATS hourly GRM records for GFM component of sorbent train.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsHourlyGfmRecord MatsHourlyGfmRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsHourlyGfmRecord MatsHourlyGfmRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_Hourly_GFM_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_Hourly_GFM_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -11681,11 +11681,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Hourly_GFM_Record", null);
+                    SetCheckParameter("MATS_Hourly_GFM_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Hourly_GFM_Record", value.SourceRow);
+                    SetCheckParameter("MATS_Hourly_GFM_Record", value.SourceRow);
                 }
             }
         }
@@ -11693,11 +11693,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the Hourly GFM Records that are active for the current hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsHourlyGfmRecord> MatsHourlyGfmRecordsForHourAndLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsHourlyGfmRecord> MatsHourlyGfmRecordsForHourAndLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MATS_Hourly_GFM_Records_for_Hour_and_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_Hourly_GFM_Records_for_Hour_and_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -11711,11 +11711,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Hourly_GFM_Records_for_Hour_and_Location", null);
+                    SetCheckParameter("MATS_Hourly_GFM_Records_for_Hour_and_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Hourly_GFM_Records_for_Hour_and_Location", value.SourceView);
+                    SetCheckParameter("MATS_Hourly_GFM_Records_for_Hour_and_Location", value.SourceView);
                 }
             }
         }
@@ -11723,15 +11723,15 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Identifies that the main trap Hg concentration is in a valid format for susbsequent checks
         /// </summary>
-        public static bool? MatsMainTrapHgValid
+        public  bool? MatsMainTrapHgValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Main_Trap_Hg_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Main_Trap_Hg_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Main_Trap_Hg_Valid", value);
+                SetCheckParameter("MATS_Main_Trap_Hg_Valid", value);
             }
         }
         
@@ -11740,15 +11740,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///The calculated Unadjusted MATS HCl Concentration MHV value in scientific notation.
         /// </summary>
-        public static string MatsMhvCalculatedHclcValue
+        public  string MatsMhvCalculatedHclcValue
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MHV_Calculated_HClC_Value")));
+                return ((string)(GetCheckParameter("MATS_MHV_Calculated_HClC_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MHV_Calculated_HClC_Value", value);
+                SetCheckParameter("MATS_MHV_Calculated_HClC_Value", value);
             }
         }
         
@@ -11757,15 +11757,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///The calculated Unadjusted MATS HF Concentration MHV value in scientific notation.
         /// </summary>
-        public static string MatsMhvCalculatedHfcValue
+        public  string MatsMhvCalculatedHfcValue
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MHV_Calculated_HFC_Value")));
+                return ((string)(GetCheckParameter("MATS_MHV_Calculated_HFC_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MHV_Calculated_HFC_Value", value);
+                SetCheckParameter("MATS_MHV_Calculated_HFC_Value", value);
             }
         }
         
@@ -11774,15 +11774,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///The calculated Unadjusted MATS Hg Concentration MHV value in scientific notation.
         /// </summary>
-        public static string MatsMhvCalculatedHgcValue
+        public  string MatsMhvCalculatedHgcValue
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MHV_Calculated_HgC_Value")));
+                return ((string)(GetCheckParameter("MATS_MHV_Calculated_HgC_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MHV_Calculated_HgC_Value", value);
+                SetCheckParameter("MATS_MHV_Calculated_HgC_Value", value);
             }
         }
         
@@ -11791,15 +11791,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///The calculated Unadjusted MATS MHV value in scientific notation.
         /// </summary>
-        public static string MatsMhvCalculatedValue
+        public  string MatsMhvCalculatedValue
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MHV_Calculated_Value")));
+                return ((string)(GetCheckParameter("MATS_MHV_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MHV_Calculated_Value", value);
+                SetCheckParameter("MATS_MHV_Calculated_Value", value);
             }
         }
         
@@ -11808,11 +11808,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'HCLC' MATS Monitor Hourly Value records for the current hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData> MatsMhvHclcRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData> MatsMhvHclcRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MATS_MHV_HClC_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_MHV_HClC_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -11826,11 +11826,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_MHV_HClC_Records_By_Hour_Location", null);
+                    SetCheckParameter("MATS_MHV_HClC_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_MHV_HClC_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("MATS_MHV_HClC_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -11840,11 +11840,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'HGC', 'HCLC' and 'HHFC' MATS Monitor Hourly Value records for the current hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData> MatsMhvHfcRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData> MatsMhvHfcRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MATS_MHV_HFC_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_MHV_HFC_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -11858,11 +11858,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_MHV_HFC_Records_By_Hour_Location", null);
+                    SetCheckParameter("MATS_MHV_HFC_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_MHV_HFC_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("MATS_MHV_HFC_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -11872,11 +11872,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'HGC' MATS Monitor Hourly Value records for the current hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData> MatsMhvHgcRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData> MatsMhvHgcRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MATS_MHV_HgC_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_MHV_HgC_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -11890,11 +11890,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_MHV_HgC_Records_By_Hour_Location", null);
+                    SetCheckParameter("MATS_MHV_HgC_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_MHV_HgC_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("MATS_MHV_HgC_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -11904,30 +11904,30 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the list of measured MODC for the current MATS MHV parameter.
         /// </summary>
-        public static string MatsMhvMeasuredModcList
+        public  string MatsMhvMeasuredModcList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MHV_Measured_MODC_List")));
+                return ((string)(GetCheckParameter("MATS_MHV_Measured_MODC_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MHV_Measured_MODC_List", value);
+                SetCheckParameter("MATS_MHV_Measured_MODC_List", value);
             }
         }
         
         /// <summary>
         /// Contains the list of MODC for which a like-kind analyzer cannot be reported.
         /// </summary>
-        public static string MatsMhvNoLikeKindModcList
+        public  string MatsMhvNoLikeKindModcList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MHV_No_Like_Kind_MODC_List")));
+                return ((string)(GetCheckParameter("MATS_MHV_No_Like_Kind_MODC_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MHV_No_Like_Kind_MODC_List", value);
+                SetCheckParameter("MATS_MHV_No_Like_Kind_MODC_List", value);
             }
         }
         
@@ -11936,11 +11936,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the current 'HGC', 'HCLC', or 'HFC' MATS Monitor Hourly Value record.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData MatsMhvRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSMonitorHourlyValueData MatsMhvRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_MHV_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_MHV_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -11954,11 +11954,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_MHV_Record", null);
+                    SetCheckParameter("MATS_MHV_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_MHV_Record", value.SourceRow);
+                    SetCheckParameter("MATS_MHV_Record", value.SourceRow);
                 }
             }
         }
@@ -11966,11 +11966,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates whether an active MATS Sorbent Trap exists for the system in an HgC MHV.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSorbentTrapRecord> MatsMhvSorbentTraps
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSorbentTrapRecord> MatsMhvSorbentTraps
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MATS_MHV_Sorbent_Traps")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_MHV_Sorbent_Traps")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -11984,11 +11984,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_MHV_Sorbent_Traps", null);
+                    SetCheckParameter("MATS_MHV_Sorbent_Traps", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_MHV_Sorbent_Traps", value.SourceView);
+                    SetCheckParameter("MATS_MHV_Sorbent_Traps", value.SourceView);
                 }
             }
         }
@@ -11998,30 +11998,30 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the list of unavailable MODC for the current MATS MHV parameter.
         /// </summary>
-        public static string MatsMhvUnavailableModcList
+        public  string MatsMhvUnavailableModcList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MHV_Unavailable_MODC_List")));
+                return ((string)(GetCheckParameter("MATS_MHV_Unavailable_MODC_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MHV_Unavailable_MODC_List", value);
+                SetCheckParameter("MATS_MHV_Unavailable_MODC_List", value);
             }
         }
         
         /// <summary>
         /// Contains the list of Samling Trains that are missing GFM records for an hour.
         /// </summary>
-        public static string MatsMissingGfmList
+        public  string MatsMissingGfmList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Missing_GFM_List")));
+                return ((string)(GetCheckParameter("MATS_Missing_GFM_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Missing_GFM_List", value);
+                SetCheckParameter("MATS_Missing_GFM_List", value);
             }
         }
         
@@ -12030,300 +12030,300 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates the formula codes used in MATS the include moisture.
         /// </summary>
-        public static string MatsMoistureEquationList
+        public  string MatsMoistureEquationList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Moisture_Equation_List")));
+                return ((string)(GetCheckParameter("MATS_Moisture_Equation_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Moisture_Equation_List", value);
+                SetCheckParameter("MATS_Moisture_Equation_List", value);
             }
         }
         
         /// <summary>
         /// ID for MATS HCL DHV for MS-1 calcultions and to know which MATS DHV record to update. This ID will only have a value if there is an MS-1 calculation, otherwise it will be null.
         /// </summary>
-        public static string MatsMs1HclDhvId
+        public  string MatsMs1HclDhvId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MS1_HCL_DHV_ID")));
+                return ((string)(GetCheckParameter("MATS_MS1_HCL_DHV_ID")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MS1_HCL_DHV_ID", value);
+                SetCheckParameter("MATS_MS1_HCL_DHV_ID", value);
             }
         }
         
         /// <summary>
         /// Primarily used for calculating the percent difference for checking the MS1 calculations.
         /// </summary>
-        public static string MatsMs1HclUnadjustedHourlyValue
+        public  string MatsMs1HclUnadjustedHourlyValue
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MS1_HCL_Unadjusted_Hourly_Value")));
+                return ((string)(GetCheckParameter("MATS_MS1_HCL_Unadjusted_Hourly_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MS1_HCL_Unadjusted_Hourly_Value", value);
+                SetCheckParameter("MATS_MS1_HCL_Unadjusted_Hourly_Value", value);
             }
         }
         
         /// <summary>
         /// ID for MATS HF DHV for MS-1 calcultions and to know which MATS DHV record to update. This ID will only have a value if there is an MS-1 calculation, otherwise it will be null.
         /// </summary>
-        public static string MatsMs1HfDhvId
+        public  string MatsMs1HfDhvId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MS1_HF_DHV_ID")));
+                return ((string)(GetCheckParameter("MATS_MS1_HF_DHV_ID")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MS1_HF_DHV_ID", value);
+                SetCheckParameter("MATS_MS1_HF_DHV_ID", value);
             }
         }
         
         /// <summary>
         /// Primarily used for calculating the percent difference for checking the MS1 calculations.
         /// </summary>
-        public static string MatsMs1HfUnadjustedHourlyValue
+        public  string MatsMs1HfUnadjustedHourlyValue
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MS1_HF_Unadjusted_Hourly_Value")));
+                return ((string)(GetCheckParameter("MATS_MS1_HF_Unadjusted_Hourly_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MS1_HF_Unadjusted_Hourly_Value", value);
+                SetCheckParameter("MATS_MS1_HF_Unadjusted_Hourly_Value", value);
             }
         }
         
         /// <summary>
         /// ID for MATS Hg DHV for MS-1 calcultions and to know which MATS DHV record to update. This ID will only have a value if there is an MS-1 calculation, otherwise it will be null.
         /// </summary>
-        public static string MatsMs1HgDhvId
+        public  string MatsMs1HgDhvId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MS1_Hg_DHV_ID")));
+                return ((string)(GetCheckParameter("MATS_MS1_Hg_DHV_ID")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MS1_Hg_DHV_ID", value);
+                SetCheckParameter("MATS_MS1_Hg_DHV_ID", value);
             }
         }
         
         /// <summary>
         /// Primarily used for calculating the percent difference for checking the MS1 calculations.
         /// </summary>
-        public static string MatsMs1HgUnadjustedHourlyValue
+        public  string MatsMs1HgUnadjustedHourlyValue
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MS1_Hg_Unadjusted_Hourly_Value")));
+                return ((string)(GetCheckParameter("MATS_MS1_Hg_Unadjusted_Hourly_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MS1_Hg_Unadjusted_Hourly_Value", value);
+                SetCheckParameter("MATS_MS1_Hg_Unadjusted_Hourly_Value", value);
             }
         }
         
         /// <summary>
         /// ID for MATS SO2 DHV for MS-1 calcultions and to know which MATS DHV record to update. This ID will only have a value if there is an MS-1 calculation, otherwise it will be null.
         /// </summary>
-        public static string MatsMs1So2DhvId
+        public  string MatsMs1So2DhvId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MS1_SO2_DHV_ID")));
+                return ((string)(GetCheckParameter("MATS_MS1_SO2_DHV_ID")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MS1_SO2_DHV_ID", value);
+                SetCheckParameter("MATS_MS1_SO2_DHV_ID", value);
             }
         }
         
         /// <summary>
         /// Primarily used for calculating the percent difference for checking the MS1 calculations.
         /// </summary>
-        public static string MatsMs1So2UnadjustedHourlyValue
+        public  string MatsMs1So2UnadjustedHourlyValue
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_MS1_SO2_Unadjusted_Hourly_Value")));
+                return ((string)(GetCheckParameter("MATS_MS1_SO2_Unadjusted_Hourly_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_MS1_SO2_Unadjusted_Hourly_Value", value);
+                SetCheckParameter("MATS_MS1_SO2_Unadjusted_Hourly_Value", value);
             }
         }
         
         /// <summary>
         /// Contains the list of Samling Trains with multiple GFM records for an hour.
         /// </summary>
-        public static string MatsMultipleGfmList
+        public  string MatsMultipleGfmList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Multiple_GFM_List")));
+                return ((string)(GetCheckParameter("MATS_Multiple_GFM_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Multiple_GFM_List", value);
+                SetCheckParameter("MATS_Multiple_GFM_List", value);
             }
         }
         
         /// <summary>
         /// Used in the HOURAPP-11 plugin for displaying which MATS parameter the check is working with (i.e. Hg, HCL, HF or SO2).
         /// </summary>
-        public static string MatsParameterPluginHcl
+        public  string MatsParameterPluginHcl
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Parameter_Plugin_HCL")));
+                return ((string)(GetCheckParameter("MATS_Parameter_Plugin_HCL")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Parameter_Plugin_HCL", value);
+                SetCheckParameter("MATS_Parameter_Plugin_HCL", value);
             }
         }
         
         /// <summary>
         /// Used in the HOURAPP-12 plugin for displaying which MATS parameter the check is working with (i.e. Hg, HCL, HF or SO2).
         /// </summary>
-        public static string MatsParameterPluginHf
+        public  string MatsParameterPluginHf
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Parameter_Plugin_HF")));
+                return ((string)(GetCheckParameter("MATS_Parameter_Plugin_HF")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Parameter_Plugin_HF", value);
+                SetCheckParameter("MATS_Parameter_Plugin_HF", value);
             }
         }
         
         /// <summary>
         /// Used in the HOURAPP-10 plugin for displaying which MATS parameter the check is working with (i.e. Hg, HCL, HF or SO2).
         /// </summary>
-        public static string MatsParameterPluginHg
+        public  string MatsParameterPluginHg
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Parameter_Plugin_Hg")));
+                return ((string)(GetCheckParameter("MATS_Parameter_Plugin_Hg")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Parameter_Plugin_Hg", value);
+                SetCheckParameter("MATS_Parameter_Plugin_Hg", value);
             }
         }
         
         /// <summary>
         /// Used in the HOURAPP-13 plugin for displaying which MATS parameter the check is working with (i.e. Hg, HCL, HF or SO2).
         /// </summary>
-        public static string MatsParameterPluginSo2
+        public  string MatsParameterPluginSo2
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Parameter_Plugin_SO2")));
+                return ((string)(GetCheckParameter("MATS_Parameter_Plugin_SO2")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Parameter_Plugin_SO2", value);
+                SetCheckParameter("MATS_Parameter_Plugin_SO2", value);
             }
         }
         
         /// <summary>
         /// Used for displaying the reported value in the response message for HOURAPP-11 check. 
         /// </summary>
-        public static string MatsReportedPluginHcl
+        public  string MatsReportedPluginHcl
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Reported_Plugin_HCL")));
+                return ((string)(GetCheckParameter("MATS_Reported_Plugin_HCL")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Reported_Plugin_HCL", value);
+                SetCheckParameter("MATS_Reported_Plugin_HCL", value);
             }
         }
         
         /// <summary>
         /// Used for displaying the reported value in the response message for HOURAPP-12 check. 
         /// </summary>
-        public static string MatsReportedPluginHf
+        public  string MatsReportedPluginHf
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Reported_Plugin_HF")));
+                return ((string)(GetCheckParameter("MATS_Reported_Plugin_HF")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Reported_Plugin_HF", value);
+                SetCheckParameter("MATS_Reported_Plugin_HF", value);
             }
         }
         
         /// <summary>
         /// Used for displaying the reported value in the response message for HOURAPP-10 check. 
         /// </summary>
-        public static string MatsReportedPluginHg
+        public  string MatsReportedPluginHg
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Reported_Plugin_Hg")));
+                return ((string)(GetCheckParameter("MATS_Reported_Plugin_Hg")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Reported_Plugin_Hg", value);
+                SetCheckParameter("MATS_Reported_Plugin_Hg", value);
             }
         }
         
         /// <summary>
         /// Used for displaying the reported value in the response message for HOURAPP-13 check. 
         /// </summary>
-        public static string MatsReportedPluginSo2
+        public  string MatsReportedPluginSo2
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Reported_Plugin_SO2")));
+                return ((string)(GetCheckParameter("MATS_Reported_Plugin_SO2")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Reported_Plugin_SO2", value);
+                SetCheckParameter("MATS_Reported_Plugin_SO2", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Sampling Trian component id is not null and has a Sampling Train component type.
         /// </summary>
-        public static bool? MatsSamplingTrainComponentIdValid
+        public  bool? MatsSamplingTrainComponentIdValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Sampling_Train_Component_Id_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Sampling_Train_Component_Id_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sampling_Train_Component_Id_Valid", value);
+                SetCheckParameter("MATS_Sampling_Train_Component_Id_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates the number of sampling trains for the current sorbent trap.
         /// </summary>
-        public static int? MatsSamplingTrainCount
+        public  int? MatsSamplingTrainCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("MATS_Sampling_Train_Count")));
+                return ((int?)(GetCheckParameter("MATS_Sampling_Train_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sampling_Train_Count", value);
+                SetCheckParameter("MATS_Sampling_Train_Count", value);
             }
         }
         
@@ -12338,15 +12338,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///6) SamplingTrainValid as a boolean
         ///
         /// </summary>
-        public static Dictionary<string, SamplingTrainEvalInformation> MatsSamplingTrainDictionary
+        public  Dictionary<string, SamplingTrainEvalInformation> MatsSamplingTrainDictionary
         {
             get
             {
-                return ((Dictionary<string, SamplingTrainEvalInformation>)(EmParameters.GetCheckParameter("MATS_Sampling_Train_Dictionary")));
+                return ((Dictionary<string, SamplingTrainEvalInformation>)(GetCheckParameter("MATS_Sampling_Train_Dictionary")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sampling_Train_Dictionary", value);
+                SetCheckParameter("MATS_Sampling_Train_Dictionary", value);
             }
         }
         
@@ -12355,15 +12355,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in Emission Report evaluations and set in MATSTRP-9.
         /// </summary>
-        public static bool? MatsSamplingTrainProblemComponentExists
+        public  bool? MatsSamplingTrainProblemComponentExists
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Sampling_Train_Problem_Component_Exists")));
+                return ((bool?)(GetCheckParameter("MATS_Sampling_Train_Problem_Component_Exists")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sampling_Train_Problem_Component_Exists", value);
+                SetCheckParameter("MATS_Sampling_Train_Problem_Component_Exists", value);
             }
         }
         
@@ -12372,15 +12372,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in Emission Report evaluations.
         /// </summary>
-        public static string MatsSamplingTrainQaStatus
+        public  string MatsSamplingTrainQaStatus
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Sampling_Train_QA_Status")));
+                return ((string)(GetCheckParameter("MATS_Sampling_Train_QA_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sampling_Train_QA_Status", value);
+                SetCheckParameter("MATS_Sampling_Train_QA_Status", value);
             }
         }
         
@@ -12389,26 +12389,26 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in Emission Report evaluations.
         /// </summary>
-        public static bool? MatsSamplingTrainQaStatusCodeValid
+        public  bool? MatsSamplingTrainQaStatusCodeValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Sampling_Train_QA_Status_Code_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Sampling_Train_QA_Status_Code_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sampling_Train_QA_Status_Code_Valid", value);
+                SetCheckParameter("MATS_Sampling_Train_QA_Status_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Table containing sampling train status codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.TrainQaStatusCodeRow> MatsSamplingTrainQaStatusLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.TrainQaStatusCodeRow> MatsSamplingTrainQaStatusLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MATS_Sampling_Train_QA_Status_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_Sampling_Train_QA_Status_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -12422,11 +12422,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Sampling_Train_QA_Status_Lookup_Table", null);
+                    SetCheckParameter("MATS_Sampling_Train_QA_Status_Lookup_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Sampling_Train_QA_Status_Lookup_Table", value.SourceView);
+                    SetCheckParameter("MATS_Sampling_Train_QA_Status_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -12436,11 +12436,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Note: Include component type code and component type description.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSamplingTrainRecord MatsSamplingTrainRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSamplingTrainRecord MatsSamplingTrainRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_Sampling_Train_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_Sampling_Train_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -12454,11 +12454,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Sampling_Train_Record", null);
+                    SetCheckParameter("MATS_Sampling_Train_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Sampling_Train_Record", value.SourceRow);
+                    SetCheckParameter("MATS_Sampling_Train_Record", value.SourceRow);
                 }
             }
         }
@@ -12468,11 +12468,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Note: Includes component type code and component type description.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSamplingTrainRecord> MatsSamplingTrainRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSamplingTrainRecord> MatsSamplingTrainRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MATS_Sampling_Train_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_Sampling_Train_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -12486,11 +12486,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Sampling_Train_Records", null);
+                    SetCheckParameter("MATS_Sampling_Train_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Sampling_Train_Records", value.SourceView);
+                    SetCheckParameter("MATS_Sampling_Train_Records", value.SourceView);
                 }
             }
         }
@@ -12500,15 +12500,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///This should prevent checks dependent on two trains existing.
         /// </summary>
-        public static bool? MatsSamplingTrainsValid
+        public  bool? MatsSamplingTrainsValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Sampling_Trains_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Sampling_Trains_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sampling_Trains_Valid", value);
+                SetCheckParameter("MATS_Sampling_Trains_Valid", value);
             }
         }
         
@@ -12517,15 +12517,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS SO2 Concentration is needed.
         /// </summary>
-        public static bool? MatsSo2cNeeded
+        public  bool? MatsSo2cNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_SO2C_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_SO2C_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_SO2C_Needed", value);
+                SetCheckParameter("MATS_SO2C_Needed", value);
             }
         }
         
@@ -12534,30 +12534,30 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the MATS SO2 DHV parameter code which is set in the Derived Hourly category and used in the Calculated Hourly category.
         /// </summary>
-        public static string MatsSo2DhvParameter
+        public  string MatsSo2DhvParameter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_SO2_DHV_Parameter")));
+                return ((string)(GetCheckParameter("MATS_SO2_DHV_Parameter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_SO2_DHV_Parameter", value);
+                SetCheckParameter("MATS_SO2_DHV_Parameter", value);
             }
         }
         
         /// <summary>
         /// Plugin parameter used in emission report evaluations.
         /// </summary>
-        public static string MatsSo2DhvParameterDescription
+        public  string MatsSo2DhvParameterDescription
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_SO2_DHV_Parameter_Description")));
+                return ((string)(GetCheckParameter("MATS_SO2_DHV_Parameter_Description")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_SO2_DHV_Parameter_Description", value);
+                SetCheckParameter("MATS_SO2_DHV_Parameter_Description", value);
             }
         }
         
@@ -12566,11 +12566,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'SO2RE' or 'SO2RH' Derived Hourly record for the current location that is active for the current hour.  This parameter's value is null if multiple or no active records exist, or if 'SO2RE' and 'SO2RH' derived records are not expected.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSDerivedHourlyValueData MatsSo2DhvRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.MATSDerivedHourlyValueData MatsSo2DhvRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_SO2_DHV_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_SO2_DHV_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -12584,11 +12584,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_SO2_DHV_Record", null);
+                    SetCheckParameter("MATS_SO2_DHV_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_SO2_DHV_Record", value.SourceRow);
+                    SetCheckParameter("MATS_SO2_DHV_Record", value.SourceRow);
                 }
             }
         }
@@ -12598,15 +12598,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates whether the SO2 DHV record is valid for calculation purposes.
         /// </summary>
-        public static bool? MatsSo2DhvValid
+        public  bool? MatsSo2DhvValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_SO2_DHV_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_SO2_DHV_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_SO2_DHV_Valid", value);
+                SetCheckParameter("MATS_SO2_DHV_Valid", value);
             }
         }
         
@@ -12615,15 +12615,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the Method Code for the current 'SO2RE' or 'SO2RH' Monitor Method record.  This parameter's value is null if MATS SO2 Method Record is null.
         /// </summary>
-        public static string MatsSo2MethodCode
+        public  string MatsSo2MethodCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_SO2_Method_Code")));
+                return ((string)(GetCheckParameter("MATS_SO2_Method_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_SO2_Method_Code", value);
+                SetCheckParameter("MATS_SO2_Method_Code", value);
             }
         }
         
@@ -12632,11 +12632,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the 'SO2RE' or 'SO2RH' Monitor Method record for the current location that is active for the current hour.  This parameter's value is null if multiple or no active records exist, or if 'SO2RE' and 'SO2RH' derived records are not expected.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow MatsSo2MethodRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow MatsSo2MethodRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_SO2_Method_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_SO2_Method_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -12650,11 +12650,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_SO2_Method_Record", null);
+                    SetCheckParameter("MATS_SO2_Method_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_SO2_Method_Record", value.SourceRow);
+                    SetCheckParameter("MATS_SO2_Method_Record", value.SourceRow);
                 }
             }
         }
@@ -12664,15 +12664,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the Parameter Code for the current 'SO2RE' or 'SO2RH' Monitor Method record.  This parameter's value is null if MATS SO2 Method Record is null.
         /// </summary>
-        public static string MatsSo2ParameterCode
+        public  string MatsSo2ParameterCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_SO2_Parameter_Code")));
+                return ((string)(GetCheckParameter("MATS_SO2_Parameter_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_SO2_Parameter_Code", value);
+                SetCheckParameter("MATS_SO2_Parameter_Code", value);
             }
         }
         
@@ -12681,15 +12681,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS SO2RE DHV Checks should run.
         /// </summary>
-        public static bool? MatsSo2reDhvChecksNeeded
+        public  bool? MatsSo2reDhvChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_SO2RE_DHV_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_SO2RE_DHV_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_SO2RE_DHV_Checks_Needed", value);
+                SetCheckParameter("MATS_SO2RE_DHV_Checks_Needed", value);
             }
         }
         
@@ -12698,30 +12698,30 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Boolean value indicating whether a MATS SO2RH DHV Checks should run.
         /// </summary>
-        public static bool? MatsSo2rhDhvChecksNeeded
+        public  bool? MatsSo2rhDhvChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_SO2RH_DHV_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_SO2RH_DHV_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_SO2RH_DHV_Checks_Needed", value);
+                SetCheckParameter("MATS_SO2RH_DHV_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// Contains the begin date and hour of the current sorbent trap.
         /// </summary>
-        public static DateTime? MatsSorbentTrapBeginDatehour
+        public  DateTime? MatsSorbentTrapBeginDatehour
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_Begin_DateHour")));
+                return ((DateTime?)(GetCheckParameter("MATS_Sorbent_Trap_Begin_DateHour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Begin_DateHour", value);
+                SetCheckParameter("MATS_Sorbent_Trap_Begin_DateHour", value);
             }
         }
         
@@ -12730,15 +12730,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in emission report checks.
         /// </summary>
-        public static bool? MatsSorbentTrapBeginDateHourValid
+        public  bool? MatsSorbentTrapBeginDateHourValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_Begin_Date_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Sorbent_Trap_Begin_Date_Hour_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Begin_Date_Hour_Valid", value);
+                SetCheckParameter("MATS_Sorbent_Trap_Begin_Date_Hour_Valid", value);
             }
         }
         
@@ -12747,15 +12747,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in Emission Report checks.
         /// </summary>
-        public static bool? MatsSorbentTrapBeginDateValid
+        public  bool? MatsSorbentTrapBeginDateValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_Begin_Date_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Sorbent_Trap_Begin_Date_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Begin_Date_Valid", value);
+                SetCheckParameter("MATS_Sorbent_Trap_Begin_Date_Valid", value);
             }
         }
         
@@ -12764,15 +12764,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Generically when this is false it should prvevent running other sorbent trap checks.
         /// </summary>
-        public static bool? MatsSorbentTrapDatesAndHoursConsistent
+        public  bool? MatsSorbentTrapDatesAndHoursConsistent
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_Dates_and_Hours_Consistent")));
+                return ((bool?)(GetCheckParameter("MATS_Sorbent_Trap_Dates_and_Hours_Consistent")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Dates_and_Hours_Consistent", value);
+                SetCheckParameter("MATS_Sorbent_Trap_Dates_and_Hours_Consistent", value);
             }
         }
         
@@ -12789,30 +12789,30 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Initialized in HOURGEN-19.
         /// </summary>
-        public static Dictionary<string, SorbentTrapEvalInformation> MatsSorbentTrapDictionary
+        public  Dictionary<string, SorbentTrapEvalInformation> MatsSorbentTrapDictionary
         {
             get
             {
-                return ((Dictionary<string, SorbentTrapEvalInformation>)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_Dictionary")));
+                return ((Dictionary<string, SorbentTrapEvalInformation>)(GetCheckParameter("MATS_Sorbent_Trap_Dictionary")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Dictionary", value);
+                SetCheckParameter("MATS_Sorbent_Trap_Dictionary", value);
             }
         }
         
         /// <summary>
         /// Contains the end date and hour of the current sorbent trap.
         /// </summary>
-        public static DateTime? MatsSorbentTrapEndDatehour
+        public  DateTime? MatsSorbentTrapEndDatehour
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_End_DateHour")));
+                return ((DateTime?)(GetCheckParameter("MATS_Sorbent_Trap_End_DateHour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_Trap_End_DateHour", value);
+                SetCheckParameter("MATS_Sorbent_Trap_End_DateHour", value);
             }
         }
         
@@ -12821,15 +12821,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in emission report checks.
         /// </summary>
-        public static bool? MatsSorbentTrapEndDateHourValid
+        public  bool? MatsSorbentTrapEndDateHourValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_End_Date_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Sorbent_Trap_End_Date_Hour_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_Trap_End_Date_Hour_Valid", value);
+                SetCheckParameter("MATS_Sorbent_Trap_End_Date_Hour_Valid", value);
             }
         }
         
@@ -12838,15 +12838,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in Emission Report checks.
         /// </summary>
-        public static bool? MatsSorbentTrapEndDateValid
+        public  bool? MatsSorbentTrapEndDateValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Sorbent_Trap_End_Date_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_Trap_End_Date_Valid", value);
+                SetCheckParameter("MATS_Sorbent_Trap_End_Date_Valid", value);
             }
         }
         
@@ -12855,30 +12855,30 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in Emission Report checks, and initialized in HOURGEN-19.  Updated in MATSTRP 1 through 6.
         /// </summary>
-        public static bool? MatsSorbentTrapEvaluationNeeded
+        public  bool? MatsSorbentTrapEvaluationNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_Evaluation_Needed")));
+                return ((bool?)(GetCheckParameter("MATS_Sorbent_Trap_Evaluation_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Evaluation_Needed", value);
+                SetCheckParameter("MATS_Sorbent_Trap_Evaluation_Needed", value);
             }
         }
         
         /// <summary>
         /// An array with elements for each location in an emission report.  Each element contains a list which contains the sorbent traps associated with the location.
         /// </summary>
-        public static List<SorbentTrapEvalInformation>[] MatsSorbentTrapListByLocationArray
+        public  List<SorbentTrapEvalInformation>[] MatsSorbentTrapListByLocationArray
         {
             get
             {
-                return ((List<SorbentTrapEvalInformation>[])(EmParameters.GetCheckParameter("Mats_Sorbent_Trap_List_By_Location_Array")));
+                return ((List<SorbentTrapEvalInformation>[])(GetCheckParameter("Mats_Sorbent_Trap_List_By_Location_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Mats_Sorbent_Trap_List_By_Location_Array", value);
+                SetCheckParameter("Mats_Sorbent_Trap_List_By_Location_Array", value);
             }
         }
         
@@ -12887,15 +12887,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the MODC determined for the Sorbent Trap used for the hour.
         /// </summary>
-        public static string MatsSorbentTrapModc
+        public  string MatsSorbentTrapModc
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_MODC")));
+                return ((string)(GetCheckParameter("MATS_Sorbent_Trap_MODC")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_Trap_MODC", value);
+                SetCheckParameter("MATS_Sorbent_Trap_MODC", value);
             }
         }
         
@@ -12904,41 +12904,41 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in Emissiion Report evaluation.
         /// </summary>
-        public static bool? MatsSorbentTrapModcCodeValid
+        public  bool? MatsSorbentTrapModcCodeValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Sorbent_TRAP_MODC_Code_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Sorbent_TRAP_MODC_Code_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_TRAP_MODC_Code_Valid", value);
+                SetCheckParameter("MATS_Sorbent_TRAP_MODC_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Identifies whether the paired trap agreement is reported properly for subsequent checks.
         /// </summary>
-        public static bool? MatsSorbentTrapPairedTrapAgreementValid
+        public  bool? MatsSorbentTrapPairedTrapAgreementValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_Paired_Trap_Agreement_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Sorbent_Trap_Paired_Trap_Agreement_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Paired_Trap_Agreement_Valid", value);
+                SetCheckParameter("MATS_Sorbent_Trap_Paired_Trap_Agreement_Valid", value);
             }
         }
         
         /// <summary>
         /// Data records for each sorbent trap sampling period.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSorbentTrapRecord MatsSorbentTrapRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSorbentTrapRecord MatsSorbentTrapRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("MATS_Sorbent_Trap_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -12952,11 +12952,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Record", null);
+                    SetCheckParameter("MATS_Sorbent_Trap_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Record", value.SourceRow);
+                    SetCheckParameter("MATS_Sorbent_Trap_Record", value.SourceRow);
                 }
             }
         }
@@ -12970,11 +12970,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///2) The reporting period is the same as the reporting period of the emission report.
         ///
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSorbentTrapRecord> MatsSorbentTrapRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSorbentTrapRecord> MatsSorbentTrapRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_Sorbent_Trap_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -12988,11 +12988,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Records", null);
+                    SetCheckParameter("MATS_Sorbent_Trap_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Records", value.SourceView);
+                    SetCheckParameter("MATS_Sorbent_Trap_Records", value.SourceView);
                 }
             }
         }
@@ -13008,15 +13008,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///6) SamplingTrainValid as a boolean
         ///
         /// </summary>
-        public static List<SamplingTrainEvalInformation> MatsSorbentTrapSamplingTrainList
+        public  List<SamplingTrainEvalInformation> MatsSorbentTrapSamplingTrainList
         {
             get
             {
-                return ((List<SamplingTrainEvalInformation>)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_Sampling_Train_List")));
+                return ((List<SamplingTrainEvalInformation>)(GetCheckParameter("MATS_Sorbent_Trap_Sampling_Train_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Sampling_Train_List", value);
+                SetCheckParameter("MATS_Sorbent_Trap_Sampling_Train_List", value);
             }
         }
         
@@ -13030,11 +13030,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///3) The end date is on or after the begin date of the emission report.
         ///
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSorbentTrapSupplementalDataRecord> MatsSorbentTrapSupplementalDataRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MatsSorbentTrapSupplementalDataRecord> MatsSorbentTrapSupplementalDataRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_Supplemental_Data_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MATS_Sorbent_Trap_Supplemental_Data_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13048,11 +13048,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Supplemental_Data_Records", null);
+                    SetCheckParameter("MATS_Sorbent_Trap_Supplemental_Data_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Supplemental_Data_Records", value.SourceView);
+                    SetCheckParameter("MATS_Sorbent_Trap_Supplemental_Data_Records", value.SourceView);
                 }
             }
         }
@@ -13062,131 +13062,131 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in the Emission Report evaluation, initialized to true in MATSTRP-9, and updated in MATSTRP 10, 11, 12 and 13.
         /// </summary>
-        public static bool? MatsSorbentTrapValidExists
+        public  bool? MatsSorbentTrapValidExists
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Sorbent_Trap_Valid_Exists")));
+                return ((bool?)(GetCheckParameter("MATS_Sorbent_Trap_Valid_Exists")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Sorbent_Trap_Valid_Exists", value);
+                SetCheckParameter("MATS_Sorbent_Trap_Valid_Exists", value);
             }
         }
         
         /// <summary>
         /// Identifies that reported spike reference value is reported correctly for subsequent checks.
         /// </summary>
-        public static bool? MatsSpikeReferenceValueValid
+        public  bool? MatsSpikeReferenceValueValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Spike_Reference_Value_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Spike_Reference_Value_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Spike_Reference_Value_Valid", value);
+                SetCheckParameter("MATS_Spike_Reference_Value_Valid", value);
             }
         }
         
         /// <summary>
         /// Identifies if the spike trap Hg concentration is reported correctly for subsequent check.
         /// </summary>
-        public static bool? MatsSpikeTrapHgValid
+        public  bool? MatsSpikeTrapHgValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Spike_Trap_Hg_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Spike_Trap_Hg_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Spike_Trap_Hg_Valid", value);
+                SetCheckParameter("MATS_Spike_Trap_Hg_Valid", value);
             }
         }
         
         /// <summary>
         /// Identifies that the total sample volume is reported properly for subsequent checks.
         /// </summary>
-        public static bool? MatsTotalSampleVolumeDscmValid
+        public  bool? MatsTotalSampleVolumeDscmValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MATS_Total_Sample_Volume_DSCM_Valid")));
+                return ((bool?)(GetCheckParameter("MATS_Total_Sample_Volume_DSCM_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MATS_Total_Sample_Volume_DSCM_Valid", value);
+                SetCheckParameter("MATS_Total_Sample_Volume_DSCM_Valid", value);
             }
         }
         
         /// <summary>
         /// The highest value for NOx rate recorded in the relevant Appendix E Correlation Test
         /// </summary>
-        public static decimal? MaximumAppECurveNoxEmissionRate
+        public  decimal? MaximumAppECurveNoxEmissionRate
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Maximum_App_E_Curve_Nox_Emission_Rate")));
+                return ((decimal?)(GetCheckParameter("Maximum_App_E_Curve_Nox_Emission_Rate")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Maximum_App_E_Curve_Nox_Emission_Rate", value);
+                SetCheckParameter("Maximum_App_E_Curve_Nox_Emission_Rate", value);
             }
         }
         
         /// <summary>
         /// Stores the maximum level count for a FLOW system.  Used by the RATA status evaluation.
         /// </summary>
-        public static int? MaxLevelCount
+        public  int? MaxLevelCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Max_Level_Count")));
+                return ((int?)(GetCheckParameter("Max_Level_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Max_Level_Count", value);
+                SetCheckParameter("Max_Level_Count", value);
             }
         }
         
         /// <summary>
         /// The largest amount of operating time for all stacks associated with the current monitoring plan in the current hour
         /// </summary>
-        public static decimal? MaxStackOptime
+        public  decimal? MaxStackOptime
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Max_Stack_Optime")));
+                return ((decimal?)(GetCheckParameter("Max_Stack_Optime")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Max_Stack_Optime", value);
+                SetCheckParameter("Max_Stack_Optime", value);
             }
         }
         
         /// <summary>
         /// The largest amount of operating time for all units associated with the current monitoring plan in the current hour
         /// </summary>
-        public static decimal? MaxUnitOptime
+        public  decimal? MaxUnitOptime
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Max_Unit_Optime")));
+                return ((decimal?)(GetCheckParameter("Max_Unit_Optime")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Max_Unit_Optime", value);
+                SetCheckParameter("Max_Unit_Optime", value);
             }
         }
         
         /// <summary>
         /// Records for Methods at Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorMethodRow> MethodRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorMethodRow> MethodRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Method_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Method_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13200,11 +13200,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Method_Records", null);
+                    SetCheckParameter("Method_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Method_Records", value.SourceView);
+                    SetCheckParameter("Method_Records", value.SourceView);
                 }
             }
         }
@@ -13212,161 +13212,161 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains a list of CO2M Formula Codes that were missing from the monitoring plan for the hour but were required according to the emissions data.
         /// </summary>
-        public static string MissingCo2mFormula
+        public  string MissingCo2mFormula
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Missing_CO2M_Formula")));
+                return ((string)(GetCheckParameter("Missing_CO2M_Formula")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Missing_CO2M_Formula", value);
+                SetCheckParameter("Missing_CO2M_Formula", value);
             }
         }
         
         /// <summary>
         /// Contains the list of derived hourly parameters for which the missing data hours exceed the maximum allowed for the year based on that last PMA.
         /// </summary>
-        public static string MissingDataPmaProblemDerivedList
+        public  string MissingDataPmaProblemDerivedList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Missing_Data_PMA_Problem_Derived_List")));
+                return ((string)(GetCheckParameter("Missing_Data_PMA_Problem_Derived_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Missing_Data_PMA_Problem_Derived_List", value);
+                SetCheckParameter("Missing_Data_PMA_Problem_Derived_List", value);
             }
         }
         
         /// <summary>
         /// Contains the list of monitored hourly parameters for which the missing data hours exceed the maximum allowed for the year based on that last PMA.
         /// </summary>
-        public static string MissingDataPmaProblemMonitorList
+        public  string MissingDataPmaProblemMonitorList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Missing_Data_PMA_Problem_Monitor_List")));
+                return ((string)(GetCheckParameter("Missing_Data_PMA_Problem_Monitor_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Missing_Data_PMA_Problem_Monitor_List", value);
+                SetCheckParameter("Missing_Data_PMA_Problem_Monitor_List", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the emission report is for an Annual or Ozone Season reporter.
         /// </summary>
-        public static string MissingDataPmaReporterType
+        public  string MissingDataPmaReporterType
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Missing_Data_PMA_Reporter_Type")));
+                return ((string)(GetCheckParameter("Missing_Data_PMA_Reporter_Type")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Missing_Data_PMA_Reporter_Type", value);
+                SetCheckParameter("Missing_Data_PMA_Reporter_Type", value);
             }
         }
         
         /// <summary>
         /// Object to track Missing Data Hours and Last PMA Value for each location and monitor and derived parameter value.
         /// </summary>
-        public static MissingDataPmaTracking MissingDataPmaTracking
+        public  MissingDataPmaTracking MissingDataPmaTracking
         {
             get
             {
-                return ((MissingDataPmaTracking)(EmParameters.GetCheckParameter("Missing_Data_Pma_Tracking")));
+                return ((MissingDataPmaTracking)(GetCheckParameter("Missing_Data_Pma_Tracking")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Missing_Data_Pma_Tracking", value);
+                SetCheckParameter("Missing_Data_Pma_Tracking", value);
             }
         }
         
         /// <summary>
         /// The year and quarter for which a fuel-flow-to-load test is missing in the Appendix D status analysis.
         /// </summary>
-        public static string MissingFf2lYearQuarter
+        public  string MissingFf2lYearQuarter
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Missing_FF2L_Year_Quarter")));
+                return ((string)(GetCheckParameter("Missing_FF2L_Year_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Missing_FF2L_Year_Quarter", value);
+                SetCheckParameter("Missing_FF2L_Year_Quarter", value);
             }
         }
         
         /// <summary>
         /// Contains the MODC for the NOXC or dilient record that does not contain MODC 46 when one but not both of the NOXC or dilient records contains MODC 46, but the other does not.
         /// </summary>
-        public static string MissingModc46Non46ModcCode
+        public  string MissingModc46Non46ModcCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Missing_MODC_46_Non_46_MODC_Code")));
+                return ((string)(GetCheckParameter("Missing_MODC_46_Non_46_MODC_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Missing_MODC_46_Non_46_MODC_Code", value);
+                SetCheckParameter("Missing_MODC_46_Non_46_MODC_Code", value);
             }
         }
         
         /// <summary>
         /// Contains the parameter description associated with the NOXC or dilient record that contains MODC 46 when one but not both of the NOXC or dilient records contains MODC 46, but the other does not.
         /// </summary>
-        public static string MissingModc46ParameterForModc46
+        public  string MissingModc46ParameterForModc46
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Missing_MODC_46_Parameter_for_MODC_46")));
+                return ((string)(GetCheckParameter("Missing_MODC_46_Parameter_for_MODC_46")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Missing_MODC_46_Parameter_for_MODC_46", value);
+                SetCheckParameter("Missing_MODC_46_Parameter_for_MODC_46", value);
             }
         }
         
         /// <summary>
         /// Contains the parameter description associated with the NOXC or dilient record that does not contain MODC 46 when one but not both of the NOXC or dilient records contains MODC 46, but the other does not.
         /// </summary>
-        public static string MissingModc46ParameterForNon46
+        public  string MissingModc46ParameterForNon46
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Missing_MODC_46_Parameter_For_Non_46")));
+                return ((string)(GetCheckParameter("Missing_MODC_46_Parameter_For_Non_46")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Missing_MODC_46_Parameter_For_Non_46", value);
+                SetCheckParameter("Missing_MODC_46_Parameter_For_Non_46", value);
             }
         }
         
         /// <summary>
         /// Indicates if moisture is needed in a calculation.
         /// </summary>
-        public static bool? MoistureNeeded
+        public  bool? MoistureNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Moisture_Needed")));
+                return ((bool?)(GetCheckParameter("Moisture_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Moisture_Needed", value);
+                SetCheckParameter("Moisture_Needed", value);
             }
         }
         
         /// <summary>
         /// The Monitor Default records by a specific hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorDefaultRow> MonitorDefaultRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorDefaultRow> MonitorDefaultRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_Default_Records_by_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_Default_Records_by_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13380,11 +13380,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_Default_Records_by_Hour_Location", null);
+                    SetCheckParameter("Monitor_Default_Records_by_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_Default_Records_by_Hour_Location", value.SourceView);
+                    SetCheckParameter("Monitor_Default_Records_by_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -13392,11 +13392,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Monitor Formula Records By Day and Location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorFormulaRow> MonitorFormulaRecordsByDayLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorFormulaRow> MonitorFormulaRecordsByDayLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_Formula_Records_By_Day_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_Formula_Records_By_Day_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13410,11 +13410,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_Formula_Records_By_Day_Location", null);
+                    SetCheckParameter("Monitor_Formula_Records_By_Day_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_Formula_Records_By_Day_Location", value.SourceView);
+                    SetCheckParameter("Monitor_Formula_Records_By_Day_Location", value.SourceView);
                 }
             }
         }
@@ -13422,11 +13422,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Monitor Formula Records By Hour and Location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorFormulaRow> MonitorFormulaRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorFormulaRow> MonitorFormulaRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_Formula_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_Formula_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13440,11 +13440,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_Formula_Records_By_Hour_Location", null);
+                    SetCheckParameter("Monitor_Formula_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_Formula_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Monitor_Formula_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -13452,146 +13452,146 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates whether or not the AdjustedHourlyValue in the current MonitorHourlyValueData record is valid.
         /// </summary>
-        public static bool? MonitorHourlyAdjustedValueStatus
+        public  bool? MonitorHourlyAdjustedValueStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Monitor_Hourly_Adjusted_Value_Status")));
+                return ((bool?)(GetCheckParameter("Monitor_Hourly_Adjusted_Value_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Monitor_Hourly_Adjusted_Value_Status", value);
+                SetCheckParameter("Monitor_Hourly_Adjusted_Value_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the ComponentID in the current MonitorHourlyValueData record is valid.
         /// </summary>
-        public static bool? MonitorHourlyComponentStatus
+        public  bool? MonitorHourlyComponentStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Monitor_Hourly_Component_Status")));
+                return ((bool?)(GetCheckParameter("Monitor_Hourly_Component_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Monitor_Hourly_Component_Status", value);
+                SetCheckParameter("Monitor_Hourly_Component_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the use of the Missing Data Status MODCs were appropriate.
         /// </summary>
-        public static bool? MonitorHourlyMissingDataStatus
+        public  bool? MonitorHourlyMissingDataStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Monitor_Hourly_Missing_Data_Status")));
+                return ((bool?)(GetCheckParameter("Monitor_Hourly_Missing_Data_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Monitor_Hourly_Missing_Data_Status", value);
+                SetCheckParameter("Monitor_Hourly_Missing_Data_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the MODCCode in the current MonitorHourlyValueData record is valid.
         /// </summary>
-        public static bool? MonitorHourlyModcStatus
+        public  bool? MonitorHourlyModcStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Monitor_Hourly_Modc_Status")));
+                return ((bool?)(GetCheckParameter("Monitor_Hourly_Modc_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Monitor_Hourly_Modc_Status", value);
+                SetCheckParameter("Monitor_Hourly_Modc_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not extraneous fields in the current MonitorHourlyValueData record are null.
         /// </summary>
-        public static bool? MonitorHourlyNullStatus
+        public  bool? MonitorHourlyNullStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Monitor_Hourly_Null_Status")));
+                return ((bool?)(GetCheckParameter("Monitor_Hourly_Null_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Monitor_Hourly_Null_Status", value);
+                SetCheckParameter("Monitor_Hourly_Null_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the PercentAvailable in the current MonitorHourlyValueData record is valid.
         /// </summary>
-        public static bool? MonitorHourlyPmaStatus
+        public  bool? MonitorHourlyPmaStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Monitor_Hourly_Pma_Status")));
+                return ((bool?)(GetCheckParameter("Monitor_Hourly_Pma_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Monitor_Hourly_Pma_Status", value);
+                SetCheckParameter("Monitor_Hourly_Pma_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the UnadjustedHourly Value in the MHV record for SO2C, NOXC, or FLOW being evaluated is valid.
         /// </summary>
-        public static bool? MonitorHourlyPreadjustedValueStatus
+        public  bool? MonitorHourlyPreadjustedValueStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Monitor_Hourly_Preadjusted_Value_Status")));
+                return ((bool?)(GetCheckParameter("Monitor_Hourly_Preadjusted_Value_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Monitor_Hourly_Preadjusted_Value_Status", value);
+                SetCheckParameter("Monitor_Hourly_Preadjusted_Value_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the MonitoringSystemID in the current MonitorHourlyValueData record is valid.
         /// </summary>
-        public static bool? MonitorHourlySystemStatus
+        public  bool? MonitorHourlySystemStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Monitor_Hourly_System_Status")));
+                return ((bool?)(GetCheckParameter("Monitor_Hourly_System_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Monitor_Hourly_System_Status", value);
+                SetCheckParameter("Monitor_Hourly_System_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the UnadjustedHourlyValue in the current MonitorHourlyValueData record is valid.
         /// </summary>
-        public static bool? MonitorHourlyUnadjustedValueStatus
+        public  bool? MonitorHourlyUnadjustedValueStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Monitor_Hourly_Unadjusted_Value_Status")));
+                return ((bool?)(GetCheckParameter("Monitor_Hourly_Unadjusted_Value_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Monitor_Hourly_Unadjusted_Value_Status", value);
+                SetCheckParameter("Monitor_Hourly_Unadjusted_Value_Status", value);
             }
         }
         
         /// <summary>
         /// Records for MonitoringPlanLocation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorLocationRow> MonitoringPlanLocationRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorLocationRow> MonitoringPlanLocationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitoring_Plan_Location_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitoring_Plan_Location_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13605,11 +13605,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitoring_Plan_Location_Records", null);
+                    SetCheckParameter("Monitoring_Plan_Location_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitoring_Plan_Location_Records", value.SourceView);
+                    SetCheckParameter("Monitoring_Plan_Location_Records", value.SourceView);
                 }
             }
         }
@@ -13617,11 +13617,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Monitor Load records by a specific hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorLoadRow> MonitorLoadRecordsByHourAndLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorLoadRow> MonitorLoadRecordsByHourAndLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_Load_Records_by_Hour_and_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_Load_Records_by_Hour_and_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13635,11 +13635,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_Load_Records_by_Hour_and_Location", null);
+                    SetCheckParameter("Monitor_Load_Records_by_Hour_and_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_Load_Records_by_Hour_and_Location", value.SourceView);
+                    SetCheckParameter("Monitor_Load_Records_by_Hour_and_Location", value.SourceView);
                 }
             }
         }
@@ -13647,11 +13647,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Monitor Method Records By Day Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow> MonitorMethodRecordsByDayLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow> MonitorMethodRecordsByDayLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_Method_Records_By_Day_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_Method_Records_By_Day_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13665,11 +13665,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_Method_Records_By_Day_Location", null);
+                    SetCheckParameter("Monitor_Method_Records_By_Day_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_Method_Records_By_Day_Location", value.SourceView);
+                    SetCheckParameter("Monitor_Method_Records_By_Day_Location", value.SourceView);
                 }
             }
         }
@@ -13677,11 +13677,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the monitor method records active for a particular hour and monitoring plan.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow> MonitorMethodRecordsByHour
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow> MonitorMethodRecordsByHour
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_Method_Records_By_Hour")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_Method_Records_By_Hour")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13695,11 +13695,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_Method_Records_By_Hour", null);
+                    SetCheckParameter("Monitor_Method_Records_By_Hour", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_Method_Records_By_Hour", value.SourceView);
+                    SetCheckParameter("Monitor_Method_Records_By_Hour", value.SourceView);
                 }
             }
         }
@@ -13707,11 +13707,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Monitor Method Records By Hour Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow> MonitorMethodRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow> MonitorMethodRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_Method_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_Method_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13725,11 +13725,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_Method_Records_By_Hour_Location", null);
+                    SetCheckParameter("Monitor_Method_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_Method_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Monitor_Method_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -13737,11 +13737,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The set of Monitor Qualification records that are active during the current hour
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorQualificationRow> MonitorQualificationRecordsByHour
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorQualificationRow> MonitorQualificationRecordsByHour
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_Qualification_Records_By_Hour")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_Qualification_Records_By_Hour")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13755,11 +13755,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_Qualification_Records_By_Hour", null);
+                    SetCheckParameter("Monitor_Qualification_Records_By_Hour", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_Qualification_Records_By_Hour", value.SourceView);
+                    SetCheckParameter("Monitor_Qualification_Records_By_Hour", value.SourceView);
                 }
             }
         }
@@ -13767,11 +13767,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Monitor Span Records By Hour and Location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSpanRow> MonitorSpanRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSpanRow> MonitorSpanRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_Span_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_Span_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13785,11 +13785,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_Span_Records_By_Hour_Location", null);
+                    SetCheckParameter("Monitor_Span_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_Span_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Monitor_Span_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -13797,11 +13797,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Monitor System Component records for a specific hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow> MonitorSystemComponentRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow> MonitorSystemComponentRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_System_Component_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_System_Component_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13815,11 +13815,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_System_Component_Records_By_Hour_Location", null);
+                    SetCheckParameter("Monitor_System_Component_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_System_Component_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Monitor_System_Component_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -13827,11 +13827,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the monitor system component records for locations in an emission report that were active during the quarter of the emission report.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow> MonitorSystemComponentsForEmEvaluation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow> MonitorSystemComponentsForEmEvaluation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_System_Components_For_Em_Evaluation")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_System_Components_For_Em_Evaluation")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13845,11 +13845,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_System_Components_For_Em_Evaluation", null);
+                    SetCheckParameter("Monitor_System_Components_For_Em_Evaluation", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_System_Components_For_Em_Evaluation", value.SourceView);
+                    SetCheckParameter("Monitor_System_Components_For_Em_Evaluation", value.SourceView);
                 }
             }
         }
@@ -13857,11 +13857,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// System Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow> MonitorSystemRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow> MonitorSystemRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_System_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_System_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13875,11 +13875,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_System_Records", null);
+                    SetCheckParameter("Monitor_System_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_System_Records", value.SourceView);
+                    SetCheckParameter("Monitor_System_Records", value.SourceView);
                 }
             }
         }
@@ -13887,11 +13887,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Monitor System records for a specific hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemRow> MonitorSystemRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemRow> MonitorSystemRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_System_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_System_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13905,11 +13905,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_System_Records_By_Hour_Location", null);
+                    SetCheckParameter("Monitor_System_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_System_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Monitor_System_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -13917,11 +13917,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the monitor system records for locations in an emission report that were active during the quarter of the emission report.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemRow> MonitorSystemsForEmEvaluation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemRow> MonitorSystemsForEmEvaluation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Monitor_Systems_For_Em_Evaluation")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_Systems_For_Em_Evaluation")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -13935,11 +13935,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Monitor_Systems_For_Em_Evaluation", null);
+                    SetCheckParameter("Monitor_Systems_For_Em_Evaluation", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Monitor_Systems_For_Em_Evaluation", value.SourceView);
+                    SetCheckParameter("Monitor_Systems_For_Em_Evaluation", value.SourceView);
                 }
             }
         }
@@ -13952,56 +13952,56 @@ namespace ECMPS.Checks.Em.Parameters
         ///3.  A non-aborted and non-failed test with a test end date on or before minute 44 of the current hour.
         ///
         /// </summary>
-        public static cDailyCalibrationData MostRecentDailyCalibrationTestObject
+        public  cDailyCalibrationData MostRecentDailyCalibrationTestObject
         {
             get
             {
-                return ((cDailyCalibrationData)(EmParameters.GetCheckParameter("Most_Recent_Daily_Calibration_Test_Object")));
+                return ((cDailyCalibrationData)(GetCheckParameter("Most_Recent_Daily_Calibration_Test_Object")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Most_Recent_Daily_Calibration_Test_Object", value);
+                SetCheckParameter("Most_Recent_Daily_Calibration_Test_Object", value);
             }
         }
         
         /// <summary>
         /// Indiicates the last time a monitoring plan was evaluated for a message plug-in.
         /// </summary>
-        public static string MpLastEvaluatedTimeframe
+        public  string MpLastEvaluatedTimeframe
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MP_Last_Evaluated_Timeframe")));
+                return ((string)(GetCheckParameter("MP_Last_Evaluated_Timeframe")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MP_Last_Evaluated_Timeframe", value);
+                SetCheckParameter("MP_Last_Evaluated_Timeframe", value);
             }
         }
         
         /// <summary>
         /// The Load Units of Measure Code for all locations in the MP configuration being evaluated.
         /// </summary>
-        public static string MpLoadUom
+        public  string MpLoadUom
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MP_Load_UOM")));
+                return ((string)(GetCheckParameter("MP_Load_UOM")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MP_Load_UOM", value);
+                SetCheckParameter("MP_Load_UOM", value);
             }
         }
         
         /// <summary>
         /// This table contains the non-load based indicator for each location at a facility.  If the location is a stack or pipe the indicator is 1 if any connected unit has and indicator of 1.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MpLocationNonLoadBasedIndication> MpLocationNonLoadBasedRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MpLocationNonLoadBasedIndication> MpLocationNonLoadBasedRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Mp_Location_Non_Load_Based_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Mp_Location_Non_Load_Based_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -14015,11 +14015,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Mp_Location_Non_Load_Based_Records", null);
+                    SetCheckParameter("Mp_Location_Non_Load_Based_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Mp_Location_Non_Load_Based_Records", value.SourceView);
+                    SetCheckParameter("Mp_Location_Non_Load_Based_Records", value.SourceView);
                 }
             }
         }
@@ -14029,11 +14029,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///This parameter was originally used in Emissions but will also now be used in Monitoring Plan checks.  For Monitoring Plan checks it will include all the methods in the Monitoring Plan being evaluated.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow> MpMethodRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow> MpMethodRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MP_Method_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MP_Method_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -14047,11 +14047,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MP_Method_Records", null);
+                    SetCheckParameter("MP_Method_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MP_Method_Records", value.SourceView);
+                    SetCheckParameter("MP_Method_Records", value.SourceView);
                 }
             }
         }
@@ -14059,11 +14059,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Unit Operating Status Records for all units in the monitoring plan configuration.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpOperatingStatusRow> MpOperatingStatusRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpOperatingStatusRow> MpOperatingStatusRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MP_Operating_Status_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MP_Operating_Status_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -14077,11 +14077,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MP_Operating_Status_Records", null);
+                    SetCheckParameter("MP_Operating_Status_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MP_Operating_Status_Records", value.SourceView);
+                    SetCheckParameter("MP_Operating_Status_Records", value.SourceView);
                 }
             }
         }
@@ -14089,26 +14089,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// A string that contains either "Unit", "CP", "MP", or "Complex" reflecting whether this monitoring plan is for a simple unit, a common pipe, a multipipe, or a complex pipe config, respectively.
         /// </summary>
-        public static bool? MpPipeConfigForHourlyChecks
+        public  bool? MpPipeConfigForHourlyChecks
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MP_Pipe_Config_for_Hourly_Checks")));
+                return ((bool?)(GetCheckParameter("MP_Pipe_Config_for_Hourly_Checks")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MP_Pipe_Config_for_Hourly_Checks", value);
+                SetCheckParameter("MP_Pipe_Config_for_Hourly_Checks", value);
             }
         }
         
         /// <summary>
         /// The Unit Program Exemption Records for all units in the monitoring plan configuration.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpProgramExemptionRow> MpProgramExemptionRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpProgramExemptionRow> MpProgramExemptionRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MP_Program_Exemption_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MP_Program_Exemption_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -14122,11 +14122,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MP_Program_Exemption_Records", null);
+                    SetCheckParameter("MP_Program_Exemption_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MP_Program_Exemption_Records", value.SourceView);
+                    SetCheckParameter("MP_Program_Exemption_Records", value.SourceView);
                 }
             }
         }
@@ -14134,11 +14134,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Program records which apply to all units in the monitoring configuration.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationProgramRow> MpProgramRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationProgramRow> MpProgramRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MP_Program_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MP_Program_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -14152,11 +14152,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MP_Program_Records", null);
+                    SetCheckParameter("MP_Program_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MP_Program_Records", value.SourceView);
+                    SetCheckParameter("MP_Program_Records", value.SourceView);
                 }
             }
         }
@@ -14164,11 +14164,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Monitor Qualification Percent records for a monitoring plan.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MonitorQualificationPercentData> MpQualificationPercentRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.MonitorQualificationPercentData> MpQualificationPercentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MP_Qualification_Percent_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MP_Qualification_Percent_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -14182,11 +14182,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MP_Qualification_Percent_Records", null);
+                    SetCheckParameter("MP_Qualification_Percent_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MP_Qualification_Percent_Records", value.SourceView);
+                    SetCheckParameter("MP_Qualification_Percent_Records", value.SourceView);
                 }
             }
         }
@@ -14194,11 +14194,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Qualification Records for all locations in the monitoring configuration.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorQualificationRow> MpQualificationRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorQualificationRow> MpQualificationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MP_Qualification_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MP_Qualification_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -14212,11 +14212,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MP_Qualification_Records", null);
+                    SetCheckParameter("MP_Qualification_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MP_Qualification_Records", value.SourceView);
+                    SetCheckParameter("MP_Qualification_Records", value.SourceView);
                 }
             }
         }
@@ -14224,11 +14224,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Program Reporting Frequency Record for all locations in the monitoring configuration.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationReportingFrequencyRow> MpReportingFrequencyRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationReportingFrequencyRow> MpReportingFrequencyRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MP_Reporting_Frequency_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MP_Reporting_Frequency_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -14242,11 +14242,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MP_Reporting_Frequency_Records", null);
+                    SetCheckParameter("MP_Reporting_Frequency_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MP_Reporting_Frequency_Records", value.SourceView);
+                    SetCheckParameter("MP_Reporting_Frequency_Records", value.SourceView);
                 }
             }
         }
@@ -14254,41 +14254,41 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// A string that contains either "Unit", "CS", "MS", or "Complex" reflecting whether this monitoring plan is for a simple unit, a common stack, a multistack, or a complex config, respectively.
         /// </summary>
-        public static string MpStackConfigForHourlyChecks
+        public  string MpStackConfigForHourlyChecks
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("MP_Stack_Config_For_Hourly_Checks")));
+                return ((string)(GetCheckParameter("MP_Stack_Config_For_Hourly_Checks")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MP_Stack_Config_For_Hourly_Checks", value);
+                SetCheckParameter("MP_Stack_Config_For_Hourly_Checks", value);
             }
         }
         
         /// <summary>
         /// This parameter indicates whether the associated monitoring plan was successfully evaluated.
         /// </summary>
-        public static bool? MpSuccessfullyEvaluated
+        public  bool? MpSuccessfullyEvaluated
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("MP_Successfully_Evaluated")));
+                return ((bool?)(GetCheckParameter("MP_Successfully_Evaluated")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MP_Successfully_Evaluated", value);
+                SetCheckParameter("MP_Successfully_Evaluated", value);
             }
         }
         
         /// <summary>
         /// The System Component rows associated with a monitoring plan
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow> MpSystemComponentRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemComponentRow> MpSystemComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("MP_System_Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MP_System_Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -14302,11 +14302,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("MP_System_Component_Records", null);
+                    SetCheckParameter("MP_System_Component_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("MP_System_Component_Records", value.SourceView);
+                    SetCheckParameter("MP_System_Component_Records", value.SourceView);
                 }
             }
         }
@@ -14314,45 +14314,45 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Load for the unit in the MP configuration being evaluated.
         /// </summary>
-        public static int? MpUnitLoad
+        public  int? MpUnitLoad
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("MP_Unit_Load")));
+                return ((int?)(GetCheckParameter("MP_Unit_Load")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MP_Unit_Load", value);
+                SetCheckParameter("MP_Unit_Load", value);
             }
         }
         
         /// <summary>
         /// Indicates if the monitoring plan contains a standard multiple stack configuration.
         /// </summary>
-        public static bool? MultipleStackConfiguration
+        public  bool? MultipleStackConfiguration
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Multiple_Stack_Configuration")));
+                return ((bool?)(GetCheckParameter("Multiple_Stack_Configuration")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Multiple_Stack_Configuration", value);
+                SetCheckParameter("Multiple_Stack_Configuration", value);
             }
         }
         
         /// <summary>
         /// Contains the the hourly tolerance for MW Load as definited in the Hourly Emissions Tolerances crosscheck table.
         /// </summary>
-        public static int? MwLoadHourlyTolerance
+        public  int? MwLoadHourlyTolerance
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("MW_Load_Hourly_Tolerance")));
+                return ((int?)(GetCheckParameter("MW_Load_Hourly_Tolerance")));
             }
             set
             {
-                EmParameters.SetCheckParameter("MW_Load_Hourly_Tolerance", value);
+                SetCheckParameter("MW_Load_Hourly_Tolerance", value);
             }
         }
         
@@ -14361,15 +14361,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? NoxCalculatedAdjustedValue
+        public  decimal? NoxCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("NOX_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("NOX_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOX_Calculated_Adjusted_Value", value);
+                SetCheckParameter("NOX_Calculated_Adjusted_Value", value);
             }
         }
         
@@ -14378,15 +14378,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? NoxCalculatedApportionmentBasedValue
+        public  decimal? NoxCalculatedApportionmentBasedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("NOX_Calculated_Apportionment_Based_Value")));
+                return ((decimal?)(GetCheckParameter("NOX_Calculated_Apportionment_Based_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOX_Calculated_Apportionment_Based_Value", value);
+                SetCheckParameter("NOX_Calculated_Apportionment_Based_Value", value);
             }
         }
         
@@ -14395,116 +14395,116 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current MHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? NoxcCalculatedAdjustedValue
+        public  decimal? NoxcCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("NOXC_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("NOXC_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOXC_Calculated_Adjusted_Value", value);
+                SetCheckParameter("NOXC_Calculated_Adjusted_Value", value);
             }
         }
         
         /// <summary>
         /// the number of MonitorHourlyValueData records reported for NOx Conc during the current day and hour
         /// </summary>
-        public static int? NoxcMonitorHourlyCount
+        public  int? NoxcMonitorHourlyCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("NOxC_Monitor_Hourly_Count")));
+                return ((int?)(GetCheckParameter("NOxC_Monitor_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOxC_Monitor_Hourly_Count", value);
+                SetCheckParameter("NOxC_Monitor_Hourly_Count", value);
             }
         }
         
         /// <summary>
         /// The NOx Concentration value that should be used in the NOx Emission Rate calcualtion
         /// </summary>
-        public static decimal? NoxConcForNoxRateCalculation
+        public  decimal? NoxConcForNoxRateCalculation
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Nox_Conc_For_Nox_Rate_Calculation")));
+                return ((decimal?)(GetCheckParameter("Nox_Conc_For_Nox_Rate_Calculation")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Nox_Conc_For_Nox_Rate_Calculation", value);
+                SetCheckParameter("Nox_Conc_For_Nox_Rate_Calculation", value);
             }
         }
         
         /// <summary>
         /// The Method of Determination Code for the NOx Concentration Record during the current hour
         /// </summary>
-        public static string NoxConcModc
+        public  string NoxConcModc
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("NOx_Conc_Modc")));
+                return ((string)(GetCheckParameter("NOx_Conc_Modc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOx_Conc_Modc", value);
+                SetCheckParameter("NOx_Conc_Modc", value);
             }
         }
         
         /// <summary>
         /// Indicates that NOx Concentration (MonitorHourlyValue) checks must be run in support of the NOx Mass Calculation
         /// </summary>
-        public static bool? NoxConcNeededForNoxMassCalc
+        public  bool? NoxConcNeededForNoxMassCalc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("NOx_Conc_Needed_for_NOx_Mass_Calc")));
+                return ((bool?)(GetCheckParameter("NOx_Conc_Needed_for_NOx_Mass_Calc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOx_Conc_Needed_for_NOx_Mass_Calc", value);
+                SetCheckParameter("NOx_Conc_Needed_for_NOx_Mass_Calc", value);
             }
         }
         
         /// <summary>
         /// Boolean flag that indicates whether or not to look for a required NOx Conc record based on the status of the NOx Rate Derived Hourly Record
         /// </summary>
-        public static bool? NoxConcNeededForNoxRateCalc
+        public  bool? NoxConcNeededForNoxRateCalc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("NOx_Conc_Needed_for_NOx_Rate_Calc")));
+                return ((bool?)(GetCheckParameter("NOx_Conc_Needed_for_NOx_Rate_Calc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOx_Conc_Needed_for_NOx_Rate_Calc", value);
+                SetCheckParameter("NOx_Conc_Needed_for_NOx_Rate_Calc", value);
             }
         }
         
         /// <summary>
         /// indicates whether or not the NOX Derived Hourly Value checks were all run successfully
         /// </summary>
-        public static bool? NoxDerivedHourlyStatus
+        public  bool? NoxDerivedHourlyStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("NOX_Derived_Hourly_Status")));
+                return ((bool?)(GetCheckParameter("NOX_Derived_Hourly_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOX_Derived_Hourly_Status", value);
+                SetCheckParameter("NOX_Derived_Hourly_Status", value);
             }
         }
         
         /// <summary>
         /// The NOX and NOXM Derived Hourly Value Records By Hour and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueNoxRow> NoxDerivedHourlyValueRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueNoxRow> NoxDerivedHourlyValueRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("NOx_Derived_Hourly_Value_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("NOx_Derived_Hourly_Value_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -14518,11 +14518,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("NOx_Derived_Hourly_Value_Records_By_Hour_Location", null);
+                    SetCheckParameter("NOx_Derived_Hourly_Value_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("NOx_Derived_Hourly_Value_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("NOx_Derived_Hourly_Value_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -14530,120 +14530,120 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The MODC code from the NOx Emission Rate record
         /// </summary>
-        public static string NoxEmissionRateModc
+        public  string NoxEmissionRateModc
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("NOx_Emission_Rate_Modc")));
+                return ((string)(GetCheckParameter("NOx_Emission_Rate_Modc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOx_Emission_Rate_Modc", value);
+                SetCheckParameter("NOx_Emission_Rate_Modc", value);
             }
         }
         
         /// <summary>
         /// A list of Appendix E Nox Systems used during the reporting period for each location
         /// </summary>
-        public static string NoxeSystemIdArray
+        public  string NoxeSystemIdArray
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("NOXE_System_ID_Array")));
+                return ((string)(GetCheckParameter("NOXE_System_ID_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOXE_System_ID_Array", value);
+                SetCheckParameter("NOXE_System_ID_Array", value);
             }
         }
         
         /// <summary>
         /// Bypass Approach Code of active NOX Monitor Method entries for the current configuration during the current hour
         /// </summary>
-        public static string NoxMassBypassCode
+        public  string NoxMassBypassCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("NOx_Mass_Bypass_Code")));
+                return ((string)(GetCheckParameter("NOx_Mass_Bypass_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOx_Mass_Bypass_Code", value);
+                SetCheckParameter("NOx_Mass_Bypass_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates that DerivedHourlyValue checks for NOx Mass Rate (NOX) Category checks should be run
         /// </summary>
-        public static bool? NoxMassDerivedChecksNeeded
+        public  bool? NoxMassDerivedChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("NOx_Mass_Derived_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("NOx_Mass_Derived_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOx_Mass_Derived_Checks_Needed", value);
+                SetCheckParameter("NOx_Mass_Derived_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// The equation code used to calculate NOx Mass for the current DerivedHourlyValue record
         /// </summary>
-        public static string NoxMassEquationCode
+        public  string NoxMassEquationCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("NOx_Mass_Equation_Code")));
+                return ((string)(GetCheckParameter("NOx_Mass_Equation_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOx_Mass_Equation_Code", value);
+                SetCheckParameter("NOx_Mass_Equation_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates if active NOX Monitor Method entries for the current configuration during the current hour uses fuel-specific missing data approach
         /// </summary>
-        public static bool? NoxMassFuelSpecificMissingData
+        public  bool? NoxMassFuelSpecificMissingData
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("NOx_Mass_Fuel_Specific_Missing_Data")));
+                return ((bool?)(GetCheckParameter("NOx_Mass_Fuel_Specific_Missing_Data")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOx_Mass_Fuel_Specific_Missing_Data", value);
+                SetCheckParameter("NOx_Mass_Fuel_Specific_Missing_Data", value);
             }
         }
         
         /// <summary>
         /// Indicates that a Monitor Method record for NOx Mass is active during the current hour, and thus a DerivedHourlyValue record should be present
         /// </summary>
-        public static bool? NoxMassMethodActiveForHour
+        public  bool? NoxMassMethodActiveForHour
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("NOx_Mass_Method_Active_For_Hour")));
+                return ((bool?)(GetCheckParameter("NOx_Mass_Method_Active_For_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOx_Mass_Method_Active_For_Hour", value);
+                SetCheckParameter("NOx_Mass_Method_Active_For_Hour", value);
             }
         }
         
         /// <summary>
         /// The Method Code associated with the Monitor Method record for NOX Mass for the current location that is active during the current hour.  Typically, this code will be either "NOXR" or "CEM"
         /// </summary>
-        public static string NoxMassMonitorMethodCode
+        public  string NoxMassMonitorMethodCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("NOx_Mass_Monitor_Method_Code")));
+                return ((string)(GetCheckParameter("NOx_Mass_Monitor_Method_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOx_Mass_Monitor_Method_Code", value);
+                SetCheckParameter("NOx_Mass_Monitor_Method_Code", value);
             }
         }
         
@@ -14652,56 +14652,56 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? NoxmCalculatedAdjustedValue
+        public  decimal? NoxmCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("NOXM_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("NOXM_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOXM_Calculated_Adjusted_Value", value);
+                SetCheckParameter("NOXM_Calculated_Adjusted_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates that DerivedHourlyValue checks for NOXM Category checks should be run
         /// </summary>
-        public static bool? NoxmDerivedChecksNeeded
+        public  bool? NoxmDerivedChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("NOXM_Derived_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("NOXM_Derived_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOXM_Derived_Checks_Needed", value);
+                SetCheckParameter("NOXM_Derived_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// indicates whether or not the NOXM Derived Hourly Value checks were all run successfully
         /// </summary>
-        public static bool? NoxmDerivedHourlyStatus
+        public  bool? NoxmDerivedHourlyStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("NOXM_Derived_Hourly_Status")));
+                return ((bool?)(GetCheckParameter("NOXM_Derived_Hourly_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOXM_Derived_Hourly_Status", value);
+                SetCheckParameter("NOXM_Derived_Hourly_Status", value);
             }
         }
         
         /// <summary>
         /// The NOx Monitor Method records for a specific hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodNoxRow> NoxMonitorMethodRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodNoxRow> NoxMonitorMethodRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("NOx_Monitor_Method_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("NOx_Monitor_Method_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -14715,11 +14715,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("NOx_Monitor_Method_Records_By_Hour_Location", null);
+                    SetCheckParameter("NOx_Monitor_Method_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("NOx_Monitor_Method_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("NOx_Monitor_Method_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -14727,90 +14727,90 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The fieldnames of invalid data in the NOX Summary Value record.
         /// </summary>
-        public static string NoxmSummaryInvalidFields
+        public  string NoxmSummaryInvalidFields
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("NOXM_Summary_Invalid_Fields")));
+                return ((string)(GetCheckParameter("NOXM_Summary_Invalid_Fields")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOXM_Summary_Invalid_Fields", value);
+                SetCheckParameter("NOXM_Summary_Invalid_Fields", value);
             }
         }
         
         /// <summary>
         /// This variable sums the Appendix E NOXR values from all fuel sources
         /// </summary>
-        public static decimal? NoxrAppEAccumulator
+        public  decimal? NoxrAppEAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Noxr_App_E_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Noxr_App_E_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Noxr_App_E_Accumulator", value);
+                SetCheckParameter("Noxr_App_E_Accumulator", value);
             }
         }
         
         /// <summary>
         /// Bypass Approach Code of active NOXR Monitor Method entries for the current configuration during the current hour
         /// </summary>
-        public static string NoxRateBypassCode
+        public  string NoxRateBypassCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("NOx_Rate_Bypass_Code")));
+                return ((string)(GetCheckParameter("NOx_Rate_Bypass_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOx_Rate_Bypass_Code", value);
+                SetCheckParameter("NOx_Rate_Bypass_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the NOx Emission Rate Derived Hourly checks must be run in support of the NOx Mass Calculation
         /// </summary>
-        public static bool? NoxRateChecksNeededForNoxMassCalc
+        public  bool? NoxRateChecksNeededForNoxMassCalc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("NOx_Rate_Checks_Needed_for_NOx_Mass_Calc")));
+                return ((bool?)(GetCheckParameter("NOx_Rate_Checks_Needed_for_NOx_Mass_Calc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOx_Rate_Checks_Needed_for_NOx_Mass_Calc", value);
+                SetCheckParameter("NOx_Rate_Checks_Needed_for_NOx_Mass_Calc", value);
             }
         }
         
         /// <summary>
         /// The Equation Code used to derive NOx Rate for the current NOx Rate Derived Hourly Record
         /// </summary>
-        public static string NoxRateEquationCode
+        public  string NoxRateEquationCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Nox_Rate_Equation_Code")));
+                return ((string)(GetCheckParameter("Nox_Rate_Equation_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Nox_Rate_Equation_Code", value);
+                SetCheckParameter("Nox_Rate_Equation_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates if active NOXR Monitor Method entries for the current configuration during the current hour uses fuel-specific missing data approach
         /// </summary>
-        public static bool? NoxRateFuelSpecificMissingData
+        public  bool? NoxRateFuelSpecificMissingData
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("NOx_Rate_Fuel_Specific_Missing_Data")));
+                return ((bool?)(GetCheckParameter("NOx_Rate_Fuel_Specific_Missing_Data")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOx_Rate_Fuel_Specific_Missing_Data", value);
+                SetCheckParameter("NOx_Rate_Fuel_Specific_Missing_Data", value);
             }
         }
         
@@ -14819,15 +14819,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? NoxrCalculatedAdjustedValue
+        public  decimal? NoxrCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("NOXR_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("NOXR_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOXR_Calculated_Adjusted_Value", value);
+                SetCheckParameter("NOXR_Calculated_Adjusted_Value", value);
             }
         }
         
@@ -14836,101 +14836,101 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcUnadjustedHourlyValue
         /// </summary>
-        public static decimal? NoxrCalculatedUnadjustedValue
+        public  decimal? NoxrCalculatedUnadjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("NOXR_Calculated_Unadjusted_Value")));
+                return ((decimal?)(GetCheckParameter("NOXR_Calculated_Unadjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOXR_Calculated_Unadjusted_Value", value);
+                SetCheckParameter("NOXR_Calculated_Unadjusted_Value", value);
             }
         }
         
         /// <summary>
         /// Flag to indicate whether or not it is necessary to perform NOx Rate Derived Hourly checks at this location for the current hour
         /// </summary>
-        public static bool? NoxrDerivedHourlyChecksNeeded
+        public  bool? NoxrDerivedHourlyChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("NOxR_Derived_Hourly_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("NOxR_Derived_Hourly_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOxR_Derived_Hourly_Checks_Needed", value);
+                SetCheckParameter("NOxR_Derived_Hourly_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// The number of DerivedHourlyValueData records with parameter "NOXR" that have been reported for the Current Hour
         /// </summary>
-        public static int? NoxrDerivedHourlyCount
+        public  int? NoxrDerivedHourlyCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("NoxR_Derived_Hourly_Count")));
+                return ((int?)(GetCheckParameter("NoxR_Derived_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NoxR_Derived_Hourly_Count", value);
+                SetCheckParameter("NoxR_Derived_Hourly_Count", value);
             }
         }
         
         /// <summary>
         /// indicates whether or not the NOXR Derived Hourly Value checks were all run successfully
         /// </summary>
-        public static bool? NoxrDerivedHourlyStatus
+        public  bool? NoxrDerivedHourlyStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("NOXR_Derived_Hourly_Status")));
+                return ((bool?)(GetCheckParameter("NOXR_Derived_Hourly_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOXR_Derived_Hourly_Status", value);
+                SetCheckParameter("NOXR_Derived_Hourly_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether an NOXR DHV record has a measured MODC.
         /// </summary>
-        public static bool? NoxrHasMeasuredDhvModc
+        public  bool? NoxrHasMeasuredDhvModc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("NOXR_Has_Measured_DHV_MODC")));
+                return ((bool?)(GetCheckParameter("NOXR_Has_Measured_DHV_MODC")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOXR_Has_Measured_DHV_MODC", value);
+                SetCheckParameter("NOXR_Has_Measured_DHV_MODC", value);
             }
         }
         
         /// <summary>
         /// The Data and Maps hourly measure code for NOXR.
         /// </summary>
-        public static string NoxrMeasureCode
+        public  string NoxrMeasureCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("NOXR_Measure_Code")));
+                return ((string)(GetCheckParameter("NOXR_Measure_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOXR_Measure_Code", value);
+                SetCheckParameter("NOXR_Measure_Code", value);
             }
         }
         
         /// <summary>
         /// The NOx Rate Monitor Method records for a specific hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodNoxrRow> NoxrMonitorMethodRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodNoxrRow> NoxrMonitorMethodRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("NOxR_Monitor_Method_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("NOxR_Monitor_Method_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -14944,11 +14944,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("NOxR_Monitor_Method_Records_By_Hour_Location", null);
+                    SetCheckParameter("NOxR_Monitor_Method_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("NOxR_Monitor_Method_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("NOxR_Monitor_Method_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -14956,11 +14956,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the NOX system related MHV records for the hour with either MODC 47 or 48.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.NoxrPrimaryAndPrimaryBypassMhv> NoxrPrimaryOrPrimaryBypassMhvRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.NoxrPrimaryAndPrimaryBypassMhv> NoxrPrimaryOrPrimaryBypassMhvRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("NOXR_Primary_or_Primary_Bypass_MHV_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("NOXR_Primary_or_Primary_Bypass_MHV_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -14974,11 +14974,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("NOXR_Primary_or_Primary_Bypass_MHV_Records", null);
+                    SetCheckParameter("NOXR_Primary_or_Primary_Bypass_MHV_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("NOXR_Primary_or_Primary_Bypass_MHV_Records", value.SourceView);
+                    SetCheckParameter("NOXR_Primary_or_Primary_Bypass_MHV_Records", value.SourceView);
                 }
             }
         }
@@ -14986,26 +14986,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The first quarter in the current year of the reporting period when NOXR method was active for the location.
         /// </summary>
-        public static int? NoxrStartQuarter
+        public  int? NoxrStartQuarter
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("NOXR_Start_Quarter")));
+                return ((int?)(GetCheckParameter("NOXR_Start_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOXR_Start_Quarter", value);
+                SetCheckParameter("NOXR_Start_Quarter", value);
             }
         }
         
         /// <summary>
         /// Contains rows for units in emission reports.  Each row contains an indicator column for each of the four quarters of the emission report's year.  The indicator indicates when the unit is in an MS configuartion during the quarter, and that at least one of the MS reported NOxR during the quarter.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.NoxrSummaryRequiredForLmeAnnual> NoxrSummaryRequiredForLmeAnnualRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.NoxrSummaryRequiredForLmeAnnual> NoxrSummaryRequiredForLmeAnnualRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("NOxR_Summary_Required_for_LME_Annual_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("NOxR_Summary_Required_for_LME_Annual_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -15019,11 +15019,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("NOxR_Summary_Required_for_LME_Annual_Records", null);
+                    SetCheckParameter("NOxR_Summary_Required_for_LME_Annual_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("NOxR_Summary_Required_for_LME_Annual_Records", value.SourceView);
+                    SetCheckParameter("NOxR_Summary_Required_for_LME_Annual_Records", value.SourceView);
                 }
             }
         }
@@ -15031,26 +15031,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The first quarter in the current year of the reporting period when NOX method was active for the location.
         /// </summary>
-        public static int? NoxStartQuarter
+        public  int? NoxStartQuarter
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("NOX_Start_Quarter")));
+                return ((int?)(GetCheckParameter("NOX_Start_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NOX_Start_Quarter", value);
+                SetCheckParameter("NOX_Start_Quarter", value);
             }
         }
         
         /// <summary>
         /// Contains the NSPS4T Annual rows for an emission report.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tAnnual> Nsps4tAnnualRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tAnnual> Nsps4tAnnualRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("NSPS4T_Annual_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("NSPS4T_Annual_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -15064,11 +15064,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Annual_Records", null);
+                    SetCheckParameter("NSPS4T_Annual_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Annual_Records", value.SourceView);
+                    SetCheckParameter("NSPS4T_Annual_Records", value.SourceView);
                 }
             }
         }
@@ -15076,11 +15076,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the NSPS4T Compliance Period rows for an emission report.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tCompliancePeriod> Nsps4tCompliancePeriodRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tCompliancePeriod> Nsps4tCompliancePeriodRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("NSPS4T_Compliance_Period_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("NSPS4T_Compliance_Period_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -15094,11 +15094,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Compliance_Period_Records", null);
+                    SetCheckParameter("NSPS4T_Compliance_Period_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Compliance_Period_Records", value.SourceView);
+                    SetCheckParameter("NSPS4T_Compliance_Period_Records", value.SourceView);
                 }
             }
         }
@@ -15106,11 +15106,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The current NSPS4T Annual record.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tAnnual Nsps4tCurrentAnnualRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tAnnual Nsps4tCurrentAnnualRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("NSPS4T_Current_Annual_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("NSPS4T_Current_Annual_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -15124,11 +15124,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Current_Annual_Record", null);
+                    SetCheckParameter("NSPS4T_Current_Annual_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Current_Annual_Record", value.SourceRow);
+                    SetCheckParameter("NSPS4T_Current_Annual_Record", value.SourceRow);
                 }
             }
         }
@@ -15136,11 +15136,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The first of the current Compliance Period records.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tCompliancePeriod Nsps4tCurrentCompliancePeriod1Record
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tCompliancePeriod Nsps4tCurrentCompliancePeriod1Record
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("NSPS4T_Current_Compliance_Period_1_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("NSPS4T_Current_Compliance_Period_1_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -15154,11 +15154,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Current_Compliance_Period_1_Record", null);
+                    SetCheckParameter("NSPS4T_Current_Compliance_Period_1_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Current_Compliance_Period_1_Record", value.SourceRow);
+                    SetCheckParameter("NSPS4T_Current_Compliance_Period_1_Record", value.SourceRow);
                 }
             }
         }
@@ -15166,11 +15166,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The second of the current Compliance Period records.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tCompliancePeriod Nsps4tCurrentCompliancePeriod2Record
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tCompliancePeriod Nsps4tCurrentCompliancePeriod2Record
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("NSPS4T_Current_Compliance_Period_2_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("NSPS4T_Current_Compliance_Period_2_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -15184,11 +15184,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Current_Compliance_Period_2_Record", null);
+                    SetCheckParameter("NSPS4T_Current_Compliance_Period_2_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Current_Compliance_Period_2_Record", value.SourceRow);
+                    SetCheckParameter("NSPS4T_Current_Compliance_Period_2_Record", value.SourceRow);
                 }
             }
         }
@@ -15196,11 +15196,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The third of the current Compliance Period records.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tCompliancePeriod Nsps4tCurrentCompliancePeriod3Record
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tCompliancePeriod Nsps4tCurrentCompliancePeriod3Record
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("NSPS4T_Current_Compliance_Period_3_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("NSPS4T_Current_Compliance_Period_3_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -15214,11 +15214,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Current_Compliance_Period_3_Record", null);
+                    SetCheckParameter("NSPS4T_Current_Compliance_Period_3_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Current_Compliance_Period_3_Record", value.SourceRow);
+                    SetCheckParameter("NSPS4T_Current_Compliance_Period_3_Record", value.SourceRow);
                 }
             }
         }
@@ -15226,11 +15226,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The current NSPS4T Summary record
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tSummary Nsps4tCurrentSummaryRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tSummary Nsps4tCurrentSummaryRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("NSPS4T_Current_Summary_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("NSPS4T_Current_Summary_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -15244,11 +15244,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Current_Summary_Record", null);
+                    SetCheckParameter("NSPS4T_Current_Summary_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Current_Summary_Record", value.SourceRow);
+                    SetCheckParameter("NSPS4T_Current_Summary_Record", value.SourceRow);
                 }
             }
         }
@@ -15256,26 +15256,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// List of invlaid CO2 Emission Rate UOM codes.
         /// </summary>
-        public static string Nsps4tInvalidCo2EmissionRateUomList
+        public  string Nsps4tInvalidCo2EmissionRateUomList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("NSPS4T_Invalid_CO2_Emission_Rate_UOM_List")));
+                return ((string)(GetCheckParameter("NSPS4T_Invalid_CO2_Emission_Rate_UOM_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("NSPS4T_Invalid_CO2_Emission_Rate_UOM_List", value);
+                SetCheckParameter("NSPS4T_Invalid_CO2_Emission_Rate_UOM_List", value);
             }
         }
         
         /// <summary>
         /// Contains the NSPS4T Summary rows for an emission report.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tSummary> Nsps4tSummaryRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.Nsps4tSummary> Nsps4tSummaryRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("NSPS4T_Summary_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("NSPS4T_Summary_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -15289,11 +15289,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Summary_Records", null);
+                    SetCheckParameter("NSPS4T_Summary_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("NSPS4T_Summary_Records", value.SourceView);
+                    SetCheckParameter("NSPS4T_Summary_Records", value.SourceView);
                 }
             }
         }
@@ -15301,15 +15301,15 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The O2 Concentration value to be used in the CO2C Calculation
         /// </summary>
-        public static decimal? O2ConcForCo2cCalc
+        public  decimal? O2ConcForCo2cCalc
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("O2_Conc_For_Co2c_Calc")));
+                return ((decimal?)(GetCheckParameter("O2_Conc_For_Co2c_Calc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Conc_For_Co2c_Calc", value);
+                SetCheckParameter("O2_Conc_For_Co2c_Calc", value);
             }
         }
         
@@ -15318,15 +15318,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current MHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? O2cSdCalculatedAdjustedValue
+        public  decimal? O2cSdCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("O2C_SD_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("O2C_SD_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2C_SD_Calculated_Adjusted_Value", value);
+                SetCheckParameter("O2C_SD_Calculated_Adjusted_Value", value);
             }
         }
         
@@ -15335,60 +15335,60 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current MHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? O2DryCalculatedAdjustedValue
+        public  decimal? O2DryCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("O2_Dry_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("O2_Dry_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Dry_Calculated_Adjusted_Value", value);
+                SetCheckParameter("O2_Dry_Calculated_Adjusted_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the O2 Dry Hourly record needs to be checked
         /// </summary>
-        public static bool? O2DryChecksNeededForH2o
+        public  bool? O2DryChecksNeededForH2o
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Dry_Checks_Needed_For_H2O")));
+                return ((bool?)(GetCheckParameter("O2_Dry_Checks_Needed_For_H2O")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Dry_Checks_Needed_For_H2O", value);
+                SetCheckParameter("O2_Dry_Checks_Needed_For_H2O", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the O2 Dry Checks must be run in support of the current Heat Input Calculation
         /// </summary>
-        public static bool? O2DryChecksNeededForHeatInput
+        public  bool? O2DryChecksNeededForHeatInput
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Dry_Checks_Needed_for_Heat_Input")));
+                return ((bool?)(GetCheckParameter("O2_Dry_Checks_Needed_for_Heat_Input")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Dry_Checks_Needed_for_Heat_Input", value);
+                SetCheckParameter("O2_Dry_Checks_Needed_for_Heat_Input", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not O2 Dry Checks must be run in support of the NOx Rate Calculation
         /// </summary>
-        public static bool? O2DryChecksNeededForNoxRateCalc
+        public  bool? O2DryChecksNeededForNoxRateCalc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Dry_Checks_Needed_For_Nox_Rate_Calc")));
+                return ((bool?)(GetCheckParameter("O2_Dry_Checks_Needed_For_Nox_Rate_Calc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Dry_Checks_Needed_For_Nox_Rate_Calc", value);
+                SetCheckParameter("O2_Dry_Checks_Needed_For_Nox_Rate_Calc", value);
             }
         }
         
@@ -15397,56 +15397,56 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the MHV O2 Dry MODC value used in calcultion checks to determine whether O2 Dry was substituted and is set in the O2 Dry section of HOURMHV-8.
         /// </summary>
-        public static string O2DryModc
+        public  string O2DryModc
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("O2_Dry_MODC")));
+                return ((string)(GetCheckParameter("O2_Dry_MODC")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Dry_MODC", value);
+                SetCheckParameter("O2_Dry_MODC", value);
             }
         }
         
         /// <summary>
         /// flag to indicate whether or not checks need to be launched for O2 Dry (or null) Monitor Hourly data
         /// </summary>
-        public static bool? O2DryMonitorHourlyChecksNeeded
+        public  bool? O2DryMonitorHourlyChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Dry_Monitor_Hourly_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("O2_Dry_Monitor_Hourly_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Dry_Monitor_Hourly_Checks_Needed", value);
+                SetCheckParameter("O2_Dry_Monitor_Hourly_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// the number of MonitorHourlyValueData records in the current hour that have the parameter_cd = "O2C" and a Moisture Basis of "D"
         /// </summary>
-        public static int? O2DryMonitorHourlyCount
+        public  int? O2DryMonitorHourlyCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("O2_Dry_Monitor_Hourly_Count")));
+                return ((int?)(GetCheckParameter("O2_Dry_Monitor_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Dry_Monitor_Hourly_Count", value);
+                SetCheckParameter("O2_Dry_Monitor_Hourly_Count", value);
             }
         }
         
         /// <summary>
         /// The O2 Dry Monitor Hourly Value Records By Hour and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueO2DryRow> O2DryMonitorHourlyValueRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueO2DryRow> O2DryMonitorHourlyValueRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("O2_Dry_Monitor_Hourly_Value_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("O2_Dry_Monitor_Hourly_Value_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -15460,11 +15460,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("O2_Dry_Monitor_Hourly_Value_Records_By_Hour_Location", null);
+                    SetCheckParameter("O2_Dry_Monitor_Hourly_Value_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("O2_Dry_Monitor_Hourly_Value_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("O2_Dry_Monitor_Hourly_Value_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -15474,15 +15474,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates whether O2 Dry values are needed to support the reporting of MATS parameters.
         /// </summary>
-        public static bool? O2DryNeededForMats
+        public  bool? O2DryNeededForMats
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Dry_Needed_for_MATS")));
+                return ((bool?)(GetCheckParameter("O2_Dry_Needed_for_MATS")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Dry_Needed_for_MATS", value);
+                SetCheckParameter("O2_Dry_Needed_for_MATS", value);
             }
         }
         
@@ -15491,56 +15491,56 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates whether O2 Dry values are needed to support the calculation of MATS parameters.
         /// </summary>
-        public static bool? O2DryNeededForMatsCalculation
+        public  bool? O2DryNeededForMatsCalculation
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Dry_Needed_for_MATS_Calculation")));
+                return ((bool?)(GetCheckParameter("O2_Dry_Needed_for_MATS_Calculation")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Dry_Needed_for_MATS_Calculation", value);
+                SetCheckParameter("O2_Dry_Needed_for_MATS_Calculation", value);
             }
         }
         
         /// <summary>
         /// Defines whether or not a Monitor Hourly Value is required for O2 in support of the CO2 Concentration Calculation
         /// </summary>
-        public static bool? O2DryNeededToSupportCo2Calculation
+        public  bool? O2DryNeededToSupportCo2Calculation
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Dry_Needed_To_Support_Co2_Calculation")));
+                return ((bool?)(GetCheckParameter("O2_Dry_Needed_To_Support_Co2_Calculation")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Dry_Needed_To_Support_Co2_Calculation", value);
+                SetCheckParameter("O2_Dry_Needed_To_Support_Co2_Calculation", value);
             }
         }
         
         /// <summary>
         /// the number of MonitorHourlyValueData records in the current hour that have the parameter_cd = "O2C" and  Moisture Basis is NULL
         /// </summary>
-        public static int? O2NullMonitorHourlyCount
+        public  int? O2NullMonitorHourlyCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("O2_Null_Monitor_Hourly_Count")));
+                return ((int?)(GetCheckParameter("O2_Null_Monitor_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Null_Monitor_Hourly_Count", value);
+                SetCheckParameter("O2_Null_Monitor_Hourly_Count", value);
             }
         }
         
         /// <summary>
         /// The O2 Monitor Hourly Value Records with a Null Basis By Hour and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueO2NullRow> O2NullMonitorHourlyValueRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueO2NullRow> O2NullMonitorHourlyValueRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("O2_Null_Monitor_Hourly_Value_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("O2_Null_Monitor_Hourly_Value_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -15554,11 +15554,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("O2_Null_Monitor_Hourly_Value_Records_By_Hour_Location", null);
+                    SetCheckParameter("O2_Null_Monitor_Hourly_Value_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("O2_Null_Monitor_Hourly_Value_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("O2_Null_Monitor_Hourly_Value_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -15568,60 +15568,60 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current MHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? O2WetCalculatedAdjustedValue
+        public  decimal? O2WetCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("O2_Wet_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("O2_Wet_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Wet_Calculated_Adjusted_Value", value);
+                SetCheckParameter("O2_Wet_Calculated_Adjusted_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the O2 Wet Hourly record needs to be checked
         /// </summary>
-        public static bool? O2WetChecksNeededForH2o
+        public  bool? O2WetChecksNeededForH2o
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Wet_Checks_Needed_For_H2O")));
+                return ((bool?)(GetCheckParameter("O2_Wet_Checks_Needed_For_H2O")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Wet_Checks_Needed_For_H2O", value);
+                SetCheckParameter("O2_Wet_Checks_Needed_For_H2O", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the O2 Wet Checks must be run in support of the current Heat Input Calculation
         /// </summary>
-        public static bool? O2WetChecksNeededForHeatInput
+        public  bool? O2WetChecksNeededForHeatInput
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Wet_Checks_Needed_for_Heat_Input")));
+                return ((bool?)(GetCheckParameter("O2_Wet_Checks_Needed_for_Heat_Input")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Wet_Checks_Needed_for_Heat_Input", value);
+                SetCheckParameter("O2_Wet_Checks_Needed_for_Heat_Input", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not O2 Wet Checks must be run in support of the NOx Rate Calculation
         /// </summary>
-        public static bool? O2WetChecksNeededForNoxRateCalc
+        public  bool? O2WetChecksNeededForNoxRateCalc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Wet_Checks_Needed_For_Nox_Rate_Calc")));
+                return ((bool?)(GetCheckParameter("O2_Wet_Checks_Needed_For_Nox_Rate_Calc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Wet_Checks_Needed_For_Nox_Rate_Calc", value);
+                SetCheckParameter("O2_Wet_Checks_Needed_For_Nox_Rate_Calc", value);
             }
         }
         
@@ -15630,56 +15630,56 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Contains the MHV O2 Wet MODC value used in calcultion checks to determine whether O2 Wet was substituted and is set in the O2 Wet section of HOURMHV-8.
         /// </summary>
-        public static string O2WetModc
+        public  string O2WetModc
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("O2_Wet_MODC")));
+                return ((string)(GetCheckParameter("O2_Wet_MODC")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Wet_MODC", value);
+                SetCheckParameter("O2_Wet_MODC", value);
             }
         }
         
         /// <summary>
         /// flag to indicate whether or not checks need to be launched for O2 Wet (or null) Monitor Hourly data
         /// </summary>
-        public static bool? O2WetMonitorHourlyChecksNeeded
+        public  bool? O2WetMonitorHourlyChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Wet_Monitor_Hourly_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("O2_Wet_Monitor_Hourly_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Wet_Monitor_Hourly_Checks_Needed", value);
+                SetCheckParameter("O2_Wet_Monitor_Hourly_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// the number of MonitorHourlyValueData records in the current hour that have the parameter_cd = "O2C" and a Moisture Basis of "W"
         /// </summary>
-        public static int? O2WetMonitorHourlyCount
+        public  int? O2WetMonitorHourlyCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("O2_Wet_Monitor_Hourly_Count")));
+                return ((int?)(GetCheckParameter("O2_Wet_Monitor_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Wet_Monitor_Hourly_Count", value);
+                SetCheckParameter("O2_Wet_Monitor_Hourly_Count", value);
             }
         }
         
         /// <summary>
         /// The O2 Wet Monitor Hourly Value Records By Hour and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueO2WetRow> O2WetMonitorHourlyValueRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueO2WetRow> O2WetMonitorHourlyValueRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("O2_Wet_Monitor_Hourly_Value_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("O2_Wet_Monitor_Hourly_Value_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -15693,11 +15693,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("O2_Wet_Monitor_Hourly_Value_Records_By_Hour_Location", null);
+                    SetCheckParameter("O2_Wet_Monitor_Hourly_Value_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("O2_Wet_Monitor_Hourly_Value_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("O2_Wet_Monitor_Hourly_Value_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -15707,15 +15707,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates whether O2 Wet values are needed to support the calculation of MATS parameters.
         /// </summary>
-        public static bool? O2WetNeededForMats
+        public  bool? O2WetNeededForMats
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Wet_Needed_for_MATS")));
+                return ((bool?)(GetCheckParameter("O2_Wet_Needed_for_MATS")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Wet_Needed_for_MATS", value);
+                SetCheckParameter("O2_Wet_Needed_for_MATS", value);
             }
         }
         
@@ -15724,41 +15724,41 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates whether O2 Wet values are needed to support the calculation of MATS parameters.
         /// </summary>
-        public static bool? O2WetNeededForMatsCalculation
+        public  bool? O2WetNeededForMatsCalculation
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Wet_Needed_for_MATS_Calculation")));
+                return ((bool?)(GetCheckParameter("O2_Wet_Needed_for_MATS_Calculation")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Wet_Needed_for_MATS_Calculation", value);
+                SetCheckParameter("O2_Wet_Needed_for_MATS_Calculation", value);
             }
         }
         
         /// <summary>
         /// Defines whether or not a Monitor Hourly Value is required for O2 in support of the CO2 Concentration Calculation
         /// </summary>
-        public static bool? O2WetNeededToSupportCo2Calculation
+        public  bool? O2WetNeededToSupportCo2Calculation
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("O2_Wet_Needed_To_Support_Co2_Calculation")));
+                return ((bool?)(GetCheckParameter("O2_Wet_Needed_To_Support_Co2_Calculation")));
             }
             set
             {
-                EmParameters.SetCheckParameter("O2_Wet_Needed_To_Support_Co2_Calculation", value);
+                SetCheckParameter("O2_Wet_Needed_To_Support_Co2_Calculation", value);
             }
         }
         
         /// <summary>
         /// The O2X Monitor Default records by a specific hour and location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorDefaultO2xRow> O2xMonitorDefaultRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorDefaultO2xRow> O2xMonitorDefaultRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("O2x_Monitor_Default_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("O2x_Monitor_Default_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -15772,11 +15772,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("O2x_Monitor_Default_Records_By_Hour_Location", null);
+                    SetCheckParameter("O2x_Monitor_Default_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("O2x_Monitor_Default_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("O2x_Monitor_Default_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -15784,11 +15784,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the ignored Prior daily int check, because the check was conducted when the unit was offline.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.DailyMiscellaneousTestPeriodData OfflineDailyIntRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.DailyMiscellaneousTestPeriodData OfflineDailyIntRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Offline_Daily_Int_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Offline_Daily_Int_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -15802,11 +15802,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Offline_Daily_Int_Record", null);
+                    SetCheckParameter("Offline_Daily_Int_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Offline_Daily_Int_Record", value.SourceRow);
+                    SetCheckParameter("Offline_Daily_Int_Record", value.SourceRow);
                 }
             }
         }
@@ -15814,26 +15814,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contain the object representing an online Daily Interference Check and including the row for that check.
         /// </summary>
-        public static cLastDailyInterferenceCheckTest OnlineDailyIntCheck
+        public  cLastDailyInterferenceCheckTest OnlineDailyIntCheck
         {
             get
             {
-                return ((cLastDailyInterferenceCheckTest)(EmParameters.GetCheckParameter("Online_Daily_Int_Check")));
+                return ((cLastDailyInterferenceCheckTest)(GetCheckParameter("Online_Daily_Int_Check")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Online_Daily_Int_Check", value);
+                SetCheckParameter("Online_Daily_Int_Check", value);
             }
         }
         
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Prior daily interference check
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.DailyMiscellaneousTestPeriodData OnlineDailyIntRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.DailyMiscellaneousTestPeriodData OnlineDailyIntRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Online_Daily_Int_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Online_Daily_Int_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -15847,11 +15847,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Online_Daily_Int_Record", null);
+                    SetCheckParameter("Online_Daily_Int_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Online_Daily_Int_Record", value.SourceRow);
+                    SetCheckParameter("Online_Daily_Int_Record", value.SourceRow);
                 }
             }
         }
@@ -15863,11 +15863,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///This parameter is for the emission processes and is loaded through the CheckEm.OnOffCalibrationTestAllData() table function.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.OnOffCalibrationTestAllData> OocTestRecordsByLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.OnOffCalibrationTestAllData> OocTestRecordsByLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("OOC_Test_Records_by_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("OOC_Test_Records_by_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -15881,11 +15881,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("OOC_Test_Records_by_Location", null);
+                    SetCheckParameter("OOC_Test_Records_by_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("OOC_Test_Records_by_Location", value.SourceView);
+                    SetCheckParameter("OOC_Test_Records_by_Location", value.SourceView);
                 }
             }
         }
@@ -15893,26 +15893,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// An array of date list.  Each element represents a location in a monitoring plan, and contains a list of operating dates for the location that are less than or equal to the current date.
         /// </summary>
-        public static List<DateTime>[] OperatingDateArray
+        public  List<DateTime>[] OperatingDateArray
         {
             get
             {
-                return ((List<DateTime>[])(EmParameters.GetCheckParameter("Operating_Date_Array")));
+                return ((List<DateTime>[])(GetCheckParameter("Operating_Date_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Operating_Date_Array", value);
+                SetCheckParameter("Operating_Date_Array", value);
             }
         }
         
         /// <summary>
         /// Operating Supp Data Records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpOpSuppDataRow> OperatingSuppDataRecordsByLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpOpSuppDataRow> OperatingSuppDataRecordsByLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Operating_Supp_Data_Records_by_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Operating_Supp_Data_Records_by_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -15926,11 +15926,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Operating_Supp_Data_Records_by_Location", null);
+                    SetCheckParameter("Operating_Supp_Data_Records_by_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Operating_Supp_Data_Records_by_Location", value.SourceView);
+                    SetCheckParameter("Operating_Supp_Data_Records_by_Location", value.SourceView);
                 }
             }
         }
@@ -15938,131 +15938,131 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The fieldnames of invalid data in the OPHOURS Summary Value record.
         /// </summary>
-        public static string OphoursSummaryInvalidFields
+        public  string OphoursSummaryInvalidFields
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("OPHOURS_Summary_Invalid_Fields")));
+                return ((string)(GetCheckParameter("OPHOURS_Summary_Invalid_Fields")));
             }
             set
             {
-                EmParameters.SetCheckParameter("OPHOURS_Summary_Invalid_Fields", value);
+                SetCheckParameter("OPHOURS_Summary_Invalid_Fields", value);
             }
         }
         
         /// <summary>
         /// The fieldnames of invalid data in the OPTIME Summary Value record.
         /// </summary>
-        public static string OptimeSummaryInvalidFields
+        public  string OptimeSummaryInvalidFields
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("OPTIME_Summary_Invalid_Fields")));
+                return ((string)(GetCheckParameter("OPTIME_Summary_Invalid_Fields")));
             }
             set
             {
-                EmParameters.SetCheckParameter("OPTIME_Summary_Invalid_Fields", value);
+                SetCheckParameter("OPTIME_Summary_Invalid_Fields", value);
             }
         }
         
         /// <summary>
         /// The recalculated ozone-season-to-date value for total heat input.
         /// </summary>
-        public static decimal? OsHitCalculatedValue
+        public  decimal? OsHitCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("OS_HIT_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("OS_HIT_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("OS_HIT_Calculated_Value", value);
+                SetCheckParameter("OS_HIT_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated ozone-season-to-date value for NOx Mass.
         /// </summary>
-        public static decimal? OsNoxMassCalculatedValue
+        public  decimal? OsNoxMassCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("OS_NOx_Mass_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("OS_NOx_Mass_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("OS_NOx_Mass_Calculated_Value", value);
+                SetCheckParameter("OS_NOx_Mass_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated ozone-season-to-date value for total operating hours.
         /// </summary>
-        public static int? OsOphoursCalculatedValue
+        public  int? OsOphoursCalculatedValue
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("OS_OPHOURS_Calculated_Value")));
+                return ((int?)(GetCheckParameter("OS_OPHOURS_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("OS_OPHOURS_Calculated_Value", value);
+                SetCheckParameter("OS_OPHOURS_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated ozone-season-to-date value for total operating time.
         /// </summary>
-        public static decimal? OsOptimeCalculatedValue
+        public  decimal? OsOptimeCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("OS_OPTIME_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("OS_OPTIME_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("OS_OPTIME_Calculated_Value", value);
+                SetCheckParameter("OS_OPTIME_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates if the units in the configuration report ozone season totals.
         /// </summary>
-        public static bool? OsReportingRequirement
+        public  bool? OsReportingRequirement
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("OS_Reporting_Requirement")));
+                return ((bool?)(GetCheckParameter("OS_Reporting_Requirement")));
             }
             set
             {
-                EmParameters.SetCheckParameter("OS_Reporting_Requirement", value);
+                SetCheckParameter("OS_Reporting_Requirement", value);
             }
         }
         
         /// <summary>
         /// Contians the override Bias Adjustment Factor to use primarily for RATA Status OOC results.
         /// </summary>
-        public static decimal? OverrideRataBaf
+        public  decimal? OverrideRataBaf
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Override_RATA_BAF")));
+                return ((decimal?)(GetCheckParameter("Override_RATA_BAF")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Override_RATA_BAF", value);
+                SetCheckParameter("Override_RATA_BAF", value);
             }
         }
         
         /// <summary>
         /// Lists all combinations of valid Parameter Codes and  Units of Measure codes with min and max values.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ParameterUomRow> ParameterUnitsOfMeasureLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ParameterUomRow> ParameterUnitsOfMeasureLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -16076,11 +16076,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table", null);
+                    SetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -16088,30 +16088,30 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the year/qtr information when Missing Op data is the result for PEI Status.
         /// </summary>
-        public static string PeiMissingOpDataInfo
+        public  string PeiMissingOpDataInfo
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("PEI_Missing_Op_Data_Info")));
+                return ((string)(GetCheckParameter("PEI_Missing_Op_Data_Info")));
             }
             set
             {
-                EmParameters.SetCheckParameter("PEI_Missing_Op_Data_Info", value);
+                SetCheckParameter("PEI_Missing_Op_Data_Info", value);
             }
         }
         
         /// <summary>
         /// Indicates if the fuel flow component record is required to undergo PEI checking as part of the Appendix D Status evaluation
         /// </summary>
-        public static bool? PeiRequired
+        public  bool? PeiRequired
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("PEI_Required")));
+                return ((bool?)(GetCheckParameter("PEI_Required")));
             }
             set
             {
-                EmParameters.SetCheckParameter("PEI_Required", value);
+                SetCheckParameter("PEI_Required", value);
             }
         }
         
@@ -16120,11 +16120,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///PEI tests.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> PeiTestRecordsByLocationForQaStatus
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> PeiTestRecordsByLocationForQaStatus
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("PEI_Test_Records_By_Location_For_QA_Status")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("PEI_Test_Records_By_Location_For_QA_Status")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -16138,11 +16138,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("PEI_Test_Records_By_Location_For_QA_Status", null);
+                    SetCheckParameter("PEI_Test_Records_By_Location_For_QA_Status", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("PEI_Test_Records_By_Location_For_QA_Status", value.SourceView);
+                    SetCheckParameter("PEI_Test_Records_By_Location_For_QA_Status", value.SourceView);
                 }
             }
         }
@@ -16150,86 +16150,86 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the sum of the products "Pipe Load" times "Pipe Operating Time" for all pipes in the monitoring plan during the current hour
         /// </summary>
-        public static decimal? PipeLoadtimesoptimeAccumulator
+        public  decimal? PipeLoadtimesoptimeAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Pipe_LoadTimesOpTime_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Pipe_LoadTimesOpTime_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Pipe_LoadTimesOpTime_Accumulator", value);
+                SetCheckParameter("Pipe_LoadTimesOpTime_Accumulator", value);
             }
         }
         
         /// <summary>
         /// Contains the System Id of the primary bypass system when a primary bypass system is active.
         /// </summary>
-        public static string PrimaryBypassActiveBypassSystemId
+        public  string PrimaryBypassActiveBypassSystemId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Primary_Bypass_Active_Bypass_System_Id")));
+                return ((string)(GetCheckParameter("Primary_Bypass_Active_Bypass_System_Id")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Primary_Bypass_Active_Bypass_System_Id", value);
+                SetCheckParameter("Primary_Bypass_Active_Bypass_System_Id", value);
             }
         }
         
         /// <summary>
         /// Indicates whether a primary bypass system (stack) was active during the current hour.
         /// </summary>
-        public static bool? PrimaryBypassActiveForHour
+        public  bool? PrimaryBypassActiveForHour
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Primary_Bypass_Active_For_Hour")));
+                return ((bool?)(GetCheckParameter("Primary_Bypass_Active_For_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Primary_Bypass_Active_For_Hour", value);
+                SetCheckParameter("Primary_Bypass_Active_For_Hour", value);
             }
         }
         
         /// <summary>
         /// Indicates whether a primary bypass system (stack) was active during the quarter of an emission report.
         /// </summary>
-        public static bool? PrimaryBypassActiveInQuarter
+        public  bool? PrimaryBypassActiveInQuarter
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Primary_Bypass_Active_In_Quarter")));
+                return ((bool?)(GetCheckParameter("Primary_Bypass_Active_In_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Primary_Bypass_Active_In_Quarter", value);
+                SetCheckParameter("Primary_Bypass_Active_In_Quarter", value);
             }
         }
         
         /// <summary>
         /// Contains the System Id of the primary system when a primary bypass system is active.
         /// </summary>
-        public static string PrimaryBypassActivePrimarySystemId
+        public  string PrimaryBypassActivePrimarySystemId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Primary_Bypass_Active_Primary_System_Id")));
+                return ((string)(GetCheckParameter("Primary_Bypass_Active_Primary_System_Id")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Primary_Bypass_Active_Primary_System_Id", value);
+                SetCheckParameter("Primary_Bypass_Active_Primary_System_Id", value);
             }
         }
         
         /// <summary>
         /// Used by the Hourly QA Status checks to store the event record that is the Prior event in the Appendix D (Accuracy) Status evaluation.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow PriorAccuracyEventRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow PriorAccuracyEventRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Prior_Accuracy_Event_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Prior_Accuracy_Event_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -16243,11 +16243,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Prior_Accuracy_Event_Record", null);
+                    SetCheckParameter("Prior_Accuracy_Event_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Prior_Accuracy_Event_Record", value.SourceRow);
+                    SetCheckParameter("Prior_Accuracy_Event_Record", value.SourceRow);
                 }
             }
         }
@@ -16255,11 +16255,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the event record that is the Prior event in the Daily Calibration Status evaluation.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow PriorDailyCalEventRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow PriorDailyCalEventRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Prior_Daily_Cal_Event_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Prior_Daily_Cal_Event_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -16273,11 +16273,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Prior_Daily_Cal_Event_Record", null);
+                    SetCheckParameter("Prior_Daily_Cal_Event_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Prior_Daily_Cal_Event_Record", value.SourceRow);
+                    SetCheckParameter("Prior_Daily_Cal_Event_Record", value.SourceRow);
                 }
             }
         }
@@ -16285,56 +16285,56 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The first op hour after the last non op hour covered by the Prior Daily Cal Record.
         /// </summary>
-        public static DateTime? PriorDailyCalFirstOpHourAfterLastNonOpHour
+        public  DateTime? PriorDailyCalFirstOpHourAfterLastNonOpHour
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("Prior_Daily_Cal_First_Op_Hour_After_Last_Non_Op_Hour")));
+                return ((DateTime?)(GetCheckParameter("Prior_Daily_Cal_First_Op_Hour_After_Last_Non_Op_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Prior_Daily_Cal_First_Op_Hour_After_Last_Non_Op_Hour", value);
+                SetCheckParameter("Prior_Daily_Cal_First_Op_Hour_After_Last_Non_Op_Hour", value);
             }
         }
         
         /// <summary>
         /// Contains the last covered non-op hour covered by the Prior Daily Cal Record.
         /// </summary>
-        public static DateTime? PriorDailyCalLastCoveredNonOpHour
+        public  DateTime? PriorDailyCalLastCoveredNonOpHour
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("Prior_Daily_Cal_Last_Covered_Non_Op_Hour")));
+                return ((DateTime?)(GetCheckParameter("Prior_Daily_Cal_Last_Covered_Non_Op_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Prior_Daily_Cal_Last_Covered_Non_Op_Hour", value);
+                SetCheckParameter("Prior_Daily_Cal_Last_Covered_Non_Op_Hour", value);
             }
         }
         
         /// <summary>
         /// Calc Test Res corresponding to a Daily Cal Record
         /// </summary>
-        public static string PriorDailyCalRecCalcTestRes
+        public  string PriorDailyCalRecCalcTestRes
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Prior_Daily_Cal_Rec_Calc_Test_Res")));
+                return ((string)(GetCheckParameter("Prior_Daily_Cal_Rec_Calc_Test_Res")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Prior_Daily_Cal_Rec_Calc_Test_Res", value);
+                SetCheckParameter("Prior_Daily_Cal_Rec_Calc_Test_Res", value);
             }
         }
         
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Prior daily cal test.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDailyCalibrationRow PriorDailyCalRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDailyCalibrationRow PriorDailyCalRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Prior_Daily_Cal_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Prior_Daily_Cal_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -16348,11 +16348,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Prior_Daily_Cal_Record", null);
+                    SetCheckParameter("Prior_Daily_Cal_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Prior_Daily_Cal_Record", value.SourceRow);
+                    SetCheckParameter("Prior_Daily_Cal_Record", value.SourceRow);
                 }
             }
         }
@@ -16360,11 +16360,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the event record that is the Prior event in the Leak Check evaluation.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow PriorLeakEventRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow PriorLeakEventRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Prior_Leak_Event_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Prior_Leak_Event_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -16378,11 +16378,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Prior_Leak_Event_Record", null);
+                    SetCheckParameter("Prior_Leak_Event_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Prior_Leak_Event_Record", value.SourceRow);
+                    SetCheckParameter("Prior_Leak_Event_Record", value.SourceRow);
                 }
             }
         }
@@ -16390,26 +16390,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The date the prior leak check expires (with and without extension).
         /// </summary>
-        public static DateTime? PriorLeakExpirationDate
+        public  DateTime? PriorLeakExpirationDate
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("Prior_Leak_Expiration_Date")));
+                return ((DateTime?)(GetCheckParameter("Prior_Leak_Expiration_Date")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Prior_Leak_Expiration_Date", value);
+                SetCheckParameter("Prior_Leak_Expiration_Date", value);
             }
         }
         
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Prior Leak Check.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow PriorLeakRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow PriorLeakRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Prior_Leak_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Prior_Leak_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -16423,11 +16423,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Prior_Leak_Record", null);
+                    SetCheckParameter("Prior_Leak_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Prior_Leak_Record", value.SourceRow);
+                    SetCheckParameter("Prior_Leak_Record", value.SourceRow);
                 }
             }
         }
@@ -16435,11 +16435,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the event record that is the Prior event in the Linearity Status evaluation.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow PriorLinearityEventRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow PriorLinearityEventRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Prior_Linearity_Event_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Prior_Linearity_Event_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -16453,11 +16453,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Prior_Linearity_Event_Record", null);
+                    SetCheckParameter("Prior_Linearity_Event_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Prior_Linearity_Event_Record", value.SourceRow);
+                    SetCheckParameter("Prior_Linearity_Event_Record", value.SourceRow);
                 }
             }
         }
@@ -16465,11 +16465,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Prior linearity test.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow PriorLinearityRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow PriorLinearityRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Prior_Linearity_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Prior_Linearity_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -16483,11 +16483,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Prior_Linearity_Record", null);
+                    SetCheckParameter("Prior_Linearity_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Prior_Linearity_Record", value.SourceRow);
+                    SetCheckParameter("Prior_Linearity_Record", value.SourceRow);
                 }
             }
         }
@@ -16495,11 +16495,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Prior max level RATA test.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow PriorMaxLevelRataRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow PriorMaxLevelRataRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Prior_Max_Level_RATA_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Prior_Max_Level_RATA_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -16513,11 +16513,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Prior_Max_Level_RATA_Record", null);
+                    SetCheckParameter("Prior_Max_Level_RATA_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Prior_Max_Level_RATA_Record", value.SourceRow);
+                    SetCheckParameter("Prior_Max_Level_RATA_Record", value.SourceRow);
                 }
             }
         }
@@ -16525,11 +16525,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Prior Multi level RATA test.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow PriorMultiLevelRataRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow PriorMultiLevelRataRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Prior_Multi_Level_RATA_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Prior_Multi_Level_RATA_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -16543,11 +16543,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Prior_Multi_Level_RATA_Record", null);
+                    SetCheckParameter("Prior_Multi_Level_RATA_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Prior_Multi_Level_RATA_Record", value.SourceRow);
+                    SetCheckParameter("Prior_Multi_Level_RATA_Record", value.SourceRow);
                 }
             }
         }
@@ -16555,11 +16555,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the event record that is the Prior event in the Appendix D (PEI) Status evaluation.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow PriorPeiEventRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow PriorPeiEventRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Prior_PEI_Event_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Prior_PEI_Event_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -16573,11 +16573,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Prior_PEI_Event_Record", null);
+                    SetCheckParameter("Prior_PEI_Event_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Prior_PEI_Event_Record", value.SourceRow);
+                    SetCheckParameter("Prior_PEI_Event_Record", value.SourceRow);
                 }
             }
         }
@@ -16585,11 +16585,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Prior PEI test.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow PriorPeiRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow PriorPeiRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Prior_PEI_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Prior_PEI_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -16603,11 +16603,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Prior_PEI_Record", null);
+                    SetCheckParameter("Prior_PEI_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Prior_PEI_Record", value.SourceRow);
+                    SetCheckParameter("Prior_PEI_Record", value.SourceRow);
                 }
             }
         }
@@ -16615,11 +16615,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the event record that is the Prior event in the RATA Status evaluation.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow PriorRataEventRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow PriorRataEventRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Prior_RATA_Event_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Prior_RATA_Event_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -16633,11 +16633,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Prior_RATA_Event_Record", null);
+                    SetCheckParameter("Prior_RATA_Event_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Prior_RATA_Event_Record", value.SourceRow);
+                    SetCheckParameter("Prior_RATA_Event_Record", value.SourceRow);
                 }
             }
         }
@@ -16645,26 +16645,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates if the Prior RATA record for hourly RATA status is an Alternate Single Level RATA.
         /// </summary>
-        public static bool? PriorRataIsAlternateSingleLevelRata
+        public  bool? PriorRataIsAlternateSingleLevelRata
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Prior_Rata_Is_Alternate_Single_Level_RATA")));
+                return ((bool?)(GetCheckParameter("Prior_Rata_Is_Alternate_Single_Level_RATA")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Prior_Rata_Is_Alternate_Single_Level_RATA", value);
+                SetCheckParameter("Prior_Rata_Is_Alternate_Single_Level_RATA", value);
             }
         }
         
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the Prior RATA test.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow PriorRataRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow PriorRataRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Prior_RATA_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Prior_RATA_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -16678,11 +16678,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Prior_RATA_Record", null);
+                    SetCheckParameter("Prior_RATA_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Prior_RATA_Record", value.SourceRow);
+                    SetCheckParameter("Prior_RATA_Record", value.SourceRow);
                 }
             }
         }
@@ -16690,11 +16690,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the program code information needed to produce program list for checks.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.ProgramCodeRow> ProgramCodeTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.ProgramCodeRow> ProgramCodeTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Program_Code_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Program_Code_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -16708,11 +16708,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Program_Code_Table", null);
+                    SetCheckParameter("Program_Code_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Program_Code_Table", value.SourceView);
+                    SetCheckParameter("Program_Code_Table", value.SourceView);
                 }
             }
         }
@@ -16720,146 +16720,146 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains a list of ozone season program codes.
         /// </summary>
-        public static string ProgramIsOzoneSeasonList
+        public  string ProgramIsOzoneSeasonList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Program_is_Ozone_Season_List")));
+                return ((string)(GetCheckParameter("Program_is_Ozone_Season_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Program_is_Ozone_Season_List", value);
+                SetCheckParameter("Program_is_Ozone_Season_List", value);
             }
         }
         
         /// <summary>
         /// Contains a list of program codes for programs that require NOXC system certification.
         /// </summary>
-        public static string ProgramRequiresNoxcSystemCertificationList
+        public  string ProgramRequiresNoxcSystemCertificationList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Program_Requires_NOXC_System_Certification_List")));
+                return ((string)(GetCheckParameter("Program_Requires_NOXC_System_Certification_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Program_Requires_NOXC_System_Certification_List", value);
+                SetCheckParameter("Program_Requires_NOXC_System_Certification_List", value);
             }
         }
         
         /// <summary>
         /// Contains a list of program codes for programs that require NOX system certification.
         /// </summary>
-        public static string ProgramRequiresNoxSystemCertificationList
+        public  string ProgramRequiresNoxSystemCertificationList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Program_Requires_NOX_System_Certification_List")));
+                return ((string)(GetCheckParameter("Program_Requires_NOX_System_Certification_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Program_Requires_NOX_System_Certification_List", value);
+                SetCheckParameter("Program_Requires_NOX_System_Certification_List", value);
             }
         }
         
         /// <summary>
         /// Contains a list of program codes for programs that require SO2 certification.
         /// </summary>
-        public static string ProgramRequiresSo2SystemCertificationList
+        public  string ProgramRequiresSo2SystemCertificationList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Program_Requires_SO2_System_Certification_List")));
+                return ((string)(GetCheckParameter("Program_Requires_SO2_System_Certification_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Program_Requires_SO2_System_Certification_List", value);
+                SetCheckParameter("Program_Requires_SO2_System_Certification_List", value);
             }
         }
         
         /// <summary>
         /// Contains a list of program codes for programs that use the RUE excemption.
         /// </summary>
-        public static string ProgramUsesRueList
+        public  string ProgramUsesRueList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Program_Uses_RUE_List")));
+                return ((string)(GetCheckParameter("Program_Uses_RUE_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Program_Uses_RUE_List", value);
+                SetCheckParameter("Program_Uses_RUE_List", value);
             }
         }
         
         /// <summary>
         /// Contains the list of gas component codes in a Protocol Gas row that are balance components.
         /// </summary>
-        public static string ProtocolGasBalanceComponentList
+        public  string ProtocolGasBalanceComponentList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Protocol_Gas_Balance_Component_List")));
+                return ((string)(GetCheckParameter("Protocol_Gas_Balance_Component_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Protocol_Gas_Balance_Component_List", value);
+                SetCheckParameter("Protocol_Gas_Balance_Component_List", value);
             }
         }
         
         /// <summary>
         /// Contains the list of gas component codes in a Protocol Gas row that are duplicates.
         /// </summary>
-        public static string ProtocolGasDuplicateComponentList
+        public  string ProtocolGasDuplicateComponentList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Protocol_Gas_Duplicate_Component_List")));
+                return ((string)(GetCheckParameter("Protocol_Gas_Duplicate_Component_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Protocol_Gas_Duplicate_Component_List", value);
+                SetCheckParameter("Protocol_Gas_Duplicate_Component_List", value);
             }
         }
         
         /// <summary>
         /// Contains the list of gas component codes in a Protocol Gas row that a source should only use exclusive of other gas component codes.
         /// </summary>
-        public static string ProtocolGasExclusiveComponentList
+        public  string ProtocolGasExclusiveComponentList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Protocol_Gas_Exclusive_Component_List")));
+                return ((string)(GetCheckParameter("Protocol_Gas_Exclusive_Component_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Protocol_Gas_Exclusive_Component_List", value);
+                SetCheckParameter("Protocol_Gas_Exclusive_Component_List", value);
             }
         }
         
         /// <summary>
         /// Contains the list of invalid Gas Component Codes.
         /// </summary>
-        public static string ProtocolGasInvalidComponentList
+        public  string ProtocolGasInvalidComponentList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Protocol_Gas_Invalid_Component_List")));
+                return ((string)(GetCheckParameter("Protocol_Gas_Invalid_Component_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Protocol_Gas_Invalid_Component_List", value);
+                SetCheckParameter("Protocol_Gas_Invalid_Component_List", value);
             }
         }
         
         /// <summary>
         /// A lookup table of Protocol Gas Vendors.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ProtocolGasVendorRow> ProtocolGasVendorLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ProtocolGasVendorRow> ProtocolGasVendorLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Protocol_Gas_Vendor_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Protocol_Gas_Vendor_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -16873,11 +16873,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Protocol_Gas_Vendor_Lookup_Table", null);
+                    SetCheckParameter("Protocol_Gas_Vendor_Lookup_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Protocol_Gas_Vendor_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Protocol_Gas_Vendor_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -16885,11 +16885,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The QA Cert Events records for the monitoring configuration in the EM file being evaluated.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow> QaCertEventsForEmEvaluation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow> QaCertEventsForEmEvaluation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("QA_Cert_Events_for_EM_Evaluation")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("QA_Cert_Events_for_EM_Evaluation")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -16903,11 +16903,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("QA_Cert_Events_for_EM_Evaluation", null);
+                    SetCheckParameter("QA_Cert_Events_for_EM_Evaluation", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("QA_Cert_Events_for_EM_Evaluation", value.SourceView);
+                    SetCheckParameter("QA_Cert_Events_for_EM_Evaluation", value.SourceView);
                 }
             }
         }
@@ -16915,56 +16915,56 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Array of dictionaries containing QaCertficationSupplementalDataClass objects that are used to hold and increament operating day and hour counts for QA Certification Events.
         /// </summary>
-        public static Dictionary<string, QaCertificationSupplementalData>[] QaCertEventSuppDataDictionaryArray
+        public  Dictionary<string, QaCertificationSupplementalData>[] QaCertEventSuppDataDictionaryArray
         {
             get
             {
-                return ((Dictionary<string, QaCertificationSupplementalData>[])(EmParameters.GetCheckParameter("QA_Cert_Event_Supp_Data_Dictionary_Array")));
+                return ((Dictionary<string, QaCertificationSupplementalData>[])(GetCheckParameter("QA_Cert_Event_Supp_Data_Dictionary_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Cert_Event_Supp_Data_Dictionary_Array", value);
+                SetCheckParameter("QA_Cert_Event_Supp_Data_Dictionary_Array", value);
             }
         }
         
         /// <summary>
         /// A dictionary with a COMPONENT_ID as a key and a list of associated QA Cert Event Supp Data objects as a value.
         /// </summary>
-        public static Dictionary<string, List<QaCertificationSupplementalData>> QaCertEventSuppDataDictionaryByComponent
+        public  Dictionary<string, List<QaCertificationSupplementalData>> QaCertEventSuppDataDictionaryByComponent
         {
             get
             {
-                return ((Dictionary<string, List<QaCertificationSupplementalData>>)(EmParameters.GetCheckParameter("QA_Cert_Event_Supp_Data_Dictionary_by_Component")));
+                return ((Dictionary<string, List<QaCertificationSupplementalData>>)(GetCheckParameter("QA_Cert_Event_Supp_Data_Dictionary_by_Component")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Cert_Event_Supp_Data_Dictionary_by_Component", value);
+                SetCheckParameter("QA_Cert_Event_Supp_Data_Dictionary_by_Component", value);
             }
         }
         
         /// <summary>
         /// A dictionary with a MON_SYS_ID as a key and a list of associated QA Cert Event Supp Data objects as a value.
         /// </summary>
-        public static Dictionary<string, List<QaCertificationSupplementalData>> QaCertEventSuppDataDictionaryBySystem
+        public  Dictionary<string, List<QaCertificationSupplementalData>> QaCertEventSuppDataDictionaryBySystem
         {
             get
             {
-                return ((Dictionary<string, List<QaCertificationSupplementalData>>)(EmParameters.GetCheckParameter("QA_Cert_Event_Supp_Data_Dictionary_by_System")));
+                return ((Dictionary<string, List<QaCertificationSupplementalData>>)(GetCheckParameter("QA_Cert_Event_Supp_Data_Dictionary_by_System")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Cert_Event_Supp_Data_Dictionary_by_System", value);
+                SetCheckParameter("QA_Cert_Event_Supp_Data_Dictionary_by_System", value);
             }
         }
         
         /// <summary>
         /// The QA Certification Event records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow> QaCertificationEventRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow> QaCertificationEventRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Qa_Certification_Event_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Qa_Certification_Event_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -16978,11 +16978,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Qa_Certification_Event_Records", null);
+                    SetCheckParameter("Qa_Certification_Event_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Qa_Certification_Event_Records", value.SourceView);
+                    SetCheckParameter("Qa_Certification_Event_Records", value.SourceView);
                 }
             }
         }
@@ -16990,11 +16990,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The QA Cert Test records for the monitoring configuration in the EM file being evaluated.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> QaCertTestsForEmEvaluation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> QaCertTestsForEmEvaluation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("QA_Cert_Tests_for_EM_Evaluation")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("QA_Cert_Tests_for_EM_Evaluation")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -17008,11 +17008,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("QA_Cert_Tests_for_EM_Evaluation", null);
+                    SetCheckParameter("QA_Cert_Tests_for_EM_Evaluation", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("QA_Cert_Tests_for_EM_Evaluation", value.SourceView);
+                    SetCheckParameter("QA_Cert_Tests_for_EM_Evaluation", value.SourceView);
                 }
             }
         }
@@ -17022,15 +17022,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Currently used in the Weekly System Integrity Status checks.
         /// </summary>
-        public static DateTime? QaStatusComponentBeginDate
+        public  DateTime? QaStatusComponentBeginDate
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("QA_Status_Component_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("QA_Status_Component_Begin_Date")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Status_Component_Begin_Date", value);
+                SetCheckParameter("QA_Status_Component_Begin_Date", value);
             }
         }
         
@@ -17039,15 +17039,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Currently used in the Daily Calibration Status checks.
         /// </summary>
-        public static DateTime? QaStatusComponentBeginDatehour
+        public  DateTime? QaStatusComponentBeginDatehour
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("QA_Status_Component_Begin_Datehour")));
+                return ((DateTime?)(GetCheckParameter("QA_Status_Component_Begin_Datehour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Status_Component_Begin_Datehour", value);
+                SetCheckParameter("QA_Status_Component_Begin_Datehour", value);
             }
         }
         
@@ -17056,15 +17056,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in some QA status checks.
         /// </summary>
-        public static string QaStatusComponentId
+        public  string QaStatusComponentId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("QA_Status_Component_Id")));
+                return ((string)(GetCheckParameter("QA_Status_Component_Id")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Status_Component_Id", value);
+                SetCheckParameter("QA_Status_Component_Id", value);
             }
         }
         
@@ -17073,45 +17073,45 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in some QA status checks.
         /// </summary>
-        public static string QaStatusComponentIdentifier
+        public  string QaStatusComponentIdentifier
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("QA_Status_Component_Identifier")));
+                return ((string)(GetCheckParameter("QA_Status_Component_Identifier")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Status_Component_Identifier", value);
+                SetCheckParameter("QA_Status_Component_Identifier", value);
             }
         }
         
         /// <summary>
         /// Contains the currennt MHV or MATS MHV row's component type for use with status checking.
         /// </summary>
-        public static string QaStatusComponentTypeCode
+        public  string QaStatusComponentTypeCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("QA_Status_Component_Type_Code")));
+                return ((string)(GetCheckParameter("QA_Status_Component_Type_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Status_Component_Type_Code", value);
+                SetCheckParameter("QA_Status_Component_Type_Code", value);
             }
         }
         
         /// <summary>
         /// Contains the parameter code of the derived or monitor hourly record for which a QA status will run.
         /// </summary>
-        public static string QaStatusHourlyParameterCode
+        public  string QaStatusHourlyParameterCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("QA_Status_Hourly_Parameter_Code")));
+                return ((string)(GetCheckParameter("QA_Status_Hourly_Parameter_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Status_Hourly_Parameter_Code", value);
+                SetCheckParameter("QA_Status_Hourly_Parameter_Code", value);
             }
         }
         
@@ -17122,30 +17122,30 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///This parameter is set in MatsMhv-13 and is only populated for MATS systems/components.
         /// </summary>
-        public static DateTime? QaStatusMatsErbDate
+        public  DateTime? QaStatusMatsErbDate
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("QA_Status_MATS_ERB_Date")));
+                return ((DateTime?)(GetCheckParameter("QA_Status_MATS_ERB_Date")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Status_MATS_ERB_Date", value);
+                SetCheckParameter("QA_Status_MATS_ERB_Date", value);
             }
         }
         
         /// <summary>
         /// Contains the primary or primary bypass system id on which to perform a QA status when a primary bypass system is involved.
         /// </summary>
-        public static string QaStatusPrimaryOrPrimaryBypassSystemId
+        public  string QaStatusPrimaryOrPrimaryBypassSystemId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("QA_Status_Primary_Or_Primary_Bypass_System_Id")));
+                return ((string)(GetCheckParameter("QA_Status_Primary_Or_Primary_Bypass_System_Id")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Status_Primary_Or_Primary_Bypass_System_Id", value);
+                SetCheckParameter("QA_Status_Primary_Or_Primary_Bypass_System_Id", value);
             }
         }
         
@@ -17154,15 +17154,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in some QA status checks.
         /// </summary>
-        public static string QaStatusSystemDesignationCode
+        public  string QaStatusSystemDesignationCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("QA_Status_System_Designation_Code")));
+                return ((string)(GetCheckParameter("QA_Status_System_Designation_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Status_System_Designation_Code", value);
+                SetCheckParameter("QA_Status_System_Designation_Code", value);
             }
         }
         
@@ -17171,15 +17171,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in some QA status checks.
         /// </summary>
-        public static string QaStatusSystemId
+        public  string QaStatusSystemId
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("QA_Status_System_Id")));
+                return ((string)(GetCheckParameter("QA_Status_System_Id")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Status_System_Id", value);
+                SetCheckParameter("QA_Status_System_Id", value);
             }
         }
         
@@ -17188,41 +17188,41 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in some QA status checks.
         /// </summary>
-        public static string QaStatusSystemIdentifier
+        public  string QaStatusSystemIdentifier
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("QA_Status_System_Identifier")));
+                return ((string)(GetCheckParameter("QA_Status_System_Identifier")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Status_System_Identifier", value);
+                SetCheckParameter("QA_Status_System_Identifier", value);
             }
         }
         
         /// <summary>
         /// Contains the System Type for the current Monitor Hour Value or MATS Monitor Hourly Value record for which a QA status is being evaluated.
         /// </summary>
-        public static string QaStatusSystemTypeCode
+        public  string QaStatusSystemTypeCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("QA_Status_System_Type_Code")));
+                return ((string)(GetCheckParameter("QA_Status_System_Type_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("QA_Status_System_Type_Code", value);
+                SetCheckParameter("QA_Status_System_Type_Code", value);
             }
         }
         
         /// <summary>
         /// The QA Supplemental Attribute records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppAttributeRow> QaSupplementalAttributeRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppAttributeRow> QaSupplementalAttributeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("QA_Supplemental_Attribute_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("QA_Supplemental_Attribute_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -17236,11 +17236,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("QA_Supplemental_Attribute_Records", null);
+                    SetCheckParameter("QA_Supplemental_Attribute_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("QA_Supplemental_Attribute_Records", value.SourceView);
+                    SetCheckParameter("QA_Supplemental_Attribute_Records", value.SourceView);
                 }
             }
         }
@@ -17248,26 +17248,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// This parameter contains a list of Location Names with missing peeking qualification percent entries.
         /// </summary>
-        public static string QualificationPercentMissingList
+        public  string QualificationPercentMissingList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Qualification_Percent_Missing_List")));
+                return ((string)(GetCheckParameter("Qualification_Percent_Missing_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Qualification_Percent_Missing_List", value);
+                SetCheckParameter("Qualification_Percent_Missing_List", value);
             }
         }
         
         /// <summary>
         /// Cross-Check Table defining a tolerance (amount of error that is allowable in a calculation) per parameter and unit of measure
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.QuarterlyEmissionsTolerancesRow> QuarterlyEmissionsTolerancesCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.QuarterlyEmissionsTolerancesRow> QuarterlyEmissionsTolerancesCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Quarterly_Emissions_Tolerances_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Quarterly_Emissions_Tolerances_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -17281,11 +17281,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Quarterly_Emissions_Tolerances_Cross_Check_Table", null);
+                    SetCheckParameter("Quarterly_Emissions_Tolerances_Cross_Check_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Quarterly_Emissions_Tolerances_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Quarterly_Emissions_Tolerances_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -17295,86 +17295,86 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Indicates wheather an MHV record requires a Quarterly Gas Audit Status Evaluation.
         /// </summary>
-        public static bool? QuarterlyGasAuditStatus
+        public  bool? QuarterlyGasAuditStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Quarterly_Gas_Audit_Status")));
+                return ((bool?)(GetCheckParameter("Quarterly_Gas_Audit_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Quarterly_Gas_Audit_Status", value);
+                SetCheckParameter("Quarterly_Gas_Audit_Status", value);
             }
         }
         
         /// <summary>
         /// The number of operating levels that must be or were performed in a RATA following a certification event.
         /// </summary>
-        public static int? RataEventOperatingLevelCount
+        public  int? RataEventOperatingLevelCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("RATA_Event_Operating_Level_Count")));
+                return ((int?)(GetCheckParameter("RATA_Event_Operating_Level_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("RATA_Event_Operating_Level_Count", value);
+                SetCheckParameter("RATA_Event_Operating_Level_Count", value);
             }
         }
         
         /// <summary>
         /// Contains the year/qtr information when Missing Op data is the result for RATA Status.
         /// </summary>
-        public static string RataMissingOpDataInfo
+        public  string RataMissingOpDataInfo
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("RATA_Missing_Op_Data_Info")));
+                return ((string)(GetCheckParameter("RATA_Missing_Op_Data_Info")));
             }
             set
             {
-                EmParameters.SetCheckParameter("RATA_Missing_Op_Data_Info", value);
+                SetCheckParameter("RATA_Missing_Op_Data_Info", value);
             }
         }
         
         /// <summary>
         /// The bias adjustment factor from the prior test.
         /// </summary>
-        public static decimal? RataStatusBaf
+        public  decimal? RataStatusBaf
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("RATA_Status_BAF")));
+                return ((decimal?)(GetCheckParameter("RATA_Status_BAF")));
             }
             set
             {
-                EmParameters.SetCheckParameter("RATA_Status_BAF", value);
+                SetCheckParameter("RATA_Status_BAF", value);
             }
         }
         
         /// <summary>
         /// Indicates if an MHV or DHV record requires the RATA Status Evaluation.
         /// </summary>
-        public static bool? RataStatusRequired
+        public  bool? RataStatusRequired
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("RATA_Status_Required")));
+                return ((bool?)(GetCheckParameter("RATA_Status_Required")));
             }
             set
             {
-                EmParameters.SetCheckParameter("RATA_Status_Required", value);
+                SetCheckParameter("RATA_Status_Required", value);
             }
         }
         
         /// <summary>
         /// All RATA test summary records for the location.  Used by the QA Status evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> RataTestRecordsByLocationForQaStatus
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> RataTestRecordsByLocationForQaStatus
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("RATA_Test_Records_By_Location_For_QA_Status")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("RATA_Test_Records_By_Location_For_QA_Status")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -17388,11 +17388,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("RATA_Test_Records_By_Location_For_QA_Status", null);
+                    SetCheckParameter("RATA_Test_Records_By_Location_For_QA_Status", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("RATA_Test_Records_By_Location_For_QA_Status", value.SourceView);
+                    SetCheckParameter("RATA_Test_Records_By_Location_For_QA_Status", value.SourceView);
                 }
             }
         }
@@ -17400,15 +17400,15 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Generic field used to display a reported emissions value in an error message.
         /// </summary>
-        public static string ReportedEmissionsValue
+        public  string ReportedEmissionsValue
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Reported_Emissions_Value")));
+                return ((string)(GetCheckParameter("Reported_Emissions_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Reported_Emissions_Value", value);
+                SetCheckParameter("Reported_Emissions_Value", value);
             }
         }
         
@@ -17419,11 +17419,11 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Primarily used by Emission Report QA Status checks.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.ReportingFrequencyByLocationQuarter> ReportingFrequencyByLocationQuarter
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.ReportingFrequencyByLocationQuarter> ReportingFrequencyByLocationQuarter
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Reporting_Frequency_by_Location_Quarter")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Reporting_Frequency_by_Location_Quarter")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -17437,11 +17437,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Reporting_Frequency_by_Location_Quarter", null);
+                    SetCheckParameter("Reporting_Frequency_by_Location_Quarter", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Reporting_Frequency_by_Location_Quarter", value.SourceView);
+                    SetCheckParameter("Reporting_Frequency_by_Location_Quarter", value.SourceView);
                 }
             }
         }
@@ -17449,255 +17449,255 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates whether there are any hours of operation in the reporting period in the emissions file being evaluated.
         /// </summary>
-        public static bool? ReportingPeriodOperating
+        public  bool? ReportingPeriodOperating
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Reporting_Period_Operating")));
+                return ((bool?)(GetCheckParameter("Reporting_Period_Operating")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Reporting_Period_Operating", value);
+                SetCheckParameter("Reporting_Period_Operating", value);
             }
         }
         
         /// <summary>
         /// The first day of emissions reporting for the RGGI program.
         /// </summary>
-        public static DateTime? RggiBeginDate
+        public  DateTime? RggiBeginDate
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("RGGI_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("RGGI_Begin_Date")));
             }
             set
             {
-                EmParameters.SetCheckParameter("RGGI_Begin_Date", value);
+                SetCheckParameter("RGGI_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The first quarter in the current year of the reporting period when a location was affected by RGGI.
         /// </summary>
-        public static int? RggiStartQuarter
+        public  int? RggiStartQuarter
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("RGGI_Start_Quarter")));
+                return ((int?)(GetCheckParameter("RGGI_Start_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("RGGI_Start_Quarter", value);
+                SetCheckParameter("RGGI_Start_Quarter", value);
             }
         }
         
         /// <summary>
         /// The recalculated quarterly value for CO2 Mass.
         /// </summary>
-        public static decimal? RptPeriodCo2MassCalculatedValue
+        public  decimal? RptPeriodCo2MassCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Rpt_Period_CO2_Mass_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("Rpt_Period_CO2_Mass_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Rpt_Period_CO2_Mass_Calculated_Value", value);
+                SetCheckParameter("Rpt_Period_CO2_Mass_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated quarterly value for heat input.
         /// </summary>
-        public static decimal? RptPeriodHiCalculatedValue
+        public  decimal? RptPeriodHiCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Rpt_Period_HI_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("Rpt_Period_HI_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Rpt_Period_HI_Calculated_Value", value);
+                SetCheckParameter("Rpt_Period_HI_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated quarterly value for NOx Mass.
         /// </summary>
-        public static decimal? RptPeriodNoxMassCalculatedValue
+        public  decimal? RptPeriodNoxMassCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Rpt_Period_NOx_Mass_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("Rpt_Period_NOx_Mass_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Rpt_Period_NOx_Mass_Calculated_Value", value);
+                SetCheckParameter("Rpt_Period_NOx_Mass_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated quarterly value for NOx Emission Rate.
         /// </summary>
-        public static decimal? RptPeriodNoxRateCalculatedValue
+        public  decimal? RptPeriodNoxRateCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Rpt_Period_NOx_Rate_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("Rpt_Period_NOx_Rate_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Rpt_Period_NOx_Rate_Calculated_Value", value);
+                SetCheckParameter("Rpt_Period_NOx_Rate_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The total number of operating hours that NOx Rate was calculated for this location in the reporting period.
         /// </summary>
-        public static int? RptPeriodNoxRateHours
+        public  int? RptPeriodNoxRateHours
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Rpt_Period_NOx_Rate_Hours")));
+                return ((int?)(GetCheckParameter("Rpt_Period_NOx_Rate_Hours")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Rpt_Period_NOx_Rate_Hours", value);
+                SetCheckParameter("Rpt_Period_NOx_Rate_Hours", value);
             }
         }
         
         /// <summary>
         /// The sum of the hourly NOx Rate values calculated for this location in the reporting period.
         /// </summary>
-        public static string RptPeriodNoxRateSum
+        public  string RptPeriodNoxRateSum
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Rpt_Period_NOx_Rate_Sum")));
+                return ((string)(GetCheckParameter("Rpt_Period_NOx_Rate_Sum")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Rpt_Period_NOx_Rate_Sum", value);
+                SetCheckParameter("Rpt_Period_NOx_Rate_Sum", value);
             }
         }
         
         /// <summary>
         /// The recalculated quarterly value for operating days.
         /// </summary>
-        public static int? RptPeriodOpDaysCalculatedValue
+        public  int? RptPeriodOpDaysCalculatedValue
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Rpt_Period_Op_Days_Calculated_Value")));
+                return ((int?)(GetCheckParameter("Rpt_Period_Op_Days_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Rpt_Period_Op_Days_Calculated_Value", value);
+                SetCheckParameter("Rpt_Period_Op_Days_Calculated_Value", value);
             }
         }
 
         /// <summary>
         /// Accumulates the total Op Hours Reported  - array indexed based on location entities (stacks/pipes/units)
         /// </summary>
-        public static Int32[] RptPeriodOpHoursAccumulatorArray
+        public  Int32[] RptPeriodOpHoursAccumulatorArray
         {
             get
             {
-                return ((Int32[])(EmParameters.GetCheckParameter("Rpt_Period_Op_Hours_Accumulator_Array")));
+                return ((Int32[])(GetCheckParameter("Rpt_Period_Op_Hours_Accumulator_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Rpt_Period_Op_Hours_Accumulator_Array", value);
+                SetCheckParameter("Rpt_Period_Op_Hours_Accumulator_Array", value);
             }
         }
         
         /// <summary>
         /// The recalculated quarterly value for operating hours.
         /// </summary>
-        public static int? RptPeriodOpHoursCalculatedValue
+        public  int? RptPeriodOpHoursCalculatedValue
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Rpt_Period_Op_Hours_Calculated_Value")));
+                return ((int?)(GetCheckParameter("Rpt_Period_Op_Hours_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Rpt_Period_Op_Hours_Calculated_Value", value);
+                SetCheckParameter("Rpt_Period_Op_Hours_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated quarterly value for operating time.
         /// </summary>
-        public static decimal? RptPeriodOpTimeCalculatedValue
+        public  decimal? RptPeriodOpTimeCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Rpt_Period_Op_Time_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("Rpt_Period_Op_Time_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Rpt_Period_Op_Time_Calculated_Value", value);
+                SetCheckParameter("Rpt_Period_Op_Time_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// The recalculated quarterly value for SO2 Mass.
         /// </summary>
-        public static decimal? RptPeriodSo2MassCalculatedValue
+        public  decimal? RptPeriodSo2MassCalculatedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Rpt_Period_SO2_Mass_Calculated_Value")));
+                return ((decimal?)(GetCheckParameter("Rpt_Period_SO2_Mass_Calculated_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Rpt_Period_SO2_Mass_Calculated_Value", value);
+                SetCheckParameter("Rpt_Period_SO2_Mass_Calculated_Value", value);
             }
         }
         
         /// <summary>
         /// Accumulator variable used to sum up the Appendix D SO2 Mass Rate from all fuel sources
         /// </summary>
-        public static decimal? So2AppDAccumulator
+        public  decimal? So2AppDAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("So2_App_D_Accumulator")));
+                return ((decimal?)(GetCheckParameter("So2_App_D_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("So2_App_D_Accumulator", value);
+                SetCheckParameter("So2_App_D_Accumulator", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the active method for SO2 at the current location during the current hour is for Appendix D
         /// </summary>
-        public static bool? So2AppDMethodActiveForHour
+        public  bool? So2AppDMethodActiveForHour
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("SO2_App_D_Method_Active_For_Hour")));
+                return ((bool?)(GetCheckParameter("SO2_App_D_Method_Active_For_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2_App_D_Method_Active_For_Hour", value);
+                SetCheckParameter("SO2_App_D_Method_Active_For_Hour", value);
             }
         }
         
         /// <summary>
         /// Bypass Approach Code of active SO2 Monitor Method entries for the current configuration during the current hour
         /// </summary>
-        public static string So2BypassCode
+        public  string So2BypassCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("SO2_Bypass_Code")));
+                return ((string)(GetCheckParameter("SO2_Bypass_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2_Bypass_Code", value);
+                SetCheckParameter("SO2_Bypass_Code", value);
             }
         }
         
@@ -17706,15 +17706,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? So2CalculatedAdjustedValue
+        public  decimal? So2CalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("SO2_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("SO2_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2_Calculated_Adjusted_Value", value);
+                SetCheckParameter("SO2_Calculated_Adjusted_Value", value);
             }
         }
         
@@ -17723,101 +17723,101 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current MHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? So2cCalculatedAdjustedValue
+        public  decimal? So2cCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("SO2C_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("SO2C_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2C_Calculated_Adjusted_Value", value);
+                SetCheckParameter("SO2C_Calculated_Adjusted_Value", value);
             }
         }
         
         /// <summary>
         /// Boolean value to describe whether or not there is an SO2 method for CEM defined in the monitoring plan that is active during the current hour
         /// </summary>
-        public static bool? So2CemMethodActiveForHour
+        public  bool? So2CemMethodActiveForHour
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("SO2_CEM_Method_Active_For_Hour")));
+                return ((bool?)(GetCheckParameter("SO2_CEM_Method_Active_For_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2_CEM_Method_Active_For_Hour", value);
+                SetCheckParameter("SO2_CEM_Method_Active_For_Hour", value);
             }
         }
         
         /// <summary>
         /// Indicates whether reported SO2C is only used for the MATS program and that ARP, both C-SAPR SO2, and older SO2 programs are not active for the hour.
         /// </summary>
-        public static bool? So2cIsOnlyForMats
+        public  bool? So2cIsOnlyForMats
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("SO2C_Is_Only_for_MATS")));
+                return ((bool?)(GetCheckParameter("SO2C_Is_Only_for_MATS")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2C_Is_Only_for_MATS", value);
+                SetCheckParameter("SO2C_Is_Only_for_MATS", value);
             }
         }
         
         /// <summary>
         /// Flag to indicate whether or not it is necessary to perform SO2 Derived Hourly checks at this location for the current hour
         /// </summary>
-        public static bool? So2DerivedHourlyChecksNeeded
+        public  bool? So2DerivedHourlyChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("SO2_Derived_Hourly_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("SO2_Derived_Hourly_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2_Derived_Hourly_Checks_Needed", value);
+                SetCheckParameter("SO2_Derived_Hourly_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// The number of DerivedHourlyValueData records with parameter "SO2" that have been reported for the Current Hour
         /// </summary>
-        public static int? So2DerivedHourlyCount
+        public  int? So2DerivedHourlyCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("SO2_Derived_Hourly_Count")));
+                return ((int?)(GetCheckParameter("SO2_Derived_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2_Derived_Hourly_Count", value);
+                SetCheckParameter("SO2_Derived_Hourly_Count", value);
             }
         }
         
         /// <summary>
         /// flag to indicate whether or not all Derived Hourly checks for SO2 have passed successfully
         /// </summary>
-        public static bool? So2DerivedHourlyStatus
+        public  bool? So2DerivedHourlyStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("SO2_Derived_Hourly_Status")));
+                return ((bool?)(GetCheckParameter("SO2_Derived_Hourly_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2_Derived_Hourly_Status", value);
+                SetCheckParameter("SO2_Derived_Hourly_Status", value);
             }
         }
         
         /// <summary>
         /// The SO2 and SO2M Derived Hourly Value Records By Hour and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueSo2Row> So2DerivedHourlyValueRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueSo2Row> So2DerivedHourlyValueRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("SO2_Derived_Hourly_Value_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("SO2_Derived_Hourly_Value_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -17831,11 +17831,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("SO2_Derived_Hourly_Value_Records_By_Hour_Location", null);
+                    SetCheckParameter("SO2_Derived_Hourly_Value_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("SO2_Derived_Hourly_Value_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("SO2_Derived_Hourly_Value_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -17843,45 +17843,45 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// A code that references an equation in MonitoringFormulaData that will be used for calculations for the current record (specific to Parameter SO2)
         /// </summary>
-        public static bool? So2EquationCode
+        public  bool? So2EquationCode
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("SO2_Equation_Code")));
+                return ((bool?)(GetCheckParameter("SO2_Equation_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2_Equation_Code", value);
+                SetCheckParameter("SO2_Equation_Code", value);
             }
         }
         
         /// <summary>
         /// Boolean value to describe whether or not there is an SO2 method for F23 defined in the monitoring plan that is active during the current hour
         /// </summary>
-        public static bool? So2F23MethodActiveForHour
+        public  bool? So2F23MethodActiveForHour
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("SO2_F23_Method_Active_For_Hour")));
+                return ((bool?)(GetCheckParameter("SO2_F23_Method_Active_For_Hour")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2_F23_Method_Active_For_Hour", value);
+                SetCheckParameter("SO2_F23_Method_Active_For_Hour", value);
             }
         }
         
         /// <summary>
         /// Indicates if SO2 Monitor Method for the current configuration during the current hour uses fuel-specific missing data approach
         /// </summary>
-        public static bool? So2FuelSpecificMissingData
+        public  bool? So2FuelSpecificMissingData
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("So2_Fuel_Specific_Missing_Data")));
+                return ((bool?)(GetCheckParameter("So2_Fuel_Specific_Missing_Data")));
             }
             set
             {
-                EmParameters.SetCheckParameter("So2_Fuel_Specific_Missing_Data", value);
+                SetCheckParameter("So2_Fuel_Specific_Missing_Data", value);
             }
         }
         
@@ -17890,15 +17890,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///This parameter is initialized to false in HOUROP-3 and set to true in HOURAD-24.
         /// </summary>
-        public static bool? So2HpffExists
+        public  bool? So2HpffExists
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("SO2_HPFF_Exists")));
+                return ((bool?)(GetCheckParameter("SO2_HPFF_Exists")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2_HPFF_Exists", value);
+                SetCheckParameter("SO2_HPFF_Exists", value);
             }
         }
         
@@ -17907,101 +17907,101 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Field to be updated: Current DHV Record.CalcAdjustedHourlyValue
         /// </summary>
-        public static decimal? So2mCalculatedAdjustedValue
+        public  decimal? So2mCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("SO2M_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("SO2M_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2M_Calculated_Adjusted_Value", value);
+                SetCheckParameter("SO2M_Calculated_Adjusted_Value", value);
             }
         }
         
         /// <summary>
         /// Flag to indicate whether or not it is necessary to perform SO2M Derived Hourly checks at this location for the current hour
         /// </summary>
-        public static bool? So2mDerivedChecksNeeded
+        public  bool? So2mDerivedChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("SO2M_Derived_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("SO2M_Derived_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2M_Derived_Checks_Needed", value);
+                SetCheckParameter("SO2M_Derived_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// flag to indicate whether or not all Derived Hourly checks for SO2M have passed successfully
         /// </summary>
-        public static bool? So2mDerivedHourlyStatus
+        public  bool? So2mDerivedHourlyStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("SO2M_Derived_Hourly_Status")));
+                return ((bool?)(GetCheckParameter("SO2M_Derived_Hourly_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2M_Derived_Hourly_Status", value);
+                SetCheckParameter("SO2M_Derived_Hourly_Status", value);
             }
         }
         
         /// <summary>
         /// Method Code of active SO2 Monitor Method entries for the current configuration during the current hour
         /// </summary>
-        public static string So2MethodCode
+        public  string So2MethodCode
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("SO2_Method_Code")));
+                return ((string)(GetCheckParameter("SO2_Method_Code")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2_Method_Code", value);
+                SetCheckParameter("SO2_Method_Code", value);
             }
         }
         
         /// <summary>
         /// flag to indicate whether or not checks need to be launched for SO2 Monitor Hourly data
         /// </summary>
-        public static bool? So2MonitorHourlyChecksNeeded
+        public  bool? So2MonitorHourlyChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("SO2_Monitor_Hourly_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("SO2_Monitor_Hourly_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2_Monitor_Hourly_Checks_Needed", value);
+                SetCheckParameter("SO2_Monitor_Hourly_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// The number of MonitorHourlyValueData records that have been defined with paramter "SO2C" for the current hour
         /// </summary>
-        public static int? So2MonitorHourlyCount
+        public  int? So2MonitorHourlyCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("So2_Monitor_Hourly_Count")));
+                return ((int?)(GetCheckParameter("So2_Monitor_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("So2_Monitor_Hourly_Count", value);
+                SetCheckParameter("So2_Monitor_Hourly_Count", value);
             }
         }
         
         /// <summary>
         /// The SO2 Monitor Hourly Value Records By Hour and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueSo2cRow> So2MonitorHourlyValueRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorHrlyValueSo2cRow> So2MonitorHourlyValueRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("SO2_Monitor_Hourly_Value_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("SO2_Monitor_Hourly_Value_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18015,11 +18015,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("SO2_Monitor_Hourly_Value_Records_By_Hour_Location", null);
+                    SetCheckParameter("SO2_Monitor_Hourly_Value_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("SO2_Monitor_Hourly_Value_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("SO2_Monitor_Hourly_Value_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -18027,56 +18027,56 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Flag to indicate whether or not it is necessary to perform SO2R Derived Hourly checks at this location for the current hour
         /// </summary>
-        public static bool? So2rDerivedChecksNeeded
+        public  bool? So2rDerivedChecksNeeded
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("SO2R_Derived_Checks_Needed")));
+                return ((bool?)(GetCheckParameter("SO2R_Derived_Checks_Needed")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2R_Derived_Checks_Needed", value);
+                SetCheckParameter("SO2R_Derived_Checks_Needed", value);
             }
         }
         
         /// <summary>
         /// The number of DerivedHourlyValueData records with parameter "SO2R" that have been reported for the Current Hour
         /// </summary>
-        public static int? So2rDerivedHourlyCount
+        public  int? So2rDerivedHourlyCount
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("SO2R_Derived_Hourly_Count")));
+                return ((int?)(GetCheckParameter("SO2R_Derived_Hourly_Count")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2R_Derived_Hourly_Count", value);
+                SetCheckParameter("SO2R_Derived_Hourly_Count", value);
             }
         }
         
         /// <summary>
         /// flag to indicate whether or not all Derived Hourly checks for SO2R have passed successfully
         /// </summary>
-        public static bool? So2rDerivedHourlyStatus
+        public  bool? So2rDerivedHourlyStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("SO2R_Derived_Hourly_Status")));
+                return ((bool?)(GetCheckParameter("SO2R_Derived_Hourly_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2R_Derived_Hourly_Status", value);
+                SetCheckParameter("SO2R_Derived_Hourly_Status", value);
             }
         }
         
         /// <summary>
         /// The SO2R Derived Hourly Value Records By Hour and Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueSo2rRow> So2rDerivedHourlyValueRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpDerivedHrlyValueSo2rRow> So2rDerivedHourlyValueRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("SO2R_Derived_Hourly_Value_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("SO2R_Derived_Hourly_Value_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18090,11 +18090,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("SO2R_Derived_Hourly_Value_Records_By_Hour_Location", null);
+                    SetCheckParameter("SO2R_Derived_Hourly_Value_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("SO2R_Derived_Hourly_Value_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("SO2R_Derived_Hourly_Value_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -18102,26 +18102,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The first quarter in the current year of the reporting period when SO2 method was active for the location.
         /// </summary>
-        public static int? So2StartQuarter
+        public  int? So2StartQuarter
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("SO2_Start_Quarter")));
+                return ((int?)(GetCheckParameter("SO2_Start_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("SO2_Start_Quarter", value);
+                SetCheckParameter("SO2_Start_Quarter", value);
             }
         }
         
         /// <summary>
         /// Span Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorSpanRow> SpanRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorSpanRow> SpanRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Span_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Span_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18135,11 +18135,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Span_Records", null);
+                    SetCheckParameter("Span_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Span_Records", value.SourceView);
+                    SetCheckParameter("Span_Records", value.SourceView);
                 }
             }
         }
@@ -18147,116 +18147,116 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates if the unit (or units linked to the location) burned OOL, PRS, PRG, or PRS fuel during the hour.
         /// </summary>
-        public static bool? SpecialFuelBurned
+        public  bool? SpecialFuelBurned
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Special_Fuel_Burned")));
+                return ((bool?)(GetCheckParameter("Special_Fuel_Burned")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Special_Fuel_Burned", value);
+                SetCheckParameter("Special_Fuel_Burned", value);
             }
         }
         
         /// <summary>
         /// Indicates if it has been determined that the unit (or units linked to the location) burned OOL, PRS, PRG, or PRS fuel during the hour.
         /// </summary>
-        public static bool? SpecialFuelDetermined
+        public  bool? SpecialFuelDetermined
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Special_Fuel_Determined")));
+                return ((bool?)(GetCheckParameter("Special_Fuel_Determined")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Special_Fuel_Determined", value);
+                SetCheckParameter("Special_Fuel_Determined", value);
             }
         }
         
         /// <summary>
         /// The value calculated for Stack Flow based on the Bias Adjustment Facotr
         /// </summary>
-        public static decimal? StackFlowCalculatedAdjustedValue
+        public  decimal? StackFlowCalculatedAdjustedValue
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Stack_Flow_Calculated_Adjusted_Value")));
+                return ((decimal?)(GetCheckParameter("Stack_Flow_Calculated_Adjusted_Value")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Stack_Flow_Calculated_Adjusted_Value", value);
+                SetCheckParameter("Stack_Flow_Calculated_Adjusted_Value", value);
             }
         }
         
         /// <summary>
         /// Sums the total heat input at all common and multiple stacks for a given hour in a monitoring plan by multiplying heat input rate times op time at each unit
         /// </summary>
-        public static decimal? StackHeatinputtimesoptimeAccumulator
+        public  decimal? StackHeatinputtimesoptimeAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Stack_HeatInputTimesOpTime_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Stack_HeatInputTimesOpTime_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Stack_HeatInputTimesOpTime_Accumulator", value);
+                SetCheckParameter("Stack_HeatInputTimesOpTime_Accumulator", value);
             }
         }
         
         /// <summary>
         /// Contains the sum of the products "Stack Load" times "Stack Operating Time" for all stacks in the monitoring plan during the current hour
         /// </summary>
-        public static decimal? StackLoadtimesoptimeAccumulator
+        public  decimal? StackLoadtimesoptimeAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Stack_Loadtimesoptime_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Stack_Loadtimesoptime_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Stack_Loadtimesoptime_Accumulator", value);
+                SetCheckParameter("Stack_Loadtimesoptime_Accumulator", value);
             }
         }
         
         /// <summary>
         /// Sums Operating Time for all stacks in Monitoring Plan during current hour
         /// </summary>
-        public static decimal? StackOptimeAccumulator
+        public  decimal? StackOptimeAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Stack_Optime_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Stack_Optime_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Stack_Optime_Accumulator", value);
+                SetCheckParameter("Stack_Optime_Accumulator", value);
             }
         }
         
         /// <summary>
         /// The first quarter in the current year of the reporting period when any method was active for the location.
         /// </summary>
-        public static int? StartQuarter
+        public  int? StartQuarter
         {
             get
             {
-                return ((int?)(EmParameters.GetCheckParameter("Start_Quarter")));
+                return ((int?)(GetCheckParameter("Start_Quarter")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Start_Quarter", value);
+                SetCheckParameter("Start_Quarter", value);
             }
         }
         
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the subsequent recertification linearity test.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow SubsequentLinearityRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow SubsequentLinearityRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Subsequent_Linearity_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Subsequent_Linearity_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -18270,11 +18270,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Subsequent_Linearity_Record", null);
+                    SetCheckParameter("Subsequent_Linearity_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Subsequent_Linearity_Record", value.SourceRow);
+                    SetCheckParameter("Subsequent_Linearity_Record", value.SourceRow);
                 }
             }
         }
@@ -18282,11 +18282,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Used by the Hourly QA Status checks to store the test record that is the subsequent recertification RATA test.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow SubsequentRataRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow SubsequentRataRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("Subsequent_RATA_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Subsequent_RATA_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -18300,11 +18300,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Subsequent_RATA_Record", null);
+                    SetCheckParameter("Subsequent_RATA_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Subsequent_RATA_Record", value.SourceRow);
+                    SetCheckParameter("Subsequent_RATA_Record", value.SourceRow);
                 }
             }
         }
@@ -18312,11 +18312,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Records in SummaryValue table that are consistent with the current reporting period
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow> SummaryValueRecordsByReportingPeriodLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwEvemSummaryValueRow> SummaryValueRecordsByReportingPeriodLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Summary_Value_Records_By_Reporting_Period_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Summary_Value_Records_By_Reporting_Period_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18330,11 +18330,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Summary_Value_Records_By_Reporting_Period_Location", null);
+                    SetCheckParameter("Summary_Value_Records_By_Reporting_Period_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Summary_Value_Records_By_Reporting_Period_Location", value.SourceView);
+                    SetCheckParameter("Summary_Value_Records_By_Reporting_Period_Location", value.SourceView);
                 }
             }
         }
@@ -18342,11 +18342,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Monitor_System_Component records linked to the current component including the fields from the associated system record.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> SystemComponentRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> SystemComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("System_Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18360,11 +18360,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("System_Component_Records", null);
+                    SetCheckParameter("System_Component_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("System_Component_Records", value.SourceView);
+                    SetCheckParameter("System_Component_Records", value.SourceView);
                 }
             }
         }
@@ -18372,11 +18372,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// System Fuel Flow and associated system data for the current system and hour.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpSystemFuelFlowRow> SystemFuelFlowRecordsForHour
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpSystemFuelFlowRow> SystemFuelFlowRecordsForHour
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("System_Fuel_Flow_Records_For_Hour")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Fuel_Flow_Records_For_Hour")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18390,11 +18390,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("System_Fuel_Flow_Records_For_Hour", null);
+                    SetCheckParameter("System_Fuel_Flow_Records_For_Hour", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("System_Fuel_Flow_Records_For_Hour", value.SourceView);
+                    SetCheckParameter("System_Fuel_Flow_Records_For_Hour", value.SourceView);
                 }
             }
         }
@@ -18402,26 +18402,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Constains the system operating supplemental data for system and reporting period combinations.
         /// </summary>
-        public static Dictionary<string, SystemOperatingSupplementalData>[] SystemOperatingSuppDataDictionaryArray
+        public  Dictionary<string, SystemOperatingSupplementalData>[] SystemOperatingSuppDataDictionaryArray
         {
             get
             {
-                return ((Dictionary<string, SystemOperatingSupplementalData>[])(EmParameters.GetCheckParameter("System_Operating_Supp_Data_Dictionary_Array")));
+                return ((Dictionary<string, SystemOperatingSupplementalData>[])(GetCheckParameter("System_Operating_Supp_Data_Dictionary_Array")));
             }
             set
             {
-                EmParameters.SetCheckParameter("System_Operating_Supp_Data_Dictionary_Array", value);
+                SetCheckParameter("System_Operating_Supp_Data_Dictionary_Array", value);
             }
         }
         
         /// <summary>
         /// The System Operating Supplemental Data records for the current location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.SystemOpSuppData> SystemOperatingSuppDataRecordsByLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckEm.Function.SystemOpSuppData> SystemOperatingSuppDataRecordsByLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("System_Operating_Supp_Data_Records_by_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Operating_Supp_Data_Records_by_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18435,11 +18435,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("System_Operating_Supp_Data_Records_by_Location", null);
+                    SetCheckParameter("System_Operating_Supp_Data_Records_by_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("System_Operating_Supp_Data_Records_by_Location", value.SourceView);
+                    SetCheckParameter("System_Operating_Supp_Data_Records_by_Location", value.SourceView);
                 }
             }
         }
@@ -18447,11 +18447,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Lookup table that stores system-wide values.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwSystemParameterRow> SystemParameterLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwSystemParameterRow> SystemParameterLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("System_Parameter_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Parameter_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18465,11 +18465,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("System_Parameter_Lookup_Table", null);
+                    SetCheckParameter("System_Parameter_Lookup_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("System_Parameter_Lookup_Table", value.SourceView);
+                    SetCheckParameter("System_Parameter_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -18477,11 +18477,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Cross check table linking parameter, units of measure, and fuel to the Table D-6 default value.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.TableD6MissingDataValuesRow> TableD6MissingDataValues
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.TableD6MissingDataValuesRow> TableD6MissingDataValues
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Table_D-6_Missing_Data_Values")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Table_D-6_Missing_Data_Values")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18495,11 +18495,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Table_D-6_Missing_Data_Values", null);
+                    SetCheckParameter("Table_D-6_Missing_Data_Values", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Table_D-6_Missing_Data_Values", value.SourceView);
+                    SetCheckParameter("Table_D-6_Missing_Data_Values", value.SourceView);
                 }
             }
         }
@@ -18509,15 +18509,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Should be set and used with in the same category.  Do not use in the child category of the category in which it is set.  It can be used within two different categories as long is one category is not a descendant of the other.
         /// </summary>
-        public static bool? TestDateTimeValid
+        public  bool? TestDateTimeValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Test_Date_Time_Valid")));
+                return ((bool?)(GetCheckParameter("Test_Date_Time_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Test_Date_Time_Valid", value);
+                SetCheckParameter("Test_Date_Time_Valid", value);
             }
         }
         
@@ -18526,26 +18526,26 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Should be set and used with in the same category.  Do not use in the child category of the category in which it is set.  It can be used within two different categories as long is one category is not a descendant of the other.
         /// </summary>
-        public static bool? TestDateValid
+        public  bool? TestDateValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Test_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Test_Date_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Test_Date_Valid", value);
+                SetCheckParameter("Test_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// The Test Extension Exemption records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestExtensionExemptionRow> TestExtensionExemptionRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestExtensionExemptionRow> TestExtensionExemptionRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Test_Extension_Exemption_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Test_Extension_Exemption_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18559,11 +18559,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Test_Extension_Exemption_Records", null);
+                    SetCheckParameter("Test_Extension_Exemption_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Test_Extension_Exemption_Records", value.SourceView);
+                    SetCheckParameter("Test_Extension_Exemption_Records", value.SourceView);
                 }
             }
         }
@@ -18571,11 +18571,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The Test Extension Exemption records for the monitoring configuration in the EM file being evaluated.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow> TestExtensionExemptionsForEmEvaluation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow> TestExtensionExemptionsForEmEvaluation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Test_Extension_Exemptions_for_EM_Evaluation")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Test_Extension_Exemptions_for_EM_Evaluation")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18589,11 +18589,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Test_Extension_Exemptions_for_EM_Evaluation", null);
+                    SetCheckParameter("Test_Extension_Exemptions_for_EM_Evaluation", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Test_Extension_Exemptions_for_EM_Evaluation", value.SourceView);
+                    SetCheckParameter("Test_Extension_Exemptions_for_EM_Evaluation", value.SourceView);
                 }
             }
         }
@@ -18603,41 +18603,41 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Should be set and used with in the same category.  Do not use in the child category of the category in which it is set.  It can be used within two different categories as long is one category is not a descendant of the other.
         /// </summary>
-        public static bool? TestHourValid
+        public  bool? TestHourValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Test_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Test_Hour_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Test_Hour_Valid", value);
+                SetCheckParameter("Test_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// Contains a comma delimited list of the valid Test Result Codes.
         /// </summary>
-        public static string TestResultCodeList
+        public  string TestResultCodeList
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("Test_Result_Code_List")));
+                return ((string)(GetCheckParameter("Test_Result_Code_List")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Test_Result_Code_List", value);
+                SetCheckParameter("Test_Result_Code_List", value);
             }
         }
         
         /// <summary>
         /// A list of valid test result codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.TestResultCodeRow> TestResultCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.TestResultCodeRow> TestResultCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Test_Result_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Test_Result_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18651,11 +18651,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Test_Result_Code_Lookup_Table", null);
+                    SetCheckParameter("Test_Result_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Test_Result_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Test_Result_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -18663,26 +18663,26 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates whether the test result is valid.
         /// </summary>
-        public static bool? TestResultValid
+        public  bool? TestResultValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Test_Result_Valid")));
+                return ((bool?)(GetCheckParameter("Test_Result_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Test_Result_Valid", value);
+                SetCheckParameter("Test_Result_Valid", value);
             }
         }
         
         /// <summary>
         /// Acceptable tolerances between reported and calculated values for tests.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.TestTolerancesRow> TestTolerancesCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.TestTolerancesRow> TestTolerancesCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Test_Tolerances_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Test_Tolerances_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18696,11 +18696,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Test_Tolerances_Cross_Check_Table", null);
+                    SetCheckParameter("Test_Tolerances_Cross_Check_Table", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Test_Tolerances_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Test_Tolerances_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -18708,56 +18708,56 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Total heat input (mmBtu) reported from fuel flow meters at the location.
         /// </summary>
-        public static decimal? TotalHeatInputFromFuelFlow
+        public  decimal? TotalHeatInputFromFuelFlow
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Total_Heat_Input_From_Fuel_Flow")));
+                return ((decimal?)(GetCheckParameter("Total_Heat_Input_From_Fuel_Flow")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Total_Heat_Input_From_Fuel_Flow", value);
+                SetCheckParameter("Total_Heat_Input_From_Fuel_Flow", value);
             }
         }
         
         /// <summary>
         /// The expiration date of the most recent Unit Default Test for the location and fuel during the current hour.
         /// </summary>
-        public static DateTime? UdefExpirationDate
+        public  DateTime? UdefExpirationDate
         {
             get
             {
-                return ((DateTime?)(EmParameters.GetCheckParameter("UDEF_Expiration_Date")));
+                return ((DateTime?)(GetCheckParameter("UDEF_Expiration_Date")));
             }
             set
             {
-                EmParameters.SetCheckParameter("UDEF_Expiration_Date", value);
+                SetCheckParameter("UDEF_Expiration_Date", value);
             }
         }
         
         /// <summary>
         /// The status of the Unit Default Test for the location and fuel during the current hour.
         /// </summary>
-        public static string UdefStatus
+        public  string UdefStatus
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("UDEF_Status")));
+                return ((string)(GetCheckParameter("UDEF_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("UDEF_Status", value);
+                SetCheckParameter("UDEF_Status", value);
             }
         }
         
         /// <summary>
         /// All records Unit Default tests for the location in the QA_SUPP_DATA table.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> UnitDefaultTestRecordsByLocationForQaStatus
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataHourlyStatusRow> UnitDefaultTestRecordsByLocationForQaStatus
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Unit_Default_Test_Records_By_Location_For_QA_Status")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Unit_Default_Test_Records_By_Location_For_QA_Status")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18771,11 +18771,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Unit_Default_Test_Records_By_Location_For_QA_Status", null);
+                    SetCheckParameter("Unit_Default_Test_Records_By_Location_For_QA_Status", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Unit_Default_Test_Records_By_Location_For_QA_Status", value.SourceView);
+                    SetCheckParameter("Unit_Default_Test_Records_By_Location_For_QA_Status", value.SourceView);
                 }
             }
         }
@@ -18783,86 +18783,86 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Sums the total heat input at all units for a given hour in a monitoring plan by multiplying heat input rate times op time at each unit
         /// </summary>
-        public static decimal? UnitHeatinputtimesoptimeAccumulator
+        public  decimal? UnitHeatinputtimesoptimeAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Unit_HeatInputTimesOpTime_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Unit_HeatInputTimesOpTime_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Unit_HeatInputTimesOpTime_Accumulator", value);
+                SetCheckParameter("Unit_HeatInputTimesOpTime_Accumulator", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not the Current unit operated during the Current Hour
         /// </summary>
-        public static bool? UnitHourlyOperationalStatus
+        public  bool? UnitHourlyOperationalStatus
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Unit_Hourly_Operational_Status")));
+                return ((bool?)(GetCheckParameter("Unit_Hourly_Operational_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Unit_Hourly_Operational_Status", value);
+                SetCheckParameter("Unit_Hourly_Operational_Status", value);
             }
         }
         
         /// <summary>
         /// Describes whether or not the NonLoadBasedUnit flag is set in the Unit record
         /// </summary>
-        public static bool? UnitIsLoadBased
+        public  bool? UnitIsLoadBased
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Unit_Is_Load_Based")));
+                return ((bool?)(GetCheckParameter("Unit_Is_Load_Based")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Unit_Is_Load_Based", value);
+                SetCheckParameter("Unit_Is_Load_Based", value);
             }
         }
         
         /// <summary>
         /// Contains the sum of the products "Unit Load" times "Unit Operating Time" for all units in the monitoring plan during the current hour
         /// </summary>
-        public static decimal? UnitLoadtimesoptimeAccumulator
+        public  decimal? UnitLoadtimesoptimeAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Unit_Loadtimesoptime_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Unit_Loadtimesoptime_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Unit_Loadtimesoptime_Accumulator", value);
+                SetCheckParameter("Unit_Loadtimesoptime_Accumulator", value);
             }
         }
         
         /// <summary>
         /// Sums Operating Time for all units in Monitoring Plan during current hour
         /// </summary>
-        public static decimal? UnitOptimeAccumulator
+        public  decimal? UnitOptimeAccumulator
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Unit_Optime_Accumulator")));
+                return ((decimal?)(GetCheckParameter("Unit_Optime_Accumulator")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Unit_Optime_Accumulator", value);
+                SetCheckParameter("Unit_Optime_Accumulator", value);
             }
         }
         
         /// <summary>
         /// The Unit Stack Configuration records for all of a facility's locations that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> UnitStackConfigurationRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> UnitStackConfigurationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Unit_Stack_Configuration_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Unit_Stack_Configuration_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18876,11 +18876,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Unit_Stack_Configuration_Records", null);
+                    SetCheckParameter("Unit_Stack_Configuration_Records", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Unit_Stack_Configuration_Records", value.SourceView);
+                    SetCheckParameter("Unit_Stack_Configuration_Records", value.SourceView);
                 }
             }
         }
@@ -18888,11 +18888,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The list of Unit Stack Configuration Records active for the current hour and associated with the current location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpUnitStackConfigurationRow> UnitStackConfigurationRecordsByHourLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpUnitStackConfigurationRow> UnitStackConfigurationRecordsByHourLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Unit_Stack_Configuration_Records_By_Hour_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Unit_Stack_Configuration_Records_By_Hour_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18906,11 +18906,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Unit_Stack_Configuration_Records_By_Hour_Location", null);
+                    SetCheckParameter("Unit_Stack_Configuration_Records_By_Hour_Location", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Unit_Stack_Configuration_Records_By_Hour_Location", value.SourceView);
+                    SetCheckParameter("Unit_Stack_Configuration_Records_By_Hour_Location", value.SourceView);
                 }
             }
         }
@@ -18918,11 +18918,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// The list of Unit Stack Configuration Records active for the current hour and associated with the current monitor plan
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpUnitStackConfigurationRow> UnitStackConfigurationRecordsByHourMonitorPlan
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpUnitStackConfigurationRow> UnitStackConfigurationRecordsByHourMonitorPlan
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmParameters.GetCheckParameter("Unit_Stack_Configuration_Records_By_Hour_Monitor_Plan")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Unit_Stack_Configuration_Records_By_Hour_Monitor_Plan")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -18936,11 +18936,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("Unit_Stack_Configuration_Records_By_Hour_Monitor_Plan", null);
+                    SetCheckParameter("Unit_Stack_Configuration_Records_By_Hour_Monitor_Plan", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("Unit_Stack_Configuration_Records_By_Hour_Monitor_Plan", value.SourceView);
+                    SetCheckParameter("Unit_Stack_Configuration_Records_By_Hour_Monitor_Plan", value.SourceView);
                 }
             }
         }
@@ -18948,105 +18948,105 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Indicates whether the UpscaleGasTypeCode in the Daily Calibration Test is valid.
         /// </summary>
-        public static bool? UpscaleGasTypeValid
+        public  bool? UpscaleGasTypeValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Upscale_Gas_Type_Valid")));
+                return ((bool?)(GetCheckParameter("Upscale_Gas_Type_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Upscale_Gas_Type_Valid", value);
+                SetCheckParameter("Upscale_Gas_Type_Valid", value);
             }
         }
         
         /// <summary>
         /// The percent of span value of the reference value of a upscale injection of a daily calibration test.
         /// </summary>
-        public static decimal? UpscaleReferencePercentOfSpan
+        public  decimal? UpscaleReferencePercentOfSpan
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Upscale_Reference_Percent_of_Span")));
+                return ((decimal?)(GetCheckParameter("Upscale_Reference_Percent_of_Span")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Upscale_Reference_Percent_of_Span", value);
+                SetCheckParameter("Upscale_Reference_Percent_of_Span", value);
             }
         }
         
         /// <summary>
         /// This boolean is based on the Diluent Cap Indicator field in the CO2 Mass Derived hourly record and indicates whether or not the diluent cap should be used in the CO2 Mass Calculation
         /// </summary>
-        public static bool? UseCo2DiluentCapForCo2MassCalc
+        public  bool? UseCo2DiluentCapForCo2MassCalc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Use_Co2_Diluent_Cap_For_Co2_Mass_Calc")));
+                return ((bool?)(GetCheckParameter("Use_Co2_Diluent_Cap_For_Co2_Mass_Calc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Use_Co2_Diluent_Cap_For_Co2_Mass_Calc", value);
+                SetCheckParameter("Use_Co2_Diluent_Cap_For_Co2_Mass_Calc", value);
             }
         }
         
         /// <summary>
         /// This boolean is based on the Diluent Cap Indicator field in the CO2 Mass Derived hourly record and indicates whether or not the diluent cap should be used in the CO2 Concentration Calculation
         /// </summary>
-        public static bool? UseO2DiluentCapForCo2ConcCalc
+        public  bool? UseO2DiluentCapForCo2ConcCalc
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Use_O2_Diluent_Cap_for_Co2_Conc_Calc")));
+                return ((bool?)(GetCheckParameter("Use_O2_Diluent_Cap_for_Co2_Conc_Calc")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Use_O2_Diluent_Cap_for_Co2_Conc_Calc", value);
+                SetCheckParameter("Use_O2_Diluent_Cap_for_Co2_Conc_Calc", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not a range-checked FC Factor was reported in the Hourly Operating Data record for the hour
         /// </summary>
-        public static bool? ValidFcFactorExists
+        public  bool? ValidFcFactorExists
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Valid_Fc_Factor_Exists")));
+                return ((bool?)(GetCheckParameter("Valid_Fc_Factor_Exists")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Valid_Fc_Factor_Exists", value);
+                SetCheckParameter("Valid_Fc_Factor_Exists", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not a range-checked value was reported for FD Factor in the Hourly Operating Data record
         /// </summary>
-        public static bool? ValidFdFactorExists
+        public  bool? ValidFdFactorExists
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Valid_Fd_Factor_Exists")));
+                return ((bool?)(GetCheckParameter("Valid_Fd_Factor_Exists")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Valid_Fd_Factor_Exists", value);
+                SetCheckParameter("Valid_Fd_Factor_Exists", value);
             }
         }
         
         /// <summary>
         /// Indicates whether or not a range-checked FW Factor was reported in the Hourly Operating Data record for the hour
         /// </summary>
-        public static bool? ValidFwFactorExists
+        public  bool? ValidFwFactorExists
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Valid_Fw_Factor_Exists")));
+                return ((bool?)(GetCheckParameter("Valid_Fw_Factor_Exists")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Valid_Fw_Factor_Exists", value);
+                SetCheckParameter("Valid_Fw_Factor_Exists", value);
             }
         }
         
@@ -19055,15 +19055,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in emission report evaluations.
         /// </summary>
-        public static bool? WeeklySystemIntegrityApsIsValid
+        public  bool? WeeklySystemIntegrityApsIsValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Weekly_System_Integrity_APS_Is_Valid")));
+                return ((bool?)(GetCheckParameter("Weekly_System_Integrity_APS_Is_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Weekly_System_Integrity_APS_Is_Valid", value);
+                SetCheckParameter("Weekly_System_Integrity_APS_Is_Valid", value);
             }
         }
         
@@ -19072,15 +19072,15 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Used in emission report evaluations.
         /// </summary>
-        public static bool? WeeklySystemIntegrityErrorIsValid
+        public  bool? WeeklySystemIntegrityErrorIsValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Weekly_System_Integrity_Error_Is_Valid")));
+                return ((bool?)(GetCheckParameter("Weekly_System_Integrity_Error_Is_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Weekly_System_Integrity_Error_Is_Valid", value);
+                SetCheckParameter("Weekly_System_Integrity_Error_Is_Valid", value);
             }
         }
         
@@ -19089,26 +19089,26 @@ namespace ECMPS.Checks.Em.Parameters
         ///
         ///Runs in the emission report evaluation.
         /// </summary>
-        public static bool? WeeklyTestSummaryValid
+        public  bool? WeeklyTestSummaryValid
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("Weekly_Test_Summary_Valid")));
+                return ((bool?)(GetCheckParameter("Weekly_Test_Summary_Valid")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Weekly_Test_Summary_Valid", value);
+                SetCheckParameter("Weekly_Test_Summary_Valid", value);
             }
         }
         
         /// <summary>
         /// Contains the QA certification event that occurs after the WSI Prior Test Record, but before the current hour.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow WsiInterveningEventRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow WsiInterveningEventRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("WSI_Intervening_Event_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("WSI_Intervening_Event_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -19122,11 +19122,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("WSI_Intervening_Event_Record", null);
+                    SetCheckParameter("WSI_Intervening_Event_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("WSI_Intervening_Event_Record", value.SourceRow);
+                    SetCheckParameter("WSI_Intervening_Event_Record", value.SourceRow);
                 }
             }
         }
@@ -19134,11 +19134,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the QA certification like kind event that occurs before the current hour.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow WsiInterveningLikeKindEventRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow WsiInterveningLikeKindEventRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("WSI_Intervening_Like_Kind_Event_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("WSI_Intervening_Like_Kind_Event_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -19152,11 +19152,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("WSI_Intervening_Like_Kind_Event_Record", null);
+                    SetCheckParameter("WSI_Intervening_Like_Kind_Event_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("WSI_Intervening_Like_Kind_Event_Record", value.SourceRow);
+                    SetCheckParameter("WSI_Intervening_Like_Kind_Event_Record", value.SourceRow);
                 }
             }
         }
@@ -19164,11 +19164,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the QA certification event to use for plug-in values in result messages.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow WsiPluginEventRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow WsiPluginEventRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("WSI_Plugin_Event_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("WSI_Plugin_Event_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -19182,11 +19182,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("WSI_Plugin_Event_Record", null);
+                    SetCheckParameter("WSI_Plugin_Event_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("WSI_Plugin_Event_Record", value.SourceRow);
+                    SetCheckParameter("WSI_Plugin_Event_Record", value.SourceRow);
                 }
             }
         }
@@ -19194,11 +19194,11 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the most recent weekly system integrity test prior to the current hour.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckEm.Function.WeeklySystemIntegrity WsiPriorTestRecord
+        public  ECMPS.Checks.Data.Ecmps.CheckEm.Function.WeeklySystemIntegrity WsiPriorTestRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmParameters.GetCheckParameter("WSI_Prior_Test_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("WSI_Prior_Test_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -19212,11 +19212,11 @@ namespace ECMPS.Checks.Em.Parameters
             {
                 if ((value == null))
                 {
-                    EmParameters.SetCheckParameter("WSI_Prior_Test_Record", null);
+                    SetCheckParameter("WSI_Prior_Test_Record", null);
                 }
                 else
                 {
-                    EmParameters.SetCheckParameter("WSI_Prior_Test_Record", value.SourceRow);
+                    SetCheckParameter("WSI_Prior_Test_Record", value.SourceRow);
                 }
             }
         }
@@ -19224,60 +19224,60 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Contains the check result for the Weekly System Integrity Status checks.
         /// </summary>
-        public static string WsiStatus
+        public  string WsiStatus
         {
             get
             {
-                return ((string)(EmParameters.GetCheckParameter("WSI_Status")));
+                return ((string)(GetCheckParameter("WSI_Status")));
             }
             set
             {
-                EmParameters.SetCheckParameter("WSI_Status", value);
+                SetCheckParameter("WSI_Status", value);
             }
         }
         
         /// <summary>
         /// Indicates whether Weekly System Integrity status checks are needed for the current MATS MHV record.
         /// </summary>
-        public static bool? WsiStatusRequired
+        public  bool? WsiStatusRequired
         {
             get
             {
-                return ((bool?)(EmParameters.GetCheckParameter("WSI_Status_Required")));
+                return ((bool?)(GetCheckParameter("WSI_Status_Required")));
             }
             set
             {
-                EmParameters.SetCheckParameter("WSI_Status_Required", value);
+                SetCheckParameter("WSI_Status_Required", value);
             }
         }
         
         /// <summary>
         /// A dictionary that for each component contains the most recent test prior to the current hour, and the list of operating days exclusively between test date and the current date.
         /// </summary>
-        public static Dictionary<string, WsiTestStatusInformation> WsiTestDictionary
+        public  Dictionary<string, WsiTestStatusInformation> WsiTestDictionary
         {
             get
             {
-                return ((Dictionary<string, WsiTestStatusInformation>)(EmParameters.GetCheckParameter("WSI_Test_Dictionary")));
+                return ((Dictionary<string, WsiTestStatusInformation>)(GetCheckParameter("WSI_Test_Dictionary")));
             }
             set
             {
-                EmParameters.SetCheckParameter("WSI_Test_Dictionary", value);
+                SetCheckParameter("WSI_Test_Dictionary", value);
             }
         }
         
         /// <summary>
         /// The percent of span value of the reference value of a zero injection of a daily calibration test.
         /// </summary>
-        public static decimal? ZeroReferencePercentOfSpan
+        public  decimal? ZeroReferencePercentOfSpan
         {
             get
             {
-                return ((decimal?)(EmParameters.GetCheckParameter("Zero_Reference_Percent_of_Span")));
+                return ((decimal?)(GetCheckParameter("Zero_Reference_Percent_of_Span")));
             }
             set
             {
-                EmParameters.SetCheckParameter("Zero_Reference_Percent_of_Span", value);
+                SetCheckParameter("Zero_Reference_Percent_of_Span", value);
             }
         }
         
@@ -19286,20 +19286,20 @@ namespace ECMPS.Checks.Em.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <returns>Returns the requested check parameter as an object if it exists, and as a null if it does not.</returns>
-        public static object GetCheckParameter(string parameterId)
+        public  object GetCheckParameter(string parameterId)
         {
             cLegacyCheckParameter checkParameter;
-            if (((EmParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                checkParameter = EmParameters.Category.GetCheckParameter(parameterId);
+                checkParameter = Category.GetCheckParameter(parameterId);
             }
             else
             {
-                if (((EmParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    checkParameter = EmParameters.Process.GetCheckParameter(parameterId);
+                    checkParameter = Process.GetCheckParameter(parameterId);
                 }
                 else
                 {
@@ -19321,19 +19321,19 @@ namespace ECMPS.Checks.Em.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <param name="parameterValue">The value to which to set the parameter.</param>
-        public static void SetCheckParameter(string parameterId, object parameterValue)
+        public  void SetCheckParameter(string parameterId, object parameterValue)
         {
-            if (((EmParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                EmParameters.Category.SetCheckParameter(parameterId, parameterValue);
+                Category.SetCheckParameter(parameterId, parameterValue);
             }
             else
             {
-                if (((EmParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    EmParameters.Process.SetCheckParameter(parameterId, parameterValue);
+                    Process.SetCheckParameter(parameterId, parameterValue);
                 }
             }
         }
@@ -19341,20 +19341,20 @@ namespace ECMPS.Checks.Em.Parameters
         /// <summary>
         /// Initializes the values in the check parameter object.
         /// </summary>
-        public static void Init(cProcess process)
+        public  void Init(cProcess process)
         {
-            EmParameters._process = process;
-            EmParameters.Category = null;
-            EmParameters.RegisterParameters();
+            _process = process;
+            Category = null;
+            RegisterParameters();
         }
         
         /// <summary>
         /// Registers each check parameter.
         /// </summary>
-        public static void RegisterParameters()
+        public  void RegisterParameters()
         {
-            if (((EmParameters.Process == null) 
-                        || (EmParameters.Process.ProcessParameters == null)))
+            if (((Process == null) 
+                        || (Process.ProcessParameters == null)))
             {
                 return;
             }
