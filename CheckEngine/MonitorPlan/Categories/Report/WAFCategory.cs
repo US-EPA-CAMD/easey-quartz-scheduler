@@ -41,12 +41,14 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "RECT_DUCT_WAF";
     }
 
+    public cWAFCategory(){}
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cWAFCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cWAFCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cWAFCategory Category;
       string ErrorMessage = "";

@@ -32,9 +32,9 @@ namespace ECMPS.Checks.FuelFlowChecks
 
     #endregion
 
-    #region Public Static Methods: Checks
+    #region Public Methods: Checks
 
-    public static string FUELFLW2(cCategory Category, ref bool Log)
+    public string FUELFLW2(cCategory Category, ref bool Log)
     // Fuel Flow Maximum Fuel Flow Rate Valid
     {
       string ReturnVal = "";
@@ -61,7 +61,7 @@ namespace ECMPS.Checks.FuelFlowChecks
       return ReturnVal;
     }
 
-    public static string FUELFLW3(cCategory Category, ref bool Log)
+    public string FUELFLW3(cCategory Category, ref bool Log)
     // Fuel Flow Begin Date Valid
     {
       string ReturnVal = "";
@@ -78,7 +78,7 @@ namespace ECMPS.Checks.FuelFlowChecks
       return ReturnVal;
     }
 
-    public static string FUELFLW4(cCategory Category, ref bool Log)
+    public string FUELFLW4(cCategory Category, ref bool Log)
     // Fuel Flow Begin Hour Valid
     {
       string ReturnVal = "";
@@ -95,7 +95,7 @@ namespace ECMPS.Checks.FuelFlowChecks
       return ReturnVal;
     }
 
-    public static string FUELFLW5(cCategory Category, ref bool Log)
+    public string FUELFLW5(cCategory Category, ref bool Log)
     // Fuel Flow End Date Valid
     {
       string ReturnVal = "";
@@ -112,7 +112,7 @@ namespace ECMPS.Checks.FuelFlowChecks
       return ReturnVal;
     }
 
-    public static string FUELFLW6(cCategory Category, ref bool Log)
+    public string FUELFLW6(cCategory Category, ref bool Log)
     // Fuel Flow End Hour Valid
     {
       string ReturnVal = "";
@@ -129,7 +129,7 @@ namespace ECMPS.Checks.FuelFlowChecks
       return ReturnVal;
     }
 
-    public static string FUELFLW7(cCategory Category, ref bool Log)
+    public string FUELFLW7(cCategory Category, ref bool Log)
     // Fuel Flow Dates and Hours Consistent
     {
       string ReturnVal = "";
@@ -151,7 +151,7 @@ namespace ECMPS.Checks.FuelFlowChecks
       return ReturnVal;
     }
 
-    public static string FUELFLW8(cCategory Category, ref bool Log)
+    public string FUELFLW8(cCategory Category, ref bool Log)
     // Fuel Flow Maximum Fuel Flow Rate Source Code Valid
     {
       string ReturnVal = "";
@@ -179,7 +179,7 @@ namespace ECMPS.Checks.FuelFlowChecks
       return ReturnVal;
     }
 
-    public static string FUELFLW10(cCategory Category, ref bool Log)
+    public string FUELFLW10(cCategory Category, ref bool Log)
     // Fuel Flow Units of Measure Code Valid
     {
       string ReturnVal = "";
@@ -236,7 +236,7 @@ namespace ECMPS.Checks.FuelFlowChecks
       return ReturnVal;
     }
 
-    public static string FUELFLW11(cCategory Category, ref bool Log)
+    public string FUELFLW11(cCategory Category, ref bool Log)
     // Fuel Flow Active Status
     {
       string ReturnVal = "";
@@ -263,7 +263,7 @@ namespace ECMPS.Checks.FuelFlowChecks
       return ReturnVal;
     }
 
-    public static string FUELFLW17(cCategory Category, ref bool Log)
+    public string FUELFLW17(cCategory Category, ref bool Log)
     // Overlapping Fuel Flow Records
     {
       string ReturnVal = "";
@@ -314,7 +314,7 @@ namespace ECMPS.Checks.FuelFlowChecks
       return ReturnVal;
     }
 
-    public static string FUELFLW18(cCategory Category, ref bool Log)
+    public string FUELFLW18(cCategory Category, ref bool Log)
     // System and Fuelflow Dates Consistent
     {
       string ReturnVal = "";
@@ -361,7 +361,7 @@ namespace ECMPS.Checks.FuelFlowChecks
 
     }
 
-    public static string FUELFLW19(cCategory Category, ref bool Log)
+    public string FUELFLW19(cCategory Category, ref bool Log)
     // Duplicate System Fuel Flow Records
     {
       string ReturnVal = "";

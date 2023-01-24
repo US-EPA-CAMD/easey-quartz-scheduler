@@ -32,12 +32,14 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "MONITOR_SPAN";
     }
 
+    public cSpanCategory(){}
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cSpanCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cSpanCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cSpanCategory Category;
       string ErrorMessage = "";

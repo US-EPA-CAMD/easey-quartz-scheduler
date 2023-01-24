@@ -25,6 +25,8 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "MONITOR_QUALIFICATION_LEE";
     }
 
+    public cQualificationLEECategory(){}
+
     #endregion
 
 
@@ -43,9 +45,9 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cQualificationLEECategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cQualificationLEECategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cQualificationLEECategory Category;
       string ErrorMessage = "";

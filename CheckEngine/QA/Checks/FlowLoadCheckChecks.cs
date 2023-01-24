@@ -41,7 +41,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
 
 
     #region Flow to Load Check Checks
-      public static string F2LCHK1(cCategory Category, ref bool Log)
+      public  string F2LCHK1(cCategory Category, ref bool Log)
       //System Type Valid
       {
           string ReturnVal = "";
@@ -72,7 +72,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK2(cCategory Category, ref bool Log)
+      public  string F2LCHK2(cCategory Category, ref bool Log)
       //Flow to Load Check Test Reason Code Valid
       {
           string ReturnVal = "";
@@ -109,7 +109,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK3(cCategory Category, ref bool Log)
+      public  string F2LCHK3(cCategory Category, ref bool Log)
       //Flow to Load Check Operating Level Valid
       {
           string ReturnVal = "";
@@ -145,7 +145,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK4(cCategory Category, ref bool Log)
+      public  string F2LCHK4(cCategory Category, ref bool Log)
       //Flow to Load Check Data Test Basis Valid
       {
           string ReturnVal = "";
@@ -177,7 +177,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK5(cCategory Category, ref bool Log)
+      public  string F2LCHK5(cCategory Category, ref bool Log)
       //Flow to Load Check Data Bias Adjusted Indicator Valid
       {
           string ReturnVal = "";
@@ -200,7 +200,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK6(cCategory Category, ref bool Log)
+      public  string F2LCHK6(cCategory Category, ref bool Log)
       //Flow to Load Check Data Number of Hours Valid
       {
           string ReturnVal = "";
@@ -234,7 +234,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK7(cCategory Category, ref bool Log)
+      public  string F2LCHK7(cCategory Category, ref bool Log)
       //Flow to Load Check Data Number of Hours Excluded for Fuel Valid
       {
           string ReturnVal = "";
@@ -254,7 +254,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
       
-      public static string F2LCHK8(cCategory Category, ref bool Log)
+      public  string F2LCHK8(cCategory Category, ref bool Log)
       //Flow to Load Check Data Number of Hours Excluded for Ramping Valid
       {
           string ReturnVal = "";
@@ -274,7 +274,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK9(cCategory Category, ref bool Log)
+      public  string F2LCHK9(cCategory Category, ref bool Log)
       //Flow to Load Check Data Number of Hours Excluded for Bypass Valid
       {
           string ReturnVal = "";
@@ -294,7 +294,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK10(cCategory Category, ref bool Log)
+      public  string F2LCHK10(cCategory Category, ref bool Log)
       //Flow to Load Check Data Number of Hours Excluded Pre RATA Valid
       {
           string ReturnVal = "";
@@ -314,7 +314,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK11(cCategory Category, ref bool Log)
+      public  string F2LCHK11(cCategory Category, ref bool Log)
       //Flow to Load Check Data Number of Hours Excluded Test Valid
       {
           string ReturnVal = "";
@@ -334,7 +334,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK12(cCategory Category, ref bool Log)
+      public  string F2LCHK12(cCategory Category, ref bool Log)
       //Flow to Load Check Data Number of Hours Excluded for Main and Bypass Valid
       {
           string ReturnVal = "";
@@ -354,7 +354,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK13(cCategory Category, ref bool Log)
+      public  string F2LCHK13(cCategory Category, ref bool Log)
       //Flow to Load Check Total Hours Valid
       {
           string ReturnVal = "";
@@ -380,7 +380,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK14(cCategory Category, ref bool Log)
+      public  string F2LCHK14(cCategory Category, ref bool Log)
       //Identification of Previously Reported Test or Test Number for Flow to Load Check
       {
           string ReturnVal = "";
@@ -447,7 +447,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
       }
 
 
-      public static string F2LCHK15(cCategory Category, ref bool Log)
+      public  string F2LCHK15(cCategory Category, ref bool Log)
       //Required Flow to Load Reference Data for Flow to Load Check
       {
           string ReturnVal = "";
@@ -584,7 +584,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK16(cCategory Category, ref bool Log)
+      public  string F2LCHK16(cCategory Category, ref bool Log)
       //Flow to Load Check Data Average Absolute Percentage Difference Valid
       {
           string ReturnVal = "";
@@ -685,7 +685,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
       }
 
 
-      public static string F2LCHK17(cCategory Category, ref bool Log)
+      public  string F2LCHK17(cCategory Category, ref bool Log)
       //Flow to Load Check Test Result Code Valid
       {
           string ReturnVal = "";
@@ -740,7 +740,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK18(cCategory Category, ref bool Log)
+      public  string F2LCHK18(cCategory Category, ref bool Log)
       //Duplicate Flow to Load Check
       {
           string ReturnVal = "";
@@ -792,7 +792,7 @@ namespace ECMPS.Checks.FlowLoadCheckChecks
           return ReturnVal;
       }
 
-      public static string F2LCHK19(cCategory Category, ref bool Log)
+      public  string F2LCHK19(cCategory Category, ref bool Log)
       //System ID Valid
       {
           string ReturnVal = "";

@@ -66,7 +66,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
 
         #region HGLMEDefaultChecks Checks
 
-        public static string HGLME1(cCategory Category, ref bool Log)
+        public  string HGLME1(cCategory Category, ref bool Log)
         //Initialize Hg LME Default Test Variables
         {
             string ReturnVal = "";
@@ -84,7 +84,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME2(cCategory Category, ref bool Log)
+        public  string HGLME2(cCategory Category, ref bool Log)
         //Hg LME Default Test Reason Code Valid
         {
             string ReturnVal = "";
@@ -112,7 +112,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME3(cCategory Category, ref bool Log)
+        public  string HGLME3(cCategory Category, ref bool Log)
         //Determine Test Begin and End Time
         {
             string ReturnVal = "";
@@ -192,7 +192,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME4(cCategory Category, ref bool Log)
+        public  string HGLME4(cCategory Category, ref bool Log)
         //Maximum Operating Hours Valid
         {
             string ReturnVal = "";
@@ -218,7 +218,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME5(cCategory Category, ref bool Log)
+        public  string HGLME5(cCategory Category, ref bool Log)
         //Reference Method Code Valid
         {
             string ReturnVal = "";
@@ -250,7 +250,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME6(cCategory Category, ref bool Log)
+        public  string HGLME6(cCategory Category, ref bool Log)
         //Max Potential Hg Mass Valid
         {
             string ReturnVal = "";
@@ -273,7 +273,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME7(cCategory Category, ref bool Log)
+        public  string HGLME7(cCategory Category, ref bool Log)
         //Reported Test Frequency Valid
         {
             string ReturnVal = "";
@@ -296,7 +296,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME8(cCategory Category, ref bool Log)
+        public  string HGLME8(cCategory Category, ref bool Log)
         //Hg LME Default Test Number of Units in Group Valid
         {
             string ReturnVal = "";
@@ -331,7 +331,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME9(cCategory Category, ref bool Log)
+        public  string HGLME9(cCategory Category, ref bool Log)
         //Hg LME Default Test Number of Tests for Group Valid
         {
             string ReturnVal = "";
@@ -385,7 +385,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME10(cCategory Category, ref bool Log)
+        public  string HGLME10(cCategory Category, ref bool Log)
         //Hg LME Default Test Begin Time Consistent with Run Times
         {
             string ReturnVal = "";
@@ -412,7 +412,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME11(cCategory Category, ref bool Log)
+        public  string HGLME11(cCategory Category, ref bool Log)
         //Hg LME Default Test End Time Consistent with Run Times
         {
             string ReturnVal = "";
@@ -439,7 +439,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME12(cCategory Category, ref bool Log)
+        public  string HGLME12(cCategory Category, ref bool Log)
         //Identification of Previously Reported Test or Test Number for Hg LME Default Test
         {
             string ReturnVal = "";
@@ -524,7 +524,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME13(cCategory Category, ref bool Log)
+        public  string HGLME13(cCategory Category, ref bool Log)
         //Concurrent Hg LME Default Tests
         {
             string ReturnVal = "";
@@ -572,7 +572,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME14(cCategory Category, ref bool Log)
+        public  string HGLME14(cCategory Category, ref bool Log)
         //Operating Level Valid
         {
             string ReturnVal = "";
@@ -666,7 +666,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME15(cCategory Category, ref bool Log)
+        public  string HGLME15(cCategory Category, ref bool Log)
         //Initialize Hg Default Test Level Data Variables
         {
             string ReturnVal = "";
@@ -688,7 +688,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME16(cCategory Category, ref bool Log)
+        public  string HGLME16(cCategory Category, ref bool Log)
         //Test Location ID Valid
         {
             string ReturnVal = "";
@@ -746,7 +746,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME17(cCategory Category, ref bool Log)
+        public  string HGLME17(cCategory Category, ref bool Log)
         //Max Run Value Valid
         {
             string ReturnVal = "";
@@ -769,7 +769,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME18(cCategory Category, ref bool Log)
+        public  string HGLME18(cCategory Category, ref bool Log)
         //Run Number Valid
         {
             string ReturnVal = "";
@@ -792,7 +792,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME19(cCategory Category, ref bool Log)
+        public  string HGLME19(cCategory Category, ref bool Log)
         //Run Begin Time Valid
         {
             string ReturnVal = "";
@@ -820,7 +820,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME20(cCategory Category, ref bool Log)
+        public  string HGLME20(cCategory Category, ref bool Log)
         //Train1 Value Valid
         {
             string ReturnVal = "";
@@ -862,7 +862,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME21(cCategory Category, ref bool Log)
+        public  string HGLME21(cCategory Category, ref bool Log)
         //Train2 Value Valid
         {
             string ReturnVal = "";
@@ -904,7 +904,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME22(cCategory Category, ref bool Log)
+        public  string HGLME22(cCategory Category, ref bool Log)
         //Reference Value for Run Valid
         {
             string ReturnVal = "";
@@ -965,7 +965,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME23(cCategory Category, ref bool Log)
+        public  string HGLME23(cCategory Category, ref bool Log)
         //Calculate Relative Deviation
         {
             string ReturnVal = "";
@@ -1015,7 +1015,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME24(cCategory Category, ref bool Log)
+        public  string HGLME24(cCategory Category, ref bool Log)
         //Gross Unit Load Valid
         {
             string ReturnVal = "";
@@ -1038,7 +1038,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME25(cCategory Category, ref bool Log)
+        public  string HGLME25(cCategory Category, ref bool Log)
         //Run End Time Valid
         {
             string ReturnVal = "";
@@ -1089,7 +1089,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME26(cCategory Category, ref bool Log)
+        public  string HGLME26(cCategory Category, ref bool Log)
         //Run Relative Deviation Valid
         {
             string ReturnVal = "";
@@ -1133,7 +1133,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME27(cCategory Category, ref bool Log)
+        public  string HGLME27(cCategory Category, ref bool Log)
         //Gross Unit Load Consistent with Range of Operation
         {
             string ReturnVal = "";
@@ -1191,7 +1191,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME28(cCategory Category, ref bool Log)
+        public  string HGLME28(cCategory Category, ref bool Log)
         //Check for Valid Run Sequence
         {
             string ReturnVal = "";
@@ -1231,7 +1231,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME29(cCategory Category, ref bool Log)
+        public  string HGLME29(cCategory Category, ref bool Log)
         //Hg LME Default Test Runs Missing or Out of Sequence
         {
             string ReturnVal = "";
@@ -1249,7 +1249,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME30(cCategory Category, ref bool Log)
+        public  string HGLME30(cCategory Category, ref bool Log)
         //Insufficient Number of Runs
         {
             string ReturnVal = "";
@@ -1275,7 +1275,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME31(cCategory Category, ref bool Log)
+        public  string HGLME31(cCategory Category, ref bool Log)
         //Max Run Value Consistent with Reported Value
         {
             string ReturnVal = "";
@@ -1308,7 +1308,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME32(cCategory Category, ref bool Log)
+        public  string HGLME32(cCategory Category, ref bool Log)
         //Hg LME Default Test Consistent with Method
         {
             string ReturnVal = "";
@@ -1358,7 +1358,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME33(cCategory Category, ref bool Log)
+        public  string HGLME33(cCategory Category, ref bool Log)
         //Common Stack Test Code Valid
         {
             string ReturnVal = "";
@@ -1510,7 +1510,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME34(cCategory Category, ref bool Log)
+        public  string HGLME34(cCategory Category, ref bool Log)
         //Determine Default Hg Concentration
         {
             string ReturnVal = "";
@@ -1618,7 +1618,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME35(cCategory Category, ref bool Log)
+        public  string HGLME35(cCategory Category, ref bool Log)
         //Determine Hg LME Max Potential Hg Mass
         {
             string ReturnVal = "";
@@ -1669,7 +1669,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME36(cCategory Category, ref bool Log)
+        public  string HGLME36(cCategory Category, ref bool Log)
         //Determine Test Frequency 
         {
             string ReturnVal = "";
@@ -1834,7 +1834,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME37(cCategory Category, ref bool Log)
+        public  string HGLME37(cCategory Category, ref bool Log)
         //Hg LME Default Hg Concentration Valid
         {
             string ReturnVal = "";
@@ -1857,7 +1857,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME38(cCategory Category, ref bool Log)
+        public  string HGLME38(cCategory Category, ref bool Log)
         //Duplicate Hg LME Default Test
         {
             string ReturnVal = "";
@@ -1902,7 +1902,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME39(cCategory Category, ref bool Log)
+        public  string HGLME39(cCategory Category, ref bool Log)
         //Reported Operating Level Valid
         {
             string ReturnVal = "";
@@ -1939,7 +1939,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME40(cCategory Category, ref bool Log)
+        public  string HGLME40(cCategory Category, ref bool Log)
         //Duplicate Hg LME Default Test Level
         {
             string ReturnVal = "";
@@ -1968,7 +1968,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME41(cCategory Category, ref bool Log)
+        public  string HGLME41(cCategory Category, ref bool Log)
         //Duplicate Hg LME Default Test Run
         {
             string ReturnVal = "";
@@ -1999,7 +1999,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME42(cCategory Category, ref bool Log)
+        public  string HGLME42(cCategory Category, ref bool Log)
         //Run APS Indicator Valid
         {
             string ReturnVal = "";
@@ -2020,7 +2020,7 @@ namespace ECMPS.Checks.HGLMEDefaultChecks
             return ReturnVal;
         }
 
-        public static string HGLME43(cCategory Category, ref bool Log)
+        public  string HGLME43(cCategory Category, ref bool Log)
         //Run APS Indicator Valid
         {
             string ReturnVal = "";

@@ -41,12 +41,14 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "MONITOR_LOAD";
     }
 
+    public cLoadCategory(){}
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cLoadCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cLoadCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cLoadCategory Category;
       string ErrorMessage = "";

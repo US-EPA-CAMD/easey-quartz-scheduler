@@ -33,12 +33,14 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "MONITOR_PLAN_COMMENT";
     }
 
+    public cMonitorPlanCommentCategory(){}
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cMonitorPlanCommentCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cMonitorPlanCommentCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cMonitorPlanCommentCategory Category;
       string ErrorMessage = "";

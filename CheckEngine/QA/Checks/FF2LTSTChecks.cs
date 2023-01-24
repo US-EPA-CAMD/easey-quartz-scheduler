@@ -37,7 +37,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
 
         #region FF2LTSTChecks Checks
 
-        public static string FF2LTST1( cCategory Category, ref bool Log )
+        public  string FF2LTST1( cCategory Category, ref bool Log )
         //Fuel Flow to Load Test System Type Valid
         {
             string ReturnVal = "";
@@ -68,7 +68,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
             return ReturnVal;
         }
 
-        public static string FF2LTST2( cCategory Category, ref bool Log )
+        public  string FF2LTST2( cCategory Category, ref bool Log )
         //Identification of Previously Reported Test or Test Number for Fuel Flow to Load Test
         {
             string ReturnVal = "";
@@ -131,7 +131,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
             return ReturnVal;
         }
 
-        public static string FF2LTST3( cCategory Category, ref bool Log )
+        public  string FF2LTST3( cCategory Category, ref bool Log )
         //Fuel Flow to Load Test Basis Valid
         {
             string ReturnVal = "";
@@ -161,7 +161,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
             return ReturnVal;
         }
 
-        public static string FF2LTST4( cCategory Category, ref bool Log )
+        public  string FF2LTST4( cCategory Category, ref bool Log )
         //Fuel Flow to Load Test Basis Consistent with Baseline Data
         {
             string ReturnVal = "";
@@ -279,7 +279,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
             return ReturnVal;
         }
 
-        public static string FF2LTST5( cCategory Category, ref bool Log )
+        public  string FF2LTST5( cCategory Category, ref bool Log )
         //Fuel Flow to Load Average Difference Valid
         {
             string ReturnVal = "";
@@ -322,7 +322,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
             return ReturnVal;
         }
 
-        public static string FF2LTST6( cCategory Category, ref bool Log )
+        public  string FF2LTST6( cCategory Category, ref bool Log )
         //Fuel Flow to Load Test Number of Hours Used Valid
         {
             string ReturnVal = "";
@@ -360,7 +360,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
             return ReturnVal;
         }
 
-        public static string FF2LTST7( cCategory Category, ref bool Log )
+        public  string FF2LTST7( cCategory Category, ref bool Log )
         //Fuel Flow to Load Test Number of Hours Excluded Cofiring Valid
         {
             string ReturnVal = "";
@@ -381,7 +381,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
             return ReturnVal;
         }
 
-        public static string FF2LTST8( cCategory Category, ref bool Log )
+        public  string FF2LTST8( cCategory Category, ref bool Log )
         //Fuel Flow to Load Test Number of Hours Excluded Ramping Valid
         {
             string ReturnVal = "";
@@ -402,7 +402,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
             return ReturnVal;
         }
 
-        public static string FF2LTST9( cCategory Category, ref bool Log )
+        public  string FF2LTST9( cCategory Category, ref bool Log )
         //Fuel Flow to Load Test Number of Hours Excluded Low Range Valid
         {
             string ReturnVal = "";
@@ -423,7 +423,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
             return ReturnVal;
         }
 
-        public static string FF2LTST10( cCategory Category, ref bool Log )
+        public  string FF2LTST10( cCategory Category, ref bool Log )
         //Fuel Flow to Load Test Reason Code Valid
         {
             string ReturnVal = "";
@@ -459,7 +459,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
             return ReturnVal;
         }
 
-        public static string FF2LTST11( cCategory Category, ref bool Log )
+        public  string FF2LTST11( cCategory Category, ref bool Log )
         //Fuel Flow to Load Test Result Code Valid
         {
             string ReturnVal = "";
@@ -498,7 +498,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
             return ReturnVal;
         }
 
-        public static string FF2LTST12( cCategory Category, ref bool Log )
+        public  string FF2LTST12( cCategory Category, ref bool Log )
         //Fuel Flow to Load Test Total Hours Valid
         {
             string ReturnVal = "";
@@ -527,7 +527,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
             return ReturnVal;
         }
 
-        public static string FF2LTST13( cCategory Category, ref bool Log )
+        public  string FF2LTST13( cCategory Category, ref bool Log )
         //System ID Valid
         {
             string ReturnVal = "";
@@ -547,7 +547,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
             return ReturnVal;
         }
 
-        public static string FF2LTST14( cCategory Category, ref bool Log )
+        public  string FF2LTST14( cCategory Category, ref bool Log )
         //Duplicate Fuel Flow to Load Test
         {
             string ReturnVal = "";

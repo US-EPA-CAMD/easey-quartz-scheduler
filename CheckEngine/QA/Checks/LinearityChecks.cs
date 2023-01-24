@@ -65,7 +65,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#region Linearity Checks 1-10
 
 		#region Linearity Check 1
-		public static string LINEAR1(cCategory Category, ref bool Log) //Determine Linearity Injection Sequence
+		public  string LINEAR1(cCategory Category, ref bool Log) //Determine Linearity Injection Sequence
 		{
 			string ReturnVal = "", LastCode = "";
 			DateTime LastDate = DateTime.MinValue;
@@ -140,7 +140,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 2
-		public static string LINEAR2(cCategory Category, ref bool Log) //Validate Component
+		public  string LINEAR2(cCategory Category, ref bool Log) //Validate Component
 		{
 			string ReturnVal = "";
 
@@ -197,31 +197,31 @@ namespace ECMPS.Checks.LinearityChecks
 						}
 					}
 					
-					/* TODO: BeginDateHour / etc is not defined as part of QAParameters.CurrentLinearityTest
+					/* TODO: BeginDateHour / etc is not defined as part of qaParams.CurrentLinearityTest
 					
-					if ((QaParameters.LinearityComponentValid == true) && TestTypeCd.InList("LINE,HGLINE,HGSI3"))
+					if ((qaParams.LinearityComponentValid == true) && TestTypeCd.InList("LINE,HGLINE,HGSI3"))
                     {
-						int count = QaParameters.SystemComponentRecords.CountRows
+						int count = qaParams.SystemComponentRecords.CountRows
 							(
 								new cFilterCondition[]
                                 {
-									new cFilterCondition("COMPONENT_ID", QaParameters.CurrentLinearityTest.ComponentId),
-									new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual.ToString(), QaParameters.CurrentLinearityTest.BeginDatehour.Default(DateTypes.START), eNullDateDefault.Min),
-									new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual.ToString(), QaParameters.CurrentLinearityTest.BeginDatehour.Default(DateTypes.START), eNullDateDefault.Max),
-									new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual.ToString(), QaParameters.CurrentLinearityTest.EndDatehour.Default(DateTypes.END), eNullDateDefault.Min),
-									new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual.ToString(), QaParameters.CurrentLinearityTest.EndDatehour.Default(DateTypes.END), eNullDateDefault.Max)
+									new cFilterCondition("COMPONENT_ID", qaParams.CurrentLinearityTest.ComponentId),
+									new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual.ToString(), qaParams.CurrentLinearityTest.BeginDatehour.Default(DateTypes.START), eNullDateDefault.Min),
+									new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual.ToString(), qaParams.CurrentLinearityTest.BeginDatehour.Default(DateTypes.START), eNullDateDefault.Max),
+									new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual.ToString(), qaParams.CurrentLinearityTest.EndDatehour.Default(DateTypes.END), eNullDateDefault.Min),
+									new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual.ToString(), qaParams.CurrentLinearityTest.EndDatehour.Default(DateTypes.END), eNullDateDefault.Max)
 								}
 							);
 
 						if (count == 0)
                         {
 							VwMonitorSystemComponentRow earliestBySystemBegin 
-								= QaParameters.SystemComponentRecords.FindFirstRow("SYSTEM_BEGIN_DATEHOUR", 
-								                                                   new cFilterCondition[] { new cFilterCondition("COMPONENT_ID", QaParameters.CurrentLinearityTest.ComponentId) });
+								= qaParams.SystemComponentRecords.FindFirstRow("SYSTEM_BEGIN_DATEHOUR", 
+								                                                   new cFilterCondition[] { new cFilterCondition("COMPONENT_ID", qaParams.CurrentLinearityTest.ComponentId) });
 
-							if ((earliestBySystemBegin == null) || (earliestBySystemBegin.SystemBeginDatehour <= QaParameters.CurrentLinearityTest.EndDatehour))
+							if ((earliestBySystemBegin == null) || (earliestBySystemBegin.SystemBeginDatehour <= qaParams.CurrentLinearityTest.EndDatehour))
                             {
-								QaParameters.LinearityComponentValid = false;
+								qaParams.LinearityComponentValid = false;
 								Category.CheckCatalogResult = "D";
 							}
 						}
@@ -239,7 +239,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 3
-		public static string LINEAR3(cCategory Category, ref bool Log) // Test Aborted
+		public  string LINEAR3(cCategory Category, ref bool Log) // Test Aborted
 		{
 			string ReturnVal = "";
 
@@ -267,7 +267,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 4
-		public static string LINEAR4(cCategory Category, ref bool Log) // Duplicate Test and Test Number
+		public  string LINEAR4(cCategory Category, ref bool Log) // Duplicate Test and Test Number
 		{
 			string ReturnVal = "";
 
@@ -356,7 +356,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 5
-		public static string LINEAR5(cCategory Category, ref bool Log) // Validate Test Date
+		public  string LINEAR5(cCategory Category, ref bool Log) // Validate Test Date
 		{
 			string ReturnVal = "";
 
@@ -388,7 +388,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 6
-		public static string LINEAR6(cCategory Category, ref bool Log) // Validate Test Date
+		public  string LINEAR6(cCategory Category, ref bool Log) // Validate Test Date
 		{
 			string ReturnVal = "";
 
@@ -420,7 +420,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 7 (Obsolete)
-		//public static string LINEAR7(cCategory Category, ref bool Log) //Validate Span Scale
+		//public  string LINEAR7(cCategory Category, ref bool Log) //Validate Span Scale
 		//{
 		//  string ReturnVal = "";
 
@@ -484,7 +484,7 @@ namespace ECMPS.Checks.LinearityChecks
 		//  return ReturnVal;
 		//}
 
-		//public static string LINEAR8(cCategory Category, ref bool Log) //Validate Span Value
+		//public  string LINEAR8(cCategory Category, ref bool Log) //Validate Span Value
 		//{
 		//  string ReturnVal = "";
 
@@ -547,7 +547,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 9
-		public static string LINEAR9(cCategory Category, ref bool Log) // Validate Test Reason Code
+		public  string LINEAR9(cCategory Category, ref bool Log) // Validate Test Reason Code
 		{
 			string ReturnVal = "";
 
@@ -579,7 +579,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 10
-		public static string LINEAR10(cCategory Category, ref bool Log) // Validate Test Result Code
+		public  string LINEAR10(cCategory Category, ref bool Log) // Validate Test Result Code
 		{
 			string ReturnVal = "";
 
@@ -618,7 +618,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#region Linearity Checks 11-20
 
 		#region Linearity Check 11
-		public static string LINEAR11(cCategory Category, ref bool Log) // Simultaneous Injections
+		public  string LINEAR11(cCategory Category, ref bool Log) // Simultaneous Injections
 		{
 			string ReturnVal = "";
 
@@ -644,7 +644,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 12
-		public static string LINEAR12(cCategory Category, ref bool Log) // Injection Sequence Valid
+		public  string LINEAR12(cCategory Category, ref bool Log) // Injection Sequence Valid
 		{
 			string ReturnVal = "";
 
@@ -673,7 +673,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 13
-		public static string LINEAR13(cCategory Category, ref bool Log) //Concurrent Test
+		public  string LINEAR13(cCategory Category, ref bool Log) //Concurrent Test
 		{
 			string ReturnVal = "";
 
@@ -764,7 +764,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 14
-		public static string LINEAR14(cCategory Category, ref bool Log) //Duplicate Linearity Summary
+		public  string LINEAR14(cCategory Category, ref bool Log) //Duplicate Linearity Summary
 		{
 			string ReturnVal = "";
 
@@ -799,7 +799,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 15
-		public static string LINEAR15(cCategory Category, ref bool Log) // Validate Gas Level Code
+		public  string LINEAR15(cCategory Category, ref bool Log) // Validate Gas Level Code
 		{
 			string ReturnVal = "";
 
@@ -836,7 +836,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 16
-		public static string LINEAR16(cCategory Category, ref bool Log) // Validate Mean Measured Value
+		public  string LINEAR16(cCategory Category, ref bool Log) // Validate Mean Measured Value
 		{
 			string ReturnVal = "";
 
@@ -858,7 +858,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 17
-		public static string LINEAR17(cCategory Category, ref bool Log) // Validate Mean Ref Value
+		public  string LINEAR17(cCategory Category, ref bool Log) // Validate Mean Ref Value
 		{
 			string ReturnVal = "";
 
@@ -887,7 +887,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 18
-		public static string LINEAR18(cCategory Category, ref bool Log) // Validate Percent Error
+		public  string LINEAR18(cCategory Category, ref bool Log) // Validate Percent Error
 		{
 			string ReturnVal = "";
 
@@ -925,7 +925,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 19
-		public static string LINEAR19(cCategory Category, ref bool Log) //Validate Injection Time
+		public  string LINEAR19(cCategory Category, ref bool Log) //Validate Injection Time
 		{
 			string ReturnVal = "";
 
@@ -987,7 +987,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 20
-		public static string LINEAR20(cCategory Category, ref bool Log) // Validate Measured Value
+		public  string LINEAR20(cCategory Category, ref bool Log) // Validate Measured Value
 		{
 			string ReturnVal = "";
 
@@ -1023,7 +1023,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#region Linearity Checks 21-30
 
 		#region Linearity Check 21
-		public static string LINEAR21(cCategory Category, ref bool Log) // Validate Ref Value
+		public  string LINEAR21(cCategory Category, ref bool Log) // Validate Ref Value
 		{
 			string ReturnVal = "";
 
@@ -1067,7 +1067,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 22
-		public static string LINEAR22(cCategory Category, ref bool Log) // Compare Ref Value and Span to Gas Level
+		public  string LINEAR22(cCategory Category, ref bool Log) // Compare Ref Value and Span to Gas Level
 		{
 			string ReturnVal = "";
 
@@ -1088,7 +1088,7 @@ namespace ECMPS.Checks.LinearityChecks
 					DataView TestToleranceRecords = (DataView)Category.GetCheckParameter("Test_Tolerances_Cross_Check_Table").ParameterValue;
 					string OldFilter = TestToleranceRecords.RowFilter;
 					TestToleranceRecords.RowFilter = AddToDataViewFilter(OldFilter, "FieldDescription = '" + "GasPercentOfSpan'");
-					TestToleranceRecords.RowFilter = AddToDataViewFilter(TestToleranceRecords.RowFilter, "TestTypeCode = '" + QaParameters.CurrentLinearitySummary.TestTypeCd + "'");
+					TestToleranceRecords.RowFilter = AddToDataViewFilter(TestToleranceRecords.RowFilter, "TestTypeCode = '" + qaParams.CurrentLinearitySummary.TestTypeCd + "'");
 					decimal Tolerance = cDBConvert.ToDecimal(((DataRowView)TestToleranceRecords[0])["Tolerance"]);
 					TestToleranceRecords.RowFilter = OldFilter;
 					decimal Floor;
@@ -1174,7 +1174,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 23
-		public static string LINEAR23(cCategory Category, ref bool Log) // Compare Ref Value to Gas Level
+		public  string LINEAR23(cCategory Category, ref bool Log) // Compare Ref Value to Gas Level
 		{
 			string ReturnVal = "";
 
@@ -1233,7 +1233,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 24
-		public static string LINEAR24(cCategory Category, ref bool Log) // Find Simultaneous Injection for Alternate Range
+		public  string LINEAR24(cCategory Category, ref bool Log) // Find Simultaneous Injection for Alternate Range
 		{
 			string ReturnVal = "";
 
@@ -1301,7 +1301,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 25
-		public static string LINEAR25(cCategory Category, ref bool Log) // Appropriate number of injections
+		public  string LINEAR25(cCategory Category, ref bool Log) // Appropriate number of injections
 		{
 			string ReturnVal = "";
 
@@ -1335,7 +1335,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 26
-		public static string LINEAR26(cCategory Category, ref bool Log) // Calculate Level
+		public  string LINEAR26(cCategory Category, ref bool Log) // Calculate Level
 		{
 			string ReturnVal = "";
 
@@ -1351,7 +1351,7 @@ namespace ECMPS.Checks.LinearityChecks
 					Decimal MeanMeasured = (decimal)Category.GetCheckParameter("Linearity_Measured_Value_Total").ParameterValue / 3;
 					Decimal MeanReference = (decimal)Category.GetCheckParameter("Linearity_Reference_Value_Total").ParameterValue / 3;
 					Decimal MeanDiff = Math.Abs(MeanReference - MeanMeasured);
-					Decimal lsPercentError = QaParameters.CurrentLinearitySummary.PercentError.IsNull() ? Decimal.MaxValue : (decimal)QaParameters.CurrentLinearitySummary.PercentError;
+					Decimal lsPercentError = qaParams.CurrentLinearitySummary.PercentError.IsNull() ? Decimal.MaxValue : (decimal)qaParams.CurrentLinearitySummary.PercentError;
 					Decimal calcPercentError = Decimal.MaxValue;
 					if (MeanReference > 0)
 					{
@@ -1498,7 +1498,7 @@ namespace ECMPS.Checks.LinearityChecks
 												TestResult = "FAILED";
 												if (0 <= lsPercentError && lsPercentError <= (decimal)0.8)
 												{
-													TolFilter[0].Set("TestTypeCode", QaParameters.CurrentLinearitySummary.TestTypeCd);
+													TolFilter[0].Set("TestTypeCode", qaParams.CurrentLinearitySummary.TestTypeCd);
 													TolFilter[1].Set("FieldDescription", "MeanDifferenceUGSCM");
 													if (FindRow(TestToleranceRecords, TolFilter, out TolRowFound))
 														if (Math.Abs(MeanDiff - lsPercentError) <= cDBConvert.ToDecimal(TolRowFound["Tolerance"]))
@@ -1508,7 +1508,7 @@ namespace ECMPS.Checks.LinearityChecks
 											else
 												if (MeanReference > 0 && 0 <= lsPercentError && lsPercentError <= (decimal)10)
 												{
-													TolFilter[0].Set("TestTypeCode", QaParameters.CurrentLinearitySummary.TestTypeCd);
+													TolFilter[0].Set("TestTypeCode", qaParams.CurrentLinearitySummary.TestTypeCd);
 													TolFilter[1].Set("FieldDescription", "PercentError");
 													if (FindRow(TestToleranceRecords, TolFilter, out TolRowFound))
 														if (Math.Abs(MeanDiff - lsPercentError) <= cDBConvert.ToDecimal(TolRowFound["Tolerance"]))
@@ -1527,11 +1527,11 @@ namespace ECMPS.Checks.LinearityChecks
 					Category.SetCheckParameter("Linearity_Test_Result", TestResult, eParameterDataType.String);
 
 
-					if ((APSInd == 0) && (QaParameters.LinearitySummaryApsIndicator == 1))
+					if ((APSInd == 0) && (qaParams.LinearitySummaryApsIndicator == 1))
 					{
 						Category.CheckCatalogResult = "B";
 					}
-					else if ((APSInd == 1) && (QaParameters.LinearitySummaryApsIndicator == 0))
+					else if ((APSInd == 1) && (qaParams.LinearitySummaryApsIndicator == 0))
 					{
 						Category.CheckCatalogResult = "C";
 					}
@@ -1558,7 +1558,7 @@ namespace ECMPS.Checks.LinearityChecks
 
 		#region Linearity Check 27
 
-		public static string LINEAR27(cCategory Category, ref bool Log) // Compare Calculated Results for Level to Reported Results
+		public  string LINEAR27(cCategory Category, ref bool Log) // Compare Calculated Results for Level to Reported Results
 		{
 			string ReturnVal = "";
 
@@ -1606,7 +1606,7 @@ namespace ECMPS.Checks.LinearityChecks
 									else if (CompTypeCode == "HG")
 									{
 										TestToleranceRecords.RowFilter = AddToDataViewFilter(OldFilter, "FieldDescription = '" + "MeanDifferenceUGSCM" + "'");
-										TestToleranceRecords.RowFilter = AddToDataViewFilter(TestToleranceRecords.RowFilter, "TestTypeCode = '" + QaParameters.CurrentLinearitySummary.TestTypeCd + "'");
+										TestToleranceRecords.RowFilter = AddToDataViewFilter(TestToleranceRecords.RowFilter, "TestTypeCode = '" + qaParams.CurrentLinearitySummary.TestTypeCd + "'");
 										ToleranceValue = cDBConvert.ToDecimal(((DataRowView)TestToleranceRecords[0])["Tolerance"]);
 										if (System.Math.Abs((Decimal)Category.GetCheckParameter("Linearity_Summary_Mean_Difference").ParameterValue -
 											cDBConvert.ToDecimal(CurrentLinearitySummary["Percent_Error"])) > ToleranceValue)
@@ -1615,7 +1615,7 @@ namespace ECMPS.Checks.LinearityChecks
 									else
 									{
 										TestToleranceRecords.RowFilter = AddToDataViewFilter(OldFilter, "FieldDescription = '" + "MeanDifferencePCT" + "'");
-										TestToleranceRecords.RowFilter = AddToDataViewFilter(TestToleranceRecords.RowFilter, "TestTypeCode = '" + QaParameters.CurrentLinearitySummary.TestTypeCd + "'");
+										TestToleranceRecords.RowFilter = AddToDataViewFilter(TestToleranceRecords.RowFilter, "TestTypeCode = '" + qaParams.CurrentLinearitySummary.TestTypeCd + "'");
 										ToleranceValue = cDBConvert.ToDecimal(((DataRowView)TestToleranceRecords[0])["Tolerance"]);
 										if (System.Math.Abs((Decimal)Category.GetCheckParameter("Linearity_Summary_Mean_Difference").ParameterValue -
 											cDBConvert.ToDecimal(CurrentLinearitySummary["Percent_Error"])) > ToleranceValue)
@@ -1637,13 +1637,13 @@ namespace ECMPS.Checks.LinearityChecks
                             else if (CompTypeCode == "HG")
                             {
                                 TestToleranceRecords.RowFilter = AddToDataViewFilter(OldFilter, "FieldDescription = '" + "MeanDifferenceUGSCM" + "'");
-                                TestToleranceRecords.RowFilter = AddToDataViewFilter(TestToleranceRecords.RowFilter, "TestTypeCode = '" + QaParameters.CurrentLinearitySummary.TestTypeCd + "'");
+                                TestToleranceRecords.RowFilter = AddToDataViewFilter(TestToleranceRecords.RowFilter, "TestTypeCode = '" + qaParams.CurrentLinearitySummary.TestTypeCd + "'");
                                 ToleranceValue = cDBConvert.ToDecimal(((DataRowView)TestToleranceRecords[0])["Tolerance"]);
                             }
                             else
                             {
                                 TestToleranceRecords.RowFilter = AddToDataViewFilter(OldFilter, "FieldDescription = '" + "MeanDifferencePCT" + "'");
-                                TestToleranceRecords.RowFilter = AddToDataViewFilter(TestToleranceRecords.RowFilter, "TestTypeCode = '" + QaParameters.CurrentLinearitySummary.TestTypeCd + "'");
+                                TestToleranceRecords.RowFilter = AddToDataViewFilter(TestToleranceRecords.RowFilter, "TestTypeCode = '" + qaParams.CurrentLinearitySummary.TestTypeCd + "'");
                                 ToleranceValue = cDBConvert.ToDecimal(((DataRowView)TestToleranceRecords[0])["Tolerance"]);
                             }
                             TestToleranceRecords.RowFilter = OldFilter;
@@ -1683,7 +1683,7 @@ namespace ECMPS.Checks.LinearityChecks
 
 		#region Linearity Check 28
 
-		public static string LINEAR28(cCategory Category, ref bool Log) // Appropriate Number of Gas Levels
+		public  string LINEAR28(cCategory Category, ref bool Log) // Appropriate Number of Gas Levels
 		{
 			string ReturnVal = "";
 
@@ -1727,7 +1727,7 @@ namespace ECMPS.Checks.LinearityChecks
 
 		#region Linearity Check 29
 
-		public static string LINEAR29(cCategory Category, ref bool Log) // Compare Final Test Result to Reported Result
+		public  string LINEAR29(cCategory Category, ref bool Log) // Compare Final Test Result to Reported Result
 		{
 			string ReturnVal = "";
 
@@ -1784,7 +1784,7 @@ namespace ECMPS.Checks.LinearityChecks
 
 		#region Linearity Check 30
 
-		public static string LINEAR30(cCategory Category, ref bool Log) // Initialize Linearity Variables
+		public  string LINEAR30(cCategory Category, ref bool Log) // Initialize Linearity Variables
 		{
 			string ReturnVal = "";
 
@@ -1811,7 +1811,7 @@ namespace ECMPS.Checks.LinearityChecks
 
 		#region Linearity Check 31
 
-		public static string LINEAR31(cCategory Category, ref bool Log) // Duplicate Test 
+		public  string LINEAR31(cCategory Category, ref bool Log) // Duplicate Test 
 		{
 			string ReturnVal = "";
 
@@ -1867,7 +1867,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 32
-		public static string LINEAR32(cCategory Category, ref bool Log) // Duplicate Linearity Summary
+		public  string LINEAR32(cCategory Category, ref bool Log) // Duplicate Linearity Summary
 		{
 			string ReturnVal = "";
 
@@ -1910,7 +1910,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 33
-		public static string LINEAR33(cCategory Category, ref bool Log) // Duplicate Linearity Summary
+		public  string LINEAR33(cCategory Category, ref bool Log) // Duplicate Linearity Summary
 		{
 			string ReturnVal = "";
 
@@ -1961,7 +1961,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 34
-		public static string LINEAR34(cCategory Category, ref bool Log) // Extra Linearity Injections
+		public  string LINEAR34(cCategory Category, ref bool Log) // Extra Linearity Injections
 		{
 			string ReturnVal = "";
 
@@ -2006,7 +2006,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 35
-		public static string LINEAR35(cCategory Category, ref bool Log)
+		public  string LINEAR35(cCategory Category, ref bool Log)
 		//Linearity Component ID Valid  
 		{
 			string ReturnVal = "";
@@ -2027,7 +2027,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 36
-		public static string LINEAR36(cCategory Category, ref bool Log) //Initialize Linearity Summary Variables
+		public  string LINEAR36(cCategory Category, ref bool Log) //Initialize Linearity Summary Variables
 		{
 			string ReturnVal = "";
 
@@ -2051,7 +2051,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 37
-		public static string LINEAR37(cCategory Category, ref bool Log)
+		public  string LINEAR37(cCategory Category, ref bool Log)
 		//APS Indicator Valid
 		{
 			string ReturnVal = "";
@@ -2072,7 +2072,7 @@ namespace ECMPS.Checks.LinearityChecks
 		#endregion
 
 		#region Linearity Check 38
-		public static string LINEAR38(cCategory Category, ref bool Log)
+		public  string LINEAR38(cCategory Category, ref bool Log)
 		//Calculate Linearity Summary Values
 		{
 			string ReturnVal = "";

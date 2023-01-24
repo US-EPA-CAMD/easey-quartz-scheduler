@@ -25,6 +25,8 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
         #endregion
 
+        private MpParameters mpParameters;
+
 
         #region Private Fields
 
@@ -35,26 +37,30 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
         #region Constructors
 
-        public cMonitorPlanCategory(cCheckEngine CheckEngine, cMonitorPlan MonitorPlan)
+        public cMonitorPlanCategory(cCheckEngine CheckEngine, cMonitorPlan MonitorPlan, ref MpParameters mpParams)
             : base(CheckEngine, (cProcess)MonitorPlan, "MONPLAN")
         {
             mMonitorPlan = MonitorPlan;
             TableName = "MONITOR_PLAN";
+            mpParameters = mpParams;
+        }
+
+        public cMonitorPlanCategory(){
         }
 
         #endregion
 
 
-        #region Public Static Methods
+        #region Public  Methods
 
-        public static cMonitorPlanCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+        public  cMonitorPlanCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess, ref MpParameters mpParams)
         {
             cMonitorPlanCategory Category;
             string ErrorMessage = "";
 
             try
             {
-                Category = new cMonitorPlanCategory(ACheckEngine, AMonitorPlanProcess);
+                Category = new cMonitorPlanCategory(ACheckEngine, AMonitorPlanProcess, ref mpParams);
 
                 bool Result = Category.InitCheckBands(ACheckEngine.DbAuxConnection, ref ErrorMessage);
 
@@ -160,7 +166,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
             SetDataViewCheckParameter("Program_Code_Table", mMonitorPlan.SourceData.Tables["ProgramCode"], "", "Prg_Cd");
 
             // System Parameter Table
-            MpParameters.SystemParameterLookupTable = new CheckDataView<VwSystemParameterRow>(Process.SourceData.Tables["SystemParameter"], null, null);
+            mpParameters.SystemParameterLookupTable = new CheckDataView<VwSystemParameterRow>(Process.SourceData.Tables["SystemParameter"], null, null);
 
             // This Crosscheck has its own table - not a virtual crosscheck - used in MATSMethodChecks
             SetDataViewCheckParameter("Parameter_And_Method_And_Location_To_Formula_Crosscheck", mMonitorPlan.SourceData.Tables["ParameterAndMethodAndLocationToFormulaCrosscheck"], "", "");

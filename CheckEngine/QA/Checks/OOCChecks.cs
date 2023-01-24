@@ -66,7 +66,7 @@ namespace ECMPS.Checks.OOCChecks
 
 		#region OOC 1-10
 		#region ONOFF1
-		public static string ONOFF1(cCategory Category, ref bool Log)
+		public  string ONOFF1(cCategory Category, ref bool Log)
 		//Online Offline Calibration Test Component Type Check
 		{
 			string ReturnVal = "";
@@ -98,7 +98,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF2
-		public static string ONOFF2(cCategory Category, ref bool Log)
+		public  string ONOFF2(cCategory Category, ref bool Log)
 		//Aborted Online Offline Calibration Test Check
 		{
 			string ReturnVal = "";
@@ -121,7 +121,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF3
-		public static string ONOFF3(cCategory Category, ref bool Log)
+		public  string ONOFF3(cCategory Category, ref bool Log)
 		//Online Offline Calibration Test Reason Code Valid
 		{
 			string ReturnVal = "";
@@ -152,7 +152,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF4
-		public static string ONOFF4(cCategory Category, ref bool Log)
+		public  string ONOFF4(cCategory Category, ref bool Log)
 		//Online Offline Calibration Test Upscale Gas Level Code Valid
 		{
 			string ReturnVal = "";
@@ -201,7 +201,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF5
-		public static string ONOFF5(cCategory Category, ref bool Log)
+		public  string ONOFF5(cCategory Category, ref bool Log)
 		//Offline Upscale Injection Time Valid
 		{
 			string ReturnVal = "";
@@ -228,7 +228,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF6
-		public static string ONOFF6(cCategory Category, ref bool Log)
+		public  string ONOFF6(cCategory Category, ref bool Log)
 		//Offline Upscale Measured Value Valid
 		{
 			string ReturnVal = "";
@@ -251,7 +251,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF7
-		public static string ONOFF7(cCategory Category, ref bool Log)
+		public  string ONOFF7(cCategory Category, ref bool Log)
 		//Offline Upscale Reference Value Valid
 		{
 			string ReturnVal = "";
@@ -277,7 +277,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF8
-		public static string ONOFF8(cCategory Category, ref bool Log)
+		public  string ONOFF8(cCategory Category, ref bool Log)
 		//Offline Upscale Calibration Error Valid
 		{
 			string ReturnVal = "";
@@ -303,7 +303,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF9
-		public static string ONOFF9(cCategory Category, ref bool Log)
+		public  string ONOFF9(cCategory Category, ref bool Log)
 		//Offline Zero Injection Time Valid
 		{
 			string ReturnVal = "";
@@ -330,7 +330,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF10
-		public static string ONOFF10(cCategory Category, ref bool Log)
+		public  string ONOFF10(cCategory Category, ref bool Log)
 		//Offline Zero Measured Value Valid
 		{
 			string ReturnVal = "";
@@ -355,7 +355,7 @@ namespace ECMPS.Checks.OOCChecks
 
 		#region OOC 11-20
 		#region ONOFF11
-		public static string ONOFF11(cCategory Category, ref bool Log)
+		public  string ONOFF11(cCategory Category, ref bool Log)
 		//Offline Zero Reference Value Valid
 		{
 			string ReturnVal = "";
@@ -381,7 +381,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF12
-		public static string ONOFF12(cCategory Category, ref bool Log)
+		public  string ONOFF12(cCategory Category, ref bool Log)
 		//Offline Zero Calibration Error Valid
 		{
 			string ReturnVal = "";
@@ -407,7 +407,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF13
-		public static string ONOFF13(cCategory Category, ref bool Log)
+		public  string ONOFF13(cCategory Category, ref bool Log)
 		//Online Upscale Injection Time Valid
 		{
 			string ReturnVal = "";
@@ -434,7 +434,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF14
-		public static string ONOFF14(cCategory Category, ref bool Log)
+		public  string ONOFF14(cCategory Category, ref bool Log)
 		//Online Upscale Measured Value Valid
 		{
 			string ReturnVal = "";
@@ -457,7 +457,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF15
-		public static string ONOFF15(cCategory Category, ref bool Log)
+		public  string ONOFF15(cCategory Category, ref bool Log)
 		//Online Upscale Reference Value Valid
 		{
 			string ReturnVal = "";
@@ -483,7 +483,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF16
-		public static string ONOFF16(cCategory Category, ref bool Log)
+		public  string ONOFF16(cCategory Category, ref bool Log)
 		//Online Upscale Calibration Error Valid
 		{
 			string ReturnVal = "";
@@ -509,7 +509,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF17
-		public static string ONOFF17(cCategory Category, ref bool Log)
+		public  string ONOFF17(cCategory Category, ref bool Log)
 		//Online Zero Injection Time Valid
 		{
 			string ReturnVal = "";
@@ -536,7 +536,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF18
-		public static string ONOFF18(cCategory Category, ref bool Log)
+		public  string ONOFF18(cCategory Category, ref bool Log)
 		//Online Zero Measured Value Valid
 		{
 			string ReturnVal = "";
@@ -559,7 +559,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF19
-		public static string ONOFF19(cCategory Category, ref bool Log)
+		public  string ONOFF19(cCategory Category, ref bool Log)
 		//Online Zero Reference Value Valid
 		{
 			string ReturnVal = "";
@@ -585,7 +585,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF20
-		public static string ONOFF20(cCategory Category, ref bool Log)
+		public  string ONOFF20(cCategory Category, ref bool Log)
 		//Online Zero Calibration Error Valid
 		{
 			string ReturnVal = "";
@@ -613,7 +613,7 @@ namespace ECMPS.Checks.OOCChecks
 
 		#region OOC 21-30
 		#region ONOFF21
-		public static string ONOFF21(cCategory Category, ref bool Log)
+		public  string ONOFF21(cCategory Category, ref bool Log)
 		//Reference Values Consistent with Calibration Gas Levels
 		{
 			string ReturnVal = "";
@@ -643,7 +643,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF22
-		public static string ONOFF22(cCategory Category, ref bool Log)
+		public  string ONOFF22(cCategory Category, ref bool Log)
 		//Online Offline Calibration Test Injection Sequence Valid
 		{
 			string ReturnVal = "";
@@ -703,7 +703,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF23
-		public static string ONOFF23(cCategory Category, ref bool Log)
+		public  string ONOFF23(cCategory Category, ref bool Log)
 		//Identification of Previously Reported Test or Test Number for Online Offline Calibration Test
 		{
 			string ReturnVal = "";
@@ -790,7 +790,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF24
-		public static string ONOFF24(cCategory Category, ref bool Log)
+		public  string ONOFF24(cCategory Category, ref bool Log)
 		//Online Offline Calibration Test Begin Time Valid
 		{
 			string ReturnVal = "";
@@ -841,7 +841,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF25
-		public static string ONOFF25(cCategory Category, ref bool Log)
+		public  string ONOFF25(cCategory Category, ref bool Log)
 		//Online Offline Calibration Test End Time Valid
 		{
 			string ReturnVal = "";
@@ -892,7 +892,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF26
-		public static string ONOFF26(cCategory Category, ref bool Log)
+		public  string ONOFF26(cCategory Category, ref bool Log)
 		//Upscale Reference Values Consistent with Span
 		{
 			string ReturnVal = "";
@@ -1006,7 +1006,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF27
-		public static string ONOFF27(cCategory Category, ref bool Log)
+		public  string ONOFF27(cCategory Category, ref bool Log)
 		//Zero Reference Values Consistent with Span
 		{
 			string ReturnVal = "";
@@ -1048,7 +1048,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF28
-		public static string ONOFF28(cCategory Category, ref bool Log)
+		public  string ONOFF28(cCategory Category, ref bool Log)
 		//Calculate Offline Upscale Gas Injection or Reference Signal Results
 		{
 			string ReturnVal = "";
@@ -1200,7 +1200,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF29
-		public static string ONOFF29(cCategory Category, ref bool Log)
+		public  string ONOFF29(cCategory Category, ref bool Log)
 		//Calculate Offline Zero Gas Injection or Reference Signal Results
 		{
 			string ReturnVal = "";
@@ -1351,7 +1351,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF30
-		public static string ONOFF30(cCategory Category, ref bool Log)
+		public  string ONOFF30(cCategory Category, ref bool Log)
 		//Calculate Online Upscale Gas Injection or Reference Signal Results
 		{
 			string ReturnVal = "";
@@ -1508,7 +1508,7 @@ namespace ECMPS.Checks.OOCChecks
 		#region OOC 31-40
 
 		#region ONOFF31
-		public static string ONOFF31(cCategory Category, ref bool Log)
+		public  string ONOFF31(cCategory Category, ref bool Log)
 		//Calculate Online Zero Gas Injection or Reference Signal Results
 		{
 			string ReturnVal = "";
@@ -1659,7 +1659,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF32
-		public static string ONOFF32(cCategory Category, ref bool Log)
+		public  string ONOFF32(cCategory Category, ref bool Log)
 		//Reported Offline Upscale Injection Results Consistent with Recalculated Values
 		//Note: Test Tolerance Cross Check records are pre-filtered for "7DAY" TestTypeCode by the Category
 		{
@@ -1746,7 +1746,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF33
-		public static string ONOFF33(cCategory Category, ref bool Log)
+		public  string ONOFF33(cCategory Category, ref bool Log)
 		//Reported Offline Zero Injection Results Consistent with Recalculated Values
 		{
 			string ReturnVal = "";
@@ -1825,7 +1825,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF34
-		public static string ONOFF34(cCategory Category, ref bool Log)
+		public  string ONOFF34(cCategory Category, ref bool Log)
 		//Calculate Online Upscale Gas Injection or Reference Signal Results
 		{
 			string ReturnVal = "";
@@ -1904,7 +1904,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF35
-		public static string ONOFF35(cCategory Category, ref bool Log)
+		public  string ONOFF35(cCategory Category, ref bool Log)
 		//Reported Online Zero Injection Results Consistent with Recalculated Values
 		{
 			string ReturnVal = "";
@@ -1983,7 +1983,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF36
-		public static string ONOFF36(cCategory Category, ref bool Log)
+		public  string ONOFF36(cCategory Category, ref bool Log)
 		//Determination of Overall Online Offline Calibration Test Result
 		{
 			string ReturnVal = "";
@@ -2022,7 +2022,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF37
-		public static string ONOFF37(cCategory Category, ref bool Log)
+		public  string ONOFF37(cCategory Category, ref bool Log)
 		//Online Offline Calibration Test Component ID Valid
 		{
 			string ReturnVal = "";
@@ -2052,7 +2052,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF38
-		public static string ONOFF38(cCategory Category, ref bool Log)
+		public  string ONOFF38(cCategory Category, ref bool Log)
 		//Duplicate Online Offline Calibration Test
 		{
 			string ReturnVal = "";
@@ -2109,7 +2109,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF39
-		public static string ONOFF39(cCategory Category, ref bool Log)
+		public  string ONOFF39(cCategory Category, ref bool Log)
 		//Online Offline Calibration Test Result Code Valid
 		{
 			string ReturnVal = "";
@@ -2141,7 +2141,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF40
-		public static string ONOFF40(cCategory Category, ref bool Log)
+		public  string ONOFF40(cCategory Category, ref bool Log)
 		//Online Offline Calibration Test Component Type Check
 		{
 			string ReturnVal = "";
@@ -2164,7 +2164,7 @@ namespace ECMPS.Checks.OOCChecks
 
 		#region OOC 41-50
 		#region ONOFF41
-		public static string ONOFF41(cCategory Category, ref bool Log)
+		public  string ONOFF41(cCategory Category, ref bool Log)
 		//Online Zero APS Indicator Valid
 		{
 			string ReturnVal = "";
@@ -2186,7 +2186,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF42
-		public static string ONOFF42(cCategory Category, ref bool Log)
+		public  string ONOFF42(cCategory Category, ref bool Log)
 		//Offline Zero APS Indicator Valid
 		{
 			string ReturnVal = "";
@@ -2208,7 +2208,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF43
-		public static string ONOFF43(cCategory Category, ref bool Log)
+		public  string ONOFF43(cCategory Category, ref bool Log)
 		//Online Upscale APS Indicator Valid
 		{
 			string ReturnVal = "";
@@ -2230,7 +2230,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF44
-		public static string ONOFF44(cCategory Category, ref bool Log)
+		public  string ONOFF44(cCategory Category, ref bool Log)
 		//Offline Upscale APS Indicator Valid
 		{
 			string ReturnVal = "";
@@ -2252,7 +2252,7 @@ namespace ECMPS.Checks.OOCChecks
 		#endregion
 
 		#region ONOFF45
-		public static string ONOFF45(cCategory Category, ref bool Log)
+		public  string ONOFF45(cCategory Category, ref bool Log)
 		//Calculate Online Offline Calibration
 		{
 			string ReturnVal = "";
@@ -2483,7 +2483,7 @@ namespace ECMPS.Checks.OOCChecks
 
 		#region Private Methods: Utilities
 
-		private static decimal GetTolerance(string ATestTypeCd, String AFieldDescription, cCategory ACategory)
+		private  decimal GetTolerance(string ATestTypeCd, String AFieldDescription, cCategory ACategory)
 		{
 			DataView ToleranceView = (DataView)ACategory.GetCheckParameter("Test_Tolerances_Cross_Check_Table").ParameterValue;
 			DataRowView ToleranceRow;

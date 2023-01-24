@@ -23,13 +23,13 @@ namespace ECMPS.Checks.Qa.Parameters
     {
         
         // Storage field for property 'Process'
-        private static cProcess _process;
+        private  cProcess _process;
         
         // Storage field for property 'Category'
-        private static cCategory _category;
+        private  cCategory _category;
         
         /// The process object for the current evaluation process.  Set by the actual process during initialization.
-        public static cProcess Process
+        public  cProcess Process
         {
             get
             {
@@ -38,7 +38,7 @@ namespace ECMPS.Checks.Qa.Parameters
         }
         
         /// The current category object set at the beginning of the category's processing of checks and nulled at the end of the processing.
-        public static cCategory Category
+        public  cCategory Category
         {
             get
             {
@@ -53,11 +53,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// A lookup table of Accuracy Specification Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AccuracySpecCodeRow> AccuracySpecificationCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AccuracySpecCodeRow> AccuracySpecificationCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Accuracy_Specification_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Accuracy_Specification_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -71,11 +71,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Accuracy_Specification_Code_Lookup_Table", null);
+                    SetCheckParameter("Accuracy_Specification_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Accuracy_Specification_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Accuracy_Specification_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -83,41 +83,41 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The recalculated result of a fuel flowmeter accuracy test.
         /// </summary>
-        public static string AccuracyTestCalcResult
+        public  string AccuracyTestCalcResult
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Accuracy_Test_Calc_Result")));
+                return ((string)(GetCheckParameter("Accuracy_Test_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Accuracy_Test_Calc_Result", value);
+                SetCheckParameter("Accuracy_Test_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// Indicates if the component tested in the fuel flowmeter accuracy test has a valid component type.
         /// </summary>
-        public static bool? AccuracyTestComponentTypeValid
+        public  bool? AccuracyTestComponentTypeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Accuracy_Test_Component_Type_Valid")));
+                return ((bool?)(GetCheckParameter("Accuracy_Test_Component_Type_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Accuracy_Test_Component_Type_Valid", value);
+                SetCheckParameter("Accuracy_Test_Component_Type_Valid", value);
             }
         }
         
         /// <summary>
         /// A lookup table of Accuracy Test Method Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AccuracyTestMethodCodeRow> AccuracyTestMethodCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AccuracyTestMethodCodeRow> AccuracyTestMethodCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Accuracy_Test_Method_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Accuracy_Test_Method_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -131,11 +131,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Accuracy_Test_Method_Code_Lookup_Table", null);
+                    SetCheckParameter("Accuracy_Test_Method_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Accuracy_Test_Method_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Accuracy_Test_Method_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -143,26 +143,26 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if the accuracy test method code in the fuel flowmeter accuracy test is valid.
         /// </summary>
-        public static bool? AccuracyTestMethodValid
+        public  bool? AccuracyTestMethodValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Accuracy_Test_Method_Valid")));
+                return ((bool?)(GetCheckParameter("Accuracy_Test_Method_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Accuracy_Test_Method_Valid", value);
+                SetCheckParameter("Accuracy_Test_Method_Valid", value);
             }
         }
         
         /// <summary>
         /// All fuel flowmeter accuracy test summary records for the component.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFfaccRow> AccuracyTestRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFfaccRow> AccuracyTestRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Accuracy_Test_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Accuracy_Test_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -176,11 +176,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Accuracy_Test_Records", null);
+                    SetCheckParameter("Accuracy_Test_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Accuracy_Test_Records", value.SourceView);
+                    SetCheckParameter("Accuracy_Test_Records", value.SourceView);
                 }
             }
         }
@@ -188,11 +188,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The air emission testing records associated with the test being evaluated.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwQaAiremissiontestingdataRow> AirEmissionTestingRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwQaAiremissiontestingdataRow> AirEmissionTestingRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Air_Emission_Testing_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Air_Emission_Testing_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -206,11 +206,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Air_Emission_Testing_Records", null);
+                    SetCheckParameter("Air_Emission_Testing_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Air_Emission_Testing_Records", value.SourceView);
+                    SetCheckParameter("Air_Emission_Testing_Records", value.SourceView);
                 }
             }
         }
@@ -218,11 +218,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// A collection of records for all Analyzer Range records for the component with the associated component information.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwAnalyzerRangeRow> AnalyzerRangeRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwAnalyzerRangeRow> AnalyzerRangeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Analyzer_Range_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Analyzer_Range_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -236,11 +236,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Analyzer_Range_Records", null);
+                    SetCheckParameter("Analyzer_Range_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Analyzer_Range_Records", value.SourceView);
+                    SetCheckParameter("Analyzer_Range_Records", value.SourceView);
                 }
             }
         }
@@ -248,206 +248,206 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The calculated average hourly heat input rate for the operating level of an Appendix E Test.
         /// </summary>
-        public static decimal? AppeCalcAvgHiRate
+        public  decimal? AppeCalcAvgHiRate
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Calc_Avg_HI_Rate")));
+                return ((decimal?)(GetCheckParameter("APPE_Calc_Avg_HI_Rate")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Calc_Avg_HI_Rate", value);
+                SetCheckParameter("APPE_Calc_Avg_HI_Rate", value);
             }
         }
         
         /// <summary>
         /// The recalculated heat input for gas in an Appendix E test.
         /// </summary>
-        public static decimal? AppeCalcGasHeatInput
+        public  decimal? AppeCalcGasHeatInput
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Calc_Gas_Heat_Input")));
+                return ((decimal?)(GetCheckParameter("APPE_Calc_Gas_Heat_Input")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Calc_Gas_Heat_Input", value);
+                SetCheckParameter("APPE_Calc_Gas_Heat_Input", value);
             }
         }
         
         /// <summary>
         /// The average hourly heat input rate for the operating level of an Appendix E Test  recalculated from the heat input in the gas and oil records.
         /// </summary>
-        public static decimal? AppeCalcLevelAverageHiRate
+        public  decimal? AppeCalcLevelAverageHiRate
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Calc_Level_Average_HI_Rate")));
+                return ((decimal?)(GetCheckParameter("APPE_Calc_Level_Average_HI_Rate")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Calc_Level_Average_HI_Rate", value);
+                SetCheckParameter("APPE_Calc_Level_Average_HI_Rate", value);
             }
         }
         
         /// <summary>
         /// The mean reference value for the operating level of an Appendix E Test  recalculated from the reference values in the run records.
         /// </summary>
-        public static decimal? AppeCalcLevelMeanReferenceValue
+        public  decimal? AppeCalcLevelMeanReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Calc_Level_Mean_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("APPE_Calc_Level_Mean_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Calc_Level_Mean_Reference_Value", value);
+                SetCheckParameter("APPE_Calc_Level_Mean_Reference_Value", value);
             }
         }
         
         /// <summary>
         /// The calculated mean reference value for the operating level of an Appendix E Test.
         /// </summary>
-        public static decimal? AppeCalcMeanRv
+        public  decimal? AppeCalcMeanRv
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Calc_Mean_RV")));
+                return ((decimal?)(GetCheckParameter("APPE_Calc_Mean_RV")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Calc_Mean_RV", value);
+                SetCheckParameter("APPE_Calc_Mean_RV", value);
             }
         }
         
         /// <summary>
         /// The recalculated heat input for oil in an Appendix E test.
         /// </summary>
-        public static decimal? AppeCalcOilHeatInput
+        public  decimal? AppeCalcOilHeatInput
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Calc_Oil_Heat_Input")));
+                return ((decimal?)(GetCheckParameter("APPE_Calc_Oil_Heat_Input")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Calc_Oil_Heat_Input", value);
+                SetCheckParameter("APPE_Calc_Oil_Heat_Input", value);
             }
         }
         
         /// <summary>
         /// The recalculated oil mass from volume and density in an Appendix E test.
         /// </summary>
-        public static decimal? AppeCalcOilMass
+        public  decimal? AppeCalcOilMass
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Calc_Oil_Mass")));
+                return ((decimal?)(GetCheckParameter("APPE_Calc_Oil_Mass")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Calc_Oil_Mass", value);
+                SetCheckParameter("APPE_Calc_Oil_Mass", value);
             }
         }
         
         /// <summary>
         /// The heat input rate for the Appendix E Test run recalculated from the heat input in the gas and oil records.
         /// </summary>
-        public static decimal? AppeCalcRunHiRate
+        public  decimal? AppeCalcRunHiRate
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Calc_Run_HI_Rate")));
+                return ((decimal?)(GetCheckParameter("APPE_Calc_Run_HI_Rate")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Calc_Run_HI_Rate", value);
+                SetCheckParameter("APPE_Calc_Run_HI_Rate", value);
             }
         }
         
         /// <summary>
         /// The total heat input for the Appendix E Test run recalculated from the heat input in the gas and oil records.
         /// </summary>
-        public static decimal? AppeCalcRunTotalHi
+        public  decimal? AppeCalcRunTotalHi
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Calc_Run_Total_HI")));
+                return ((decimal?)(GetCheckParameter("APPE_Calc_Run_Total_HI")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Calc_Run_Total_HI", value);
+                SetCheckParameter("APPE_Calc_Run_Total_HI", value);
             }
         }
         
         /// <summary>
         /// Indicates if systems reported in the gas and oil flow records are consistent in all the runs of an Appendix E test.
         /// </summary>
-        public static bool? AppeGasAndOilSystemsConsistent
+        public  bool? AppeGasAndOilSystemsConsistent
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("APPE_Gas_and_Oil_Systems_Consistent")));
+                return ((bool?)(GetCheckParameter("APPE_Gas_and_Oil_Systems_Consistent")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Gas_and_Oil_Systems_Consistent", value);
+                SetCheckParameter("APPE_Gas_and_Oil_Systems_Consistent", value);
             }
         }
         
         /// <summary>
         /// The calculated heat input for gas in an Appendix E gas record.
         /// </summary>
-        public static decimal? AppeGasCalcHi
+        public  decimal? AppeGasCalcHi
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Gas_Calc_HI")));
+                return ((decimal?)(GetCheckParameter("APPE_Gas_Calc_HI")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Gas_Calc_HI", value);
+                SetCheckParameter("APPE_Gas_Calc_HI", value);
             }
         }
         
         /// <summary>
         /// The maximum allowable value for gas GCV.
         /// </summary>
-        public static decimal? AppeGasGcvMaximumValue
+        public  decimal? AppeGasGcvMaximumValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Gas_GCV_Maximum_Value")));
+                return ((decimal?)(GetCheckParameter("APPE_Gas_GCV_Maximum_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Gas_GCV_Maximum_Value", value);
+                SetCheckParameter("APPE_Gas_GCV_Maximum_Value", value);
             }
         }
         
         /// <summary>
         /// The minimum allowable value for gas GCV.
         /// </summary>
-        public static decimal? AppeGasGcvMinimumValue
+        public  decimal? AppeGasGcvMinimumValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Gas_GCV_Minimum_Value")));
+                return ((decimal?)(GetCheckParameter("APPE_Gas_GCV_Minimum_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Gas_GCV_Minimum_Value", value);
+                SetCheckParameter("APPE_Gas_GCV_Minimum_Value", value);
             }
         }
         
         /// <summary>
         /// All Heat Input from Gas records for the Appendix E test.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeHiGasRow> AppeGasRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeHiGasRow> AppeGasRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("APPE_Gas_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("APPE_Gas_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -461,11 +461,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("APPE_Gas_Records", null);
+                    SetCheckParameter("APPE_Gas_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("APPE_Gas_Records", value.SourceView);
+                    SetCheckParameter("APPE_Gas_Records", value.SourceView);
                 }
             }
         }
@@ -473,326 +473,326 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if heat input rate in the runs of an Appendix E test are consistent with the operating level.
         /// </summary>
-        public static bool? AppeHeatInputConsistentWithOperatingLevel
+        public  bool? AppeHeatInputConsistentWithOperatingLevel
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("APPE_Heat_Input_Consistent_with_Operating_Level")));
+                return ((bool?)(GetCheckParameter("APPE_Heat_Input_Consistent_with_Operating_Level")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Heat_Input_Consistent_with_Operating_Level", value);
+                SetCheckParameter("APPE_Heat_Input_Consistent_with_Operating_Level", value);
             }
         }
         
         /// <summary>
         /// An array of heat input rate for the Appendix E test segments.
         /// </summary>
-        public static decimal? AppeHeatInputRateArray
+        public  decimal? AppeHeatInputRateArray
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Heat_Input_Rate_Array")));
+                return ((decimal?)(GetCheckParameter("APPE_Heat_Input_Rate_Array")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Heat_Input_Rate_Array", value);
+                SetCheckParameter("APPE_Heat_Input_Rate_Array", value);
             }
         }
         
         /// <summary>
         /// The RunNumber of the previous run of the Appendix E test when sort in OperatingLevelForRun, RunNumber order.
         /// </summary>
-        public static int? AppeLastRunNumber
+        public  int? AppeLastRunNumber
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("APPE_Last_Run_Number")));
+                return ((int?)(GetCheckParameter("APPE_Last_Run_Number")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Last_Run_Number", value);
+                SetCheckParameter("APPE_Last_Run_Number", value);
             }
         }
         
         /// <summary>
         /// A counter fo the current operating level of an Appendix E Test being evaluated.
         /// </summary>
-        public static int? AppeLevelCount
+        public  int? AppeLevelCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("APPE_Level_Count")));
+                return ((int?)(GetCheckParameter("APPE_Level_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Level_Count", value);
+                SetCheckParameter("APPE_Level_Count", value);
             }
         }
         
         /// <summary>
         /// Indicates if the number of operating levels in the Appendix E test was validated.
         /// </summary>
-        public static bool? AppeLevelCountValidated
+        public  bool? AppeLevelCountValidated
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("APPE_Level_Count_Validated")));
+                return ((bool?)(GetCheckParameter("APPE_Level_Count_Validated")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Level_Count_Validated", value);
+                SetCheckParameter("APPE_Level_Count_Validated", value);
             }
         }
         
         /// <summary>
         /// The maximum heat input rate in the runs of an operating level of an Appendix E Test.
         /// </summary>
-        public static decimal? AppeLevelMaximumHiRate
+        public  decimal? AppeLevelMaximumHiRate
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Level_Maximum_HI_Rate")));
+                return ((decimal?)(GetCheckParameter("APPE_Level_Maximum_HI_Rate")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Level_Maximum_HI_Rate", value);
+                SetCheckParameter("APPE_Level_Maximum_HI_Rate", value);
             }
         }
         
         /// <summary>
         /// A counter fo the number of runs in the operating level of the Appendix E Test being evaluated.
         /// </summary>
-        public static int? AppeLevelRunCount
+        public  int? AppeLevelRunCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("APPE_Level_Run_Count")));
+                return ((int?)(GetCheckParameter("APPE_Level_Run_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Level_Run_Count", value);
+                SetCheckParameter("APPE_Level_Run_Count", value);
             }
         }
         
         /// <summary>
         /// The sum of the heat input rates in the runs of an operating level of an Appendix E Test.
         /// </summary>
-        public static decimal? AppeLevelSumHiRate
+        public  decimal? AppeLevelSumHiRate
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Level_Sum_HI_Rate")));
+                return ((decimal?)(GetCheckParameter("APPE_Level_Sum_HI_Rate")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Level_Sum_HI_Rate", value);
+                SetCheckParameter("APPE_Level_Sum_HI_Rate", value);
             }
         }
         
         /// <summary>
         /// The sum of the reference values in the runs of an operating level of an Appendix E Test.
         /// </summary>
-        public static decimal? AppeLevelSumReferenceValue
+        public  decimal? AppeLevelSumReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Level_Sum_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("APPE_Level_Sum_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Level_Sum_Reference_Value", value);
+                SetCheckParameter("APPE_Level_Sum_Reference_Value", value);
             }
         }
         
         /// <summary>
         /// An maximum NOx rate of the Appendix E test segments.
         /// </summary>
-        public static decimal? AppeMaximumNoxRate
+        public  decimal? AppeMaximumNoxRate
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Maximum_NOx_Rate")));
+                return ((decimal?)(GetCheckParameter("APPE_Maximum_NOx_Rate")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Maximum_NOx_Rate", value);
+                SetCheckParameter("APPE_Maximum_NOx_Rate", value);
             }
         }
         
         /// <summary>
         /// An array of NOx rates for the Appendix E test segments.
         /// </summary>
-        public static decimal? AppeNoxRateArray
+        public  decimal? AppeNoxRateArray
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_NOx_Rate_Array")));
+                return ((decimal?)(GetCheckParameter("APPE_NOx_Rate_Array")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_NOx_Rate_Array", value);
+                SetCheckParameter("APPE_NOx_Rate_Array", value);
             }
         }
         
         /// <summary>
         /// The calculated heat input for oil in an Appendix Eoil record.
         /// </summary>
-        public static decimal? AppeOilCalcHi
+        public  decimal? AppeOilCalcHi
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Oil_Calc_HI")));
+                return ((decimal?)(GetCheckParameter("APPE_Oil_Calc_HI")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Oil_Calc_HI", value);
+                SetCheckParameter("APPE_Oil_Calc_HI", value);
             }
         }
         
         /// <summary>
         /// The calculated mass oil in an Appendix Eoil record.
         /// </summary>
-        public static decimal? AppeOilCalcMassOil
+        public  decimal? AppeOilCalcMassOil
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Oil_Calc_Mass_Oil")));
+                return ((decimal?)(GetCheckParameter("APPE_Oil_Calc_Mass_Oil")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Oil_Calc_Mass_Oil", value);
+                SetCheckParameter("APPE_Oil_Calc_Mass_Oil", value);
             }
         }
         
         /// <summary>
         /// The maximum allowable value for oil density based on the units of measure.
         /// </summary>
-        public static decimal? AppeOilDensityMaximumValue
+        public  decimal? AppeOilDensityMaximumValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Oil_Density_Maximum_Value")));
+                return ((decimal?)(GetCheckParameter("APPE_Oil_Density_Maximum_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Oil_Density_Maximum_Value", value);
+                SetCheckParameter("APPE_Oil_Density_Maximum_Value", value);
             }
         }
         
         /// <summary>
         /// The minimum allowable value for oil density based on the units of measure.
         /// </summary>
-        public static decimal? AppeOilDensityMinimumValue
+        public  decimal? AppeOilDensityMinimumValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Oil_Density_Minimum_Value")));
+                return ((decimal?)(GetCheckParameter("APPE_Oil_Density_Minimum_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Oil_Density_Minimum_Value", value);
+                SetCheckParameter("APPE_Oil_Density_Minimum_Value", value);
             }
         }
         
         /// <summary>
         /// The oil density units of measure code appropriate for the volume units of measure.
         /// </summary>
-        public static string AppeOilDensityUom
+        public  string AppeOilDensityUom
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("APPE_Oil_Density_UOM")));
+                return ((string)(GetCheckParameter("APPE_Oil_Density_UOM")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Oil_Density_UOM", value);
+                SetCheckParameter("APPE_Oil_Density_UOM", value);
             }
         }
         
         /// <summary>
         /// Indicates if the oil density units of measure code is appropriate for the volume units of measure.
         /// </summary>
-        public static bool? AppeOilDensityUomValid
+        public  bool? AppeOilDensityUomValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("APPE_Oil_Density_UOM_Valid")));
+                return ((bool?)(GetCheckParameter("APPE_Oil_Density_UOM_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Oil_Density_UOM_Valid", value);
+                SetCheckParameter("APPE_Oil_Density_UOM_Valid", value);
             }
         }
         
         /// <summary>
         /// The maximum allowable value for oil GCV based on the units of measure.
         /// </summary>
-        public static decimal? AppeOilGcvMaximumValue
+        public  decimal? AppeOilGcvMaximumValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Oil_GCV_Maximum_Value")));
+                return ((decimal?)(GetCheckParameter("APPE_Oil_GCV_Maximum_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Oil_GCV_Maximum_Value", value);
+                SetCheckParameter("APPE_Oil_GCV_Maximum_Value", value);
             }
         }
         
         /// <summary>
         /// The minimum allowable value for oil GCV based on the units of measure.
         /// </summary>
-        public static decimal? AppeOilGcvMinimumValue
+        public  decimal? AppeOilGcvMinimumValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Oil_GCV_Minimum_Value")));
+                return ((decimal?)(GetCheckParameter("APPE_Oil_GCV_Minimum_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Oil_GCV_Minimum_Value", value);
+                SetCheckParameter("APPE_Oil_GCV_Minimum_Value", value);
             }
         }
         
         /// <summary>
         /// The oil GCV units of measure code appropriate for the volume units of measure.
         /// </summary>
-        public static string AppeOilGcvUom
+        public  string AppeOilGcvUom
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("APPE_Oil_GCV_UOM")));
+                return ((string)(GetCheckParameter("APPE_Oil_GCV_UOM")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Oil_GCV_UOM", value);
+                SetCheckParameter("APPE_Oil_GCV_UOM", value);
             }
         }
         
         /// <summary>
         /// Indicates if the Oil GCV UOM Code is valid.
         /// </summary>
-        public static bool? AppeOilGcvUomValid
+        public  bool? AppeOilGcvUomValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("APPE_Oil_GCV_UOM_Valid")));
+                return ((bool?)(GetCheckParameter("APPE_Oil_GCV_UOM_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Oil_GCV_UOM_Valid", value);
+                SetCheckParameter("APPE_Oil_GCV_UOM_Valid", value);
             }
         }
         
         /// <summary>
         /// All Heat Input from Oil records for the Appendix E test.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeHiOilRow> AppeOilRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeHiOilRow> AppeOilRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("APPE_Oil_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("APPE_Oil_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -806,11 +806,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("APPE_Oil_Records", null);
+                    SetCheckParameter("APPE_Oil_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("APPE_Oil_Records", value.SourceView);
+                    SetCheckParameter("APPE_Oil_Records", value.SourceView);
                 }
             }
         }
@@ -818,71 +818,71 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The SystemTypeCode of the oil system in the Heat Input from Oil records for an Appendix E test.
         /// </summary>
-        public static string AppeOilSystemType
+        public  string AppeOilSystemType
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("APPE_Oil_System_Type")));
+                return ((string)(GetCheckParameter("APPE_Oil_System_Type")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Oil_System_Type", value);
+                SetCheckParameter("APPE_Oil_System_Type", value);
             }
         }
         
         /// <summary>
         /// The calculated heat input for an Appendix E run.
         /// </summary>
-        public static decimal? AppeRunCalcHi
+        public  decimal? AppeRunCalcHi
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Run_Calc_HI")));
+                return ((decimal?)(GetCheckParameter("APPE_Run_Calc_HI")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Run_Calc_HI", value);
+                SetCheckParameter("APPE_Run_Calc_HI", value);
             }
         }
         
         /// <summary>
         /// The calculated heat input rate for an Appendix E run.
         /// </summary>
-        public static decimal? AppeRunCalcHiRate
+        public  decimal? AppeRunCalcHiRate
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Run_Calc_HI_Rate")));
+                return ((decimal?)(GetCheckParameter("APPE_Run_Calc_HI_Rate")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Run_Calc_HI_Rate", value);
+                SetCheckParameter("APPE_Run_Calc_HI_Rate", value);
             }
         }
         
         /// <summary>
         /// The length of the Appendix E Test run in minutes.
         /// </summary>
-        public static decimal? AppeRunLength
+        public  decimal? AppeRunLength
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("APPE_Run_Length")));
+                return ((decimal?)(GetCheckParameter("APPE_Run_Length")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Run_Length", value);
+                SetCheckParameter("APPE_Run_Length", value);
             }
         }
         
         /// <summary>
         /// All Run records for the Appendix E test.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeCorrelationTestRunRow> AppeRunRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeCorrelationTestRunRow> AppeRunRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("APPE_Run_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("APPE_Run_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -896,11 +896,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("APPE_Run_Records", null);
+                    SetCheckParameter("APPE_Run_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("APPE_Run_Records", value.SourceView);
+                    SetCheckParameter("APPE_Run_Records", value.SourceView);
                 }
             }
         }
@@ -908,86 +908,86 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// A string of run numbers in the APPE test.
         /// </summary>
-        public static string AppeRunSequence
+        public  string AppeRunSequence
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("APPE_Run_Sequence")));
+                return ((string)(GetCheckParameter("APPE_Run_Sequence")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Run_Sequence", value);
+                SetCheckParameter("APPE_Run_Sequence", value);
             }
         }
         
         /// <summary>
         /// Indicates if the sequence of run numbers in the Appendix E test is consecutive.
         /// </summary>
-        public static bool? AppeRunSequenceConsecutive
+        public  bool? AppeRunSequenceConsecutive
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("APPE_Run_Sequence_Consecutive")));
+                return ((bool?)(GetCheckParameter("APPE_Run_Sequence_Consecutive")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Run_Sequence_Consecutive", value);
+                SetCheckParameter("APPE_Run_Sequence_Consecutive", value);
             }
         }
         
         /// <summary>
         /// Indicates if the sequence of run numbers in the APPE test is valid.
         /// </summary>
-        public static bool? AppeRunSequenceValid
+        public  bool? AppeRunSequenceValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("APPE_Run_Sequence_Valid")));
+                return ((bool?)(GetCheckParameter("APPE_Run_Sequence_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Run_Sequence_Valid", value);
+                SetCheckParameter("APPE_Run_Sequence_Valid", value);
             }
         }
         
         /// <summary>
         /// The number of Heat Input from Oil and Gas records in the runs of an Appendix E test.
         /// </summary>
-        public static int? AppeRunSystemCount
+        public  int? AppeRunSystemCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("APPE_Run_System_Count")));
+                return ((int?)(GetCheckParameter("APPE_Run_System_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Run_System_Count", value);
+                SetCheckParameter("APPE_Run_System_Count", value);
             }
         }
         
         /// <summary>
         /// Indicates if the run times in the APPE test are valid.
         /// </summary>
-        public static bool? AppeRunTimesValid
+        public  bool? AppeRunTimesValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("APPE_Run_Times_Valid")));
+                return ((bool?)(GetCheckParameter("APPE_Run_Times_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Run_Times_Valid", value);
+                SetCheckParameter("APPE_Run_Times_Valid", value);
             }
         }
         
         /// <summary>
         /// All Summary records for the Appendix E test.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeCorrelationTestSumRow> AppeSummaryRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeCorrelationTestSumRow> AppeSummaryRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("APPE_Summary_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("APPE_Summary_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1001,11 +1001,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("APPE_Summary_Records", null);
+                    SetCheckParameter("APPE_Summary_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("APPE_Summary_Records", value.SourceView);
+                    SetCheckParameter("APPE_Summary_Records", value.SourceView);
                 }
             }
         }
@@ -1013,161 +1013,161 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The FuelCode of the NOXE system in the Appendix E test.
         /// </summary>
-        public static string AppeSystemFuelCode
+        public  string AppeSystemFuelCode
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("APPE_System_Fuel_Code")));
+                return ((string)(GetCheckParameter("APPE_System_Fuel_Code")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_System_Fuel_Code", value);
+                SetCheckParameter("APPE_System_Fuel_Code", value);
             }
         }
         
         /// <summary>
         /// The list of fuelflow Monitoring System IDs in the Heat Input from Gas and Oil records for an Appendix E test.
         /// </summary>
-        public static string AppeSystemList
+        public  string AppeSystemList
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("APPE_System_List")));
+                return ((string)(GetCheckParameter("APPE_System_List")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_System_List", value);
+                SetCheckParameter("APPE_System_List", value);
             }
         }
         
         /// <summary>
         /// The list of fuelflow Monitoring System IDs in the Heat Input from Oil records with inconsistent Volume Units of Measure.
         /// </summary>
-        public static string AppeSystemsWithInconsistentUom
+        public  string AppeSystemsWithInconsistentUom
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("APPE_Systems_with_Inconsistent_UOM")));
+                return ((string)(GetCheckParameter("APPE_Systems_with_Inconsistent_UOM")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Systems_with_Inconsistent_UOM", value);
+                SetCheckParameter("APPE_Systems_with_Inconsistent_UOM", value);
             }
         }
         
         /// <summary>
         /// Indicates if system type is valid for the Appendix E test.
         /// </summary>
-        public static bool? AppeSystemValid
+        public  bool? AppeSystemValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("APPE_System_Valid")));
+                return ((bool?)(GetCheckParameter("APPE_System_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_System_Valid", value);
+                SetCheckParameter("APPE_System_Valid", value);
             }
         }
         
         /// <summary>
         /// The begin date of the first run of the Appendix E test.
         /// </summary>
-        public static DateTime? AppeTestBeginDate
+        public  DateTime? AppeTestBeginDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("APPE_Test_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("APPE_Test_Begin_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Test_Begin_Date", value);
+                SetCheckParameter("APPE_Test_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The begin hour of the first run of the Appendix E test.
         /// </summary>
-        public static int? AppeTestBeginHour
+        public  int? AppeTestBeginHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("APPE_Test_Begin_Hour")));
+                return ((int?)(GetCheckParameter("APPE_Test_Begin_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Test_Begin_Hour", value);
+                SetCheckParameter("APPE_Test_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// The begin minute of the first run of the Appendix E test.
         /// </summary>
-        public static int? AppeTestBeginMinute
+        public  int? AppeTestBeginMinute
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("APPE_Test_Begin_Minute")));
+                return ((int?)(GetCheckParameter("APPE_Test_Begin_Minute")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Test_Begin_Minute", value);
+                SetCheckParameter("APPE_Test_Begin_Minute", value);
             }
         }
         
         /// <summary>
         /// The end date of the last run of the Appendix E test.
         /// </summary>
-        public static DateTime? AppeTestEndDate
+        public  DateTime? AppeTestEndDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("APPE_Test_End_Date")));
+                return ((DateTime?)(GetCheckParameter("APPE_Test_End_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Test_End_Date", value);
+                SetCheckParameter("APPE_Test_End_Date", value);
             }
         }
         
         /// <summary>
         /// The end hour of the last run of the Appendix E test.
         /// </summary>
-        public static int? AppeTestEndHour
+        public  int? AppeTestEndHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("APPE_Test_End_Hour")));
+                return ((int?)(GetCheckParameter("APPE_Test_End_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Test_End_Hour", value);
+                SetCheckParameter("APPE_Test_End_Hour", value);
             }
         }
         
         /// <summary>
         /// The end minute of the last run of the Appendix E test.
         /// </summary>
-        public static int? AppeTestEndMinute
+        public  int? AppeTestEndMinute
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("APPE_Test_End_Minute")));
+                return ((int?)(GetCheckParameter("APPE_Test_End_Minute")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Test_End_Minute", value);
+                SetCheckParameter("APPE_Test_End_Minute", value);
             }
         }
         
         /// <summary>
         /// All Appendix E test records for the system.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryAppeRow> AppeTestRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryAppeRow> AppeTestRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("APPE_Test_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("APPE_Test_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1181,11 +1181,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("APPE_Test_Records", null);
+                    SetCheckParameter("APPE_Test_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("APPE_Test_Records", value.SourceView);
+                    SetCheckParameter("APPE_Test_Records", value.SourceView);
                 }
             }
         }
@@ -1193,26 +1193,26 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if the recalculated total heat input for the run was used instead of the reported value to recalculate heat input rate.
         /// </summary>
-        public static bool? AppeUseCalculatedRunHi
+        public  bool? AppeUseCalculatedRunHi
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("APPE_Use_Calculated_Run_HI")));
+                return ((bool?)(GetCheckParameter("APPE_Use_Calculated_Run_HI")));
             }
             set
             {
-                QaParameters.SetCheckParameter("APPE_Use_Calculated_Run_HI", value);
+                SetCheckParameter("APPE_Use_Calculated_Run_HI", value);
             }
         }
         
         /// <summary>
         /// A list of APS Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.ApsCodeRow> ApsCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.ApsCodeRow> ApsCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("APS_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("APS_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1226,11 +1226,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("APS_Code_Lookup_Table", null);
+                    SetCheckParameter("APS_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("APS_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("APS_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -1238,11 +1238,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Collection of Data Elements for the Monitoring System in the test being evaluated
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemRow> AssociatedSystem
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorSystemRow> AssociatedSystem
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Associated_System")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Associated_System")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1256,11 +1256,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Associated_System", null);
+                    SetCheckParameter("Associated_System", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Associated_System", value.SourceView);
+                    SetCheckParameter("Associated_System", value.SourceView);
                 }
             }
         }
@@ -1268,371 +1268,371 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if the Appendix E test produced valid data to define segments.
         /// </summary>
-        public static bool? CalculateAppeSegments
+        public  bool? CalculateAppeSegments
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calculate_APPE_Segments")));
+                return ((bool?)(GetCheckParameter("Calculate_APPE_Segments")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calculate_APPE_Segments", value);
+                SetCheckParameter("Calculate_APPE_Segments", value);
             }
         }
         
         /// <summary>
         /// Indicates whether Average Gross Unit Load should be calculated.
         /// </summary>
-        public static bool? CalculateAverageGrossUnitLoad
+        public  bool? CalculateAverageGrossUnitLoad
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calculate_Average_Gross_Unit_Load")));
+                return ((bool?)(GetCheckParameter("Calculate_Average_Gross_Unit_Load")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calculate_Average_Gross_Unit_Load", value);
+                SetCheckParameter("Calculate_Average_Gross_Unit_Load", value);
             }
         }
         
         /// <summary>
         /// Indicates that the results of the linearity level may be calculated.
         /// </summary>
-        public static bool? CalculateLinearityLevel
+        public  bool? CalculateLinearityLevel
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calculate_Linearity_Level")));
+                return ((bool?)(GetCheckParameter("Calculate_Linearity_Level")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calculate_Linearity_Level", value);
+                SetCheckParameter("Calculate_Linearity_Level", value);
             }
         }
         
         /// <summary>
         /// Indicates that the results of the linearity test may be calculated.
         /// </summary>
-        public static bool? CalculateLinearityTest
+        public  bool? CalculateLinearityTest
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calculate_Linearity_Test")));
+                return ((bool?)(GetCheckParameter("Calculate_Linearity_Test")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calculate_Linearity_Test", value);
+                SetCheckParameter("Calculate_Linearity_Test", value);
             }
         }
         
         /// <summary>
         /// Indicates if calculations should be performed for the operating level of a RATA.
         /// </summary>
-        public static bool? CalculateRataLevel
+        public  bool? CalculateRataLevel
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calculate_RATA_Level")));
+                return ((bool?)(GetCheckParameter("Calculate_RATA_Level")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calculate_RATA_Level", value);
+                SetCheckParameter("Calculate_RATA_Level", value);
             }
         }
         
         /// <summary>
         /// Indicates if the run velocity of a flow RATA run can be recalculated.
         /// </summary>
-        public static bool? CalculateRunVelocity
+        public  bool? CalculateRunVelocity
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calculate_Run_Velocity")));
+                return ((bool?)(GetCheckParameter("Calculate_Run_Velocity")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calculate_Run_Velocity", value);
+                SetCheckParameter("Calculate_Run_Velocity", value);
             }
         }
         
         /// <summary>
         /// Indicates if the default emission rate for the unit can be calculated.
         /// </summary>
-        public static bool? CalculateUnitDefaultNoxRate
+        public  bool? CalculateUnitDefaultNoxRate
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calculate_Unit_Default_NOx_Rate")));
+                return ((bool?)(GetCheckParameter("Calculate_Unit_Default_NOx_Rate")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calculate_Unit_Default_NOx_Rate", value);
+                SetCheckParameter("Calculate_Unit_Default_NOx_Rate", value);
             }
         }
         
         /// <summary>
         /// Indicates that the results of the upscale injection of a 7day calibration test can be recalculated.
         /// </summary>
-        public static bool? CalculateUpscaleCalibrationInjection
+        public  bool? CalculateUpscaleCalibrationInjection
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calculate_Upscale_Calibration_Injection")));
+                return ((bool?)(GetCheckParameter("Calculate_Upscale_Calibration_Injection")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calculate_Upscale_Calibration_Injection", value);
+                SetCheckParameter("Calculate_Upscale_Calibration_Injection", value);
             }
         }
         
         /// <summary>
         /// Indicates that the results of the zero-level injection of a 7day calibration test can be recalculated.
         /// </summary>
-        public static bool? CalculateZeroCalibrationInjection
+        public  bool? CalculateZeroCalibrationInjection
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calculate_Zero_Calibration_Injection")));
+                return ((bool?)(GetCheckParameter("Calculate_Zero_Calibration_Injection")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calculate_Zero_Calibration_Injection", value);
+                SetCheckParameter("Calculate_Zero_Calibration_Injection", value);
             }
         }
         
         /// <summary>
         /// The number of calibration injection records in the 7day calibration test.
         /// </summary>
-        public static int? CalibrationInjectionCount
+        public  int? CalibrationInjectionCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Calibration_Injection_Count")));
+                return ((int?)(GetCheckParameter("Calibration_Injection_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Injection_Count", value);
+                SetCheckParameter("Calibration_Injection_Count", value);
             }
         }
         
         /// <summary>
         /// Indicates if the injections of a 7day calibration test were performed on different days.
         /// </summary>
-        public static bool? CalibrationInjectionTimesAppropriate
+        public  bool? CalibrationInjectionTimesAppropriate
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calibration_Injection_Times_Appropriate")));
+                return ((bool?)(GetCheckParameter("Calibration_Injection_Times_Appropriate")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Injection_Times_Appropriate", value);
+                SetCheckParameter("Calibration_Injection_Times_Appropriate", value);
             }
         }
         
         /// <summary>
         /// Indicates if all the injection dates, times, and hours of a 7day calibration test are valid.
         /// </summary>
-        public static bool? CalibrationInjectionTimesValid
+        public  bool? CalibrationInjectionTimesValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calibration_Injection_Times_Valid")));
+                return ((bool?)(GetCheckParameter("Calibration_Injection_Times_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Injection_Times_Valid", value);
+                SetCheckParameter("Calibration_Injection_Times_Valid", value);
             }
         }
         
         /// <summary>
         /// The maximum reference value in the upscale injections of the 7day calibration test.
         /// </summary>
-        public static decimal? CalibrationMaximumUpscaleReferenceValue
+        public  decimal? CalibrationMaximumUpscaleReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Calibration_Maximum_Upscale_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("Calibration_Maximum_Upscale_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Maximum_Upscale_Reference_Value", value);
+                SetCheckParameter("Calibration_Maximum_Upscale_Reference_Value", value);
             }
         }
         
         /// <summary>
         /// The maximum reference value in the zero-level injections of the 7day calibration test.
         /// </summary>
-        public static decimal? CalibrationMaximumZeroReferenceValue
+        public  decimal? CalibrationMaximumZeroReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Calibration_Maximum_Zero_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("Calibration_Maximum_Zero_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Maximum_Zero_Reference_Value", value);
+                SetCheckParameter("Calibration_Maximum_Zero_Reference_Value", value);
             }
         }
         
         /// <summary>
         /// The minimum reference value in the upscale injections of the 7day calibration test.
         /// </summary>
-        public static decimal? CalibrationMinimumUpscaleReferenceValue
+        public  decimal? CalibrationMinimumUpscaleReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Calibration_Minimum_Upscale_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("Calibration_Minimum_Upscale_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Minimum_Upscale_Reference_Value", value);
+                SetCheckParameter("Calibration_Minimum_Upscale_Reference_Value", value);
             }
         }
         
         /// <summary>
         /// The minimum reference value in the zero-level injections of the 7day calibration test.
         /// </summary>
-        public static decimal? CalibrationMinimumZeroReferenceValue
+        public  decimal? CalibrationMinimumZeroReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Calibration_Minimum_Zero_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("Calibration_Minimum_Zero_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Minimum_Zero_Reference_Value", value);
+                SetCheckParameter("Calibration_Minimum_Zero_Reference_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates if the 7day calibration test was aborted.
         /// </summary>
-        public static bool? CalibrationTestAborted
+        public  bool? CalibrationTestAborted
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calibration_Test_Aborted")));
+                return ((bool?)(GetCheckParameter("Calibration_Test_Aborted")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Test_Aborted", value);
+                SetCheckParameter("Calibration_Test_Aborted", value);
             }
         }
         
         /// <summary>
         /// The begin date of the first injection in the 7day calibration test.
         /// </summary>
-        public static DateTime? CalibrationTestBeginDate
+        public  DateTime? CalibrationTestBeginDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("Calibration_Test_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Calibration_Test_Begin_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Test_Begin_Date", value);
+                SetCheckParameter("Calibration_Test_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The begin hour of the first injection in the 7day calibration test.
         /// </summary>
-        public static int? CalibrationTestBeginHour
+        public  int? CalibrationTestBeginHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Calibration_Test_Begin_Hour")));
+                return ((int?)(GetCheckParameter("Calibration_Test_Begin_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Test_Begin_Hour", value);
+                SetCheckParameter("Calibration_Test_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// The begin minute of the first injection in the 7day calibration test.
         /// </summary>
-        public static int? CalibrationTestBeginMinute
+        public  int? CalibrationTestBeginMinute
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Calibration_Test_Begin_Minute")));
+                return ((int?)(GetCheckParameter("Calibration_Test_Begin_Minute")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Test_Begin_Minute", value);
+                SetCheckParameter("Calibration_Test_Begin_Minute", value);
             }
         }
         
         /// <summary>
         /// Indicates if the component tested in the 7day calibration test has a valid component type.
         /// </summary>
-        public static bool? CalibrationTestComponentTypeValid
+        public  bool? CalibrationTestComponentTypeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calibration_Test_Component_Type_Valid")));
+                return ((bool?)(GetCheckParameter("Calibration_Test_Component_Type_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Test_Component_Type_Valid", value);
+                SetCheckParameter("Calibration_Test_Component_Type_Valid", value);
             }
         }
         
         /// <summary>
         /// The end date of the last injection in the 7day calibration test.
         /// </summary>
-        public static DateTime? CalibrationTestEndDate
+        public  DateTime? CalibrationTestEndDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("Calibration_Test_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Calibration_Test_End_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Test_End_Date", value);
+                SetCheckParameter("Calibration_Test_End_Date", value);
             }
         }
         
         /// <summary>
         /// The end hour of the last injection in the 7day calibration test.
         /// </summary>
-        public static int? CalibrationTestEndHour
+        public  int? CalibrationTestEndHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Calibration_Test_End_Hour")));
+                return ((int?)(GetCheckParameter("Calibration_Test_End_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Test_End_Hour", value);
+                SetCheckParameter("Calibration_Test_End_Hour", value);
             }
         }
         
         /// <summary>
         /// The end minute of the last injection in the 7day calibration test.
         /// </summary>
-        public static int? CalibrationTestEndMinute
+        public  int? CalibrationTestEndMinute
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Calibration_Test_End_Minute")));
+                return ((int?)(GetCheckParameter("Calibration_Test_End_Minute")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Test_End_Minute", value);
+                SetCheckParameter("Calibration_Test_End_Minute", value);
             }
         }
         
         /// <summary>
         /// All 7day calibration tests for the component.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummary7DayRow> CalibrationTestRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummary7DayRow> CalibrationTestRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Calibration_Test_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Calibration_Test_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1646,11 +1646,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Calibration_Test_Records", null);
+                    SetCheckParameter("Calibration_Test_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Calibration_Test_Records", value.SourceView);
+                    SetCheckParameter("Calibration_Test_Records", value.SourceView);
                 }
             }
         }
@@ -1658,176 +1658,176 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The recalculated result of a 7day calibration test.
         /// </summary>
-        public static string CalibrationTestResult
+        public  string CalibrationTestResult
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Calibration_Test_Result")));
+                return ((string)(GetCheckParameter("Calibration_Test_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Test_Result", value);
+                SetCheckParameter("Calibration_Test_Result", value);
             }
         }
         
         /// <summary>
         /// The ID of the QA Supp Data record associated with the current 7day calibration test.
         /// </summary>
-        public static string CalibrationTestSuppDataId
+        public  string CalibrationTestSuppDataId
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Calibration_Test_Supp_Data_ID")));
+                return ((string)(GetCheckParameter("Calibration_Test_Supp_Data_ID")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Test_Supp_Data_ID", value);
+                SetCheckParameter("Calibration_Test_Supp_Data_ID", value);
             }
         }
         
         /// <summary>
         /// Indicates if overall test status of 7day calibration test can be determined.  Used for insuring correct levels.
         /// </summary>
-        public static bool? CalibrationTestValidityPerformed
+        public  bool? CalibrationTestValidityPerformed
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Calibration_Test_Validity_Performed")));
+                return ((bool?)(GetCheckParameter("Calibration_Test_Validity_Performed")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Test_Validity_Performed", value);
+                SetCheckParameter("Calibration_Test_Validity_Performed", value);
             }
         }
         
         /// <summary>
         /// The upscale gas level code for the 7day calibration test.
         /// </summary>
-        public static string CalibrationUpscaleGasLevelCode
+        public  string CalibrationUpscaleGasLevelCode
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Calibration_Upscale_Gas_Level_Code")));
+                return ((string)(GetCheckParameter("Calibration_Upscale_Gas_Level_Code")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Upscale_Gas_Level_Code", value);
+                SetCheckParameter("Calibration_Upscale_Gas_Level_Code", value);
             }
         }
         
         /// <summary>
         /// The recalculated APS indicator for the upscale injection.
         /// </summary>
-        public static int? CalibrationUpscaleInjectionCalcApsIndicator
+        public  int? CalibrationUpscaleInjectionCalcApsIndicator
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Calibration_Upscale_Injection_Calc_APS_Indicator")));
+                return ((int?)(GetCheckParameter("Calibration_Upscale_Injection_Calc_APS_Indicator")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Upscale_Injection_Calc_APS_Indicator", value);
+                SetCheckParameter("Calibration_Upscale_Injection_Calc_APS_Indicator", value);
             }
         }
         
         /// <summary>
         /// The recalculated calibration error or difference for the upscale injection.
         /// </summary>
-        public static decimal? CalibrationUpscaleInjectionCalcResult
+        public  decimal? CalibrationUpscaleInjectionCalcResult
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Calibration_Upscale_Injection_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("Calibration_Upscale_Injection_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Upscale_Injection_Calc_Result", value);
+                SetCheckParameter("Calibration_Upscale_Injection_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// The percent of span value of the reference value of a upscale injection of a 7day calibration test.
         /// </summary>
-        public static decimal? CalibrationUpscaleReferenceValuePercentOfSpan
+        public  decimal? CalibrationUpscaleReferenceValuePercentOfSpan
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Calibration_Upscale_Reference_Value_Percent_of_Span")));
+                return ((decimal?)(GetCheckParameter("Calibration_Upscale_Reference_Value_Percent_of_Span")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Upscale_Reference_Value_Percent_of_Span", value);
+                SetCheckParameter("Calibration_Upscale_Reference_Value_Percent_of_Span", value);
             }
         }
         
         /// <summary>
         /// The recalculated APS indicator for the zero-level injection.
         /// </summary>
-        public static int? CalibrationZeroInjectionCalcApsIndicator
+        public  int? CalibrationZeroInjectionCalcApsIndicator
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Calibration_Zero_Injection_Calc_APS_Indicator")));
+                return ((int?)(GetCheckParameter("Calibration_Zero_Injection_Calc_APS_Indicator")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Zero_Injection_Calc_APS_Indicator", value);
+                SetCheckParameter("Calibration_Zero_Injection_Calc_APS_Indicator", value);
             }
         }
         
         /// <summary>
         /// The recalculated calibration error or difference for the zero-level injection.
         /// </summary>
-        public static decimal? CalibrationZeroInjectionCalcResult
+        public  decimal? CalibrationZeroInjectionCalcResult
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Calibration_Zero_Injection_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("Calibration_Zero_Injection_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Zero_Injection_Calc_Result", value);
+                SetCheckParameter("Calibration_Zero_Injection_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// The percent of span value of the reference value of a zero level injection of a 7day calibration test.
         /// </summary>
-        public static decimal? CalibrationZeroReferenceValuePercentOfSpan
+        public  decimal? CalibrationZeroReferenceValuePercentOfSpan
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Calibration_Zero_Reference_Value_Percent_of_Span")));
+                return ((decimal?)(GetCheckParameter("Calibration_Zero_Reference_Value_Percent_of_Span")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Calibration_Zero_Reference_Value_Percent_of_Span", value);
+                SetCheckParameter("Calibration_Zero_Reference_Value_Percent_of_Span", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported completion test date and hour of a QA Cert event is valid.
         /// </summary>
-        public static bool? CompletionTestDateAndHourValid
+        public  bool? CompletionTestDateAndHourValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Completion_Test_Date_And_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Completion_Test_Date_And_Hour_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Completion_Test_Date_And_Hour_Valid", value);
+                SetCheckParameter("Completion_Test_Date_And_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// All linearity injection records (with associated linearity test information) for all linearity tests associated with the component.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckQa.Function.LinearityInjectionByComponent> ComponentLinearityInjectionRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckQa.Function.LinearityInjectionByComponent> ComponentLinearityInjectionRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Component_Linearity_Injection_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Component_Linearity_Injection_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1841,11 +1841,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Component_Linearity_Injection_Records", null);
+                    SetCheckParameter("Component_Linearity_Injection_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Component_Linearity_Injection_Records", value.SourceView);
+                    SetCheckParameter("Component_Linearity_Injection_Records", value.SourceView);
                 }
             }
         }
@@ -1853,11 +1853,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Component Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwComponentRow> ComponentRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwComponentRow> ComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1871,11 +1871,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Component_Records", null);
+                    SetCheckParameter("Component_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Component_Records", value.SourceView);
+                    SetCheckParameter("Component_Records", value.SourceView);
                 }
             }
         }
@@ -1883,26 +1883,26 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if the reported conditional begin date and hour of a QA Cert event is valid.
         /// </summary>
-        public static bool? ConditionalBeginDateAndHourValid
+        public  bool? ConditionalBeginDateAndHourValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Conditional_Begin_Date_and_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Conditional_Begin_Date_and_Hour_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Conditional_Begin_Date_and_Hour_Valid", value);
+                SetCheckParameter("Conditional_Begin_Date_and_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// This parameter contains the Protocol Gas Parameter to Type cross check table.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ProtocolGasParameterToTypeRow> CrosscheckProtocolgasparametertotype
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.ProtocolGasParameterToTypeRow> CrosscheckProtocolgasparametertotype
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("CrossCheck_ProtocolGasParameterToType")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("CrossCheck_ProtocolGasParameterToType")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -1916,11 +1916,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("CrossCheck_ProtocolGasParameterToType", null);
+                    SetCheckParameter("CrossCheck_ProtocolGasParameterToType", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("CrossCheck_ProtocolGasParameterToType", value.SourceView);
+                    SetCheckParameter("CrossCheck_ProtocolGasParameterToType", value.SourceView);
                 }
             }
         }
@@ -1928,11 +1928,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Test Summary record for the 7day calibration test summary record being evaluated and associated location and component data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow Current7DayCalibrationTest
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow Current7DayCalibrationTest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_7Day_Calibration_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_7Day_Calibration_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1946,11 +1946,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_7Day_Calibration_Test", null);
+                    SetCheckParameter("Current_7Day_Calibration_Test", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_7Day_Calibration_Test", value.SourceRow);
+                    SetCheckParameter("Current_7Day_Calibration_Test", value.SourceRow);
                 }
             }
         }
@@ -1958,11 +1958,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Test Summary and Fuel Flow Accuracy records for the fuel flowmeter accuracy test being evaluated and associated location and component data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFfaccRow CurrentAccuracyTest
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFfaccRow CurrentAccuracyTest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Accuracy_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Accuracy_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -1976,11 +1976,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Accuracy_Test", null);
+                    SetCheckParameter("Current_Accuracy_Test", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Accuracy_Test", value.SourceRow);
+                    SetCheckParameter("Current_Accuracy_Test", value.SourceRow);
                 }
             }
         }
@@ -1988,11 +1988,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Heat Input for Gas record for the Appendix E test being evaluated and associated data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeHiGasRow CurrentAppendixEHiForGas
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeHiGasRow CurrentAppendixEHiForGas
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Appendix_E_HI_for_Gas")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Appendix_E_HI_for_Gas")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2006,11 +2006,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Appendix_E_HI_for_Gas", null);
+                    SetCheckParameter("Current_Appendix_E_HI_for_Gas", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Appendix_E_HI_for_Gas", value.SourceRow);
+                    SetCheckParameter("Current_Appendix_E_HI_for_Gas", value.SourceRow);
                 }
             }
         }
@@ -2018,11 +2018,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Heat Input for Oil record for the Appendix E test being evaluated and associated data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeHiOilRow CurrentAppendixEHiForOil
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeHiOilRow CurrentAppendixEHiForOil
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Appendix_E_HI_for_Oil")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Appendix_E_HI_for_Oil")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2036,11 +2036,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Appendix_E_HI_for_Oil", null);
+                    SetCheckParameter("Current_Appendix_E_HI_for_Oil", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Appendix_E_HI_for_Oil", value.SourceRow);
+                    SetCheckParameter("Current_Appendix_E_HI_for_Oil", value.SourceRow);
                 }
             }
         }
@@ -2048,11 +2048,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The APPE Correlation Test Run record being evaluated and associated test data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeCorrelationTestRunRow CurrentAppendixERun
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeCorrelationTestRunRow CurrentAppendixERun
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Appendix_E_Run")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Appendix_E_Run")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2066,11 +2066,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Appendix_E_Run", null);
+                    SetCheckParameter("Current_Appendix_E_Run", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Appendix_E_Run", value.SourceRow);
+                    SetCheckParameter("Current_Appendix_E_Run", value.SourceRow);
                 }
             }
         }
@@ -2078,11 +2078,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The APPE Correlation Test Summary being evaluated and associated test data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeCorrelationTestSumRow CurrentAppendixESummary
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeCorrelationTestSumRow CurrentAppendixESummary
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Appendix_E_Summary")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Appendix_E_Summary")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2096,11 +2096,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Appendix_E_Summary", null);
+                    SetCheckParameter("Current_Appendix_E_Summary", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Appendix_E_Summary", value.SourceRow);
+                    SetCheckParameter("Current_Appendix_E_Summary", value.SourceRow);
                 }
             }
         }
@@ -2108,11 +2108,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Test Summary record for the Appendix E test being evaluated and associated location and system data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryAppeRow CurrentAppendixETest
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryAppeRow CurrentAppendixETest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Appendix_E_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Appendix_E_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2126,11 +2126,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Appendix_E_Test", null);
+                    SetCheckParameter("Current_Appendix_E_Test", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Appendix_E_Test", value.SourceRow);
+                    SetCheckParameter("Current_Appendix_E_Test", value.SourceRow);
                 }
             }
         }
@@ -2138,11 +2138,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Calibration Injection record (with associated 7-day calibration test summary information) being evaluated.  These are sorted in zero injection date order.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCalibrationInjectionRow CurrentCalibrationInjection
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCalibrationInjectionRow CurrentCalibrationInjection
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Calibration_Injection")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Calibration_Injection")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2156,11 +2156,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Calibration_Injection", null);
+                    SetCheckParameter("Current_Calibration_Injection", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Calibration_Injection", value.SourceRow);
+                    SetCheckParameter("Current_Calibration_Injection", value.SourceRow);
                 }
             }
         }
@@ -2168,11 +2168,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// List of information for the Current record in Component.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwComponentRow CurrentComponent
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwComponentRow CurrentComponent
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Component")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Component")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2186,11 +2186,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Component", null);
+                    SetCheckParameter("Current_Component", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Component", value.SourceRow);
+                    SetCheckParameter("Current_Component", value.SourceRow);
                 }
             }
         }
@@ -2198,11 +2198,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Cycle Time Injection record for the cycle time test being evaluated and associated data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCycleTimeInjectionRow CurrentCycleTimeInjection
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCycleTimeInjectionRow CurrentCycleTimeInjection
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Cycle_Time_Injection")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Cycle_Time_Injection")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2216,11 +2216,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Cycle_Time_Injection", null);
+                    SetCheckParameter("Current_Cycle_Time_Injection", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Cycle_Time_Injection", value.SourceRow);
+                    SetCheckParameter("Current_Cycle_Time_Injection", value.SourceRow);
                 }
             }
         }
@@ -2228,11 +2228,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Test Summary and Cycle Time Summary records for the cycle time test being evaluated and associated location and component data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow CurrentCycleTimeTest
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow CurrentCycleTimeTest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Cycle_Time_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Cycle_Time_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2246,11 +2246,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Cycle_Time_Test", null);
+                    SetCheckParameter("Current_Cycle_Time_Test", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Cycle_Time_Test", value.SourceRow);
+                    SetCheckParameter("Current_Cycle_Time_Test", value.SourceRow);
                 }
             }
         }
@@ -2258,11 +2258,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The current Flow RATA Run record being evaluated and it associated Test Summary, RATA, RATA Summary, and RATA Run data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaFlowRataRunRow CurrentFlowRataRun
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaFlowRataRunRow CurrentFlowRataRun
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Flow_RATA_Run")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Flow_RATA_Run")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2276,11 +2276,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Flow_RATA_Run", null);
+                    SetCheckParameter("Current_Flow_RATA_Run", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Flow_RATA_Run", value.SourceRow);
+                    SetCheckParameter("Current_Flow_RATA_Run", value.SourceRow);
                 }
             }
         }
@@ -2288,11 +2288,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Test Summary and Flow to Load Check records for the Flow to Load Reference data being evaluated and associated location and system.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow CurrentFlowToLoadCheck
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow CurrentFlowToLoadCheck
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Flow_to_Load_Check")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Flow_to_Load_Check")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2306,11 +2306,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Flow_to_Load_Check", null);
+                    SetCheckParameter("Current_Flow_to_Load_Check", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Flow_to_Load_Check", value.SourceRow);
+                    SetCheckParameter("Current_Flow_to_Load_Check", value.SourceRow);
                 }
             }
         }
@@ -2318,11 +2318,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Test Summary and Flow to Load Reference Data records for the Flow to Load Reference data being evaluated and associated location and system.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow CurrentFlowToLoadReference
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow CurrentFlowToLoadReference
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Flow_to_Load_Reference")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Flow_to_Load_Reference")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2336,11 +2336,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Flow_to_Load_Reference", null);
+                    SetCheckParameter("Current_Flow_to_Load_Reference", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Flow_to_Load_Reference", value.SourceRow);
+                    SetCheckParameter("Current_Flow_to_Load_Reference", value.SourceRow);
                 }
             }
         }
@@ -2348,11 +2348,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Collection of Data Elements for the Fuel Flow to Load Baseline Record being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFf2lbasRow CurrentFuelFlowToLoadBaseline
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFf2lbasRow CurrentFuelFlowToLoadBaseline
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Fuel_Flow_To_Load_Baseline")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Fuel_Flow_To_Load_Baseline")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2366,11 +2366,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Fuel_Flow_To_Load_Baseline", null);
+                    SetCheckParameter("Current_Fuel_Flow_To_Load_Baseline", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Fuel_Flow_To_Load_Baseline", value.SourceRow);
+                    SetCheckParameter("Current_Fuel_Flow_To_Load_Baseline", value.SourceRow);
                 }
             }
         }
@@ -2378,11 +2378,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Collection of Data Elements for the Fuel Flow to Load Test being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFf2ltstRow CurrentFuelFlowToLoadTest
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFf2ltstRow CurrentFuelFlowToLoadTest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Fuel_Flow_to_Load_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Fuel_Flow_to_Load_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2396,11 +2396,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Fuel_Flow_to_Load_Test", null);
+                    SetCheckParameter("Current_Fuel_Flow_to_Load_Test", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Fuel_Flow_to_Load_Test", value.SourceRow);
+                    SetCheckParameter("Current_Fuel_Flow_to_Load_Test", value.SourceRow);
                 }
             }
         }
@@ -2408,11 +2408,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Linearity Injection record (with associated summary and test information) being evaluated.  These are sorted in descending date/time order for the gas level.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckQa.Function.LinearityInjection CurrentLinearityInjection
+        public  ECMPS.Checks.Data.Ecmps.CheckQa.Function.LinearityInjection CurrentLinearityInjection
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Linearity_Injection")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Linearity_Injection")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2426,11 +2426,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Linearity_Injection", null);
+                    SetCheckParameter("Current_Linearity_Injection", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Linearity_Injection", value.SourceRow);
+                    SetCheckParameter("Current_Linearity_Injection", value.SourceRow);
                 }
             }
         }
@@ -2438,11 +2438,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Linearity Summary record (with associated test information) being evaluated.  They are processed in gas level code order.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.CheckQa.Function.LinearitySummary CurrentLinearitySummary
+        public  ECMPS.Checks.Data.Ecmps.CheckQa.Function.LinearitySummary CurrentLinearitySummary
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Linearity_Summary")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Linearity_Summary")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2456,11 +2456,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Linearity_Summary", null);
+                    SetCheckParameter("Current_Linearity_Summary", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Linearity_Summary", value.SourceRow);
+                    SetCheckParameter("Current_Linearity_Summary", value.SourceRow);
                 }
             }
         }
@@ -2468,11 +2468,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Test Summary record for the linearity record being evaluated and associated location and component data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryLineRow CurrentLinearityTest
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryLineRow CurrentLinearityTest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Linearity_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Linearity_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2486,11 +2486,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Linearity_Test", null);
+                    SetCheckParameter("Current_Linearity_Test", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Linearity_Test", value.SourceRow);
+                    SetCheckParameter("Current_Linearity_Test", value.SourceRow);
                 }
             }
         }
@@ -2498,11 +2498,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The monitor location being evaluated including linked stack information (active/retire date) and unit information (non load based indicator).
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationRow CurrentLocation
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpLocationRow CurrentLocation
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Location")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Location")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2516,11 +2516,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Location", null);
+                    SetCheckParameter("Current_Location", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Location", value.SourceRow);
+                    SetCheckParameter("Current_Location", value.SourceRow);
                 }
             }
         }
@@ -2528,11 +2528,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Current Monitor Location being processed.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLocationRow CurrentMonitorLocation
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLocationRow CurrentMonitorLocation
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Monitor_Location")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Monitor_Location")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2546,11 +2546,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Monitor_Location", null);
+                    SetCheckParameter("Current_Monitor_Location", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Monitor_Location", value.SourceRow);
+                    SetCheckParameter("Current_Monitor_Location", value.SourceRow);
                 }
             }
         }
@@ -2558,11 +2558,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Test Summary record for the online offline calibration test summary record being evaluated and associated location and component data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryOnoffRow CurrentOocTest
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryOnoffRow CurrentOocTest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_OOC_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_OOC_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2576,11 +2576,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_OOC_Test", null);
+                    SetCheckParameter("Current_OOC_Test", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_OOC_Test", value.SourceRow);
+                    SetCheckParameter("Current_OOC_Test", value.SourceRow);
                 }
             }
         }
@@ -2591,11 +2591,11 @@ namespace ECMPS.Checks.Qa.Parameters
         ///Record Identifier if Cylinder ID is not null:  "Cylinder ID " + Cylinder_Identifier
         ///Record Identifier if Cylinder ID is null:  "Gas Level " + Gas_Level_Cd + " Gas Type " + Gas_Type_Cd
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.Table.ProtocolGasRow CurrentProtocolGasRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.Table.ProtocolGasRow CurrentProtocolGasRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Protocol_Gas_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Protocol_Gas_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2609,11 +2609,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Protocol_Gas_Record", null);
+                    SetCheckParameter("Current_Protocol_Gas_Record", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Protocol_Gas_Record", value.SourceRow);
+                    SetCheckParameter("Current_Protocol_Gas_Record", value.SourceRow);
                 }
             }
         }
@@ -2621,11 +2621,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The QA Cert Event record being evaluated and associated location and component data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow CurrentQaCertEvent
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow CurrentQaCertEvent
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_QA_Cert_Event")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_QA_Cert_Event")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2639,11 +2639,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_QA_Cert_Event", null);
+                    SetCheckParameter("Current_QA_Cert_Event", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_QA_Cert_Event", value.SourceRow);
+                    SetCheckParameter("Current_QA_Cert_Event", value.SourceRow);
                 }
             }
         }
@@ -2651,11 +2651,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Test Summary and RATA records for the RATA being evaluated and associated location, system, and test claim data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRataRow CurrentRata
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRataRow CurrentRata
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_RATA")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_RATA")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2669,11 +2669,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_RATA", null);
+                    SetCheckParameter("Current_RATA", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_RATA", value.SourceRow);
+                    SetCheckParameter("Current_RATA", value.SourceRow);
                 }
             }
         }
@@ -2681,11 +2681,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The current RATA Run record being evaluated and it associated Test Summary, RATA, RATA Summary, and Flow RATA Run data
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataRunRow CurrentRataRun
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataRunRow CurrentRataRun
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_RATA_Run")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_RATA_Run")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2699,11 +2699,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_RATA_Run", null);
+                    SetCheckParameter("Current_RATA_Run", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_RATA_Run", value.SourceRow);
+                    SetCheckParameter("Current_RATA_Run", value.SourceRow);
                 }
             }
         }
@@ -2711,11 +2711,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The RATA Summary record being evaluated and it associated TestSummary and RATA data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataSummaryRow CurrentRataSummary
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataSummaryRow CurrentRataSummary
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_RATA_Summary")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_RATA_Summary")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2729,11 +2729,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_RATA_Summary", null);
+                    SetCheckParameter("Current_RATA_Summary", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_RATA_Summary", value.SourceRow);
+                    SetCheckParameter("Current_RATA_Summary", value.SourceRow);
                 }
             }
         }
@@ -2741,11 +2741,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The current RATA Traverse record being evaluated and it associated Test Summary, RATA, RATA Summary, RATA Run, and Flow RATA Run data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataTraverseRow CurrentRataTraverse
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataTraverseRow CurrentRataTraverse
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_RATA_Traverse")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_RATA_Traverse")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2759,11 +2759,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_RATA_Traverse", null);
+                    SetCheckParameter("Current_RATA_Traverse", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_RATA_Traverse", value.SourceRow);
+                    SetCheckParameter("Current_RATA_Traverse", value.SourceRow);
                 }
             }
         }
@@ -2771,11 +2771,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The record being evaluated on the data entry screen.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeCorrelationTestRunRow CurrentRecord
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaAeCorrelationTestRunRow CurrentRecord
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Record")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Record")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2789,11 +2789,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Record", null);
+                    SetCheckParameter("Current_Record", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Record", value.SourceRow);
+                    SetCheckParameter("Current_Record", value.SourceRow);
                 }
             }
         }
@@ -2801,11 +2801,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Collection of Data Elements for the Monitoring System being evaluated
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow CurrentSystem
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow CurrentSystem
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_System")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_System")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2819,11 +2819,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_System", null);
+                    SetCheckParameter("Current_System", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_System", value.SourceRow);
+                    SetCheckParameter("Current_System", value.SourceRow);
                 }
             }
         }
@@ -2831,11 +2831,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Test Summary record for the test being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow CurrentTest
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow CurrentTest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2849,11 +2849,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Test", null);
+                    SetCheckParameter("Current_Test", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Test", value.SourceRow);
+                    SetCheckParameter("Current_Test", value.SourceRow);
                 }
             }
         }
@@ -2861,11 +2861,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Test Extension Exemption record being evaluated and associated location and component data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestExtensionExemptionRow CurrentTestExtensionExemption
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestExtensionExemptionRow CurrentTestExtensionExemption
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Test_Extension_Exemption")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Test_Extension_Exemption")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2879,11 +2879,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Test_Extension_Exemption", null);
+                    SetCheckParameter("Current_Test_Extension_Exemption", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Test_Extension_Exemption", value.SourceRow);
+                    SetCheckParameter("Current_Test_Extension_Exemption", value.SourceRow);
                 }
             }
         }
@@ -2891,11 +2891,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The TestQualification record and associated test data being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestClaimRow CurrentTestQualification
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestClaimRow CurrentTestQualification
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Test_Qualification")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Test_Qualification")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2909,11 +2909,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Test_Qualification", null);
+                    SetCheckParameter("Current_Test_Qualification", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Test_Qualification", value.SourceRow);
+                    SetCheckParameter("Current_Test_Qualification", value.SourceRow);
                 }
             }
         }
@@ -2921,11 +2921,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Test Summary and Transmitter Transducer records for the transmitter transducer test being evaluated and associated location and component data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFfaccttRow CurrentTransmitterTransducerTest
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFfaccttRow CurrentTransmitterTransducerTest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Transmitter_Transducer_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Transmitter_Transducer_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2939,11 +2939,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Transmitter_Transducer_Test", null);
+                    SetCheckParameter("Current_Transmitter_Transducer_Test", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Transmitter_Transducer_Test", value.SourceRow);
+                    SetCheckParameter("Current_Transmitter_Transducer_Test", value.SourceRow);
                 }
             }
         }
@@ -2951,11 +2951,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Unit Default Test Run record being evaluated and associated test data.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaUnitDefaultTestRunRow CurrentUnitDefaultRun
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaUnitDefaultTestRunRow CurrentUnitDefaultRun
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Unit_Default_Run")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Unit_Default_Run")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2969,11 +2969,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Unit_Default_Run", null);
+                    SetCheckParameter("Current_Unit_Default_Run", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Unit_Default_Run", value.SourceRow);
+                    SetCheckParameter("Current_Unit_Default_Run", value.SourceRow);
                 }
             }
         }
@@ -2981,11 +2981,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Test Summary and Unit Default Test record of the unit default test being evaluated.
         /// </summary>
-        public static ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryUnitdefRow CurrentUnitDefaultTest
+        public  ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryUnitdefRow CurrentUnitDefaultTest
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(QaParameters.GetCheckParameter("Current_Unit_Default_Test")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Unit_Default_Test")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -2999,11 +2999,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Current_Unit_Default_Test", null);
+                    SetCheckParameter("Current_Unit_Default_Test", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Current_Unit_Default_Test", value.SourceRow);
+                    SetCheckParameter("Current_Unit_Default_Test", value.SourceRow);
                 }
             }
         }
@@ -3011,116 +3011,116 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The recalculated injection cycle time.
         /// </summary>
-        public static int? CycleTimeCalcInjectionCycleTime
+        public  int? CycleTimeCalcInjectionCycleTime
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Cycle_Time_Calc_Injection_Cycle_Time")));
+                return ((int?)(GetCheckParameter("Cycle_Time_Calc_Injection_Cycle_Time")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Calc_Injection_Cycle_Time", value);
+                SetCheckParameter("Cycle_Time_Calc_Injection_Cycle_Time", value);
             }
         }
         
         /// <summary>
         /// The recalculated result of a cycle time test.
         /// </summary>
-        public static string CycleTimeCalcTestResult
+        public  string CycleTimeCalcTestResult
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Cycle_Time_Calc_Test_Result")));
+                return ((string)(GetCheckParameter("Cycle_Time_Calc_Test_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Calc_Test_Result", value);
+                SetCheckParameter("Cycle_Time_Calc_Test_Result", value);
             }
         }
         
         /// <summary>
         /// The recalculated total cycle time for the system.
         /// </summary>
-        public static int? CycleTimeCalcTotalCycleTime
+        public  int? CycleTimeCalcTotalCycleTime
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Cycle_Time_Calc_Total_Cycle_Time")));
+                return ((int?)(GetCheckParameter("Cycle_Time_Calc_Total_Cycle_Time")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Calc_Total_Cycle_Time", value);
+                SetCheckParameter("Cycle_Time_Calc_Total_Cycle_Time", value);
             }
         }
         
         /// <summary>
         /// The number of high-level injections in the cycle time test.
         /// </summary>
-        public static int? CycleTimeHighInjectionCount
+        public  int? CycleTimeHighInjectionCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Cycle_Time_High_Injection_Count")));
+                return ((int?)(GetCheckParameter("Cycle_Time_High_Injection_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_High_Injection_Count", value);
+                SetCheckParameter("Cycle_Time_High_Injection_Count", value);
             }
         }
         
         /// <summary>
         /// The reference value in the high-level injection of the cycle time test.
         /// </summary>
-        public static decimal? CycleTimeHighReferenceValue
+        public  decimal? CycleTimeHighReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Cycle_Time_High_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("Cycle_Time_High_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_High_Reference_Value", value);
+                SetCheckParameter("Cycle_Time_High_Reference_Value", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported begin time of a cycle time injection is prior to its end time.
         /// </summary>
-        public static bool? CycleTimeInjectionDatesConsistent
+        public  bool? CycleTimeInjectionDatesConsistent
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Cycle_Time_Injection_Dates_Consistent")));
+                return ((bool?)(GetCheckParameter("Cycle_Time_Injection_Dates_Consistent")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Injection_Dates_Consistent", value);
+                SetCheckParameter("Cycle_Time_Injection_Dates_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates if the gas level code of a cycle time injection is valid.
         /// </summary>
-        public static bool? CycleTimeInjectionGasLevelValid
+        public  bool? CycleTimeInjectionGasLevelValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Cycle_Time_Injection_Gas_Level_Valid")));
+                return ((bool?)(GetCheckParameter("Cycle_Time_Injection_Gas_Level_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Injection_Gas_Level_Valid", value);
+                SetCheckParameter("Cycle_Time_Injection_Gas_Level_Valid", value);
             }
         }
         
         /// <summary>
         /// All cycle time injections for the cycle time test.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCycleTimeInjectionRow> CycleTimeInjectionRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCycleTimeInjectionRow> CycleTimeInjectionRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Cycle_Time_Injection_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Cycle_Time_Injection_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3134,11 +3134,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Cycle_Time_Injection_Records", null);
+                    SetCheckParameter("Cycle_Time_Injection_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Cycle_Time_Injection_Records", value.SourceView);
+                    SetCheckParameter("Cycle_Time_Injection_Records", value.SourceView);
                 }
             }
         }
@@ -3146,161 +3146,161 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if the injection times of a cycle time test are valid.
         /// </summary>
-        public static bool? CycleTimeInjectionTimesValid
+        public  bool? CycleTimeInjectionTimesValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Cycle_Time_Injection_Times_Valid")));
+                return ((bool?)(GetCheckParameter("Cycle_Time_Injection_Times_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Injection_Times_Valid", value);
+                SetCheckParameter("Cycle_Time_Injection_Times_Valid", value);
             }
         }
         
         /// <summary>
         /// A calculation of the percent of the span value of the reference value.
         /// </summary>
-        public static decimal? CycleTimeReferencePercentOfSpan
+        public  decimal? CycleTimeReferencePercentOfSpan
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Cycle_Time_Reference_Percent_Of_Span")));
+                return ((decimal?)(GetCheckParameter("Cycle_Time_Reference_Percent_Of_Span")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Reference_Percent_Of_Span", value);
+                SetCheckParameter("Cycle_Time_Reference_Percent_Of_Span", value);
             }
         }
         
         /// <summary>
         /// Indicates if the cycle time test was aborted.
         /// </summary>
-        public static bool? CycleTimeTestAborted
+        public  bool? CycleTimeTestAborted
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Cycle_Time_Test_Aborted")));
+                return ((bool?)(GetCheckParameter("Cycle_Time_Test_Aborted")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Test_Aborted", value);
+                SetCheckParameter("Cycle_Time_Test_Aborted", value);
             }
         }
         
         /// <summary>
         /// The begin date of the first injection in the cycle time test.
         /// </summary>
-        public static DateTime? CycleTimeTestBeginDate
+        public  DateTime? CycleTimeTestBeginDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("Cycle_Time_Test_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Cycle_Time_Test_Begin_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Test_Begin_Date", value);
+                SetCheckParameter("Cycle_Time_Test_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The begin hour of the first injection in the cycle time test.
         /// </summary>
-        public static int? CycleTimeTestBeginHour
+        public  int? CycleTimeTestBeginHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Cycle_Time_Test_Begin_Hour")));
+                return ((int?)(GetCheckParameter("Cycle_Time_Test_Begin_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Test_Begin_Hour", value);
+                SetCheckParameter("Cycle_Time_Test_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// The begin minute of the first injection in the cycle time test.
         /// </summary>
-        public static int? CycleTimeTestBeginMinute
+        public  int? CycleTimeTestBeginMinute
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Cycle_Time_Test_Begin_Minute")));
+                return ((int?)(GetCheckParameter("Cycle_Time_Test_Begin_Minute")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Test_Begin_Minute", value);
+                SetCheckParameter("Cycle_Time_Test_Begin_Minute", value);
             }
         }
         
         /// <summary>
         /// Indicates if the component tested in the cycle time test has a valid component type.
         /// </summary>
-        public static bool? CycleTimeTestComponentTypeValid
+        public  bool? CycleTimeTestComponentTypeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Cycle_Time_Test_Component_Type_Valid")));
+                return ((bool?)(GetCheckParameter("Cycle_Time_Test_Component_Type_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Test_Component_Type_Valid", value);
+                SetCheckParameter("Cycle_Time_Test_Component_Type_Valid", value);
             }
         }
         
         /// <summary>
         /// The end date of the last injection in the cycle time test.
         /// </summary>
-        public static DateTime? CycleTimeTestEndDate
+        public  DateTime? CycleTimeTestEndDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("Cycle_Time_Test_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Cycle_Time_Test_End_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Test_End_Date", value);
+                SetCheckParameter("Cycle_Time_Test_End_Date", value);
             }
         }
         
         /// <summary>
         /// The end hour of the last injection in the cycle time test.
         /// </summary>
-        public static int? CycleTimeTestEndHour
+        public  int? CycleTimeTestEndHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Cycle_Time_Test_End_Hour")));
+                return ((int?)(GetCheckParameter("Cycle_Time_Test_End_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Test_End_Hour", value);
+                SetCheckParameter("Cycle_Time_Test_End_Hour", value);
             }
         }
         
         /// <summary>
         /// The end minute of the last injection in the cycle time test.
         /// </summary>
-        public static int? CycleTimeTestEndMinute
+        public  int? CycleTimeTestEndMinute
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Cycle_Time_Test_End_Minute")));
+                return ((int?)(GetCheckParameter("Cycle_Time_Test_End_Minute")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Test_End_Minute", value);
+                SetCheckParameter("Cycle_Time_Test_End_Minute", value);
             }
         }
         
         /// <summary>
         /// All cycle time tests for the component.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryCycleRow> CycleTimeTestRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryCycleRow> CycleTimeTestRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Cycle_Time_Test_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Cycle_Time_Test_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3314,11 +3314,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Cycle_Time_Test_Records", null);
+                    SetCheckParameter("Cycle_Time_Test_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Cycle_Time_Test_Records", value.SourceView);
+                    SetCheckParameter("Cycle_Time_Test_Records", value.SourceView);
                 }
             }
         }
@@ -3326,86 +3326,86 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The ID of the QA Supp Data record associated with the current cycle time test.
         /// </summary>
-        public static string CycleTimeTestSuppDataId
+        public  string CycleTimeTestSuppDataId
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Cycle_Time_Test_Supp_Data_Id")));
+                return ((string)(GetCheckParameter("Cycle_Time_Test_Supp_Data_Id")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Test_Supp_Data_Id", value);
+                SetCheckParameter("Cycle_Time_Test_Supp_Data_Id", value);
             }
         }
         
         /// <summary>
         /// Indicates if overall total time of the cycle time test was calculated.  Used for insuring correct levels.
         /// </summary>
-        public static bool? CycleTimeTestTotalTimeCalculated
+        public  bool? CycleTimeTestTotalTimeCalculated
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Cycle_Time_Test_Total_Time_Calculated")));
+                return ((bool?)(GetCheckParameter("Cycle_Time_Test_Total_Time_Calculated")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Test_Total_Time_Calculated", value);
+                SetCheckParameter("Cycle_Time_Test_Total_Time_Calculated", value);
             }
         }
         
         /// <summary>
         /// Indicates if overall test status of cycle time test can be determined.  Used for insuring correct levels.
         /// </summary>
-        public static bool? CycleTimeTestValidityDetermined
+        public  bool? CycleTimeTestValidityDetermined
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Cycle_Time_Test_Validity_Determined")));
+                return ((bool?)(GetCheckParameter("Cycle_Time_Test_Validity_Determined")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Test_Validity_Determined", value);
+                SetCheckParameter("Cycle_Time_Test_Validity_Determined", value);
             }
         }
         
         /// <summary>
         /// The number of zero-level injections in the cycle time test.
         /// </summary>
-        public static int? CycleTimeZeroInjectionCount
+        public  int? CycleTimeZeroInjectionCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Cycle_Time_Zero_Injection_Count")));
+                return ((int?)(GetCheckParameter("Cycle_Time_Zero_Injection_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Zero_Injection_Count", value);
+                SetCheckParameter("Cycle_Time_Zero_Injection_Count", value);
             }
         }
         
         /// <summary>
         /// The reference value in the zero-level injection of the cycle time test.
         /// </summary>
-        public static decimal? CycleTimeZeroReferenceValue
+        public  decimal? CycleTimeZeroReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Cycle_Time_Zero_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("Cycle_Time_Zero_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Cycle_Time_Zero_Reference_Value", value);
+                SetCheckParameter("Cycle_Time_Zero_Reference_Value", value);
             }
         }
         
         /// <summary>
         /// Default records with default info included.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorDefaultRow> DefaultRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorDefaultRow> DefaultRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Default_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Default_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3419,11 +3419,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Default_Records", null);
+                    SetCheckParameter("Default_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Default_Records", value.SourceView);
+                    SetCheckParameter("Default_Records", value.SourceView);
                 }
             }
         }
@@ -3431,311 +3431,311 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if another 7day calibration test has been assigned the same test number.
         /// </summary>
-        public static bool? Duplicate7DayCalibration
+        public  bool? Duplicate7DayCalibration
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_7Day_Calibration")));
+                return ((bool?)(GetCheckParameter("Duplicate_7Day_Calibration")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_7Day_Calibration", value);
+                SetCheckParameter("Duplicate_7Day_Calibration", value);
             }
         }
         
         /// <summary>
         /// Indicates if another Appendix E test has been assigned the same test number.
         /// </summary>
-        public static bool? DuplicateAppendixETest
+        public  bool? DuplicateAppendixETest
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_Appendix_E_Test")));
+                return ((bool?)(GetCheckParameter("Duplicate_Appendix_E_Test")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_Appendix_E_Test", value);
+                SetCheckParameter("Duplicate_Appendix_E_Test", value);
             }
         }
         
         /// <summary>
         /// Indicates if another cycle time test has been assigned the same test number.
         /// </summary>
-        public static bool? DuplicateCycleTime
+        public  bool? DuplicateCycleTime
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_Cycle_Time")));
+                return ((bool?)(GetCheckParameter("Duplicate_Cycle_Time")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_Cycle_Time", value);
+                SetCheckParameter("Duplicate_Cycle_Time", value);
             }
         }
         
         /// <summary>
         /// Indicates if another flow to load check has been assigned the same test number.
         /// </summary>
-        public static bool? DuplicateFlowToLoadCheck
+        public  bool? DuplicateFlowToLoadCheck
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_Flow_To_Load_Check")));
+                return ((bool?)(GetCheckParameter("Duplicate_Flow_To_Load_Check")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_Flow_To_Load_Check", value);
+                SetCheckParameter("Duplicate_Flow_To_Load_Check", value);
             }
         }
         
         /// <summary>
         /// Indicates if another flow to load reference data record has been assigned the same test number.
         /// </summary>
-        public static bool? DuplicateFlowToLoadReference
+        public  bool? DuplicateFlowToLoadReference
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_Flow_To_Load_Reference")));
+                return ((bool?)(GetCheckParameter("Duplicate_Flow_To_Load_Reference")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_Flow_To_Load_Reference", value);
+                SetCheckParameter("Duplicate_Flow_To_Load_Reference", value);
             }
         }
         
         /// <summary>
         /// Indicates if another fuel flow accuracy test has been assigned the same test number.
         /// </summary>
-        public static bool? DuplicateFuelFlowAccuracy
+        public  bool? DuplicateFuelFlowAccuracy
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_Fuel_Flow_Accuracy")));
+                return ((bool?)(GetCheckParameter("Duplicate_Fuel_Flow_Accuracy")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_Fuel_Flow_Accuracy", value);
+                SetCheckParameter("Duplicate_Fuel_Flow_Accuracy", value);
             }
         }
         
         /// <summary>
         /// Indicates if another fuel flow to load baseline data record has been assigned the same test number.
         /// </summary>
-        public static bool? DuplicateFuelFlowToLoadBaseline
+        public  bool? DuplicateFuelFlowToLoadBaseline
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_Fuel_Flow_To_Load_Baseline")));
+                return ((bool?)(GetCheckParameter("Duplicate_Fuel_Flow_To_Load_Baseline")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_Fuel_Flow_To_Load_Baseline", value);
+                SetCheckParameter("Duplicate_Fuel_Flow_To_Load_Baseline", value);
             }
         }
         
         /// <summary>
         /// Indicates if another fuel flow to load test has been assigned the same test number.
         /// </summary>
-        public static bool? DuplicateFuelFlowToLoadTest
+        public  bool? DuplicateFuelFlowToLoadTest
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_Fuel_Flow_to_Load_Test")));
+                return ((bool?)(GetCheckParameter("Duplicate_Fuel_Flow_to_Load_Test")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_Fuel_Flow_to_Load_Test", value);
+                SetCheckParameter("Duplicate_Fuel_Flow_to_Load_Test", value);
             }
         }
         
         /// <summary>
         /// Indicates if another linearity check has been assigned the same test number.
         /// </summary>
-        public static bool? DuplicateLinearity
+        public  bool? DuplicateLinearity
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_Linearity")));
+                return ((bool?)(GetCheckParameter("Duplicate_Linearity")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_Linearity", value);
+                SetCheckParameter("Duplicate_Linearity", value);
             }
         }
         
         /// <summary>
         /// Indicates if another linearity injection has been assigned the same gas level and time.
         /// </summary>
-        public static bool? DuplicateLinearityInjection
+        public  bool? DuplicateLinearityInjection
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_Linearity_Injection")));
+                return ((bool?)(GetCheckParameter("Duplicate_Linearity_Injection")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_Linearity_Injection", value);
+                SetCheckParameter("Duplicate_Linearity_Injection", value);
             }
         }
         
         /// <summary>
         /// Indicates if another test has been assigned the same test number.
         /// </summary>
-        public static bool? DuplicateMiscellaneousTest
+        public  bool? DuplicateMiscellaneousTest
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_Miscellaneous_Test")));
+                return ((bool?)(GetCheckParameter("Duplicate_Miscellaneous_Test")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_Miscellaneous_Test", value);
+                SetCheckParameter("Duplicate_Miscellaneous_Test", value);
             }
         }
         
         /// <summary>
         /// Indicates if another online offline calibration test has been assigned the same test number.
         /// </summary>
-        public static bool? DuplicateOnlineOfflineCalibration
+        public  bool? DuplicateOnlineOfflineCalibration
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_Online_Offline_Calibration")));
+                return ((bool?)(GetCheckParameter("Duplicate_Online_Offline_Calibration")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_Online_Offline_Calibration", value);
+                SetCheckParameter("Duplicate_Online_Offline_Calibration", value);
             }
         }
         
         /// <summary>
         /// Indicates if another RATA has been assigned the same test number.
         /// </summary>
-        public static bool? DuplicateRata
+        public  bool? DuplicateRata
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_RATA")));
+                return ((bool?)(GetCheckParameter("Duplicate_RATA")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_RATA", value);
+                SetCheckParameter("Duplicate_RATA", value);
             }
         }
         
         /// <summary>
         /// Indicates if another transmitter transducer test has been assigned the same test number.
         /// </summary>
-        public static bool? DuplicateTransmitterTransducer
+        public  bool? DuplicateTransmitterTransducer
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_Transmitter_Transducer")));
+                return ((bool?)(GetCheckParameter("Duplicate_Transmitter_Transducer")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_Transmitter_Transducer", value);
+                SetCheckParameter("Duplicate_Transmitter_Transducer", value);
             }
         }
         
         /// <summary>
         /// Indicates if another unit default test has been assigned the same test number.
         /// </summary>
-        public static bool? DuplicateUnitDefaultTest
+        public  bool? DuplicateUnitDefaultTest
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Duplicate_Unit_Default_Test")));
+                return ((bool?)(GetCheckParameter("Duplicate_Unit_Default_Test")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Duplicate_Unit_Default_Test", value);
+                SetCheckParameter("Duplicate_Unit_Default_Test", value);
             }
         }
         
         /// <summary>
         /// The date when new rules for ECMPS go into effect for the MP evaluation.
         /// </summary>
-        public static DateTime? EcmpsMpBeginDate
+        public  DateTime? EcmpsMpBeginDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("ECMPS_MP_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("ECMPS_MP_Begin_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("ECMPS_MP_Begin_Date", value);
+                SetCheckParameter("ECMPS_MP_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// Indicates if the fuel flowmeter accuracy test should be evaluated.
         /// </summary>
-        public static bool? EvaluateAccuracyTest
+        public  bool? EvaluateAccuracyTest
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Evaluate_Accuracy_Test")));
+                return ((bool?)(GetCheckParameter("Evaluate_Accuracy_Test")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Evaluate_Accuracy_Test", value);
+                SetCheckParameter("Evaluate_Accuracy_Test", value);
             }
         }
         
         /// <summary>
         /// Indicates if data on the fuel flowmeter accuracy test data entry screen should be evaluated.
         /// </summary>
-        public static bool? EvaluateAccuracyTestScreen
+        public  bool? EvaluateAccuracyTestScreen
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Evaluate_Accuracy_Test_Screen")));
+                return ((bool?)(GetCheckParameter("Evaluate_Accuracy_Test_Screen")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Evaluate_Accuracy_Test_Screen", value);
+                SetCheckParameter("Evaluate_Accuracy_Test_Screen", value);
             }
         }
         
         /// <summary>
         /// Indicates if injections in the online offline calibration test should be evaluated.
         /// </summary>
-        public static bool? EvaluateOocInjections
+        public  bool? EvaluateOocInjections
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Evaluate_OOC_Injections")));
+                return ((bool?)(GetCheckParameter("Evaluate_OOC_Injections")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Evaluate_OOC_Injections", value);
+                SetCheckParameter("Evaluate_OOC_Injections", value);
             }
         }
         
         /// <summary>
         /// Indicates if injection data on the online offline calibration test data entry screen should be evaluated.
         /// </summary>
-        public static bool? EvaluateOocScreen
+        public  bool? EvaluateOocScreen
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Evaluate_OOC_Screen")));
+                return ((bool?)(GetCheckParameter("Evaluate_OOC_Screen")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Evaluate_OOC_Screen", value);
+                SetCheckParameter("Evaluate_OOC_Screen", value);
             }
         }
         
         /// <summary>
         /// Indicates the types of monitoring systems and components that are appropriate for the QA certification event code.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.EventCodeToSystemOrComponentTypeRow> EventCodeToSystemOrComponentTypeCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.EventCodeToSystemOrComponentTypeRow> EventCodeToSystemOrComponentTypeCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Event_Code_to_System_or_Component_Type_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Event_Code_to_System_or_Component_Type_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3749,11 +3749,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Event_Code_to_System_or_Component_Type_Cross_Check_Table", null);
+                    SetCheckParameter("Event_Code_to_System_or_Component_Type_Cross_Check_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Event_Code_to_System_or_Component_Type_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Event_Code_to_System_or_Component_Type_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -3761,11 +3761,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates the types of tests that are required for the QA certification event code.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.EventCodeToTestTypeCodesRow> EventCodeToTestTypeCodesCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.EventCodeToTestTypeCodesRow> EventCodeToTestTypeCodesCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Event_Code_to_Test_Type_Codes_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Event_Code_to_Test_Type_Codes_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3779,11 +3779,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Event_Code_to_Test_Type_Codes_Cross_Check_Table", null);
+                    SetCheckParameter("Event_Code_to_Test_Type_Codes_Cross_Check_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Event_Code_to_Test_Type_Codes_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Event_Code_to_Test_Type_Codes_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -3791,161 +3791,161 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if the reported event date of a QA Cert event is valid.
         /// </summary>
-        public static bool? EventDateValid
+        public  bool? EventDateValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Event_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Event_Date_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Event_Date_Valid", value);
+                SetCheckParameter("Event_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported event hour of a QA Cert event is valid.
         /// </summary>
-        public static bool? EventHourValid
+        public  bool? EventHourValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Event_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Event_Hour_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Event_Hour_Valid", value);
+                SetCheckParameter("Event_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the same Appendix E test has been reported with a different test number.
         /// </summary>
-        public static bool? ExtraAppeTest
+        public  bool? ExtraAppeTest
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Extra_APPE_Test")));
+                return ((bool?)(GetCheckParameter("Extra_APPE_Test")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Extra_APPE_Test", value);
+                SetCheckParameter("Extra_APPE_Test", value);
             }
         }
         
         /// <summary>
         /// Indicates if the same linearity test has been reported with a different test number.
         /// </summary>
-        public static bool? ExtraLinearityTest
+        public  bool? ExtraLinearityTest
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Extra_Linearity_Test")));
+                return ((bool?)(GetCheckParameter("Extra_Linearity_Test")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Extra_Linearity_Test", value);
+                SetCheckParameter("Extra_Linearity_Test", value);
             }
         }
         
         /// <summary>
         /// Indicates if the same RATA has been reported with a different test number.
         /// </summary>
-        public static bool? ExtraRata
+        public  bool? ExtraRata
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Extra_RATA")));
+                return ((bool?)(GetCheckParameter("Extra_RATA")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Extra_RATA", value);
+                SetCheckParameter("Extra_RATA", value);
             }
         }
         
         /// <summary>
         /// Indicates if the same Unit Default test has been reported with a different test number.
         /// </summary>
-        public static bool? ExtraUnitDefaultTest
+        public  bool? ExtraUnitDefaultTest
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Extra_Unit_Default_Test")));
+                return ((bool?)(GetCheckParameter("Extra_Unit_Default_Test")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Extra_Unit_Default_Test", value);
+                SetCheckParameter("Extra_Unit_Default_Test", value);
             }
         }
         
         /// <summary>
         /// The recalculated average reference method stack flow in the flow-to-load reference data.
         /// </summary>
-        public static decimal? F2lCalcFlow
+        public  decimal? F2lCalcFlow
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("F2L_Calc_Flow")));
+                return ((decimal?)(GetCheckParameter("F2L_Calc_Flow")));
             }
             set
             {
-                QaParameters.SetCheckParameter("F2L_Calc_Flow", value);
+                SetCheckParameter("F2L_Calc_Flow", value);
             }
         }
         
         /// <summary>
         /// The recalculated gross heat rate in the flow-to-load reference data.
         /// </summary>
-        public static decimal? F2lCalcGhr
+        public  decimal? F2lCalcGhr
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("F2L_Calc_GHR")));
+                return ((decimal?)(GetCheckParameter("F2L_Calc_GHR")));
             }
             set
             {
-                QaParameters.SetCheckParameter("F2L_Calc_GHR", value);
+                SetCheckParameter("F2L_Calc_GHR", value);
             }
         }
         
         /// <summary>
         /// The reecalculated average gross unit load in the flow-to-load reference data.
         /// </summary>
-        public static decimal? F2lCalcGul
+        public  decimal? F2lCalcGul
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("F2L_Calc_GUL")));
+                return ((decimal?)(GetCheckParameter("F2L_Calc_GUL")));
             }
             set
             {
-                QaParameters.SetCheckParameter("F2L_Calc_GUL", value);
+                SetCheckParameter("F2L_Calc_GUL", value);
             }
         }
         
         /// <summary>
         /// The reecalculated flow-to-load ratio in the flow-to-load reference data.
         /// </summary>
-        public static decimal? F2lCalcRatio
+        public  decimal? F2lCalcRatio
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("F2L_Calc_Ratio")));
+                return ((decimal?)(GetCheckParameter("F2L_Calc_Ratio")));
             }
             set
             {
-                QaParameters.SetCheckParameter("F2L_Calc_Ratio", value);
+                SetCheckParameter("F2L_Calc_Ratio", value);
             }
         }
         
         /// <summary>
         /// The QA Supplemental Attribute records for all of a facility's tests that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppAttributeRow> FacilityQaSupplementalAttributeRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppAttributeRow> FacilityQaSupplementalAttributeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Facility_QA_Supplemental_Attribute_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_QA_Supplemental_Attribute_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3959,11 +3959,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Facility_QA_Supplemental_Attribute_Records", null);
+                    SetCheckParameter("Facility_QA_Supplemental_Attribute_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Facility_QA_Supplemental_Attribute_Records", value.SourceView);
+                    SetCheckParameter("Facility_QA_Supplemental_Attribute_Records", value.SourceView);
                 }
             }
         }
@@ -3971,11 +3971,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The QA Supplemental Data records for all of a facility's tests that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataRow> FacilityQaSupplementalDataRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataRow> FacilityQaSupplementalDataRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Facility_QA_Supplemental_Data_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_QA_Supplemental_Data_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -3989,11 +3989,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Facility_QA_Supplemental_Data_Records", null);
+                    SetCheckParameter("Facility_QA_Supplemental_Data_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Facility_QA_Supplemental_Data_Records", value.SourceView);
+                    SetCheckParameter("Facility_QA_Supplemental_Data_Records", value.SourceView);
                 }
             }
         }
@@ -4001,11 +4001,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Monitor Qualification records for all of a facility's locations that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorQualificationRow> FacilityQualificationRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorQualificationRow> FacilityQualificationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Facility_Qualification_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_Qualification_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4019,11 +4019,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Facility_Qualification_Records", null);
+                    SetCheckParameter("Facility_Qualification_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Facility_Qualification_Records", value.SourceView);
+                    SetCheckParameter("Facility_Qualification_Records", value.SourceView);
                 }
             }
         }
@@ -4031,11 +4031,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The RATA run records and associated RATA data for all of a facility's RATAs that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataRunRow> FacilityRataRunRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataRunRow> FacilityRataRunRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Facility_RATA_Run_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_RATA_Run_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4049,11 +4049,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Facility_RATA_Run_Records", null);
+                    SetCheckParameter("Facility_RATA_Run_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Facility_RATA_Run_Records", value.SourceView);
+                    SetCheckParameter("Facility_RATA_Run_Records", value.SourceView);
                 }
             }
         }
@@ -4061,11 +4061,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The RATA Summary records for for all of a facility's RATAs that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataSummaryRow> FacilityRataSummaryRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataSummaryRow> FacilityRataSummaryRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Facility_RATA_Summary_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_RATA_Summary_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4079,11 +4079,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Facility_RATA_Summary_Records", null);
+                    SetCheckParameter("Facility_RATA_Summary_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Facility_RATA_Summary_Records", value.SourceView);
+                    SetCheckParameter("Facility_RATA_Summary_Records", value.SourceView);
                 }
             }
         }
@@ -4091,11 +4091,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// List of all UNIT_CAPACITY records for the facility.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationCapacityRow> FacilityUnitCapacityRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationCapacityRow> FacilityUnitCapacityRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Facility_Unit_Capacity_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_Unit_Capacity_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4109,11 +4109,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Facility_Unit_Capacity_Records", null);
+                    SetCheckParameter("Facility_Unit_Capacity_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Facility_Unit_Capacity_Records", value.SourceView);
+                    SetCheckParameter("Facility_Unit_Capacity_Records", value.SourceView);
                 }
             }
         }
@@ -4121,11 +4121,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The unit stack configuration records for all of a facility's locations that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> FacilityUnitStackConfigurationRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> FacilityUnitStackConfigurationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Facility_Unit_Stack_Configuration_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Facility_Unit_Stack_Configuration_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4139,11 +4139,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Facility_Unit_Stack_Configuration_Records", null);
+                    SetCheckParameter("Facility_Unit_Stack_Configuration_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Facility_Unit_Stack_Configuration_Records", value.SourceView);
+                    SetCheckParameter("Facility_Unit_Stack_Configuration_Records", value.SourceView);
                 }
             }
         }
@@ -4151,251 +4151,251 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The test end date or reinstallation date of the Accuracy Test in the fuel flow to load baseline data record.
         /// </summary>
-        public static DateTime? Ff2lbasAccuracyTestBaselineStartDate
+        public  DateTime? Ff2lbasAccuracyTestBaselineStartDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("FF2LBAS_Accuracy_Test_Baseline_Start_Date")));
+                return ((DateTime?)(GetCheckParameter("FF2LBAS_Accuracy_Test_Baseline_Start_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("FF2LBAS_Accuracy_Test_Baseline_Start_Date", value);
+                SetCheckParameter("FF2LBAS_Accuracy_Test_Baseline_Start_Date", value);
             }
         }
         
         /// <summary>
         /// The test end hour or reinstallation hour of the Accuracy Test in the fuel flow to load baseline data record.
         /// </summary>
-        public static int? Ff2lbasAccuracyTestBaselineStartHour
+        public  int? Ff2lbasAccuracyTestBaselineStartHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("FF2LBAS_Accuracy_Test_Baseline_Start_Hour")));
+                return ((int?)(GetCheckParameter("FF2LBAS_Accuracy_Test_Baseline_Start_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("FF2LBAS_Accuracy_Test_Baseline_Start_Hour", value);
+                SetCheckParameter("FF2LBAS_Accuracy_Test_Baseline_Start_Hour", value);
             }
         }
         
         /// <summary>
         /// The derived baseline start date based on the accuracy test and PEI in the fuel flow to load baseline data record.
         /// </summary>
-        public static DateTime? Ff2lbasBaselineStartDate
+        public  DateTime? Ff2lbasBaselineStartDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("FF2LBAS_Baseline_Start_Date")));
+                return ((DateTime?)(GetCheckParameter("FF2LBAS_Baseline_Start_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("FF2LBAS_Baseline_Start_Date", value);
+                SetCheckParameter("FF2LBAS_Baseline_Start_Date", value);
             }
         }
         
         /// <summary>
         /// The derived baseline start hour based on the accuracy test and PEI in the fuel flow to load baseline data record.
         /// </summary>
-        public static int? Ff2lbasBaselineStartHour
+        public  int? Ff2lbasBaselineStartHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("FF2LBAS_Baseline_Start_Hour")));
+                return ((int?)(GetCheckParameter("FF2LBAS_Baseline_Start_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("FF2LBAS_Baseline_Start_Hour", value);
+                SetCheckParameter("FF2LBAS_Baseline_Start_Hour", value);
             }
         }
         
         /// <summary>
         /// The length of the fuel flow to load collection period in hours.
         /// </summary>
-        public static decimal? Ff2lbasCollectionPeriodHours
+        public  decimal? Ff2lbasCollectionPeriodHours
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("FF2LBAS_Collection_Period_Hours")));
+                return ((decimal?)(GetCheckParameter("FF2LBAS_Collection_Period_Hours")));
             }
             set
             {
-                QaParameters.SetCheckParameter("FF2LBAS_Collection_Period_Hours", value);
+                SetCheckParameter("FF2LBAS_Collection_Period_Hours", value);
             }
         }
         
         /// <summary>
         /// Indicates if the fuel-flow-to-load ratio UOM code is valid.
         /// </summary>
-        public static bool? Ff2lbasFuelFlowToLoadRatioUomCodeValid
+        public  bool? Ff2lbasFuelFlowToLoadRatioUomCodeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("FF2LBAS_Fuel_Flow_To_Load_Ratio_UOM_Code_Valid")));
+                return ((bool?)(GetCheckParameter("FF2LBAS_Fuel_Flow_To_Load_Ratio_UOM_Code_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("FF2LBAS_Fuel_Flow_To_Load_Ratio_UOM_Code_Valid", value);
+                SetCheckParameter("FF2LBAS_Fuel_Flow_To_Load_Ratio_UOM_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the fuel-flow-to-load GHR UOM code is valid.
         /// </summary>
-        public static bool? Ff2lbasGhrUomCodeValid
+        public  bool? Ff2lbasGhrUomCodeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("FF2LBAS_GHR_UOM_Code_Valid")));
+                return ((bool?)(GetCheckParameter("FF2LBAS_GHR_UOM_Code_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("FF2LBAS_GHR_UOM_Code_Valid", value);
+                SetCheckParameter("FF2LBAS_GHR_UOM_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// The load units of measure code for the location.
         /// </summary>
-        public static string Ff2lbasLoadUomCode
+        public  string Ff2lbasLoadUomCode
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("FF2LBAS_Load_UOM_Code")));
+                return ((string)(GetCheckParameter("FF2LBAS_Load_UOM_Code")));
             }
             set
             {
-                QaParameters.SetCheckParameter("FF2LBAS_Load_UOM_Code", value);
+                SetCheckParameter("FF2LBAS_Load_UOM_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates if the fuel-flow-to-load baseline is reported either as fuel flow to load ratio or GHR.
         /// </summary>
-        public static bool? Ff2lbasMethodValid
+        public  bool? Ff2lbasMethodValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("FF2LBAS_Method_Valid")));
+                return ((bool?)(GetCheckParameter("FF2LBAS_Method_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("FF2LBAS_Method_Valid", value);
+                SetCheckParameter("FF2LBAS_Method_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if a PEI is required for a fuel flow-to-load baseline data record.
         /// </summary>
-        public static bool? Ff2lbasPeiRequired
+        public  bool? Ff2lbasPeiRequired
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("FF2LBAS_PEI_Required")));
+                return ((bool?)(GetCheckParameter("FF2LBAS_PEI_Required")));
             }
             set
             {
-                QaParameters.SetCheckParameter("FF2LBAS_PEI_Required", value);
+                SetCheckParameter("FF2LBAS_PEI_Required", value);
             }
         }
         
         /// <summary>
         /// Indicates if system type is valid for the fuel-flow-to-load baseline data.
         /// </summary>
-        public static bool? Ff2lbasSystemValid
+        public  bool? Ff2lbasSystemValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("FF2LBAS_System_Valid")));
+                return ((bool?)(GetCheckParameter("FF2LBAS_System_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("FF2LBAS_System_Valid", value);
+                SetCheckParameter("FF2LBAS_System_Valid", value);
             }
         }
         
         /// <summary>
         /// The Test Basis (FF2L ratio or GHR) of the fuel flow-to-load baseline data.
         /// </summary>
-        public static string Ff2lbasTestBasis
+        public  string Ff2lbasTestBasis
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("FF2LBAS_Test_Basis")));
+                return ((string)(GetCheckParameter("FF2LBAS_Test_Basis")));
             }
             set
             {
-                QaParameters.SetCheckParameter("FF2LBAS_Test_Basis", value);
+                SetCheckParameter("FF2LBAS_Test_Basis", value);
             }
         }
         
         /// <summary>
         /// Indicates if system type is valid for the fuel-flow-to-load test.
         /// </summary>
-        public static bool? Ff2ltstSystemValid
+        public  bool? Ff2ltstSystemValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("FF2LTST_System_Valid")));
+                return ((bool?)(GetCheckParameter("FF2LTST_System_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("FF2LTST_System_Valid", value);
+                SetCheckParameter("FF2LTST_System_Valid", value);
             }
         }
         
         /// <summary>
         /// The first ECMPS Reporting Period for the related facility.
         /// </summary>
-        public static int? FirstEcmpsReportingPeriod
+        public  int? FirstEcmpsReportingPeriod
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("First_ECMPS_Reporting_Period")));
+                return ((int?)(GetCheckParameter("First_ECMPS_Reporting_Period")));
             }
             set
             {
-                QaParameters.SetCheckParameter("First_ECMPS_Reporting_Period", value);
+                SetCheckParameter("First_ECMPS_Reporting_Period", value);
             }
         }
         
         /// <summary>
         /// Indicates whether calculations can be performed for the operating level of a flow RATA using method 2F, 2G, 2J, or M2H.
         /// </summary>
-        public static bool? FlowRataLevelValid
+        public  bool? FlowRataLevelValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Flow_RATA_Level_Valid")));
+                return ((bool?)(GetCheckParameter("Flow_RATA_Level_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_RATA_Level_Valid", value);
+                SetCheckParameter("Flow_RATA_Level_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if Flow RATA Run or RATA Traverse record is appropriate for the reference method.
         /// </summary>
-        public static bool? FlowRataRecordValid
+        public  bool? FlowRataRecordValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Flow_RATA_Record_Valid")));
+                return ((bool?)(GetCheckParameter("Flow_RATA_Record_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_RATA_Record_Valid", value);
+                SetCheckParameter("Flow_RATA_Record_Valid", value);
             }
         }
         
         /// <summary>
         /// All Flow Run records associated with a RATA.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaFlowRataRunRow> FlowRataRunRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaFlowRataRunRow> FlowRataRunRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Flow_RATA_Run_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Flow_RATA_Run_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4409,11 +4409,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Flow_RATA_Run_Records", null);
+                    SetCheckParameter("Flow_RATA_Run_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Flow_RATA_Run_Records", value.SourceView);
+                    SetCheckParameter("Flow_RATA_Run_Records", value.SourceView);
                 }
             }
         }
@@ -4421,86 +4421,86 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if Flow RATA Run record is present and valid.
         /// </summary>
-        public static bool? FlowRataRunValid
+        public  bool? FlowRataRunValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Flow_RATA_Run_Valid")));
+                return ((bool?)(GetCheckParameter("Flow_RATA_Run_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_RATA_Run_Valid", value);
+                SetCheckParameter("Flow_RATA_Run_Valid", value);
             }
         }
         
         /// <summary>
         /// Average gross unit load in the associated flow-to-load reference data.
         /// </summary>
-        public static int? FlowToLoadCheckAverageGrossUnitLoad
+        public  int? FlowToLoadCheckAverageGrossUnitLoad
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Flow_to_Load_Check_Average_Gross_Unit_Load")));
+                return ((int?)(GetCheckParameter("Flow_to_Load_Check_Average_Gross_Unit_Load")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_to_Load_Check_Average_Gross_Unit_Load", value);
+                SetCheckParameter("Flow_to_Load_Check_Average_Gross_Unit_Load", value);
             }
         }
         
         /// <summary>
         /// Recalculated test result for the flow-to-load check.
         /// </summary>
-        public static string FlowToLoadCheckCalcTestResult
+        public  string FlowToLoadCheckCalcTestResult
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Flow_To_Load_Check_Calc_Test_Result")));
+                return ((string)(GetCheckParameter("Flow_To_Load_Check_Calc_Test_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_To_Load_Check_Calc_Test_Result", value);
+                SetCheckParameter("Flow_To_Load_Check_Calc_Test_Result", value);
             }
         }
         
         /// <summary>
         /// The load units of measure in the associated load record.
         /// </summary>
-        public static string FlowToLoadCheckLoadUnitsOfMeasure
+        public  string FlowToLoadCheckLoadUnitsOfMeasure
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Flow_to_Load_Check_Load_Units_of_Measure")));
+                return ((string)(GetCheckParameter("Flow_to_Load_Check_Load_Units_of_Measure")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_to_Load_Check_Load_Units_of_Measure", value);
+                SetCheckParameter("Flow_to_Load_Check_Load_Units_of_Measure", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported operating level code of flow-to-load check is valid.
         /// </summary>
-        public static bool? FlowToLoadCheckOperatingLevelCodeValid
+        public  bool? FlowToLoadCheckOperatingLevelCodeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Flow_To_Load_Check_Operating_Level_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Flow_To_Load_Check_Operating_Level_Code_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_To_Load_Check_Operating_Level_Code_Valid", value);
+                SetCheckParameter("Flow_To_Load_Check_Operating_Level_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// All Flow to Load Check and associated Test Summary records for the monitoring system.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow> FlowToLoadCheckRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow> FlowToLoadCheckRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Flow_to_Load_Check_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Flow_to_Load_Check_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4514,11 +4514,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Flow_to_Load_Check_Records", null);
+                    SetCheckParameter("Flow_to_Load_Check_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Flow_to_Load_Check_Records", value.SourceView);
+                    SetCheckParameter("Flow_to_Load_Check_Records", value.SourceView);
                 }
             }
         }
@@ -4526,176 +4526,176 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The ID of the QA Supp Data record associated with the flow-to-load check.
         /// </summary>
-        public static string FlowToLoadCheckSuppDataId
+        public  string FlowToLoadCheckSuppDataId
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Flow_to_Load_Check_Supp_Data_ID")));
+                return ((string)(GetCheckParameter("Flow_to_Load_Check_Supp_Data_ID")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_to_Load_Check_Supp_Data_ID", value);
+                SetCheckParameter("Flow_to_Load_Check_Supp_Data_ID", value);
             }
         }
         
         /// <summary>
         /// Indicates if system type is valid for the flow-to-load check.
         /// </summary>
-        public static bool? FlowToLoadCheckSystemValid
+        public  bool? FlowToLoadCheckSystemValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Flow_to_Load_Check_System_Valid")));
+                return ((bool?)(GetCheckParameter("Flow_to_Load_Check_System_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_to_Load_Check_System_Valid", value);
+                SetCheckParameter("Flow_to_Load_Check_System_Valid", value);
             }
         }
         
         /// <summary>
         /// Recalculated average gross unit load during the used runs of the reference RATA(s) at the operating level.
         /// </summary>
-        public static decimal? FlowToLoadReferenceCalcAverageGrossUnitLoad
+        public  decimal? FlowToLoadReferenceCalcAverageGrossUnitLoad
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Flow_to_Load_Reference_Calc_Average_Gross_Unit_Load")));
+                return ((decimal?)(GetCheckParameter("Flow_to_Load_Reference_Calc_Average_Gross_Unit_Load")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_to_Load_Reference_Calc_Average_Gross_Unit_Load", value);
+                SetCheckParameter("Flow_to_Load_Reference_Calc_Average_Gross_Unit_Load", value);
             }
         }
         
         /// <summary>
         /// Recalculated average reference values during the used runs of the reference RATA(s) at the operating level.
         /// </summary>
-        public static decimal? FlowToLoadReferenceCalcAverageReferenceMethodFlow
+        public  decimal? FlowToLoadReferenceCalcAverageReferenceMethodFlow
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Flow_To_Load_Reference_Calc_Average_Reference_Method_Flow")));
+                return ((decimal?)(GetCheckParameter("Flow_To_Load_Reference_Calc_Average_Reference_Method_Flow")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_To_Load_Reference_Calc_Average_Reference_Method_Flow", value);
+                SetCheckParameter("Flow_To_Load_Reference_Calc_Average_Reference_Method_Flow", value);
             }
         }
         
         /// <summary>
         /// Recalculated flow-to-load ratio
         /// </summary>
-        public static decimal? FlowToLoadReferenceCalcFlowToLoadRatio
+        public  decimal? FlowToLoadReferenceCalcFlowToLoadRatio
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Flow_To_Load_Reference_Calc_Flow_To_Load_Ratio")));
+                return ((decimal?)(GetCheckParameter("Flow_To_Load_Reference_Calc_Flow_To_Load_Ratio")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_To_Load_Reference_Calc_Flow_To_Load_Ratio", value);
+                SetCheckParameter("Flow_To_Load_Reference_Calc_Flow_To_Load_Ratio", value);
             }
         }
         
         /// <summary>
         /// Recalculated gross heat rate
         /// </summary>
-        public static decimal? FlowToLoadReferenceCalcGhr
+        public  decimal? FlowToLoadReferenceCalcGhr
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Flow_To_Load_Reference_Calc_GHR")));
+                return ((decimal?)(GetCheckParameter("Flow_To_Load_Reference_Calc_GHR")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_To_Load_Reference_Calc_GHR", value);
+                SetCheckParameter("Flow_To_Load_Reference_Calc_GHR", value);
             }
         }
         
         /// <summary>
         /// Indicates if flow-to-load reference data was reported as using either flow-to-load ratio or GHR methodology (but not both)
         /// </summary>
-        public static bool? FlowToLoadReferenceMethodologyValid
+        public  bool? FlowToLoadReferenceMethodologyValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Flow_to_Load_Reference_Methodology_Valid")));
+                return ((bool?)(GetCheckParameter("Flow_to_Load_Reference_Methodology_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_to_Load_Reference_Methodology_Valid", value);
+                SetCheckParameter("Flow_to_Load_Reference_Methodology_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported operating level code of flow-to-load reference data is valid.
         /// </summary>
-        public static bool? FlowToLoadReferenceOperatingLevelCodeValid
+        public  bool? FlowToLoadReferenceOperatingLevelCodeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Flow_To_Load_Reference_Operating_Level_Code_Valid")));
+                return ((bool?)(GetCheckParameter("Flow_To_Load_Reference_Operating_Level_Code_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_To_Load_Reference_Operating_Level_Code_Valid", value);
+                SetCheckParameter("Flow_To_Load_Reference_Operating_Level_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// The RATASummaryID of the associated operating level of the reference RATA.
         /// </summary>
-        public static string FlowToLoadReferenceRataSummaryId
+        public  string FlowToLoadReferenceRataSummaryId
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Flow_To_Load_Reference_RATA_Summary_ID")));
+                return ((string)(GetCheckParameter("Flow_To_Load_Reference_RATA_Summary_ID")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_To_Load_Reference_RATA_Summary_ID", value);
+                SetCheckParameter("Flow_To_Load_Reference_RATA_Summary_ID", value);
             }
         }
         
         /// <summary>
         /// The QASuppDataID of the associated flow RATA.
         /// </summary>
-        public static string FlowToLoadReferenceRataSuppId
+        public  string FlowToLoadReferenceRataSuppId
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Flow_To_Load_Reference_RATA_Supp_ID")));
+                return ((string)(GetCheckParameter("Flow_To_Load_Reference_RATA_Supp_ID")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_To_Load_Reference_RATA_Supp_ID", value);
+                SetCheckParameter("Flow_To_Load_Reference_RATA_Supp_ID", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported RATA test number of flow-to-load reference data is valid.
         /// </summary>
-        public static bool? FlowToLoadReferenceRataTestNumberValid
+        public  bool? FlowToLoadReferenceRataTestNumberValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Flow_To_Load_Reference_RATA_Test_Number_Valid")));
+                return ((bool?)(GetCheckParameter("Flow_To_Load_Reference_RATA_Test_Number_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_To_Load_Reference_RATA_Test_Number_Valid", value);
+                SetCheckParameter("Flow_To_Load_Reference_RATA_Test_Number_Valid", value);
             }
         }
         
         /// <summary>
         /// All Flow to Load Reference Data Test Summary records for the monitoring system.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow> FlowToLoadReferenceRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow> FlowToLoadReferenceRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Flow_to_Load_Reference_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Flow_to_Load_Reference_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4709,11 +4709,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Flow_to_Load_Reference_Records", null);
+                    SetCheckParameter("Flow_to_Load_Reference_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Flow_to_Load_Reference_Records", value.SourceView);
+                    SetCheckParameter("Flow_to_Load_Reference_Records", value.SourceView);
                 }
             }
         }
@@ -4721,41 +4721,41 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The ID of the QA Supp Data record associated with the flow-to-load reference data.
         /// </summary>
-        public static string FlowToLoadReferenceSuppDataId
+        public  string FlowToLoadReferenceSuppDataId
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Flow_to_Load_Reference_Supp_Data_ID")));
+                return ((string)(GetCheckParameter("Flow_to_Load_Reference_Supp_Data_ID")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_to_Load_Reference_Supp_Data_ID", value);
+                SetCheckParameter("Flow_to_Load_Reference_Supp_Data_ID", value);
             }
         }
         
         /// <summary>
         /// Indicates if system type is valid for the flow-to-load reference data.
         /// </summary>
-        public static bool? FlowToLoadReferenceSystemValid
+        public  bool? FlowToLoadReferenceSystemValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Flow_to_Load_Reference_System_Valid")));
+                return ((bool?)(GetCheckParameter("Flow_to_Load_Reference_System_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Flow_to_Load_Reference_System_Valid", value);
+                SetCheckParameter("Flow_to_Load_Reference_System_Valid", value);
             }
         }
         
         /// <summary>
         /// A lookup table of Fuel codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.FuelCodeRow> FuelCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.FuelCodeRow> FuelCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Fuel_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4769,11 +4769,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Fuel_Code_Lookup_Table", null);
+                    SetCheckParameter("Fuel_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Fuel_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -4781,11 +4781,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Fuel Flow to Load  Baseline Records for the system.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFf2lbasRow> FuelFlowToLoadBaselineRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFf2lbasRow> FuelFlowToLoadBaselineRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Fuel_Flow_To_Load_Baseline_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Flow_To_Load_Baseline_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4799,11 +4799,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Fuel_Flow_To_Load_Baseline_Records", null);
+                    SetCheckParameter("Fuel_Flow_To_Load_Baseline_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Fuel_Flow_To_Load_Baseline_Records", value.SourceView);
+                    SetCheckParameter("Fuel_Flow_To_Load_Baseline_Records", value.SourceView);
                 }
             }
         }
@@ -4811,11 +4811,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Links appropriate fuel-to-load baseline UOM code to load UOM code and system type code.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelFlowToLoadBaselineUomToLoadUomAndSystemTypeRow> FuelFlowToLoadBaselineUomToLoadUomAndSystemtypeCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.FuelFlowToLoadBaselineUomToLoadUomAndSystemTypeRow> FuelFlowToLoadBaselineUomToLoadUomAndSystemtypeCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Fuel_Flow_To_Load_Baseline_Uom_To_Load_Uom_And_Systemtype_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Flow_To_Load_Baseline_Uom_To_Load_Uom_And_Systemtype_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4829,11 +4829,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Fuel_Flow_To_Load_Baseline_Uom_To_Load_Uom_And_Systemtype_Cross_Check_Table", null);
+                    SetCheckParameter("Fuel_Flow_To_Load_Baseline_Uom_To_Load_Uom_And_Systemtype_Cross_Check_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Fuel_Flow_To_Load_Baseline_Uom_To_Load_Uom_And_Systemtype_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Flow_To_Load_Baseline_Uom_To_Load_Uom_And_Systemtype_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -4841,11 +4841,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Fuel Flow to Load  Test Records for the system.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFf2ltstRow> FuelFlowToLoadTestRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFf2ltstRow> FuelFlowToLoadTestRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Fuel_Flow_to_Load_Test_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Flow_to_Load_Test_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4859,11 +4859,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Fuel_Flow_to_Load_Test_Records", null);
+                    SetCheckParameter("Fuel_Flow_to_Load_Test_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Fuel_Flow_to_Load_Test_Records", value.SourceView);
+                    SetCheckParameter("Fuel_Flow_to_Load_Test_Records", value.SourceView);
                 }
             }
         }
@@ -4871,11 +4871,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Lookup table of PGVP Gas Type Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.GasTypeCodeRow> GasTypeCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.GasTypeCodeRow> GasTypeCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Gas_Type_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Gas_Type_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -4889,11 +4889,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Gas_Type_Code_Lookup_Table", null);
+                    SetCheckParameter("Gas_Type_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Gas_Type_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Gas_Type_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -4901,341 +4901,341 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The calculated average gross unit load for the high operating level.
         /// </summary>
-        public static decimal? HighAverageGrossUnitLoad
+        public  decimal? HighAverageGrossUnitLoad
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("High_Average_Gross_Unit_Load")));
+                return ((decimal?)(GetCheckParameter("High_Average_Gross_Unit_Load")));
             }
             set
             {
-                QaParameters.SetCheckParameter("High_Average_Gross_Unit_Load", value);
+                SetCheckParameter("High_Average_Gross_Unit_Load", value);
             }
         }
         
         /// <summary>
         /// The calculated BAF for the high operating level.
         /// </summary>
-        public static decimal? HighBaf
+        public  decimal? HighBaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("High_BAF")));
+                return ((decimal?)(GetCheckParameter("High_BAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("High_BAF", value);
+                SetCheckParameter("High_BAF", value);
             }
         }
         
         /// <summary>
         /// The highest CEM Value used in the calculation of relative accuracy for a RATA.
         /// </summary>
-        public static decimal? HighestRataCemValue
+        public  decimal? HighestRataCemValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Highest_RATA_CEM_Value")));
+                return ((decimal?)(GetCheckParameter("Highest_RATA_CEM_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Highest_RATA_CEM_Value", value);
+                SetCheckParameter("Highest_RATA_CEM_Value", value);
             }
         }
         
         /// <summary>
         /// The highest Run Number in a RATA.
         /// </summary>
-        public static int? HighestRataRunNumber
+        public  int? HighestRataRunNumber
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Highest_RATA_Run_Number")));
+                return ((int?)(GetCheckParameter("Highest_RATA_Run_Number")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Highest_RATA_Run_Number", value);
+                SetCheckParameter("Highest_RATA_Run_Number", value);
             }
         }
         
         /// <summary>
         /// The number of used runs for the high operating level of a RATA.
         /// </summary>
-        public static decimal? HighRunCount
+        public  decimal? HighRunCount
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("High_Run_Count")));
+                return ((decimal?)(GetCheckParameter("High_Run_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("High_Run_Count", value);
+                SetCheckParameter("High_Run_Count", value);
             }
         }
         
         /// <summary>
         /// The sum of the gross unit loads in the used runs for the high operating level.
         /// </summary>
-        public static decimal? HighSumGrossUnitLoad
+        public  decimal? HighSumGrossUnitLoad
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("High_Sum_Gross_Unit_Load")));
+                return ((decimal?)(GetCheckParameter("High_Sum_Gross_Unit_Load")));
             }
             set
             {
-                QaParameters.SetCheckParameter("High_Sum_Gross_Unit_Load", value);
+                SetCheckParameter("High_Sum_Gross_Unit_Load", value);
             }
         }
         
         /// <summary>
         /// The sum of the reference values in the used runs for the high operating level of a RATA.
         /// </summary>
-        public static decimal? HighSumReferenceValue
+        public  decimal? HighSumReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("High_Sum_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("High_Sum_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("High_Sum_Reference_Value", value);
+                SetCheckParameter("High_Sum_Reference_Value", value);
             }
         }
         
         /// <summary>
         /// A list of values in the RATA Summary record that are not equal to the calculated values.
         /// </summary>
-        public static string InconsistentRataFields
+        public  string InconsistentRataFields
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Inconsistent_RATA_Fields")));
+                return ((string)(GetCheckParameter("Inconsistent_RATA_Fields")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Inconsistent_RATA_Fields", value);
+                SetCheckParameter("Inconsistent_RATA_Fields", value);
             }
         }
         
         /// <summary>
         /// The maximum heat input rate in the runs of the previous operating level of an Appendix E Test.
         /// </summary>
-        public static decimal? LastAppeMaximumHiRate
+        public  decimal? LastAppeMaximumHiRate
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Last_APPE_Maximum_HI_Rate")));
+                return ((decimal?)(GetCheckParameter("Last_APPE_Maximum_HI_Rate")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Last_APPE_Maximum_HI_Rate", value);
+                SetCheckParameter("Last_APPE_Maximum_HI_Rate", value);
             }
         }
         
         /// <summary>
         /// The date of the previous zero-level injection in a 7day calibration test.
         /// </summary>
-        public static DateTime? LastCalibrationInjectionDate
+        public  DateTime? LastCalibrationInjectionDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("Last_Calibration_Injection_Date")));
+                return ((DateTime?)(GetCheckParameter("Last_Calibration_Injection_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Last_Calibration_Injection_Date", value);
+                SetCheckParameter("Last_Calibration_Injection_Date", value);
             }
         }
         
         /// <summary>
         /// Time of the previous linearity injection (YYYYMMDDHHMM).
         /// </summary>
-        public static string LastInjectionTime
+        public  string LastInjectionTime
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Last_Injection_Time")));
+                return ((string)(GetCheckParameter("Last_Injection_Time")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Last_Injection_Time", value);
+                SetCheckParameter("Last_Injection_Time", value);
             }
         }
         
         /// <summary>
         /// The Gas Level Code of the prior linearity summary record processed.
         /// </summary>
-        public static string LastLinearityLevelCode
+        public  string LastLinearityLevelCode
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Last_Linearity_Level_Code")));
+                return ((string)(GetCheckParameter("Last_Linearity_Level_Code")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Last_Linearity_Level_Code", value);
+                SetCheckParameter("Last_Linearity_Level_Code", value);
             }
         }
         
         /// <summary>
         /// The run number of the chronologically previous RATA run in an operating level.
         /// </summary>
-        public static int? LastRataRunNumber
+        public  int? LastRataRunNumber
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Last_RATA_Run_Number")));
+                return ((int?)(GetCheckParameter("Last_RATA_Run_Number")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Last_RATA_Run_Number", value);
+                SetCheckParameter("Last_RATA_Run_Number", value);
             }
         }
         
         /// <summary>
         /// The Traverse Point ID of the prior RATA Traverse record processed.
         /// </summary>
-        public static string LastRataTraversePointId
+        public  string LastRataTraversePointId
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Last_RATA_Traverse_Point_ID")));
+                return ((string)(GetCheckParameter("Last_RATA_Traverse_Point_ID")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Last_RATA_Traverse_Point_ID", value);
+                SetCheckParameter("Last_RATA_Traverse_Point_ID", value);
             }
         }
         
         /// <summary>
         /// The calculated APS indicator for the gas level of the linearity check.
         /// </summary>
-        public static int? LinearityCalcAps
+        public  int? LinearityCalcAps
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Linearity_Calc_APS")));
+                return ((int?)(GetCheckParameter("Linearity_Calc_APS")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Calc_APS", value);
+                SetCheckParameter("Linearity_Calc_APS", value);
             }
         }
         
         /// <summary>
         /// The calculated mean measured value for the gas level of the linearity check.
         /// </summary>
-        public static decimal? LinearityCalcMmv
+        public  decimal? LinearityCalcMmv
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Linearity_Calc_MMV")));
+                return ((decimal?)(GetCheckParameter("Linearity_Calc_MMV")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Calc_MMV", value);
+                SetCheckParameter("Linearity_Calc_MMV", value);
             }
         }
         
         /// <summary>
         /// The calculated mean reference value for the gas level of the linearity check.
         /// </summary>
-        public static decimal? LinearityCalcMrv
+        public  decimal? LinearityCalcMrv
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Linearity_Calc_MRV")));
+                return ((decimal?)(GetCheckParameter("Linearity_Calc_MRV")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Calc_MRV", value);
+                SetCheckParameter("Linearity_Calc_MRV", value);
             }
         }
         
         /// <summary>
         /// The calculated percent error for the gas level of the linearity check.
         /// </summary>
-        public static decimal? LinearityCalcPe
+        public  decimal? LinearityCalcPe
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Linearity_Calc_PE")));
+                return ((decimal?)(GetCheckParameter("Linearity_Calc_PE")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Calc_PE", value);
+                SetCheckParameter("Linearity_Calc_PE", value);
             }
         }
         
         /// <summary>
         /// Indicates if component type is valid for the linearity test.
         /// </summary>
-        public static bool? LinearityComponentValid
+        public  bool? LinearityComponentValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Linearity_Component_Valid")));
+                return ((bool?)(GetCheckParameter("Linearity_Component_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Component_Valid", value);
+                SetCheckParameter("Linearity_Component_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if gas level code is valid for the linearity summary record.
         /// </summary>
-        public static bool? LinearityGasLevelValid
+        public  bool? LinearityGasLevelValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Linearity_Gas_Level_Valid")));
+                return ((bool?)(GetCheckParameter("Linearity_Gas_Level_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Gas_Level_Valid", value);
+                SetCheckParameter("Linearity_Gas_Level_Valid", value);
             }
         }
         
         /// <summary>
         /// The number of injections performed for the gas level of the linearity check.
         /// </summary>
-        public static int? LinearityInjectionCount
+        public  int? LinearityInjectionCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Linearity_Injection_Count")));
+                return ((int?)(GetCheckParameter("Linearity_Injection_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Injection_Count", value);
+                SetCheckParameter("Linearity_Injection_Count", value);
             }
         }
         
         /// <summary>
         /// Indicates if the linearity was one of the last 3 injections performed at the calibration gas level, and was included in the calculations for that level.
         /// </summary>
-        public static bool? LinearityInjectionIncluded
+        public  bool? LinearityInjectionIncluded
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Linearity_Injection_Included")));
+                return ((bool?)(GetCheckParameter("Linearity_Injection_Included")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Injection_Included", value);
+                SetCheckParameter("Linearity_Injection_Included", value);
             }
         }
         
         /// <summary>
         /// The Linearity Injection records for the test.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckQa.Function.LinearityInjection> LinearityInjectionRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckQa.Function.LinearityInjection> LinearityInjectionRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Linearity_Injection_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Linearity_Injection_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5249,11 +5249,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Linearity_Injection_Records", null);
+                    SetCheckParameter("Linearity_Injection_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Linearity_Injection_Records", value.SourceView);
+                    SetCheckParameter("Linearity_Injection_Records", value.SourceView);
                 }
             }
         }
@@ -5261,281 +5261,281 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if the reference value in the linearity injection record contains a valid value.
         /// </summary>
-        public static bool? LinearityInjectionReferenceValueValid
+        public  bool? LinearityInjectionReferenceValueValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Linearity_Injection_Reference_Value_Valid")));
+                return ((bool?)(GetCheckParameter("Linearity_Injection_Reference_Value_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Injection_Reference_Value_Valid", value);
+                SetCheckParameter("Linearity_Injection_Reference_Value_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the injection times in a linearity check are valid.
         /// </summary>
-        public static bool? LinearityInjectionTimesValid
+        public  bool? LinearityInjectionTimesValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Linearity_Injection_Times_Valid")));
+                return ((bool?)(GetCheckParameter("Linearity_Injection_Times_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Injection_Times_Valid", value);
+                SetCheckParameter("Linearity_Injection_Times_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the Injection Date, Hour, and Minute in the linearity injection record is valid.
         /// </summary>
-        public static bool? LinearityInjectionTimeValid
+        public  bool? LinearityInjectionTimeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Linearity_Injection_Time_Valid")));
+                return ((bool?)(GetCheckParameter("Linearity_Injection_Time_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Injection_Time_Valid", value);
+                SetCheckParameter("Linearity_Injection_Time_Valid", value);
             }
         }
         
         /// <summary>
         /// A list of fields containing intermediate values that are inconsistent with recalculated value.
         /// </summary>
-        public static string LinearityIntermediateValues
+        public  string LinearityIntermediateValues
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Linearity_Intermediate_Values")));
+                return ((string)(GetCheckParameter("Linearity_Intermediate_Values")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Intermediate_Values", value);
+                SetCheckParameter("Linearity_Intermediate_Values", value);
             }
         }
         
         /// <summary>
         /// A list of calibration gas levels in the linearity check.
         /// </summary>
-        public static string LinearityLevelList
+        public  string LinearityLevelList
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Linearity_Level_List")));
+                return ((string)(GetCheckParameter("Linearity_Level_List")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Level_List", value);
+                SetCheckParameter("Linearity_Level_List", value);
             }
         }
         
         /// <summary>
         /// Indicates if calculations can be performed for the gas level of a linearity check.
         /// </summary>
-        public static bool? LinearityLevelValid
+        public  bool? LinearityLevelValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Linearity_Level_Valid")));
+                return ((bool?)(GetCheckParameter("Linearity_Level_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Level_Valid", value);
+                SetCheckParameter("Linearity_Level_Valid", value);
             }
         }
         
         /// <summary>
         /// The sum of the measured values of the last three injections in the gas level of the linearity check.
         /// </summary>
-        public static decimal? LinearityMeasuredValueTotal
+        public  decimal? LinearityMeasuredValueTotal
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Linearity_Measured_Value_Total")));
+                return ((decimal?)(GetCheckParameter("Linearity_Measured_Value_Total")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Measured_Value_Total", value);
+                SetCheckParameter("Linearity_Measured_Value_Total", value);
             }
         }
         
         /// <summary>
         /// A calculation of the percent of the span value of the reference value.
         /// </summary>
-        public static decimal? LinearityReferencePercentOfSpan
+        public  decimal? LinearityReferencePercentOfSpan
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Linearity_Reference_Percent_of_Span")));
+                return ((decimal?)(GetCheckParameter("Linearity_Reference_Percent_of_Span")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Reference_Percent_of_Span", value);
+                SetCheckParameter("Linearity_Reference_Percent_of_Span", value);
             }
         }
         
         /// <summary>
         /// Indicates if reference value of a linearity injection is consistent with the span value based on gas level.
         /// </summary>
-        public static string LinearityReferenceValueConsistentWithSpan
+        public  string LinearityReferenceValueConsistentWithSpan
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Linearity_Reference_Value_Consistent_with_Span")));
+                return ((string)(GetCheckParameter("Linearity_Reference_Value_Consistent_with_Span")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Reference_Value_Consistent_with_Span", value);
+                SetCheckParameter("Linearity_Reference_Value_Consistent_with_Span", value);
             }
         }
         
         /// <summary>
         /// Indicates if mid-leve reference values, which are less than high-level reference values and greater than low-level reference values.
         /// </summary>
-        public static bool? LinearityReferenceValuesConsistent
+        public  bool? LinearityReferenceValuesConsistent
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Linearity_Reference_Values_Consistent")));
+                return ((bool?)(GetCheckParameter("Linearity_Reference_Values_Consistent")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Reference_Values_Consistent", value);
+                SetCheckParameter("Linearity_Reference_Values_Consistent", value);
             }
         }
         
         /// <summary>
         /// The sum of the reference values of the last three injections in the gas level of the linearity check.
         /// </summary>
-        public static decimal? LinearityReferenceValueTotal
+        public  decimal? LinearityReferenceValueTotal
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Linearity_Reference_Value_Total")));
+                return ((decimal?)(GetCheckParameter("Linearity_Reference_Value_Total")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Reference_Value_Total", value);
+                SetCheckParameter("Linearity_Reference_Value_Total", value);
             }
         }
         
         /// <summary>
         /// Indicates if the sequence of linearity injections is valid.
         /// </summary>
-        public static bool? LinearitySequenceValid
+        public  bool? LinearitySequenceValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Linearity_Sequence_Valid")));
+                return ((bool?)(GetCheckParameter("Linearity_Sequence_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Sequence_Valid", value);
+                SetCheckParameter("Linearity_Sequence_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the alternate performance specification was used to determine the results for the gas level of the linearity check.
         /// </summary>
-        public static int? LinearitySummaryApsIndicator
+        public  int? LinearitySummaryApsIndicator
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Linearity_Summary_APS_Indicator")));
+                return ((int?)(GetCheckParameter("Linearity_Summary_APS_Indicator")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Summary_APS_Indicator", value);
+                SetCheckParameter("Linearity_Summary_APS_Indicator", value);
             }
         }
         
         /// <summary>
         /// The calculated mean difference for the gas level of the linearity check.
         /// </summary>
-        public static decimal? LinearitySummaryMeanDifference
+        public  decimal? LinearitySummaryMeanDifference
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Linearity_Summary_Mean_Difference")));
+                return ((decimal?)(GetCheckParameter("Linearity_Summary_Mean_Difference")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Summary_Mean_Difference", value);
+                SetCheckParameter("Linearity_Summary_Mean_Difference", value);
             }
         }
         
         /// <summary>
         /// The calculated mean measured value for the gas level of the linearity check.
         /// </summary>
-        public static decimal? LinearitySummaryMeanMeasuredValue
+        public  decimal? LinearitySummaryMeanMeasuredValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Linearity_Summary_Mean_Measured_Value")));
+                return ((decimal?)(GetCheckParameter("Linearity_Summary_Mean_Measured_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Summary_Mean_Measured_Value", value);
+                SetCheckParameter("Linearity_Summary_Mean_Measured_Value", value);
             }
         }
         
         /// <summary>
         /// The calculated mean reference value for the gas level of the linearity check.
         /// </summary>
-        public static decimal? LinearitySummaryMeanReferenceValue
+        public  decimal? LinearitySummaryMeanReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Linearity_Summary_Mean_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("Linearity_Summary_Mean_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Summary_Mean_Reference_Value", value);
+                SetCheckParameter("Linearity_Summary_Mean_Reference_Value", value);
             }
         }
         
         /// <summary>
         /// The calculated percent error for the gas level of the linearity check.
         /// </summary>
-        public static decimal? LinearitySummaryPercentError
+        public  decimal? LinearitySummaryPercentError
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Linearity_Summary_Percent_Error")));
+                return ((decimal?)(GetCheckParameter("Linearity_Summary_Percent_Error")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Summary_Percent_Error", value);
+                SetCheckParameter("Linearity_Summary_Percent_Error", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported percent error in the linearity summary record contains a valid value.
         /// </summary>
-        public static bool? LinearitySummaryPercentErrorValid
+        public  bool? LinearitySummaryPercentErrorValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Linearity_Summary_Percent_Error_Valid")));
+                return ((bool?)(GetCheckParameter("Linearity_Summary_Percent_Error_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Summary_Percent_Error_Valid", value);
+                SetCheckParameter("Linearity_Summary_Percent_Error_Valid", value);
             }
         }
         
         /// <summary>
         /// The Linearity Summary records for the test.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckQa.Function.LinearitySummary> LinearitySummaryRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckQa.Function.LinearitySummary> LinearitySummaryRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Linearity_Summary_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Linearity_Summary_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5549,11 +5549,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Linearity_Summary_Records", null);
+                    SetCheckParameter("Linearity_Summary_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Linearity_Summary_Records", value.SourceView);
+                    SetCheckParameter("Linearity_Summary_Records", value.SourceView);
                 }
             }
         }
@@ -5561,131 +5561,131 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The ID of the QA Supp Data record associated with the current linearity check.
         /// </summary>
-        public static string LinearitySuppDataId
+        public  string LinearitySuppDataId
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Linearity_Supp_Data_ID")));
+                return ((string)(GetCheckParameter("Linearity_Supp_Data_ID")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Supp_Data_ID", value);
+                SetCheckParameter("Linearity_Supp_Data_ID", value);
             }
         }
         
         /// <summary>
         /// Indicates if the linearity test is aborted
         /// </summary>
-        public static bool? LinearityTestAborted
+        public  bool? LinearityTestAborted
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Linearity_Test_Aborted")));
+                return ((bool?)(GetCheckParameter("Linearity_Test_Aborted")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Test_Aborted", value);
+                SetCheckParameter("Linearity_Test_Aborted", value);
             }
         }
         
         /// <summary>
         /// Begin Date of linearity check.
         /// </summary>
-        public static bool? LinearityTestBeginDate
+        public  bool? LinearityTestBeginDate
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Linearity_Test_Begin_Date")));
+                return ((bool?)(GetCheckParameter("Linearity_Test_Begin_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Test_Begin_Date", value);
+                SetCheckParameter("Linearity_Test_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// Begin Hour of linearity check.
         /// </summary>
-        public static int? LinearityTestBeginHour
+        public  int? LinearityTestBeginHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Linearity_Test_Begin_Hour")));
+                return ((int?)(GetCheckParameter("Linearity_Test_Begin_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Test_Begin_Hour", value);
+                SetCheckParameter("Linearity_Test_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// Begin Minute of linearity check.
         /// </summary>
-        public static int? LinearityTestBeginMinute
+        public  int? LinearityTestBeginMinute
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Linearity_Test_Begin_Minute")));
+                return ((int?)(GetCheckParameter("Linearity_Test_Begin_Minute")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Test_Begin_Minute", value);
+                SetCheckParameter("Linearity_Test_Begin_Minute", value);
             }
         }
         
         /// <summary>
         /// End Date of linearity check.
         /// </summary>
-        public static DateTime? LinearityTestEndDate
+        public  DateTime? LinearityTestEndDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("Linearity_Test_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Linearity_Test_End_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Test_End_Date", value);
+                SetCheckParameter("Linearity_Test_End_Date", value);
             }
         }
         
         /// <summary>
         /// End Hour of linearity check.
         /// </summary>
-        public static int? LinearityTestEndHour
+        public  int? LinearityTestEndHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Linearity_Test_End_Hour")));
+                return ((int?)(GetCheckParameter("Linearity_Test_End_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Test_End_Hour", value);
+                SetCheckParameter("Linearity_Test_End_Hour", value);
             }
         }
         
         /// <summary>
         /// End Minute of linearity check.
         /// </summary>
-        public static int? LinearityTestEndMinute
+        public  int? LinearityTestEndMinute
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Linearity_Test_End_Minute")));
+                return ((int?)(GetCheckParameter("Linearity_Test_End_Minute")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Test_End_Minute", value);
+                SetCheckParameter("Linearity_Test_End_Minute", value);
             }
         }
         
         /// <summary>
         /// All linearity injection records in the test with their associated linearity summary data.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.CheckQa.Function.LinearityInjection> LinearityTestInjectionRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.CheckQa.Function.LinearityInjection> LinearityTestInjectionRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Linearity_Test_Injection_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Linearity_Test_Injection_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5699,11 +5699,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Linearity_Test_Injection_Records", null);
+                    SetCheckParameter("Linearity_Test_Injection_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Linearity_Test_Injection_Records", value.SourceView);
+                    SetCheckParameter("Linearity_Test_Injection_Records", value.SourceView);
                 }
             }
         }
@@ -5711,11 +5711,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// All linearity test summary records for the component.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow> LinearityTestRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow> LinearityTestRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Linearity_Test_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Linearity_Test_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5729,11 +5729,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Linearity_Test_Records", null);
+                    SetCheckParameter("Linearity_Test_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Linearity_Test_Records", value.SourceView);
+                    SetCheckParameter("Linearity_Test_Records", value.SourceView);
                 }
             }
         }
@@ -5741,56 +5741,56 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Calculated linearity test result.
         /// </summary>
-        public static string LinearityTestResult
+        public  string LinearityTestResult
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Linearity_Test_Result")));
+                return ((string)(GetCheckParameter("Linearity_Test_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Test_Result", value);
+                SetCheckParameter("Linearity_Test_Result", value);
             }
         }
         
         /// <summary>
         /// Test Type Description (either linearity of 3-pt system integrity check).
         /// </summary>
-        public static string LinearityTestType
+        public  string LinearityTestType
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Linearity_Test_Type")));
+                return ((string)(GetCheckParameter("Linearity_Test_Type")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Linearity_Test_Type", value);
+                SetCheckParameter("Linearity_Test_Type", value);
             }
         }
         
         /// <summary>
         /// The LowerOperationBoundary in the active load record.
         /// </summary>
-        public static int? LoadLowerBoundary
+        public  int? LoadLowerBoundary
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Load_Lower_Boundary")));
+                return ((int?)(GetCheckParameter("Load_Lower_Boundary")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Load_Lower_Boundary", value);
+                SetCheckParameter("Load_Lower_Boundary", value);
             }
         }
         
         /// <summary>
         /// Load records for current location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLoadRow> LoadRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorLoadRow> LoadRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Load_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Load_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5804,11 +5804,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Load_Records", null);
+                    SetCheckParameter("Load_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Load_Records", value.SourceView);
+                    SetCheckParameter("Load_Records", value.SourceView);
                 }
             }
         }
@@ -5816,26 +5816,26 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The UpperOperationBoundary in the active load record.
         /// </summary>
-        public static int? LoadUpperBoundary
+        public  int? LoadUpperBoundary
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Load_Upper_Boundary")));
+                return ((int?)(GetCheckParameter("Load_Upper_Boundary")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Load_Upper_Boundary", value);
+                SetCheckParameter("Load_Upper_Boundary", value);
             }
         }
         
         /// <summary>
         /// A collection of records for all Analyzer Range records for the location with the associated component information.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AnalyzerRangeRow> LocationAnalyzerRangeRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.AnalyzerRangeRow> LocationAnalyzerRangeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Location_Analyzer_Range_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Analyzer_Range_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5849,11 +5849,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Location_Analyzer_Range_Records", null);
+                    SetCheckParameter("Location_Analyzer_Range_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Location_Analyzer_Range_Records", value.SourceView);
+                    SetCheckParameter("Location_Analyzer_Range_Records", value.SourceView);
                 }
             }
         }
@@ -5861,11 +5861,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The monitor location attribute records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorLocationAttributeRow> LocationAttributeRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorLocationAttributeRow> LocationAttributeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Location_Attribute_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Attribute_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5879,11 +5879,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Location_Attribute_Records", null);
+                    SetCheckParameter("Location_Attribute_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Location_Attribute_Records", value.SourceView);
+                    SetCheckParameter("Location_Attribute_Records", value.SourceView);
                 }
             }
         }
@@ -5895,11 +5895,11 @@ namespace ECMPS.Checks.Qa.Parameters
         ///
         ///For a stack or pipe, this is the Unit Control records for all units linked to the stack or pipe via Unit Stack Configuration records.  The  InstallDate for the location control record should be the later of the InstallDate in the Unit Control record and the StartDate in the Unit Stack Configuration record.  The  RetireDate for the location control record should be the earlier of the RetireDate in the Unit Control record and the EndDate in the Unit Stack Configuration record.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationControlRow> LocationControlRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationControlRow> LocationControlRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Location_Control_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Control_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5913,11 +5913,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Location_Control_Records", null);
+                    SetCheckParameter("Location_Control_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Location_Control_Records", value.SourceView);
+                    SetCheckParameter("Location_Control_Records", value.SourceView);
                 }
             }
         }
@@ -5925,11 +5925,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Unit Operating Status records which are linked to the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationOperatingStatusRow> LocationOperatingStatusRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationOperatingStatusRow> LocationOperatingStatusRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Location_Operating_Status_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Operating_Status_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5943,11 +5943,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Location_Operating_Status_Records", null);
+                    SetCheckParameter("Location_Operating_Status_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Location_Operating_Status_Records", value.SourceView);
+                    SetCheckParameter("Location_Operating_Status_Records", value.SourceView);
                 }
             }
         }
@@ -5959,11 +5959,11 @@ namespace ECMPS.Checks.Qa.Parameters
         ///
         ///For a stack or pipe, this is the Unit Reporting Frequency records for all units linked to the stack or pipe via Unit Stack Configuration records.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationReportingFrequencyRow> LocationReportingFrequencyRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationReportingFrequencyRow> LocationReportingFrequencyRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Location_Reporting_Frequency_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Reporting_Frequency_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -5977,11 +5977,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Location_Reporting_Frequency_Records", null);
+                    SetCheckParameter("Location_Reporting_Frequency_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Location_Reporting_Frequency_Records", value.SourceView);
+                    SetCheckParameter("Location_Reporting_Frequency_Records", value.SourceView);
                 }
             }
         }
@@ -5989,11 +5989,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// System Component Records at location with associated component data.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> LocationSystemComponentRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> LocationSystemComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Location_System_Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_System_Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6007,11 +6007,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Location_System_Component_Records", null);
+                    SetCheckParameter("Location_System_Component_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Location_System_Component_Records", value.SourceView);
+                    SetCheckParameter("Location_System_Component_Records", value.SourceView);
                 }
             }
         }
@@ -6019,11 +6019,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// All test summary records associated with the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow> LocationTestRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow> LocationTestRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Location_Test_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Test_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6037,11 +6037,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Location_Test_Records", null);
+                    SetCheckParameter("Location_Test_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Location_Test_Records", value.SourceView);
+                    SetCheckParameter("Location_Test_Records", value.SourceView);
                 }
             }
         }
@@ -6049,11 +6049,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Unit Type records for the unit or all the units linked to a stack or pipe.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationUnitTypeRow> LocationUnitTypeRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationUnitTypeRow> LocationUnitTypeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Location_Unit_Type_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Unit_Type_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6067,11 +6067,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Location_Unit_Type_Records", null);
+                    SetCheckParameter("Location_Unit_Type_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Location_Unit_Type_Records", value.SourceView);
+                    SetCheckParameter("Location_Unit_Type_Records", value.SourceView);
                 }
             }
         }
@@ -6079,86 +6079,86 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The calculated average gross unit load for the low operating level.
         /// </summary>
-        public static decimal? LowAverageGrossUnitLoad
+        public  decimal? LowAverageGrossUnitLoad
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Low_Average_Gross_Unit_Load")));
+                return ((decimal?)(GetCheckParameter("Low_Average_Gross_Unit_Load")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Low_Average_Gross_Unit_Load", value);
+                SetCheckParameter("Low_Average_Gross_Unit_Load", value);
             }
         }
         
         /// <summary>
         /// The calculated BAF for the low operating level.
         /// </summary>
-        public static decimal? LowBaf
+        public  decimal? LowBaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Low_BAF")));
+                return ((decimal?)(GetCheckParameter("Low_BAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Low_BAF", value);
+                SetCheckParameter("Low_BAF", value);
             }
         }
         
         /// <summary>
         /// The number of used runs for the low operating level of a RATA.
         /// </summary>
-        public static decimal? LowRunCount
+        public  decimal? LowRunCount
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Low_Run_Count")));
+                return ((decimal?)(GetCheckParameter("Low_Run_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Low_Run_Count", value);
+                SetCheckParameter("Low_Run_Count", value);
             }
         }
         
         /// <summary>
         /// The sum of the gross unit loads in the used runs for the low operating level.
         /// </summary>
-        public static decimal? LowSumGrossUnitLoad
+        public  decimal? LowSumGrossUnitLoad
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Low_Sum_Gross_Unit_Load")));
+                return ((decimal?)(GetCheckParameter("Low_Sum_Gross_Unit_Load")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Low_Sum_Gross_Unit_Load", value);
+                SetCheckParameter("Low_Sum_Gross_Unit_Load", value);
             }
         }
         
         /// <summary>
         /// The sum of the reference values in the used runs for the low operating level of a RATA.
         /// </summary>
-        public static decimal? LowSumReferenceValue
+        public  decimal? LowSumReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Low_Sum_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("Low_Sum_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Low_Sum_Reference_Value", value);
+                SetCheckParameter("Low_Sum_Reference_Value", value);
             }
         }
         
         /// <summary>
         /// Records for Methods at Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorMethodRow> MethodRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorMethodRow> MethodRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Method_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Method_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6172,11 +6172,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Method_Records", null);
+                    SetCheckParameter("Method_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Method_Records", value.SourceView);
+                    SetCheckParameter("Method_Records", value.SourceView);
                 }
             }
         }
@@ -6184,116 +6184,116 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The calculated average gross unit load for the mid operating level.
         /// </summary>
-        public static decimal? MidAverageGrossUnitLoad
+        public  decimal? MidAverageGrossUnitLoad
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Mid_Average_Gross_Unit_Load")));
+                return ((decimal?)(GetCheckParameter("Mid_Average_Gross_Unit_Load")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Mid_Average_Gross_Unit_Load", value);
+                SetCheckParameter("Mid_Average_Gross_Unit_Load", value);
             }
         }
         
         /// <summary>
         /// The calculated BAF for the mid operating level.
         /// </summary>
-        public static decimal? MidBaf
+        public  decimal? MidBaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Mid_BAF")));
+                return ((decimal?)(GetCheckParameter("Mid_BAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Mid_BAF", value);
+                SetCheckParameter("Mid_BAF", value);
             }
         }
         
         /// <summary>
         /// The number of used runs for the mid operating level of a RATA.
         /// </summary>
-        public static decimal? MidRunCount
+        public  decimal? MidRunCount
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Mid_Run_Count")));
+                return ((decimal?)(GetCheckParameter("Mid_Run_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Mid_Run_Count", value);
+                SetCheckParameter("Mid_Run_Count", value);
             }
         }
         
         /// <summary>
         /// The sum of the gross unit loads in the used runs for the mid operating level.
         /// </summary>
-        public static decimal? MidSumGrossUnitLoad
+        public  decimal? MidSumGrossUnitLoad
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Mid_Sum_Gross_Unit_Load")));
+                return ((decimal?)(GetCheckParameter("Mid_Sum_Gross_Unit_Load")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Mid_Sum_Gross_Unit_Load", value);
+                SetCheckParameter("Mid_Sum_Gross_Unit_Load", value);
             }
         }
         
         /// <summary>
         /// The sum of the reference values in the used runs for the mid operating level of a RATA.
         /// </summary>
-        public static decimal? MidSumReferenceValue
+        public  decimal? MidSumReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Mid_Sum_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("Mid_Sum_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Mid_Sum_Reference_Value", value);
+                SetCheckParameter("Mid_Sum_Reference_Value", value);
             }
         }
         
         /// <summary>
         /// The fieldname of the component or monitoring system ID reported in the test.
         /// </summary>
-        public static string MiscellaneousTestIdFieldname
+        public  string MiscellaneousTestIdFieldname
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Miscellaneous_Test_ID_Fieldname")));
+                return ((string)(GetCheckParameter("Miscellaneous_Test_ID_Fieldname")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Miscellaneous_Test_ID_Fieldname", value);
+                SetCheckParameter("Miscellaneous_Test_ID_Fieldname", value);
             }
         }
         
         /// <summary>
         /// Indicates if the miscellaneous test should be evaluated.
         /// </summary>
-        public static bool? MiscellaneousTestTypeValid
+        public  bool? MiscellaneousTestTypeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Miscellaneous_Test_Type_Valid")));
+                return ((bool?)(GetCheckParameter("Miscellaneous_Test_Type_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Miscellaneous_Test_Type_Valid", value);
+                SetCheckParameter("Miscellaneous_Test_Type_Valid", value);
             }
         }
         
         /// <summary>
         /// MonitoringPlanLocation records associated with QA entity being evaluated.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorPlanLocationRow> MonitoringPlanLocationRecordsForQa
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorPlanLocationRow> MonitoringPlanLocationRecordsForQa
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Monitoring_Plan_Location_Records_for_QA")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitoring_Plan_Location_Records_for_QA")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6307,11 +6307,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Monitoring_Plan_Location_Records_for_QA", null);
+                    SetCheckParameter("Monitoring_Plan_Location_Records_for_QA", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Monitoring_Plan_Location_Records_for_QA", value.SourceView);
+                    SetCheckParameter("Monitoring_Plan_Location_Records_for_QA", value.SourceView);
                 }
             }
         }
@@ -6319,11 +6319,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// System Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow> MonitorSystemRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow> MonitorSystemRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Monitor_System_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_System_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6337,11 +6337,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Monitor_System_Records", null);
+                    SetCheckParameter("Monitor_System_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Monitor_System_Records", value.SourceView);
+                    SetCheckParameter("Monitor_System_Records", value.SourceView);
                 }
             }
         }
@@ -6349,86 +6349,86 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The normal operating levels at which a flow RATA was performed.
         /// </summary>
-        public static string NormalRataOperatingLevels
+        public  string NormalRataOperatingLevels
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Normal_RATA_Operating_Levels")));
+                return ((string)(GetCheckParameter("Normal_RATA_Operating_Levels")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Normal_RATA_Operating_Levels", value);
+                SetCheckParameter("Normal_RATA_Operating_Levels", value);
             }
         }
         
         /// <summary>
         /// The recalculated APS indicator for the offline upscale injection.
         /// </summary>
-        public static int? OfflineUpscaleCalcAps
+        public  int? OfflineUpscaleCalcAps
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Offline_Upscale_Calc_APS")));
+                return ((int?)(GetCheckParameter("Offline_Upscale_Calc_APS")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Offline_Upscale_Calc_APS", value);
+                SetCheckParameter("Offline_Upscale_Calc_APS", value);
             }
         }
         
         /// <summary>
         /// The recalculated result (CE or diff) for the offline upscale injection.
         /// </summary>
-        public static decimal? OfflineUpscaleCalcResult
+        public  decimal? OfflineUpscaleCalcResult
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Offline_Upscale_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("Offline_Upscale_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Offline_Upscale_Calc_Result", value);
+                SetCheckParameter("Offline_Upscale_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// The recalculated APS indicator for the offline zero injection.
         /// </summary>
-        public static int? OfflineZeroCalcAps
+        public  int? OfflineZeroCalcAps
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Offline_Zero_Calc_APS")));
+                return ((int?)(GetCheckParameter("Offline_Zero_Calc_APS")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Offline_Zero_Calc_APS", value);
+                SetCheckParameter("Offline_Zero_Calc_APS", value);
             }
         }
         
         /// <summary>
         /// The recalculated result (CE or diff) for the offline zero injection.
         /// </summary>
-        public static decimal? OfflineZeroCalcResult
+        public  decimal? OfflineZeroCalcResult
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Offline_Zero_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("Offline_Zero_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Offline_Zero_Calc_Result", value);
+                SetCheckParameter("Offline_Zero_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// Identifies valid relationships between UOM codes for Oil Volume, Density, and GCV for Appendix E test.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.OilVolumeUomToDensityUomToGcvUomRow> OilVolumeUomToDensityUomToGcvUom
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.OilVolumeUomToDensityUomToGcvUomRow> OilVolumeUomToDensityUomToGcvUom
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Oil_Volume_UOM_to_Density_UOM_to_GCV_UOM")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Oil_Volume_UOM_to_Density_UOM_to_GCV_UOM")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6442,11 +6442,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Oil_Volume_UOM_to_Density_UOM_to_GCV_UOM", null);
+                    SetCheckParameter("Oil_Volume_UOM_to_Density_UOM_to_GCV_UOM", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Oil_Volume_UOM_to_Density_UOM_to_GCV_UOM", value.SourceView);
+                    SetCheckParameter("Oil_Volume_UOM_to_Density_UOM_to_GCV_UOM", value.SourceView);
                 }
             }
         }
@@ -6454,236 +6454,236 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The recalculated APS indicator for the online upscale injection.
         /// </summary>
-        public static int? OnlineUpscaleCalcAps
+        public  int? OnlineUpscaleCalcAps
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Online_Upscale_Calc_APS")));
+                return ((int?)(GetCheckParameter("Online_Upscale_Calc_APS")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Online_Upscale_Calc_APS", value);
+                SetCheckParameter("Online_Upscale_Calc_APS", value);
             }
         }
         
         /// <summary>
         /// The recalculated result (CE or diff) for the online upscale injection.
         /// </summary>
-        public static decimal? OnlineUpscaleCalcResult
+        public  decimal? OnlineUpscaleCalcResult
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Online_Upscale_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("Online_Upscale_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Online_Upscale_Calc_Result", value);
+                SetCheckParameter("Online_Upscale_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// The recalculated APS indicator for the online zero injection.
         /// </summary>
-        public static int? OnlineZeroCalcAps
+        public  int? OnlineZeroCalcAps
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Online_Zero_Calc_APS")));
+                return ((int?)(GetCheckParameter("Online_Zero_Calc_APS")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Online_Zero_Calc_APS", value);
+                SetCheckParameter("Online_Zero_Calc_APS", value);
             }
         }
         
         /// <summary>
         /// The recalculated result (CE or diff) for the online zero injection.
         /// </summary>
-        public static decimal? OnlineZeroCalcResult
+        public  decimal? OnlineZeroCalcResult
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Online_Zero_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("Online_Zero_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Online_Zero_Calc_Result", value);
+                SetCheckParameter("Online_Zero_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported injection date/hour of all injections in a online offline calibration test are valid.
         /// </summary>
-        public static bool? OocInjectionTimesValid
+        public  bool? OocInjectionTimesValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("OOC_Injection_Times_Valid")));
+                return ((bool?)(GetCheckParameter("OOC_Injection_Times_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("OOC_Injection_Times_Valid", value);
+                SetCheckParameter("OOC_Injection_Times_Valid", value);
             }
         }
         
         /// <summary>
         /// The recalculated APS indicator for the offline upscale injection.
         /// </summary>
-        public static int? OocOfflineUpscaleInjectionCalcApsIndicator
+        public  int? OocOfflineUpscaleInjectionCalcApsIndicator
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("OOC_Offline_Upscale_Injection_Calc_APS_Indicator")));
+                return ((int?)(GetCheckParameter("OOC_Offline_Upscale_Injection_Calc_APS_Indicator")));
             }
             set
             {
-                QaParameters.SetCheckParameter("OOC_Offline_Upscale_Injection_Calc_APS_Indicator", value);
+                SetCheckParameter("OOC_Offline_Upscale_Injection_Calc_APS_Indicator", value);
             }
         }
         
         /// <summary>
         /// The recalculated calibration error or difference for the offline upscale injection.
         /// </summary>
-        public static decimal? OocOfflineUpscaleInjectionCalcResult
+        public  decimal? OocOfflineUpscaleInjectionCalcResult
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("OOC_Offline_Upscale_Injection_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("OOC_Offline_Upscale_Injection_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("OOC_Offline_Upscale_Injection_Calc_Result", value);
+                SetCheckParameter("OOC_Offline_Upscale_Injection_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// The recalculated APS indicator for the offline zero-level injection.
         /// </summary>
-        public static int? OocOfflineZeroInjectionCalcApsIndicator
+        public  int? OocOfflineZeroInjectionCalcApsIndicator
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("OOC_Offline_Zero_Injection_Calc_APS_Indicator")));
+                return ((int?)(GetCheckParameter("OOC_Offline_Zero_Injection_Calc_APS_Indicator")));
             }
             set
             {
-                QaParameters.SetCheckParameter("OOC_Offline_Zero_Injection_Calc_APS_Indicator", value);
+                SetCheckParameter("OOC_Offline_Zero_Injection_Calc_APS_Indicator", value);
             }
         }
         
         /// <summary>
         /// The recalculated calibration error or difference for the offline zero-level injection.
         /// </summary>
-        public static decimal? OocOfflineZeroInjectionCalcResult
+        public  decimal? OocOfflineZeroInjectionCalcResult
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("OOC_Offline_Zero_Injection_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("OOC_Offline_Zero_Injection_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("OOC_Offline_Zero_Injection_Calc_Result", value);
+                SetCheckParameter("OOC_Offline_Zero_Injection_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// The recalculated APS indicator for the online upscale injection.
         /// </summary>
-        public static int? OocOnlineUpscaleInjectionCalcApsIndicator
+        public  int? OocOnlineUpscaleInjectionCalcApsIndicator
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("OOC_Online_Upscale_Injection_Calc_APS_Indicator")));
+                return ((int?)(GetCheckParameter("OOC_Online_Upscale_Injection_Calc_APS_Indicator")));
             }
             set
             {
-                QaParameters.SetCheckParameter("OOC_Online_Upscale_Injection_Calc_APS_Indicator", value);
+                SetCheckParameter("OOC_Online_Upscale_Injection_Calc_APS_Indicator", value);
             }
         }
         
         /// <summary>
         /// The recalculated calibration error or difference for the online upscale injection.
         /// </summary>
-        public static decimal? OocOnlineUpscaleInjectionCalcResult
+        public  decimal? OocOnlineUpscaleInjectionCalcResult
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("OOC_Online_Upscale_Injection_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("OOC_Online_Upscale_Injection_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("OOC_Online_Upscale_Injection_Calc_Result", value);
+                SetCheckParameter("OOC_Online_Upscale_Injection_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// The recalculated APS indicator for the online zero-level injection.
         /// </summary>
-        public static int? OocOnlineZeroInjectionCalcApsIndicator
+        public  int? OocOnlineZeroInjectionCalcApsIndicator
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("OOC_Online_Zero_Injection_Calc_APS_Indicator")));
+                return ((int?)(GetCheckParameter("OOC_Online_Zero_Injection_Calc_APS_Indicator")));
             }
             set
             {
-                QaParameters.SetCheckParameter("OOC_Online_Zero_Injection_Calc_APS_Indicator", value);
+                SetCheckParameter("OOC_Online_Zero_Injection_Calc_APS_Indicator", value);
             }
         }
         
         /// <summary>
         /// The recalculated calibration error or difference for the online zero-level injection.
         /// </summary>
-        public static decimal? OocOnlineZeroInjectionCalcResult
+        public  decimal? OocOnlineZeroInjectionCalcResult
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("OOC_Online_Zero_Injection_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("OOC_Online_Zero_Injection_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("OOC_Online_Zero_Injection_Calc_Result", value);
+                SetCheckParameter("OOC_Online_Zero_Injection_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// The recalculated result of a online offline calibration test.
         /// </summary>
-        public static string OocTestCalcResult
+        public  string OocTestCalcResult
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("OOC_Test_Calc_Result")));
+                return ((string)(GetCheckParameter("OOC_Test_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("OOC_Test_Calc_Result", value);
+                SetCheckParameter("OOC_Test_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// Indicates if the component tested in the online offline calibration test has a valid component type.
         /// </summary>
-        public static bool? OocTestComponentTypeValid
+        public  bool? OocTestComponentTypeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("OOC_Test_Component_Type_Valid")));
+                return ((bool?)(GetCheckParameter("OOC_Test_Component_Type_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("OOC_Test_Component_Type_Valid", value);
+                SetCheckParameter("OOC_Test_Component_Type_Valid", value);
             }
         }
         
         /// <summary>
         /// All online offline calibration tests for the component.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryOnoffRow> OocTestRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryOnoffRow> OocTestRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("OOC_Test_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("OOC_Test_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6697,11 +6697,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("OOC_Test_Records", null);
+                    SetCheckParameter("OOC_Test_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("OOC_Test_Records", value.SourceView);
+                    SetCheckParameter("OOC_Test_Records", value.SourceView);
                 }
             }
         }
@@ -6709,41 +6709,41 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The percent of span value of the reference value of a upscale injection of a online offline calibration test.
         /// </summary>
-        public static decimal? OocUpscaleReferenceValuePercentOfSpan
+        public  decimal? OocUpscaleReferenceValuePercentOfSpan
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("OOC_Upscale_Reference_Value_Percent_Of_Span")));
+                return ((decimal?)(GetCheckParameter("OOC_Upscale_Reference_Value_Percent_Of_Span")));
             }
             set
             {
-                QaParameters.SetCheckParameter("OOC_Upscale_Reference_Value_Percent_Of_Span", value);
+                SetCheckParameter("OOC_Upscale_Reference_Value_Percent_Of_Span", value);
             }
         }
         
         /// <summary>
         /// The percent of span value of the reference value of a zero level injection of a online offline calibration test.
         /// </summary>
-        public static decimal? OocZeroReferenceValuePercentOfSpan
+        public  decimal? OocZeroReferenceValuePercentOfSpan
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("OOC_Zero_Reference_Value_Percent_Of_Span")));
+                return ((decimal?)(GetCheckParameter("OOC_Zero_Reference_Value_Percent_Of_Span")));
             }
             set
             {
-                QaParameters.SetCheckParameter("OOC_Zero_Reference_Value_Percent_Of_Span", value);
+                SetCheckParameter("OOC_Zero_Reference_Value_Percent_Of_Span", value);
             }
         }
         
         /// <summary>
         /// Operating Level Code Lookup Table where op level code is equal to H, L, M, or N.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.OperatingLevelCodeRow> OperatingLevelCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.OperatingLevelCodeRow> OperatingLevelCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Operating_Level_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Operating_Level_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6757,11 +6757,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Operating_Level_Code_Lookup_Table", null);
+                    SetCheckParameter("Operating_Level_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Operating_Level_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Operating_Level_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -6769,41 +6769,41 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The overall BAF for a RATA.
         /// </summary>
-        public static decimal? OverallBaf
+        public  decimal? OverallBaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Overall_BAF")));
+                return ((decimal?)(GetCheckParameter("Overall_BAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Overall_BAF", value);
+                SetCheckParameter("Overall_BAF", value);
             }
         }
         
         /// <summary>
         /// The calculated relative accuracy for the RATA.
         /// </summary>
-        public static decimal? OverallRelativeAccuracy
+        public  decimal? OverallRelativeAccuracy
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Overall_Relative_Accuracy")));
+                return ((decimal?)(GetCheckParameter("Overall_Relative_Accuracy")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Overall_Relative_Accuracy", value);
+                SetCheckParameter("Overall_Relative_Accuracy", value);
             }
         }
         
         /// <summary>
         /// Lists all combinations of valid Parameter Codes and  Units of Measure codes with min and max values.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ParameterUomRow> ParameterUnitsOfMeasureLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ParameterUomRow> ParameterUnitsOfMeasureLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6817,11 +6817,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table", null);
+                    SetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Parameter_Units_Of_Measure_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -6829,11 +6829,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// A lookup table of Pressure Measure Codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.PressureMeasureCodeRow> PressureMeasureCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.PressureMeasureCodeRow> PressureMeasureCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Pressure_Measure_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Pressure_Measure_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -6847,11 +6847,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Pressure_Measure_Code_Lookup_Table", null);
+                    SetCheckParameter("Pressure_Measure_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Pressure_Measure_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Pressure_Measure_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -6859,161 +6859,161 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if the average NOx emission rate was calculated for the previous operating level of a unit default test.  
         /// </summary>
-        public static bool? PreviousUnitDefaultLevelCalculated
+        public  bool? PreviousUnitDefaultLevelCalculated
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Previous_Unit_Default_Level_Calculated")));
+                return ((bool?)(GetCheckParameter("Previous_Unit_Default_Level_Calculated")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Previous_Unit_Default_Level_Calculated", value);
+                SetCheckParameter("Previous_Unit_Default_Level_Calculated", value);
             }
         }
         
         /// <summary>
         /// Indicates whether approval was requested for a protocol gas record with a non-standard set of components.
         /// </summary>
-        public static bool? ProtocolGasApprovalRequested
+        public  bool? ProtocolGasApprovalRequested
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Protocol_Gas_Approval_Requested")));
+                return ((bool?)(GetCheckParameter("Protocol_Gas_Approval_Requested")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Protocol_Gas_Approval_Requested", value);
+                SetCheckParameter("Protocol_Gas_Approval_Requested", value);
             }
         }
         
         /// <summary>
         /// Contains the list of gas component codes in a Protocol Gas row that are balance components.
         /// </summary>
-        public static string ProtocolGasBalanceComponentList
+        public  string ProtocolGasBalanceComponentList
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Protocol_Gas_Balance_Component_List")));
+                return ((string)(GetCheckParameter("Protocol_Gas_Balance_Component_List")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Protocol_Gas_Balance_Component_List", value);
+                SetCheckParameter("Protocol_Gas_Balance_Component_List", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the Gas Component Code list stored in the Gas Type Code is valid.
         /// </summary>
-        public static bool? ProtocolGasComponentListValid
+        public  bool? ProtocolGasComponentListValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Protocol_Gas_Component_List_Valid")));
+                return ((bool?)(GetCheckParameter("Protocol_Gas_Component_List_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Protocol_Gas_Component_List_Valid", value);
+                SetCheckParameter("Protocol_Gas_Component_List_Valid", value);
             }
         }
         
         /// <summary>
         /// Contains the Cylinder ID in a protocol gas row
         /// </summary>
-        public static string ProtocolGasCylinderIdList
+        public  string ProtocolGasCylinderIdList
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Protocol_Gas_Cylinder_ID_List")));
+                return ((string)(GetCheckParameter("Protocol_Gas_Cylinder_ID_List")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Protocol_Gas_Cylinder_ID_List", value);
+                SetCheckParameter("Protocol_Gas_Cylinder_ID_List", value);
             }
         }
         
         /// <summary>
         /// Contains the list of gas component codes in a Protocol Gas row that are duplicates.
         /// </summary>
-        public static string ProtocolGasDuplicateComponentList
+        public  string ProtocolGasDuplicateComponentList
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Protocol_Gas_Duplicate_Component_List")));
+                return ((string)(GetCheckParameter("Protocol_Gas_Duplicate_Component_List")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Protocol_Gas_Duplicate_Component_List", value);
+                SetCheckParameter("Protocol_Gas_Duplicate_Component_List", value);
             }
         }
         
         /// <summary>
         /// A list of gases (type + level) used in the test.
         /// </summary>
-        public static string ProtocolGases
+        public  string ProtocolGases
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Protocol_Gases")));
+                return ((string)(GetCheckParameter("Protocol_Gases")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Protocol_Gases", value);
+                SetCheckParameter("Protocol_Gases", value);
             }
         }
         
         /// <summary>
         /// Contains the list of gas component codes in a Protocol Gas row that a source should only use exclusive of other gas component codes.
         /// </summary>
-        public static string ProtocolGasExclusiveComponentList
+        public  string ProtocolGasExclusiveComponentList
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Protocol_Gas_Exclusive_Component_List")));
+                return ((string)(GetCheckParameter("Protocol_Gas_Exclusive_Component_List")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Protocol_Gas_Exclusive_Component_List", value);
+                SetCheckParameter("Protocol_Gas_Exclusive_Component_List", value);
             }
         }
         
         /// <summary>
         /// Contains the list of invalid Gas Component Codes.
         /// </summary>
-        public static string ProtocolGasInvalidComponentList
+        public  string ProtocolGasInvalidComponentList
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Protocol_Gas_Invalid_Component_List")));
+                return ((string)(GetCheckParameter("Protocol_Gas_Invalid_Component_List")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Protocol_Gas_Invalid_Component_List", value);
+                SetCheckParameter("Protocol_Gas_Invalid_Component_List", value);
             }
         }
         
         /// <summary>
         /// The ComponentTypeCode or RATA Reference Method of the test associated with the Protocol Gas record.
         /// </summary>
-        public static string ProtocolGasParameter
+        public  string ProtocolGasParameter
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Protocol_Gas_Parameter")));
+                return ((string)(GetCheckParameter("Protocol_Gas_Parameter")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Protocol_Gas_Parameter", value);
+                SetCheckParameter("Protocol_Gas_Parameter", value);
             }
         }
         
         /// <summary>
         /// A lookup table of Protocol Gas Vendors.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ProtocolGasVendorRow> ProtocolGasVendorLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.ProtocolGasVendorRow> ProtocolGasVendorLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Protocol_Gas_Vendor_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Protocol_Gas_Vendor_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7027,11 +7027,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Protocol_Gas_Vendor_Lookup_Table", null);
+                    SetCheckParameter("Protocol_Gas_Vendor_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Protocol_Gas_Vendor_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Protocol_Gas_Vendor_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -7039,101 +7039,101 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if type of system or component is appropriate for the event code.
         /// </summary>
-        public static bool? QaCertEventAndTypeConsistent
+        public  bool? QaCertEventAndTypeConsistent
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("QA_Cert_Event_and_Type_Consistent")));
+                return ((bool?)(GetCheckParameter("QA_Cert_Event_and_Type_Consistent")));
             }
             set
             {
-                QaParameters.SetCheckParameter("QA_Cert_Event_and_Type_Consistent", value);
+                SetCheckParameter("QA_Cert_Event_and_Type_Consistent", value);
             }
         }
         
         /// <summary>
         /// The ComponentTypeCode of the component in the QA Cert Event record.
         /// </summary>
-        public static string QaCertEventComponentType
+        public  string QaCertEventComponentType
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("QA_Cert_Event_Component_Type")));
+                return ((string)(GetCheckParameter("QA_Cert_Event_Component_Type")));
             }
             set
             {
-                QaParameters.SetCheckParameter("QA_Cert_Event_Component_Type", value);
+                SetCheckParameter("QA_Cert_Event_Component_Type", value);
             }
         }
         
         /// <summary>
         /// A list of TestTypeCodes required for a QA Cert Event but not included in the RequiredTestCode.
         /// </summary>
-        public static string QaCertEventMissingTestTypes
+        public  string QaCertEventMissingTestTypes
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("QA_Cert_Event_Missing_Test_Types")));
+                return ((string)(GetCheckParameter("QA_Cert_Event_Missing_Test_Types")));
             }
             set
             {
-                QaParameters.SetCheckParameter("QA_Cert_Event_Missing_Test_Types", value);
+                SetCheckParameter("QA_Cert_Event_Missing_Test_Types", value);
             }
         }
         
         /// <summary>
         /// Code which indicates if the MonitoringSystemID or ComponentID or both are must be reported in the event record based on RequiredTestCode.
         /// </summary>
-        public static string QaCertEventRequiredIdCode
+        public  string QaCertEventRequiredIdCode
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("QA_Cert_Event_Required_ID_Code")));
+                return ((string)(GetCheckParameter("QA_Cert_Event_Required_ID_Code")));
             }
             set
             {
-                QaParameters.SetCheckParameter("QA_Cert_Event_Required_ID_Code", value);
+                SetCheckParameter("QA_Cert_Event_Required_ID_Code", value);
             }
         }
         
         /// <summary>
         /// The SystemTypeCode of the monitoring system in the QA Cert Event record.
         /// </summary>
-        public static string QaCertEventSystemType
+        public  string QaCertEventSystemType
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("QA_Cert_Event_System_Type")));
+                return ((string)(GetCheckParameter("QA_Cert_Event_System_Type")));
             }
             set
             {
-                QaParameters.SetCheckParameter("QA_Cert_Event_System_Type", value);
+                SetCheckParameter("QA_Cert_Event_System_Type", value);
             }
         }
         
         /// <summary>
         /// Code which type of system or component is appropriate for the event record based on RequiredTestCode.
         /// </summary>
-        public static string QaCertEventValidSystemOrComponent
+        public  string QaCertEventValidSystemOrComponent
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("QA_Cert_Event_Valid_System_Or_Component")));
+                return ((string)(GetCheckParameter("QA_Cert_Event_Valid_System_Or_Component")));
             }
             set
             {
-                QaParameters.SetCheckParameter("QA_Cert_Event_Valid_System_Or_Component", value);
+                SetCheckParameter("QA_Cert_Event_Valid_System_Or_Component", value);
             }
         }
         
         /// <summary>
         /// The QA Certification Event records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow> QaCertificationEventRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaCertEventRow> QaCertificationEventRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Qa_Certification_Event_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Qa_Certification_Event_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7147,11 +7147,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Qa_Certification_Event_Records", null);
+                    SetCheckParameter("Qa_Certification_Event_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Qa_Certification_Event_Records", value.SourceView);
+                    SetCheckParameter("Qa_Certification_Event_Records", value.SourceView);
                 }
             }
         }
@@ -7159,11 +7159,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The QA Supplemental Attribute records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppAttributeRow> QaSupplementalAttributeRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppAttributeRow> QaSupplementalAttributeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("QA_Supplemental_Attribute_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("QA_Supplemental_Attribute_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7177,11 +7177,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("QA_Supplemental_Attribute_Records", null);
+                    SetCheckParameter("QA_Supplemental_Attribute_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("QA_Supplemental_Attribute_Records", value.SourceView);
+                    SetCheckParameter("QA_Supplemental_Attribute_Records", value.SourceView);
                 }
             }
         }
@@ -7189,11 +7189,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The QA Supplemental Data records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataRow> QaSupplementalDataRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaSuppDataRow> QaSupplementalDataRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("QA_Supplemental_Data_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("QA_Supplemental_Data_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7207,11 +7207,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("QA_Supplemental_Data_Records", null);
+                    SetCheckParameter("QA_Supplemental_Data_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("QA_Supplemental_Data_Records", value.SourceView);
+                    SetCheckParameter("QA_Supplemental_Data_Records", value.SourceView);
                 }
             }
         }
@@ -7219,716 +7219,716 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// RATA is aborted
         /// </summary>
-        public static bool? RataAborted
+        public  bool? RataAborted
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Aborted")));
+                return ((bool?)(GetCheckParameter("RATA_Aborted")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Aborted", value);
+                SetCheckParameter("RATA_Aborted", value);
             }
         }
         
         /// <summary>
         /// Indicates if the replacement velocity of the traverse point was added to the sum of the adjusted velocities for the run of a flow RATA.
         /// </summary>
-        public static bool? RataAdjustedVelocityDetermined
+        public  bool? RataAdjustedVelocityDetermined
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Adjusted_Velocity_Determined")));
+                return ((bool?)(GetCheckParameter("RATA_Adjusted_Velocity_Determined")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Adjusted_Velocity_Determined", value);
+                SetCheckParameter("RATA_Adjusted_Velocity_Determined", value);
             }
         }
         
         /// <summary>
         /// Indicates if the adjusted calculated WAF for the run of a flow RATA has been determined.
         /// </summary>
-        public static bool? RataAdjustedWafDetermined
+        public  bool? RataAdjustedWafDetermined
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Adjusted_WAF_Determined")));
+                return ((bool?)(GetCheckParameter("RATA_Adjusted_WAF_Determined")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Adjusted_WAF_Determined", value);
+                SetCheckParameter("RATA_Adjusted_WAF_Determined", value);
             }
         }
         
         /// <summary>
         /// The WAF applied to the runs for the operating level of a Method 2H flow RATA.
         /// </summary>
-        public static decimal? RataApplicableWaf
+        public  decimal? RataApplicableWaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Applicable_WAF")));
+                return ((decimal?)(GetCheckParameter("RATA_Applicable_WAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Applicable_WAF", value);
+                SetCheckParameter("RATA_Applicable_WAF", value);
             }
         }
         
         /// <summary>
         /// Earlies run Begin Date of RATA
         /// </summary>
-        public static DateTime? RataBeginDate
+        public  DateTime? RataBeginDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("RATA_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("RATA_Begin_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Begin_Date", value);
+                SetCheckParameter("RATA_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// Earliest run Begin Hour of RATA
         /// </summary>
-        public static int? RataBeginHour
+        public  int? RataBeginHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_Begin_Hour")));
+                return ((int?)(GetCheckParameter("RATA_Begin_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Begin_Hour", value);
+                SetCheckParameter("RATA_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// Earlies Run Begin Minute of RATA.
         /// </summary>
-        public static int? RataBeginMinute
+        public  int? RataBeginMinute
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_Begin_Minute")));
+                return ((int?)(GetCheckParameter("RATA_Begin_Minute")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Begin_Minute", value);
+                SetCheckParameter("RATA_Begin_Minute", value);
             }
         }
         
         /// <summary>
         /// The recalculated average run velocity adjusted for wall effects for a method 2FH, 2GH, or M2H flow RATA.
         /// </summary>
-        public static decimal? RataCalcAdjustedRunVelocity
+        public  decimal? RataCalcAdjustedRunVelocity
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Adjusted_Run_Velocity")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Adjusted_Run_Velocity")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Adjusted_Run_Velocity", value);
+                SetCheckParameter("RATA_Calc_Adjusted_Run_Velocity", value);
             }
         }
         
         /// <summary>
         /// The recalculated APS indicator of the operating level of a RATA.
         /// </summary>
-        public static int? RataCalcAps
+        public  int? RataCalcAps
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_Calc_APS")));
+                return ((int?)(GetCheckParameter("RATA_Calc_APS")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_APS", value);
+                SetCheckParameter("RATA_Calc_APS", value);
             }
         }
         
         /// <summary>
         /// The recalculated stack area for a method 2F, 2G, or M2H flow RATA.
         /// </summary>
-        public static decimal? RataCalcArea
+        public  decimal? RataCalcArea
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Area")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Area")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Area", value);
+                SetCheckParameter("RATA_Calc_Area", value);
             }
         }
         
         /// <summary>
         /// The recalculated average velocity adjusted for wall effects for the run of a flow RATA.
         /// </summary>
-        public static decimal? RataCalcAverageAdjustedVelocity
+        public  decimal? RataCalcAverageAdjustedVelocity
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Average_Adjusted_Velocity")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Average_Adjusted_Velocity")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Average_Adjusted_Velocity", value);
+                SetCheckParameter("RATA_Calc_Average_Adjusted_Velocity", value);
             }
         }
         
         /// <summary>
         /// The recalculated average gross unit load of the operating level of a RATA.
         /// </summary>
-        public static decimal? RataCalcAverageGul
+        public  decimal? RataCalcAverageGul
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Average_GUL")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Average_GUL")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Average_GUL", value);
+                SetCheckParameter("RATA_Calc_Average_GUL", value);
             }
         }
         
         /// <summary>
         /// The recalculated stack flow for the run of a flow RATA.
         /// </summary>
-        public static decimal? RataCalcAverageStackFlow
+        public  decimal? RataCalcAverageStackFlow
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Average_Stack_Flow")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Average_Stack_Flow")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Average_Stack_Flow", value);
+                SetCheckParameter("RATA_Calc_Average_Stack_Flow", value);
             }
         }
         
         /// <summary>
         /// The recalculated stack flow for the run of a Method 2H flow RATA.
         /// </summary>
-        public static decimal? RataCalcAverageStackFlow2H
+        public  decimal? RataCalcAverageStackFlow2H
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Rata_Calc_Average_Stack_Flow_2H")));
+                return ((decimal?)(GetCheckParameter("Rata_Calc_Average_Stack_Flow_2H")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Rata_Calc_Average_Stack_Flow_2H", value);
+                SetCheckParameter("Rata_Calc_Average_Stack_Flow_2H", value);
             }
         }
         
         /// <summary>
         /// The recalculated average velocity (without wall effects) of a flow RATA run.
         /// </summary>
-        public static decimal? RataCalcAverageVelocity
+        public  decimal? RataCalcAverageVelocity
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Average_Velocity")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Average_Velocity")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Average_Velocity", value);
+                SetCheckParameter("RATA_Calc_Average_Velocity", value);
             }
         }
         
         /// <summary>
         /// The recalculated bias adjustment factor of the operating level of a RATA.
         /// </summary>
-        public static decimal? RataCalcBaf
+        public  decimal? RataCalcBaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_BAF")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_BAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_BAF", value);
+                SetCheckParameter("RATA_Calc_BAF", value);
             }
         }
         
         /// <summary>
         /// The recalculated CalculatedWAF for the run of a flow RATA.
         /// </summary>
-        public static decimal? RataCalcCalculatedWaf
+        public  decimal? RataCalcCalculatedWaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Calculated_WAF")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Calculated_WAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Calculated_WAF", value);
+                SetCheckParameter("RATA_Calc_Calculated_WAF", value);
             }
         }
         
         /// <summary>
         /// The recalculated confidence coefficient of the operating level of a RATA.
         /// </summary>
-        public static decimal? RataCalcCc
+        public  decimal? RataCalcCc
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_CC")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_CC")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_CC", value);
+                SetCheckParameter("RATA_Calc_CC", value);
             }
         }
         
         /// <summary>
         /// The recalculated dry molecular weight for the Flow RATA run.
         /// </summary>
-        public static decimal? RataCalcDryMolecularWeight
+        public  decimal? RataCalcDryMolecularWeight
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Dry_Molecular_Weight")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Dry_Molecular_Weight")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Dry_Molecular_Weight", value);
+                SetCheckParameter("RATA_Calc_Dry_Molecular_Weight", value);
             }
         }
         
         /// <summary>
         /// The recalculated dry molecular weight for a method 2F, 2G, or M2H flow RATA.
         /// </summary>
-        public static decimal? RataCalcDryMw
+        public  decimal? RataCalcDryMw
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Dry_MW")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Dry_MW")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Dry_MW", value);
+                SetCheckParameter("RATA_Calc_Dry_MW", value);
             }
         }
         
         /// <summary>
         /// The recalculated CalculatedWAF for the operating level of a flow RATA.
         /// </summary>
-        public static decimal? RataCalcLevelWaf
+        public  decimal? RataCalcLevelWaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Level_WAF")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Level_WAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Level_WAF", value);
+                SetCheckParameter("RATA_Calc_Level_WAF", value);
             }
         }
         
         /// <summary>
         /// The recalculated mean CEM value of the operating level of a RATA.
         /// </summary>
-        public static decimal? RataCalcMeanCem
+        public  decimal? RataCalcMeanCem
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Mean_CEM")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Mean_CEM")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Mean_CEM", value);
+                SetCheckParameter("RATA_Calc_Mean_CEM", value);
             }
         }
         
         /// <summary>
         /// The recalculated mean difference of the operating level of a RATA.
         /// </summary>
-        public static decimal? RataCalcMeanDiff
+        public  decimal? RataCalcMeanDiff
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Mean_Diff")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Mean_Diff")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Mean_Diff", value);
+                SetCheckParameter("RATA_Calc_Mean_Diff", value);
             }
         }
         
         /// <summary>
         /// The recalculated mean reference value of the operating level of a RATA.
         /// </summary>
-        public static decimal? RataCalcMeanRv
+        public  decimal? RataCalcMeanRv
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Mean_RV")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Mean_RV")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Mean_RV", value);
+                SetCheckParameter("RATA_Calc_Mean_RV", value);
             }
         }
         
         /// <summary>
         /// The recalculated overall bias adjustment factor of the RATA.
         /// </summary>
-        public static decimal? RataCalcOverallBaf
+        public  decimal? RataCalcOverallBaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Overall_BAF")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Overall_BAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Overall_BAF", value);
+                SetCheckParameter("RATA_Calc_Overall_BAF", value);
             }
         }
         
         /// <summary>
         /// The recalculated overall relative accuracy of the RATA.
         /// </summary>
-        public static decimal? RataCalcOverallRata
+        public  decimal? RataCalcOverallRata
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Overall_RATA")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Overall_RATA")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Overall_RATA", value);
+                SetCheckParameter("RATA_Calc_Overall_RATA", value);
             }
         }
         
         /// <summary>
         /// The WAF for the Operating Level as calculated by the software.
         /// </summary>
-        public static decimal? RataCalcOverallWaf
+        public  decimal? RataCalcOverallWaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Overall_WAF")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Overall_WAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Overall_WAF", value);
+                SetCheckParameter("RATA_Calc_Overall_WAF", value);
             }
         }
         
         /// <summary>
         /// The recalculated traverse point velocity for a method 2F, 2G, or M2H flow RATA.
         /// </summary>
-        public static decimal? RataCalcPointVelocity
+        public  decimal? RataCalcPointVelocity
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Point_Velocity")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Point_Velocity")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Point_Velocity", value);
+                SetCheckParameter("RATA_Calc_Point_Velocity", value);
             }
         }
         
         /// <summary>
         /// The recalculated relative accuracy of the operating level of a RATA.
         /// </summary>
-        public static decimal? RataCalcRa
+        public  decimal? RataCalcRa
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_RA")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_RA")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_RA", value);
+                SetCheckParameter("RATA_Calc_RA", value);
             }
         }
         
         /// <summary>
         /// The recalculated average stack flow rate (run reference value) of a method 2F, 2G, or M2H flow RATA.
         /// </summary>
-        public static decimal? RataCalcRunRv
+        public  decimal? RataCalcRunRv
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Run_RV")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Run_RV")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Run_RV", value);
+                SetCheckParameter("RATA_Calc_Run_RV", value);
             }
         }
         
         /// <summary>
         /// The recalculated average run velocity for a method 2F, 2G, or M2H flow RATA.
         /// </summary>
-        public static decimal? RataCalcRunVelocity
+        public  decimal? RataCalcRunVelocity
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Run_Velocity")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Run_Velocity")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Run_Velocity", value);
+                SetCheckParameter("RATA_Calc_Run_Velocity", value);
             }
         }
         
         /// <summary>
         /// The recalculated WAF for the run of a method 2FH, 2GH, or M2H flow RATA.
         /// </summary>
-        public static decimal? RataCalcRunWaf
+        public  decimal? RataCalcRunWaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Run_WAF")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Run_WAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Run_WAF", value);
+                SetCheckParameter("RATA_Calc_Run_WAF", value);
             }
         }
         
         /// <summary>
         /// The recalculated standard deviation of the differences of the operating level of a RATA.
         /// </summary>
-        public static decimal? RataCalcSd
+        public  decimal? RataCalcSd
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_SD")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_SD")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_SD", value);
+                SetCheckParameter("RATA_Calc_SD", value);
             }
         }
         
         /// <summary>
         /// The recalculated stack area for the method 2F, 2G, or 2H RATA.
         /// </summary>
-        public static decimal? RataCalcStackArea
+        public  decimal? RataCalcStackArea
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Stack_Area")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Stack_Area")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Stack_Area", value);
+                SetCheckParameter("RATA_Calc_Stack_Area", value);
             }
         }
         
         /// <summary>
         /// The calculated stack pressure for the run of a flow RATA.
         /// </summary>
-        public static decimal? RataCalcStackPressure
+        public  decimal? RataCalcStackPressure
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Stack_Pressure")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Stack_Pressure")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Stack_Pressure", value);
+                SetCheckParameter("RATA_Calc_Stack_Pressure", value);
             }
         }
         
         /// <summary>
         /// The TValue based on the number of runs in the operating level of a RATA.
         /// </summary>
-        public static decimal? RataCalcTvalue
+        public  decimal? RataCalcTvalue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_TValue")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_TValue")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_TValue", value);
+                SetCheckParameter("RATA_Calc_TValue", value);
             }
         }
         
         /// <summary>
         /// Indicates if the CalculatedWAF for the run of a flow RATA can be recalculated.
         /// </summary>
-        public static bool? RataCalculatedWafValid
+        public  bool? RataCalculatedWafValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Calculated_WAF_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Calculated_WAF_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calculated_WAF_Valid", value);
+                SetCheckParameter("RATA_Calculated_WAF_Valid", value);
             }
         }
         
         /// <summary>
         /// The recalculated wet molecular weight for the Flow RATA run.
         /// </summary>
-        public static decimal? RataCalcWetMolecularWeight
+        public  decimal? RataCalcWetMolecularWeight
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Wet_Molecular_Weight")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Wet_Molecular_Weight")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Wet_Molecular_Weight", value);
+                SetCheckParameter("RATA_Calc_Wet_Molecular_Weight", value);
             }
         }
         
         /// <summary>
         /// The recalculated dry molecular weight for a method 2F, 2G, or M2H flow RATA.
         /// </summary>
-        public static decimal? RataCalcWetMw
+        public  decimal? RataCalcWetMw
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Calc_Wet_MW")));
+                return ((decimal?)(GetCheckParameter("RATA_Calc_Wet_MW")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Calc_Wet_MW", value);
+                SetCheckParameter("RATA_Calc_Wet_MW", value);
             }
         }
         
         /// <summary>
         /// Indicates if WAF for the Operating Level should be calculated.
         /// </summary>
-        public static bool? RataCheckWaf
+        public  bool? RataCheckWaf
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Check_WAF")));
+                return ((bool?)(GetCheckParameter("RATA_Check_WAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Check_WAF", value);
+                SetCheckParameter("RATA_Check_WAF", value);
             }
         }
         
         /// <summary>
         /// An exemption code associated with the RATA.
         /// </summary>
-        public static string RataClaimCode
+        public  string RataClaimCode
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("RATA_Claim_Code")));
+                return ((string)(GetCheckParameter("RATA_Claim_Code")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Claim_Code", value);
+                SetCheckParameter("RATA_Claim_Code", value);
             }
         }
         
         /// <summary>
         /// Indicates if the Test Claim Code for a RATA is valid.
         /// </summary>
-        public static bool? RataClaimCodeValid
+        public  bool? RataClaimCodeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Claim_Code_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Claim_Code_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Claim_Code_Valid", value);
+                SetCheckParameter("RATA_Claim_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// Last run End Date of RATA
         /// </summary>
-        public static DateTime? RataEndDate
+        public  DateTime? RataEndDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("RATA_End_Date")));
+                return ((DateTime?)(GetCheckParameter("RATA_End_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_End_Date", value);
+                SetCheckParameter("RATA_End_Date", value);
             }
         }
         
         /// <summary>
         /// Last run End Hour of RATA
         /// </summary>
-        public static int? RataEndHour
+        public  int? RataEndHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_End_Hour")));
+                return ((int?)(GetCheckParameter("RATA_End_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_End_Hour", value);
+                SetCheckParameter("RATA_End_Hour", value);
             }
         }
         
         /// <summary>
         /// Last run End Minute of RATA.
         /// </summary>
-        public static int? RataEndMinute
+        public  int? RataEndMinute
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_End_Minute")));
+                return ((int?)(GetCheckParameter("RATA_End_Minute")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_End_Minute", value);
+                SetCheckParameter("RATA_End_Minute", value);
             }
         }
 
         /// <summary>
         /// Used as a result message plugin for RATA-132, and contains a list of RATA Summary Values the allow more decimal places than allowed.
         /// </summary>
-        public static string RataFieldsWithBadRounding
+        public  string RataFieldsWithBadRounding
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("RATA_Fields_With_Bad_Rounding")));
+                return ((string)(GetCheckParameter("RATA_Fields_With_Bad_Rounding")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Fields_With_Bad_Rounding", value);
+                SetCheckParameter("RATA_Fields_With_Bad_Rounding", value);
             }
         }
         
         /// <summary>
         /// Code that indicates the expiration date of the RATA based on calculated results.
         /// </summary>
-        public static string RataFrequency
+        public  string RataFrequency
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("RATA_Frequency")));
+                return ((string)(GetCheckParameter("RATA_Frequency")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Frequency", value);
+                SetCheckParameter("RATA_Frequency", value);
             }
         }
         
         /// <summary>
         /// RATA Frequency Code Lookup Table
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.RataFrequencyCodeRow> RataFrequencyCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.RataFrequencyCodeRow> RataFrequencyCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("RATA_Frequency_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("RATA_Frequency_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -7942,11 +7942,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("RATA_Frequency_Code_Lookup_Table", null);
+                    SetCheckParameter("RATA_Frequency_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("RATA_Frequency_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("RATA_Frequency_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -7954,251 +7954,251 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Dummy variable to create proper order of checks.
         /// </summary>
-        public static bool? RataFrequencyDetermined
+        public  bool? RataFrequencyDetermined
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Frequency_Determined")));
+                return ((bool?)(GetCheckParameter("RATA_Frequency_Determined")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Frequency_Determined", value);
+                SetCheckParameter("RATA_Frequency_Determined", value);
             }
         }
         
         /// <summary>
         /// The frequently used operating levels at which a flow RATA was performed.
         /// </summary>
-        public static string RataFrequentlyUsedLevels
+        public  string RataFrequentlyUsedLevels
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("RATA_Frequently_Used_Levels")));
+                return ((string)(GetCheckParameter("RATA_Frequently_Used_Levels")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Frequently_Used_Levels", value);
+                SetCheckParameter("RATA_Frequently_Used_Levels", value);
             }
         }
         
         /// <summary>
         /// The higher to two operating levels in a multi-level RATA.
         /// </summary>
-        public static string RataHigherLevel
+        public  string RataHigherLevel
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("RATA_Higher_Level")));
+                return ((string)(GetCheckParameter("RATA_Higher_Level")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Higher_Level", value);
+                SetCheckParameter("RATA_Higher_Level", value);
             }
         }
         
         /// <summary>
         /// A list of invalid probe types used in a flow RATA.
         /// </summary>
-        public static string RataInvalidProbes
+        public  string RataInvalidProbes
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Rata_Invalid_Probes")));
+                return ((string)(GetCheckParameter("Rata_Invalid_Probes")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Rata_Invalid_Probes", value);
+                SetCheckParameter("Rata_Invalid_Probes", value);
             }
         }
         
         /// <summary>
         /// A comma delimited list of the operating levels in the RATA.
         /// </summary>
-        public static string RataLevelList
+        public  string RataLevelList
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("RATA_Level_List")));
+                return ((string)(GetCheckParameter("RATA_Level_List")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Level_List", value);
+                SetCheckParameter("RATA_Level_List", value);
             }
         }
         
         /// <summary>
         /// Indicates whether calculations can be performed for the operating level of a RATA.
         /// </summary>
-        public static bool? RataLevelValid
+        public  bool? RataLevelValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Level_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Level_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Level_Valid", value);
+                SetCheckParameter("RATA_Level_Valid", value);
             }
         }
         
         /// <summary>
         /// The maximum number of traverse points in the flow RATA runs used to calculate the wall effects adjustment factor.
         /// </summary>
-        public static int? RataMaximumTraversePointCount
+        public  int? RataMaximumTraversePointCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_Maximum_Traverse_Point_Count")));
+                return ((int?)(GetCheckParameter("RATA_Maximum_Traverse_Point_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Maximum_Traverse_Point_Count", value);
+                SetCheckParameter("RATA_Maximum_Traverse_Point_Count", value);
             }
         }
         
         /// <summary>
         /// The maximum number of traverse points in all runs of the operating level of a flow RATA.
         /// </summary>
-        public static int? RataMaximumTraversePointCountForAllRuns
+        public  int? RataMaximumTraversePointCountForAllRuns
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_Maximum_Traverse_Point_Count_for_All_Runs")));
+                return ((int?)(GetCheckParameter("RATA_Maximum_Traverse_Point_Count_for_All_Runs")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Maximum_Traverse_Point_Count_for_All_Runs", value);
+                SetCheckParameter("RATA_Maximum_Traverse_Point_Count_for_All_Runs", value);
             }
         }
         
         /// <summary>
         /// The minimum number of traverse points in the flow RATA runs used to calculate the wall effects adjustment factor.
         /// </summary>
-        public static int? RataMinimumTraversePointCount
+        public  int? RataMinimumTraversePointCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_Minimum_Traverse_Point_Count")));
+                return ((int?)(GetCheckParameter("RATA_Minimum_Traverse_Point_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Minimum_Traverse_Point_Count", value);
+                SetCheckParameter("RATA_Minimum_Traverse_Point_Count", value);
             }
         }
         
         /// <summary>
         /// The minimum number of wall points used to calculate the replacement velocity in the exterior method 1 traverse points in the run of a flow RATA.
         /// </summary>
-        public static int? RataMinimumWallPoints
+        public  int? RataMinimumWallPoints
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_Minimum_Wall_Points")));
+                return ((int?)(GetCheckParameter("RATA_Minimum_Wall_Points")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Minimum_Wall_Points", value);
+                SetCheckParameter("RATA_Minimum_Wall_Points", value);
             }
         }
         
         /// <summary>
         /// The number of different operating levels in the run records of a RATA.
         /// </summary>
-        public static int? RataNumberOfLoadLevels
+        public  int? RataNumberOfLoadLevels
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_Number_of_Load_Levels")));
+                return ((int?)(GetCheckParameter("RATA_Number_of_Load_Levels")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Number_of_Load_Levels", value);
+                SetCheckParameter("RATA_Number_of_Load_Levels", value);
             }
         }
         
         /// <summary>
         /// Indicates if the Operating Level Code for a RATA Summary and children records is valid.
         /// </summary>
-        public static bool? RataOperatingLevelValid
+        public  bool? RataOperatingLevelValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Operating_Level_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Operating_Level_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Operating_Level_Valid", value);
+                SetCheckParameter("RATA_Operating_Level_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if PercentCO2 in the Flow RATA Run record is valid.
         /// </summary>
-        public static bool? RataPercentCo2Valid
+        public  bool? RataPercentCo2Valid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Percent_CO2_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Percent_CO2_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Percent_CO2_Valid", value);
+                SetCheckParameter("RATA_Percent_CO2_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if PercentMoisture in the Flow RATA Run record is valid.
         /// </summary>
-        public static bool? RataPercentMoistureValid
+        public  bool? RataPercentMoistureValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Percent_Moisture_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Percent_Moisture_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Percent_Moisture_Valid", value);
+                SetCheckParameter("RATA_Percent_Moisture_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if PercentO2 in the Flow RATA Run record is valid.
         /// </summary>
-        public static bool? RataPercentO2Valid
+        public  bool? RataPercentO2Valid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Percent_O2_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Percent_O2_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Percent_O2_Valid", value);
+                SetCheckParameter("RATA_Percent_O2_Valid", value);
             }
         }
         
         /// <summary>
         /// The probe types associated with the RATA Run.
         /// </summary>
-        public static string RataProbeTypes
+        public  string RataProbeTypes
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("RATA_Probe_Types")));
+                return ((string)(GetCheckParameter("RATA_Probe_Types")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Probe_Types", value);
+                SetCheckParameter("RATA_Probe_Types", value);
             }
         }
         
         /// <summary>
         /// All RATA Test Summary records for the monitoring system.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow> RataRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryRow> RataRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("RATA_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("RATA_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8212,11 +8212,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("RATA_Records", null);
+                    SetCheckParameter("RATA_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("RATA_Records", value.SourceView);
+                    SetCheckParameter("RATA_Records", value.SourceView);
                 }
             }
         }
@@ -8224,146 +8224,146 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The rectangular duct WAF for a location.
         /// </summary>
-        public static decimal? RataRectangularDuctWaf
+        public  decimal? RataRectangularDuctWaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Rectangular_Duct_WAF")));
+                return ((decimal?)(GetCheckParameter("RATA_Rectangular_Duct_WAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Rectangular_Duct_WAF", value);
+                SetCheckParameter("RATA_Rectangular_Duct_WAF", value);
             }
         }
         
         /// <summary>
         /// Indicates if RATA Reference Method Code is valid.
         /// </summary>
-        public static bool? RataReferenceMethodValid
+        public  bool? RataReferenceMethodValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Reference_Method_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Reference_Method_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Reference_Method_Valid", value);
+                SetCheckParameter("RATA_Reference_Method_Valid", value);
             }
         }
         
         /// <summary>
         /// The Reference Method Code for the RATA.  (Note: This is used to check Protocol Gas record, so it only applies to one-level RATAs.)
         /// </summary>
-        public static string RataRefMethodCode
+        public  string RataRefMethodCode
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("RATA_Ref_Method_Code")));
+                return ((string)(GetCheckParameter("RATA_Ref_Method_Code")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Ref_Method_Code", value);
+                SetCheckParameter("RATA_Ref_Method_Code", value);
             }
         }
         
         /// <summary>
         /// The number of method 1 traverse points in a run of a flow RATA which are used to calculate the replacement velocity.
         /// </summary>
-        public static int? RataReplacementPointCount
+        public  int? RataReplacementPointCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_Replacement_Point_Count")));
+                return ((int?)(GetCheckParameter("RATA_Replacement_Point_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Replacement_Point_Count", value);
+                SetCheckParameter("RATA_Replacement_Point_Count", value);
             }
         }
         
         /// <summary>
         /// Calculated RATA result.
         /// </summary>
-        public static string RataResult
+        public  string RataResult
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("RATA_Result")));
+                return ((string)(GetCheckParameter("RATA_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Result", value);
+                SetCheckParameter("RATA_Result", value);
             }
         }
         
         /// <summary>
         /// Indicates if the Begin Date, Hour, and Minute for a RATA run are valid.
         /// </summary>
-        public static bool? RataRunBeginTimeValid
+        public  bool? RataRunBeginTimeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Run_Begin_Time_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Run_Begin_Time_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Run_Begin_Time_Valid", value);
+                SetCheckParameter("RATA_Run_Begin_Time_Valid", value);
             }
         }
         
         /// <summary>
         /// Number of runs used in an operating level of a RATA.
         /// </summary>
-        public static int? RataRunCount
+        public  int? RataRunCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_Run_Count")));
+                return ((int?)(GetCheckParameter("RATA_Run_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Run_Count", value);
+                SetCheckParameter("RATA_Run_Count", value);
             }
         }
         
         /// <summary>
         /// Indicates if the end date/hour/minutes in the RATA run record is valid.
         /// </summary>
-        public static bool? RataRunEndTimeValid
+        public  bool? RataRunEndTimeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Run_End_Time_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Run_End_Time_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Run_End_Time_Valid", value);
+                SetCheckParameter("RATA_Run_End_Time_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the Run Number for a RATA Run and children records is valid.
         /// </summary>
-        public static bool? RataRunNumberValid
+        public  bool? RataRunNumberValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Run_Number_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Run_Number_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Run_Number_Valid", value);
+                SetCheckParameter("RATA_Run_Number_Valid", value);
             }
         }
         
         /// <summary>
         /// All Run records associated with a RATA.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataRunRow> RataRunRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataRunRow> RataRunRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("RATA_Run_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("RATA_Run_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8377,11 +8377,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("RATA_Run_Records", null);
+                    SetCheckParameter("RATA_Run_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("RATA_Run_Records", value.SourceView);
+                    SetCheckParameter("RATA_Run_Records", value.SourceView);
                 }
             }
         }
@@ -8389,221 +8389,221 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if the reported Run Begin and End Date/Hour/Minute of a RATA are consistent.
         /// </summary>
-        public static bool? RataRunTimesValid
+        public  bool? RataRunTimesValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Run_Times_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Run_Times_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Run_Times_Valid", value);
+                SetCheckParameter("RATA_Run_Times_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if stack diameter is valid for a flow RATA
         /// </summary>
-        public static bool? RataStackDiameterValid
+        public  bool? RataStackDiameterValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Stack_Diameter_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Stack_Diameter_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Stack_Diameter_Valid", value);
+                SetCheckParameter("RATA_Stack_Diameter_Valid", value);
             }
         }
         
         /// <summary>
         /// An array of the stack flow rates for all the runs of a Method 2H RATA.
         /// </summary>
-        public static decimal? RataStackFlowArray
+        public  decimal? RataStackFlowArray
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Stack_Flow_Array")));
+                return ((decimal?)(GetCheckParameter("RATA_Stack_Flow_Array")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Stack_Flow_Array", value);
+                SetCheckParameter("RATA_Stack_Flow_Array", value);
             }
         }
         
         /// <summary>
         /// The sum of the velocities adjusted for wall effects for a run of a flow RATA.
         /// </summary>
-        public static decimal? RataSumAdjustedVelocity
+        public  decimal? RataSumAdjustedVelocity
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Sum_Adjusted_Velocity")));
+                return ((decimal?)(GetCheckParameter("RATA_Sum_Adjusted_Velocity")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Sum_Adjusted_Velocity", value);
+                SetCheckParameter("RATA_Sum_Adjusted_Velocity", value);
             }
         }
         
         /// <summary>
         /// Sum of the CEM values in the operating level of a RATA.
         /// </summary>
-        public static decimal? RataSumCemValues
+        public  decimal? RataSumCemValues
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Sum_CEM_Values")));
+                return ((decimal?)(GetCheckParameter("RATA_Sum_CEM_Values")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Sum_CEM_Values", value);
+                SetCheckParameter("RATA_Sum_CEM_Values", value);
             }
         }
         
         /// <summary>
         /// Sum of differences between the CEM value and reference value in the operating level of a RATA
         /// </summary>
-        public static decimal? RataSumDifferences
+        public  decimal? RataSumDifferences
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Sum_Differences")));
+                return ((decimal?)(GetCheckParameter("RATA_Sum_Differences")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Sum_Differences", value);
+                SetCheckParameter("RATA_Sum_Differences", value);
             }
         }
         
         /// <summary>
         /// Sum of the average gross unit loads in the operating level of a RATA.
         /// </summary>
-        public static decimal? RataSumGrossUnitLoad
+        public  decimal? RataSumGrossUnitLoad
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Sum_Gross_Unit_Load")));
+                return ((decimal?)(GetCheckParameter("RATA_Sum_Gross_Unit_Load")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Sum_Gross_Unit_Load", value);
+                SetCheckParameter("RATA_Sum_Gross_Unit_Load", value);
             }
         }
         
         /// <summary>
         /// Indicates if alternate performance specification was used to evaluate the results of the operating level of a RATA.
         /// </summary>
-        public static int? RataSummaryApsIndicator
+        public  int? RataSummaryApsIndicator
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_Summary_APS_Indicator")));
+                return ((int?)(GetCheckParameter("RATA_Summary_APS_Indicator")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Summary_APS_Indicator", value);
+                SetCheckParameter("RATA_Summary_APS_Indicator", value);
             }
         }
         
         /// <summary>
         /// The calculated average gross unit load for the operating level of a RATA.
         /// </summary>
-        public static decimal? RataSummaryAverageGrossUnitLoad
+        public  decimal? RataSummaryAverageGrossUnitLoad
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Summary_Average_Gross_Unit_Load")));
+                return ((decimal?)(GetCheckParameter("RATA_Summary_Average_Gross_Unit_Load")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Summary_Average_Gross_Unit_Load", value);
+                SetCheckParameter("RATA_Summary_Average_Gross_Unit_Load", value);
             }
         }
         
         /// <summary>
         /// The bias adjustment factor calculated for an operating level of a RATA.
         /// </summary>
-        public static decimal? RataSummaryBaf
+        public  decimal? RataSummaryBaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Summary_BAF")));
+                return ((decimal?)(GetCheckParameter("RATA_Summary_BAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Summary_BAF", value);
+                SetCheckParameter("RATA_Summary_BAF", value);
             }
         }
         
         /// <summary>
         /// The confidence cofficient calculated from the runs of a RATA.
         /// </summary>
-        public static decimal? RataSummaryConfidenceCoefficient
+        public  decimal? RataSummaryConfidenceCoefficient
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Summary_Confidence_Coefficient")));
+                return ((decimal?)(GetCheckParameter("RATA_Summary_Confidence_Coefficient")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Summary_Confidence_Coefficient", value);
+                SetCheckParameter("RATA_Summary_Confidence_Coefficient", value);
             }
         }
         
         /// <summary>
         /// Mean of the CEM values in the operating level of a RATA.
         /// </summary>
-        public static decimal? RataSummaryMeanCemValue
+        public  decimal? RataSummaryMeanCemValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Summary_Mean_CEM_Value")));
+                return ((decimal?)(GetCheckParameter("RATA_Summary_Mean_CEM_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Summary_Mean_CEM_Value", value);
+                SetCheckParameter("RATA_Summary_Mean_CEM_Value", value);
             }
         }
         
         /// <summary>
         /// Mean of the differences between the reference value and CEM value in the operating level of a RATA.
         /// </summary>
-        public static decimal? RataSummaryMeanDifference
+        public  decimal? RataSummaryMeanDifference
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Summary_Mean_Difference")));
+                return ((decimal?)(GetCheckParameter("RATA_Summary_Mean_Difference")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Summary_Mean_Difference", value);
+                SetCheckParameter("RATA_Summary_Mean_Difference", value);
             }
         }
         
         /// <summary>
         /// Mean of the reference values in the operating level of a RATA.
         /// </summary>
-        public static decimal? RataSummaryMeanReferenceValue
+        public  decimal? RataSummaryMeanReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Summary_Mean_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("RATA_Summary_Mean_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Summary_Mean_Reference_Value", value);
+                SetCheckParameter("RATA_Summary_Mean_Reference_Value", value);
             }
         }
         
         /// <summary>
         /// All Summary records associated with a RATA.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataSummaryRow> RataSummaryRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataSummaryRow> RataSummaryRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("RATA_Summary_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("RATA_Summary_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8617,11 +8617,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("RATA_Summary_Records", null);
+                    SetCheckParameter("RATA_Summary_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("RATA_Summary_Records", value.SourceView);
+                    SetCheckParameter("RATA_Summary_Records", value.SourceView);
                 }
             }
         }
@@ -8629,221 +8629,221 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The relative accuracy calculated for an operating level of a RATA.
         /// </summary>
-        public static decimal? RataSummaryRelativeAccuracy
+        public  decimal? RataSummaryRelativeAccuracy
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Summary_Relative_Accuracy")));
+                return ((decimal?)(GetCheckParameter("RATA_Summary_Relative_Accuracy")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Summary_Relative_Accuracy", value);
+                SetCheckParameter("RATA_Summary_Relative_Accuracy", value);
             }
         }
         
         /// <summary>
         /// The standard deviation of the differences calculated from the runs of a RATA.
         /// </summary>
-        public static decimal? RataSummaryStandardDeviation
+        public  decimal? RataSummaryStandardDeviation
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Summary_Standard_Deviation")));
+                return ((decimal?)(GetCheckParameter("RATA_Summary_Standard_Deviation")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Summary_Standard_Deviation", value);
+                SetCheckParameter("RATA_Summary_Standard_Deviation", value);
             }
         }
         
         /// <summary>
         /// The T-Value based on the number of runs of a RATA.
         /// </summary>
-        public static decimal? RataSummaryTvalue
+        public  decimal? RataSummaryTvalue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Summary_TValue")));
+                return ((decimal?)(GetCheckParameter("RATA_Summary_TValue")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Summary_TValue", value);
+                SetCheckParameter("RATA_Summary_TValue", value);
             }
         }
         
         /// <summary>
         /// Sum of the reference values in the operating level of a RATA.
         /// </summary>
-        public static decimal? RataSumReferenceValues
+        public  decimal? RataSumReferenceValues
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Sum_Reference_Values")));
+                return ((decimal?)(GetCheckParameter("RATA_Sum_Reference_Values")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Sum_Reference_Values", value);
+                SetCheckParameter("RATA_Sum_Reference_Values", value);
             }
         }
         
         /// <summary>
         /// Sum of the squares of the differences between the CEM value and reference value in the operating level of a RATA
         /// </summary>
-        public static decimal? RataSumSquareDifferences
+        public  decimal? RataSumSquareDifferences
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Sum_Square_Differences")));
+                return ((decimal?)(GetCheckParameter("RATA_Sum_Square_Differences")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Sum_Square_Differences", value);
+                SetCheckParameter("RATA_Sum_Square_Differences", value);
             }
         }
         
         /// <summary>
         /// The sum of the stack temperatures of all traverse points in a flow RATA run.
         /// </summary>
-        public static decimal? RataSumTemperature
+        public  decimal? RataSumTemperature
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Sum_Temperature")));
+                return ((decimal?)(GetCheckParameter("RATA_Sum_Temperature")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Sum_Temperature", value);
+                SetCheckParameter("RATA_Sum_Temperature", value);
             }
         }
         
         /// <summary>
         /// The calculated average velocity without wall effects of all traverse points in a flow RATA run.
         /// </summary>
-        public static decimal? RataSumVelocity
+        public  decimal? RataSumVelocity
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Sum_Velocity")));
+                return ((decimal?)(GetCheckParameter("RATA_Sum_Velocity")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Sum_Velocity", value);
+                SetCheckParameter("RATA_Sum_Velocity", value);
             }
         }
         
         /// <summary>
         /// Sum of calculated WAFs in an operating level of a RATA.
         /// </summary>
-        public static decimal? RataSumWaf
+        public  decimal? RataSumWaf
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Sum_WAF")));
+                return ((decimal?)(GetCheckParameter("RATA_Sum_WAF")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Sum_WAF", value);
+                SetCheckParameter("RATA_Sum_WAF", value);
             }
         }
         
         /// <summary>
         /// The ID of the QA Supp Data record associated with the RATA.
         /// </summary>
-        public static string RataSuppDataId
+        public  string RataSuppDataId
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("RATA_Supp_Data_ID")));
+                return ((string)(GetCheckParameter("RATA_Supp_Data_ID")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Supp_Data_ID", value);
+                SetCheckParameter("RATA_Supp_Data_ID", value);
             }
         }
         
         /// <summary>
         /// Indicates if system type is valid for the RATA
         /// </summary>
-        public static bool? RataSystemValid
+        public  bool? RataSystemValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_System_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_System_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_System_Valid", value);
+                SetCheckParameter("RATA_System_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the Test Claim Code of a RATA is valid.
         /// </summary>
-        public static bool? RataTestClaimCodeValid
+        public  bool? RataTestClaimCodeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Test_Claim_Code_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Test_Claim_Code_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Test_Claim_Code_Valid", value);
+                SetCheckParameter("RATA_Test_Claim_Code_Valid", value);
             }
         }
         
         /// <summary>
         /// The recalculated RATA Traverse velocity (without wall effects).
         /// </summary>
-        public static decimal? RataTraverseCalcVelocity
+        public  decimal? RataTraverseCalcVelocity
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("RATA_Traverse_Calc_Velocity")));
+                return ((decimal?)(GetCheckParameter("RATA_Traverse_Calc_Velocity")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Traverse_Calc_Velocity", value);
+                SetCheckParameter("RATA_Traverse_Calc_Velocity", value);
             }
         }
         
         /// <summary>
         /// The number of method 1 traverse points in a run of a flow RATA.
         /// </summary>
-        public static int? RataTraversePointCount
+        public  int? RataTraversePointCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Rata_Traverse_Point_Count")));
+                return ((int?)(GetCheckParameter("Rata_Traverse_Point_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Rata_Traverse_Point_Count", value);
+                SetCheckParameter("Rata_Traverse_Point_Count", value);
             }
         }
         
         /// <summary>
         /// Indicates if the RATA Traverse Point IDs consist of three alphanumeric characters.
         /// </summary>
-        public static bool? RataTraversePointIdValid
+        public  bool? RataTraversePointIdValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Traverse_Point_ID_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Traverse_Point_ID_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Traverse_Point_ID_Valid", value);
+                SetCheckParameter("RATA_Traverse_Point_ID_Valid", value);
             }
         }
         
         /// <summary>
         /// All RATA Traverse records associated with a RATA.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataTraverseRow> RataTraverseRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataTraverseRow> RataTraverseRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("RATA_Traverse_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("RATA_Traverse_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -8857,11 +8857,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("RATA_Traverse_Records", null);
+                    SetCheckParameter("RATA_Traverse_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("RATA_Traverse_Records", value.SourceView);
+                    SetCheckParameter("RATA_Traverse_Records", value.SourceView);
                 }
             }
         }
@@ -8869,146 +8869,146 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if RATA Traverse data is valid.
         /// </summary>
-        public static bool? RataTraverseValid
+        public  bool? RataTraverseValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Traverse_Valid")));
+                return ((bool?)(GetCheckParameter("RATA_Traverse_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Traverse_Valid", value);
+                SetCheckParameter("RATA_Traverse_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if all validity checks have been performed prior to recalculating traverse velocity.
         /// </summary>
-        public static bool? RataTraverseValidityDetermined
+        public  bool? RataTraverseValidityDetermined
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Traverse_Validity_Determined")));
+                return ((bool?)(GetCheckParameter("RATA_Traverse_Validity_Determined")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Traverse_Validity_Determined", value);
+                SetCheckParameter("RATA_Traverse_Validity_Determined", value);
             }
         }
         
         /// <summary>
         /// Number of runs not used in an operating level of a RATA.
         /// </summary>
-        public static int? RataUnusedRunCount
+        public  int? RataUnusedRunCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_Unused_Run_Count")));
+                return ((int?)(GetCheckParameter("RATA_Unused_Run_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Unused_Run_Count", value);
+                SetCheckParameter("RATA_Unused_Run_Count", value);
             }
         }
         
         /// <summary>
         /// Indicates if WAF for Operating was calculated.  Used for leveling.
         /// </summary>
-        public static bool? RataWafCalculated
+        public  bool? RataWafCalculated
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_WAF_Calculated")));
+                return ((bool?)(GetCheckParameter("RATA_WAF_Calculated")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_WAF_Calculated", value);
+                SetCheckParameter("RATA_WAF_Calculated", value);
             }
         }
         
         /// <summary>
         /// Number of runs used in an operating level of a RATA to calculate the WAF.
         /// </summary>
-        public static int? RataWafRunCount
+        public  int? RataWafRunCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_WAF_Run_Count")));
+                return ((int?)(GetCheckParameter("RATA_WAF_Run_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_WAF_Run_Count", value);
+                SetCheckParameter("RATA_WAF_Run_Count", value);
             }
         }
         
         /// <summary>
         /// The RunNumbers of all RATA runs for the operating level that contained wall effects data.
         /// </summary>
-        public static string RataWafRunNumbers
+        public  string RataWafRunNumbers
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("RATA_WAF_Run_Numbers")));
+                return ((string)(GetCheckParameter("RATA_WAF_Run_Numbers")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_WAF_Run_Numbers", value);
+                SetCheckParameter("RATA_WAF_Run_Numbers", value);
             }
         }
         
         /// <summary>
         /// The number of traverse points in the rectangular duct WAF test.
         /// </summary>
-        public static int? RataWafTestTraversePointCount
+        public  int? RataWafTestTraversePointCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("RATA_WAF_Test_Traverse_Point_Count")));
+                return ((int?)(GetCheckParameter("RATA_WAF_Test_Traverse_Point_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_WAF_Test_Traverse_Point_Count", value);
+                SetCheckParameter("RATA_WAF_Test_Traverse_Point_Count", value);
             }
         }
         
         /// <summary>
         /// Indicates if the number of wall points used to determine the replacement velocity are the same for all exterior method 1 traverse points in the run of a flow RATA.
         /// </summary>
-        public static bool? RataWallPointsConsistent
+        public  bool? RataWallPointsConsistent
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Wall_Points_Consistent")));
+                return ((bool?)(GetCheckParameter("RATA_Wall_Points_Consistent")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Wall_Points_Consistent", value);
+                SetCheckParameter("RATA_Wall_Points_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates if a zero value was reported for the reference or measured value in a RATA.
         /// </summary>
-        public static bool? RataZeroValue
+        public  bool? RataZeroValue
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("RATA_Zero_Value")));
+                return ((bool?)(GetCheckParameter("RATA_Zero_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("RATA_Zero_Value", value);
+                SetCheckParameter("RATA_Zero_Value", value);
             }
         }
         
         /// <summary>
         /// The Rectangular Duct WAF records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwRectDuctWafRow> RectangularDuctWafRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwRectDuctWafRow> RectangularDuctWafRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Rectangular_Duct_WAF_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Rectangular_Duct_WAF_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9022,11 +9022,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Rectangular_Duct_WAF_Records", null);
+                    SetCheckParameter("Rectangular_Duct_WAF_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Rectangular_Duct_WAF_Records", value.SourceView);
+                    SetCheckParameter("Rectangular_Duct_WAF_Records", value.SourceView);
                 }
             }
         }
@@ -9034,11 +9034,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Lookup table for Reference Method Codes for RATA.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.RefMethodCodeRow> ReferenceMethodCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.RefMethodCodeRow> ReferenceMethodCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Reference_Method_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Reference_Method_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9052,11 +9052,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Reference_Method_Code_Lookup_Table", null);
+                    SetCheckParameter("Reference_Method_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Reference_Method_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Reference_Method_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -9064,11 +9064,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates whether MonitoringSystemID, ComponentID, or both must be reported in the QA certification event record based on the RequiredTestCode.  Also determines system/component types appropriate for the test code.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.RequiredTestCodeToRequiredIdAndSystemOrComponentTypeRow> RequiredTestCodeToRequiredIdAndSystemOrComponentTypeCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.RequiredTestCodeToRequiredIdAndSystemOrComponentTypeRow> RequiredTestCodeToRequiredIdAndSystemOrComponentTypeCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Required_Test_Code_to_Required_ID_and_System_or_Component_Type_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Required_Test_Code_to_Required_ID_and_System_or_Component_Type_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9082,11 +9082,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Required_Test_Code_to_Required_ID_and_System_or_Component_Type_Cross_Check_Table", null);
+                    SetCheckParameter("Required_Test_Code_to_Required_ID_and_System_or_Component_Type_Cross_Check_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Required_Test_Code_to_Required_ID_and_System_or_Component_Type_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Required_Test_Code_to_Required_ID_and_System_or_Component_Type_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -9094,206 +9094,206 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if all CEM and Reference Values in a Flow RATA were rounded to the nearest 1000 scfh.
         /// </summary>
-        public static bool? RoundedFlowRataValues
+        public  bool? RoundedFlowRataValues
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Rounded_Flow_RATA_Values")));
+                return ((bool?)(GetCheckParameter("Rounded_Flow_RATA_Values")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Rounded_Flow_RATA_Values", value);
+                SetCheckParameter("Rounded_Flow_RATA_Values", value);
             }
         }
         
         /// <summary>
         /// The recalculated APS indicator for the upscale injection.
         /// </summary>
-        public static bool? SevenDayUpscaleCalcAps
+        public  bool? SevenDayUpscaleCalcAps
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("7DAY_Upscale_Calc_APS")));
+                return ((bool?)(GetCheckParameter("7DAY_Upscale_Calc_APS")));
             }
             set
             {
-                QaParameters.SetCheckParameter("7DAY_Upscale_Calc_APS", value);
+                SetCheckParameter("7DAY_Upscale_Calc_APS", value);
             }
         }
         
         /// <summary>
         /// The recalculated result (CE or Diff) for the upscale injection.
         /// </summary>
-        public static decimal? SevenDayUpscaleCalcResult
+        public  decimal? SevenDayUpscaleCalcResult
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("7DAY_Upscale_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("7DAY_Upscale_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("7DAY_Upscale_Calc_Result", value);
+                SetCheckParameter("7DAY_Upscale_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// A dummy parameter.
         /// </summary>
-        public static int? SevenDayUpscaleInjectionValidated
+        public  int? SevenDayUpscaleInjectionValidated
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("7DAY_Upscale_Injection_Validated")));
+                return ((int?)(GetCheckParameter("7DAY_Upscale_Injection_Validated")));
             }
             set
             {
-                QaParameters.SetCheckParameter("7DAY_Upscale_Injection_Validated", value);
+                SetCheckParameter("7DAY_Upscale_Injection_Validated", value);
             }
         }
         
         /// <summary>
         /// The recalculated APS indicator for the zero injection.
         /// </summary>
-        public static int? SevenDayZeroCalcAps
+        public  int? SevenDayZeroCalcAps
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("7DAY_Zero_Calc_APS")));
+                return ((int?)(GetCheckParameter("7DAY_Zero_Calc_APS")));
             }
             set
             {
-                QaParameters.SetCheckParameter("7DAY_Zero_Calc_APS", value);
+                SetCheckParameter("7DAY_Zero_Calc_APS", value);
             }
         }
         
         /// <summary>
         /// The recalculated result (CE or Diff) for the zero injection.
         /// </summary>
-        public static decimal? SevenDayZeroCalcResult
+        public  decimal? SevenDayZeroCalcResult
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("7DAY_Zero_Calc_Result")));
+                return ((decimal?)(GetCheckParameter("7DAY_Zero_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("7DAY_Zero_Calc_Result", value);
+                SetCheckParameter("7DAY_Zero_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// A dummy parameter.
         /// </summary>
-        public static int? SevenDayZeroInjectionValidated
+        public  int? SevenDayZeroInjectionValidated
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("7DAY_Zero_Injection_Validated")));
+                return ((int?)(GetCheckParameter("7DAY_Zero_Injection_Validated")));
             }
             set
             {
-                QaParameters.SetCheckParameter("7DAY_Zero_Injection_Validated", value);
+                SetCheckParameter("7DAY_Zero_Injection_Validated", value);
             }
         }
         
         /// <summary>
         /// Indicates if any runs in the APPE test overlapped.
         /// </summary>
-        public static bool? SimultaneousAppeRuns
+        public  bool? SimultaneousAppeRuns
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Simultaneous_APPE_Runs")));
+                return ((bool?)(GetCheckParameter("Simultaneous_APPE_Runs")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Simultaneous_APPE_Runs", value);
+                SetCheckParameter("Simultaneous_APPE_Runs", value);
             }
         }
         
         /// <summary>
         /// Indicates if an injection was conducted at the same time as an injection in another linearity check for the alternate range of a component.
         /// </summary>
-        public static bool? SimultaneousLinearityInjectionForAlternateRange
+        public  bool? SimultaneousLinearityInjectionForAlternateRange
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Simultaneous_Linearity_Injection_for_Alternate_Range")));
+                return ((bool?)(GetCheckParameter("Simultaneous_Linearity_Injection_for_Alternate_Range")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Simultaneous_Linearity_Injection_for_Alternate_Range", value);
+                SetCheckParameter("Simultaneous_Linearity_Injection_for_Alternate_Range", value);
             }
         }
         
         /// <summary>
         /// Indicates if linearity injections were performed simultaneously.
         /// </summary>
-        public static bool? SimultaneousLinearityInjections
+        public  bool? SimultaneousLinearityInjections
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Simultaneous_Linearity_Injections")));
+                return ((bool?)(GetCheckParameter("Simultaneous_Linearity_Injections")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Simultaneous_Linearity_Injections", value);
+                SetCheckParameter("Simultaneous_Linearity_Injections", value);
             }
         }
         
         /// <summary>
         /// Indicates if RATA runs were performed simultaneously.
         /// </summary>
-        public static string SimultaneousRataRuns
+        public  string SimultaneousRataRuns
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Simultaneous_RATA_Runs")));
+                return ((string)(GetCheckParameter("Simultaneous_RATA_Runs")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Simultaneous_RATA_Runs", value);
+                SetCheckParameter("Simultaneous_RATA_Runs", value);
             }
         }
         
         /// <summary>
         /// Indicates if any runs in the unit default test overlapped.
         /// </summary>
-        public static bool? SimultaneousUnitDefaultRuns
+        public  bool? SimultaneousUnitDefaultRuns
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Simultaneous_Unit_Default_Runs")));
+                return ((bool?)(GetCheckParameter("Simultaneous_Unit_Default_Runs")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Simultaneous_Unit_Default_Runs", value);
+                SetCheckParameter("Simultaneous_Unit_Default_Runs", value);
             }
         }
         
         /// <summary>
         /// Indicates whether the standard or alternative historical load usage data collection period was used for achieving a single-load flow claim exemption.
         /// </summary>
-        public static string SlcCollectionPeriod
+        public  string SlcCollectionPeriod
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("SLC_Collection_Period")));
+                return ((string)(GetCheckParameter("SLC_Collection_Period")));
             }
             set
             {
-                QaParameters.SetCheckParameter("SLC_Collection_Period", value);
+                SetCheckParameter("SLC_Collection_Period", value);
             }
         }
         
         /// <summary>
         /// Span Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorSpanRow> SpanRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.MonitorSpanRow> SpanRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Span_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Span_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9307,11 +9307,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Span_Records", null);
+                    SetCheckParameter("Span_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Span_Records", value.SourceView);
+                    SetCheckParameter("Span_Records", value.SourceView);
                 }
             }
         }
@@ -9319,11 +9319,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Monitor_System_Component records linked to the current component including the fields from the associated system record.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> SystemComponentRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> SystemComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("System_Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9337,11 +9337,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("System_Component_Records", null);
+                    SetCheckParameter("System_Component_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("System_Component_Records", value.SourceView);
+                    SetCheckParameter("System_Component_Records", value.SourceView);
                 }
             }
         }
@@ -9349,11 +9349,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Lookup table that stores system-wide values.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwSystemParameterRow> SystemParameterLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwSystemParameterRow> SystemParameterLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("System_Parameter_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_Parameter_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9367,11 +9367,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("System_Parameter_Lookup_Table", null);
+                    SetCheckParameter("System_Parameter_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("System_Parameter_Lookup_Table", value.SourceView);
+                    SetCheckParameter("System_Parameter_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -9379,11 +9379,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// All RATA Summary records for a monitoring system, including associated RATA information.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataSummaryRow> SystemRataSummaryRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaRataSummaryRow> SystemRataSummaryRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("System_RATA_Summary_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_RATA_Summary_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9397,11 +9397,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("System_RATA_Summary_Records", null);
+                    SetCheckParameter("System_RATA_Summary_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("System_RATA_Summary_Records", value.SourceView);
+                    SetCheckParameter("System_RATA_Summary_Records", value.SourceView);
                 }
             }
         }
@@ -9409,11 +9409,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// All Monitor_System_Component records for the current system including the fields from the associated component record.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> SystemSystemComponentRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemComponentRow> SystemSystemComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("System_System_Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("System_System_Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9427,11 +9427,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("System_System_Component_Records", null);
+                    SetCheckParameter("System_System_Component_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("System_System_Component_Records", value.SourceView);
+                    SetCheckParameter("System_System_Component_Records", value.SourceView);
                 }
             }
         }
@@ -9439,11 +9439,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// A list of valid test basis codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.TestBasisCodeRow> TestBasisCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.TestBasisCodeRow> TestBasisCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Test_Basis_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Test_Basis_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9457,11 +9457,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Test_Basis_Code_Lookup_Table", null);
+                    SetCheckParameter("Test_Basis_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Test_Basis_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Test_Basis_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -9469,146 +9469,146 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if the reported begin time of a test is valid.
         /// </summary>
-        public static bool? TestBeginDateValid
+        public  bool? TestBeginDateValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Test_Begin_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Test_Begin_Date_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_Begin_Date_Valid", value);
+                SetCheckParameter("Test_Begin_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported begin hour of a test is valid.
         /// </summary>
-        public static bool? TestBeginHourValid
+        public  bool? TestBeginHourValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Test_Begin_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Test_Begin_Hour_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_Begin_Hour_Valid", value);
+                SetCheckParameter("Test_Begin_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported begin minute of a test is valid.
         /// </summary>
-        public static bool? TestBeginMinuteValid
+        public  bool? TestBeginMinuteValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Test_Begin_Minute_Valid")));
+                return ((bool?)(GetCheckParameter("Test_Begin_Minute_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_Begin_Minute_Valid", value);
+                SetCheckParameter("Test_Begin_Minute_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported begin time of a test is prior to its end time.
         /// </summary>
-        public static bool? TestDatesConsistent
+        public  bool? TestDatesConsistent
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Test_Dates_Consistent")));
+                return ((bool?)(GetCheckParameter("Test_Dates_Consistent")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_Dates_Consistent", value);
+                SetCheckParameter("Test_Dates_Consistent", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported end date of a test os valid.
         /// </summary>
-        public static bool? TestEndDateValid
+        public  bool? TestEndDateValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Test_End_Date_Valid")));
+                return ((bool?)(GetCheckParameter("Test_End_Date_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_End_Date_Valid", value);
+                SetCheckParameter("Test_End_Date_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported end hour of a test is valid.
         /// </summary>
-        public static bool? TestEndHourValid
+        public  bool? TestEndHourValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Test_End_Hour_Valid")));
+                return ((bool?)(GetCheckParameter("Test_End_Hour_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_End_Hour_Valid", value);
+                SetCheckParameter("Test_End_Hour_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the reported end minute of a test is valid.
         /// </summary>
-        public static bool? TestEndMinuteValid
+        public  bool? TestEndMinuteValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Test_End_Minute_Valid")));
+                return ((bool?)(GetCheckParameter("Test_End_Minute_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_End_Minute_Valid", value);
+                SetCheckParameter("Test_End_Minute_Valid", value);
             }
         }
         
         /// <summary>
         /// First day of quarter in test extension exemption record.
         /// </summary>
-        public static DateTime? TestExtensionExemptionBeginDate
+        public  DateTime? TestExtensionExemptionBeginDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("Test_Extension_Exemption_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Test_Extension_Exemption_Begin_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_Extension_Exemption_Begin_Date", value);
+                SetCheckParameter("Test_Extension_Exemption_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// End day of quarter in test extension exemption record.
         /// </summary>
-        public static DateTime? TestExtensionExemptionEndDate
+        public  DateTime? TestExtensionExemptionEndDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("Test_Extension_Exemption_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Test_Extension_Exemption_End_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_Extension_Exemption_End_Date", value);
+                SetCheckParameter("Test_Extension_Exemption_End_Date", value);
             }
         }
         
         /// <summary>
         /// The Test Extension Exemption records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestExtensionExemptionRow> TestExtensionExemptionRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestExtensionExemptionRow> TestExtensionExemptionRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Test_Extension_Exemption_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Test_Extension_Exemption_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9622,11 +9622,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Test_Extension_Exemption_Records", null);
+                    SetCheckParameter("Test_Extension_Exemption_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Test_Extension_Exemption_Records", value.SourceView);
+                    SetCheckParameter("Test_Extension_Exemption_Records", value.SourceView);
                 }
             }
         }
@@ -9634,26 +9634,26 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if Test Number is valid.
         /// </summary>
-        public static bool? TestNumberValid
+        public  bool? TestNumberValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Test_Number_Valid")));
+                return ((bool?)(GetCheckParameter("Test_Number_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_Number_Valid", value);
+                SetCheckParameter("Test_Number_Valid", value);
             }
         }
         
         /// <summary>
         /// All Test Qualification records associated with a RATA.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestClaimRow> TestQualificationRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestClaimRow> TestQualificationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Test_Qualification_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Test_Qualification_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9667,11 +9667,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Test_Qualification_Records", null);
+                    SetCheckParameter("Test_Qualification_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Test_Qualification_Records", value.SourceView);
+                    SetCheckParameter("Test_Qualification_Records", value.SourceView);
                 }
             }
         }
@@ -9679,11 +9679,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// A list of valid test reason codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.TestReasonCodeRow> TestReasonCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.TestReasonCodeRow> TestReasonCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Test_Reason_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Test_Reason_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9697,11 +9697,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Test_Reason_Code_Lookup_Table", null);
+                    SetCheckParameter("Test_Reason_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Test_Reason_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Test_Reason_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -9709,41 +9709,41 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The first day of the reporting period.
         /// </summary>
-        public static DateTime? TestReportingPeriodBeginDate
+        public  DateTime? TestReportingPeriodBeginDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("Test_Reporting_Period_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Test_Reporting_Period_Begin_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_Reporting_Period_Begin_Date", value);
+                SetCheckParameter("Test_Reporting_Period_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// Indicates if reporting period is valid for a test.
         /// </summary>
-        public static bool? TestReportingPeriodValid
+        public  bool? TestReportingPeriodValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Test_Reporting_Period_Valid")));
+                return ((bool?)(GetCheckParameter("Test_Reporting_Period_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_Reporting_Period_Valid", value);
+                SetCheckParameter("Test_Reporting_Period_Valid", value);
             }
         }
         
         /// <summary>
         /// A list of valid test result codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.TestResultCodeRow> TestResultCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.TestResultCodeRow> TestResultCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Test_Result_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Test_Result_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9757,11 +9757,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Test_Result_Code_Lookup_Table", null);
+                    SetCheckParameter("Test_Result_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Test_Result_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Test_Result_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -9769,56 +9769,56 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Used for leveling.
         /// </summary>
-        public static bool? TestSpanDetermined
+        public  bool? TestSpanDetermined
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Test_Span_Determined")));
+                return ((bool?)(GetCheckParameter("Test_Span_Determined")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_Span_Determined", value);
+                SetCheckParameter("Test_Span_Determined", value);
             }
         }
         
         /// <summary>
         /// Indicates if span scale of a test is a valid code.
         /// </summary>
-        public static bool? TestSpanScaleValid
+        public  bool? TestSpanScaleValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Test_Span_Scale_Valid")));
+                return ((bool?)(GetCheckParameter("Test_Span_Scale_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_Span_Scale_Valid", value);
+                SetCheckParameter("Test_Span_Scale_Valid", value);
             }
         }
         
         /// <summary>
         /// The span value for the component type of the test according to the monitoring plan.
         /// </summary>
-        public static decimal? TestSpanValue
+        public  decimal? TestSpanValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Test_Span_Value")));
+                return ((decimal?)(GetCheckParameter("Test_Span_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Test_Span_Value", value);
+                SetCheckParameter("Test_Span_Value", value);
             }
         }
         
         /// <summary>
         /// Acceptable tolerances between reported and calculated values for tests.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.TestTolerancesRow> TestTolerancesCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.TestTolerancesRow> TestTolerancesCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Test_Tolerances_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Test_Tolerances_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9832,11 +9832,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Test_Tolerances_Cross_Check_Table", null);
+                    SetCheckParameter("Test_Tolerances_Cross_Check_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Test_Tolerances_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Test_Tolerances_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -9844,11 +9844,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates the test types that are included in the QA Cert Event required test code.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.TestTypeToRequiredTestCodeRow> TestTypeToRequiredTestCodeCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.TestTypeToRequiredTestCodeRow> TestTypeToRequiredTestCodeCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Test_Type_to_Required_Test_Code_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Test_Type_to_Required_Test_Code_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9862,11 +9862,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Test_Type_to_Required_Test_Code_Cross_Check_Table", null);
+                    SetCheckParameter("Test_Type_to_Required_Test_Code_Cross_Check_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Test_Type_to_Required_Test_Code_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("Test_Type_to_Required_Test_Code_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -9874,41 +9874,41 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The recalculated result of a fuel flowmeter transmitter transducer test.
         /// </summary>
-        public static string TransmitterTransducerTestCalcResult
+        public  string TransmitterTransducerTestCalcResult
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Transmitter_Transducer_Test_Calc_Result")));
+                return ((string)(GetCheckParameter("Transmitter_Transducer_Test_Calc_Result")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Transmitter_Transducer_Test_Calc_Result", value);
+                SetCheckParameter("Transmitter_Transducer_Test_Calc_Result", value);
             }
         }
         
         /// <summary>
         /// Indicates if the component tested in the fuel flowmeter transmitter transducer test has a valid component type.
         /// </summary>
-        public static bool? TransmitterTransducerTestComponentTypeValid
+        public  bool? TransmitterTransducerTestComponentTypeValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Transmitter_Transducer_Test_Component_Type_Valid")));
+                return ((bool?)(GetCheckParameter("Transmitter_Transducer_Test_Component_Type_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Transmitter_Transducer_Test_Component_Type_Valid", value);
+                SetCheckParameter("Transmitter_Transducer_Test_Component_Type_Valid", value);
             }
         }
         
         /// <summary>
         /// All fuel flowmeter transmitter transducer test summary records for the component.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFfaccttRow> TransmitterTransducerTestRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryFfaccttRow> TransmitterTransducerTestRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Transmitter_Transducer_Test_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Transmitter_Transducer_Test_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9922,11 +9922,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Transmitter_Transducer_Test_Records", null);
+                    SetCheckParameter("Transmitter_Transducer_Test_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Transmitter_Transducer_Test_Records", value.SourceView);
+                    SetCheckParameter("Transmitter_Transducer_Test_Records", value.SourceView);
                 }
             }
         }
@@ -9934,26 +9934,26 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates if the result of the transmitter transducer test has been recalcuated.
         /// </summary>
-        public static bool? TransmitterTransducerTestResultDetermined
+        public  bool? TransmitterTransducerTestResultDetermined
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Transmitter_Transducer_Test_Result_Determined")));
+                return ((bool?)(GetCheckParameter("Transmitter_Transducer_Test_Result_Determined")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Transmitter_Transducer_Test_Result_Determined", value);
+                SetCheckParameter("Transmitter_Transducer_Test_Result_Determined", value);
             }
         }
         
         /// <summary>
         /// A table of T-Values based on the number of runs in the RATA.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.TValuesRow> TvaluesCrossCheckTable
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual.TValuesRow> TvaluesCrossCheckTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("TValues_Cross_Check_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("TValues_Cross_Check_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -9967,11 +9967,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("TValues_Cross_Check_Table", null);
+                    SetCheckParameter("TValues_Cross_Check_Table", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("TValues_Cross_Check_Table", value.SourceView);
+                    SetCheckParameter("TValues_Cross_Check_Table", value.SourceView);
                 }
             }
         }
@@ -9979,15 +9979,15 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The sum of the reference values in the runs of the "flagged" operating level of an unit default Test.
         /// </summary>
-        public static decimal? UnitDefaultFlaggedLevelSumReferenceValue
+        public  decimal? UnitDefaultFlaggedLevelSumReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Unit_Default_Flagged_Level_Sum_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("Unit_Default_Flagged_Level_Sum_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Flagged_Level_Sum_Reference_Value", value);
+                SetCheckParameter("Unit_Default_Flagged_Level_Sum_Reference_Value", value);
             }
         }
         
@@ -9995,135 +9995,135 @@ namespace ECMPS.Checks.Qa.Parameters
         /// The average NOx Rate of the "flagged" operating level of a unit default test.
         ///
         /// </summary>
-        public static decimal? UnitDefaultFlaggedNoxRate
+        public  decimal? UnitDefaultFlaggedNoxRate
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Unit_Default_Flagged_NOx_Rate")));
+                return ((decimal?)(GetCheckParameter("Unit_Default_Flagged_NOx_Rate")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Flagged_NOx_Rate", value);
+                SetCheckParameter("Unit_Default_Flagged_NOx_Rate", value);
             }
         }
         
         /// <summary>
         /// The OperatingLevelForRun in the unit default test where the RunUsedIndicator is equal to 1.
         /// </summary>
-        public static string UnitDefaultFlaggedOpLevel
+        public  string UnitDefaultFlaggedOpLevel
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Unit_Default_Flagged_Op_Level")));
+                return ((string)(GetCheckParameter("Unit_Default_Flagged_Op_Level")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Flagged_Op_Level", value);
+                SetCheckParameter("Unit_Default_Flagged_Op_Level", value);
             }
         }
         
         /// <summary>
         /// Indicates if the fuel code in the Unit Default test is valid.
         /// </summary>
-        public static bool? UnitDefaultFuelValid
+        public  bool? UnitDefaultFuelValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Unit_Default_Fuel_Valid")));
+                return ((bool?)(GetCheckParameter("Unit_Default_Fuel_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Fuel_Valid", value);
+                SetCheckParameter("Unit_Default_Fuel_Valid", value);
             }
         }
         
         /// <summary>
         /// The OperatingLevelForRun with an insufficient number of runs.
         /// </summary>
-        public static string UnitDefaultIncompleteLevel
+        public  string UnitDefaultIncompleteLevel
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Unit_Default_Incomplete_Level")));
+                return ((string)(GetCheckParameter("Unit_Default_Incomplete_Level")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Incomplete_Level", value);
+                SetCheckParameter("Unit_Default_Incomplete_Level", value);
             }
         }
         
         /// <summary>
         /// The OperatingLevelForRun in the previous unit default test run record.
         /// </summary>
-        public static string UnitDefaultLastOpLevel
+        public  string UnitDefaultLastOpLevel
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Unit_Default_Last_Op_Level")));
+                return ((string)(GetCheckParameter("Unit_Default_Last_Op_Level")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Last_Op_Level", value);
+                SetCheckParameter("Unit_Default_Last_Op_Level", value);
             }
         }
         
         /// <summary>
         /// The RunNumber of the previous run of the unit default test when sort in OperatingLevelForRun, RunNumber order.
         /// </summary>
-        public static int? UnitDefaultLastRunNumber
+        public  int? UnitDefaultLastRunNumber
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Unit_Default_Last_Run_Number")));
+                return ((int?)(GetCheckParameter("Unit_Default_Last_Run_Number")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Last_Run_Number", value);
+                SetCheckParameter("Unit_Default_Last_Run_Number", value);
             }
         }
         
         /// <summary>
         /// A counter fo the current operating level of an Unit default Test being evaluated.
         /// </summary>
-        public static int? UnitDefaultLevelCount
+        public  int? UnitDefaultLevelCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Unit_Default_Level_Count")));
+                return ((int?)(GetCheckParameter("Unit_Default_Level_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Level_Count", value);
+                SetCheckParameter("Unit_Default_Level_Count", value);
             }
         }
         
         /// <summary>
         /// A counter fo the number of runs in the operating level of the Unit Default Test being evaluated.
         /// </summary>
-        public static int? UnitDefaultLevelRunCount
+        public  int? UnitDefaultLevelRunCount
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Unit_Default_Level_Run_Count")));
+                return ((int?)(GetCheckParameter("Unit_Default_Level_Run_Count")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Level_Run_Count", value);
+                SetCheckParameter("Unit_Default_Level_Run_Count", value);
             }
         }
         
         /// <summary>
         /// The sum of the reference values in the runs of an operating level of an unit default Test.
         /// </summary>
-        public static decimal? UnitDefaultLevelSumReferenceValue
+        public  decimal? UnitDefaultLevelSumReferenceValue
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Unit_Default_Level_Sum_Reference_Value")));
+                return ((decimal?)(GetCheckParameter("Unit_Default_Level_Sum_Reference_Value")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Level_Sum_Reference_Value", value);
+                SetCheckParameter("Unit_Default_Level_Sum_Reference_Value", value);
             }
         }
         
@@ -10131,41 +10131,41 @@ namespace ECMPS.Checks.Qa.Parameters
         /// The maximum average NOx Rate of all operating levels of a unit default test.
         ///
         /// </summary>
-        public static decimal? UnitDefaultMaximumNoxRate
+        public  decimal? UnitDefaultMaximumNoxRate
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Unit_Default_Maximum_NOx_Rate")));
+                return ((decimal?)(GetCheckParameter("Unit_Default_Maximum_NOx_Rate")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Maximum_NOx_Rate", value);
+                SetCheckParameter("Unit_Default_Maximum_NOx_Rate", value);
             }
         }
         
         /// <summary>
         /// Indicates if the default emission rate has been recalculated.
         /// </summary>
-        public static bool? UnitDefaultNoxRateDetermined
+        public  bool? UnitDefaultNoxRateDetermined
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Unit_Default_NOx_Rate_Determined")));
+                return ((bool?)(GetCheckParameter("Unit_Default_NOx_Rate_Determined")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_NOx_Rate_Determined", value);
+                SetCheckParameter("Unit_Default_NOx_Rate_Determined", value);
             }
         }
         
         /// <summary>
         /// All Run records for the Unit Default test.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaUnitDefaultTestRunRow> UnitDefaultRunRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaUnitDefaultTestRunRow> UnitDefaultRunRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Unit_Default_Run_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Unit_Default_Run_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -10179,11 +10179,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Unit_Default_Run_Records", null);
+                    SetCheckParameter("Unit_Default_Run_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Unit_Default_Run_Records", value.SourceView);
+                    SetCheckParameter("Unit_Default_Run_Records", value.SourceView);
                 }
             }
         }
@@ -10191,165 +10191,165 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// A string of run numbers in the unit default test.
         /// </summary>
-        public static string UnitDefaultRunSequence
+        public  string UnitDefaultRunSequence
         {
             get
             {
-                return ((string)(QaParameters.GetCheckParameter("Unit_Default_Run_Sequence")));
+                return ((string)(GetCheckParameter("Unit_Default_Run_Sequence")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Run_Sequence", value);
+                SetCheckParameter("Unit_Default_Run_Sequence", value);
             }
         }
         
         /// <summary>
         /// Indicates if the sequence of run numbers in the unit default test is consecutive.
         /// </summary>
-        public static bool? UnitDefaultRunSequenceConsecutive
+        public  bool? UnitDefaultRunSequenceConsecutive
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Unit_Default_Run_Sequence_Consecutive")));
+                return ((bool?)(GetCheckParameter("Unit_Default_Run_Sequence_Consecutive")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Run_Sequence_Consecutive", value);
+                SetCheckParameter("Unit_Default_Run_Sequence_Consecutive", value);
             }
         }
         
         /// <summary>
         /// Indicates if the sequence of run numbers in the unit default test is valid.
         /// </summary>
-        public static bool? UnitDefaultRunSequenceValid
+        public  bool? UnitDefaultRunSequenceValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Unit_Default_Run_Sequence_Valid")));
+                return ((bool?)(GetCheckParameter("Unit_Default_Run_Sequence_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Run_Sequence_Valid", value);
+                SetCheckParameter("Unit_Default_Run_Sequence_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if the run times in the unit default test are valid.
         /// </summary>
-        public static bool? UnitDefaultRunTimesValid
+        public  bool? UnitDefaultRunTimesValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Unit_Default_Run_Times_Valid")));
+                return ((bool?)(GetCheckParameter("Unit_Default_Run_Times_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Run_Times_Valid", value);
+                SetCheckParameter("Unit_Default_Run_Times_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates if all runs in the flagged operating level of a Unit Default test are equal to 1.
         /// </summary>
-        public static bool? UnitDefaultRunUsedIndicatorsConsistent
+        public  bool? UnitDefaultRunUsedIndicatorsConsistent
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Unit_Default_Run_Used_Indicators_Consistent")));
+                return ((bool?)(GetCheckParameter("Unit_Default_Run_Used_Indicators_Consistent")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Run_Used_Indicators_Consistent", value);
+                SetCheckParameter("Unit_Default_Run_Used_Indicators_Consistent", value);
             }
         }
         
         /// <summary>
         /// The begin date of the first run of the Unit Default test.
         /// </summary>
-        public static DateTime? UnitDefaultTestBeginDate
+        public  DateTime? UnitDefaultTestBeginDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("Unit_Default_Test_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Unit_Default_Test_Begin_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Test_Begin_Date", value);
+                SetCheckParameter("Unit_Default_Test_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The begin hour of the first run of the Unit Default test.
         /// </summary>
-        public static int? UnitDefaultTestBeginHour
+        public  int? UnitDefaultTestBeginHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Unit_Default_Test_Begin_Hour")));
+                return ((int?)(GetCheckParameter("Unit_Default_Test_Begin_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Test_Begin_Hour", value);
+                SetCheckParameter("Unit_Default_Test_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// The begin minute of the first run of the Unit Default test.
         /// </summary>
-        public static int? UnitDefaultTestBeginMinute
+        public  int? UnitDefaultTestBeginMinute
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Unit_Default_Test_Begin_Minute")));
+                return ((int?)(GetCheckParameter("Unit_Default_Test_Begin_Minute")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Test_Begin_Minute", value);
+                SetCheckParameter("Unit_Default_Test_Begin_Minute", value);
             }
         }
         
         /// <summary>
         /// The end date of the last run of the unit default test.
         /// </summary>
-        public static DateTime? UnitDefaultTestEndDate
+        public  DateTime? UnitDefaultTestEndDate
         {
             get
             {
-                return ((DateTime?)(QaParameters.GetCheckParameter("Unit_Default_Test_End_Date")));
+                return ((DateTime?)(GetCheckParameter("Unit_Default_Test_End_Date")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Test_End_Date", value);
+                SetCheckParameter("Unit_Default_Test_End_Date", value);
             }
         }
         
         /// <summary>
         /// The end hour of the last run of the unit default test.
         /// </summary>
-        public static int? UnitDefaultTestEndHour
+        public  int? UnitDefaultTestEndHour
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Unit_Default_Test_End_Hour")));
+                return ((int?)(GetCheckParameter("Unit_Default_Test_End_Hour")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Test_End_Hour", value);
+                SetCheckParameter("Unit_Default_Test_End_Hour", value);
             }
         }
         
         /// <summary>
         /// The end minute of the last run of the unit default test.
         /// </summary>
-        public static int? UnitDefaultTestEndMinute
+        public  int? UnitDefaultTestEndMinute
         {
             get
             {
-                return ((int?)(QaParameters.GetCheckParameter("Unit_Default_Test_End_Minute")));
+                return ((int?)(GetCheckParameter("Unit_Default_Test_End_Minute")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Test_End_Minute", value);
+                SetCheckParameter("Unit_Default_Test_End_Minute", value);
             }
         }
         
@@ -10357,26 +10357,26 @@ namespace ECMPS.Checks.Qa.Parameters
         /// The NOx default emission rate recalculated from the values in the runs of unit default test.
         ///
         /// </summary>
-        public static decimal? UnitDefaultTestNoxRate
+        public  decimal? UnitDefaultTestNoxRate
         {
             get
             {
-                return ((decimal?)(QaParameters.GetCheckParameter("Unit_Default_Test_NOx_Rate")));
+                return ((decimal?)(GetCheckParameter("Unit_Default_Test_NOx_Rate")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Unit_Default_Test_NOx_Rate", value);
+                SetCheckParameter("Unit_Default_Test_NOx_Rate", value);
             }
         }
         
         /// <summary>
         /// All unit default test records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryUnitdefRow> UnitDefaultTestRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwQaTestSummaryUnitdefRow> UnitDefaultTestRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Unit_Default_Test_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Unit_Default_Test_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -10390,11 +10390,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Unit_Default_Test_Records", null);
+                    SetCheckParameter("Unit_Default_Test_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Unit_Default_Test_Records", value.SourceView);
+                    SetCheckParameter("Unit_Default_Test_Records", value.SourceView);
                 }
             }
         }
@@ -10402,11 +10402,11 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// The Unit Stack Configuration records for all of a facility's locations that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> UnitStackConfigurationRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> UnitStackConfigurationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(QaParameters.GetCheckParameter("Unit_Stack_Configuration_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Unit_Stack_Configuration_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -10420,11 +10420,11 @@ namespace ECMPS.Checks.Qa.Parameters
             {
                 if ((value == null))
                 {
-                    QaParameters.SetCheckParameter("Unit_Stack_Configuration_Records", null);
+                    SetCheckParameter("Unit_Stack_Configuration_Records", null);
                 }
                 else
                 {
-                    QaParameters.SetCheckParameter("Unit_Stack_Configuration_Records", value.SourceView);
+                    SetCheckParameter("Unit_Stack_Configuration_Records", value.SourceView);
                 }
             }
         }
@@ -10432,60 +10432,60 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Indicates that the results of the upscale injection of a 7day calibration test can be recalculated.
         /// </summary>
-        public static bool? UpscaleCalibrationInjectionValid
+        public  bool? UpscaleCalibrationInjectionValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Upscale_Calibration_Injection_Valid")));
+                return ((bool?)(GetCheckParameter("Upscale_Calibration_Injection_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Upscale_Calibration_Injection_Valid", value);
+                SetCheckParameter("Upscale_Calibration_Injection_Valid", value);
             }
         }
         
         /// <summary>
         /// Indicates that the upscale gas level code of an online offline calibration test is valid.
         /// </summary>
-        public static bool? UpscaleOocGasLevelValid
+        public  bool? UpscaleOocGasLevelValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Upscale_OOC_Gas_Level_Valid")));
+                return ((bool?)(GetCheckParameter("Upscale_OOC_Gas_Level_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Upscale_OOC_Gas_Level_Valid", value);
+                SetCheckParameter("Upscale_OOC_Gas_Level_Valid", value);
             }
         }
         
         /// <summary>
         /// This is used for levelling only.
         /// </summary>
-        public static bool? ValidPgvpRecord
+        public  bool? ValidPgvpRecord
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Valid_PGVP_Record")));
+                return ((bool?)(GetCheckParameter("Valid_PGVP_Record")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Valid_PGVP_Record", value);
+                SetCheckParameter("Valid_PGVP_Record", value);
             }
         }
         
         /// <summary>
         /// Indicates that the results of the zero-level injection of a 7day calibration test can be recalculated.
         /// </summary>
-        public static bool? ZeroCalibrationInjectionValid
+        public  bool? ZeroCalibrationInjectionValid
         {
             get
             {
-                return ((bool?)(QaParameters.GetCheckParameter("Zero_Calibration_Injection_Valid")));
+                return ((bool?)(GetCheckParameter("Zero_Calibration_Injection_Valid")));
             }
             set
             {
-                QaParameters.SetCheckParameter("Zero_Calibration_Injection_Valid", value);
+                SetCheckParameter("Zero_Calibration_Injection_Valid", value);
             }
         }
         
@@ -10494,20 +10494,20 @@ namespace ECMPS.Checks.Qa.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <returns>Returns the requested check parameter as an object if it exists, and as a null if it does not.</returns>
-        public static object GetCheckParameter(string parameterId)
+        public  object GetCheckParameter(string parameterId)
         {
             cLegacyCheckParameter checkParameter;
-            if (((QaParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                checkParameter = QaParameters.Category.GetCheckParameter(parameterId);
+                checkParameter = Category.GetCheckParameter(parameterId);
             }
             else
             {
-                if (((QaParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    checkParameter = QaParameters.Process.GetCheckParameter(parameterId);
+                    checkParameter = Process.GetCheckParameter(parameterId);
                 }
                 else
                 {
@@ -10529,19 +10529,19 @@ namespace ECMPS.Checks.Qa.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <param name="parameterValue">The value to which to set the parameter.</param>
-        public static void SetCheckParameter(string parameterId, object parameterValue)
+        public  void SetCheckParameter(string parameterId, object parameterValue)
         {
-            if (((QaParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                QaParameters.Category.SetCheckParameter(parameterId, parameterValue);
+                Category.SetCheckParameter(parameterId, parameterValue);
             }
             else
             {
-                if (((QaParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    QaParameters.Process.SetCheckParameter(parameterId, parameterValue);
+                    Process.SetCheckParameter(parameterId, parameterValue);
                 }
             }
         }
@@ -10549,20 +10549,20 @@ namespace ECMPS.Checks.Qa.Parameters
         /// <summary>
         /// Initializes the values in the check parameter object.
         /// </summary>
-        public static void Init(cProcess process)
+        public  void Init(cProcess process)
         {
-            QaParameters._process = process;
-            QaParameters.Category = null;
-            QaParameters.RegisterParameters();
+            _process = process;
+            Category = null;
+            RegisterParameters();
         }
         
         /// <summary>
         /// Registers each check parameter.
         /// </summary>
-        public static void RegisterParameters()
+        public  void RegisterParameters()
         {
-            if (((QaParameters.Process == null) 
-                        || (QaParameters.Process.ProcessParameters == null)))
+            if (((Process == null) 
+                        || (Process.ProcessParameters == null)))
             {
                 return;
             }

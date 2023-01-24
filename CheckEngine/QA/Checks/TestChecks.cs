@@ -52,7 +52,7 @@ namespace ECMPS.Checks.TestChecks
 		#region Test Checks
 
 		#region Test Checks 1-10
-		public static string TEST1(cCategory Category, ref bool Log) // Valid Begin Date
+		public  string TEST1(cCategory Category, ref bool Log) // Valid Begin Date
 		{
 			string ReturnVal = "";
 
@@ -84,7 +84,7 @@ namespace ECMPS.Checks.TestChecks
 			return ReturnVal;
 		}
 
-		public static string TEST2(cCategory Category, ref bool Log) // Valid Begin Hour
+		public  string TEST2(cCategory Category, ref bool Log) // Valid Begin Hour
 		{
 			string ReturnVal = "";
 
@@ -115,7 +115,7 @@ namespace ECMPS.Checks.TestChecks
 			return ReturnVal;
 		}
 
-		public static string TEST3(cCategory Category, ref bool Log) // Valid Begin Minute
+		public  string TEST3(cCategory Category, ref bool Log) // Valid Begin Minute
 		{
 			string ReturnVal = "";
 
@@ -153,7 +153,7 @@ namespace ECMPS.Checks.TestChecks
 			return ReturnVal;
 		}
 
-		public static string TEST4(cCategory Category, ref bool Log) // Valid End Date
+		public  string TEST4(cCategory Category, ref bool Log) // Valid End Date
 		{
 			string ReturnVal = "";
 
@@ -185,7 +185,7 @@ namespace ECMPS.Checks.TestChecks
 			return ReturnVal;
 		}
 
-		public static string TEST5(cCategory Category, ref bool Log) // Valid End Hour
+		public  string TEST5(cCategory Category, ref bool Log) // Valid End Hour
 		{
 			string ReturnVal = "";
 
@@ -216,7 +216,7 @@ namespace ECMPS.Checks.TestChecks
 			return ReturnVal;
 		}
 
-		public static string TEST6(cCategory Category, ref bool Log) // Valid End Minute
+		public  string TEST6(cCategory Category, ref bool Log) // Valid End Minute
 		{
 			string ReturnVal = "";
 
@@ -255,7 +255,7 @@ namespace ECMPS.Checks.TestChecks
 			return ReturnVal;
 		}
 
-		public static string TEST7(cCategory Category, ref bool Log) // Linearity Dates Consistent
+		public  string TEST7(cCategory Category, ref bool Log) // Linearity Dates Consistent
 		{
 			string ReturnVal = "";
 
@@ -306,7 +306,7 @@ namespace ECMPS.Checks.TestChecks
 			return ReturnVal;
 		}
 
-		public static string TEST8(cCategory Category, ref bool Log) //Validate Span Scale
+		public  string TEST8(cCategory Category, ref bool Log) //Validate Span Scale
 		{
 			string ReturnVal = "";
 
@@ -401,7 +401,7 @@ namespace ECMPS.Checks.TestChecks
 			return ReturnVal;
 		}
 
-		public static string TEST9(cCategory Category, ref bool Log) //Validate Span Value
+		public  string TEST9(cCategory Category, ref bool Log) //Validate Span Value
 		{
 			string ReturnVal = "";
 
@@ -498,7 +498,7 @@ namespace ECMPS.Checks.TestChecks
 			return ReturnVal;
 		}
 
-		public static string TEST10(cCategory Category, ref bool Log)
+		public  string TEST10(cCategory Category, ref bool Log)
 		//Test Year Valid
 		{
 			string ReturnVal = "";
@@ -546,7 +546,7 @@ namespace ECMPS.Checks.TestChecks
 
 		#region Test Checks 11-20
 
-		public static string TEST11(cCategory Category, ref bool Log)
+		public  string TEST11(cCategory Category, ref bool Log)
 		//Test Quarter Valid
 		{
 			string ReturnVal = "";
@@ -570,7 +570,7 @@ namespace ECMPS.Checks.TestChecks
 		}
 
 
-		public static string TEST12(cCategory Category, ref bool Log)
+		public  string TEST12(cCategory Category, ref bool Log)
 		//Miscellaneous Test Type Code Valid
 		{
 			string ReturnVal = "";
@@ -601,7 +601,7 @@ namespace ECMPS.Checks.TestChecks
 		}
 
 
-		public static string TEST13(cCategory Category, ref bool Log)
+		public  string TEST13(cCategory Category, ref bool Log)
 		// Valid Test Number
 		{
 			string ReturnVal = "";
@@ -626,7 +626,7 @@ namespace ECMPS.Checks.TestChecks
 		}
 
 
-		public static string TEST14(cCategory Category, ref bool Log)
+		public  string TEST14(cCategory Category, ref bool Log)
 		//Miscellaneous Test Description Valid
 		{
 			string ReturnVal = "";
@@ -653,7 +653,7 @@ namespace ECMPS.Checks.TestChecks
 		}
 
 
-		public static string TEST15(cCategory Category, ref bool Log)
+		public  string TEST15(cCategory Category, ref bool Log)
 		//Miscellaneous Test Grace Period Indicator Valid
 		{
 			string ReturnVal = "";
@@ -674,7 +674,7 @@ namespace ECMPS.Checks.TestChecks
 		}
 
 
-		public static string TEST16(cCategory Category, ref bool Log)
+		public  string TEST16(cCategory Category, ref bool Log)
 		//Miscellaneous Test System or Component Valid
 		{
 			string ReturnVal = "";
@@ -786,7 +786,7 @@ namespace ECMPS.Checks.TestChecks
 		}
 
 
-		public static string TEST17(cCategory Category, ref bool Log)
+		public  string TEST17(cCategory Category, ref bool Log)
 		//Miscellaneous Test Reason Code Valid
 		{
 			string ReturnVal = "";
@@ -819,7 +819,7 @@ namespace ECMPS.Checks.TestChecks
 		}
 
 
-		public static string TEST18(cCategory Category, ref bool Log)
+		public  string TEST18(cCategory Category, ref bool Log)
 		//Miscellaneous Test Result Code Valid
 		{
 			string ReturnVal = "";
@@ -849,7 +849,7 @@ namespace ECMPS.Checks.TestChecks
 		}
 
 
-		public static string TEST19(cCategory Category, ref bool Log)
+		public  string TEST19(cCategory Category, ref bool Log)
 		//Duplicate Miscellaneous Test
 		{
 			string ReturnVal = "";
@@ -905,7 +905,7 @@ namespace ECMPS.Checks.TestChecks
 		}
 
 
-		public static string TEST20(cCategory Category, ref bool Log)
+		public  string TEST20(cCategory Category, ref bool Log)
 		//Identification of Previously Reported Test or Test Number for Miscellaneous Test
 		{
 			string ReturnVal = "";
@@ -1062,7 +1062,7 @@ namespace ECMPS.Checks.TestChecks
 
 		#region Test Checks 21-30
 
-		public static string TEST21(cCategory Category, ref bool Log)
+		public  string TEST21(cCategory Category, ref bool Log)
 		//Critical Level 2 Message
 		{
 			string ReturnVal = "";
@@ -1080,7 +1080,7 @@ namespace ECMPS.Checks.TestChecks
 		}
 
 
-		public static string TEST22(cCategory Category, ref bool Log)
+		public  string TEST22(cCategory Category, ref bool Log)
 		//MP Evaluation Check
 		{
 			string ReturnVal = "";
@@ -1115,16 +1115,16 @@ namespace ECMPS.Checks.TestChecks
 			return ReturnVal;
 		}
 
-		public static string TEST23(cCategory Category, ref bool Log)
+		public  string TEST23(cCategory Category, ref bool Log)
 		//Ensures that the Injection Protocol is null when the test is not a 7 Day Calibration Test or a Cycle Time Test, or when the component type is not 'HG'.
 		{
 			string ReturnVal = "";
 
 			try
 			{
-				if (QaParameters.CurrentTest.TestTypeCd.InList("7DAY,CYCLE"))
+				if (qaParams.CurrentTest.TestTypeCd.InList("7DAY,CYCLE"))
 				{
-					DataRowView ComponentRecord = cRowFilter.FindRow(QaParameters.ComponentRecords.SourceView, new cFilterCondition[] { new cFilterCondition("COMPONENT_ID", QaParameters.CurrentTest.ComponentId) }
+					DataRowView ComponentRecord = cRowFilter.FindRow(qaParams.ComponentRecords.SourceView, new cFilterCondition[] { new cFilterCondition("COMPONENT_ID", qaParams.CurrentTest.ComponentId) }
 					);
 
 					if (ComponentRecord != null)
@@ -1132,18 +1132,18 @@ namespace ECMPS.Checks.TestChecks
 
 						if (ComponentRecord["COMPONENT_TYPE_CD"].ToString() == "HG")
 						{
-							if (QaParameters.CurrentTest.InjectionProtocolCd == null)
+							if (qaParams.CurrentTest.InjectionProtocolCd == null)
 							{
 								Category.CheckCatalogResult = "A";
 							}
-							else if (QaParameters.CurrentTest.InjectionProtocolCd.NotInList("HGE,HGO"))
+							else if (qaParams.CurrentTest.InjectionProtocolCd.NotInList("HGE,HGO"))
 							{
 								Category.CheckCatalogResult = "B";
 							}
 						}
 						else
 						{
-							if (QaParameters.CurrentTest.InjectionProtocolCd != null)
+							if (qaParams.CurrentTest.InjectionProtocolCd != null)
 							{
 								Category.CheckCatalogResult = "C";
 							}
@@ -1153,7 +1153,7 @@ namespace ECMPS.Checks.TestChecks
 				else
 				{
 
-					if (QaParameters.CurrentTest.InjectionProtocolCd != null)
+					if (qaParams.CurrentTest.InjectionProtocolCd != null)
 					{
 						Category.CheckCatalogResult = "D";
 					}
@@ -1168,24 +1168,24 @@ namespace ECMPS.Checks.TestChecks
 		}
 
 		
-		public static string TEST24(cCategory Category, ref bool Log)
+		public  string TEST24(cCategory Category, ref bool Log)
 		//Initialize Test Parameters
 		{
 			string ReturnVal = "";
 
 			try
 			{
-				if (QaParameters.FirstEcmpsReportingPeriod == null)
+				if (qaParams.FirstEcmpsReportingPeriod == null)
 				{
-					QaParameters.EcmpsMpBeginDate = new DateTime(2009, 1, 1);
+					qaParams.EcmpsMpBeginDate = new DateTime(2009, 1, 1);
 				}
 				else
 				{
-					QaParameters.EcmpsMpBeginDate = cDateFunctions.StartDateThisQuarter(QaParameters.FirstEcmpsReportingPeriod.Value);
+					qaParams.EcmpsMpBeginDate = cDateFunctions.StartDateThisQuarter(qaParams.FirstEcmpsReportingPeriod.Value);
 				}
 
-				QaParameters.ProtocolGases = null;
-				QaParameters.ProtocolGasCylinderIdList = null;
+				qaParams.ProtocolGases = null;
+				qaParams.ProtocolGasCylinderIdList = null;
 			}
 			catch (Exception ex)
 			{

@@ -25,6 +25,8 @@ namespace CheckEngineRunner
 
         static async Task Main(string[] args)
         {
+
+            /*
             string fileTypeCd = ((args != null) && (args.Length >= 1)) ? args[0] : null;
             string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
             string otherId = ((args != null) && (args.Length >= 3)) ? args[2] : null;
@@ -61,6 +63,14 @@ namespace CheckEngineRunner
 
             Console.ReadLine();
 
+            */
+            string localDir = System.IO.Directory.GetCurrentDirectory();
+            string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\MonitorPlan\\obj\\Debug\\netcoreapp3.1\\";
+            cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
+
+            bool result = checkEngine.RunChecks_MpReport("TWCORNEL5-488E42008B434177BC7D7BFF138D18EF", new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+
+            Console.ReadLine();
         }
     }
 

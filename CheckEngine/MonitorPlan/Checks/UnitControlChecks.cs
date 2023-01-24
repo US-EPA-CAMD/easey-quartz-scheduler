@@ -35,7 +35,7 @@ namespace ECMPS.Checks.UnitControlChecks
 
 		#endregion
 
-		public static string CONTROL1(cCategory Category, ref bool Log)
+		public string CONTROL1(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -68,7 +68,7 @@ namespace ECMPS.Checks.UnitControlChecks
 			return ReturnVal;
 		}
 
-		public static string CONTROL2(cCategory Category, ref bool Log)
+		public string CONTROL2(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -113,7 +113,7 @@ namespace ECMPS.Checks.UnitControlChecks
 			return ReturnVal;
 		}
 
-		public static string CONTROL4(cCategory Category, ref bool Log)
+		public string CONTROL4(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -140,7 +140,7 @@ namespace ECMPS.Checks.UnitControlChecks
 			return ReturnVal;
 		}
 
-		public static string CONTROL5(cCategory Category, ref bool Log)
+		public string CONTROL5(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -187,7 +187,7 @@ namespace ECMPS.Checks.UnitControlChecks
 			return ReturnVal;
 		}
 
-		public static string CONTROL6(cCategory Category, ref bool Log)
+		public string CONTROL6(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -203,7 +203,7 @@ namespace ECMPS.Checks.UnitControlChecks
 			return ReturnVal;
 		}
 
-		public static string CONTROL8(cCategory Category, ref bool Log)
+		public string CONTROL8(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -224,7 +224,7 @@ namespace ECMPS.Checks.UnitControlChecks
 			return ReturnVal;
 		}
 
-		public static string CONTROL9(cCategory Category, ref bool Log)
+		public string CONTROL9(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -241,7 +241,7 @@ namespace ECMPS.Checks.UnitControlChecks
 			return ReturnVal;
 		}
 
-		public static string CONTROL11(cCategory Category, ref bool Log)
+		public string CONTROL11(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -297,7 +297,7 @@ namespace ECMPS.Checks.UnitControlChecks
 			return ReturnVal;
 		}
 
-		public static string CONTROL13(cCategory Category, ref bool Log)
+		public string CONTROL13(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -336,7 +336,7 @@ namespace ECMPS.Checks.UnitControlChecks
 			return ReturnVal;
 		}
 
-		public static string CONTROL14(cCategory Category, ref bool Log)
+		public string CONTROL14(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -381,7 +381,7 @@ namespace ECMPS.Checks.UnitControlChecks
 			return ReturnVal;
 		}
 
-		public static string CONTROL15(cCategory Category, ref bool Log)
+		public string CONTROL15(cCategory Category, ref bool Log)
 		{
 			string ReturnVal = "";
 
@@ -414,48 +414,48 @@ namespace ECMPS.Checks.UnitControlChecks
 
 			return ReturnVal;
 		}
-		public static string CONTROL16(cCategory category, ref bool log)
+		public string CONTROL16(cCategory category, ref bool log)
 		// Control Equipment Dual Range Analyzer Check
 		{
 			string returnValue = "";
 
 			try
 			{
-				if (MpParameters.CurrentControl != null)
+				if (mpParams.CurrentControl != null)
 				{
 					//don't get dates that precede facility ECMPS usage
 					DateTime controlEvalStartDate;
-					if (MpParameters.ControlEvaluationStartDate.Value < MpParameters.EcmpsMpBeginDate)
+					if (mpParams.ControlEvaluationStartDate.Value < mpParams.EcmpsMpBeginDate)
 					{
-						controlEvalStartDate = MpParameters.EcmpsMpBeginDate.Value;
+						controlEvalStartDate = mpParams.EcmpsMpBeginDate.Value;
 					}
 					else
 					{
-						controlEvalStartDate = MpParameters.ControlEvaluationStartDate.Value;
+						controlEvalStartDate = mpParams.ControlEvaluationStartDate.Value;
 					}
 
-					DataView uscRecords = cRowFilter.FindActiveRows(MpParameters.UnitStackConfigurationRecords.SourceView,
+					DataView uscRecords = cRowFilter.FindActiveRows(mpParams.UnitStackConfigurationRecords.SourceView,
 										controlEvalStartDate,
-										MpParameters.ControlEvaluationEndDate.Value,
+										mpParams.ControlEvaluationEndDate.Value,
 										new cFilterCondition[] 
                                         { 
-                                          new cFilterCondition("Mon_Loc_Id", MpParameters.CurrentLocation.MonLocId)
+                                          new cFilterCondition("Mon_Loc_Id", mpParams.CurrentLocation.MonLocId)
                                         });
 
 					DataView componentRecords = new DataView();
 					DataView coveredRecords = new DataView();
 
-					if (MpParameters.CurrentControl.ControlCd.InList("SCR,SNCR"))
+					if (mpParams.CurrentControl.ControlCd.InList("SCR,SNCR"))
 					{
-						componentRecords = cRowFilter.FindActiveRows(MpParameters.SystemComponentRecords.SourceView,
-											controlEvalStartDate, MpParameters.ControlEvaluationEndDate.Value,
+						componentRecords = cRowFilter.FindActiveRows(mpParams.SystemComponentRecords.SourceView,
+											controlEvalStartDate, mpParams.ControlEvaluationEndDate.Value,
 											 new cFilterCondition[] 
 											{
 												new cFilterCondition("COMPONENT_TYPE_CD", "NOX", eFilterConditionStringCompare.Equals),
 											});
 
-						if (componentRecords == null || componentRecords.Count == 0 || !cChecks.CheckForRangeCoveredUnitStackConfig(MpParameters.CurrentLocation.MonLocId, componentRecords, uscRecords,
-							controlEvalStartDate, MpParameters.ControlEvaluationEndDate.Value,
+						if (componentRecords == null || componentRecords.Count == 0 || !CheckForRangeCoveredUnitStackConfig(mpParams.CurrentLocation.MonLocId, componentRecords, uscRecords,
+							controlEvalStartDate, mpParams.ControlEvaluationEndDate.Value,
 							out coveredRecords))
 						{
 							category.CheckCatalogResult = "A";
@@ -466,10 +466,10 @@ namespace ECMPS.Checks.UnitControlChecks
 						foreach (DataRowView componentRow in coveredRecords)
 						{
 
-							DataView analyzerRangeRecords = cRowFilter.FindActiveRows(MpParameters.AnalyzerRangeRecords.SourceView,
+							DataView analyzerRangeRecords = cRowFilter.FindActiveRows(mpParams.AnalyzerRangeRecords.SourceView,
 															componentRow["BEGIN_DATE"].AsDateTime().Default(controlEvalStartDate),
 															componentRow["BEGIN_HOUR"].AsInteger().Default(0),
-															componentRow["END_DATE"].AsDateTime().Default(MpParameters.ControlEvaluationEndDate.Value),
+															componentRow["END_DATE"].AsDateTime().Default(mpParams.ControlEvaluationEndDate.Value),
 															componentRow["END_HOUR"].AsInteger().Default(23),
 											new cFilterCondition[] 
 							                    {
@@ -480,13 +480,13 @@ namespace ECMPS.Checks.UnitControlChecks
 							if (analyzerRangeRecords.Count == 0 || !CheckForHourRangeCovered(analyzerRangeRecords,
 															componentRow["BEGIN_DATE"].AsDateTime().Default(controlEvalStartDate),
 															componentRow["BEGIN_HOUR"].AsInteger().Default(0),
-															componentRow["END_DATE"].AsDateTime().Default(MpParameters.ControlEvaluationEndDate.Value),
+															componentRow["END_DATE"].AsDateTime().Default(mpParams.ControlEvaluationEndDate.Value),
 															componentRow["END_HOUR"].AsInteger().Default(23)))
 							{
-								DataView spanRecords = cRowFilter.FindActiveRows(MpParameters.SpanRecords.SourceView,
+								DataView spanRecords = cRowFilter.FindActiveRows(mpParams.SpanRecords.SourceView,
 															componentRow["BEGIN_DATE"].AsDateTime().Default(controlEvalStartDate),
 															componentRow["BEGIN_HOUR"].AsInteger().Default(0),
-															componentRow["END_DATE"].AsDateTime().Default(MpParameters.ControlEvaluationEndDate.Value),
+															componentRow["END_DATE"].AsDateTime().Default(mpParams.ControlEvaluationEndDate.Value),
 															componentRow["END_HOUR"].AsInteger().Default(23),
 
 												new cFilterCondition[] 
@@ -507,9 +507,9 @@ namespace ECMPS.Checks.UnitControlChecks
 									if (analyzerRangeRecords.Count == 0)
 									//only need to check the spans
 									{
-										if (!CheckForRangeCoveredUnitStackConfig(MpParameters.CurrentLocation.MonLocId, spanRecords, uscRecords,
+										if (!CheckForRangeCoveredUnitStackConfig(mpParams.CurrentLocation.MonLocId, spanRecords, uscRecords,
 															componentRow["BEGIN_DATE"].AsDateTime().Default(controlEvalStartDate),
-															componentRow["END_DATE"].AsDateTime().Default(MpParameters.ControlEvaluationEndDate.Value).AddHours(componentRow["END_HOUR"].AsInteger().Default(23)),
+															componentRow["END_DATE"].AsDateTime().Default(mpParams.ControlEvaluationEndDate.Value).AddHours(componentRow["END_HOUR"].AsInteger().Default(23)),
 															out coveredRecords))
 										{
 											category.CheckCatalogResult = "A";
@@ -521,9 +521,9 @@ namespace ECMPS.Checks.UnitControlChecks
 
 										DataView combinedDetailRecords = Control16_CombineLocationViews(spanRecords, analyzerRangeRecords);
 
-										if (!CheckForRangeCoveredUnitStackConfig(MpParameters.CurrentLocation.MonLocId, combinedDetailRecords, uscRecords,
+										if (!CheckForRangeCoveredUnitStackConfig(mpParams.CurrentLocation.MonLocId, combinedDetailRecords, uscRecords,
 															componentRow["BEGIN_DATE"].AsDateTime().Default(controlEvalStartDate).AddHours(componentRow["BEGIN_HOUR"].AsInteger().Default(0)),
-															componentRow["END_DATE"].AsDateTime().Default(MpParameters.ControlEvaluationEndDate.Value).AddHours(componentRow["END_HOUR"].AsInteger().Default(23)),
+															componentRow["END_DATE"].AsDateTime().Default(mpParams.ControlEvaluationEndDate.Value).AddHours(componentRow["END_HOUR"].AsInteger().Default(23)),
 															out coveredRecords))
 										{
 											category.CheckCatalogResult = "A";
@@ -535,17 +535,17 @@ namespace ECMPS.Checks.UnitControlChecks
 
 					} //end Control SCR
 
-					if (MpParameters.CurrentControl.ControlCd.InList("DA,DL,MO,SB,WL,WLS"))
+					if (mpParams.CurrentControl.ControlCd.InList("DA,DL,MO,SB,WL,WLS"))
 					{
-						componentRecords = cRowFilter.FindActiveRows(MpParameters.SystemComponentRecords.SourceView,
-											controlEvalStartDate, MpParameters.ControlEvaluationEndDate.Value,
+						componentRecords = cRowFilter.FindActiveRows(mpParams.SystemComponentRecords.SourceView,
+											controlEvalStartDate, mpParams.ControlEvaluationEndDate.Value,
 											 new cFilterCondition[] 
 											{
 												new cFilterCondition("COMPONENT_TYPE_CD", "SO2", eFilterConditionStringCompare.Equals),
 											});
 
-						if (componentRecords == null || componentRecords.Count == 0 || !cChecks.CheckForRangeCoveredUnitStackConfig(MpParameters.CurrentLocation.MonLocId, componentRecords, uscRecords,
-							controlEvalStartDate, MpParameters.ControlEvaluationEndDate.Value,
+						if (componentRecords == null || componentRecords.Count == 0 || !CheckForRangeCoveredUnitStackConfig(mpParams.CurrentLocation.MonLocId, componentRecords, uscRecords,
+							controlEvalStartDate, mpParams.ControlEvaluationEndDate.Value,
 							out coveredRecords))
 						{
 							category.CheckCatalogResult = "A";
@@ -554,13 +554,13 @@ namespace ECMPS.Checks.UnitControlChecks
 						//check the components we like for detail
 						foreach (DataRowView componentRow in coveredRecords)
 						{
-							//DateTime rangeBegin = componentRow["BEGIN_DATE"].AsDateTime().Default(MpParameters.ControlEvaluationStartDate.Value);
-							//DateTime rangeEnd = componentRow["END_DATE"].AsDateTime().Default(MpParameters.ControlEvaluationEndDate.Value);
+							//DateTime rangeBegin = componentRow["BEGIN_DATE"].AsDateTime().Default(mpParams.ControlEvaluationStartDate.Value);
+							//DateTime rangeEnd = componentRow["END_DATE"].AsDateTime().Default(mpParams.ControlEvaluationEndDate.Value);
 
-							DataView analyzerRangeRecords = cRowFilter.FindActiveRows(MpParameters.AnalyzerRangeRecords.SourceView,
+							DataView analyzerRangeRecords = cRowFilter.FindActiveRows(mpParams.AnalyzerRangeRecords.SourceView,
 															componentRow["BEGIN_DATE"].AsDateTime().Default(controlEvalStartDate),
 															componentRow["BEGIN_HOUR"].AsInteger().Default(0),
-															componentRow["END_DATE"].AsDateTime().Default(MpParameters.ControlEvaluationEndDate.Value),
+															componentRow["END_DATE"].AsDateTime().Default(mpParams.ControlEvaluationEndDate.Value),
 															componentRow["END_HOUR"].AsInteger().Default(23),
 													new cFilterCondition[] 
 											        {
@@ -571,13 +571,13 @@ namespace ECMPS.Checks.UnitControlChecks
 							if (analyzerRangeRecords.Count == 0 || !CheckForHourRangeCovered(analyzerRangeRecords,
 															componentRow["BEGIN_DATE"].AsDateTime().Default(controlEvalStartDate),
 															componentRow["BEGIN_HOUR"].AsInteger().Default(0),
-															componentRow["END_DATE"].AsDateTime().Default(MpParameters.ControlEvaluationEndDate.Value),
+															componentRow["END_DATE"].AsDateTime().Default(mpParams.ControlEvaluationEndDate.Value),
 															componentRow["END_HOUR"].AsInteger().Default(23)))
 							{
-								DataView spanRecords = cRowFilter.FindActiveRows(MpParameters.SpanRecords.SourceView,
+								DataView spanRecords = cRowFilter.FindActiveRows(mpParams.SpanRecords.SourceView,
 															componentRow["BEGIN_DATE"].AsDateTime().Default(controlEvalStartDate),
 															componentRow["BEGIN_HOUR"].AsInteger().Default(0),
-															componentRow["END_DATE"].AsDateTime().Default(MpParameters.ControlEvaluationEndDate.Value),
+															componentRow["END_DATE"].AsDateTime().Default(mpParams.ControlEvaluationEndDate.Value),
 															componentRow["END_HOUR"].AsInteger().Default(23),
 												new cFilterCondition[] 
 			                                    {
@@ -596,9 +596,9 @@ namespace ECMPS.Checks.UnitControlChecks
 									if (analyzerRangeRecords.Count == 0)
 									//only need to check the spans
 									{
-										if (!CheckForRangeCoveredUnitStackConfig(MpParameters.CurrentLocation.MonLocId, spanRecords, uscRecords,
+										if (!CheckForRangeCoveredUnitStackConfig(mpParams.CurrentLocation.MonLocId, spanRecords, uscRecords,
 															componentRow["BEGIN_DATE"].AsDateTime().Default(controlEvalStartDate).AddHours(componentRow["BEGIN_HOUR"].AsInteger().Default(0)),
-															componentRow["END_DATE"].AsDateTime().Default(MpParameters.ControlEvaluationEndDate.Value).AddHours(componentRow["END_HOUR"].AsInteger().Default(23)),
+															componentRow["END_DATE"].AsDateTime().Default(mpParams.ControlEvaluationEndDate.Value).AddHours(componentRow["END_HOUR"].AsInteger().Default(23)),
 														out coveredRecords))
 										{
 											category.CheckCatalogResult = "A";
@@ -610,8 +610,8 @@ namespace ECMPS.Checks.UnitControlChecks
 
 										DataView combinedDetailRecords = Control16_CombineLocationViews(spanRecords, analyzerRangeRecords);
 
-										if (!CheckForRangeCoveredUnitStackConfig(MpParameters.CurrentLocation.MonLocId, combinedDetailRecords, uscRecords,
-																								controlEvalStartDate, MpParameters.ControlEvaluationEndDate.Value,
+										if (!CheckForRangeCoveredUnitStackConfig(mpParams.CurrentLocation.MonLocId, combinedDetailRecords, uscRecords,
+																								controlEvalStartDate, mpParams.ControlEvaluationEndDate.Value,
 																								out coveredRecords))
 										{
 											category.CheckCatalogResult = "A";
@@ -634,7 +634,7 @@ namespace ECMPS.Checks.UnitControlChecks
 			return returnValue;
 		}
 
-		private static DataView Control16_CombineLocationViews(DataView View1, DataView View2)
+		private DataView Control16_CombineLocationViews(DataView View1, DataView View2)
 		{
 			DataView dv = new DataView();
 			DataTable dt = new DataTable();
@@ -670,7 +670,7 @@ namespace ECMPS.Checks.UnitControlChecks
 			return dv;
 		}
 		/*
-		public static string CONTROL_template( cCategory Category, ref bool Log )
+		public string CONTROL_template( cCategory Category, ref bool Log )
 		{
 			string ReturnVal = "";
 

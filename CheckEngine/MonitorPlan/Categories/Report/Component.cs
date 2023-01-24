@@ -41,12 +41,14 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "COMPONENT";
     }
 
+    public cComponent(){}
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cComponent GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cComponent GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cComponent Category;
       string ErrorMessage = "";

@@ -59,9 +59,9 @@ namespace ECMPS.Checks.SpanChecks
 
     #endregion
 
-    #region Public Static Methods: Checks
+    #region Public Methods: Checks
 
-    public static string SPAN1(cCategory Category, ref bool Log)
+    public string SPAN1(cCategory Category, ref bool Log)
     // Span MPC Value Valid 
     {
       string ReturnVal = "";
@@ -264,7 +264,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN2(cCategory Category, ref bool Log)
+    public string SPAN2(cCategory Category, ref bool Log)
     // Span MEC Value Valid 
     {
       string ReturnVal = "";
@@ -392,7 +392,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN3(cCategory Category, ref bool Log)
+    public string SPAN3(cCategory Category, ref bool Log)
     // Span MPF Value Valid
     {
       string ReturnVal = "";
@@ -425,7 +425,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN4(cCategory Category, ref bool Log)
+    public string SPAN4(cCategory Category, ref bool Log)
     // Span Scale Transition Point Value (Max Low Range) Valid
     {
       string ReturnVal = "";
@@ -528,7 +528,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN6(cCategory Category, ref bool Log)
+    public string SPAN6(cCategory Category, ref bool Log)
     // Span Value Valid
     {
       string ReturnVal = "";
@@ -626,7 +626,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN7(cCategory Category, ref bool Log)
+    public string SPAN7(cCategory Category, ref bool Log)
     // Span Full Scale Range Value Valid 
     {
       string ReturnVal = "";
@@ -663,7 +663,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN8(cCategory Category, ref bool Log)
+    public string SPAN8(cCategory Category, ref bool Log)
     // Span Begin Date Valid
     {
       string ReturnVal = "";
@@ -680,7 +680,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN9(cCategory Category, ref bool Log)
+    public string SPAN9(cCategory Category, ref bool Log)
     // Span Begin Hour Valid
     {
       string ReturnVal = "";
@@ -697,7 +697,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN10(cCategory Category, ref bool Log)
+    public string SPAN10(cCategory Category, ref bool Log)
     // Span End Date Valid
     {
       string ReturnVal = "";
@@ -714,7 +714,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN11(cCategory Category, ref bool Log)
+    public string SPAN11(cCategory Category, ref bool Log)
     // Span End Hour Valid
     {
       string ReturnVal = "";
@@ -731,7 +731,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN12(cCategory Category, ref bool Log)
+    public string SPAN12(cCategory Category, ref bool Log)
     // Span Dates and Hours Consistent
     {
       string ReturnVal = "";
@@ -753,7 +753,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN13(cCategory Category, ref bool Log)
+    public string SPAN13(cCategory Category, ref bool Log)
     // Span Active Status
     {
       string ReturnVal = "";
@@ -780,7 +780,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN16(cCategory Category, ref bool Log)
+    public string SPAN16(cCategory Category, ref bool Log)
     // Flow Span Value Valid
     {
       string ReturnVal = "";
@@ -862,7 +862,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN17(cCategory Category, ref bool Log)
+    public string SPAN17(cCategory Category, ref bool Log)
     // Flow Span Full Scale Range Value Valid
     {
       string ReturnVal = "";
@@ -896,38 +896,38 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN18(cCategory Category, ref bool Log)
+    public string SPAN18(cCategory Category, ref bool Log)
     // Span Scale Code Valid 
     {
       string ReturnVal = "";
 
       try
       {
-        if (MpParameters.SpanComponentTypeCodeValid.AsBoolean().Default())
+        if (mpParams.SpanComponentTypeCodeValid.AsBoolean().Default())
         {
-            MpParameters.SpanScaleCodeValid = true;
+            mpParams.SpanScaleCodeValid = true;
 
-          if (MpParameters.CurrentSpan.ComponentTypeCd != "FLOW")
+          if (mpParams.CurrentSpan.ComponentTypeCd != "FLOW")
           {
-              if (MpParameters.CurrentSpan.SpanScaleCd == null)
+              if (mpParams.CurrentSpan.SpanScaleCd == null)
               {
-                  MpParameters.SpanScaleCodeValid = false;
+                  mpParams.SpanScaleCodeValid = false;
                   Category.CheckCatalogResult = "A";
               }
-              else if (!MpParameters.CurrentSpan.SpanScaleCd.InList("H,L"))
+              else if (!mpParams.CurrentSpan.SpanScaleCd.InList("H,L"))
               {
-                  MpParameters.SpanScaleCodeValid = false;
+                  mpParams.SpanScaleCodeValid = false;
                   Category.CheckCatalogResult = "B";
               }
-              else if (MpParameters.CurrentSpan.ComponentTypeCd.InList("HG,HCL") && MpParameters.CurrentSpan.SpanScaleCd != "H")
+              else if (mpParams.CurrentSpan.ComponentTypeCd.InList("HG,HCL") && mpParams.CurrentSpan.SpanScaleCd != "H")
               {
-                  MpParameters.SpanScaleCodeValid = false;
+                  mpParams.SpanScaleCodeValid = false;
                   Category.CheckCatalogResult = "D";
               }
           }
-          else if (MpParameters.CurrentSpan.ComponentTypeCd == "FLOW" && MpParameters.CurrentSpan.SpanScaleCd != null)
+          else if (mpParams.CurrentSpan.ComponentTypeCd == "FLOW" && mpParams.CurrentSpan.SpanScaleCd != null)
           {
-              MpParameters.SpanScaleCodeValid = false;
+              mpParams.SpanScaleCodeValid = false;
               Category.CheckCatalogResult = "C";
           }
         }
@@ -942,7 +942,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN20(cCategory Category, ref bool Log)
+    public string SPAN20(cCategory Category, ref bool Log)
     // Span Component Type Code Valid
     {
       string ReturnVal = "";
@@ -991,7 +991,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN21(cCategory Category, ref bool Log)
+    public string SPAN21(cCategory Category, ref bool Log)
     // Span Units of Measure Code Valid
     {
       string ReturnVal = "";
@@ -1055,7 +1055,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN36(cCategory Category, ref bool Log)
+    public string SPAN36(cCategory Category, ref bool Log)
     // Span Default High Range Value Valid
     {
       string ReturnVal = "";
@@ -1107,7 +1107,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN37(cCategory Category, ref bool Log)
+    public string SPAN37(cCategory Category, ref bool Log)
     // Default High Range Value Consistent with Span Value and Full Scale Range
     {
       string ReturnVal = "";
@@ -1136,7 +1136,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN47(cCategory Category, ref bool Log)
+    public string SPAN47(cCategory Category, ref bool Log)
     // High Scale Span Consistent with Low Scale Span 
     {
       string ReturnVal = "";
@@ -1208,7 +1208,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN48(cCategory Category, ref bool Log)
+    public string SPAN48(cCategory Category, ref bool Log)
     // Required Low Scale Span Record Reported for Low MEC or Default High Range 
     {
       string ReturnVal = "";
@@ -1300,7 +1300,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN50(cCategory Category, ref bool Log)
+    public string SPAN50(cCategory Category, ref bool Log)
     // Span Method Code Valid
     {
       string ReturnVal = "";
@@ -1367,7 +1367,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN52(cCategory Category, ref bool Log)
+    public string SPAN52(cCategory Category, ref bool Log)
     // Required Component Reported for Span
     {
       string ReturnVal = "";
@@ -1441,7 +1441,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN53(cCategory Category, ref bool Log)
+    public string SPAN53(cCategory Category, ref bool Log)
     // Overlapping Span Records
     {
       string ReturnVal = "";
@@ -1500,7 +1500,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN54(cCategory Category, ref bool Log)
+    public string SPAN54(cCategory Category, ref bool Log)
     // Required High-Scale Span Record Reported
     {
       string ReturnVal = "";
@@ -1549,7 +1549,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN55(cCategory Category, ref bool Log)
+    public string SPAN55(cCategory Category, ref bool Log)
     // Duplicate Span Records
     {
       string ReturnVal = "";
@@ -1612,7 +1612,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN56(cCategory Category, ref bool Log)
+    public string SPAN56(cCategory Category, ref bool Log)
     // Span MPC Value Valid 
     {
       string ReturnVal = "";
@@ -1664,7 +1664,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN57(cCategory Category, ref bool Log)
+    public string SPAN57(cCategory Category, ref bool Log)
     // Span MEC Value Valid 
     {
       string ReturnVal = "";
@@ -1717,7 +1717,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN58(cCategory Category, ref bool Log)
+    public string SPAN58(cCategory Category, ref bool Log)
     // High Span Scale Transition Point Value (Max Low Range) Valid
     {
       string ReturnVal = "";
@@ -1749,7 +1749,7 @@ namespace ECMPS.Checks.SpanChecks
       return ReturnVal;
     }
 
-    public static string SPAN59(cCategory Category, ref bool Log)
+    public string SPAN59(cCategory Category, ref bool Log)
     // Low Span Scale Transition Point Value (Max Low Range) Valid
     {
       string ReturnVal = "";
@@ -1790,7 +1790,7 @@ namespace ECMPS.Checks.SpanChecks
     /// <param name="category">Category Object</param>
     /// <param name="log">Indicates whether to log results.</param>
     /// <returns>Returns error message if check fails to run correctly.</returns>
-    public static string SPAN60(cCategory category, ref bool log)
+    public string SPAN60(cCategory category, ref bool log)
     {
       string returnVal = "";
 
@@ -1824,15 +1824,15 @@ namespace ECMPS.Checks.SpanChecks
     /// <param name="category">Category Object</param>
     /// <param name="log">Indicates whether to log results.</param>
     /// <returns>Returns error message if check fails to run correctly.</returns>
-    public static string SPAN61(cCategory category, ref bool log)
+    public string SPAN61(cCategory category, ref bool log)
     {
         string returnVal = "";
 
         try
         {
-            if (MpParameters.SpanComponentTypeCodeValid.AsBoolean().Default(false))
+            if (mpParams.SpanComponentTypeCodeValid.AsBoolean().Default(false))
             {
-                if (MpParameters.CurrentSpan.ComponentTypeCd.InList("HG,HCL") && MpParameters.CurrentSpan.MaxLowRange != null)
+                if (mpParams.CurrentSpan.ComponentTypeCd.InList("HG,HCL") && mpParams.CurrentSpan.MaxLowRange != null)
                 {
                     category.CheckCatalogResult = "A";
                 }

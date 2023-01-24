@@ -7,6 +7,8 @@ using ECMPS.Checks.TypeUtilities;
 
 using ECMPS.Definitions.Extensions;
 
+using ECMPS.Checks.Mp.Parameters;
+using ECMPS.Checks.Qa.Parameters;
 
 namespace ECMPS.Checks.CheckEngine
 {
@@ -123,6 +125,37 @@ namespace ECMPS.Checks.CheckEngine
 			}
 		}
 
+		/// <summary>
+		/// reference to mpParams for all current checks
+		/// </summary>
+		public MpParameters mpParams;
+
+
+		/// <summary>
+		/// reference to mpParams for all current checks
+		/// </summary>
+		public QaParameters qaParams;
+
+		/// <summary>
+		/// setMpParamsForCheck
+		/// </summary>
+		/// <param name="paramObj"></param>
+		/// <returns></returns>
+		public void setMpParamsForCheck(ref MpParameters paramObj){
+			mpParams = paramObj;
+		}
+
+
+		/// <summary>
+		/// setQaParamsForCheck
+		/// </summary>
+		/// <param name="paramObj"></param>
+		/// <returns></returns>
+		public void setQaParamsForCheck(ref QaParameters paramObj)
+		{
+			qaParams = paramObj;
+		}
+
 
 		/// <summary>
 		/// Returns the list of Check Procedures for the current checks object.
@@ -136,7 +169,7 @@ namespace ECMPS.Checks.CheckEngine
 		#endregion
 
 
-		#region Protected Static Methods: Inspection
+		#region Protected  Methods: Inspection
 
 		/// <summary>
 		/// ListContains
@@ -145,7 +178,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AList"></param>
 		/// <param name="ADelim"></param>
 		/// <returns></returns>
-		protected static bool ListContains(string AValue, string AList, string ADelim)
+		protected  bool ListContains(string AValue, string AList, string ADelim)
 		{
 			AList = ADelim + AList + ADelim;
 
@@ -155,7 +188,7 @@ namespace ECMPS.Checks.CheckEngine
 		#endregion
 
 
-		#region Protected Static Methods: Single Record Validation
+		#region Protected  Methods: Single Record Validation
 
 		/// <summary>
 		/// Check_ActiveDateRange
@@ -166,7 +199,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="EvaluationBeginDateParameterName"></param>
 		/// <param name="EvaluationEndDateParameterName"></param>
 		/// <returns></returns>
-		protected static string Check_ActiveDateRange(cCategory Category,
+		protected  string Check_ActiveDateRange(cCategory Category,
 													  string ActiveParameterName,
 													  string CurrentRecordParameterName,
 													  string EvaluationBeginDateParameterName,
@@ -200,7 +233,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="BeginDateField"></param>
 		/// <param name="EndDateField"></param>
 		/// <returns></returns>
-		protected static string Check_ActiveDateRange(cCategory Category,
+		protected  string Check_ActiveDateRange(cCategory Category,
 													  string ActiveParameterName,
 													  string CurrentRecordParameterName,
 													  string EvaluationBeginDateParameterName,
@@ -267,7 +300,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="EndDateField"></param>
 		/// <param name="EndHourField"></param>
 		/// <returns></returns>
-		protected static string Check_ActiveHourRange(cCategory Category,
+		protected  string Check_ActiveHourRange(cCategory Category,
 													  string ActiveParameterName,
 													  string CurrentRecordParameterName,
 													  string EvaluationBeginDateParameterName,
@@ -351,7 +384,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="EvaluationEndDateParameterName"></param>
 		/// <param name="EvaluationEndHourParameterName"></param>
 		/// <returns></returns>
-		protected static string Check_ActiveHourRange(cCategory Category,
+		protected  string Check_ActiveHourRange(cCategory Category,
 													string ActiveParameterName,
 													string CurrentRecordParameterName,
 													string EvaluationBeginDateParameterName,
@@ -385,7 +418,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="StartDateValidParameterName"></param>
 		/// <param name="EndDateValidParameterName"></param>
 		/// <returns></returns>
-		protected static string Check_ConsistentDateRange(cCategory Category,
+		protected  string Check_ConsistentDateRange(cCategory Category,
 														  string ConsistentParameterName,
 														  string CurrentRecordParameterName,
 														  string StartDateValidParameterName,
@@ -414,7 +447,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="BeginDateFieldName"></param>
 		/// <param name="EndDateFieldName"></param>
 		/// <returns></returns>
-		protected static string Check_ConsistentDateRange(cCategory Category,
+		protected  string Check_ConsistentDateRange(cCategory Category,
 														  string ConsistentParameterName,
 														  string CurrentRecordParameterName,
 														  string BeginDateValidParameterName,
@@ -477,7 +510,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="BadDateRangeResult"></param>
 		/// <param name="CheckCd"></param>
 		/// <returns></returns>
-		protected static string Check_ConsistentHourRange(cCategory Category,
+		protected  string Check_ConsistentHourRange(cCategory Category,
 														  string ConsistentParameterName,
 														  string CurrentRecordParameterName,
 														  string BeginDateValidParameterName,
@@ -561,7 +594,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="EndDateValidParameterName"></param>
 		/// <param name="EndHourValidParameterName"></param>
 		/// <returns></returns>
-		protected static string Check_ConsistentHourRange(cCategory Category,
+		protected  string Check_ConsistentHourRange(cCategory Category,
 														  string ConsistentParameterName,
 														  string CurrentRecordParameterName,
 														  string BeginDateValidParameterName,
@@ -594,7 +627,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="OutOfRangeResult"></param>
 		/// <param name="CheckCd"></param>
 		/// <returns></returns>
-		protected static string Check_ValidEndDate(cCategory Category,
+		protected  string Check_ValidEndDate(cCategory Category,
 												   string ValidParameterName,
 												   string CurrentRecordParameterName,
 												   string EndDateFieldName,
@@ -639,7 +672,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="CurrentRecordParameterName"></param>
 		/// <param name="EndDateFieldName"></param>
 		/// <returns></returns>
-		protected static string Check_ValidEndDate(cCategory Category,
+		protected  string Check_ValidEndDate(cCategory Category,
 												   string ValidParameterName,
 												   string CurrentRecordParameterName,
 												   string EndDateFieldName)
@@ -661,7 +694,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ValidParameterName"></param>
 		/// <param name="CurrentRecordParameterName"></param>
 		/// <returns></returns>
-		protected static string Check_ValidEndDate(cCategory Category,
+		protected  string Check_ValidEndDate(cCategory Category,
 												   string ValidParameterName,
 												   string CurrentRecordParameterName)
 		{
@@ -685,7 +718,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="OutOfRangeResult"></param>
 		/// <param name="CheckCd"></param>
 		/// <returns></returns>
-		protected static string Check_ValidEndHour(cCategory Category,
+		protected  string Check_ValidEndHour(cCategory Category,
 												   string ValidParameterName,
 												   string CurrentRecordParameterName,
 												   string EndHourFieldName,
@@ -730,7 +763,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ValidParameterName"></param>
 		/// <param name="CurrentRecordParameterName"></param>
 		/// <returns></returns>
-		protected static string Check_ValidEndHour(cCategory Category,
+		protected  string Check_ValidEndHour(cCategory Category,
 												   string ValidParameterName,
 												   string CurrentRecordParameterName)
 		{
@@ -757,7 +790,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="OutOfRangeResult"></param>
 		/// <param name="CheckCd"></param>
 		/// <returns></returns>
-		protected static string Check_ValidStartDate(cCategory Category,
+		protected  string Check_ValidStartDate(cCategory Category,
 													 string ValidParameterName,
 													 string CurrentRecordParameterName,
 													 string BeginDateFieldName,
@@ -812,7 +845,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="OutOfRangeResult"></param>
 		/// <param name="CheckCd"></param>
 		/// <returns></returns>
-		protected static string Check_ValidStartDate(cCategory Category,
+		protected  string Check_ValidStartDate(cCategory Category,
 											   string ValidParameterName,
 											   string CurrentRecordParameterName,
 											   string BeginDateFieldName,
@@ -831,7 +864,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="CurrentRecordParameterName"></param>
 		/// <param name="StartDateFieldName"></param>
 		/// <returns></returns>
-		protected static string Check_ValidStartDate(cCategory Category,
+		protected  string Check_ValidStartDate(cCategory Category,
 													 string ValidParameterName,
 													 string CurrentRecordParameterName,
 													 string StartDateFieldName)
@@ -854,7 +887,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ValidParameterName"></param>
 		/// <param name="CurrentRecordParameterName"></param>
 		/// <returns></returns>
-		protected static string Check_ValidStartDate(cCategory Category,
+		protected  string Check_ValidStartDate(cCategory Category,
 													 string ValidParameterName,
 													 string CurrentRecordParameterName)
 		{
@@ -880,7 +913,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="OutOfRangeResult"></param>
 		/// <param name="CheckCd"></param>
 		/// <returns></returns>
-		protected static string Check_ValidStartHour(cCategory Category,
+		protected  string Check_ValidStartHour(cCategory Category,
 													 string ValidParameterName,
 													 string CurrentRecordParameterName,
 													 string BeginDateFieldName,
@@ -931,7 +964,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ValidParameterName"></param>
 		/// <param name="CurrentRecordParameterName"></param>
 		/// <returns></returns>
-		protected static string Check_ValidStartHour(cCategory Category,
+		protected  string Check_ValidStartHour(cCategory Category,
 													 string ValidParameterName,
 													 string CurrentRecordParameterName)
 		{
@@ -949,7 +982,7 @@ namespace ECMPS.Checks.CheckEngine
 		#endregion
 
 
-		#region Protected Static Methods: Range Checks and Utilities
+		#region Protected  Methods: Range Checks and Utilities
 
 		/// <summary>
 		/// InRange
@@ -958,7 +991,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="Low"></param>
 		/// <param name="High"></param>
 		/// <returns></returns>
-		protected static bool InRange(int Value, int Low, int High)
+		protected  bool InRange(int Value, int Low, int High)
 		{
 			if (Value < Low || Value > High)
 			{
@@ -977,7 +1010,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="Low"></param>
 		/// <param name="High"></param>
 		/// <returns></returns>
-		protected static bool InRange(decimal Value, decimal Low, decimal High)
+		protected  bool InRange(decimal Value, decimal Low, decimal High)
 		{
 			if (Value < Low || Value > High)
 			{
@@ -999,7 +1032,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AGaugeEndedDate"></param>
 		/// <param name="AGaugeEndedHour"></param>
 		/// <returns></returns>
-		protected static bool InRange(DateTime ACheckDate, int ACheckHour,
+		protected  bool InRange(DateTime ACheckDate, int ACheckHour,
 									  DateTime AGaugeBeganDate, int AGaugeBeganHour,
 									  DateTime AGaugeEndedDate, int AGaugeEndedHour)
 		{
@@ -1020,7 +1053,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AGaugeEndedDate"></param>
 		/// <param name="AGaugeEndedHour"></param>
 		/// <returns></returns>
-		protected static bool InDateRange(cCategory Category, DateTime ACheckDate, int ACheckHour,
+		protected  bool InDateRange(cCategory Category, DateTime ACheckDate, int ACheckHour,
 										  object AGaugeBeganDate, object AGaugeBeganHour,
 										  object AGaugeEndedDate, object AGaugeEndedHour)
 		{
@@ -1048,7 +1081,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AGaugeEndedDate"></param>
 		/// <param name="AGaugeEndedHour"></param>
 		/// <returns></returns>
-		protected static CompareRangesEnum RangesCompare(DateTime ACheckBeganDate, int ACheckBeganHour,
+		protected  CompareRangesEnum RangesCompare(DateTime ACheckBeganDate, int ACheckBeganHour,
 														 DateTime ACheckEndedDate, int ACheckEndedHour,
 														 DateTime AGaugeBeganDate, int AGaugeBeganHour,
 														 DateTime AGaugeEndedDate, int AGaugeEndedHour)
@@ -1097,7 +1130,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AGaugeEndedDate"></param>
 		/// <param name="AGaugeEndedHour"></param>
 		/// <returns></returns>
-		protected static bool RangesIntersect(DateTime ACheckBeganDate, int ACheckBeganHour,
+		protected  bool RangesIntersect(DateTime ACheckBeganDate, int ACheckBeganHour,
 											  DateTime ACheckEndedDate, int ACheckEndedHour,
 											  DateTime AGaugeBeganDate, int AGaugeBeganHour,
 											  DateTime AGaugeEndedDate, int AGaugeEndedHour)
@@ -1139,7 +1172,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AGaugeBeganDate"></param>
 		/// <param name="AGaugeEndedDate"></param>
 		/// <returns></returns>
-		protected static bool RangesIntersect(DateTime ACheckBeganDate, DateTime ACheckEndedDate,
+		protected  bool RangesIntersect(DateTime ACheckBeganDate, DateTime ACheckEndedDate,
 											  DateTime AGaugeBeganDate, DateTime AGaugeEndedDate)
 		{
 			return RangesIntersect(ACheckBeganDate, 0, ACheckEndedDate, 23,
@@ -1155,7 +1188,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ARangeBeginHour"></param>
 		/// <param name="ARangeEndDate"></param>
 		/// <param name="ARangeEndHour"></param>
-		protected static void GetActiveRange(DataView ADataView,
+		protected  void GetActiveRange(DataView ADataView,
 											  out DateTime ARangeBeginDate, out int ARangeBeginHour,
 											  out DateTime ARangeEndDate, out int ARangeEndHour)
 		{
@@ -1172,7 +1205,7 @@ namespace ECMPS.Checks.CheckEngine
 		#endregion
 
 
-		#region Protected Static Methods: DataView Filter Altering
+		#region Protected  Methods: DataView Filter Altering
 
 		/// <summary>
 		/// AddToDataViewFilter
@@ -1180,7 +1213,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="OldFilter"></param>
 		/// <param name="NewFilter"></param>
 		/// <returns></returns>
-		protected static string AddToDataViewFilter(string OldFilter, string NewFilter)
+		public  string AddToDataViewFilter(string OldFilter, string NewFilter)
 		{
 			string ReturnVal = "";
 
@@ -1199,7 +1232,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="NewFilter"></param>
 		/// <param name="Or"></param>
 		/// <returns></returns>
-		protected static string AddToDataViewFilter(string OldFilter, string NewFilter, bool Or)
+		protected  string AddToDataViewFilter(string OldFilter, string NewFilter, bool Or)
 		{
 			string ReturnVal = "";
 			if (Or)
@@ -1231,7 +1264,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="On"></param>
 		/// <param name="IncludeNullBeginDate"></param>
 		/// <returns></returns>
-		protected static string AddEvaluationDateHourRangeToDataViewFilter(string OldFilter,
+		protected  string AddEvaluationDateHourRangeToDataViewFilter(string OldFilter,
 		  string BeginDateField, string EndDateField, string BeginHourField, string EndHourField,
 		  DateTime EvaluationBeginDate, DateTime EvaluationEndDate, int EvaluationBeginHour, int EvaluationEndHour, bool All, bool On, bool IncludeNullBeginDate)
 		{
@@ -1297,7 +1330,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="All"></param>
 		/// <param name="On"></param>
 		/// <returns></returns>
-		protected static string AddEvaluationDateHourRangeToDataViewFilter(string OldFilter,
+		protected  string AddEvaluationDateHourRangeToDataViewFilter(string OldFilter,
 		string BeginDateField, string EndDateField, string BeginHourField, string EndHourField,
 		DateTime EvaluationBeginDate, DateTime EvaluationEndDate, int EvaluationBeginHour, int EvaluationEndHour, bool All, bool On)
 		{
@@ -1316,7 +1349,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="All"></param>
 		/// <param name="On"></param>
 		/// <returns></returns>
-		protected static string AddEvaluationDateHourRangeToDataViewFilter(string OldFilter,
+		protected  string AddEvaluationDateHourRangeToDataViewFilter(string OldFilter,
 		  DateTime EvaluationBeginDate, DateTime EvaluationEndDate, int EvaluationBeginHour, int EvaluationEndHour, bool All, bool On)
 		{
 			return AddEvaluationDateHourRangeToDataViewFilter(OldFilter, "begin_date", "end_date", "begin_hour", "end_hour",
@@ -1335,7 +1368,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="On"></param>
 		/// <param name="IncludeNullBeginDate"></param>
 		/// <returns></returns>
-		protected static string AddEvaluationDateHourRangeToDataViewFilter(string OldFilter,
+		protected  string AddEvaluationDateHourRangeToDataViewFilter(string OldFilter,
 		DateTime EvaluationBeginDate, DateTime EvaluationEndDate, int EvaluationBeginHour, int EvaluationEndHour, bool All, bool On, bool IncludeNullBeginDate)
 		{
 			return AddEvaluationDateHourRangeToDataViewFilter(OldFilter, "begin_date", "end_date", "begin_hour", "end_hour",
@@ -1354,7 +1387,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="On"></param>
 		/// <param name="IncludeNullBeginDate"></param>
 		/// <returns></returns>
-		protected static string AddEvaluationDateRangeToDataViewFilter(string OldFilter,
+		protected  string AddEvaluationDateRangeToDataViewFilter(string OldFilter,
 		  string BeginDateField, string EndDateField, DateTime EvaluationBeginDate, DateTime EvaluationEndDate, bool All, bool On, bool IncludeNullBeginDate)
 		{
 			string NewFilter = "";
@@ -1393,7 +1426,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="On"></param>
 		/// <param name="IncludeNullBeginDate"></param>
 		/// <returns></returns>
-		protected static string AddEvaluationDateRangeToDataViewFilter(string OldFilter, DateTime EvaluationBeginDate, DateTime EvaluationEndDate, bool All, bool On, bool IncludeNullBeginDate)
+		protected  string AddEvaluationDateRangeToDataViewFilter(string OldFilter, DateTime EvaluationBeginDate, DateTime EvaluationEndDate, bool All, bool On, bool IncludeNullBeginDate)
 		{
 			return AddEvaluationDateRangeToDataViewFilter(OldFilter, "begin_date", "end_date", EvaluationBeginDate, EvaluationEndDate, All, On, IncludeNullBeginDate);
 		}
@@ -1401,7 +1434,7 @@ namespace ECMPS.Checks.CheckEngine
 		#endregion
 
 
-		#region Protected Static Methods: DataView Filtered Return Data with Types
+		#region Protected  Methods: DataView Filtered Return Data with Types
 
 		#region Filter Pair with Enum and Methods
 
@@ -1819,7 +1852,7 @@ namespace ECMPS.Checks.CheckEngine
 			}
 		}
 
-		private static bool RowMatches(DataRowView ACheckRow, sFilterPair AFilterPair)
+		private  bool RowMatches(DataRowView ACheckRow, sFilterPair AFilterPair)
 		{
 			if (AFilterPair.DataType == eFilterDataType.String)
 				return RowMatches_String(ACheckRow, AFilterPair);
@@ -1837,7 +1870,7 @@ namespace ECMPS.Checks.CheckEngine
 				return false;
 		}
 
-		private static bool RowMatches_Decimal(DataRowView ACheckRow, sFilterPair AFilterPair)
+		private  bool RowMatches_Decimal(DataRowView ACheckRow, sFilterPair AFilterPair)
 		{
 			decimal DataValue = cDBConvert.ToDecimal(ACheckRow[AFilterPair.Field]);
 			decimal PairValue = cDBConvert.ToDecimal(AFilterPair.Value);
@@ -1856,7 +1889,7 @@ namespace ECMPS.Checks.CheckEngine
 				return false;
 		}
 
-		private static bool RowMatches_Integer(DataRowView ACheckRow, sFilterPair AFilterPair)
+		private  bool RowMatches_Integer(DataRowView ACheckRow, sFilterPair AFilterPair)
 		{
 			int DataValue = cDBConvert.ToInteger(ACheckRow[AFilterPair.Field]);
 			int PairValue = cDBConvert.ToInteger(AFilterPair.Value);
@@ -1875,7 +1908,7 @@ namespace ECMPS.Checks.CheckEngine
 				return false;
 		}
 
-		private static bool RowMatches_Long(DataRowView ACheckRow, sFilterPair AFilterPair)
+		private  bool RowMatches_Long(DataRowView ACheckRow, sFilterPair AFilterPair)
 		{
 			long DataValue = cDBConvert.ToLong(ACheckRow[AFilterPair.Field]);
 			long PairValue = cDBConvert.ToLong(AFilterPair.Value);
@@ -1894,7 +1927,7 @@ namespace ECMPS.Checks.CheckEngine
 				return false;
 		}
 
-		private static bool RowMatches_Date(DataRowView ACheckRow, sFilterPair AFilterPair, DateTypes ADateType)
+		private  bool RowMatches_Date(DataRowView ACheckRow, sFilterPair AFilterPair, DateTypes ADateType)
 		{
 			DateTime DataValue = cDBConvert.ToDate(ACheckRow[AFilterPair.Field], ADateType);
 			DateTime PairValue = cDBConvert.ToDate(AFilterPair.Value, ADateType);
@@ -1913,7 +1946,7 @@ namespace ECMPS.Checks.CheckEngine
 				return false;
 		}
 
-		private static bool RowMatches_String(DataRowView ACheckRow, sFilterPair AFilterPair)
+		private  bool RowMatches_String(DataRowView ACheckRow, sFilterPair AFilterPair)
 		{
 			string DataValue = cDBConvert.ToString(ACheckRow[AFilterPair.Field]);
 			string PairValue = cDBConvert.ToString(AFilterPair.Value);
@@ -1969,7 +2002,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AFilterPairs"></param>
 		/// <param name="ANotFilter"></param>
 		/// <returns></returns>
-		protected static int CountRows(DataView ASourceView, sFilterPair[] AFilterPairs, bool ANotFilter)
+		protected  int CountRows(DataView ASourceView, sFilterPair[] AFilterPairs, bool ANotFilter)
 		{
 			int Count = 0;
 			bool Match;
@@ -2000,7 +2033,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AView"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static int CountRows(DataView AView, sFilterPair[] AFilterPairs)
+		protected  int CountRows(DataView AView, sFilterPair[] AFilterPairs)
 		{
 			return CountRows(AView, AFilterPairs, false);
 		}
@@ -2022,7 +2055,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDateField"></param>
 		/// <param name="AEndedHourField"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, int ABeganHour,
 											 DateTime AEndedDate, int AEndedHour,
 											 string ABeganDateField, string ABeganHourField,
@@ -2049,7 +2082,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDate"></param>
 		/// <param name="AEndedHour"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, int ABeganHour,
 											 DateTime AEndedDate, int AEndedHour)
 		{
@@ -2080,7 +2113,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, int ABeganHour,
 											 DateTime AEndedDate, int AEndedHour,
 											 string ABeganDateField, string ABeganHourField,
@@ -2114,7 +2147,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedHourField"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 												  DateTime ABeganDate, int ABeganHour,
 												  DateTime AEndedDate, int AEndedHour,
 												  string ABeganDateField, string ABeganHourField,
@@ -2145,7 +2178,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilter"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 												  DateTime ABeganDate, int ABeganHour,
 												  DateTime AEndedDate, int AEndedHour,
 												  bool ANotFilter, sFilterPair[] AFilter)
@@ -2171,7 +2204,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedHour"></param>
 		/// <param name="AFilter"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 												  DateTime ABeganDate, int ABeganHour,
 												  DateTime AEndedDate, int AEndedHour,
 												  sFilterPair[] AFilter)
@@ -2202,7 +2235,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ABeganDateInclusive"></param>
 		/// <param name="AEndedDateInclusive"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate,
 											 string ABeganDateField, string AEndedDateField,
 											 bool ABeganDateInclusive, bool AEndedDateInclusive)
@@ -2227,7 +2260,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ABeganDateField"></param>
 		/// <param name="AEndedDateField"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate,
 											 string ABeganDateField, string AEndedDateField)
 		{
@@ -2250,7 +2283,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ABeganDateInclusive"></param>
 		/// <param name="AEndedDateInclusive"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate,
 											 bool ABeganDateInclusive, bool AEndedDateInclusive)
 		{
@@ -2271,7 +2304,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ABeganDate"></param>
 		/// <param name="AEndedDate"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate)
 		{
 			DataView View = FindActiveRows(ASourceView,
@@ -2296,7 +2329,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate,
 											 string ABeganDateField, string AEndedDateField,
 											 bool ABeganDateInclusive, bool AEndedDateInclusive,
@@ -2325,7 +2358,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate,
 											 string ABeganDateField, string AEndedDateField,
 											 bool ANotFilter, sFilterPair[] AFilterPairs)
@@ -2353,7 +2386,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDateInclusive"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate,
 											 string ABeganDateField, string AEndedDateField,
 											 bool ABeganDateInclusive, bool AEndedDateInclusive,
@@ -2381,7 +2414,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDateField"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate,
 											 string ABeganDateField, string AEndedDateField,
 											 sFilterPair[] AFilterPairs)
@@ -2408,7 +2441,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilter"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate,
 											 bool ABeganDateInclusive, bool AEndedDateInclusive,
 											 bool ANotFilter, sFilterPair[] AFilter)
@@ -2433,7 +2466,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilter"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate,
 											 bool ANotFilter, sFilterPair[] AFilter)
 		{
@@ -2457,7 +2490,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDateInclusive"></param>
 		/// <param name="AFilter"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate,
 											 bool ABeganDateInclusive, bool AEndedDateInclusive,
 											 sFilterPair[] AFilter)
@@ -2481,7 +2514,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDate"></param>
 		/// <param name="AFilter"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate,
 											 sFilterPair[] AFilter)
 		{
@@ -2508,7 +2541,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilterList"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate,
 											 string ABeganDateField, string AEndedDateField,
 											 bool ABeganDateInclusive, bool AEndedDateInclusive,
@@ -2534,7 +2567,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDate"></param>
 		/// <param name="AFilterList"></param>
 		/// <returns></returns>
-		protected static int CountActiveRows(DataView ASourceView,
+		protected  int CountActiveRows(DataView ASourceView,
 											 DateTime ABeganDate, DateTime AEndedDate,
 											 params sFilterPair[][] AFilterList)
 		{
@@ -2559,7 +2592,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AFilterPairs"></param>
 		/// <param name="AFilterRow"></param>
 		/// <returns></returns>
-		protected static bool FindRow(DataView ASourceView, sFilterPair[] AFilterPairs, out DataRowView AFilterRow)
+		protected  bool FindRow(DataView ASourceView, sFilterPair[] AFilterPairs, out DataRowView AFilterRow)
 		{
 			bool Result;
 			bool Match;
@@ -2602,7 +2635,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ASourceView"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataRowView FindRow(DataView ASourceView, sFilterPair[] AFilterPairs)
+		protected  DataRowView FindRow(DataView ASourceView, sFilterPair[] AFilterPairs)
 		{
 			DataRowView Result;
 
@@ -2623,7 +2656,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AFilterPairs"></param>
 		/// <param name="ANotFilter"></param>
 		/// <returns></returns>
-		protected static DataView FindRows(DataView ASourceView, sFilterPair[] AFilterPairs, bool ANotFilter)
+		protected  DataView FindRows(DataView ASourceView, sFilterPair[] AFilterPairs, bool ANotFilter)
 		{
 			if (ASourceView.Count > 0)
 			{
@@ -2664,7 +2697,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ASourceView"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataView FindRows(DataView ASourceView, sFilterPair[] AFilterPairs)
+		protected  DataView FindRows(DataView ASourceView, sFilterPair[] AFilterPairs)
 		{
 			return FindRows(ASourceView, AFilterPairs, false);
 		}
@@ -2682,7 +2715,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ABeganDateField"></param>
 		/// <param name="AEndedDateField"></param>
 		/// <returns></returns>
-		protected static DataView FindRows(DataView ASourceView,
+		protected  DataView FindRows(DataView ASourceView,
 											   DateTime EvaluationBeganDate, DateTime EvaluationEndedDate,
 											   string ABeganDateField, string AEndedDateField)
 		{
@@ -2737,7 +2770,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDateField"></param>
 		/// <param name="AEndedHourField"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, int ABeganHour,
 												 DateTime AEndedDate, int AEndedHour,
 												 string ABeganDateField, string ABeganHourField,
@@ -2785,7 +2818,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDate"></param>
 		/// <param name="AEndedHour"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, int ABeganHour,
 												 DateTime AEndedDate, int AEndedHour)
 		{
@@ -2809,7 +2842,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, int ABeganHour,
 												 DateTime AEndedDate, int AEndedHour,
 												 string ABeganDateField, string ABeganHourField,
@@ -2882,7 +2915,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDateInclusive"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, int ABeganHour, int ABeganMin,
 												 DateTime AEndedDate, int AEndedHour, int AEndedMin,
 												 string ABeganDateField, string ABeganHourField, string ABeganMinField,
@@ -2961,7 +2994,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDateInclusive"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, int ABeganHour, int ABeganMin,
 												 DateTime AEndedDate, int AEndedHour, int AEndedMin,
 												 string ABeganDateField, string ABeganHourField, string ABeganMinField,
@@ -2996,7 +3029,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ABeganDateInclusive"></param>
 		/// <param name="AEndedDateInclusive"></param>        
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, int ABeganHour, int ABeganMin,
 												 DateTime AEndedDate, int AEndedHour, int AEndedMin,
 												 string ABeganDateField, string ABeganHourField, string ABeganMinField,
@@ -3056,7 +3089,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedHourField"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, int ABeganHour,
 												 DateTime AEndedDate, int AEndedHour,
 												 string ABeganDateField, string ABeganHourField,
@@ -3080,7 +3113,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilter"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, int ABeganHour,
 												 DateTime AEndedDate, int AEndedHour,
 												 bool ANotFilter, sFilterPair[] AFilter)
@@ -3101,7 +3134,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedHour"></param>
 		/// <param name="AFilter"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, int ABeganHour,
 												 DateTime AEndedDate, int AEndedHour,
 												 sFilterPair[] AFilter)
@@ -3126,7 +3159,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ABeganDateInclusive"></param>
 		/// <param name="AEndedDateInclusive"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate,
 												 string ABeganDateField, string AEndedDateField,
 												 bool ABeganDateInclusive, bool AEndedDateInclusive)
@@ -3170,7 +3203,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ABeganDateField"></param>
 		/// <param name="AEndedDateField"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate,
 												 string ABeganDateField, string AEndedDateField)
 		{
@@ -3186,7 +3219,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ABeganDateInclusive"></param>
 		/// <param name="AEndedDateInclusive"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate,
 												 bool ABeganDateInclusive, bool AEndedDateInclusive)
 		{
@@ -3203,7 +3236,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ABeganDate"></param>
 		/// <param name="AEndedDate"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate)
 		{
 			return FindActiveRows(ASourceView, ABeganDate, AEndedDate, "Begin_Date", "End_Date", true, true);
@@ -3222,7 +3255,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate,
 												 string ABeganDateField, string AEndedDateField,
 												 bool ABeganDateInclusive, bool AEndedDateInclusive,
@@ -3281,7 +3314,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate,
 												 string ABeganDateField, string AEndedDateField,
 												 bool ANotFilter, sFilterPair[] AFilterPairs)
@@ -3305,7 +3338,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDateInclusive"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate,
 												 string ABeganDateField, string AEndedDateField,
 												 bool ABeganDateInclusive, bool AEndedDateInclusive,
@@ -3328,7 +3361,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDateField"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate,
 												 string ABeganDateField, string AEndedDateField,
 												 sFilterPair[] AFilterPairs)
@@ -3351,7 +3384,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilter"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate,
 												 bool ABeganDateInclusive, bool AEndedDateInclusive,
 												 bool ANotFilter, sFilterPair[] AFilter)
@@ -3372,7 +3405,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilter"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate,
 												 bool ANotFilter, sFilterPair[] AFilter)
 		{
@@ -3393,7 +3426,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDateInclusive"></param>
 		/// <param name="AFilter"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate,
 												 bool ABeganDateInclusive, bool AEndedDateInclusive,
 												 sFilterPair[] AFilter)
@@ -3412,7 +3445,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDate"></param>
 		/// <param name="AFilter"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate,
 												 sFilterPair[] AFilter)
 		{
@@ -3435,7 +3468,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilterList"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate,
 												 string ABeganDateField, string AEndedDateField,
 												 bool ABeganDateInclusive, bool AEndedDateInclusive,
@@ -3497,7 +3530,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDate"></param>
 		/// <param name="AFilterList"></param>
 		/// <returns></returns>
-		protected static DataView FindActiveRows(DataView ASourceView,
+		protected  DataView FindActiveRows(DataView ASourceView,
 												 DateTime ABeganDate, DateTime AEndedDate,
 												 params sFilterPair[][] AFilterList)
 		{
@@ -3523,7 +3556,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataRowView FindMostRecentRow(DataView ASourceView,
+		protected  DataRowView FindMostRecentRow(DataView ASourceView,
 													   DateTime ABeganDate, int ABeganHour,
 													   string AEndedDateField, string AEndedHourField,
 													   bool ANotFilter, sFilterPair[] AFilterPairs)
@@ -3579,7 +3612,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedHourField"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataRowView FindMostRecentRow(DataView ASourceView,
+		protected  DataRowView FindMostRecentRow(DataView ASourceView,
 													   DateTime ABeganDate, int ABeganHour,
 													   string AEndedDateField, string AEndedHourField,
 													   sFilterPair[] AFilterPairs)
@@ -3599,7 +3632,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ANotFilter"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataRowView FindMostRecentRow(DataView ASourceView,
+		protected  DataRowView FindMostRecentRow(DataView ASourceView,
 													   DateTime ABeganDate, int ABeganHour,
 													   bool ANotFilter, sFilterPair[] AFilterPairs)
 		{
@@ -3617,7 +3650,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ABeganHour"></param>
 		/// <param name="AFilterPairs"></param>
 		/// <returns></returns>
-		protected static DataRowView FindMostRecentRow(DataView ASourceView,
+		protected  DataRowView FindMostRecentRow(DataView ASourceView,
 													   DateTime ABeganDate, int ABeganHour,
 													   sFilterPair[] AFilterPairs)
 		{
@@ -3642,7 +3675,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="idColumnName">The name of the current records _ID field</param>
 		/// <param name="condition">The criteria to use to determine a duplicate</param>
 		/// <returns>true if a duplicate is found, false otherwise</returns>
-		protected static bool DuplicateRecordCheck(DataRowView currentRecord,
+		protected  bool DuplicateRecordCheck(DataRowView currentRecord,
 												   DataView allRecords,
 												   string idColumnName,
 												   cFilterCondition[] condition)
@@ -3685,7 +3718,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="IDFieldName">The name of the current records _ID field</param>
 		/// <param name="criteria">The criteria to use to determine a duplicate</param>
 		/// <returns>true if a duplicate is found, false otherwise</returns>
-		protected static bool DuplicateRecordCheck(DataRowView CurrentRecord, DataView dvRecords2Check, string IDFieldName, sFilterPair[] criteria)
+		protected  bool DuplicateRecordCheck(DataRowView CurrentRecord, DataView dvRecords2Check, string IDFieldName, sFilterPair[] criteria)
 		{
 			bool bDuplicate = false;
 			sFilterPair[] realCriteria = new sFilterPair[criteria.GetLength(0)];
@@ -3726,7 +3759,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="criteria1">The 1st criteria to use to determine a duplicate</param>
 		/// <param name="criteria2">The 2nd criteria to use to determine a duplicate</param>
 		/// <returns>true if a duplicate is found, false otherwise</returns>
-		protected static bool DuplicateRecordCheck(DataRowView CurrentRecord, DataView dvRecords2Check, string IDFieldName, sFilterPair[] criteria1, sFilterPair[] criteria2)
+		protected  bool DuplicateRecordCheck(DataRowView CurrentRecord, DataView dvRecords2Check, string IDFieldName, sFilterPair[] criteria1, sFilterPair[] criteria2)
 		{
 			bool bDuplicate = DuplicateRecordCheck(CurrentRecord, dvRecords2Check, IDFieldName, criteria1);
 			if (bDuplicate == false)
@@ -3739,7 +3772,7 @@ namespace ECMPS.Checks.CheckEngine
 		#endregion
 
 
-		#region Protected Static Methods: DataView Validation
+		#region Protected  Methods: DataView Validation
 
 		/// <summary>
 		/// Check to see if duplicate/overlapping records exist for the date range - returns false if duplicates exist, true if no duplicates
@@ -3749,7 +3782,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="BeginDate">The begin_date</param>
 		/// <param name="EndDate">The ehd_date</param>
 		/// <returns>FALSE if duplicate records exist, TRUE if no duplicates/overlapping records exist</returns>
-		protected static bool CheckForDuplicateRecords(cCategory Category, DataView dv, DateTime BeginDate, DateTime EndDate)
+		protected  bool CheckForDuplicateRecords(cCategory Category, DataView dv, DateTime BeginDate, DateTime EndDate)
 		{
 			string OldSort = dv.Sort;
 
@@ -3800,7 +3833,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="BeginHour">The begin_hour</param>
 		/// <param name="EndHour">The end_hour</param>
 		/// <returns>FALSE if duplicate records exist, TRUE if no duplicates/overlapping records exist</returns>
-		protected static bool CheckForDuplicateRecords(cCategory Category, DataView dv, DateTime BeginDate, DateTime EndDate, int BeginHour, int EndHour)
+		protected  bool CheckForDuplicateRecords(cCategory Category, DataView dv, DateTime BeginDate, DateTime EndDate, int BeginHour, int EndHour)
 		{
 			string OldSort = dv.Sort;
 
@@ -3865,7 +3898,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeEndedDateHour"></param>
 		/// <param name="RangeCount"></param>
 		/// <returns></returns>
-		protected static bool CheckForHourRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForHourRangeCovered(cCategory Category, DataView View,
 													   string FieldBeganDateHour,
 													   string FieldEndedDateHour,
 													   DateTime RangeBeganDateHour,
@@ -3931,7 +3964,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeBeganDateHour"></param>
 		/// <param name="RangeEndedDateHour"></param>
 		/// <returns></returns>
-		protected static bool CheckForHourRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForHourRangeCovered(cCategory Category, DataView View,
 													   string FieldBeganDateHour,
 													   string FieldEndedDateHour,
 													   DateTime RangeBeganDateHour,
@@ -3956,7 +3989,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeEndedDateHour"></param>
 		/// <param name="RangeCount"></param>
 		/// <returns></returns>
-		protected static bool CheckForHourRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForHourRangeCovered(cCategory Category, DataView View,
 													   DateTime RangeBeganDateHour,
 													   DateTime RangeEndedDateHour,
 													   ref int RangeCount)
@@ -3972,7 +4005,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeBeganDateHour"></param>
 		/// <param name="RangeEndedDateHour"></param>
 		/// <returns></returns>
-		protected static bool CheckForHourRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForHourRangeCovered(cCategory Category, DataView View,
 													   DateTime RangeBeganDateHour,
 													   DateTime RangeEndedDateHour)
 		{
@@ -3994,7 +4027,7 @@ namespace ECMPS.Checks.CheckEngine
     /// <param name="EndDate">The end date of the range to check</param> 
     /// <param name="resultView">Resulting view</param>
 		/// <returns></returns>
-		public static bool CheckForRangeCoveredUnitStackConfig(string unitMonLocId, DataView genericView, DataView uscView, DateTime StartDate, DateTime EndDate, out DataView resultView)
+		public  bool CheckForRangeCoveredUnitStackConfig(string unitMonLocId, DataView genericView, DataView uscView, DateTime StartDate, DateTime EndDate, out DataView resultView)
 		{
 			cDateTimeList dateList = new cDateTimeList();
 			dateList.Add(StartDate);
@@ -4155,7 +4188,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeEndedHour"></param>
 		/// <param name="RangeCount"></param>
 		/// <returns></returns>
-		protected static bool CheckForHourRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForHourRangeCovered(cCategory Category, DataView View,
 													   string FieldBeganDate, string FieldBeganHour,
 													   string FieldEndedDate, string FieldEndedHour,
 													   DateTime RangeBeganDate, int RangeBeganHour,
@@ -4227,7 +4260,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeEndedHour"></param>
 		/// <param name="RangeCount"></param>
 		/// <returns></returns>
-		protected static bool CheckForHourRangeCovered(DataView View,
+		protected  bool CheckForHourRangeCovered(DataView View,
 													   string FieldBeganDate, string FieldBeganHour,
 													   string FieldEndedDate, string FieldEndedHour,
 													   DateTime RangeBeganDate, int RangeBeganHour,
@@ -4299,7 +4332,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeEndedDate"></param>
 		/// <param name="RangeEndedHour"></param>
 		/// <returns></returns>
-		protected static bool CheckForHourRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForHourRangeCovered(cCategory Category, DataView View,
 													   string FieldBeganDate, string FieldBeganHour,
 													   string FieldEndedDate, string FieldEndedHour,
 													   DateTime RangeBeganDate, int RangeBeganHour,
@@ -4325,7 +4358,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeEndedHour"></param>
 		/// <param name="RangeCount"></param>
 		/// <returns></returns>
-		protected static bool CheckForHourRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForHourRangeCovered(cCategory Category, DataView View,
 													   DateTime RangeBeganDate, int RangeBeganHour,
 													   DateTime RangeEndedDate, int RangeEndedHour, ref int RangeCount)
 		{
@@ -4343,7 +4376,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeEndedDate"></param>
 		/// <param name="RangeEndedHour"></param>
 		/// <returns></returns>
-		protected static bool CheckForHourRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForHourRangeCovered(cCategory Category, DataView View,
 													   DateTime RangeBeganDate, int RangeBeganHour,
 													   DateTime RangeEndedDate, int RangeEndedHour)
 		{
@@ -4363,7 +4396,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeEndedDate"></param>
 		/// <param name="RangeEndedHour"></param>
 		/// <returns></returns>
-		protected static bool CheckForHourRangeCovered(DataView View,
+		protected  bool CheckForHourRangeCovered(DataView View,
 													   DateTime RangeBeganDate, int RangeBeganHour,
 													   DateTime RangeEndedDate, int RangeEndedHour)
 		{
@@ -4390,7 +4423,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AllowBeginDateNull">Are null BEGIN_DATEs allowed or not</param>
 		/// <param name="RangeCount">the range count?</param>
 		/// <returns>true if covered, false if not</returns>
-		protected static bool CheckForDateRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForDateRangeCovered(cCategory Category, DataView View,
 													   string FieldBeganDate, string FieldEndedDate,
 													   DateTime RangeBeganDate, DateTime RangeEndedDate,
 													   bool AllowBeginDateNull, ref int RangeCount)
@@ -4451,7 +4484,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AllowBeginDateNull">Are null BEGIN_DATEs allowed or not</param>
 		/// <param name="RangeCount">the range count?</param>
 		/// <returns>true if covered, false if not</returns>
-		protected static bool CheckForDateRangeCovered(DataView View,
+		protected  bool CheckForDateRangeCovered(DataView View,
 													   string FieldBeganDate, string FieldEndedDate,
 													   DateTime RangeBeganDate, DateTime RangeEndedDate,
 													   bool AllowBeginDateNull, ref int RangeCount)
@@ -4515,7 +4548,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AllowBeginDateNull">Are null BEGIN_DATEs allowed or not</param>
 		/// <param name="RangeCount">the range count?</param>
 		/// <returns>true if covered, false if not</returns>
-		protected static bool CheckForDateRangeCovered(cCategory Category, DataView View1, DataView View2,
+		protected  bool CheckForDateRangeCovered(cCategory Category, DataView View1, DataView View2,
 														string View1BeganDate, string View1EndedDate,
 														string View2BeganDate, string View2EndedDate,
 														DateTime RangeBeganDate, DateTime RangeEndedDate,
@@ -4601,7 +4634,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AllowBeginDateNull">Are null BEGIN_DATEs allowed or not</param>
 		/// <param name="RangeCount">the range count?</param>
 		/// <returns>true if covered, false if not</returns>
-		protected static bool CheckForDateRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForDateRangeCovered(cCategory Category, DataView View,
 														DateTime RangeBeganDate, DateTime RangeEndedDate,
 														bool AllowBeginDateNull, ref int RangeCount)
 		{
@@ -4619,7 +4652,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeEndedDate">The END_DATE</param>
 		/// <param name="RangeCount">the range count?</param>
 		/// <returns>true if covered, false if not</returns>
-		protected static bool CheckForDateRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForDateRangeCovered(cCategory Category, DataView View,
 														string FieldBeganDate, string FieldEndedDate,
 														DateTime RangeBeganDate, DateTime RangeEndedDate, ref int RangeCount)
 		{
@@ -4635,7 +4668,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeEndedDate">The END_DATE</param>
 		/// <param name="RangeCount">the range count?</param>
 		/// <returns>true if covered, false if not</returns>
-		protected static bool CheckForDateRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForDateRangeCovered(cCategory Category, DataView View,
 														DateTime RangeBeganDate, DateTime RangeEndedDate, ref int RangeCount)
 		{
 			return CheckForDateRangeCovered(Category, View, "begin_date", "end_date", RangeBeganDate, RangeEndedDate, false, ref RangeCount);
@@ -4651,7 +4684,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeBeganDate">The BEGIN_DATE</param>
 		/// <param name="RangeEndedDate">The END_DATE</param>
 		/// <returns>true if covered, false if not</returns>
-		protected static bool CheckForDateRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForDateRangeCovered(cCategory Category, DataView View,
 														string FieldBeganDate, string FieldEndedDate,
 														DateTime RangeBeganDate, DateTime RangeEndedDate)
 		{
@@ -4669,7 +4702,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeEndedDate">The END_DATE</param>
 		/// <param name="AllowBeginDateNull">Are null BEGIN_DATEs allowed or not</param>
 		/// <returns>true if covered, false if not</returns>
-		protected static bool CheckForDateRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForDateRangeCovered(cCategory Category, DataView View,
 														DateTime RangeBeganDate, DateTime RangeEndedDate,
 														bool AllowBeginDateNull)
 		{
@@ -4686,7 +4719,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeBeganDate">The BEGIN_DATE</param>
 		/// <param name="RangeEndedDate">The END_DATE</param>
 		/// <returns>true if covered, false if not</returns>
-		protected static bool CheckForDateRangeCovered(cCategory Category, DataView View,
+		protected  bool CheckForDateRangeCovered(cCategory Category, DataView View,
 														DateTime RangeBeganDate, DateTime RangeEndedDate)
 		{
 			int RangeCount = 0;
@@ -4701,7 +4734,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeBeganDate">The BEGIN_DATE</param>
 		/// <param name="RangeEndedDate">The END_DATE</param>
 		/// <returns>true if covered, false if not</returns>
-		protected static bool CheckForDateRangeCovered(DataView View,
+		protected  bool CheckForDateRangeCovered(DataView View,
 														DateTime RangeBeganDate, DateTime RangeEndedDate)
 		{
 			int RangeCount = 0;
@@ -4719,7 +4752,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="RangeEndedDate">The END_DATE</param>
 		/// <param name="AllowBeginDateNull">Are null BEGIN_DATEs allowed or not</param>
 		/// <returns>true if covered, false if not</returns>
-		protected static bool CheckForDateRangeCovered(cCategory Category, DataView View1, DataView View2,
+		protected  bool CheckForDateRangeCovered(cCategory Category, DataView View1, DataView View2,
 														DateTime RangeBeganDate, DateTime RangeEndedDate,
 														bool AllowBeginDateNull)
 		{
@@ -4740,7 +4773,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="dvView">The retrieved records</param>
 		/// <param name="EvalEndDate">The Evaluation End Date</param>
 		/// <returns>true if all END_DATE records are NOT NULL and latest is after the Evaluation End Date</returns>
-		protected static bool CheckEndDateForRetrievedRecords(cCategory Category, DataView dvView, DateTime EvalEndDate)
+		protected  bool CheckEndDateForRetrievedRecords(cCategory Category, DataView dvView, DateTime EvalEndDate)
 		{
 			return CheckEndDateForRetrievedRecords(Category, dvView, "END_DATE", EvalEndDate);
 		}
@@ -4753,7 +4786,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="EndDateFieldName">The name of the END_DATE field in dvView</param>
 		/// <param name="EvalEndDate">The Evaluation End Date</param>
 		/// <returns>true if all END_DATE records are NOT NULL and latest is not after the Evaluation End Date</returns>
-		protected static bool CheckEndDateForRetrievedRecords(cCategory Category, DataView dvView, string EndDateFieldName, DateTime EvalEndDate)
+		protected  bool CheckEndDateForRetrievedRecords(cCategory Category, DataView dvView, string EndDateFieldName, DateTime EvalEndDate)
 		{
 			bool bPassed = true;
 			DateTime rowEndDate = DateTime.MinValue;
@@ -4790,7 +4823,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="EvalEndDate">The Evaluation End Date</param>
 		/// <returns>true if all END_DATE records are NOT NULL and the quarter of the latest 
 		/// is not after the quarter of the Evaluation End Date</returns>
-		protected static bool CheckEndQuarterForRetrievedRecords(cCategory Category, DataView dvView, string EndDateFieldName, DateTime EvalEndDate)
+		protected  bool CheckEndQuarterForRetrievedRecords(cCategory Category, DataView dvView, string EndDateFieldName, DateTime EvalEndDate)
 		{
 			bool bPassed = true;
 			DateTime rowEndDate = DateTime.MinValue;
@@ -4824,7 +4857,7 @@ namespace ECMPS.Checks.CheckEngine
 		#endregion
 
 
-		#region Protected Static Methods: DataView Utilities
+		#region Protected  Methods: DataView Utilities
 
 		/// <summary>
 		/// ColumnToDatalist
@@ -4832,7 +4865,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ADataView"></param>
 		/// <param name="AColumnName"></param>
 		/// <returns></returns>
-		protected static string ColumnToDatalist(DataView ADataView, string AColumnName)
+		protected  string ColumnToDatalist(DataView ADataView, string AColumnName)
 		{
 			if (ADataView.Table.Columns.Contains(AColumnName))
 			{
@@ -4858,7 +4891,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AColumnName"></param>
 		/// <param name="AllowDuplicates"></param>
 		/// <returns></returns>
-		protected static string ColumnToDatalist(DataView ADataView, string AColumnName, bool AllowDuplicates)
+		protected  string ColumnToDatalist(DataView ADataView, string AColumnName, bool AllowDuplicates)
 		{
 			if (ADataView.Table.Columns.Contains(AColumnName))
 			{
@@ -4884,7 +4917,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AColumnName1"></param>
 		/// <param name="AColumnName2"></param>
 		/// <returns></returns>
-		protected static string ColumnToDatalist(DataView ADataView, string AColumnName1, string AColumnName2)
+		protected  string ColumnToDatalist(DataView ADataView, string AColumnName1, string AColumnName2)
 		{
 			if (ADataView.Table.Columns.Contains(AColumnName1) && ADataView.Table.Columns.Contains(AColumnName2))
 			{
@@ -4910,7 +4943,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AColumnName2"></param>
 		/// <param name="AllowDuplicates"></param>
 		/// <returns></returns>
-		protected static string ColumnToDatalist(DataView ADataView, string AColumnName1, string AColumnName2, bool AllowDuplicates)
+		protected  string ColumnToDatalist(DataView ADataView, string AColumnName1, string AColumnName2, bool AllowDuplicates)
 		{
 			string List = "";
 			if (ADataView.Table.Columns.Contains(AColumnName1) && ADataView.Table.Columns.Contains(AColumnName2))
@@ -4933,7 +4966,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="sColumnType2">"string", "int", and "decimal" currently supported</param>
 		/// <param name="AllowDuplicates">are duplicates allowed in the list</param>
 		/// <returns>the list, or an empty string if no list generated</returns>
-		protected static string ColumnToDatalist(DataView dvDataView, string sColumnName1, string sColumnType1, string sColumnName2, string sColumnType2, bool AllowDuplicates)
+		protected  string ColumnToDatalist(DataView dvDataView, string sColumnName1, string sColumnType1, string sColumnName2, string sColumnType2, bool AllowDuplicates)
 		{
 			string List = "";
 			string sColumnValue1, sColumnValue2;
@@ -4985,7 +5018,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ADataView"></param>
 		/// <param name="ColumnNames"></param>
 		/// <returns></returns>
-		protected static string ColumnToDatalist(DataView ADataView, params string[] ColumnNames)
+		protected  string ColumnToDatalist(DataView ADataView, params string[] ColumnNames)
 		{
 			string List = "";
 			string Delim = "";
@@ -5007,7 +5040,7 @@ namespace ECMPS.Checks.CheckEngine
 		#endregion
 
 
-		#region Protected Static Methods: Date and Hour Handling Methods
+		#region Protected  Methods: Date and Hour Handling Methods
 
 		/// <summary>
 		/// DateHour_GetEarlier
@@ -5018,7 +5051,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AHourTwo"></param>
 		/// <param name="ADateOut"></param>
 		/// <param name="AHourOut"></param>
-		protected static void DateHour_GetEarlier(DateTime ADateOne, int AHourOne, DateTime ADateTwo, int AHourTwo,
+		protected  void DateHour_GetEarlier(DateTime ADateOne, int AHourOne, DateTime ADateTwo, int AHourTwo,
 												  out DateTime ADateOut, out int AHourOut)
 		{
 			if (ADateOne < ADateTwo)
@@ -5043,7 +5076,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AHourTwo"></param>
 		/// <param name="ADateOut"></param>
 		/// <param name="AHourOut"></param>
-		protected static void DateHour_GetLater(DateTime ADateOne, int AHourOne, DateTime ADateTwo, int AHourTwo,
+		protected  void DateHour_GetLater(DateTime ADateOne, int AHourOne, DateTime ADateTwo, int AHourTwo,
 												out DateTime ADateOut, out int AHourOut)
 		{
 			if (ADateOne > ADateTwo)
@@ -5070,7 +5103,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="EndDate">End date of Outer Range to test against</param>
 		/// <param name="dateTimeList">List of dates used to define inner ranges.</param>
 		/// <returns>Returns list of distinct date/hour test ranges.</returns>
-		public static cDateTimeRanges GetRangeList(DateTime StartDate, DateTime EndDate, cDateTimeList dateTimeList)
+		public  cDateTimeRanges GetRangeList(DateTime StartDate, DateTime EndDate, cDateTimeList dateTimeList)
 		{
 			cDateTimeRanges result = new cDateTimeRanges();
 
@@ -5114,7 +5147,7 @@ namespace ECMPS.Checks.CheckEngine
 		}
 
 
-		#region Protected Static Methods: Date and Hour Range Intersections with Delegates and Types
+		#region Protected  Methods: Date and Hour Range Intersections with Delegates and Types
 
 		/// <summary>
 		/// Delegate to get data key
@@ -5139,7 +5172,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AIntEndedDate"></param>
 		/// <param name="AIntEndedHour"></param>
 		/// <returns></returns>
-		protected static bool GetRangeIntersection(DateTime AOneBeganDate, int AOneBeganHour,
+		protected  bool GetRangeIntersection(DateTime AOneBeganDate, int AOneBeganHour,
 												   DateTime AOneEndedDate, int AOneEndedHour,
 												   DateTime ATwoBeganDate, int ATwoBeganHour,
 												   DateTime ATwoEndedDate, int ATwoEndedHour,
@@ -5185,7 +5218,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEvalEndedDate"></param>
 		/// <param name="AEvalEndedHour"></param>
 		/// <returns></returns>
-		protected static DataView GetHourRangeIntersections(DataView ADataView,
+		protected  DataView GetHourRangeIntersections(DataView ADataView,
 															string ABeganDateName, string ABeganHourName,
 															string AEndedDateName, string AEndedHourName,
 															DateTime AEvalBeganDate, int AEvalBeganHour,
@@ -5283,7 +5316,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEvalEndedDate"></param>
 		/// <param name="AEvalEndedHour"></param>
 		/// <returns></returns>
-		protected static DataView GetHourRangeIntersections(DataView ADataView,
+		protected  DataView GetHourRangeIntersections(DataView ADataView,
 															DateTime AEvalBeganDate, int AEvalBeganHour,
 															DateTime AEvalEndedDate, int AEvalEndedHour)
 		{
@@ -5300,7 +5333,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDateName"></param>
 		/// <param name="AEndedHourName"></param>
 		/// <returns></returns>
-		protected static DataView GetHourRangeIntersections(DataView ADataView,
+		protected  DataView GetHourRangeIntersections(DataView ADataView,
 															string ABeganDateName, string ABeganHourName,
 															string AEndedDateName, string AEndedHourName)
 		{
@@ -5380,7 +5413,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// </summary>
 		/// <param name="ADataView"></param>
 		/// <returns></returns>
-		protected static DataView GetHourRangeIntersections(DataView ADataView)
+		protected  DataView GetHourRangeIntersections(DataView ADataView)
 		{
 			return GetHourRangeIntersections(ADataView, "Begin_Date", "Begin_Hour", "End_Date", "End_Hour");
 		}
@@ -5397,7 +5430,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ATwoEndedDate"></param>
 		/// <param name="ATwoEndedHour"></param>
 		/// <returns></returns>
-		protected static bool IsRangeIntersection(DateTime AOneBeganDate, int AOneBeganHour,
+		protected  bool IsRangeIntersection(DateTime AOneBeganDate, int AOneBeganHour,
 												  DateTime AOneEndedDate, int AOneEndedHour,
 												  DateTime ATwoBeganDate, int ATwoBeganHour,
 												  DateTime ATwoEndedDate, int ATwoEndedHour)
@@ -5419,7 +5452,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDateName"></param>
 		/// <param name="AEndedHourName"></param>
 		/// <returns></returns>
-		protected static bool IsRangeIntersection(DataView ADataView, dGetDataKey ADataKey,
+		protected  bool IsRangeIntersection(DataView ADataView, dGetDataKey ADataKey,
 												  string ABeganDateName, string ABeganHourName,
 												  string AEndedDateName, string AEndedHourName)
 		{
@@ -5457,7 +5490,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ADataView"></param>
 		/// <param name="ADataKey"></param>
 		/// <returns></returns>
-		protected static bool IsRangeIntersection(DataView ADataView, dGetDataKey ADataKey)
+		protected  bool IsRangeIntersection(DataView ADataView, dGetDataKey ADataKey)
 		{
 			return IsRangeIntersection(ADataView, ADataKey, "Begin_Date", "Begin_Hour", "End_Date", "End_Hour");
 		}
@@ -5472,7 +5505,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AEndedDateName"></param>
 		/// <param name="AEndedHourName"></param>
 		/// <returns></returns>
-		protected static bool IsRangeIntersection(DataView ADataView, string AKeyField,
+		protected  bool IsRangeIntersection(DataView ADataView, string AKeyField,
 												  string ABeganDateName, string ABeganHourName,
 												  string AEndedDateName, string AEndedHourName)
 		{
@@ -5510,7 +5543,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ADataView"></param>
 		/// <param name="AKeyField"></param>
 		/// <returns></returns>
-		protected static bool IsRangeIntersection(DataView ADataView, string AKeyField)
+		protected  bool IsRangeIntersection(DataView ADataView, string AKeyField)
 		{
 			return IsRangeIntersection(ADataView, AKeyField, "Begin_Date", "Begin_Hour", "End_Date", "End_Hour");
 		}
@@ -5518,7 +5551,7 @@ namespace ECMPS.Checks.CheckEngine
 		#endregion
 
 
-		#region Protected Static Methods: Lookup Code Validation and Retrieval
+		#region Protected  Methods: Lookup Code Validation and Retrieval
 
 		/// <summary>
 		/// Does a lookup code value exist in the given DataView
@@ -5526,7 +5559,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="LookupCode">The lookup code in question</param>
 		/// <param name="LookupCodes">The view containing lookup codes</param>
 		/// <returns>true if found, false if not</returns>
-		protected static bool LookupCodeExists(string LookupCode, DataView LookupCodes)
+		protected  bool LookupCodeExists(string LookupCode, DataView LookupCodes)
 		{
 			bool bFound = false;
 
@@ -5549,7 +5582,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="LookupCodeField">The name of the lookup column in the view</param>
 		/// <param name="LookupCodes">The view containing lookup codes</param>
 		/// <returns>true if found, false if not</returns>
-		protected static bool LookupCodeExists(string LookupCode, string LookupCodeField, DataView LookupCodes)
+		protected  bool LookupCodeExists(string LookupCode, string LookupCodeField, DataView LookupCodes)
 		{
 			bool bFound = false;
 
@@ -5574,7 +5607,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="LookupCode">The lookup code in question</param>
 		/// <param name="LookupValue">The lookup value selected</param>
 		/// <returns>true if found, false if not</returns>
-		protected static bool LookupCodeValue(string LookupCodeField, string LookupValueField, DataView LookupCodes,
+		protected  bool LookupCodeValue(string LookupCodeField, string LookupValueField, DataView LookupCodes,
 											  string LookupCode, out string LookupValue)
 		{
 			bool bFound = false;
@@ -5597,7 +5630,7 @@ namespace ECMPS.Checks.CheckEngine
 		#endregion
 
 
-		#region Protected Static Methods: Value Comparison
+		#region Protected  Methods: Value Comparison
 
 		/// <summary>
 		/// Compare
@@ -5606,7 +5639,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="AValue2"></param>
 		/// <param name="ADecimals"></param>
 		/// <returns></returns>
-		protected static bool Compare(decimal AValue1, decimal AValue2, int ADecimals)
+		protected  bool Compare(decimal AValue1, decimal AValue2, int ADecimals)
 		{
 			AValue1 = Math.Round(AValue1, ADecimals, MidpointRounding.AwayFromZero);
 			AValue2 = Math.Round(AValue2, ADecimals, MidpointRounding.AwayFromZero);
@@ -5622,7 +5655,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="ADecimals"></param>
 		/// <param name="ATolerance"></param>
 		/// <returns></returns>
-		protected static bool Compare(decimal AValue1, decimal AValue2, int ADecimals, decimal ATolerance)
+		protected  bool Compare(decimal AValue1, decimal AValue2, int ADecimals, decimal ATolerance)
 		{
 			AValue1 = Math.Round(AValue1, ADecimals, MidpointRounding.AwayFromZero);
 			AValue2 = Math.Round(AValue2, ADecimals, MidpointRounding.AwayFromZero);

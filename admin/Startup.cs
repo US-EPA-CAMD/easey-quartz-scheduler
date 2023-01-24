@@ -178,6 +178,8 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddOptions();
 
+      EvaluationJobQueue.RegisterWithQuartz(services);
+      CheckEngineEvaluation.RegisterWithQuartz(services);
       BulkFileJobQueue.RegisterWithQuartz(services);
       AllowanceHoldingsBulkDataFiles.RegisterWithQuartz(services);
       AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
@@ -188,7 +190,6 @@ namespace Epa.Camd.Quartz.Scheduler
       BulkDataFileMaintenance.RegisterWithQuartz(services);
       ApportionedEmissionsBulkData.RegisterWithQuartz(services);
       SendMail.RegisterWithQuartz(services);
-      CheckEngineEvaluation.RegisterWithQuartz(services);
       RemoveExpiredUserSession.RegisterWithQuartz(services);
       RemoveExpiredCheckoutRecord.RegisterWithQuartz(services);
     }
@@ -250,6 +251,8 @@ namespace Epa.Camd.Quartz.Scheduler
           new CheckEngineEvaluationListener(Configuration),
           GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS)
       );
+
+      EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
 
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
       AllowanceHoldingsBulkDataFiles.ScheduleWithQuartz(scheduler, app);

@@ -32,12 +32,14 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "SYSTEM_FUEL_FLOW";
     }
 
+    public cSystemFuelFlowCategory(){}
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cSystemFuelFlowCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cSystemFuelFlowCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cSystemFuelFlowCategory Category;
       string ErrorMessage = "";

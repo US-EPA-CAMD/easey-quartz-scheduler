@@ -23,13 +23,13 @@ namespace ECMPS.Checks.EmGeneration.Parameters
     {
         
         // Storage field for property 'Process'
-        private static cProcess _process;
+        private  cProcess _process;
         
         // Storage field for property 'Category'
-        private static cCategory _category;
+        private  cCategory _category;
         
         /// The process object for the current evaluation process.  Set by the actual process during initialization.
-        public static cProcess Process
+        public  cProcess Process
         {
             get
             {
@@ -38,7 +38,7 @@ namespace ECMPS.Checks.EmGeneration.Parameters
         }
         
         /// The current category object set at the beginning of the category's processing of checks and nulled at the end of the processing.
-        public static cCategory Category
+        public  cCategory Category
         {
             get
             {
@@ -53,60 +53,60 @@ namespace ECMPS.Checks.EmGeneration.Parameters
         /// <summary>
         /// The first day the location reports emissions data during the current reporting period.
         /// </summary>
-        public static DateTime? GenBeginDate
+        public  DateTime? GenBeginDate
         {
             get
             {
-                return ((DateTime?)(EmGenerationParameters.GetCheckParameter("Gen_Begin_Date")));
+                return ((DateTime?)(GetCheckParameter("Gen_Begin_Date")));
             }
             set
             {
-                EmGenerationParameters.SetCheckParameter("Gen_Begin_Date", value);
+                SetCheckParameter("Gen_Begin_Date", value);
             }
         }
         
         /// <summary>
         /// The first hour during the first day that the location reports emissions data during the current reporting period.
         /// </summary>
-        public static int? GenBeginHour
+        public  int? GenBeginHour
         {
             get
             {
-                return ((int?)(EmGenerationParameters.GetCheckParameter("Gen_Begin_Hour")));
+                return ((int?)(GetCheckParameter("Gen_Begin_Hour")));
             }
             set
             {
-                EmGenerationParameters.SetCheckParameter("Gen_Begin_Hour", value);
+                SetCheckParameter("Gen_Begin_Hour", value);
             }
         }
         
         /// <summary>
         /// Indicates if the location belongs to an ozone-season program.
         /// </summary>
-        public static bool? GenOsReportingRequirement
+        public  bool? GenOsReportingRequirement
         {
             get
             {
-                return ((bool?)(EmGenerationParameters.GetCheckParameter("Gen_OS_Reporting_Requirement")));
+                return ((bool?)(GetCheckParameter("Gen_OS_Reporting_Requirement")));
             }
             set
             {
-                EmGenerationParameters.SetCheckParameter("Gen_OS_Reporting_Requirement", value);
+                SetCheckParameter("Gen_OS_Reporting_Requirement", value);
             }
         }
         
         /// <summary>
         /// The reporting frequency code for the location during the current reporting period.
         /// </summary>
-        public static string GenReportingFrequency
+        public  string GenReportingFrequency
         {
             get
             {
-                return ((string)(EmGenerationParameters.GetCheckParameter("Gen_Reporting_Frequency")));
+                return ((string)(GetCheckParameter("Gen_Reporting_Frequency")));
             }
             set
             {
-                EmGenerationParameters.SetCheckParameter("Gen_Reporting_Frequency", value);
+                SetCheckParameter("Gen_Reporting_Frequency", value);
             }
         }
         
@@ -117,11 +117,11 @@ namespace ECMPS.Checks.EmGeneration.Parameters
         ///
         ///For a stack or pipe, this is the Unit Program records for all units linked to the stack or pipe via Unit Stack Configuration records.  The  UnitMonitorCertStartDate for the location program record should be the later of the UnitMonitorCertStartDate in the Unit Program record and the StartDate in the Unit Stack Configuration record.  The  EndDate for the location program record should be the earlier of the EndDate in the Unit Program record and the EndDate in the Unit Stack Configuration record.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationProgramRow> LocationProgramRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationProgramRow> LocationProgramRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmGenerationParameters.GetCheckParameter("Location_Program_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Program_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -135,11 +135,11 @@ namespace ECMPS.Checks.EmGeneration.Parameters
             {
                 if ((value == null))
                 {
-                    EmGenerationParameters.SetCheckParameter("Location_Program_Records", null);
+                    SetCheckParameter("Location_Program_Records", null);
                 }
                 else
                 {
-                    EmGenerationParameters.SetCheckParameter("Location_Program_Records", value.SourceView);
+                    SetCheckParameter("Location_Program_Records", value.SourceView);
                 }
             }
         }
@@ -151,11 +151,11 @@ namespace ECMPS.Checks.EmGeneration.Parameters
         ///
         ///For a stack or pipe, this is the Unit Reporting Frequency records for all units linked to the stack or pipe via Unit Stack Configuration records.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationReportingFrequencyRow> LocationReportingFrequencyRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwLocationReportingFrequencyRow> LocationReportingFrequencyRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmGenerationParameters.GetCheckParameter("Location_Reporting_Frequency_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Location_Reporting_Frequency_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -169,11 +169,11 @@ namespace ECMPS.Checks.EmGeneration.Parameters
             {
                 if ((value == null))
                 {
-                    EmGenerationParameters.SetCheckParameter("Location_Reporting_Frequency_Records", null);
+                    SetCheckParameter("Location_Reporting_Frequency_Records", null);
                 }
                 else
                 {
-                    EmGenerationParameters.SetCheckParameter("Location_Reporting_Frequency_Records", value.SourceView);
+                    SetCheckParameter("Location_Reporting_Frequency_Records", value.SourceView);
                 }
             }
         }
@@ -183,11 +183,11 @@ namespace ECMPS.Checks.EmGeneration.Parameters
         ///
         ///This parameter was originally used in Emissions but will also now be used in Monitoring Plan checks.  For Monitoring Plan checks it will include all the methods in the Monitoring Plan being evaluated.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow> MpMethodRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorMethodRow> MpMethodRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmGenerationParameters.GetCheckParameter("MP_Method_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("MP_Method_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -201,11 +201,11 @@ namespace ECMPS.Checks.EmGeneration.Parameters
             {
                 if ((value == null))
                 {
-                    EmGenerationParameters.SetCheckParameter("MP_Method_Records", null);
+                    SetCheckParameter("MP_Method_Records", null);
                 }
                 else
                 {
-                    EmGenerationParameters.SetCheckParameter("MP_Method_Records", value.SourceView);
+                    SetCheckParameter("MP_Method_Records", value.SourceView);
                 }
             }
         }
@@ -213,11 +213,11 @@ namespace ECMPS.Checks.EmGeneration.Parameters
         /// <summary>
         /// Operating Supp Data Records for the location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpOpSuppDataRow> OperatingSuppDataRecordsByLocation
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpOpSuppDataRow> OperatingSuppDataRecordsByLocation
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmGenerationParameters.GetCheckParameter("Operating_Supp_Data_Records_by_Location")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Operating_Supp_Data_Records_by_Location")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -231,11 +231,11 @@ namespace ECMPS.Checks.EmGeneration.Parameters
             {
                 if ((value == null))
                 {
-                    EmGenerationParameters.SetCheckParameter("Operating_Supp_Data_Records_by_Location", null);
+                    SetCheckParameter("Operating_Supp_Data_Records_by_Location", null);
                 }
                 else
                 {
-                    EmGenerationParameters.SetCheckParameter("Operating_Supp_Data_Records_by_Location", value.SourceView);
+                    SetCheckParameter("Operating_Supp_Data_Records_by_Location", value.SourceView);
                 }
             }
         }
@@ -243,11 +243,11 @@ namespace ECMPS.Checks.EmGeneration.Parameters
         /// <summary>
         /// Contains the program code information needed to produce program list for checks.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.ProgramCodeRow> ProgramCodeTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Lookup.Table.ProgramCodeRow> ProgramCodeTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmGenerationParameters.GetCheckParameter("Program_Code_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Program_Code_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -261,11 +261,11 @@ namespace ECMPS.Checks.EmGeneration.Parameters
             {
                 if ((value == null))
                 {
-                    EmGenerationParameters.SetCheckParameter("Program_Code_Table", null);
+                    SetCheckParameter("Program_Code_Table", null);
                 }
                 else
                 {
-                    EmGenerationParameters.SetCheckParameter("Program_Code_Table", value.SourceView);
+                    SetCheckParameter("Program_Code_Table", value.SourceView);
                 }
             }
         }
@@ -273,26 +273,26 @@ namespace ECMPS.Checks.EmGeneration.Parameters
         /// <summary>
         /// Contains a list of ozone season program codes.
         /// </summary>
-        public static string ProgramIsOzoneSeasonList
+        public  string ProgramIsOzoneSeasonList
         {
             get
             {
-                return ((string)(EmGenerationParameters.GetCheckParameter("Program_is_Ozone_Season_List")));
+                return ((string)(GetCheckParameter("Program_is_Ozone_Season_List")));
             }
             set
             {
-                EmGenerationParameters.SetCheckParameter("Program_is_Ozone_Season_List", value);
+                SetCheckParameter("Program_is_Ozone_Season_List", value);
             }
         }
         
         /// <summary>
         /// The Unit Stack Configuration records for all of a facility's locations that were retrieved for the evaluation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> UnitStackConfigurationRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwUnitStackConfigurationRow> UnitStackConfigurationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmGenerationParameters.GetCheckParameter("Unit_Stack_Configuration_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Unit_Stack_Configuration_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -306,11 +306,11 @@ namespace ECMPS.Checks.EmGeneration.Parameters
             {
                 if ((value == null))
                 {
-                    EmGenerationParameters.SetCheckParameter("Unit_Stack_Configuration_Records", null);
+                    SetCheckParameter("Unit_Stack_Configuration_Records", null);
                 }
                 else
                 {
-                    EmGenerationParameters.SetCheckParameter("Unit_Stack_Configuration_Records", value.SourceView);
+                    SetCheckParameter("Unit_Stack_Configuration_Records", value.SourceView);
                 }
             }
         }
@@ -320,20 +320,20 @@ namespace ECMPS.Checks.EmGeneration.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <returns>Returns the requested check parameter as an object if it exists, and as a null if it does not.</returns>
-        public static object GetCheckParameter(string parameterId)
+        public  object GetCheckParameter(string parameterId)
         {
             cLegacyCheckParameter checkParameter;
-            if (((EmGenerationParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                checkParameter = EmGenerationParameters.Category.GetCheckParameter(parameterId);
+                checkParameter = Category.GetCheckParameter(parameterId);
             }
             else
             {
-                if (((EmGenerationParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    checkParameter = EmGenerationParameters.Process.GetCheckParameter(parameterId);
+                    checkParameter = Process.GetCheckParameter(parameterId);
                 }
                 else
                 {
@@ -355,19 +355,19 @@ namespace ECMPS.Checks.EmGeneration.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <param name="parameterValue">The value to which to set the parameter.</param>
-        public static void SetCheckParameter(string parameterId, object parameterValue)
+        public  void SetCheckParameter(string parameterId, object parameterValue)
         {
-            if (((EmGenerationParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                EmGenerationParameters.Category.SetCheckParameter(parameterId, parameterValue);
+                Category.SetCheckParameter(parameterId, parameterValue);
             }
             else
             {
-                if (((EmGenerationParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    EmGenerationParameters.Process.SetCheckParameter(parameterId, parameterValue);
+                    Process.SetCheckParameter(parameterId, parameterValue);
                 }
             }
         }
@@ -375,20 +375,20 @@ namespace ECMPS.Checks.EmGeneration.Parameters
         /// <summary>
         /// Initializes the values in the check parameter object.
         /// </summary>
-        public static void Init(cProcess process)
+        public  void Init(cProcess process)
         {
-            EmGenerationParameters._process = process;
-            EmGenerationParameters.Category = null;
-            EmGenerationParameters.RegisterParameters();
+            _process = process;
+            Category = null;
+            RegisterParameters();
         }
         
         /// <summary>
         /// Registers each check parameter.
         /// </summary>
-        public static void RegisterParameters()
+        public  void RegisterParameters()
         {
-            if (((EmGenerationParameters.Process == null) 
-                        || (EmGenerationParameters.Process.ProcessParameters == null)))
+            if (((Process == null) 
+                        || (Process.ProcessParameters == null)))
             {
                 return;
             }

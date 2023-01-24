@@ -40,12 +40,14 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "UNIT_FUEL";
     }
 
+    public cUnitFuelCategory(){}
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cUnitFuelCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cUnitFuelCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cUnitFuelCategory Category;
       string ErrorMessage = "";
