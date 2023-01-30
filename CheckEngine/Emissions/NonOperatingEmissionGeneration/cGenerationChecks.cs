@@ -143,7 +143,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
                     DataView locationProgramView
                       = cRowFilter.FindRows(LocationProgramRecords.Value,
                                             new cFilterCondition[] { new cFilterCondition("PRG_CD",
-                                                                                EmGenerationParameters.ProgramIsOzoneSeasonList,
+                                                                                emGenerationParameters.ProgramIsOzoneSeasonList,
                                                                                 eFilterConditionStringCompare.InList),
                                                            new cFilterCondition("UNIT_MONITOR_CERT_BEGIN_DATE",
                                                                                 new DateTime(ReportingPeriod.Year, 12, 31),
@@ -1954,12 +1954,12 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
 
             try
             {
-                EmGenerationParameters.ProgramIsOzoneSeasonList = "";
+                emGenerationParameters.ProgramIsOzoneSeasonList = "";
 
-                foreach (ProgramCodeRow programCodeRow in EmGenerationParameters.ProgramCodeTable)
+                foreach (ProgramCodeRow programCodeRow in emGenerationParameters.ProgramCodeTable)
                 {
                     if (programCodeRow.OsInd == 1)
-                        EmGenerationParameters.ProgramIsOzoneSeasonList = EmGenerationParameters.ProgramIsOzoneSeasonList.ListAdd(programCodeRow.PrgCd);
+                        emGenerationParameters.ProgramIsOzoneSeasonList = emGenerationParameters.ProgramIsOzoneSeasonList.ListAdd(programCodeRow.PrgCd);
                 }
             }
             catch (Exception ex)

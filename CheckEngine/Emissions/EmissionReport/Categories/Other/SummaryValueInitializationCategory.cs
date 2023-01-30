@@ -17,10 +17,12 @@ namespace ECMPS.Checks.EmissionsReport
     {
 
         #region Constructors
+        public EmParameters emParams;
 
-        public cSummaryValueInitializationCategory(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData)
+        public cSummaryValueInitializationCategory(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData, EmParameters emparams)
           : base(ACheckEngine, (cEmissionsReportProcess)AHourlyEmissionsData, "SUMINIT")
         {
+            emParams = emparams;
         }
 
         #endregion
@@ -34,12 +36,12 @@ namespace ECMPS.Checks.EmissionsReport
 
             // Alphabetically Ordered Parameter Sets (using SetDataViewCheckParameter)
             {
-                EmParameters.MatsSamplingTrainQaStatusLookupTable = new CheckDataView<TrainQaStatusCodeRow>(SourceTables()["MatsSamplingTrainQaStatusLookupTable"], "", "");
+                emParams.MatsSamplingTrainQaStatusLookupTable = new CheckDataView<TrainQaStatusCodeRow>(SourceTables()["MatsSamplingTrainQaStatusLookupTable"], "", "");
                 /* MatsSamplingTrainRecords sorted by Location, Component Identifier, Begin Hour and End Hour to make the correct active train first after component and active filtering. */
-                EmParameters.MatsSamplingTrainRecords = new CheckDataView<MatsSamplingTrainRecord>(SourceTables()["MatsSamplingTrain"], "", "LOCATION_NAME, COMPONENT_IDENTIFIER, BEGIN_DATEHOUR, END_DATEHOUR"); ;
-                EmParameters.MatsSorbentTrapRecords = new CheckDataView<MatsSorbentTrapRecord>(SourceTables()["MatsSorbentTrap"], "", "");
-                EmParameters.MatsSorbentTrapSupplementalDataRecords = new CheckDataView<MatsSorbentTrapSupplementalDataRecord>(SourceTables()["MatsSorbentTrapSupplementalData"], "", "");
-                EmParameters.NoxrSummaryRequiredForLmeAnnualRecords = new CheckDataView<NoxrSummaryRequiredForLmeAnnual>(SourceTables()["NoxrSummaryRequiredForLmeAnnual"], "", "");
+                emParams.MatsSamplingTrainRecords = new CheckDataView<MatsSamplingTrainRecord>(SourceTables()["MatsSamplingTrain"], "", "LOCATION_NAME, COMPONENT_IDENTIFIER, BEGIN_DATEHOUR, END_DATEHOUR"); ;
+                emParams.MatsSorbentTrapRecords = new CheckDataView<MatsSorbentTrapRecord>(SourceTables()["MatsSorbentTrap"], "", "");
+                emParams.MatsSorbentTrapSupplementalDataRecords = new CheckDataView<MatsSorbentTrapSupplementalDataRecord>(SourceTables()["MatsSorbentTrapSupplementalData"], "", "");
+                emParams.NoxrSummaryRequiredForLmeAnnualRecords = new CheckDataView<NoxrSummaryRequiredForLmeAnnual>(SourceTables()["NoxrSummaryRequiredForLmeAnnual"], "", "");
             }
 
             // Unordered Parameter Sets
@@ -96,7 +98,7 @@ namespace ECMPS.Checks.EmissionsReport
                     "test_type_cd in ('LINE','HGLINE', 'HGSI3')", "");
 
                 SetDataViewCheckParameter("Linearity_Supp_Data_for_Quarter", SourceTables()["QAStatusRecords"], 
-                                          $"Test_Type_Cd = 'LINE' and Begin_Date <= '{EmParameters.CurrentReportingPeriodEndDate}' and End_Date >= '{EmParameters.CurrentReportingPeriodBeginDate}'", 
+                                          $"Test_Type_Cd = 'LINE' and Begin_Date <= '{emParams.CurrentReportingPeriodEndDate}' and End_Date >= '{emParams.CurrentReportingPeriodBeginDate}'", 
                                           "");
 
                 SetDataViewCheckParameter("FF2L_Test_Records_By_Location_For_QA_Status", SourceTables()["QAStatusRecords"],
@@ -138,12 +140,12 @@ namespace ECMPS.Checks.EmissionsReport
                 //COMPONENT_OPERATING_SUPP_DATA_RECORDS_FOR_MP_AND_YEAR
                 SetDataViewCheckParameter("COMPONENT_OPERATING_SUPP_DATA_RECORDS_FOR_MP_AND_YEAR", 
                                           SourceTables()["ComponentOpSuppData"], 
-                                          $"Calendar_Year = '{EmParameters.CurrentReportingPeriodYear}'", 
+                                          $"Calendar_Year = '{emParams.CurrentReportingPeriodYear}'", 
                                           "");
 
                 // Unit Stack Configuration rows that were active during the reporting period
                 SetDataViewCheckParameter("EM_Unit_Stack_Configuration_Records", SourceTables()["UnitStackConfiguration"], 
-                                          $"Begin_Date <= '{EmParameters.CurrentReportingPeriodEndDate}' and (End_Date is null or End_Date >= '{EmParameters.CurrentReportingPeriodBeginDate}')", 
+                                          $"Begin_Date <= '{emParams.CurrentReportingPeriodEndDate}' and (End_Date is null or End_Date >= '{emParams.CurrentReportingPeriodBeginDate}')", 
                                           "");
 
                 // Crosscheck Tables

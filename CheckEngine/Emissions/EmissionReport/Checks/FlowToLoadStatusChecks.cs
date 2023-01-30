@@ -58,7 +58,7 @@ namespace ECMPS.Checks.EmissionsChecks
             try
             {
                 F2lStatusPriorTestRequiredQuarter.SetValue(null, category);
-                EmParameters.F2lStatusPriorTestRequiredQuarterSetFromSystem = null;
+                emParams.F2lStatusPriorTestRequiredQuarterSetFromSystem = null;
                 F2lStatusPriorTestRequiredQuarterMissingOpData.SetValue(null, category);
 
                 Dictionary<string, string> f2lStatusSystemResultDictionary = (Dictionary<string, string>)F2lStatusSystemResultDictionary.Value;
@@ -103,9 +103,9 @@ namespace ECMPS.Checks.EmissionsChecks
                                 int? opHourCount;
                                 bool? opHourCountSetFromSystem;
 
-                                SystemOpSuppData systemOpSuppDataRecord = EmParameters.SystemOperatingSuppDataRecordsByLocation.FindRow
+                                SystemOpSuppData systemOpSuppDataRecord = emParams.SystemOperatingSuppDataRecordsByLocation.FindRow
                                                                           (
-                                                                              new cFilterCondition("MON_SYS_ID", EmParameters.QaStatusSystemId),
+                                                                              new cFilterCondition("MON_SYS_ID", emParams.QaStatusSystemId),
                                                                               new cFilterCondition("RPT_PERIOD_ID", reportingPeriod.RptPeriodId.AsString()),
                                                                               new cFilterCondition("OP_SUPP_DATA_TYPE_CD", "OP")
                                                                           );
@@ -117,7 +117,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                 }
                                 else
                                 {
-                                    VwMpOpSuppDataRow locationOpSuppDataRecord = EmParameters.OperatingSuppDataRecordsByLocation.FindRow
+                                    VwMpOpSuppDataRow locationOpSuppDataRecord = emParams.OperatingSuppDataRecordsByLocation.FindRow
                                                                                 (
                                                                                     new cFilterCondition("RPT_PERIOD_ID", reportingPeriod.RptPeriodId.AsString()),
                                                                                     new cFilterCondition("OP_TYPE_CD", "OPHOURS"),
@@ -154,7 +154,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                             if (f2lCheckRecord == null)
                                             {
                                                 F2lStatusPriorTestRequiredQuarter.SetValue((4 * reportingPeriod.Year) + (reportingPeriod.Quarter.AsInteger() - 1), category);
-                                                EmParameters.F2lStatusPriorTestRequiredQuarterSetFromSystem = opHourCountSetFromSystem;
+                                                emParams.F2lStatusPriorTestRequiredQuarterSetFromSystem = opHourCountSetFromSystem;
                                                 return returnVal;
                                             }
                                         }
@@ -292,7 +292,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                 {
                                     F2lStatusResult.SetValue("IC", category);
                                 }
-                                else if ((CurrentMhvRecord.Value["SYS_DESIGNATION_CD"].AsString() == "RB") && (EmParameters.F2lStatusPriorTestRequiredQuarterSetFromSystem != true))
+                                else if ((CurrentMhvRecord.Value["SYS_DESIGNATION_CD"].AsString() == "RB") && (emParams.F2lStatusPriorTestRequiredQuarterSetFromSystem != true))
                                 {
                                     F2lStatusResult.SetValue("Undetermined-No Prior Check reported for Redundant Backup Monitor", category);
                                 }
@@ -319,7 +319,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                        ((F2lStatusPriorTestRequiredQuarter.Value.IntToYear() == CurrentFlowToLoadStatusCheck.Value["CALENDAR_YEAR"].AsInteger()) &&
                                         (F2lStatusPriorTestRequiredQuarter.Value.IntToQuarter() <= CurrentFlowToLoadStatusCheck.Value["QUARTER"].AsInteger()))))
                             {
-                                if ((CurrentMhvRecord.Value["SYS_DESIGNATION_CD"].AsString() == "RB") && (EmParameters.F2lStatusPriorTestRequiredQuarterSetFromSystem != true))
+                                if ((CurrentMhvRecord.Value["SYS_DESIGNATION_CD"].AsString() == "RB") && (emParams.F2lStatusPriorTestRequiredQuarterSetFromSystem != true))
                                 {
                                     F2lStatusResult.SetValue("Undetermined-No Prior Check reported for Redundant Backup Monitor", category);
                                 }
@@ -424,7 +424,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     DateTime currentFlowToLoadStatusHour = CurrentFlowToLoadStatusCheck.Value["END_DATEHOUR"].AsDateTime(DateTime.MaxValue);
 
                     DataRowView qaCertificationEventRecord = cRowFilter.FindMostRecentRow(
-                                                                                           EmParameters.F2lQaCertificationEventRecords.SourceView,
+                                                                                           emParams.F2lQaCertificationEventRecords.SourceView,
                                                                                            currentHour.Date,
                                                                                            currentHour.Hour,
                                                                                            "QA_CERT_EVENT_DATE", "QA_CERT_EVENT_HOUR",
@@ -615,14 +615,14 @@ namespace ECMPS.Checks.EmissionsChecks
                     {
                         int? conditionalDataHours;
                         {
-                            string dictionaryKey = QaCertificationSupplementalData.FormatKey(EmParameters.F2lStatusQaCertEvent.QaCertEventId, eQaCertificationSupplementalDataTargetDateHour.ConditionalDataBeginHour);
+                            string dictionaryKey = QaCertificationSupplementalData.FormatKey(emParams.F2lStatusQaCertEvent.QaCertEventId, eQaCertificationSupplementalDataTargetDateHour.ConditionalDataBeginHour);
 
-                            if (EmParameters.QaCertEventSuppDataDictionaryArray[locationPosition].ContainsKey(dictionaryKey))
+                            if (emParams.QaCertEventSuppDataDictionaryArray[locationPosition].ContainsKey(dictionaryKey))
                             {
                                 if (!AnnualReportingRequirement.Value.Default(false) && (currentHour.Quarter() == 2))
-                                    conditionalDataHours = EmParameters.QaCertEventSuppDataDictionaryArray[locationPosition][dictionaryKey].MayAndJuneSystemOperatingCounts.Count;
+                                    conditionalDataHours = emParams.QaCertEventSuppDataDictionaryArray[locationPosition][dictionaryKey].MayAndJuneSystemOperatingCounts.Count;
                                 else
-                                    conditionalDataHours = EmParameters.QaCertEventSuppDataDictionaryArray[locationPosition][dictionaryKey].QuarterlySystemOperatingCounts.Count;
+                                    conditionalDataHours = emParams.QaCertEventSuppDataDictionaryArray[locationPosition][dictionaryKey].QuarterlySystemOperatingCounts.Count;
                             }
                             else
                             {
@@ -720,7 +720,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
 
 
-                        int currentOpHours = EmParameters.SystemOperatingSuppDataDictionaryArray[category.CurrentMonLocPos][EmParameters.QaStatusSystemId].QuarterlyOperatingCounts.Hours;
+                        int currentOpHours = emParams.SystemOperatingSuppDataDictionaryArray[category.CurrentMonLocPos][emParams.QaStatusSystemId].QuarterlyOperatingCounts.Hours;
 
 
                         if (F2lStatusQaCertEvent.Value["MIN_OP_HOURS_PRIOR_QTR"].AsInteger() == -1)
@@ -841,9 +841,9 @@ namespace ECMPS.Checks.EmissionsChecks
                 }
             }
 
-            SystemOpSuppData systemOpSuppDataRecord = EmParameters.SystemOperatingSuppDataRecordsByLocation.FindRow
+            SystemOpSuppData systemOpSuppDataRecord = emParams.SystemOperatingSuppDataRecordsByLocation.FindRow
                                                       (
-                                                          new cFilterCondition("MON_SYS_ID", EmParameters.QaStatusSystemId),
+                                                          new cFilterCondition("MON_SYS_ID", emParams.QaStatusSystemId),
                                                           new cFilterCondition("CALENDAR_YEAR", year, eFilterDataType.Integer),
                                                           new cFilterCondition("QUARTER", quarter, eFilterDataType.Integer),
                                                           new cFilterCondition("OP_SUPP_DATA_TYPE_CD", systemOpSuppType)
@@ -855,7 +855,7 @@ namespace ECMPS.Checks.EmissionsChecks
             }
             else
             {
-                VwMpOpSuppDataRow locationOpSuppDataRecord = EmParameters.OperatingSuppDataRecordsByLocation.FindRow
+                VwMpOpSuppDataRow locationOpSuppDataRecord = emParams.OperatingSuppDataRecordsByLocation.FindRow
                                                             (
                                                                 new cFilterCondition("CALENDAR_YEAR", year, eFilterDataType.Integer),
                                                                 new cFilterCondition("QUARTER", quarter, eFilterDataType.Integer),

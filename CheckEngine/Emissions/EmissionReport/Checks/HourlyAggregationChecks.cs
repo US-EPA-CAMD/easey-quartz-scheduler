@@ -45,11 +45,11 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        #region Public Static Methods: Checks
+        #region Public  Methods: Checks
 
         #region Checks 1 - 10
 
-        public static string HOURAGG1(cCategory category, ref bool log)
+        public  string HOURAGG1(cCategory category, ref bool log)
         //Compare SO2 Mass Accumulator Values 
         {
             string returnVal = "";
@@ -116,8 +116,8 @@ namespace ECMPS.Checks.EmissionsChecks
                             if (category.GetCheckParameter("LME_Annual").AsBoolean(false))
                             {
                                 CheckDataView<NoxrSummaryRequiredForLmeAnnual> SummaryRequiredRecords
-                                    = EmParameters.NoxrSummaryRequiredForLmeAnnualRecords.FindRows(
-                                                                                                    new cFilterCondition("MON_LOC_ID", EmParameters.CurrentMonitorPlanLocationRecord.MonLocId),
+                                    = emParams.NoxrSummaryRequiredForLmeAnnualRecords.FindRows(
+                                                                                                    new cFilterCondition("MON_LOC_ID", emParams.CurrentMonitorPlanLocationRecord.MonLocId),
                                                                                                     new cFilterCondition("LME_NOXR_SUMMARY_IND", eFilterConditionRelativeCompare.Equals, 1),
                                                                                                     new cFilterCondition("LME_NOXR_BEGIN", null, true)
                                                                                                   );
@@ -274,7 +274,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return returnVal;
         }
 
-        public static string HOURAGG2(cCategory Category, ref bool Log)
+        public  string HOURAGG2(cCategory Category, ref bool Log)
         //Compare SO2 Mass Accumulator Values 
         {
             string ReturnVal = "";
@@ -311,7 +311,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAGG3(cCategory Category, ref bool Log)
+        public  string HOURAGG3(cCategory Category, ref bool Log)
         //Compare CO2 Mass Accumulator Values 
         {
             string ReturnVal = "";
@@ -348,7 +348,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAGG4(cCategory Category, ref bool Log)
+        public  string HOURAGG4(cCategory Category, ref bool Log)
         //Compare HI Accumulator Values 
         {
             string ReturnVal = "";
@@ -381,7 +381,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAGG5(cCategory Category, ref bool Log)
+        public  string HOURAGG5(cCategory Category, ref bool Log)
         //Compare Op Hours Values
         {
             string ReturnVal = "";
@@ -454,7 +454,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAGG6(cCategory Category, ref bool Log)
+        public  string HOURAGG6(cCategory Category, ref bool Log)
         //Compare Op Time Values
         {
             string ReturnVal = "";
@@ -524,7 +524,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAGG7(cCategory Category, ref bool Log)
+        public  string HOURAGG7(cCategory Category, ref bool Log)
         //Compare NOx Rate Accumulator Values 
         {
             string ReturnVal = "";
@@ -605,7 +605,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAGG8(cCategory Category, ref bool Log)
+        public  string HOURAGG8(cCategory Category, ref bool Log)
         //Compare NOx Mass Accumulator Values 
         {
             string ReturnVal = "";
@@ -641,7 +641,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAGG10(cCategory Category, ref bool Log)
+        public  string HOURAGG10(cCategory Category, ref bool Log)
         //Compare CO2 Mass YTD Values
         {
             string ReturnVal = "";
@@ -787,7 +787,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region Check 11 = 20
 
-        public static string HOURAGG11(cCategory Category, ref bool Log)
+        public  string HOURAGG11(cCategory Category, ref bool Log)
         //Compare SO2 Mass YTD Values 
         {
             string ReturnVal = "";
@@ -928,7 +928,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAGG12(cCategory Category, ref bool Log)
+        public  string HOURAGG12(cCategory Category, ref bool Log)
         //Compare NOx Mass YTD and OS Values
         {
             string ReturnVal = "";
@@ -1200,7 +1200,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAGG13(cCategory Category, ref bool Log)
+        public  string HOURAGG13(cCategory Category, ref bool Log)
         //Compare NOx Rate YTD Values 
         {
             string ReturnVal = "";
@@ -1469,7 +1469,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAGG14(cCategory Category, ref bool Log)
+        public  string HOURAGG14(cCategory Category, ref bool Log)
         //Compare Total Heat Input YTD and OS Values 
         {
             string ReturnVal = "";
@@ -1743,7 +1743,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAGG15(cCategory Category, ref bool Log)
+        public  string HOURAGG15(cCategory Category, ref bool Log)
         //Compare Operating Time YTD and OS Values 
         {
             string ReturnVal = "";
@@ -1983,7 +1983,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAGG16(cCategory Category, ref bool Log)
+        public  string HOURAGG16(cCategory Category, ref bool Log)
         //Compare Operating Hours YTD and OS Values 
         {
             string ReturnVal = "";
@@ -2208,7 +2208,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAGG17(cCategory category, ref bool log)
+        public  string HOURAGG17(cCategory category, ref bool log)
         // Check BCO2 Summary Value
         {
             string returnVal = "";
@@ -2324,7 +2324,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return returnVal;
         }
 
-        public static string HOURAGG18(cCategory category, ref bool log)
+        public  string HOURAGG18(cCategory category, ref bool log)
         // Compare BCO2 Mass YTD Values
         {
             string returnVal = "";
@@ -2445,7 +2445,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region Private Methods
 
-        private static int? HourAgg1_GetStartQuarter(DataView view,
+        private  int? HourAgg1_GetStartQuarter(DataView view,
                                                      string dateField,
                                                      bool allowFirstQuarter,
                                                      cReportingPeriod reportingPeriod)
@@ -2472,7 +2472,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return result;
         }
 
-        private static void HourAgg1_SetStartQuarter(string startQuarterParameterName,
+        private  void HourAgg1_SetStartQuarter(string startQuarterParameterName,
                                                      DataView methodView,
                                                      string dateField,
                                                      bool allowFirstQuarter,
@@ -2490,7 +2490,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region Private Methods: Utilities
 
-        private static decimal GetQuarterlyTolerance(string AParameterCd, String AUom, cCategory ACategory)
+        private  decimal GetQuarterlyTolerance(string AParameterCd, String AUom, cCategory ACategory)
         {
             DataView ToleranceView = (DataView)ACategory.GetCheckParameter("Quarterly_Emissions_Tolerances_Cross_Check_Table").ParameterValue;
             DataRowView ToleranceRow;
@@ -2505,7 +2505,7 @@ namespace ECMPS.Checks.EmissionsChecks
                 return decimal.MinValue;
         }
 
-        public static void CompareAccumulatorValues1(string ASummaryValueRowName,
+        public  void CompareAccumulatorValues1(string ASummaryValueRowName,
                                                     string AExpectedSummaryValueArrayParameterName,
                                                     string AAccumCalculatedValueParameterName,
                                                     string AAccumReportedValueArrayParameterName, bool OpHoursEqualZero,
@@ -2575,7 +2575,7 @@ namespace ECMPS.Checks.EmissionsChecks
             }
         }
 
-        public static void CompareAccumulatorValues2(string ASummaryValueRowName,
+        public  void CompareAccumulatorValues2(string ASummaryValueRowName,
                                                     string AExpectedSummaryValueArrayParameterName,
                                                     string AAccumCalculatedValueParameterName,
                                                     string AAccumReportedValueArrayParameterName,
@@ -2653,7 +2653,7 @@ namespace ECMPS.Checks.EmissionsChecks
             }
         }
 
-        public static void CompareAccumulatorValues3(string ASummaryValueRowName,
+        public  void CompareAccumulatorValues3(string ASummaryValueRowName,
                                                     string AExpectedSummaryValueArrayParameterName,
                                                     string AAccumCalculatedValueParameterName,
                                                     string AAccumReportedValueArrayParameterName, bool OpHoursEqualZero,
@@ -2729,7 +2729,7 @@ namespace ECMPS.Checks.EmissionsChecks
             }
         }
 
-        public static void HourAgg7_CompareAccumValues(string ASummaryValueRowName,
+        public  void HourAgg7_CompareAccumValues(string ASummaryValueRowName,
                                                        string AExpectedSummaryValueArrayParameterName,
                                                        string AAccumCalculatedValueParameterName,
                                                        string AAccumReportedValueArrayParameterName, bool OpHoursEqualZero,

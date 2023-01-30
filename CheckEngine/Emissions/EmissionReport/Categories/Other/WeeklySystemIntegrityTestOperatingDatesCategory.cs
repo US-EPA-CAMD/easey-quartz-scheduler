@@ -19,16 +19,17 @@ namespace ECMPS.Checks.EmissionsReport
   public class WeeklySystemIntegrityTestOperatingDatesCategory : cCategoryHourly
   {
 
-    #region Constructors
-
-    /// <summary>
-    /// Creates a category with a specific parent category and category code.
-    /// </summary>
-    /// <param name="parentCategory">The parent category of the new category.</param>
-    /// <param name="categoryCd">The category code of the new category.</param>
-	  public WeeklySystemIntegrityTestOperatingDatesCategory(cCategory parentCategory)
+        #region Constructors
+        public EmParameters emParams;
+        /// <summary>
+        /// Creates a category with a specific parent category and category code.
+        /// </summary>
+        /// <param name="parentCategory">The parent category of the new category.</param>
+        /// <param name="categoryCd">The category code of the new category.</param>
+        public WeeklySystemIntegrityTestOperatingDatesCategory(cCategory parentCategory, EmParameters emparams)
       : base(parentCategory, "WSIOP", "WeeklySystemIntegrity")
     {
+            emParams = emparams;
     }
 
     #endregion
@@ -52,12 +53,12 @@ namespace ECMPS.Checks.EmissionsReport
 
     protected override void SetRecordIdentifier()
     {
-      if (EmParameters.CurrentWeeklySystemIntegrityTest != null)
+      if (emParams.CurrentWeeklySystemIntegrityTest != null)
         RecordIdentifier = string.Format("Location {0}, Component {1} and Type {2} at {3}",
-                                         EmParameters.CurrentMonitorPlanLocationRecord.LocationName,
-                                         EmParameters.CurrentWeeklySystemIntegrityTest.ComponentIdentifier,
-                                         EmParameters.CurrentWeeklySystemIntegrityTest.ComponentTypeCd,
-                                         EmParameters.CurrentWeeklySystemIntegrityTest.TestDatehour);
+                                         emParams.CurrentMonitorPlanLocationRecord.LocationName,
+                                         emParams.CurrentWeeklySystemIntegrityTest.ComponentIdentifier,
+                                         emParams.CurrentWeeklySystemIntegrityTest.ComponentTypeCd,
+                                         emParams.CurrentWeeklySystemIntegrityTest.TestDatehour);
       else
         RecordIdentifier = "this test";
     }
@@ -65,9 +66,9 @@ namespace ECMPS.Checks.EmissionsReport
     protected override bool SetErrorSuppressValues()
     {
       ErrorSuppressValues = new cErrorSuppressValues(CheckEngine.FacilityID,
-                                                     EmParameters.CurrentMonitorPlanLocationRecord.LocationName,
+                                                     emParams.CurrentMonitorPlanLocationRecord.LocationName,
                                                     null, null,
-                                                     "HOUR", EmParameters.CurrentDateHour);
+                                                     "HOUR", emParams.CurrentDateHour);
       return true;
     }
 

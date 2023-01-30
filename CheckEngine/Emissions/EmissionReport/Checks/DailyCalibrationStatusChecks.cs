@@ -42,7 +42,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #endregion
 
-        #region Public Static Methods: Checks
+        #region Public  Methods: Checks
 
         public string DCSTAT1(cCategory Category, ref bool Log)
         //Locate Most Recent Prior Daily Calibration Test
@@ -52,8 +52,8 @@ namespace ECMPS.Checks.EmissionsChecks
             try
             {
                 Category.SetCheckParameter("Prior_Daily_Cal_Record", null, eParameterDataType.DataRowView);
-                EmParameters.PriorDailyCalLastCoveredNonOpHour = null;
-                EmParameters.PriorDailyCalFirstOpHourAfterLastNonOpHour = null;
+                emParams.PriorDailyCalLastCoveredNonOpHour = null;
+                emParams.PriorDailyCalFirstOpHourAfterLastNonOpHour = null;
                 Category.SetCheckParameter("Invalid_Daily_Cal_Record", null, eParameterDataType.DataRowView);
 
                 string ApplCompId = Category.GetCheckParameter("Applicable_Component_ID").ValueAsString();
@@ -75,15 +75,15 @@ namespace ECMPS.Checks.EmissionsChecks
                     Category.SetCheckParameter("Prior_Daily_Cal_Rec_Calc_Test_Res", CalcTestRes, eParameterDataType.String);
 
 
-                    if (EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId == null)
+                    if (emParams.QaStatusPrimaryOrPrimaryBypassSystemId == null)
                     {
-                        EmParameters.PriorDailyCalLastCoveredNonOpHour = mostRecentDailyCalibrationTestObject.LocationSupplementalValues.LastCoveredNonOpHour;
-                        EmParameters.PriorDailyCalFirstOpHourAfterLastNonOpHour = mostRecentDailyCalibrationTestObject.LocationSupplementalValues.FirstOpHourAfterLastCoveredNonOpHour;
+                        emParams.PriorDailyCalLastCoveredNonOpHour = mostRecentDailyCalibrationTestObject.LocationSupplementalValues.LastCoveredNonOpHour;
+                        emParams.PriorDailyCalFirstOpHourAfterLastNonOpHour = mostRecentDailyCalibrationTestObject.LocationSupplementalValues.FirstOpHourAfterLastCoveredNonOpHour;
                     }
-                    else if (mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary.ContainsKey(EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId))
+                    else if (mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary.ContainsKey(emParams.QaStatusPrimaryOrPrimaryBypassSystemId))
                     {
-                        EmParameters.PriorDailyCalLastCoveredNonOpHour = mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary[EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId].LastCoveredNonOpHour;
-                        EmParameters.PriorDailyCalFirstOpHourAfterLastNonOpHour = mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary[EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId].FirstOpHourAfterLastCoveredNonOpHour;
+                        emParams.PriorDailyCalLastCoveredNonOpHour = mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary[emParams.QaStatusPrimaryOrPrimaryBypassSystemId].LastCoveredNonOpHour;
+                        emParams.PriorDailyCalFirstOpHourAfterLastNonOpHour = mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary[emParams.QaStatusPrimaryOrPrimaryBypassSystemId].FirstOpHourAfterLastCoveredNonOpHour;
                     }
 
 
@@ -150,8 +150,8 @@ namespace ECMPS.Checks.EmissionsChecks
                     DataRowView PriorDailyCalRec = Category.GetCheckParameter("Prior_Daily_Cal_Record").ValueAsDataRowView();
                     if (PriorDailyCalRec == null)
                     {
-                        DateTime MHVDate = EmParameters.CurrentDateHour.AsStartDate();
-                        int MHVHour = EmParameters.CurrentDateHour.AsStartHour();
+                        DateTime MHVDate = emParams.CurrentDateHour.AsStartDate();
+                        int MHVHour = emParams.CurrentDateHour.AsStartHour();
                         DateTime FirstOpDate = Category.GetCheckParameter("First_Day_of_Operation").ValueAsDateTime(DateTypes.START);
                         int FirstOpHour = Category.GetCheckParameter("First_Hour_of_Operation").ValueAsInt();
 
@@ -162,8 +162,8 @@ namespace ECMPS.Checks.EmissionsChecks
                          * Set to IC-Undetermined if the earliest System Component for the component occurred less than 25 hours 
                          * between the begin hour of the component and the current hour 
                          */
-                        else if (EmParameters.QaStatusSystemTypeCode.InList("HG,HCL") &&
-                                 (cDateFunctions.HourDifference(EmParameters.QaStatusComponentBeginDatehour.Value, EmParameters.CurrentDateHour.Value) - 1) < 25)
+                        else if (emParams.QaStatusSystemTypeCode.InList("HG,HCL") &&
+                                 (cDateFunctions.HourDifference(emParams.QaStatusComponentBeginDatehour.Value, emParams.CurrentDateHour.Value) - 1) < 25)
                         {
                             Status = "IC-Undetermined";
                         }
@@ -172,8 +172,8 @@ namespace ECMPS.Checks.EmissionsChecks
                          * Set to IC-Undetermined if the earliest System Component for the component occurred less than 25 hours 
                          * between the begin hour of the component and the current hour 
                          */
-                        else if ((EmParameters.QaStatusSystemTypeCode == "SO2") && (EmParameters.So2cIsOnlyForMats == true) &&
-                                 (cDateFunctions.HourDifference(EmParameters.QaStatusComponentBeginDatehour.Value, EmParameters.CurrentDateHour.Value) - 1) < 25)
+                        else if ((emParams.QaStatusSystemTypeCode == "SO2") && (emParams.So2cIsOnlyForMats == true) &&
+                                 (cDateFunctions.HourDifference(emParams.QaStatusComponentBeginDatehour.Value, emParams.CurrentDateHour.Value) - 1) < 25)
                         {
                             Status = "IC-Undetermined";
                         }
@@ -183,8 +183,8 @@ namespace ECMPS.Checks.EmissionsChecks
                          * the MATS Daily Calibration Required Date.  This prevents an OOC in the period when a location has
                          * been operating before starting to report MATS values in a quarter.
                          */
-                        else if (EmParameters.QaStatusSystemTypeCode.InList("HG,HCL") &&
-                                 (EmParameters.MatsDailyCalRequiredDatehour != null) && (EmParameters.CurrentDateHour < EmParameters.MatsDailyCalRequiredDatehour))
+                        else if (emParams.QaStatusSystemTypeCode.InList("HG,HCL") &&
+                                 (emParams.MatsDailyCalRequiredDatehour != null) && (emParams.CurrentDateHour < emParams.MatsDailyCalRequiredDatehour))
                         {
                             Status = "IC-Undetermined";
                         }
@@ -194,9 +194,9 @@ namespace ECMPS.Checks.EmissionsChecks
                          * the QA Status MATS ERB Date.  This prevents an OOC in the period when a location has been operating
                          * before starting to report emissions for MATS.
                          */
-                        else if (EmParameters.QaStatusSystemTypeCode.InList("HG,HCL") &&
-                                 (EmParameters.QaStatusMatsErbDate != null) &&
-                                 (cDateFunctions.HourDifference(EmParameters.QaStatusMatsErbDate.Value, EmParameters.CurrentDateHour.Value) - 1) < 25)
+                        else if (emParams.QaStatusSystemTypeCode.InList("HG,HCL") &&
+                                 (emParams.QaStatusMatsErbDate != null) &&
+                                 (cDateFunctions.HourDifference(emParams.QaStatusMatsErbDate.Value, emParams.CurrentDateHour.Value) - 1) < 25)
                         {
                             Status = "IC-Undetermined";
                         }
@@ -296,23 +296,23 @@ namespace ECMPS.Checks.EmissionsChecks
                     DataRowView PriorDailyCalRec = Category.GetCheckParameter("Prior_Daily_Cal_Record").ValueAsDataRowView();
                     DateTime PriorTestDate = cDBConvert.ToDate(PriorDailyCalRec["DAILY_TEST_DATE"], DateTypes.START);
                     int PriorTestHour = cDBConvert.ToHour(PriorDailyCalRec["DAILY_TEST_HOUR"], DateTypes.START);
-                    DateTime MHVDate = EmParameters.CurrentDateHour.AsStartDate();
-                    int MHVHour = EmParameters.CurrentDateHour.AsStartHour();
+                    DateTime MHVDate = emParams.CurrentDateHour.AsStartDate();
+                    int MHVHour = emParams.CurrentDateHour.AsStartHour();
                     int HourDiff = cDateFunctions.HourDifference(PriorTestDate, PriorTestHour, MHVDate, MHVHour);//This will never be negative, so we don't need to take abs val
                     DataView HrlyOpRecs = Category.GetCheckParameter("Hourly_Operating_Data_Records_for_Location").ValueAsDataView();
 
                     string Status = "";
 
-                    if ((cDBConvert.ToInteger(PriorDailyCalRec["ONLINE_OFFLINE_IND"]) == 1) || (EmParameters.QaStatusComponentTypeCode == "HG"))
+                    if ((cDBConvert.ToInteger(PriorDailyCalRec["ONLINE_OFFLINE_IND"]) == 1) || (emParams.QaStatusComponentTypeCode == "HG"))
                     {
                         if (HourDiff < 26)
                             Status = "IC";
                         else
                         {
-                            if (EmParameters.PriorDailyCalLastCoveredNonOpHour != null)
+                            if (emParams.PriorDailyCalLastCoveredNonOpHour != null)
                             {
-                                if ((EmParameters.PriorDailyCalFirstOpHourAfterLastNonOpHour != null) && cDateFunctions.HourDifference(EmParameters.PriorDailyCalFirstOpHourAfterLastNonOpHour.Value.Date,
-                                                                                                                                       EmParameters.PriorDailyCalFirstOpHourAfterLastNonOpHour.Value.Hour, 
+                                if ((emParams.PriorDailyCalFirstOpHourAfterLastNonOpHour != null) && cDateFunctions.HourDifference(emParams.PriorDailyCalFirstOpHourAfterLastNonOpHour.Value.Date,
+                                                                                                                                       emParams.PriorDailyCalFirstOpHourAfterLastNonOpHour.Value.Hour, 
                                                                                                                                        MHVDate, 
                                                                                                                                        MHVHour) >= 8)
                                     Status = "OOC-Expired";
@@ -344,17 +344,17 @@ namespace ECMPS.Checks.EmissionsChecks
                             int? onlineDailyCalOpHourCount;
                             DateTime? onlineDailyCalLastCoveredNonOpHour, onlineDailyCalFirstOpHourAfterLastNonOpHour;
                             {
-                                if (EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId == null)
+                                if (emParams.QaStatusPrimaryOrPrimaryBypassSystemId == null)
                                 {
                                     onlineDailyCalOpHourCount = mostRecentDailyCalibrationTestObject.LocationSupplementalValues.OperatingHourCount;
                                     onlineDailyCalLastCoveredNonOpHour = mostRecentDailyCalibrationTestObject.LocationSupplementalValues.LastCoveredNonOpHour;
                                     onlineDailyCalFirstOpHourAfterLastNonOpHour = mostRecentDailyCalibrationTestObject.LocationSupplementalValues.FirstOpHourAfterLastCoveredNonOpHour;
                                 }
-                                else if (mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary.ContainsKey(EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId))
+                                else if (mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary.ContainsKey(emParams.QaStatusPrimaryOrPrimaryBypassSystemId))
                                 {
-                                    onlineDailyCalOpHourCount = mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary[EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId].OperatingHourCount;
-                                    onlineDailyCalLastCoveredNonOpHour = mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary[EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId].LastCoveredNonOpHour;
-                                    onlineDailyCalFirstOpHourAfterLastNonOpHour = mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary[EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId].FirstOpHourAfterLastCoveredNonOpHour;
+                                    onlineDailyCalOpHourCount = mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary[emParams.QaStatusPrimaryOrPrimaryBypassSystemId].OperatingHourCount;
+                                    onlineDailyCalLastCoveredNonOpHour = mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary[emParams.QaStatusPrimaryOrPrimaryBypassSystemId].LastCoveredNonOpHour;
+                                    onlineDailyCalFirstOpHourAfterLastNonOpHour = mostRecentDailyCalibrationTestObject.SystemSupplementalValuesDictionary[emParams.QaStatusPrimaryOrPrimaryBypassSystemId].FirstOpHourAfterLastCoveredNonOpHour;
                                 }
                                 else
                                 {
@@ -573,7 +573,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region Private Methods: Utilities
 
-        private static int CountOpHoursBetween(DataView HrlyOpRecs, DateTime Date1In, int Hour1In, DateTime Date2In, int Hour2In)
+        private  int CountOpHoursBetween(DataView HrlyOpRecs, DateTime Date1In, int Hour1In, DateTime Date2In, int Hour2In)
         {
             DateTime Date1 = Date1In;
             int Hour1 = Hour1In;
@@ -600,7 +600,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return HrlyOpRecsFound.Count;
         }
 
-        private static int CountHoursBetween(DateTime Date1, int Hour1, DateTime Date2, int Hour2)
+        private  int CountHoursBetween(DateTime Date1, int Hour1, DateTime Date2, int Hour2)
         {
             int retVal;
             retVal = cDateFunctions.HourDifference(Date1, Hour1, Date2, Hour2);
@@ -609,7 +609,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return retVal;
         }
 
-        private static DataView FindCertEventRecs(DataTable SourceTable, string DailyCalRecordParameterName, string ApplCompId, string AnalyzerRangeUsed, bool UseEventDate, cCategory ACategory)
+        private  DataView FindCertEventRecs(DataTable SourceTable, string DailyCalRecordParameterName, string ApplCompId, string AnalyzerRangeUsed, bool UseEventDate, cCategory ACategory)
         {
             DataView ReturnView = null;//method returns null if no records found
 
@@ -621,8 +621,8 @@ namespace ECMPS.Checks.EmissionsChecks
             string CompId;
 
             DataRowView PriorDailyCalRec = (DataRowView)ACategory.GetCheckParameter(DailyCalRecordParameterName).ParameterValue;
-            DateTime CurrentDate = EmParameters.CurrentDateHour.AsStartDate();
-            int CurrentHour = EmParameters.CurrentDateHour.AsStartHour();
+            DateTime CurrentDate = emParams.CurrentDateHour.AsStartDate();
+            int CurrentHour = emParams.CurrentDateHour.AsStartHour();
             DateTime CheckDate;
             int CheckHour;
             string CertEventCd;

@@ -14,7 +14,7 @@ using ECMPS.Definitions.Extensions;
 
 namespace ECMPS.Checks.EmissionsReport
 {
-    static public class StatusDetermination
+     public class StatusDetermination
     {
 
         /// <summary>
@@ -73,15 +73,15 @@ namespace ECMPS.Checks.EmissionsReport
         /// 
         /// </summary>
         /// <returns>Returns VALID if the conditional data period is in affect, EXPIRED if it has expired, and MISSINGPROGRAM if a MATS program was not active during conditional data period.</returns>
-        static public eConditionalDataStatus ConditionalDataEvent125ForMats()
+         public eConditionalDataStatus ConditionalDataEvent125ForMats(EmParameters emParams)
         {
             eConditionalDataStatus result;
 
-            if ((EmParameters.CurrentDateHour == null) || (EmParameters.LocationProgramRecordsByHourLocation == null))
+            if ((emParams.CurrentDateHour == null) || (emParams.LocationProgramRecordsByHourLocation == null))
             {
                 result = eConditionalDataStatus.MISSINGVALUE; // This should never happen in a legitimate call.
             }
-            else if (EmParameters.QaStatusComponentBeginDate == null)
+            else if (emParams.QaStatusComponentBeginDate == null)
             {
                 result = eConditionalDataStatus.EXPIRED;
             }
@@ -90,9 +90,9 @@ namespace ECMPS.Checks.EmissionsReport
                 VwMpLocationProgramRow locationProgramRow;
                 {
                     locationProgramRow
-                        = EmParameters.LocationProgramRecordsByHourLocation.FindMostRecentRow
+                        = emParams.LocationProgramRecordsByHourLocation.FindMostRecentRow
                         (
-                            EmParameters.QaStatusComponentBeginDate.Value.Date.AddDays(1),
+                            emParams.QaStatusComponentBeginDate.Value.Date.AddDays(1),
                             "UNIT_MONITOR_CERT_BEGIN_DATE",
                             new cFilterCondition[] { new cFilterCondition("PRG_CD", "MATS") }
                         );
@@ -100,10 +100,10 @@ namespace ECMPS.Checks.EmissionsReport
                     if (locationProgramRow == null)
                     {
                         CheckDataView<VwMpLocationProgramRow> locationProgramView
-                            = EmParameters.LocationProgramRecordsByHourLocation.FindRows
+                            = emParams.LocationProgramRecordsByHourLocation.FindRows
                             (
                                 new cFilterCondition("PRG_CD", "MATS"),
-                                new cFilterCondition("EMISSIONS_RECORDING_BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, EmParameters.QaStatusComponentBeginDate.Value, eNullDateDefault.Max)
+                                new cFilterCondition("EMISSIONS_RECORDING_BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, emParams.QaStatusComponentBeginDate.Value, eNullDateDefault.Max)
                             );
 
                         if (locationProgramView.Count > 0)
@@ -119,9 +119,9 @@ namespace ECMPS.Checks.EmissionsReport
 
                 if (locationProgramRow == null)
                     result = eConditionalDataStatus.MISSINGPROGRAM;
-                else if ((locationProgramRow.UnitMonitorCertDeadline != null) && (locationProgramRow.UnitMonitorCertDeadline <= EmParameters.CurrentDateHour.Value.Date))
+                else if ((locationProgramRow.UnitMonitorCertDeadline != null) && (locationProgramRow.UnitMonitorCertDeadline <= emParams.CurrentDateHour.Value.Date))
                     result = eConditionalDataStatus.EXPIRED;
-                else if ((locationProgramRow.UnitMonitorCertDeadline == null) && (locationProgramRow.UnitMonitorCertBeginDate.Value.AddDays(180) <= EmParameters.CurrentDateHour.Value.Date))
+                else if ((locationProgramRow.UnitMonitorCertDeadline == null) && (locationProgramRow.UnitMonitorCertBeginDate.Value.AddDays(180) <= emParams.CurrentDateHour.Value.Date))
                     result = eConditionalDataStatus.EXPIRED;
                 else
                     result = eConditionalDataStatus.VALID;
@@ -137,11 +137,11 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="supplementalDataInd"></param>
         /// <param name="supplementalDataOpHourCount"></param>
         /// <returns></returns>
-        static public eConditionalDataStatus ConditionalDataEvent120ForMats(DateTime? conditionalDataPeriodBeginDateHour, int? supplementalDataInd, int? supplementalDataOpHourCount)
+         public eConditionalDataStatus ConditionalDataEvent120ForMats(DateTime? conditionalDataPeriodBeginDateHour, int? supplementalDataInd, int? supplementalDataOpHourCount, EmParameters emParams)
         {
             eConditionalDataStatus result;
 
-            if (EmParameters.CurrentDateHour == null)
+            if (emParams.CurrentDateHour == null)
             {
                 result = eConditionalDataStatus.MISSINGVALUE; // This should never happen in a legitimate call.
             }
@@ -149,22 +149,22 @@ namespace ECMPS.Checks.EmissionsReport
             {
                 result = eConditionalDataStatus.EXPIRED;
             }
-            else if ((cDateFunctions.HourDifference(conditionalDataPeriodBeginDateHour.Value, EmParameters.CurrentDateHour.Value) + 1) <= 168) //Include compare dates
+            else if ((cDateFunctions.HourDifference(conditionalDataPeriodBeginDateHour.Value, emParams.CurrentDateHour.Value) + 1) <= 168) //Include compare dates
             {
                 result = eConditionalDataStatus.VALID;
             }
-            else if (conditionalDataPeriodBeginDateHour.SameQuarter(EmParameters.CurrentDateHour))
+            else if (conditionalDataPeriodBeginDateHour.SameQuarter(emParams.CurrentDateHour))
             {
-                if (EmParameters.HourlyOperatingDataRecordsForLocation != null)
+                if (emParams.HourlyOperatingDataRecordsForLocation != null)
                 {
                     int count
-                        = EmParameters.HourlyOperatingDataRecordsForLocation.CountRows
+                        = emParams.HourlyOperatingDataRecordsForLocation.CountRows
                         (
                             new cFilterCondition[]
                             {
                                 new cFilterCondition("OP_TIME", 0, eFilterDataType.Decimal, eFilterConditionRelativeCompare.GreaterThan),
                                 new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual, conditionalDataPeriodBeginDateHour.Value),
-                                new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual, EmParameters.CurrentDateHour.Value)
+                                new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual, emParams.CurrentDateHour.Value)
                             }
                         );
 
@@ -182,12 +182,12 @@ namespace ECMPS.Checks.EmissionsReport
                 int opeartingHoursCurrentQuarter = 0;
                 bool opeartingHoursCurrentQuarterValid = false;
                 {
-                    int[] rptPeriodOpHoursAccumulatorArray = (int[])EmParameters.GetCheckParameter("Rpt_Period_Op_Hours_Accumulator_Array");
+                    int[] rptPeriodOpHoursAccumulatorArray = (int[])emParams.GetCheckParameter("Rpt_Period_Op_Hours_Accumulator_Array");
 
-                    if ((EmParameters.CurrentMonitorPlanLocationPostion != null) && (rptPeriodOpHoursAccumulatorArray != null) &&
-                        (rptPeriodOpHoursAccumulatorArray[EmParameters.CurrentMonitorPlanLocationPostion.Value] != -1))
+                    if ((emParams.CurrentMonitorPlanLocationPostion != null) && (rptPeriodOpHoursAccumulatorArray != null) &&
+                        (rptPeriodOpHoursAccumulatorArray[emParams.CurrentMonitorPlanLocationPostion.Value] != -1))
                     {
-                        opeartingHoursCurrentQuarter = rptPeriodOpHoursAccumulatorArray[EmParameters.CurrentMonitorPlanLocationPostion.Value];
+                        opeartingHoursCurrentQuarter = rptPeriodOpHoursAccumulatorArray[emParams.CurrentMonitorPlanLocationPostion.Value];
                         opeartingHoursCurrentQuarterValid = true;
                     }
                 }
@@ -202,17 +202,17 @@ namespace ECMPS.Checks.EmissionsReport
                     int operatingHoursBetweenQuarters = 0;
                     bool operatingHoursBetweenQuartersValid = true;
                     {
-                        int quartersBetweenCount = Math.Max(EmParameters.CurrentDateHour.Value.QuarterOrd() - conditionalDataPeriodBeginDateHour.Value.QuarterOrd() - 1, 0);
+                        int quartersBetweenCount = Math.Max(emParams.CurrentDateHour.Value.QuarterOrd() - conditionalDataPeriodBeginDateHour.Value.QuarterOrd() - 1, 0);
 
-                        if (EmParameters.OperatingSuppDataRecordsByLocation != null)
+                        if (emParams.OperatingSuppDataRecordsByLocation != null)
                         {
                             CheckDataView<VwMpOpSuppDataRow> opSuppDataView
-                                = EmParameters.OperatingSuppDataRecordsByLocation.FindRows
+                                = emParams.OperatingSuppDataRecordsByLocation.FindRows
                                 (
                                     new cFilterCondition("OP_TYPE_CD", "OPHOURS"),
                                     new cFilterCondition("FUEL_CD", null),
                                     new cFilterCondition("QUARTER_ORD", eFilterConditionRelativeCompare.GreaterThan, conditionalDataPeriodBeginDateHour.Value.QuarterOrd()),
-                                    new cFilterCondition("QUARTER_ORD", eFilterConditionRelativeCompare.LessThan, EmParameters.CurrentDateHour.Value.QuarterOrd())
+                                    new cFilterCondition("QUARTER_ORD", eFilterConditionRelativeCompare.LessThan, emParams.CurrentDateHour.Value.QuarterOrd())
                                 );
 
                             if (opSuppDataView.Count != quartersBetweenCount)
@@ -271,10 +271,10 @@ namespace ECMPS.Checks.EmissionsReport
                         DateTime? eventQuarterBeginDate;
                         DateTime? eventQuarterEndDate;
                         {
-                            if (EmParameters.OperatingSuppDataRecordsByLocation != null)
+                            if (emParams.OperatingSuppDataRecordsByLocation != null)
                             {
                                 VwMpOpSuppDataRow opSuppDataRow
-                                = EmParameters.OperatingSuppDataRecordsByLocation.FindRow
+                                = emParams.OperatingSuppDataRecordsByLocation.FindRow
                                 (
                                     new cFilterCondition("OP_TYPE_CD", "OPHOURS"),
                                     new cFilterCondition("FUEL_CD", null),

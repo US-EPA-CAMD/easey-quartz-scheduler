@@ -16,13 +16,14 @@ namespace ECMPS.Checks.EmissionsReport
     {
 
         #region Constructors
-
-        public cLeakStatusCategory(cCategoryHourly categoryEmission, string categoryCd = "LKSTAT")
+        public EmParameters emParams;
+        public cLeakStatusCategory(cCategoryHourly categoryEmission, EmParameters emparams,string categoryCd = "LKSTAT")
           : base(categoryEmission.CheckEngine,
                  categoryEmission.EmissionsReportProcess,
                  categoryEmission,
                  categoryCd)
         {
+            emParams = emparams;
         }
 
         #endregion
@@ -46,7 +47,7 @@ namespace ECMPS.Checks.EmissionsReport
 
         protected override void SetRecordIdentifier()
         {
-            RecordIdentifier = String.Format("Component ID {0}", EmParameters.QaStatusComponentIdentifier);
+            RecordIdentifier = String.Format("Component ID {0}", emParams.QaStatusComponentIdentifier);
         }
 
         protected override bool SetErrorSuppressValues()

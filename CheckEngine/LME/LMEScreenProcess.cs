@@ -29,6 +29,7 @@ namespace ECMPS.Checks.LME
         #endregion
 
         #region Public Fields
+        public EmParameters emParams = new EmParameters();
 
 
         #endregion
@@ -168,7 +169,7 @@ namespace ECMPS.Checks.LME
         /// </summary>
         protected override void InitStaticParameterClass()
         {
-          EmParameters.Init(this);
+            emParams.Init(this);
         }
 
         /// <summary>
@@ -177,7 +178,7 @@ namespace ECMPS.Checks.LME
         /// <param name="category"></param>
         public override void SetStaticParameterCategory(cCategory category)
         {
-          EmParameters.Category = category;
+            emParams.Category = category;
         }
 
         #endregion

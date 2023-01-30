@@ -76,11 +76,11 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        #region Public Static Methods: Checks
+        #region Public  Methods: Checks
 
         #region 1 - 10
 
-        public static string HOURAD1(cCategory Category, ref bool Log)
+        public  string HOURAD1(cCategory Category, ref bool Log)
         //Initialize Accumulators for Appendix D Calculations
         {
             string ReturnVal = "";
@@ -103,7 +103,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD2(cCategory Category, ref bool Log)
+        public  string HOURAD2(cCategory Category, ref bool Log)
         //Initialize Oil Fuel Flow Record
         {
             string ReturnVal = "";
@@ -124,7 +124,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD3(cCategory Category, ref bool Log)
+        public  string HOURAD3(cCategory Category, ref bool Log)
         //Initialize Gas Fuel Flow Record
         {
             string ReturnVal = "";
@@ -145,7 +145,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD4(cCategory Category, ref bool Log)
+        public  string HOURAD4(cCategory Category, ref bool Log)
         //Check Fuel Usage Time
         {
             string ReturnVal = "";
@@ -213,7 +213,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD5(cCategory Category, ref bool Log)
+        public  string HOURAD5(cCategory Category, ref bool Log)
         //Check Volumetric SODC Code
         {
             string ReturnVal = "";
@@ -277,7 +277,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD6(cCategory Category, ref bool Log)
+        public  string HOURAD6(cCategory Category, ref bool Log)
         //Check Oil Mass SODC Code
         {
             string ReturnVal = "";
@@ -349,7 +349,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD7(cCategory Category, ref bool Log)
+        public  string HOURAD7(cCategory Category, ref bool Log)
         //Check Fuel Flow Monitoring System
         {
             string ReturnVal = "";
@@ -487,7 +487,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD8(cCategory Category, ref bool Log)
+        public  string HOURAD8(cCategory Category, ref bool Log)
         //Check Volumetric Units of Measure
         {
             string ReturnVal = "";
@@ -537,7 +537,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD9(cCategory Category, ref bool Log)
+        public  string HOURAD9(cCategory Category, ref bool Log)
         //Check Fuel in HFF Record
         {
             string ReturnVal = "";
@@ -563,7 +563,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD10(cCategory Category, ref bool Log)
+        public  string HOURAD10(cCategory Category, ref bool Log)
         //Check Volumetric Flow in HFF Record
         {
             string ReturnVal = "";
@@ -716,7 +716,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region 11 - 20
 
-        public static string HOURAD11(cCategory Category, ref bool Log)
+        public  string HOURAD11(cCategory Category, ref bool Log)
         //Check Mass Oil Flow in HFF Record
         {
             string ReturnVal = "";
@@ -854,7 +854,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD12(cCategory Category, ref bool Log)
+        public  string HOURAD12(cCategory Category, ref bool Log)
         //Determine Density
         {
             string ReturnVal = "";
@@ -968,7 +968,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD13(cCategory Category, ref bool Log)
+        public  string HOURAD13(cCategory Category, ref bool Log)
         //Check Density Sample Type
         {
             string ReturnVal = "";
@@ -987,7 +987,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD14(cCategory Category, ref bool Log)
+        public  string HOURAD14(cCategory Category, ref bool Log)
         //Check Extraneous Density Record Fields
         {
             string ReturnVal = "";
@@ -1023,7 +1023,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD15(cCategory Category, ref bool Log)
+        public  string HOURAD15(cCategory Category, ref bool Log)
         //Calculate Mass Oil Flow
         {
             string ReturnVal = "";
@@ -1052,7 +1052,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD16(cCategory Category, ref bool Log)
+        public  string HOURAD16(cCategory Category, ref bool Log)
         //Determine GCV
         {
             string ReturnVal = "";
@@ -1184,7 +1184,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD17(cCategory Category, ref bool Log)
+        public  string HOURAD17(cCategory Category, ref bool Log)
         //Check GCV Sample Type
         {
             string ReturnVal = "";
@@ -1211,7 +1211,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD18(cCategory Category, ref bool Log)
+        public  string HOURAD18(cCategory Category, ref bool Log)
         //Check Extraneous GCV Record Fields
         {
             string ReturnVal = "";
@@ -1247,7 +1247,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD19(cCategory Category, ref bool Log)
+        public  string HOURAD19(cCategory Category, ref bool Log)
         //Validate Heat Input Record
         {
             string ReturnVal = "";
@@ -1278,7 +1278,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     if (Convert.ToBoolean(Category.GetCheckParameter("Heat_Input_App_D_Method_Active_For_Hour").ParameterValue))
                 {
                     Category.SetCheckParameter("Current_HI_HPFF_Record", ParamFFRecords[0], eParameterDataType.DataRowView);
-                    EmParameters.HiHpffExists = true;
+                    emParams.HiHpffExists = true;
 
                     string ParamFFRecMonFormId = cDBConvert.ToString(ParamFFRecords[0]["MON_FORM_ID"]);
                     if (ParamFFRecMonFormId == "")
@@ -1325,7 +1325,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD20(cCategory Category, ref bool Log)
+        public  string HOURAD20(cCategory Category, ref bool Log)
         //Check Extraneous Heat Input Record Fields
         {
             string ReturnVal = "";
@@ -1367,7 +1367,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region 21 - 30
 
-        public static string HOURAD21(cCategory Category, ref bool Log)
+        public  string HOURAD21(cCategory Category, ref bool Log)
         //Calculate Heat Input Rate
         {
             string ReturnVal = "";
@@ -1494,7 +1494,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD22(cCategory Category, ref bool Log)
+        public  string HOURAD22(cCategory Category, ref bool Log)
         //Check Reported Heat Input
         {
             string ReturnVal = "";
@@ -1573,7 +1573,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD23(cCategory Category, ref bool Log)
+        public  string HOURAD23(cCategory Category, ref bool Log)
         //Check Heat Input Units Of Measure
         {
             string ReturnVal = "";
@@ -1592,7 +1592,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD24(cCategory Category, ref bool Log)
+        public  string HOURAD24(cCategory Category, ref bool Log)
         //Validate SO2 Record
         {
             string ReturnVal = "";
@@ -1624,7 +1624,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     if (Convert.ToBoolean(Category.GetCheckParameter("SO2_App_D_Method_Active_For_Hour").ParameterValue))
                 {
                     Category.SetCheckParameter("Current_SO2_HPFF_Record", ParamFFRecords[0], eParameterDataType.DataRowView);
-                    EmParameters.So2HpffExists = true;
+                    emParams.So2HpffExists = true;
 
                     string ParamFFRecMonFormId = cDBConvert.ToString(ParamFFRecords[0]["MON_FORM_ID"]);
                     if (ParamFFRecMonFormId == "")
@@ -1667,7 +1667,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD25(cCategory Category, ref bool Log)
+        public  string HOURAD25(cCategory Category, ref bool Log)
         //Check Extraneous SO2 Record Fields
         {
             string ReturnVal = "";
@@ -1704,7 +1704,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD26(cCategory Category, ref bool Log)
+        public  string HOURAD26(cCategory Category, ref bool Log)
         //Check SO2 Units Of Measure
         {
             string ReturnVal = "";
@@ -1723,7 +1723,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD27(cCategory category, ref bool log)
+        public  string HOURAD27(cCategory category, ref bool log)
         //Calculate SO2 Mass Rate
         {
             string ReturnVal = "";
@@ -1812,7 +1812,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD28(cCategory Category, ref bool Log)
+        public  string HOURAD28(cCategory Category, ref bool Log)
         //Determine Sulfur Content
         {
             string ReturnVal = "";
@@ -1930,7 +1930,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD29(cCategory Category, ref bool Log)
+        public  string HOURAD29(cCategory Category, ref bool Log)
         //Check Extraneous Sulfur Record Fields
         {
             string ReturnVal = "";
@@ -1966,7 +1966,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD30(cCategory Category, ref bool Log)
+        public  string HOURAD30(cCategory Category, ref bool Log)
         //Check Sulfur Sample Type
         {
             string ReturnVal = "";
@@ -1997,7 +1997,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region 31 - 40
 
-        public static string HOURAD31(cCategory Category, ref bool Log)
+        public  string HOURAD31(cCategory Category, ref bool Log)
         //Determine SO2 Emission Rate
         {
             string ReturnVal = "";
@@ -2048,7 +2048,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD32(cCategory Category, ref bool Log)
+        public  string HOURAD32(cCategory Category, ref bool Log)
         //Check Extraneous SO2R Record Fields
         {
             string ReturnVal = "";
@@ -2084,7 +2084,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD33(cCategory Category, ref bool Log)
+        public  string HOURAD33(cCategory Category, ref bool Log)
         //Check SO2R Formula
         {
             string ReturnVal = "";
@@ -2128,7 +2128,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD34(cCategory Category, ref bool Log)
+        public  string HOURAD34(cCategory Category, ref bool Log)
         //Check Reported SO2 Mass Rate
         {
             string ReturnVal = "";
@@ -2155,7 +2155,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD35(cCategory Category, ref bool Log)
+        public  string HOURAD35(cCategory Category, ref bool Log)
         //Determine FC Factor
         {
             string ReturnVal = "";
@@ -2224,7 +2224,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD36(cCategory Category, ref bool Log)
+        public  string HOURAD36(cCategory Category, ref bool Log)
         //Check Extraneous Fc Factor Record Fields
         {
             string ReturnVal = "";
@@ -2262,7 +2262,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD37(cCategory Category, ref bool Log)
+        public  string HOURAD37(cCategory Category, ref bool Log)
         //Validate CO2 Record
         {
             string ReturnVal = "";
@@ -2296,7 +2296,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     if (Convert.ToBoolean(Category.GetCheckParameter("CO2_App_D_Method_Active_For_Hour").ParameterValue))
                 {
                     Category.SetCheckParameter("Current_CO2_HPFF_Record", ParamFFRecords[0], eParameterDataType.DataRowView);
-                    EmParameters.Co2HpffExists = true;
+                    emParams.Co2HpffExists = true;
 
                     string ParamFFRecMonFormId = cDBConvert.ToString(ParamFFRecords[0]["MON_FORM_ID"]);
                     if (ParamFFRecMonFormId == "")
@@ -2328,7 +2328,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD38(cCategory Category, ref bool Log)
+        public  string HOURAD38(cCategory Category, ref bool Log)
         //Check Extraneous CO2 Record Fields
         {
             string ReturnVal = "";
@@ -2367,7 +2367,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD39(cCategory Category, ref bool Log)
+        public  string HOURAD39(cCategory Category, ref bool Log)
         //Calculate CO2 Mass Rate
         {
             string ReturnVal = "";
@@ -2414,7 +2414,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD40(cCategory Category, ref bool Log)
+        public  string HOURAD40(cCategory Category, ref bool Log)
         //Check Reported CO2 Mass Rate
         {
             string ReturnVal = "";
@@ -2444,7 +2444,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region 41 - 50
 
-        public static string HOURAD44(cCategory Category, ref bool Log)
+        public  string HOURAD44(cCategory Category, ref bool Log)
         //Check CO2 Units Of Measure
         {
             string ReturnVal = "";
@@ -2463,7 +2463,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAD45(cCategory category, ref bool log)
+        public  string HOURAD45(cCategory category, ref bool log)
         // Determine Appendix D Measure Codes
         {
             string returnVal = "";
@@ -2597,19 +2597,19 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOURAD46(cCategory category, ref bool log)
+        public  string HOURAD46(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.DerivedHourlyChecksNeeded.Default(false) && (EmParameters.CurrentOperatingTime.Value > 0))
+                if (emParams.DerivedHourlyChecksNeeded.Default(false) && (emParams.CurrentOperatingTime.Value > 0))
                 {
-                    string monSysId = EmParameters.CurrentFuelFlowRecord.MonSysId;
+                    string monSysId = emParams.CurrentFuelFlowRecord.MonSysId;
 
                     if (monSysId.IsNotEmpty())
                     {
-                        Dictionary<string, SystemOperatingSupplementalData> supplementalDataDictionary = EmParameters.SystemOperatingSuppDataDictionaryArray[EmParameters.CurrentMonitorPlanLocationPostion.Value];
+                        Dictionary<string, SystemOperatingSupplementalData> supplementalDataDictionary = emParams.SystemOperatingSuppDataDictionaryArray[emParams.CurrentMonitorPlanLocationPostion.Value];
 
                         // Get or created supplemental data record
                         SystemOperatingSupplementalData supplementalDataRecord;
@@ -2620,9 +2620,9 @@ namespace ECMPS.Checks.EmissionsChecks
                             }
                             else
                             {
-                                supplementalDataRecord = new SystemOperatingSupplementalData(EmParameters.CurrentReportingPeriod.Value,
+                                supplementalDataRecord = new SystemOperatingSupplementalData(emParams.CurrentReportingPeriod.Value,
                                                                                              monSysId,
-                                                                                             EmParameters.CurrentFuelFlowRecord.MonLocId,
+                                                                                             emParams.CurrentFuelFlowRecord.MonLocId,
                                                                                              true);
 
                                 supplementalDataDictionary.Add(monSysId, supplementalDataRecord);
@@ -2630,7 +2630,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
 
                         // Update with null modcCd will skip Quality Assured and Monitor Available counting, witch are not needed.
-                        supplementalDataRecord.IncreamentForCurrentHour(EmParameters.CurrentOperatingDatehour.Value, null);
+                        supplementalDataRecord.IncreamentForCurrentHour(emParams.CurrentOperatingDatehour.Value, null);
                     }
                 }
             }
@@ -2649,7 +2649,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region Private Methods: Utilities
 
-        private static new decimal GetHourlyEmissionsTolerance(string AParameterCd, String AUom, cCategory ACategory)
+        private  new decimal GetHourlyEmissionsTolerance(string AParameterCd, String AUom, cCategory ACategory)
         {
             DataView ToleranceView = (DataView)ACategory.GetCheckParameter("Hourly_Emissions_Tolerances_Cross_Check_Table").ParameterValue;
             DataRowView ToleranceRow;

@@ -22,17 +22,18 @@ namespace ECMPS.Checks.EmissionsReport
   public class MatsHourlyGasFlowMeterCurrentRowCategory : cCategoryHourly
   {
 
-    #region Constructors
-
-    /// <summary>
-    /// Creates a category object to represent the category indicated by the passed code, 
-    /// and links that object to a parent category object.
-    /// </summary>
-    /// <param name="parentCategory">The parent category.</param>
-    /// <param name="categoryCd">The category code of the category the object will represent.</param>
-    public MatsHourlyGasFlowMeterCurrentRowCategory(cCategory parentCategory, string categoryCd)
+        #region Constructors
+        public EmParameters emParams;
+        /// <summary>
+        /// Creates a category object to represent the category indicated by the passed code, 
+        /// and links that object to a parent category object.
+        /// </summary>
+        /// <param name="parentCategory">The parent category.</param>
+        /// <param name="categoryCd">The category code of the category the object will represent.</param>
+        public MatsHourlyGasFlowMeterCurrentRowCategory(cCategory parentCategory, string categoryCd, EmParameters emparams)
       : base(parentCategory, categoryCd)
     {
+            emParams = emparams;
     }
 
     #endregion
@@ -56,10 +57,10 @@ namespace ECMPS.Checks.EmissionsReport
 
     protected override void SetRecordIdentifier()
     {
-      if (EmParameters.MatsHourlyGfmRecord != null)
+      if (emParams.MatsHourlyGfmRecord != null)
         RecordIdentifier = string.Format("GFM {0}",
-                                         EmParameters.MatsHourlyGfmRecord.ComponentIdentifier,
-                                         EmParameters.MatsHourlyGfmRecord.BeginDatehour);
+                                         emParams.MatsHourlyGfmRecord.ComponentIdentifier,
+                                         emParams.MatsHourlyGfmRecord.BeginDatehour);
       else
         RecordIdentifier = null;
     }
@@ -70,12 +71,12 @@ namespace ECMPS.Checks.EmissionsReport
     /// <returns></returns>
     protected override bool SetErrorSuppressValues()
     {
-      if (EmParameters.MatsHourlyGfmRecord != null)
+      if (emParams.MatsHourlyGfmRecord != null)
       {
         long facId = CheckEngine.FacilityID;
-        string locationName = EmParameters.MatsHourlyGfmRecord.LocationName;
-        string matchDataValue = EmParameters.MatsHourlyGfmRecord.ComponentIdentifier;
-        DateTime? matchTimeValue = EmParameters.MatsHourlyGfmRecord.BeginDatehour;
+        string locationName = emParams.MatsHourlyGfmRecord.LocationName;
+        string matchDataValue = emParams.MatsHourlyGfmRecord.ComponentIdentifier;
+        DateTime? matchTimeValue = emParams.MatsHourlyGfmRecord.BeginDatehour;
 
         ErrorSuppressValues = new cErrorSuppressValues(facId, locationName, "PARAM", matchDataValue, "HOUR", matchTimeValue);
         return true;

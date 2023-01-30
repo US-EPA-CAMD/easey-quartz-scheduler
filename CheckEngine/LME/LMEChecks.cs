@@ -71,7 +71,7 @@ namespace ECMPS.Checks.LMEChecks
 
         #region Checks  1 - 10
 
-        public static string LME1(cCategory Category, ref bool Log) //LME Facility and Units Present in the Production Facility Table
+        public  string LME1(cCategory Category, ref bool Log) //LME Facility and Units Present in the Production Facility Table
         {
             string ReturnVal = "";
             try
@@ -127,7 +127,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME2(cCategory Category, ref bool Log) //LME File Configuration Valid
+        public  string LME2(cCategory Category, ref bool Log) //LME File Configuration Valid
         {
             string ReturnVal = "";
             try
@@ -233,7 +233,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME4(cCategory Category, ref bool Log) //Check LME Import Begin Hour
+        public  string LME4(cCategory Category, ref bool Log) //Check LME Import Begin Hour
         {
             string ReturnVal = "";
             try
@@ -259,7 +259,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME5(cCategory Category, ref bool Log) //Check LME Import Op Time
+        public  string LME5(cCategory Category, ref bool Log) //Check LME Import Op Time
         {
             string ReturnVal = "";
             try
@@ -288,7 +288,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME6(cCategory Category, ref bool Log) //Check LME Import Load Value
+        public  string LME6(cCategory Category, ref bool Log) //Check LME Import Load Value
         {
             string ReturnVal = "";
             try
@@ -317,7 +317,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME7(cCategory Category, ref bool Log) //Check LME Import Load UOM
+        public  string LME7(cCategory Category, ref bool Log) //Check LME Import Load UOM
         {
             string ReturnVal = "";
             try
@@ -335,7 +335,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME8(cCategory Category, ref bool Log) //Check LME Import Fuel Code List
+        public  string LME8(cCategory Category, ref bool Log) //Check LME Import Fuel Code List
         {
             string ReturnVal = "";
             try
@@ -367,7 +367,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME9(cCategory Category, ref bool Log) //Check LME Import Operating Condition Code
+        public  string LME9(cCategory Category, ref bool Log) //Check LME Import Operating Condition Code
         {
             string ReturnVal = "";
             try
@@ -384,7 +384,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME10(cCategory Category, ref bool Log)
+        public  string LME10(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
             try
@@ -711,7 +711,7 @@ namespace ECMPS.Checks.LMEChecks
 
         #region Checks 11 - 20
 
-        public static string LME11(cCategory Category, ref bool Log) //Check LTFF System
+        public  string LME11(cCategory Category, ref bool Log) //Check LTFF System
         {
             string ReturnVal = "";
             try
@@ -745,7 +745,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME12(cCategory Category, ref bool Log) //Check LTFF Fuel Flow Period Code
+        public  string LME12(cCategory Category, ref bool Log) //Check LTFF Fuel Flow Period Code
         {
             string ReturnVal = "";
             try
@@ -781,7 +781,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME13(cCategory Category, ref bool Log) //Check Long Term Fuel Flow Value
+        public  string LME13(cCategory Category, ref bool Log) //Check Long Term Fuel Flow Value
         {
             string ReturnVal = "";
             try
@@ -798,7 +798,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME14(cCategory Category, ref bool Log) //Check Long Term Fuel Flow UOM
+        public  string LME14(cCategory Category, ref bool Log) //Check Long Term Fuel Flow UOM
         {
             string ReturnVal = "";
             try
@@ -841,7 +841,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME15(cCategory Category, ref bool Log) //Check LTFF GCV
+        public  string LME15(cCategory Category, ref bool Log) //Check LTFF GCV
         {
             string ReturnVal = "";
             try
@@ -858,7 +858,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME16(cCategory Category, ref bool Log) //Check LTFF GCV UOM
+        public  string LME16(cCategory Category, ref bool Log) //Check LTFF GCV UOM
         {
             string ReturnVal = "";
             try
@@ -946,7 +946,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME17(cCategory Category, ref bool Log) //Check LTFF Total Heat Input
+        public  string LME17(cCategory Category, ref bool Log) //Check LTFF Total Heat Input
         {
             string ReturnVal = "";
             try
@@ -999,7 +999,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME18(cCategory Category, ref bool Log) //Check LME Begin Hour
+        public  string LME18(cCategory Category, ref bool Log) //Check LME Begin Hour
         {
             string ReturnVal = "";
             try
@@ -1019,7 +1019,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME19(cCategory Category, ref bool Log) //Check LME Begin Date
+        public  string LME19(cCategory Category, ref bool Log) //Check LME Begin Date
         {
             string ReturnVal = "";
             try
@@ -1046,7 +1046,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME20(cCategory Category, ref bool Log) //Duplicate LME Hourly Op Record
+        public  string LME20(cCategory Category, ref bool Log) //Duplicate LME Hourly Op Record
         {
             string ReturnVal = "";
             try
@@ -1079,7 +1079,7 @@ namespace ECMPS.Checks.LMEChecks
 
         #region Checks 21 - 30
 
-        public static string LME21(cCategory Category, ref bool Log)
+        public  string LME21(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
             try
@@ -1134,7 +1134,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME22(cCategory Category, ref bool Log)
+        public  string LME22(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
             try
@@ -1173,7 +1173,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME23(cCategory Category, ref bool Log) //Check LME Data Entry Screen Op Time
+        public  string LME23(cCategory Category, ref bool Log) //Check LME Data Entry Screen Op Time
         {
             string ReturnVal = "";
             try
@@ -1193,7 +1193,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME24(cCategory Category, ref bool Log)
+        public  string LME24(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
             try
@@ -1235,7 +1235,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME25(cCategory Category, ref bool Log) //Check LME Data Entry Screen Load Value
+        public  string LME25(cCategory Category, ref bool Log) //Check LME Data Entry Screen Load Value
         {
             string ReturnVal = "";
             try
@@ -1264,7 +1264,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME26(cCategory Category, ref bool Log) //Check LME Load UOM
+        public  string LME26(cCategory Category, ref bool Log) //Check LME Load UOM
         {
             string ReturnVal = "";
             try
@@ -1313,7 +1313,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME27(cCategory Category, ref bool Log) //Check LME Fuel Code List
+        public  string LME27(cCategory Category, ref bool Log) //Check LME Fuel Code List
         {
             string ReturnVal = "";
             try
@@ -1335,7 +1335,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME28(cCategory Category, ref bool Log) //Calculate Heat Input for LME Unit
+        public  string LME28(cCategory Category, ref bool Log) //Calculate Heat Input for LME Unit
         {
             string ReturnVal = "";
             try
@@ -1539,7 +1539,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME29(cCategory Category, ref bool Log) //Calculate SO2 Mass for LME Unit
+        public  string LME29(cCategory Category, ref bool Log) //Calculate SO2 Mass for LME Unit
         {
             string ReturnVal = "";
             try
@@ -1625,7 +1625,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME30(cCategory Category, ref bool Log) //Calculate NOX Mass for LME Unit
+        public  string LME30(cCategory Category, ref bool Log) //Calculate NOX Mass for LME Unit
         {
             string ReturnVal = "";
             try
@@ -1736,7 +1736,7 @@ namespace ECMPS.Checks.LMEChecks
 
         #region Checks 31 - 40
 
-        public static string LME31(cCategory Category, ref bool Log) //Calculate CO2 Mass for LME Unit
+        public  string LME31(cCategory Category, ref bool Log) //Calculate CO2 Mass for LME Unit
         {
             string ReturnVal = "";
             try
@@ -1823,7 +1823,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME32(cCategory Category, ref bool Log)//Calculate HIT Summary Values
+        public  string LME32(cCategory Category, ref bool Log)//Calculate HIT Summary Values
         {
             string ReturnVal = "";
             try
@@ -1961,7 +1961,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME33(cCategory Category, ref bool Log) //Calculate OPTIME Summary Values
+        public  string LME33(cCategory Category, ref bool Log) //Calculate OPTIME Summary Values
         {
             string ReturnVal = "";
             try
@@ -2088,7 +2088,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME34(cCategory Category, ref bool Log) //Calculate OPHOURS Summary Values
+        public  string LME34(cCategory Category, ref bool Log) //Calculate OPHOURS Summary Values
         {
             string ReturnVal = "";
             try
@@ -2215,7 +2215,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME35(cCategory Category, ref bool Log) //Calculate SO2M Summary Values
+        public  string LME35(cCategory Category, ref bool Log) //Calculate SO2M Summary Values
         {
             string ReturnVal = "";
             try
@@ -2302,7 +2302,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME36(cCategory Category, ref bool Log) //Calculate CO2M Summary Values
+        public  string LME36(cCategory Category, ref bool Log) //Calculate CO2M Summary Values
         {
             string ReturnVal = "";
             try
@@ -2388,7 +2388,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME37(cCategory Category, ref bool Log) //Calculate NOXM Summary Values
+        public  string LME37(cCategory Category, ref bool Log) //Calculate NOXM Summary Values
         {
             string ReturnVal = "";
             try
@@ -2529,7 +2529,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME38(cCategory Category, ref bool Log) //Calculate NOXR Summary Values
+        public  string LME38(cCategory Category, ref bool Log) //Calculate NOXR Summary Values
         {
             string ReturnVal = "";
             try
@@ -2651,7 +2651,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME39(cCategory Category, ref bool Log) //Check LME Import MHHI Indicator
+        public  string LME39(cCategory Category, ref bool Log) //Check LME Import MHHI Indicator
         {
             string ReturnVal = "";
             try
@@ -2668,7 +2668,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME40(cCategory Category, ref bool Log) //Check LME MHHI Indicator
+        public  string LME40(cCategory Category, ref bool Log) //Check LME MHHI Indicator
         {
             string ReturnVal = "";
             try
@@ -2697,7 +2697,7 @@ namespace ECMPS.Checks.LMEChecks
 
         #region Checks 41 - 50
 
-        public static string LME41(cCategory Category, ref bool Log) //Check LTFF Fuel Flow Period Code
+        public  string LME41(cCategory Category, ref bool Log) //Check LTFF Fuel Flow Period Code
         {
             string ReturnVal = "";
             try
@@ -2734,7 +2734,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME42(cCategory Category, ref bool Log) //Check LTFF Total Heat Input
+        public  string LME42(cCategory Category, ref bool Log) //Check LTFF Total Heat Input
         {
             string ReturnVal = "";
             try
@@ -2823,7 +2823,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME43(cCategory Category, ref bool Log) //Check LTFF Fuel Flow Period Code
+        public  string LME43(cCategory Category, ref bool Log) //Check LTFF Fuel Flow Period Code
         {
             string ReturnVal = "";
             try
@@ -2848,7 +2848,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME44(cCategory Category, ref bool Log) //Check Fuel Codes against LTFF Records
+        public  string LME44(cCategory Category, ref bool Log) //Check Fuel Codes against LTFF Records
         {
             string ReturnVal = "";
             try
@@ -2905,7 +2905,7 @@ namespace ECMPS.Checks.LMEChecks
             return ReturnVal;
         }
 
-        public static string LME45(cCategory category, ref bool log)
+        public  string LME45(cCategory category, ref bool log)
         // Duplicate LTFF Record
         {
             string returnVal = "";
@@ -2941,7 +2941,7 @@ namespace ECMPS.Checks.LMEChecks
         /// <param name="category">Category containing the check.</param>
         /// <param name="log">Obsolete log parameter flag.</param>
         /// <returns></returns>
-        public static string LME46(cCategory category, ref bool log)
+        public  string LME46(cCategory category, ref bool log)
         {
             string returnVal = "";
 
