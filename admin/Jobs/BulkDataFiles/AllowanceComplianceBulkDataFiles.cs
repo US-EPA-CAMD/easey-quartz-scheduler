@@ -36,14 +36,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
-      if (!await scheduler.CheckExists(WithJobKey()))
-      {
-        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_COMPLIANCE_SCHEDULE"] != null){
-          app.UseQuartzJob<AllowanceComplianceBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_COMPLIANCE_SCHEDULE"]));
-        }
-        else
-          app.UseQuartzJob<AllowanceComplianceBulkDataFiles>(WithCronSchedule("0 0/10 1-5 15 * ? *"));
+
+      if(await scheduler.CheckExists(WithJobKey())){
+        await scheduler.DeleteJob(WithJobKey());
       }
+
+      if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_COMPLIANCE_SCHEDULE"] != null){
+        app.UseQuartzJob<AllowanceComplianceBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_COMPLIANCE_SCHEDULE"]));
+      }
+      else
+        app.UseQuartzJob<AllowanceComplianceBulkDataFiles>(WithCronSchedule("0 0/10 1-5 15 * ? *"));
+    
     }
 
     public AllowanceComplianceBulkDataFiles (NpgSqlContext dbContext, IConfiguration configuration)
@@ -141,7 +144,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       return TriggerBuilder.Create()
           .WithIdentity(WithTriggerKey())
           .WithDescription(Identity.TriggerDescription)
-          .WithCronSchedule(cronExpression);
+          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }
