@@ -61,11 +61,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           description = $"Facility/Unit attributes data for {year}";
         }
         else if (
-          dataType.Equals("mats", StringComparison.OrdinalIgnoreCase) ||
+          dataType.Equals("mercury and air toxics emissions (mats)", StringComparison.OrdinalIgnoreCase) ||
           dataType.Equals("emissions", StringComparison.OrdinalIgnoreCase)
         )
         {
-          string regulation = dataType.Equals("mats", StringComparison.OrdinalIgnoreCase)
+          string regulation = dataType.Equals("Mercury and Air Toxics Emissions (MATS)", StringComparison.OrdinalIgnoreCase)
             ? "Mercury and Air Toxics Standards (MATS)"
             : "Part 75";
 
@@ -79,13 +79,19 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
         else if (dataType.Equals("allowance", StringComparison.OrdinalIgnoreCase))
         {
-            description = $"{programs.Find(i => i.Code == programCode.ToUpper()).Description} Allowance Transactions Data";
+            if(year != null){
+              description = $"{programs.Find(i => i.Code == programCode.ToUpper()).Description} Allowance Transactions Data";
+            }
+            else{
+              description = $"{programs.Find(i => i.Code == programCode.ToUpper()).Description} Allowance Holdings Data";
+            }
         }
         else if (dataType.Equals("compliance", StringComparison.OrdinalIgnoreCase))
         {
           description = $"{programs.Find(i => i.Code == programCode.ToUpper()).Description} Annual Reconciliation Data";
         }
       return description;
+
     }
 
     public async Task Execute(IJobExecutionContext context)

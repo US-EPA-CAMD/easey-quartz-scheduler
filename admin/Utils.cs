@@ -14,12 +14,16 @@ namespace Epa.Camd.Quartz.Scheduler
 
     public static IConfiguration Configuration {get; set;}
 
-    public static DateTime getCurrentEasternTime(){
-        try{
-          return TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("America/New_York"));
+    public static TimeZoneInfo getCurrentEasternZone(){
+      try{
+          return TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
         }catch(Exception){
-          return TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+          return TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
         }
+    }
+
+    public static DateTime getCurrentEasternTime(){
+      return TimeZoneInfo.ConvertTime(DateTime.Now, getCurrentEasternZone());
     }
 
     public static string getBearerTokenFromRequest(HttpRequest Request){
