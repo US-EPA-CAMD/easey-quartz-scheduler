@@ -18,10 +18,14 @@ namespace ECMPS.Checks.EmissionsReport
 
         #region Constructors
 
-        public cNoxrUnusedPpbRataStatusInitCategory(cNoxrUnusedPpbMonitorHourlyCategory parentCategory)
+        public cNoxrUnusedPpbRataStatusInitCategory(cNoxrUnusedPpbMonitorHourlyCategory parentCategory, EmParameters emparams)
             : base(parentCategory, "NXPPBRI")
         {
+            emParams = emparams;
         }
+
+        public EmParameters emParams;
+
 
         #endregion
 
@@ -44,21 +48,21 @@ namespace ECMPS.Checks.EmissionsReport
 
         protected override void SetRecordIdentifier()
         {
-            string locationName = (EmParameters.CurrentMonitorPlanLocationRecord != null) ? EmParameters.CurrentMonitorPlanLocationRecord.LocationName : null;
-            string parameterCd = (EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord != null) ? EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.ParameterCd : null;
-            string modcCd = (EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord != null) ? EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.ModcCd : null;
+            string locationName = (emParams.CurrentMonitorPlanLocationRecord != null) ? emParams.CurrentMonitorPlanLocationRecord.LocationName : null;
+            string parameterCd = (emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord != null) ? emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.ParameterCd : null;
+            string modcCd = (emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord != null) ? emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.ModcCd : null;
 
             RecordIdentifier = string.Format("Location {0}, Parameter {1}, MODC {2}", locationName, parameterCd, modcCd);
         }
 
         protected override bool SetErrorSuppressValues()
         {
-            if (EmParameters.CurrentMonitorPlanLocationRecord != null && EmParameters.CurrentHourlyOpRecord != null && EmParameters.CurrentMonitorPlanLocationRecord != null)
+            if (emParams.CurrentMonitorPlanLocationRecord != null && emParams.CurrentHourlyOpRecord != null && emParams.CurrentMonitorPlanLocationRecord != null)
             {
                 long facId = CheckEngine.FacilityID;
-                string locationName = EmParameters.CurrentMonitorPlanLocationRecord.LocationName;
-                string matchDataValue = EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.ParameterCd;
-                DateTime? matchTimeValue = EmParameters.CurrentHourlyOpRecord.BeginDatehour.Default();
+                string locationName = emParams.CurrentMonitorPlanLocationRecord.LocationName;
+                string matchDataValue = emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.ParameterCd;
+                DateTime? matchTimeValue = emParams.CurrentHourlyOpRecord.BeginDatehour.Default();
 
                 ErrorSuppressValues = new cErrorSuppressValues(facId, locationName, "PARAM", matchDataValue, "HOUR", matchTimeValue);
                 return true;

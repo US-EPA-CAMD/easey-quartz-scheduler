@@ -21,18 +21,20 @@ namespace ECMPS.Checks.EmissionsReport
   public class MatsSorbentTrapAllRowsCategory : cCategoryHourly
   {
 
-    #region Constructors
+        #region Constructors
+        public EmParameters emParams;
 
-    /// <summary>
-    /// Creates a category object to represent the category indicated by the passed code, 
-    /// and links that object to a parent category object.
-    /// </summary>
-    /// <param name="parentCategory">The parent category.</param>
-    /// <param name="categoryCd">The category code of the category the object will represent.</param>
-    public MatsSorbentTrapAllRowsCategory(cCategory parentCategory, string categoryCd)
+        /// <summary>
+        /// Creates a category object to represent the category indicated by the passed code, 
+        /// and links that object to a parent category object.
+        /// </summary>
+        /// <param name="parentCategory">The parent category.</param>
+        /// <param name="categoryCd">The category code of the category the object will represent.</param>
+        public MatsSorbentTrapAllRowsCategory(cCategory parentCategory, string categoryCd, EmParameters emparams)
       : base(parentCategory, categoryCd)
     {
-    }
+            emParams = emparams;
+     }
 
     #endregion
 
@@ -63,10 +65,10 @@ namespace ECMPS.Checks.EmissionsReport
     /// <returns></returns>
     protected override bool SetErrorSuppressValues()
     {
-      if (EmParameters.MatsSorbentTrapRecord != null)
+      if (emParams.MatsSorbentTrapRecord != null)
       {
         long facId = CheckEngine.FacilityID;
-        string locationName = EmParameters.MatsSorbentTrapRecord.LocationName;
+        string locationName = emParams.MatsSorbentTrapRecord.LocationName;
         DateTime? matchTimeValue = CheckEngine.ReportingPeriod.BeganDate;
 
         ErrorSuppressValues = new cErrorSuppressValues(facId, locationName, null, null, "QUARTER", matchTimeValue);

@@ -51,7 +51,7 @@ namespace ECMPS.Checks.EmissionsChecks
       {
         PriorLeakRecord.SetValue(null, category);
 
-        string componentId = EmParameters.QaStatusComponentId;
+        string componentId = emParams.QaStatusComponentId;
         DateTime currentHour = CurrentMhvRecord.Value["BEGIN_DATE"].AsDateTime(DateTime.MinValue).AddHours(CurrentMhvRecord.Value["BEGIN_HOUR"].AsInteger(0));
 
         DataRowView leakCheckRecord = cRowFilter.FindMostRecentRow(
@@ -94,7 +94,7 @@ namespace ECMPS.Checks.EmissionsChecks
         PriorLeakEventRecord.SetValue(null, category);
         LeakStatusResult.SetValue(null, category);
 
-        string componentId = EmParameters.QaStatusComponentId;
+        string componentId = emParams.QaStatusComponentId;
         DateTime currentHour = CurrentMhvRecord.Value["BEGIN_DATE"].AsDateTime(DateTime.MinValue).AddHours(CurrentMhvRecord.Value["BEGIN_HOUR"].AsInteger(0));
         cReportingPeriod currentQuarter = new cReportingPeriod(CurrentReportingPeriod.Value.Default(0));
 

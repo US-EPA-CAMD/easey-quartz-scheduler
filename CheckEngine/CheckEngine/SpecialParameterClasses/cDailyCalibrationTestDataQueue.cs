@@ -19,7 +19,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
     {
 
         #region Public Constructors
-
+        public EmParameters emParameters; 
         /// <summary>
         /// The constructor for an object of cDailyCalibrationTestDataQueue.
         /// </summary>
@@ -120,7 +120,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         {
             get
             {
-               return EmParameters.CurrentOperatingDate;
+               return emParameters.CurrentOperatingDate;
             }
         }
 
@@ -131,7 +131,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         {
             get
             {
-                return EmParameters.CurrentOperatingHour;
+                return emParameters.CurrentOperatingHour;
             }
         }
 

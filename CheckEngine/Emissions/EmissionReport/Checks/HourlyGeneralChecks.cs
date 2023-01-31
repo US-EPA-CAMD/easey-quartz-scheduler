@@ -109,7 +109,7 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        #region Public Static Methods: Checks
+        #region Public  Methods: Checks
 
         public string HOURGEN1(cCategory Category, ref bool Log)
         // Initialize Accumulators for Summary Value Data 
@@ -164,7 +164,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                 string[] LastDayOpArray = new string[MonitorLocationCount];
 
-                EmParameters.OperatingDateArray = new List<DateTime>[MonitorLocationCount];
+                emParams.OperatingDateArray = new List<DateTime>[MonitorLocationCount];
 
                 for (int MonitorLocationDex = 0; MonitorLocationDex < MonitorLocationCount; MonitorLocationDex++)
                 {
@@ -210,7 +210,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     LMEAprilOpTimeArray[MonitorLocationDex] = 0;
 
                     LastDayOpArray[MonitorLocationDex] = null;
-                    EmParameters.OperatingDateArray[MonitorLocationDex] = new List<DateTime>();
+                    emParams.OperatingDateArray[MonitorLocationDex] = new List<DateTime>();
                 }
 
                 Category.SetCheckParameter("Rpt_Period_Co2_Mass_Reported_Accumulator_Array", Co2MassReportedAccumulatorArray, eParameterDataType.Decimal, true, true);
@@ -281,7 +281,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                 // Create List
                 {
-                    EmParameters.InvalidCylinderIdList = new List<string>();
+                    emParams.InvalidCylinderIdList = new List<string>();
                 }
             }
             catch (Exception ex)
@@ -341,7 +341,7 @@ namespace ECMPS.Checks.EmissionsChecks
                 }
                 else
                 {
-                    RowFilter[0].Set("PRG_CD", EmParameters.ProgramIsOzoneSeasonList, eFilterPairStringCompare.InList);
+                    RowFilter[0].Set("PRG_CD", emParams.ProgramIsOzoneSeasonList, eFilterPairStringCompare.InList);
                     //RowFilter[1].Set("UNIT_MONITOR_CERT_BEGIN_DATE", LastDayCurrentRptPeriod, eFilterDataType.DateBegan, eFilterPairRelativeCompare.LessThanOrEqual);
                     //RowFilter[2].Set("END_DATE", null, eFilterDataType.DateEnded);
                     //RowFilter[2].Set("END_DATE", FirstDayCurrentRptPeriod, eFilterDataType.DateEnded, eFilterPairRelativeCompare.GreaterThanOrEqual);
@@ -580,13 +580,13 @@ namespace ECMPS.Checks.EmissionsChecks
                         {
                             PrgCd = cDBConvert.ToString(drv["PRG_CD"]);
                             UPID = cDBConvert.ToString(drv["UP_ID"]);
-                            if (PrgCd.InList(EmParameters.ProgramUsesRueList))
+                            if (PrgCd.InList(emParams.ProgramUsesRueList))
                             {
                                 allProgramsAreNonRue = false;
                                 RowFilter2 = new sFilterPair[3];
                                 DataView ProgExemptRecs = Category.GetCheckParameter("MP_Program_Exemption_Records").ValueAsDataView();
                                 RowFilter2[0].Set("EXEMPT_TYPE_CD", "RUE");
-                                if (PrgCd.InList(EmParameters.ProgramIsOzoneSeasonList) && CurrentReportingPeriodQuarter <= 2)
+                                if (PrgCd.InList(emParams.ProgramIsOzoneSeasonList) && CurrentReportingPeriodQuarter <= 2)
                                     RowFilter2[1].Set("BEGIN_DATE", new DateTime(CurrentReportingPeriodYear, 5, 1), eFilterDataType.DateBegan, eFilterPairRelativeCompare.LessThanOrEqual);
                                 else
                                     RowFilter2[1].Set("BEGIN_DATE", FirstDayCurrentRptPeriod, eFilterDataType.DateBegan, eFilterPairRelativeCompare.LessThanOrEqual);
@@ -1072,30 +1072,30 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.MpSuccessfullyEvaluated = false;
-                EmParameters.MpLastEvaluatedTimeframe = "";
+                emParams.MpSuccessfullyEvaluated = false;
+                emParams.MpLastEvaluatedTimeframe = "";
 
-                if (EmParameters.CurrentMonitoringPlanRecord.SeverityCd.InList("CRIT1,FATAL"))
+                if (emParams.CurrentMonitoringPlanRecord.SeverityCd.InList("CRIT1,FATAL"))
                 {
                     category.CheckCatalogResult = "A";
                 }
-                else if ((EmParameters.CurrentMonitoringPlanRecord.NeedsEvalFlg == "Y") && (EmParameters.CurrentMonitoringPlanRecord.MustSubmit == "Y"))
+                else if ((emParams.CurrentMonitoringPlanRecord.NeedsEvalFlg == "Y") && (emParams.CurrentMonitoringPlanRecord.MustSubmit == "Y"))
                 {
                     category.CheckCatalogResult = "B";
                 }
-                else if (EmParameters.CurrentMonitoringPlanRecord.LastEvaluatedDate == null)
+                else if (emParams.CurrentMonitoringPlanRecord.LastEvaluatedDate == null)
                 {
-                    EmParameters.MpLastEvaluatedTimeframe = " this calendar year";
+                    emParams.MpLastEvaluatedTimeframe = " this calendar year";
                     category.CheckCatalogResult = "C";
                 }
-                else if (EmParameters.CurrentMonitoringPlanRecord.LastEvaluatedDate.Value.Year < EmParameters.CurrentReportingPeriodYear.Value)
+                else if (emParams.CurrentMonitoringPlanRecord.LastEvaluatedDate.Value.Year < emParams.CurrentReportingPeriodYear.Value)
                 {
-                    EmParameters.MpLastEvaluatedTimeframe = $" since {EmParameters.CurrentMonitoringPlanRecord.LastEvaluatedDate.Value.ToShortDateString()}";
+                    emParams.MpLastEvaluatedTimeframe = $" since {emParams.CurrentMonitoringPlanRecord.LastEvaluatedDate.Value.ToShortDateString()}";
                     category.CheckCatalogResult = "C";
                 }
                 else
                 {
-                    EmParameters.MpSuccessfullyEvaluated = true;
+                    emParams.MpSuccessfullyEvaluated = true;
                 }
             }
             catch (Exception ex)
@@ -1687,8 +1687,8 @@ namespace ECMPS.Checks.EmissionsChecks
                             string MonLocId = MonitorPlanLocationRow["MON_LOC_ID"].AsString();
 
                             DataView FacUnitFuelRows = cRowFilter.FindActiveRows(FacUnitFuelRecords,
-                                                                                 EmParameters.CurrentReportingPeriodBeginHour.Value.Date,
-                                                                                 EmParameters.CurrentReportingPeriodEndHour.Value.Date,
+                                                                                 emParams.CurrentReportingPeriodBeginHour.Value.Date,
+                                                                                 emParams.CurrentReportingPeriodEndHour.Value.Date,
                                                                                  new cFilterCondition[]
                                                                                  {
                                                                      new cFilterCondition("INDICATOR_CD", "P"),
@@ -1781,21 +1781,21 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.MatsSorbentTrapDictionary = new Dictionary<string, SorbentTrapEvalInformation>();
-                EmParameters.MatsSamplingTrainDictionary = new Dictionary<string, SamplingTrainEvalInformation>();
+                emParams.MatsSorbentTrapDictionary = new Dictionary<string, SorbentTrapEvalInformation>();
+                emParams.MatsSamplingTrainDictionary = new Dictionary<string, SamplingTrainEvalInformation>();
 
-                EmParameters.MatsSorbentTrapListByLocationArray = new List<SorbentTrapEvalInformation>[EmParameters.CurrentLocationCount.Value];
+                emParams.MatsSorbentTrapListByLocationArray = new List<SorbentTrapEvalInformation>[emParams.CurrentLocationCount.Value];
                 {
-                    for (int dex = 0; dex < EmParameters.MatsSorbentTrapListByLocationArray.Length; dex++)
-                        EmParameters.MatsSorbentTrapListByLocationArray[dex] = new List<SorbentTrapEvalInformation>();
+                    for (int dex = 0; dex < emParams.MatsSorbentTrapListByLocationArray.Length; dex++)
+                        emParams.MatsSorbentTrapListByLocationArray[dex] = new List<SorbentTrapEvalInformation>();
                 }
 
-                EmParameters.MatsSorbentTrapEvaluationNeeded = false;
+                emParams.MatsSorbentTrapEvaluationNeeded = false;
 
                 // Update MatsSorbentTrapEvaluationNeeded if sorbent traps exist in emission report and is not from supplemental data.
-                if (EmParameters.MatsSorbentTrapRecords.CountRows(new cFilterCondition[] { new cFilterCondition("SUPP_DATA_IND", "1", true) }) > 0)
+                if (emParams.MatsSorbentTrapRecords.CountRows(new cFilterCondition[] { new cFilterCondition("SUPP_DATA_IND", "1", true) }) > 0)
                 {
-                    EmParameters.MatsSorbentTrapEvaluationNeeded = true;
+                    emParams.MatsSorbentTrapEvaluationNeeded = true;
                 }
             }
             catch (Exception ex)
@@ -1818,7 +1818,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.WsiTestDictionary = new Dictionary<string, WsiTestStatusInformation>();
+                emParams.WsiTestDictionary = new Dictionary<string, WsiTestStatusInformation>();
             }
             catch (Exception ex)
             {
@@ -1840,8 +1840,8 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.TestResultCodeList = EmParameters.TestResultCodeLookupTable.SourceView.DistinctValues("TEST_RESULT_CD").DelimitedList();
-                EmParameters.MissingDataPmaTracking = new MissingDataPmaTracking(EmParameters.CurrentLocationCount.Value);
+                emParams.TestResultCodeList = emParams.TestResultCodeLookupTable.SourceView.DistinctValues("TEST_RESULT_CD").DelimitedList();
+                emParams.MissingDataPmaTracking = new MissingDataPmaTracking(emParams.CurrentLocationCount.Value);
             }
             catch (Exception ex)
             {
@@ -1863,21 +1863,21 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.MatsDailyCalRequiredDatehour = null;
+                emParams.MatsDailyCalRequiredDatehour = null;
 
                 VwSystemParameterRow systemParameterRow;
                 DateTime dateTimeValue;
 
                 // MATS_RULE System Parameter
                 {
-                    systemParameterRow = EmParameters.SystemParameterLookupTable.FindRow(new cFilterCondition("SYS_PARAM_NAME", "MATS_RULE"));
+                    systemParameterRow = emParams.SystemParameterLookupTable.FindRow(new cFilterCondition("SYS_PARAM_NAME", "MATS_RULE"));
 
                     if (systemParameterRow != null)
                     {
                         // DailyCalibrationRequiredDatehour System Parameter Value
                         if (DateTime.TryParse(systemParameterRow.ParamValue2, out dateTimeValue))
                         {
-                            EmParameters.MatsDailyCalRequiredDatehour = dateTimeValue;
+                            emParams.MatsDailyCalRequiredDatehour = dateTimeValue;
                         }
                     }
                 }
@@ -1910,28 +1910,28 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.ProgramIsOzoneSeasonList = "";
-                EmParameters.ProgramRequiresNoxSystemCertificationList = "";
-                EmParameters.ProgramRequiresNoxcSystemCertificationList = "";
-                EmParameters.ProgramRequiresSo2SystemCertificationList = "";
-                EmParameters.ProgramUsesRueList = "";
+                emParams.ProgramIsOzoneSeasonList = "";
+                emParams.ProgramRequiresNoxSystemCertificationList = "";
+                emParams.ProgramRequiresNoxcSystemCertificationList = "";
+                emParams.ProgramRequiresSo2SystemCertificationList = "";
+                emParams.ProgramUsesRueList = "";
 
-                foreach (ProgramCodeRow programCodeRow in EmParameters.ProgramCodeTable)
+                foreach (ProgramCodeRow programCodeRow in emParams.ProgramCodeTable)
                 {
                     if (programCodeRow.OsInd == 1)
-                        EmParameters.ProgramIsOzoneSeasonList = EmParameters.ProgramIsOzoneSeasonList.ListAdd(programCodeRow.PrgCd);
+                        emParams.ProgramIsOzoneSeasonList = emParams.ProgramIsOzoneSeasonList.ListAdd(programCodeRow.PrgCd);
 
                     if (programCodeRow.NoxCertInd == 1)
-                        EmParameters.ProgramRequiresNoxSystemCertificationList = EmParameters.ProgramRequiresNoxSystemCertificationList.ListAdd(programCodeRow.PrgCd);
+                        emParams.ProgramRequiresNoxSystemCertificationList = emParams.ProgramRequiresNoxSystemCertificationList.ListAdd(programCodeRow.PrgCd);
 
                     if (programCodeRow.NoxcCertInd == 1)
-                        EmParameters.ProgramRequiresNoxcSystemCertificationList = EmParameters.ProgramRequiresNoxcSystemCertificationList.ListAdd(programCodeRow.PrgCd);
+                        emParams.ProgramRequiresNoxcSystemCertificationList = emParams.ProgramRequiresNoxcSystemCertificationList.ListAdd(programCodeRow.PrgCd);
 
                     if (programCodeRow.So2CertInd == 1)
-                        EmParameters.ProgramRequiresSo2SystemCertificationList = EmParameters.ProgramRequiresSo2SystemCertificationList.ListAdd(programCodeRow.PrgCd);
+                        emParams.ProgramRequiresSo2SystemCertificationList = emParams.ProgramRequiresSo2SystemCertificationList.ListAdd(programCodeRow.PrgCd);
 
                     if (programCodeRow.RueInd == 1)
-                        EmParameters.ProgramUsesRueList = EmParameters.ProgramUsesRueList.ListAdd(programCodeRow.PrgCd);
+                        emParams.ProgramUsesRueList = emParams.ProgramUsesRueList.ListAdd(programCodeRow.PrgCd);
                 }
             }
             catch (Exception ex)
@@ -1954,54 +1954,54 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                HourlyEmissionsTolerancesRow hourlyEmissionsTolerancesRow = EmParameters.HourlyEmissionsTolerancesCrossCheckTable.FindRow(new cFilterCondition("Parameter", "LOAD"), 
+                HourlyEmissionsTolerancesRow hourlyEmissionsTolerancesRow = emParams.HourlyEmissionsTolerancesCrossCheckTable.FindRow(new cFilterCondition("Parameter", "LOAD"), 
                                                                                                                                           new cFilterCondition("UOM", "MW"));
                 {
                     if (hourlyEmissionsTolerancesRow != null)
                     {
                         try
                         {
-                            EmParameters.MwLoadHourlyTolerance = Int32.Parse(hourlyEmissionsTolerancesRow.Tolerance);
+                            emParams.MwLoadHourlyTolerance = Int32.Parse(hourlyEmissionsTolerancesRow.Tolerance);
                         }
                         catch
                         {
-                            EmParameters.MwLoadHourlyTolerance = null;
+                            emParams.MwLoadHourlyTolerance = null;
                         }
                     }
                 }
 
-                string[] locationNameArray = new string[EmParameters.MonitoringPlanLocationRecords.Count];
+                string[] locationNameArray = new string[emParams.MonitoringPlanLocationRecords.Count];
                 {
                     for (int dex = 0; dex < locationNameArray.Length; dex++)
-                        locationNameArray[dex] = EmParameters.MonitoringPlanLocationRecords[dex].LocationName;
+                        locationNameArray[dex] = emParams.MonitoringPlanLocationRecords[dex].LocationName;
 
                     category.SetCheckParameter("Location_Name_Array", locationNameArray, eParameterDataType.String, false, true);
                 }
 
 
                 /// Set Configuration Change Occured Durring Quarter
-                int count = EmParameters.EmUnitStackConfigurationRecords.CountRows(new cFilterCondition[] 
+                int count = emParams.EmUnitStackConfigurationRecords.CountRows(new cFilterCondition[] 
                             {
-                                new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.GreaterThan, EmParameters.CurrentReportingPeriodBeginDate.Value, eNullDateDefault.Min),
-                                new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.LessThanOrEqual , EmParameters.CurrentReportingPeriodEndDate.Value, eNullDateDefault.Max)
+                                new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.GreaterThan, emParams.CurrentReportingPeriodBeginDate.Value, eNullDateDefault.Min),
+                                new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.LessThanOrEqual , emParams.CurrentReportingPeriodEndDate.Value, eNullDateDefault.Max)
                             });
-                if (EmParameters.EmUnitStackConfigurationRecords.CountRows(new cFilterCondition[]
+                if (emParams.EmUnitStackConfigurationRecords.CountRows(new cFilterCondition[]
                     {
-                        new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.GreaterThan, EmParameters.CurrentReportingPeriodBeginDate.Value, eNullDateDefault.Min),
-                        new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual , EmParameters.CurrentReportingPeriodEndDate.Value, eNullDateDefault.Min)
+                        new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.GreaterThan, emParams.CurrentReportingPeriodBeginDate.Value, eNullDateDefault.Min),
+                        new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual , emParams.CurrentReportingPeriodEndDate.Value, eNullDateDefault.Min)
                     }) > 0
                     ||
-                    EmParameters.EmUnitStackConfigurationRecords.CountRows(new cFilterCondition[]
+                    emParams.EmUnitStackConfigurationRecords.CountRows(new cFilterCondition[]
                     {
-                        new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.LessThan, EmParameters.CurrentReportingPeriodEndDate.Value, eNullDateDefault.Max),
-                        new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual , EmParameters.CurrentReportingPeriodBeginDate.Value, eNullDateDefault.Max)
+                        new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.LessThan, emParams.CurrentReportingPeriodEndDate.Value, eNullDateDefault.Max),
+                        new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual , emParams.CurrentReportingPeriodBeginDate.Value, eNullDateDefault.Max)
                     }) > 0)
                 {
-                    EmParameters.ConfigurationChangeOccuredDurringQuarter = true;
+                    emParams.ConfigurationChangeOccuredDurringQuarter = true;
                 }
                 else
                 {
-                    EmParameters.ConfigurationChangeOccuredDurringQuarter = false;
+                    emParams.ConfigurationChangeOccuredDurringQuarter = false;
                 }
             }
             catch (Exception ex)
@@ -2028,12 +2028,12 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.FormattedCylinderIdList = "";
+                emParams.FormattedCylinderIdList = "";
 
-                if ((EmParameters.InvalidCylinderIdList != null) && (EmParameters.InvalidCylinderIdList.Count > 0))
+                if ((emParams.InvalidCylinderIdList != null) && (emParams.InvalidCylinderIdList.Count > 0))
                 {
-                    EmParameters.InvalidCylinderIdList.Sort();
-                    EmParameters.FormattedCylinderIdList = EmParameters.InvalidCylinderIdList.DelimitedList(",").FormatList();
+                    emParams.InvalidCylinderIdList.Sort();
+                    emParams.FormattedCylinderIdList = emParams.InvalidCylinderIdList.DelimitedList(",").FormatList();
                     category.CheckCatalogResult = "A";
                 }
             }
@@ -2060,12 +2060,12 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                int currentReportingPeriod = (ushort)EmParameters.CurrentReportingPeriod.Value;
-                int currentReportingPeriodQuarter = EmParameters.CurrentReportingPeriodQuarter.Value;
-                int currentReportingPeriodYear = EmParameters.CurrentReportingPeriodYear.Value;
-                DateTime currentReportingPeriodBeginDate = EmParameters.CurrentReportingPeriodBeginDate.Value;
-                DateTime currentReportingPeriodEndDate = EmParameters.CurrentReportingPeriodEndDate.Value;
-                CheckDataView<VwMpMonitorLocationRow> monitoringPlanLocationRecords = EmParameters.MonitoringPlanLocationRecords;
+                int currentReportingPeriod = (ushort)emParams.CurrentReportingPeriod.Value;
+                int currentReportingPeriodQuarter = emParams.CurrentReportingPeriodQuarter.Value;
+                int currentReportingPeriodYear = emParams.CurrentReportingPeriodYear.Value;
+                DateTime currentReportingPeriodBeginDate = emParams.CurrentReportingPeriodBeginDate.Value;
+                DateTime currentReportingPeriodEndDate = emParams.CurrentReportingPeriodEndDate.Value;
+                CheckDataView<VwMpMonitorLocationRow> monitoringPlanLocationRecords = emParams.MonitoringPlanLocationRecords;
 
                 int locationCount = monitoringPlanLocationRecords.Count;
 
@@ -2073,16 +2073,16 @@ namespace ECMPS.Checks.EmissionsChecks
                 VwMpMonitorLocationRow monitoringPlanLocationRecord;
                 CheckDataView<VwQaCertEventRow> qaCertEventRecords;
 
-                EmParameters.QaCertEventSuppDataDictionaryArray = new Dictionary<string, QaCertificationSupplementalData>[locationCount];
+                emParams.QaCertEventSuppDataDictionaryArray = new Dictionary<string, QaCertificationSupplementalData>[locationCount];
 
                 Dictionary<string, List<QaCertificationSupplementalData>> qaCertEventSuppDataDictionaryBySystem = new Dictionary<string, List<QaCertificationSupplementalData>>();
                 {
-                    EmParameters.QaCertEventSuppDataDictionaryBySystem = qaCertEventSuppDataDictionaryBySystem;
+                    emParams.QaCertEventSuppDataDictionaryBySystem = qaCertEventSuppDataDictionaryBySystem;
                 }
 
                 Dictionary<string, List<QaCertificationSupplementalData>> qaCertEventSuppDataDictionaryByComponent = new Dictionary<string, List<QaCertificationSupplementalData>>();
                 {
-                    EmParameters.QaCertEventSuppDataDictionaryByComponent = qaCertEventSuppDataDictionaryByComponent;
+                    emParams.QaCertEventSuppDataDictionaryByComponent = qaCertEventSuppDataDictionaryByComponent;
                 }
 
                 for (int locationPosition = 0; locationPosition < locationCount; locationPosition++)
@@ -2090,10 +2090,10 @@ namespace ECMPS.Checks.EmissionsChecks
                     monitoringPlanLocationRecord = monitoringPlanLocationRecords[locationPosition];
 
                     qaCertEventSuppDataDictionary = new Dictionary<string, QaCertificationSupplementalData>();
-                    EmParameters.QaCertEventSuppDataDictionaryArray[locationPosition] = qaCertEventSuppDataDictionary;
+                    emParams.QaCertEventSuppDataDictionaryArray[locationPosition] = qaCertEventSuppDataDictionary;
 
                     qaCertEventRecords
-                        = EmParameters.QaCertEventsForEmEvaluation.FindRows(
+                        = emParams.QaCertEventsForEmEvaluation.FindRows(
                                                                                 new cFilterCondition[]
                                                                                 {
                                                                                     new cFilterCondition("MON_LOC_ID", monitoringPlanLocationRecord.MonLocId),
@@ -2200,10 +2200,10 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                int currentReportingPeriod = (ushort)EmParameters.CurrentReportingPeriod.Value;
-                DateTime currentReportingPeriodBeginDate = EmParameters.CurrentReportingPeriodBeginDate.Value;
-                DateTime currentReportingPeriodEndDate = EmParameters.CurrentReportingPeriodEndDate.Value;
-                CheckDataView<VwMpMonitorLocationRow> monitoringPlanLocationRecords = EmParameters.MonitoringPlanLocationRecords;
+                int currentReportingPeriod = (ushort)emParams.CurrentReportingPeriod.Value;
+                DateTime currentReportingPeriodBeginDate = emParams.CurrentReportingPeriodBeginDate.Value;
+                DateTime currentReportingPeriodEndDate = emParams.CurrentReportingPeriodEndDate.Value;
+                CheckDataView<VwMpMonitorLocationRow> monitoringPlanLocationRecords = emParams.MonitoringPlanLocationRecords;
 
                 int locationCount = monitoringPlanLocationRecords.Count;
 
@@ -2211,17 +2211,17 @@ namespace ECMPS.Checks.EmissionsChecks
                 VwMpMonitorLocationRow monitoringPlanLocationRecord;
                 CheckDataView<VwMpMonitorSystemRow> monitorSystemRecords;
 
-                EmParameters.SystemOperatingSuppDataDictionaryArray = new Dictionary<string, SystemOperatingSupplementalData>[locationCount];
+                emParams.SystemOperatingSuppDataDictionaryArray = new Dictionary<string, SystemOperatingSupplementalData>[locationCount];
 
                 for (int locationPosition = 0; locationPosition < locationCount; locationPosition++)
                 {
                     monitoringPlanLocationRecord = monitoringPlanLocationRecords[locationPosition];
 
                     systemOperatingSuppDataDictionary = new Dictionary<string, SystemOperatingSupplementalData>();
-                    EmParameters.SystemOperatingSuppDataDictionaryArray[locationPosition] = systemOperatingSuppDataDictionary;
+                    emParams.SystemOperatingSuppDataDictionaryArray[locationPosition] = systemOperatingSuppDataDictionary;
 
                     monitorSystemRecords
-                        = EmParameters.MonitorSystemsForEmEvaluation.FindRows(
+                        = emParams.MonitorSystemsForEmEvaluation.FindRows(
                                                                                 new cFilterCondition[]
                                                                                 {
                                                                                     new cFilterCondition("MON_LOC_ID", monitoringPlanLocationRecord.MonLocId),
@@ -2264,10 +2264,10 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                int currentReportingPeriod = (ushort)EmParameters.CurrentReportingPeriod.Value;
-                DateTime currentReportingPeriodBeginDate = EmParameters.CurrentReportingPeriodBeginDate.Value;
-                DateTime currentReportingPeriodEndDate = EmParameters.CurrentReportingPeriodEndDate.Value;
-                CheckDataView<VwMpMonitorLocationRow> monitoringPlanLocationRecords = EmParameters.MonitoringPlanLocationRecords;
+                int currentReportingPeriod = (ushort)emParams.CurrentReportingPeriod.Value;
+                DateTime currentReportingPeriodBeginDate = emParams.CurrentReportingPeriodBeginDate.Value;
+                DateTime currentReportingPeriodEndDate = emParams.CurrentReportingPeriodEndDate.Value;
+                CheckDataView<VwMpMonitorLocationRow> monitoringPlanLocationRecords = emParams.MonitoringPlanLocationRecords;
 
                 int locationCount = monitoringPlanLocationRecords.Count;
 
@@ -2275,17 +2275,17 @@ namespace ECMPS.Checks.EmissionsChecks
                 VwMpMonitorLocationRow monitoringPlanLocationRecord;
                 CheckDataView<VwMpMonitorSystemComponentRow> monitorSystemComponentRecords;
 
-                EmParameters.ComponentOperatingSuppDataDictionaryArray = new Dictionary<string, ComponentOperatingSupplementalData>[locationCount];
+                emParams.ComponentOperatingSuppDataDictionaryArray = new Dictionary<string, ComponentOperatingSupplementalData>[locationCount];
 
                 for (int locationPosition = 0; locationPosition < locationCount; locationPosition++)
                 {
                     monitoringPlanLocationRecord = monitoringPlanLocationRecords[locationPosition];
 
                     componentOperatingSuppDataDictionary = new Dictionary<string, ComponentOperatingSupplementalData>();
-                    EmParameters.ComponentOperatingSuppDataDictionaryArray[locationPosition] = componentOperatingSuppDataDictionary;
+                    emParams.ComponentOperatingSuppDataDictionaryArray[locationPosition] = componentOperatingSuppDataDictionary;
 
                     monitorSystemComponentRecords
-                        = EmParameters.MonitorSystemComponentsForEmEvaluation.FindRows(
+                        = emParams.MonitorSystemComponentsForEmEvaluation.FindRows(
                                                                                         new cFilterCondition[]
                                                                                         {
                                                                                             new cFilterCondition("MON_LOC_ID", monitoringPlanLocationRecord.MonLocId),
@@ -2322,15 +2322,15 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                int locationCount = EmParameters.MonitoringPlanLocationRecords.Count;
+                int locationCount = emParams.MonitoringPlanLocationRecords.Count;
 
 
-                EmParameters.LastQualityAssuredValueSuppDataDictionaryArray = new Dictionary<string, LastQualityAssuredValueSupplementalData>[locationCount];
+                emParams.LastQualityAssuredValueSuppDataDictionaryArray = new Dictionary<string, LastQualityAssuredValueSupplementalData>[locationCount];
 
 
                 for (int locationPosition = 0; locationPosition < locationCount; locationPosition++)
                 {
-                    EmParameters.LastQualityAssuredValueSuppDataDictionaryArray[locationPosition] = new Dictionary<string, LastQualityAssuredValueSupplementalData>();
+                    emParams.LastQualityAssuredValueSuppDataDictionaryArray[locationPosition] = new Dictionary<string, LastQualityAssuredValueSupplementalData>();
                 }
             }
             catch (Exception ex)
@@ -2355,18 +2355,18 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.PrimaryBypassActiveInQuarter = false;
+                emParams.PrimaryBypassActiveInQuarter = false;
 
-                int recordCount = EmParameters.MonitorSystemsForEmEvaluation.CountRows(new cFilterCondition[] 
+                int recordCount = emParams.MonitorSystemsForEmEvaluation.CountRows(new cFilterCondition[] 
                                                                                        {
                                                                                            new cFilterCondition("SYS_DESIGNATION_CD", "PB"),
-                                                                                           new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, EmParameters.CurrentReportingPeriodEndDate.Value, eNullDateDefault.Min),
-                                                                                           new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, EmParameters.CurrentReportingPeriodBeginDate.Value, eNullDateDefault.Max)
+                                                                                           new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, emParams.CurrentReportingPeriodEndDate.Value, eNullDateDefault.Min),
+                                                                                           new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, emParams.CurrentReportingPeriodBeginDate.Value, eNullDateDefault.Max)
                                                                                        });
 
                 if (recordCount > 0)
                 {
-                    EmParameters.PrimaryBypassActiveInQuarter = true;
+                    emParams.PrimaryBypassActiveInQuarter = true;
                 }
             }
             catch (Exception ex)
@@ -2390,22 +2390,22 @@ namespace ECMPS.Checks.EmissionsChecks
             try
             {
                 // Initialize array that indicates which locations have linearities during the quarter.
-                EmParameters.LinearityExistsLocationArray = new bool[EmParameters.MonitoringPlanLocationRecords.Count];
+                emParams.LinearityExistsLocationArray = new bool[emParams.MonitoringPlanLocationRecords.Count];
 
                 string monLocId;
 
-                for (int locationPosition = 0; locationPosition < EmParameters.MonitoringPlanLocationRecords.Count; locationPosition++)
+                for (int locationPosition = 0; locationPosition < emParams.MonitoringPlanLocationRecords.Count; locationPosition++)
                 {
-                    monLocId = EmParameters.MonitoringPlanLocationRecords[locationPosition].MonLocId;
+                    monLocId = emParams.MonitoringPlanLocationRecords[locationPosition].MonLocId;
 
                     // Check for linearities in the quarter for the current location.
-                    if (EmParameters.LinearityTestRecordsByLocationForQaStatus.CountRows( new cFilterCondition[] { new cFilterCondition("MON_LOC_ID", monLocId) } ) > 0)
+                    if (emParams.LinearityTestRecordsByLocationForQaStatus.CountRows( new cFilterCondition[] { new cFilterCondition("MON_LOC_ID", monLocId) } ) > 0)
                     {
-                        EmParameters.LinearityExistsLocationArray[locationPosition] = true;
+                        emParams.LinearityExistsLocationArray[locationPosition] = true;
                     }
                     else
                     {
-                        EmParameters.LinearityExistsLocationArray[locationPosition] = false;
+                        emParams.LinearityExistsLocationArray[locationPosition] = false;
                     }
                 }
             }
@@ -2429,26 +2429,26 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.MissingDataPmaProblemDerivedList = null;
-                EmParameters.MissingDataPmaProblemMonitorList = null;
+                emParams.MissingDataPmaProblemDerivedList = null;
+                emParams.MissingDataPmaProblemMonitorList = null;
 
 
                 int missingDataPmaPeriodHours;
 
-                if ((EmParameters.AnnualReportingRequirement != true) && (EmParameters.OsReportingRequirement == true))
+                if ((emParams.AnnualReportingRequirement != true) && (emParams.OsReportingRequirement == true))
                 {
                     missingDataPmaPeriodHours = 3672;
-                    EmParameters.MissingDataPmaReporterType = "ozone season";
+                    emParams.MissingDataPmaReporterType = "ozone season";
                 }
                 else
                 {
                     missingDataPmaPeriodHours = 8760;
-                    EmParameters.MissingDataPmaReporterType = "year";
+                    emParams.MissingDataPmaReporterType = "year";
                 }
 
 
-                MissingDataPmaTracking missingDataPmaTracking = EmParameters.MissingDataPmaTracking;
-                int locationPosition = EmParameters.CurrentMonitorPlanLocationPostion.Value;
+                MissingDataPmaTracking missingDataPmaTracking = emParams.MissingDataPmaTracking;
+                int locationPosition = emParams.CurrentMonitorPlanLocationPostion.Value;
                 int missingDataHourCount;
                 decimal? lastPercentAvailable;
                 decimal maxMissingDataHours;
@@ -2465,32 +2465,32 @@ namespace ECMPS.Checks.EmissionsChecks
                         {
                             if (MissingDataPmaTracking.IsDerived(hourlyParameter))
                             {
-                                EmParameters.MissingDataPmaProblemDerivedList = EmParameters.MissingDataPmaProblemDerivedList.ListAdd(MissingDataPmaTracking.GetHourlyParameterCd(hourlyParameter));
+                                emParams.MissingDataPmaProblemDerivedList = emParams.MissingDataPmaProblemDerivedList.ListAdd(MissingDataPmaTracking.GetHourlyParameterCd(hourlyParameter));
                             }
                             else if (MissingDataPmaTracking.IsMonitored(hourlyParameter))
                             {
-                                EmParameters.MissingDataPmaProblemMonitorList = EmParameters.MissingDataPmaProblemMonitorList.ListAdd(MissingDataPmaTracking.GetHourlyParameterCd(hourlyParameter));
+                                emParams.MissingDataPmaProblemMonitorList = emParams.MissingDataPmaProblemMonitorList.ListAdd(MissingDataPmaTracking.GetHourlyParameterCd(hourlyParameter));
                             }
                         }
                     }
                 }
 
 
-                if ((EmParameters.MissingDataPmaProblemDerivedList != null) && (EmParameters.MissingDataPmaProblemMonitorList != null))
+                if ((emParams.MissingDataPmaProblemDerivedList != null) && (emParams.MissingDataPmaProblemMonitorList != null))
                 {
                     category.CheckCatalogResult = "A";
                 }
-                else if (EmParameters.MissingDataPmaProblemDerivedList != null)
+                else if (emParams.MissingDataPmaProblemDerivedList != null)
                 {
                     category.CheckCatalogResult = "B";
                 }
-                else if (EmParameters.MissingDataPmaProblemMonitorList != null)
+                else if (emParams.MissingDataPmaProblemMonitorList != null)
                 {
                     category.CheckCatalogResult = "C";
                 }
 
-                EmParameters.MissingDataPmaProblemDerivedList = EmParameters.MissingDataPmaProblemDerivedList.FormatList();
-                EmParameters.MissingDataPmaProblemMonitorList = EmParameters.MissingDataPmaProblemMonitorList.FormatList();
+                emParams.MissingDataPmaProblemDerivedList = emParams.MissingDataPmaProblemDerivedList.FormatList();
+                emParams.MissingDataPmaProblemMonitorList = emParams.MissingDataPmaProblemMonitorList.FormatList();
             }
             catch (Exception ex)
             {

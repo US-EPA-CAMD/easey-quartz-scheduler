@@ -75,9 +75,9 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        #region Public Static Methods: Checks (1 - 10)
+        #region Public  Methods: Checks (1 - 10)
 
-        public static string HOUROP1(cCategory Category, ref bool Log)
+        public  string HOUROP1(cCategory Category, ref bool Log)
         // Validate Single Operating Data record for hour        
         {
             string ReturnVal = "";
@@ -86,7 +86,7 @@ namespace ECMPS.Checks.EmissionsChecks
             {
                 Category.SetCheckParameter("Current_Hourly_Op_Record", null, eParameterDataType.DataRowView);
                 Category.SetCheckParameter("Unit_Hourly_Operational_Status", false, eParameterDataType.Boolean);
-                EmParameters.CurrentOperatingTime = null;
+                emParams.CurrentOperatingTime = null;
                 Category.SetCheckParameter("Hourly_Extraneous_Fields", null, eParameterDataType.String);
 
                 DataView HourlyOperatingDataView = (DataView)Category.GetCheckParameter("Hourly_Operating_Data_Records_By_Hour_Location").ParameterValue;
@@ -178,9 +178,9 @@ namespace ECMPS.Checks.EmissionsChecks
                             Category.SetCheckParameter("Unit_Hourly_Operational_Status", true, eParameterDataType.Boolean);
 
                             /* Adds the current date to the opearting date list for the location, if the date is not in the list. */
-                            if (!EmParameters.OperatingDateArray[thisLocation].Contains(EmParameters.HourlyOperatingDataRecordsByHourLocation[0].BeginDate.AsStartDate()))
+                            if (!emParams.OperatingDateArray[thisLocation].Contains(emParams.HourlyOperatingDataRecordsByHourLocation[0].BeginDate.AsStartDate()))
                             {
-                                EmParameters.OperatingDateArray[thisLocation].Add(EmParameters.HourlyOperatingDataRecordsByHourLocation[0].BeginDate.AsStartDate());
+                                emParams.OperatingDateArray[thisLocation].Add(emParams.HourlyOperatingDataRecordsByHourLocation[0].BeginDate.AsStartDate());
                             }
 
                             if (CurrMonth != "April" || AnnRptRequ)
@@ -276,7 +276,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP2(cCategory Category, ref bool Log)
+        public  string HOUROP2(cCategory Category, ref bool Log)
         // Count Flow, O2, and Heat Input records
         // Formerly Hourly-79
         {
@@ -311,7 +311,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP3(cCategory Category, ref bool Log)
+        public  string HOUROP3(cCategory Category, ref bool Log)
         // Unit Information Lookup
         {
             string ReturnVal = "";
@@ -321,7 +321,7 @@ namespace ECMPS.Checks.EmissionsChecks
                 sFilterPair[] RowFilter;
 
                 DataRowView CurrentMonitorPlanLocationRecord = Category.GetCheckParameter("Current_Monitor_Plan_Location_Record").ValueAsDataRowView();
-                DateTime currentOperatingDate = EmParameters.CurrentOperatingDate.Value;
+                DateTime currentOperatingDate = emParams.CurrentOperatingDate.Value;
 
                 Category.SetCheckParameter("Special_Fuel_Burned", false, eParameterDataType.Boolean);
                 Category.SetCheckParameter("FC_Factor_Needed", false, eParameterDataType.Boolean);
@@ -330,7 +330,7 @@ namespace ECMPS.Checks.EmissionsChecks
                 Category.SetCheckParameter("Moisture_Needed", false, eParameterDataType.Boolean);
                 Category.SetCheckParameter("Flow_Monitor_Hourly_Checks_Needed", false, eParameterDataType.Boolean);
                 Category.SetCheckParameter("Flow_Needed_For_Part_75", false, eParameterDataType.Boolean);
-                EmParameters.FlowMhvOptionallyAllowed = false;
+                emParams.FlowMhvOptionallyAllowed = false;
                 Category.SetCheckParameter("H2O_Missing_Data_Approach", null, eParameterDataType.String);
                 Category.SetCheckParameter("Current_MHV_Parameter", null, eParameterDataType.String);
                 Category.SetCheckParameter("Current_MHV_System_Type", null, eParameterDataType.String);
@@ -352,12 +352,12 @@ namespace ECMPS.Checks.EmissionsChecks
                 Category.SetCheckParameter("O2_Wet_Checks_Needed_For_Nox_Rate_Calc", false, eParameterDataType.Boolean);
 
                 // 11/7/14 RAB New parameters
-                EmParameters.Co2DiluentNeededForMats = false;
-                EmParameters.Co2DiluentNeededForMatsCalculation = false;
-                EmParameters.O2DryNeededForMats = false;
-                EmParameters.O2DryNeededForMatsCalculation = false;
-                EmParameters.O2WetNeededForMats = false;
-                EmParameters.O2WetNeededForMatsCalculation = false;
+                emParams.Co2DiluentNeededForMats = false;
+                emParams.Co2DiluentNeededForMatsCalculation = false;
+                emParams.O2DryNeededForMats = false;
+                emParams.O2DryNeededForMatsCalculation = false;
+                emParams.O2WetNeededForMats = false;
+                emParams.O2WetNeededForMatsCalculation = false;
 
                 Category.SetCheckParameter("Linearity_Status_Required", false, eParameterDataType.Boolean);
                 Category.SetCheckParameter("Appendix_E_Status_Required", false, eParameterDataType.Boolean);
@@ -372,15 +372,15 @@ namespace ECMPS.Checks.EmissionsChecks
                 Category.SetCheckParameter("F2L_Status_Required", false, eParameterDataType.Boolean);
 
                 // 11/7/14 RAB New parameters
-                EmParameters.Co2cMhvModc = null;
-                EmParameters.H2oDhvModc = null;
-                EmParameters.H2oMhvModc = null;
-                EmParameters.O2DryModc = null;
-                EmParameters.O2WetModc = null;
+                emParams.Co2cMhvModc = null;
+                emParams.H2oDhvModc = null;
+                emParams.H2oMhvModc = null;
+                emParams.O2DryModc = null;
+                emParams.O2WetModc = null;
 
-                EmParameters.So2HpffExists = false;
-                EmParameters.Co2HpffExists = false;
-                EmParameters.HiHpffExists = false;
+                emParams.So2HpffExists = false;
+                emParams.Co2HpffExists = false;
+                emParams.HiHpffExists = false;
 
                 string CurrentEntityType = "";
                 {
@@ -440,7 +440,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     bool currentUnitIsMats = false;
                     bool currentUnitHasNonMatsSo2Program = false;
 
-                    foreach (VwMpLocationProgramRow programRecord in EmParameters.LocationProgramRecordsByHourLocation)
+                    foreach (VwMpLocationProgramRow programRecord in emParams.LocationProgramRecordsByHourLocation)
                     {
                         DateTime? erbDate = programRecord.EmissionsRecordingBeginDate;
                         DateTime? umcbDate = programRecord.UnitMonitorCertBeginDate;
@@ -463,7 +463,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                             if (currentUnitIsArp == false)
                             {
-                                if ((prgCd != "MATS") && prgCd.InList(EmParameters.ProgramRequiresSo2SystemCertificationList) && (classCd == "A"))
+                                if ((prgCd != "MATS") && prgCd.InList(emParams.ProgramRequiresSo2SystemCertificationList) && (classCd == "A"))
                                 {
                                     currentUnitHasNonMatsSo2Program = true;
                                 }
@@ -471,8 +471,8 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
                     }
 
-                    EmParameters.CurrentUnitIsArp = currentUnitIsArp;
-                    EmParameters.So2cIsOnlyForMats = currentUnitIsMats && !currentUnitHasNonMatsSo2Program;
+                    emParams.CurrentUnitIsArp = currentUnitIsArp;
+                    emParams.So2cIsOnlyForMats = currentUnitIsMats && !currentUnitHasNonMatsSo2Program;
                 }
 
                 DateTime EarlyDate;
@@ -490,7 +490,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP4(cCategory Category, ref bool Log)
+        public  string HOUROP4(cCategory Category, ref bool Log)
         // Verify SO2 Monitor Method Active During Current Hour
         // Formerly Hourly-11
         {
@@ -551,7 +551,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP5(cCategory category, ref bool log)
+        public  string HOUROP5(cCategory category, ref bool log)
         // Determine H2O Method
         // Formerly Hourly-80
         {
@@ -694,7 +694,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return returnVal;
         }
 
-        public static string HOUROP6(cCategory Category, ref bool Log)
+        public  string HOUROP6(cCategory Category, ref bool Log)
         // Verify NOx Rate Monitor Method
         // Formerly Hourly-82
         {
@@ -741,7 +741,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP7(cCategory Category, ref bool Log)
+        public  string HOUROP7(cCategory Category, ref bool Log)
         // Verify NOx Mass Monitor Method Record
         // Formerly Hourly-112
         {
@@ -799,7 +799,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP8(cCategory Category, ref bool Log)
+        public  string HOUROP8(cCategory Category, ref bool Log)
         // Verify CO2 Method Active During Current Hour
         // Formerly Hourly-133
         {
@@ -855,7 +855,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP9(cCategory Category, ref bool Log)
+        public  string HOUROP9(cCategory Category, ref bool Log)
         // Verify Heat Input Method Active During Current hour
         // Formerly Hourly-168
         {
@@ -918,9 +918,9 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        #region Public Static Methods: Checks (11 - 20)
+        #region Public  Methods: Checks (11 - 20)
 
-        public static string HOUROP12(cCategory Category, ref bool Log)
+        public  string HOUROP12(cCategory Category, ref bool Log)
         // Derived Hourly H2O Counts Match Method Code
         // Formerly Hourly-99
         {
@@ -959,7 +959,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP13(cCategory Category, ref bool Log)
+        public  string HOUROP13(cCategory Category, ref bool Log)
         // Monitor Hourly H2O Counts Match Method Code
         // Formerly Hourly-100
         {
@@ -998,7 +998,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP14(cCategory Category, ref bool Log)
+        public  string HOUROP14(cCategory Category, ref bool Log)
         // Validate NOx Mass Monitor Method Record
         // Formerly Hourly-118
         {
@@ -1026,7 +1026,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP17(cCategory Category, ref bool Log)
+        public  string HOUROP17(cCategory Category, ref bool Log)
         // Verify Single SO2 Derived Hourly Data Record
         // Formerly Hourly-12
         {
@@ -1204,7 +1204,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP18(cCategory Category, ref bool Log)
+        public  string HOUROP18(cCategory Category, ref bool Log)
         // Verify Single SO2 Concentration record
         // Formerly Hourly-18
         {
@@ -1221,7 +1221,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                 if (UnitHourlyOperationalStatus)
                 {
-                    if (So2MonitorHourlyValueView.Count > 0 && !So2CemMethodActive && !EmParameters.MatsSo2cNeeded.Default(false))
+                    if (So2MonitorHourlyValueView.Count > 0 && !So2CemMethodActive && !emParams.MatsSo2cNeeded.Default(false))
                         Category.CheckCatalogResult = "A";
                     else if (So2MonitorHourlyValueView.Count > 1)
                         Category.CheckCatalogResult = "B";
@@ -1239,7 +1239,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP19(cCategory Category, ref bool Log)
+        public  string HOUROP19(cCategory Category, ref bool Log)
         // Verify Single NOx Concentration Record
         // Formerly Hourly-84
         {
@@ -1276,7 +1276,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP20(cCategory Category, ref bool Log)
+        public  string HOUROP20(cCategory Category, ref bool Log)
         // Verify Single NOx Rate Derived Hourly Record
         // Formerly Hourly-85
         {
@@ -1287,7 +1287,7 @@ namespace ECMPS.Checks.EmissionsChecks
                 Category.SetCheckParameter("Current_NoxR_Derived_Hourly_Record", null, eParameterDataType.DataRowView);
                 Category.SetCheckParameter("NOxR_Derived_Hourly_Checks_Needed", null, eParameterDataType.Boolean);
                 Category.SetCheckParameter("NoxR_Derived_Hourly_Count", null, eParameterDataType.Integer);
-                EmParameters.NoxrHasMeasuredDhvModc = null;
+                emParams.NoxrHasMeasuredDhvModc = null;
 
                 if (Category.GetCheckParameter("Derived_Hourly_Checks_Needed").ValueAsBool())
                 {
@@ -1323,7 +1323,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                 Category.SetCheckParameter("Current_NoxR_Derived_Hourly_Record", NoxrDerivedHourlyValueView[0], eParameterDataType.DataRowView);
                                 Category.SetCheckParameter("NOxR_Derived_Hourly_Checks_Needed", true, eParameterDataType.Boolean);
                                 Category.SetArrayParameter("Apportionment_NOXR_Method_Array", CurrentLocationPos, CurrentNoxrMethodCode);
-                                EmParameters.NoxrHasMeasuredDhvModc = (cDBConvert.ToString(NoxrDerivedHourlyValueView[0]["MODC_CD"]).InList("01,02,03,04,05,14,21,22,53,54 "));
+                                emParams.NoxrHasMeasuredDhvModc = (cDBConvert.ToString(NoxrDerivedHourlyValueView[0]["MODC_CD"]).InList("01,02,03,04,05,14,21,22,53,54 "));
 
                                 if (CurrentNoxrMethodCode == "AMS")
                                 {
@@ -1365,9 +1365,9 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        #region Public Static Methods: Checks (21 - 30)
+        #region Public  Methods: Checks (21 - 30)
 
-        public static string HOUROP21(cCategory Category, ref bool Log)
+        public  string HOUROP21(cCategory Category, ref bool Log)
         // Verify Single NOx Mass Derived Hourly Record
         // Formerly Hourly-119
         {
@@ -1501,7 +1501,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP22(cCategory Category, ref bool Log)
+        public  string HOUROP22(cCategory Category, ref bool Log)
         // Verify Single CO2 Mass Derived Hourly Value Record 
         // Formerly Hourly-135
         {
@@ -1638,7 +1638,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP23(cCategory Category, ref bool Log)
+        public  string HOUROP23(cCategory Category, ref bool Log)
         // Verify Single CO2 Conc Derived or Monitor Hourly Data Record
         // Formerly Hourly-141
         {
@@ -1653,7 +1653,7 @@ namespace ECMPS.Checks.EmissionsChecks
                 Category.SetCheckParameter("CO2_Conc_Monitor_Checks_Needed", false, eParameterDataType.Boolean);
                 Category.SetCheckParameter("O2_Dry_Needed_To_Support_Co2_Calculation", false, eParameterDataType.Boolean);
                 Category.SetCheckParameter("O2_Wet_Needed_To_Support_Co2_Calculation", false, eParameterDataType.Boolean);
-                EmParameters.Co2cHasMeasuredDhvModc = null;
+                emParams.Co2cHasMeasuredDhvModc = null;
 
                 DataView CO2CDHVDataRecs = (DataView)Category.GetCheckParameter("CO2C_Derived_Hourly_Records_By_Hour_Location").ParameterValue;
                 DataView CO2CMHVDataRecs = (DataView)Category.GetCheckParameter("CO2C_Monitor_Hourly_Records_By_Hour_Location").ParameterValue;
@@ -1670,11 +1670,11 @@ namespace ECMPS.Checks.EmissionsChecks
                     bool HINeeded = Convert.ToBoolean(Category.GetCheckParameter("CO2_Conc_Checks_Needed_for_Heat_Input").ParameterValue);
                     bool DiluentNeeded = Convert.ToBoolean(Category.GetCheckParameter("CO2_Diluent_Checks_Needed_For_Nox_Rate_Calc").ParameterValue);
                     bool MassNeeded = Convert.ToBoolean(Category.GetCheckParameter("CO2_Conc_Checks_Needed_For_CO2_Mass_Calc").ParameterValue);
-                    bool MATSDiluentNeeded = EmParameters.Co2DiluentNeededForMats.Default(false);
+                    bool MATSDiluentNeeded = emParams.Co2DiluentNeededForMats.Default(false);
                     if (HINeeded || DiluentNeeded || MassNeeded || MATSDiluentNeeded)
                         if (MHVRecsCt == 0 && (HINeeded || DiluentNeeded || MATSDiluentNeeded))
                         {
-                            if (HINeeded || (DiluentNeeded && EmParameters.NoxrHasMeasuredDhvModc.Default(false)) || (MATSDiluentNeeded && EmParameters.Co2DiluentNeededForMatsCalculation == true))
+                            if (HINeeded || (DiluentNeeded && emParams.NoxrHasMeasuredDhvModc.Default(false)) || (MATSDiluentNeeded && emParams.Co2DiluentNeededForMatsCalculation == true))
                                 Category.CheckCatalogResult = "B";
                             else
                                 Category.CheckCatalogResult = "F";
@@ -1712,7 +1712,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         {
                             Category.SetCheckParameter("CO2_Conc_Derived_Checks_Needed", true, eParameterDataType.Boolean);
                             Category.SetCheckParameter("Current_CO2_Conc_Derived_Hourly_Record", CO2CDHVDataRecs[0], eParameterDataType.DataRowView);
-                            EmParameters.Co2cHasMeasuredDhvModc = (cDBConvert.ToString(CO2CDHVDataRecs[0]["MODC_CD"]).InList("01,02,03,04,05,21,53,54"));
+                            emParams.Co2cHasMeasuredDhvModc = (cDBConvert.ToString(CO2CDHVDataRecs[0]["MODC_CD"]).InList("01,02,03,04,05,21,53,54"));
 
                             string FormId = cDBConvert.ToString(CO2CDHVDataRecs[0]["MON_FORM_ID"]);
 
@@ -1768,7 +1768,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP24(cCategory Category, ref bool Log)
+        public  string HOUROP24(cCategory Category, ref bool Log)
         // Count Hourly Fuel Flow Records
         {
             string ReturnVal = "";
@@ -1846,7 +1846,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP30(cCategory Category, ref bool Log)
+        public  string HOUROP30(cCategory Category, ref bool Log)
         // Determine Load Based Status of Unit
         {
             string ReturnVal = "";
@@ -1894,16 +1894,16 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        #region Public Static Methods: Checks (31 - 40)
+        #region Public  Methods: Checks (31 - 40)
 
-        public static string HOUROP32(cCategory Category, ref bool Log)
+        public  string HOUROP32(cCategory Category, ref bool Log)
         // Perform Load Checks for Operating Hour
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CurrentMaximumLoadValue = null;
+                emParams.CurrentMaximumLoadValue = null;
 
                 DataRowView CurrentHourOpRow = (DataRowView)Category.GetCheckParameter("Current_Hourly_Op_Record").ParameterValue;
 
@@ -1995,7 +1995,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                             }
                                             else 
                                             {
-                                                EmParameters.CurrentMaximumLoadValue = cDBConvert.ToInteger(MonLoadRecs[0]["MAX_LOAD_VALUE"]);
+                                                emParams.CurrentMaximumLoadValue = cDBConvert.ToInteger(MonLoadRecs[0]["MAX_LOAD_VALUE"]);
                                             }
                                         }
                                         else
@@ -2032,7 +2032,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP33(cCategory Category, ref bool Log)
+        public  string HOUROP33(cCategory Category, ref bool Log)
         // Check reported Fuel Code for Operating Hour
         {
             string ReturnVal = "";
@@ -2097,7 +2097,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP34(cCategory Category, ref bool Log)
+        public  string HOUROP34(cCategory Category, ref bool Log)
         //Validate Reported FC Factor
         {
             string ReturnVal = "";
@@ -2143,7 +2143,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP35(cCategory Category, ref bool Log)
+        public  string HOUROP35(cCategory Category, ref bool Log)
         //Validate Reported FD Factor
         {
             string ReturnVal = "";
@@ -2189,7 +2189,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP36(cCategory Category, ref bool Log)
+        public  string HOUROP36(cCategory Category, ref bool Log)
         //Validate Reported FW Factor
         {
             string ReturnVal = "";
@@ -2235,7 +2235,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP37(cCategory Category, ref bool Log)
+        public  string HOUROP37(cCategory Category, ref bool Log)
         //Verify Single Heat Input Derived Hourly Record
         {
             string ReturnVal = "";
@@ -2342,7 +2342,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP38(cCategory Category, ref bool Log)
+        public  string HOUROP38(cCategory Category, ref bool Log)
         //Determine Fuel Type
         {
             string ReturnVal = "";
@@ -2380,7 +2380,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP39(cCategory Category, ref bool Log)
+        public  string HOUROP39(cCategory Category, ref bool Log)
         //Verify Single H2O Conc Derived or Monitor Hourly Data Record
         {
             string ReturnVal = "";
@@ -2393,7 +2393,7 @@ namespace ECMPS.Checks.EmissionsChecks
                 Category.SetCheckParameter("Current_H2O_Derived_Hourly_Record", null, eParameterDataType.DataRowView);
                 Category.SetCheckParameter("O2_Wet_Checks_Needed_For_H2O", false, eParameterDataType.Boolean);
                 Category.SetCheckParameter("O2_Dry_Checks_Needed_For_H2O", false, eParameterDataType.Boolean);
-                EmParameters.H2oHasMeasuredDhvModc = null;
+                emParams.H2oHasMeasuredDhvModc = null;
 
 
                 DataRowView CurrentHourlyOpRow = (DataRowView)Category.GetCheckParameter("Current_Hourly_Op_Record").ParameterValue;
@@ -2439,7 +2439,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         {
                             DataView H2oDerivedHourlyView = (DataView)Category.GetCheckParameter("H2O_Derived_Hourly_Value_Records_By_Hour_Location").ParameterValue;
                             Category.SetCheckParameter("Current_H2O_Derived_Hourly_Record", H2oDerivedHourlyView[0], eParameterDataType.DataRowView);
-                            EmParameters.H2oHasMeasuredDhvModc = (cDBConvert.ToString(H2oDerivedHourlyView[0]["MODC_CD"]).InList("01,02,03,04,05,21,53,54"));
+                            emParams.H2oHasMeasuredDhvModc = (cDBConvert.ToString(H2oDerivedHourlyView[0]["MODC_CD"]).InList("01,02,03,04,05,21,53,54"));
 
                             Category.SetCheckParameter("H2O_Derived_Hourly_Checks_Needed", true, eParameterDataType.Boolean);
 
@@ -2472,7 +2472,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP40(cCategory Category, ref bool Log)
+        public  string HOUROP40(cCategory Category, ref bool Log)
         //Verify Single O2 Dry Monitor Hourly Value Record
         {
             string ReturnVal = "";
@@ -2491,22 +2491,22 @@ namespace ECMPS.Checks.EmissionsChecks
                         Convert.ToBoolean(Category.GetCheckParameter("O2_Dry_Checks_Needed_For_Nox_Rate_Calc").ParameterValue) ||
                         Convert.ToBoolean(Category.GetCheckParameter("O2_Dry_Needed_To_Support_Co2_Calculation").ParameterValue) ||
                                   Convert.ToBoolean(Category.GetCheckParameter("O2_Dry_Checks_Needed_For_H2O").ParameterValue) ||
-                                  EmParameters.O2DryNeededForMats.Default(false) //Added 11/10/2014
+                                  emParams.O2DryNeededForMats.Default(false) //Added 11/10/2014
                                   )
                         if (O2DryCount == 0 &&
                           (Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Checks_Needed_for_Heat_Input").ParameterValue) ||
                           Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Checks_Needed_For_Nox_Rate_Calc").ParameterValue) ||
                           Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Needed_To_Support_Co2_Calculation").ParameterValue) ||
                                         Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Checks_Needed_For_H2O").ParameterValue) ||
-                                        EmParameters.O2WetNeededForMats.Default(false) //Added 11/10/2014
+                                        emParams.O2WetNeededForMats.Default(false) //Added 11/10/2014
                                         )
                                     )
                         {
-                            if (EmParameters.O2WetChecksNeededForHeatInput.Default(false) ||
-                                EmParameters.O2WetChecksNeededForNoxRateCalc.Default(false) && EmParameters.NoxrHasMeasuredDhvModc == true ||
-                                EmParameters.O2WetNeededToSupportCo2Calculation.Default(false) && EmParameters.Co2cHasMeasuredDhvModc == true ||
-                                EmParameters.O2WetChecksNeededForH2o.Default(false) && EmParameters.H2oHasMeasuredDhvModc == true ||
-                                EmParameters.O2WetNeededForMats.Default(false) && EmParameters.O2WetNeededForMatsCalculation == true)
+                            if (emParams.O2WetChecksNeededForHeatInput.Default(false) ||
+                                emParams.O2WetChecksNeededForNoxRateCalc.Default(false) && emParams.NoxrHasMeasuredDhvModc == true ||
+                                emParams.O2WetNeededToSupportCo2Calculation.Default(false) && emParams.Co2cHasMeasuredDhvModc == true ||
+                                emParams.O2WetChecksNeededForH2o.Default(false) && emParams.H2oHasMeasuredDhvModc == true ||
+                                emParams.O2WetNeededForMats.Default(false) && emParams.O2WetNeededForMatsCalculation == true)
                                 Category.CheckCatalogResult = "A";
                             else
                                 Category.CheckCatalogResult = "G";
@@ -2515,11 +2515,11 @@ namespace ECMPS.Checks.EmissionsChecks
                         {
                             if (O2DryCount + O2NullCount == 0)
                             {
-                                if (EmParameters.O2DryChecksNeededForHeatInput.Default(false) ||
-                                    EmParameters.O2DryChecksNeededForNoxRateCalc.Default(false) && EmParameters.NoxrHasMeasuredDhvModc == true ||
-                                    EmParameters.O2DryNeededToSupportCo2Calculation.Default(false) && EmParameters.Co2cHasMeasuredDhvModc == true ||
-                                    EmParameters.O2DryChecksNeededForH2o.Default(false) && EmParameters.H2oHasMeasuredDhvModc == true ||
-                                    EmParameters.O2DryNeededForMats.Default(false) && EmParameters.O2DryNeededForMatsCalculation == true)
+                                if (emParams.O2DryChecksNeededForHeatInput.Default(false) ||
+                                    emParams.O2DryChecksNeededForNoxRateCalc.Default(false) && emParams.NoxrHasMeasuredDhvModc == true ||
+                                    emParams.O2DryNeededToSupportCo2Calculation.Default(false) && emParams.Co2cHasMeasuredDhvModc == true ||
+                                    emParams.O2DryChecksNeededForH2o.Default(false) && emParams.H2oHasMeasuredDhvModc == true ||
+                                    emParams.O2DryNeededForMats.Default(false) && emParams.O2DryNeededForMatsCalculation == true)
                                     Category.CheckCatalogResult = "B";
                                 else
                                     Category.CheckCatalogResult = "H";
@@ -2535,7 +2535,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                     if (Convert.ToBoolean(Category.GetCheckParameter("O2_Dry_Checks_Needed_for_Heat_Input").ParameterValue) &&
                                         (Convert.ToBoolean(Category.GetCheckParameter("O2_Dry_Checks_Needed_For_Nox_Rate_Calc").ParameterValue) ||
                                                             Convert.ToBoolean(Category.GetCheckParameter("O2_Dry_Checks_Needed_For_H20").ParameterValue) ||
-                                                            EmParameters.O2DryNeededForMats.Default(false) //Added 11/10/2014
+                                                            emParams.O2DryNeededForMats.Default(false) //Added 11/10/2014
                                                             )
                                                         )
                                     {
@@ -2599,7 +2599,7 @@ namespace ECMPS.Checks.EmissionsChecks
                               !Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Checks_Needed_For_Nox_Rate_Calc").ParameterValue) &&
                               !Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Needed_To_Support_Co2_Calculation").ParameterValue) &&
                                             !Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Checks_Needed_For_H2O").ParameterValue) &&
-                                            EmParameters.O2WetNeededForMats.Default(false) == false  //Added 11/10/2014
+                                            emParams.O2WetNeededForMats.Default(false) == false  //Added 11/10/2014
                                             )
                             Category.CheckCatalogResult = "E";
                     }
@@ -2617,9 +2617,9 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        #region Public Static Methods: Checks (41 - 50)
+        #region Public  Methods: Checks (41 - 50)
 
-        public static string HOUROP41(cCategory Category, ref bool Log)
+        public  string HOUROP41(cCategory Category, ref bool Log)
         //Verify Single O2 Wet Monitor Hourly Value Record
         {
             string ReturnVal = "";
@@ -2638,7 +2638,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Checks_Needed_For_Nox_Rate_Calc").ParameterValue) ||
                         Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Needed_To_Support_Co2_Calculation").ParameterValue) ||
                                   Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Checks_Needed_For_H2O").ParameterValue) ||
-                                  EmParameters.O2WetNeededForMats.Default(false) // Added 11/10/2014
+                                  emParams.O2WetNeededForMats.Default(false) // Added 11/10/2014
                                   )
 
                         if (Convert.ToInt16(Category.GetCheckParameter("O2_Wet_Monitor_Hourly_Count").ParameterValue) == 0 &&
@@ -2646,14 +2646,14 @@ namespace ECMPS.Checks.EmissionsChecks
                             Convert.ToBoolean(Category.GetCheckParameter("O2_Dry_Checks_Needed_For_Nox_Rate_Calc").ParameterValue) ||
                             Convert.ToBoolean(Category.GetCheckParameter("O2_Dry_Needed_To_Support_Co2_Calculation").ParameterValue) ||
                                         Convert.ToBoolean(Category.GetCheckParameter("O2_Dry_Checks_Needed_For_H2O").ParameterValue) ||
-                                        EmParameters.O2DryNeededForMats.Default(false) // Added 11/10/2014
+                                        emParams.O2DryNeededForMats.Default(false) // Added 11/10/2014
                                         ))
                         {
-                            if (EmParameters.O2DryChecksNeededForHeatInput.Default(false) ||
-                                EmParameters.O2DryChecksNeededForNoxRateCalc.Default(false) && EmParameters.NoxrHasMeasuredDhvModc == true ||
-                                EmParameters.O2DryNeededToSupportCo2Calculation.Default(false) && EmParameters.Co2cHasMeasuredDhvModc == true ||
-                                EmParameters.O2DryChecksNeededForH2o.Default(false) && EmParameters.H2oHasMeasuredDhvModc == true ||
-                                EmParameters.O2DryNeededForMats.Default(false) && EmParameters.O2DryNeededForMatsCalculation == true)
+                            if (emParams.O2DryChecksNeededForHeatInput.Default(false) ||
+                                emParams.O2DryChecksNeededForNoxRateCalc.Default(false) && emParams.NoxrHasMeasuredDhvModc == true ||
+                                emParams.O2DryNeededToSupportCo2Calculation.Default(false) && emParams.Co2cHasMeasuredDhvModc == true ||
+                                emParams.O2DryChecksNeededForH2o.Default(false) && emParams.H2oHasMeasuredDhvModc == true ||
+                                emParams.O2DryNeededForMats.Default(false) && emParams.O2DryNeededForMatsCalculation == true)
                                 Category.CheckCatalogResult = "A";
                             else
                                 Category.CheckCatalogResult = "E";
@@ -2662,11 +2662,11 @@ namespace ECMPS.Checks.EmissionsChecks
                         {
                             if (O2WetCount + O2NullCount == 0)
                             {
-                                if (EmParameters.O2WetChecksNeededForHeatInput.Default(false) ||
-                                    EmParameters.O2WetChecksNeededForNoxRateCalc.Default(false) && EmParameters.NoxrHasMeasuredDhvModc == true ||
-                                    EmParameters.O2WetNeededToSupportCo2Calculation.Default(false) && EmParameters.Co2cHasMeasuredDhvModc == true ||
-                                    EmParameters.O2WetChecksNeededForH2o.Default(false) && EmParameters.H2oHasMeasuredDhvModc == true ||
-                                    EmParameters.O2WetNeededForMats.Default(false) && EmParameters.O2WetNeededForMatsCalculation == true)
+                                if (emParams.O2WetChecksNeededForHeatInput.Default(false) ||
+                                    emParams.O2WetChecksNeededForNoxRateCalc.Default(false) && emParams.NoxrHasMeasuredDhvModc == true ||
+                                    emParams.O2WetNeededToSupportCo2Calculation.Default(false) && emParams.Co2cHasMeasuredDhvModc == true ||
+                                    emParams.O2WetChecksNeededForH2o.Default(false) && emParams.H2oHasMeasuredDhvModc == true ||
+                                    emParams.O2WetNeededForMats.Default(false) && emParams.O2WetNeededForMatsCalculation == true)
                                     Category.CheckCatalogResult = "B";
                                 else
                                     Category.CheckCatalogResult = "F";
@@ -2682,7 +2682,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                     if (Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Checks_Needed_for_Heat_Input").ParameterValue) &&
                                         (Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Checks_Needed_For_Nox_Rate_Calc").ParameterValue) ||
                                                             Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Checks_Needed_For_H20").ParameterValue) ||
-                                                            EmParameters.O2WetNeededForMats.Default(false) // Added 11/10/2014
+                                                            emParams.O2WetNeededForMats.Default(false) // Added 11/10/2014
                                                             )
                                                         )
                                     {
@@ -2747,7 +2747,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP42(cCategory Category, ref bool Log)
+        public  string HOUROP42(cCategory Category, ref bool Log)
         //Verify Single SO2R Derived Hourly Data Record
         {
             string ReturnVal = "";
@@ -2796,44 +2796,44 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOUROP43(cCategory category, ref bool log)
+        public  string HOUROP43(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.CurrentFlowMonitorHourlyRecord = null;
+                emParams.CurrentFlowMonitorHourlyRecord = null;
 
-                category.SetDecimalArrayParameter("Apportionment_Stack_Flow_Array", EmParameters.CurrentMonitorPlanLocationPostion.Value, null);
+                category.SetDecimalArrayParameter("Apportionment_Stack_Flow_Array", emParams.CurrentMonitorPlanLocationPostion.Value, null);
 
 
-                if ((EmParameters.FlowMhvOptionallyAllowed == true) && (EmParameters.FlowMonitorHourlyCount > 0))
+                if ((emParams.FlowMhvOptionallyAllowed == true) && (emParams.FlowMonitorHourlyCount > 0))
                 {
-                    EmParameters.FlowMonitorHourlyChecksNeeded = true;
+                    emParams.FlowMonitorHourlyChecksNeeded = true;
                 }
 
-                if (EmParameters.FlowMonitorHourlyChecksNeeded == true)
+                if (emParams.FlowMonitorHourlyChecksNeeded == true)
                 {
-                    if (EmParameters.FlowMonitorHourlyCount == 0)
+                    if (emParams.FlowMonitorHourlyCount == 0)
                     {
-                        EmParameters.FlowMonitorHourlyChecksNeeded = false;
+                        emParams.FlowMonitorHourlyChecksNeeded = false;
                         category.CheckCatalogResult = "A";
                     }
-                    else if (EmParameters.FlowMonitorHourlyCount > 1)
+                    else if (emParams.FlowMonitorHourlyCount > 1)
                     {
                         category.CheckCatalogResult = "B";
                     }
                     else // assuming only one rec in view.
                     {
-                        EmParameters.CurrentFlowMonitorHourlyRecord = EmParameters.FlowMonitorHourlyValueRecordsByHourLocation.GetRow(0);
+                        emParams.CurrentFlowMonitorHourlyRecord = emParams.FlowMonitorHourlyValueRecordsByHourLocation.GetRow(0);
 
-                        category.SetDecimalArrayParameter("Apportionment_Stack_Flow_Array", EmParameters.CurrentMonitorPlanLocationPostion.Value, 
-                                                                                            EmParameters.CurrentFlowMonitorHourlyRecord.UnadjustedHrlyValue);
+                        category.SetDecimalArrayParameter("Apportionment_Stack_Flow_Array", emParams.CurrentMonitorPlanLocationPostion.Value, 
+                                                                                            emParams.CurrentFlowMonitorHourlyRecord.UnadjustedHrlyValue);
                     }
                 }
                 else
                 {
-                    if (EmParameters.FlowMonitorHourlyCount > 0)
+                    if (emParams.FlowMonitorHourlyCount > 0)
                     {
                         category.CheckCatalogResult = "C";
                     }
@@ -2862,26 +2862,26 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOUROP44(cCategory category, ref bool log)
+        public  string HOUROP44(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.CheckLoadRangeValue = false;
-                EmParameters.CheckCsLoadRangeValue = false;
+                emParams.CheckLoadRangeValue = false;
+                emParams.CheckCsLoadRangeValue = false;
 
-                if ((EmParameters.DerivedHourlyChecksNeeded == true) && (EmParameters.UnitIsLoadBased == true))
+                if ((emParams.DerivedHourlyChecksNeeded == true) && (emParams.UnitIsLoadBased == true))
                 {
-                    decimal? hourLoad = EmParameters.CurrentHourlyOpRecord.HrLoad;
-                    int? loadRange = EmParameters.CurrentHourlyOpRecord.LoadRange;
-                    int? commonStackLoadRange = EmParameters.CurrentHourlyOpRecord.CommonStackLoadRange;
-                    string currentHEntityType = EmParameters.CurrentEntityType;
+                    decimal? hourLoad = emParams.CurrentHourlyOpRecord.HrLoad;
+                    int? loadRange = emParams.CurrentHourlyOpRecord.LoadRange;
+                    int? commonStackLoadRange = emParams.CurrentHourlyOpRecord.CommonStackLoadRange;
+                    string currentHEntityType = emParams.CurrentEntityType;
 
-                    if ((EmParameters.CurrentHourlyOpRecord.OpTime > 0) && (hourLoad >= 0) && (EmParameters.LmeAnnual == false) && (EmParameters.LmeOs == false))
+                    if ((emParams.CurrentHourlyOpRecord.OpTime > 0) && (hourLoad >= 0) && (emParams.LmeAnnual == false) && (emParams.LmeOs == false))
                     {
-                        if ((EmParameters.FlowMonitorHourlyChecksNeeded == true) || (EmParameters.NoxConcNeededForNoxMassCalc == true) || (EmParameters.NoxrDerivedHourlyChecksNeeded == true) || 
-                            (EmParameters.So2HpffExists == true) || (EmParameters.Co2HpffExists == true) || (EmParameters.HiHpffExists == true))
+                        if ((emParams.FlowMonitorHourlyChecksNeeded == true) || (emParams.NoxConcNeededForNoxMassCalc == true) || (emParams.NoxrDerivedHourlyChecksNeeded == true) || 
+                            (emParams.So2HpffExists == true) || (emParams.Co2HpffExists == true) || (emParams.HiHpffExists == true))
                         {
                             if ((loadRange == null) && (commonStackLoadRange == null))
                             {
@@ -2891,41 +2891,41 @@ namespace ECMPS.Checks.EmissionsChecks
                             {
                                 if (loadRange != null)
                                 {
-                                    EmParameters.CheckLoadRangeValue = true;
+                                    emParams.CheckLoadRangeValue = true;
                                 }
 
                                 if (commonStackLoadRange != null)
                                 {
-                                    if (EmParameters.FlowMonitorHourlyCount == 0)
+                                    if (emParams.FlowMonitorHourlyCount == 0)
                                     {
                                         category.CheckCatalogResult = "C";
                                     }
                                     else
-                                        EmParameters.CheckCsLoadRangeValue = true;
+                                        emParams.CheckCsLoadRangeValue = true;
                                 }
                             }
                             else if (currentHEntityType == "CP")
                             {
                                 if (loadRange != null)
                                 {
-                                    EmParameters.CheckLoadRangeValue = true;
+                                    emParams.CheckLoadRangeValue = true;
                                 }
 
                                 if (commonStackLoadRange != null)
                                 {
-                                    if ((EmParameters.HourlyFuelFlowCountForOil.Value + EmParameters.HourlyFuelFlowCountForGas.Value) == 0)
+                                    if ((emParams.HourlyFuelFlowCountForOil.Value + emParams.HourlyFuelFlowCountForGas.Value) == 0)
                                     {
                                         category.CheckCatalogResult = "D";
                                     }
                                     else
-                                        EmParameters.CheckCsLoadRangeValue = true;
+                                        emParams.CheckCsLoadRangeValue = true;
                                 }
                             }
                             else
                             {
                                 if (loadRange != null)
                                 {
-                                    EmParameters.CheckLoadRangeValue = true;
+                                    emParams.CheckLoadRangeValue = true;
                                 }
 
                                 if (commonStackLoadRange != null)
@@ -2972,27 +2972,27 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOUROP45(cCategory category, ref bool log)
+        public  string HOUROP45(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.CheckLoadRangeValue == true)
+                if (emParams.CheckLoadRangeValue == true)
                 {
-                    int loadRange = EmParameters.CurrentHourlyOpRecord.LoadRange.Value;
-                    int currentMaximumLoadValue = EmParameters.CurrentMaximumLoadValue.HasValue ? EmParameters.CurrentMaximumLoadValue.Value : 0;
+                    int loadRange = emParams.CurrentHourlyOpRecord.LoadRange.Value;
+                    int currentMaximumLoadValue = emParams.CurrentMaximumLoadValue.HasValue ? emParams.CurrentMaximumLoadValue.Value : 0;
 
                     if (loadRange == 0)
                     {
                         category.CheckCatalogResult = "A";
                     }
 
-                    else if (EmParameters.CurrentHourlyOpRecord.HrLoad.HasValue && (currentMaximumLoadValue > 0))
+                    else if (emParams.CurrentHourlyOpRecord.HrLoad.HasValue && (currentMaximumLoadValue > 0))
                     {
-                        decimal hourLoad = EmParameters.CurrentHourlyOpRecord.HrLoad.Value;
+                        decimal hourLoad = emParams.CurrentHourlyOpRecord.HrLoad.Value;
 
-                        EmParameters.CalculatedLoadRange = (int)Math.Floor((10 * hourLoad / currentMaximumLoadValue) + 1);
+                        emParams.CalculatedLoadRange = (int)Math.Floor((10 * hourLoad / currentMaximumLoadValue) + 1);
 
                         if (hourLoad == 0)
                         {
@@ -3045,27 +3045,27 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOUROP46(cCategory category, ref bool log)
+        public  string HOUROP46(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.CheckCsLoadRangeValue == true)
+                if (emParams.CheckCsLoadRangeValue == true)
                 {
-                    int commonStackLoadRange = EmParameters.CurrentHourlyOpRecord.CommonStackLoadRange.Value;
-                    int currentMaximumLoadValue = EmParameters.CurrentMaximumLoadValue.HasValue ? EmParameters.CurrentMaximumLoadValue.Value : 0;
+                    int commonStackLoadRange = emParams.CurrentHourlyOpRecord.CommonStackLoadRange.Value;
+                    int currentMaximumLoadValue = emParams.CurrentMaximumLoadValue.HasValue ? emParams.CurrentMaximumLoadValue.Value : 0;
 
                     if (commonStackLoadRange == 0)
                     {
                         category.CheckCatalogResult = "A";
                     }
 
-                    else if (EmParameters.CurrentHourlyOpRecord.HrLoad.HasValue && (currentMaximumLoadValue > 0))
+                    else if (emParams.CurrentHourlyOpRecord.HrLoad.HasValue && (currentMaximumLoadValue > 0))
                     {
-                        decimal hourLoad = EmParameters.CurrentHourlyOpRecord.HrLoad.Value;
+                        decimal hourLoad = emParams.CurrentHourlyOpRecord.HrLoad.Value;
 
-                        EmParameters.CalculatedCsLoadRange = (int)Math.Floor((20 * hourLoad / currentMaximumLoadValue) + 1);
+                        emParams.CalculatedCsLoadRange = (int)Math.Floor((20 * hourLoad / currentMaximumLoadValue) + 1);
 
                         if (hourLoad == 0)
                         {
@@ -3134,17 +3134,17 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOUROP47(cCategory category, ref bool log)
+        public  string HOUROP47(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.DerivedHourlyChecksNeeded.Default(false) && (EmParameters.CurrentOperatingTime.Value > 0))
+                if (emParams.DerivedHourlyChecksNeeded.Default(false) && (emParams.CurrentOperatingTime.Value > 0))
                 {
-                    foreach (QaCertificationSupplementalData qaCertificationSupplementalData in EmParameters.QaCertEventSuppDataDictionaryArray[EmParameters.CurrentMonitorPlanLocationPostion.Value].Values)
+                    foreach (QaCertificationSupplementalData qaCertificationSupplementalData in emParams.QaCertEventSuppDataDictionaryArray[emParams.CurrentMonitorPlanLocationPostion.Value].Values)
                     {
-                        qaCertificationSupplementalData.IncreamentOperatingCounts(EmParameters.CurrentOperatingDatehour.Value);
+                        qaCertificationSupplementalData.IncreamentOperatingCounts(emParams.CurrentOperatingDatehour.Value);
                     }
                 }
             }
@@ -3162,101 +3162,101 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOUROP48(cCategory category, ref bool log)
+        public  string HOUROP48(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.DerivedHourlyChecksNeeded.Default(false) && (EmParameters.CurrentOperatingTime.Value > 0))
+                if (emParams.DerivedHourlyChecksNeeded.Default(false) && (emParams.CurrentOperatingTime.Value > 0))
                 {
-                    DateTime currentOperatingHour = EmParameters.CurrentOperatingDatehour.Value;
-                    int currentReportingPeriod = EmParameters.CurrentReportingPeriod.Value;
+                    DateTime currentOperatingHour = emParams.CurrentOperatingDatehour.Value;
+                    int currentReportingPeriod = emParams.CurrentReportingPeriod.Value;
 
-                    Dictionary<string, SystemOperatingSupplementalData> supplementalDataDictionary = EmParameters.SystemOperatingSuppDataDictionaryArray[EmParameters.CurrentMonitorPlanLocationPostion.Value];
+                    Dictionary<string, SystemOperatingSupplementalData> supplementalDataDictionary = emParams.SystemOperatingSuppDataDictionaryArray[emParams.CurrentMonitorPlanLocationPostion.Value];
 
                     /* CurrentCo2ConcDerivedHourlyRecord */
-                    if (EmParameters.CurrentCo2ConcDerivedHourlyRecord != null)
+                    if (emParams.CurrentCo2ConcDerivedHourlyRecord != null)
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.CurrentCo2ConcDerivedHourlyRecord.MonSysId, EmParameters.CurrentCo2ConcDerivedHourlyRecord.ModcCd, EmParameters.CurrentCo2ConcDerivedHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.CurrentCo2ConcDerivedHourlyRecord.MonSysId, emParams.CurrentCo2ConcDerivedHourlyRecord.ModcCd, emParams.CurrentCo2ConcDerivedHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentCo2ConcMonitorHourlyRecord */
-                    if (EmParameters.CurrentCo2ConcMonitorHourlyRecord != null )
+                    if (emParams.CurrentCo2ConcMonitorHourlyRecord != null )
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.CurrentCo2ConcMonitorHourlyRecord.MonSysId, EmParameters.CurrentCo2ConcMonitorHourlyRecord.ModcCd, EmParameters.CurrentCo2ConcMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.CurrentCo2ConcMonitorHourlyRecord.MonSysId, emParams.CurrentCo2ConcMonitorHourlyRecord.ModcCd, emParams.CurrentCo2ConcMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentFlowMonitorHourlyRecord */
-                    if (EmParameters.CurrentFlowMonitorHourlyRecord != null)
+                    if (emParams.CurrentFlowMonitorHourlyRecord != null)
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.CurrentFlowMonitorHourlyRecord.MonSysId, EmParameters.CurrentFlowMonitorHourlyRecord.ModcCd, EmParameters.CurrentFlowMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.CurrentFlowMonitorHourlyRecord.MonSysId, emParams.CurrentFlowMonitorHourlyRecord.ModcCd, emParams.CurrentFlowMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentHeatInputDerivedHourlyRecord */
-                    if (EmParameters.CurrentHeatInputDerivedHourlyRecord != null)
+                    if (emParams.CurrentHeatInputDerivedHourlyRecord != null)
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.CurrentHeatInputDerivedHourlyRecord.MonSysId, EmParameters.CurrentHeatInputDerivedHourlyRecord.ModcCd, EmParameters.CurrentHeatInputDerivedHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.CurrentHeatInputDerivedHourlyRecord.MonSysId, emParams.CurrentHeatInputDerivedHourlyRecord.ModcCd, emParams.CurrentHeatInputDerivedHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentH2oDerivedHourlyRecord */
-                    if (EmParameters.CurrentH2oDerivedHourlyRecord != null)
+                    if (emParams.CurrentH2oDerivedHourlyRecord != null)
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.CurrentH2oDerivedHourlyRecord.MonSysId, EmParameters.CurrentH2oDerivedHourlyRecord.ModcCd, EmParameters.CurrentH2oDerivedHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.CurrentH2oDerivedHourlyRecord.MonSysId, emParams.CurrentH2oDerivedHourlyRecord.ModcCd, emParams.CurrentH2oDerivedHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentH2oMonitorHourlyRecord */
-                    if (EmParameters.CurrentH2oMonitorHourlyRecord != null)
+                    if (emParams.CurrentH2oMonitorHourlyRecord != null)
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.CurrentH2oMonitorHourlyRecord.MonSysId, EmParameters.CurrentH2oMonitorHourlyRecord.ModcCd, EmParameters.CurrentH2oMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.CurrentH2oMonitorHourlyRecord.MonSysId, emParams.CurrentH2oMonitorHourlyRecord.ModcCd, emParams.CurrentH2oMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentNoxConcMonitorHourlyRecord */
-                    if (EmParameters.CurrentNoxConcMonitorHourlyRecord != null)
+                    if (emParams.CurrentNoxConcMonitorHourlyRecord != null)
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.CurrentNoxConcMonitorHourlyRecord.MonSysId, EmParameters.CurrentNoxConcMonitorHourlyRecord.ModcCd, EmParameters.CurrentNoxConcMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.CurrentNoxConcMonitorHourlyRecord.MonSysId, emParams.CurrentNoxConcMonitorHourlyRecord.ModcCd, emParams.CurrentNoxConcMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentNoxrDerivedHourlyRecord */
-                    if (EmParameters.CurrentNoxrDerivedHourlyRecord != null)
+                    if (emParams.CurrentNoxrDerivedHourlyRecord != null)
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.CurrentNoxrDerivedHourlyRecord.MonSysId, EmParameters.CurrentNoxrDerivedHourlyRecord.ModcCd, EmParameters.CurrentNoxrDerivedHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.CurrentNoxrDerivedHourlyRecord.MonSysId, emParams.CurrentNoxrDerivedHourlyRecord.ModcCd, emParams.CurrentNoxrDerivedHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentO2DryMonitorHourlyRecord */
-                    if (EmParameters.CurrentO2DryMonitorHourlyRecord != null)
+                    if (emParams.CurrentO2DryMonitorHourlyRecord != null)
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.CurrentO2DryMonitorHourlyRecord.MonSysId, EmParameters.CurrentO2DryMonitorHourlyRecord.ModcCd, EmParameters.CurrentO2DryMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.CurrentO2DryMonitorHourlyRecord.MonSysId, emParams.CurrentO2DryMonitorHourlyRecord.ModcCd, emParams.CurrentO2DryMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentO2WetMonitorHourlyRecord */
-                    if (EmParameters.CurrentO2WetMonitorHourlyRecord != null)
+                    if (emParams.CurrentO2WetMonitorHourlyRecord != null)
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.CurrentO2WetMonitorHourlyRecord.MonSysId, EmParameters.CurrentO2WetMonitorHourlyRecord.ModcCd, EmParameters.CurrentO2WetMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.CurrentO2WetMonitorHourlyRecord.MonSysId, emParams.CurrentO2WetMonitorHourlyRecord.ModcCd, emParams.CurrentO2WetMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentSo2MonitorHourlyRecord */
-                    if (EmParameters.CurrentSo2MonitorHourlyRecord != null)
+                    if (emParams.CurrentSo2MonitorHourlyRecord != null)
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.CurrentSo2MonitorHourlyRecord.MonSysId, EmParameters.CurrentSo2MonitorHourlyRecord.ModcCd, EmParameters.CurrentSo2MonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.CurrentSo2MonitorHourlyRecord.MonSysId, emParams.CurrentSo2MonitorHourlyRecord.ModcCd, emParams.CurrentSo2MonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* MatsHclcMhvRecord */
-                    if (EmParameters.MatsHclcMhvRecord != null)
+                    if (emParams.MatsHclcMhvRecord != null)
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.MatsHclcMhvRecord.MonSysId, EmParameters.MatsHclcMhvRecord.ModcCd, EmParameters.MatsHclcMhvRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.MatsHclcMhvRecord.MonSysId, emParams.MatsHclcMhvRecord.ModcCd, emParams.MatsHclcMhvRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* MatsHfcMhvRecord */
-                    if (EmParameters.MatsHfcMhvRecord != null)
+                    if (emParams.MatsHfcMhvRecord != null)
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.MatsHfcMhvRecord.MonSysId, EmParameters.MatsHfcMhvRecord.ModcCd, EmParameters.MatsHfcMhvRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.MatsHfcMhvRecord.MonSysId, emParams.MatsHfcMhvRecord.ModcCd, emParams.MatsHfcMhvRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* MatsHgcMhvRecord */
-                    if (EmParameters.MatsHgcMhvRecord != null)
+                    if (emParams.MatsHgcMhvRecord != null)
                     {
-                        HOUROP48_SuppUpdate(currentReportingPeriod, EmParameters.MatsHgcMhvRecord.MonSysId, EmParameters.MatsHgcMhvRecord.ModcCd, EmParameters.MatsHgcMhvRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP48_SuppUpdate(currentReportingPeriod, emParams.MatsHgcMhvRecord.MonSysId, emParams.MatsHgcMhvRecord.ModcCd, emParams.MatsHgcMhvRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
                 }
             }
@@ -3277,7 +3277,7 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="monLocId">The primary key to the MONITOR_LOCATION table.</param>
         /// <param name="currentOperatingHour">The current operating hour being processed.</param>
         /// <param name="supplementalDataDictionary">The system operating supplemental data dictionary for the current location.</param>
-        public static void HOUROP48_SuppUpdate(int rptPeriodId, string monSysId, string modcCd, string monLocId, DateTime currentOperatingHour, Dictionary<string, SystemOperatingSupplementalData> supplementalDataDictionary)
+        public  void HOUROP48_SuppUpdate(int rptPeriodId, string monSysId, string modcCd, string monLocId, DateTime currentOperatingHour, Dictionary<string, SystemOperatingSupplementalData> supplementalDataDictionary)
         {
             if (monSysId.IsNotEmpty())
             {
@@ -3296,11 +3296,11 @@ namespace ECMPS.Checks.EmissionsChecks
                 supplementalDataRecord.IncreamentForCurrentHour(currentOperatingHour, modcCd);
 
 
-                if (EmParameters.QaCertEventSuppDataDictionaryBySystem != null &&
-                    EmParameters.QaCertEventSuppDataDictionaryBySystem.ContainsKey(monSysId) &&
-                    EmParameters.QaCertEventSuppDataDictionaryBySystem[monSysId] != null)
+                if (emParams.QaCertEventSuppDataDictionaryBySystem != null &&
+                    emParams.QaCertEventSuppDataDictionaryBySystem.ContainsKey(monSysId) &&
+                    emParams.QaCertEventSuppDataDictionaryBySystem[monSysId] != null)
                 {
-                    foreach (QaCertificationSupplementalData qaCertificationSupplementalData in EmParameters.QaCertEventSuppDataDictionaryBySystem[monSysId])
+                    foreach (QaCertificationSupplementalData qaCertificationSupplementalData in emParams.QaCertEventSuppDataDictionaryBySystem[monSysId])
                     {
                         qaCertificationSupplementalData.IncreamentSystemCounts(currentOperatingHour, modcCd);
                     }
@@ -3314,77 +3314,77 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOUROP49(cCategory category, ref bool log)
+        public  string HOUROP49(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.DerivedHourlyChecksNeeded.Default(false) && (EmParameters.CurrentOperatingTime.Value > 0))
+                if (emParams.DerivedHourlyChecksNeeded.Default(false) && (emParams.CurrentOperatingTime.Value > 0))
                 {
-                    DateTime currentOperatingHour = EmParameters.CurrentOperatingDatehour.Value;
-                    int currentReportingPeriod = EmParameters.CurrentReportingPeriod.Value;
+                    DateTime currentOperatingHour = emParams.CurrentOperatingDatehour.Value;
+                    int currentReportingPeriod = emParams.CurrentReportingPeriod.Value;
 
-                    Dictionary<string, ComponentOperatingSupplementalData> supplementalDataDictionary = EmParameters.ComponentOperatingSuppDataDictionaryArray[EmParameters.CurrentMonitorPlanLocationPostion.Value];
+                    Dictionary<string, ComponentOperatingSupplementalData> supplementalDataDictionary = emParams.ComponentOperatingSuppDataDictionaryArray[emParams.CurrentMonitorPlanLocationPostion.Value];
 
                     /* CurrentCo2ConcMonitorHourlyRecord */
-                    if (EmParameters.CurrentCo2ConcMonitorHourlyRecord != null)
+                    if (emParams.CurrentCo2ConcMonitorHourlyRecord != null)
                     {
-                        HOUROP49_SuppUpdate(currentReportingPeriod, EmParameters.CurrentCo2ConcMonitorHourlyRecord.ComponentId, EmParameters.CurrentCo2ConcMonitorHourlyRecord.ModcCd, EmParameters.CurrentCo2ConcMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP49_SuppUpdate(currentReportingPeriod, emParams.CurrentCo2ConcMonitorHourlyRecord.ComponentId, emParams.CurrentCo2ConcMonitorHourlyRecord.ModcCd, emParams.CurrentCo2ConcMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentFlowMonitorHourlyRecord */
-                    if (EmParameters.CurrentFlowMonitorHourlyRecord != null)
+                    if (emParams.CurrentFlowMonitorHourlyRecord != null)
                     {
-                        HOUROP49_SuppUpdate(currentReportingPeriod, EmParameters.CurrentFlowMonitorHourlyRecord.ComponentId, EmParameters.CurrentFlowMonitorHourlyRecord.ModcCd, EmParameters.CurrentFlowMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP49_SuppUpdate(currentReportingPeriod, emParams.CurrentFlowMonitorHourlyRecord.ComponentId, emParams.CurrentFlowMonitorHourlyRecord.ModcCd, emParams.CurrentFlowMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentH2oMonitorHourlyRecord */
-                    if (EmParameters.CurrentH2oMonitorHourlyRecord != null)
+                    if (emParams.CurrentH2oMonitorHourlyRecord != null)
                     {
-                        HOUROP49_SuppUpdate(currentReportingPeriod, EmParameters.CurrentH2oMonitorHourlyRecord.ComponentId, EmParameters.CurrentH2oMonitorHourlyRecord.ModcCd, EmParameters.CurrentH2oMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP49_SuppUpdate(currentReportingPeriod, emParams.CurrentH2oMonitorHourlyRecord.ComponentId, emParams.CurrentH2oMonitorHourlyRecord.ModcCd, emParams.CurrentH2oMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentNoxConcMonitorHourlyRecord */
-                    if (EmParameters.CurrentNoxConcMonitorHourlyRecord != null)
+                    if (emParams.CurrentNoxConcMonitorHourlyRecord != null)
                     {
-                        HOUROP49_SuppUpdate(currentReportingPeriod, EmParameters.CurrentNoxConcMonitorHourlyRecord.ComponentId, EmParameters.CurrentNoxConcMonitorHourlyRecord.ModcCd, EmParameters.CurrentNoxConcMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP49_SuppUpdate(currentReportingPeriod, emParams.CurrentNoxConcMonitorHourlyRecord.ComponentId, emParams.CurrentNoxConcMonitorHourlyRecord.ModcCd, emParams.CurrentNoxConcMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentO2DryMonitorHourlyRecord */
-                    if (EmParameters.CurrentO2DryMonitorHourlyRecord != null)
+                    if (emParams.CurrentO2DryMonitorHourlyRecord != null)
                     {
-                        HOUROP49_SuppUpdate(currentReportingPeriod, EmParameters.CurrentO2DryMonitorHourlyRecord.ComponentId, EmParameters.CurrentO2DryMonitorHourlyRecord.ModcCd, EmParameters.CurrentO2DryMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP49_SuppUpdate(currentReportingPeriod, emParams.CurrentO2DryMonitorHourlyRecord.ComponentId, emParams.CurrentO2DryMonitorHourlyRecord.ModcCd, emParams.CurrentO2DryMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentO2WetMonitorHourlyRecord */
-                    if (EmParameters.CurrentO2WetMonitorHourlyRecord != null)
+                    if (emParams.CurrentO2WetMonitorHourlyRecord != null)
                     {
-                        HOUROP49_SuppUpdate(currentReportingPeriod, EmParameters.CurrentO2WetMonitorHourlyRecord.ComponentId, EmParameters.CurrentO2WetMonitorHourlyRecord.ModcCd, EmParameters.CurrentO2WetMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP49_SuppUpdate(currentReportingPeriod, emParams.CurrentO2WetMonitorHourlyRecord.ComponentId, emParams.CurrentO2WetMonitorHourlyRecord.ModcCd, emParams.CurrentO2WetMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* CurrentSo2MonitorHourlyRecord */
-                    if (EmParameters.CurrentSo2MonitorHourlyRecord != null)
+                    if (emParams.CurrentSo2MonitorHourlyRecord != null)
                     {
-                        HOUROP49_SuppUpdate(currentReportingPeriod, EmParameters.CurrentSo2MonitorHourlyRecord.ComponentId, EmParameters.CurrentSo2MonitorHourlyRecord.ModcCd, EmParameters.CurrentSo2MonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP49_SuppUpdate(currentReportingPeriod, emParams.CurrentSo2MonitorHourlyRecord.ComponentId, emParams.CurrentSo2MonitorHourlyRecord.ModcCd, emParams.CurrentSo2MonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* MatsHclcMhvRecord */
-                    if (EmParameters.MatsHclcMhvRecord != null)
+                    if (emParams.MatsHclcMhvRecord != null)
                     {
-                        HOUROP49_SuppUpdate(currentReportingPeriod, EmParameters.MatsHclcMhvRecord.ComponentId, EmParameters.MatsHclcMhvRecord.ModcCd, EmParameters.MatsHclcMhvRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP49_SuppUpdate(currentReportingPeriod, emParams.MatsHclcMhvRecord.ComponentId, emParams.MatsHclcMhvRecord.ModcCd, emParams.MatsHclcMhvRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* MatsHfcMhvRecord */
-                    if (EmParameters.MatsHfcMhvRecord != null)
+                    if (emParams.MatsHfcMhvRecord != null)
                     {
-                        HOUROP49_SuppUpdate(currentReportingPeriod, EmParameters.MatsHfcMhvRecord.ComponentId, EmParameters.MatsHfcMhvRecord.ModcCd, EmParameters.MatsHfcMhvRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP49_SuppUpdate(currentReportingPeriod, emParams.MatsHfcMhvRecord.ComponentId, emParams.MatsHfcMhvRecord.ModcCd, emParams.MatsHfcMhvRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
 
                     /* MatsHgcMhvRecord */
-                    if (EmParameters.MatsHgcMhvRecord != null)
+                    if (emParams.MatsHgcMhvRecord != null)
                     {
-                        HOUROP49_SuppUpdate(currentReportingPeriod, EmParameters.MatsHgcMhvRecord.ComponentId, EmParameters.MatsHgcMhvRecord.ModcCd, EmParameters.MatsHgcMhvRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
+                        HOUROP49_SuppUpdate(currentReportingPeriod, emParams.MatsHgcMhvRecord.ComponentId, emParams.MatsHgcMhvRecord.ModcCd, emParams.MatsHgcMhvRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
                 }
             }
@@ -3405,7 +3405,7 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="monLocId">The primary key to the MON_LOC_ID table.</param>
         /// <param name="currentOperatingHour">The current operating hour being processed.</param>
         /// <param name="supplementalDataDictionary">The component operating supplemental data dictionary for the current location.</param>
-        public static void HOUROP49_SuppUpdate(int rptPeriodId, string componentId, string modcCd, string monLocId, DateTime currentOperatingHour, Dictionary<string, ComponentOperatingSupplementalData> supplementalDataDictionary)
+        public  void HOUROP49_SuppUpdate(int rptPeriodId, string componentId, string modcCd, string monLocId, DateTime currentOperatingHour, Dictionary<string, ComponentOperatingSupplementalData> supplementalDataDictionary)
         {
             if (componentId.IsNotEmpty())
             {
@@ -3424,11 +3424,11 @@ namespace ECMPS.Checks.EmissionsChecks
                 supplementalDataRecord.IncreamentForCurrentHour(currentOperatingHour, modcCd);
 
 
-                if (EmParameters.QaCertEventSuppDataDictionaryByComponent != null &&
-                    EmParameters.QaCertEventSuppDataDictionaryByComponent.ContainsKey(componentId) &&
-                    EmParameters.QaCertEventSuppDataDictionaryByComponent[componentId] != null)
+                if (emParams.QaCertEventSuppDataDictionaryByComponent != null &&
+                    emParams.QaCertEventSuppDataDictionaryByComponent.ContainsKey(componentId) &&
+                    emParams.QaCertEventSuppDataDictionaryByComponent[componentId] != null)
                 {
-                    foreach (QaCertificationSupplementalData qaCertificationSupplementalData in EmParameters.QaCertEventSuppDataDictionaryByComponent[componentId])
+                    foreach (QaCertificationSupplementalData qaCertificationSupplementalData in emParams.QaCertEventSuppDataDictionaryByComponent[componentId])
                     {
                         qaCertificationSupplementalData.IncreamentComponentCounts(currentOperatingHour, modcCd);
                     }
@@ -3442,20 +3442,20 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOUROP50(cCategory category, ref bool log)
+        public  string HOUROP50(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.DerivedHourlyChecksNeeded.Default(false) && (EmParameters.CurrentOperatingTime.Value > 0))
+                if (emParams.DerivedHourlyChecksNeeded.Default(false) && (emParams.CurrentOperatingTime.Value > 0))
                 {
                     bool includeComponent, includeSystem;
 
-                    DateTime currentOperatingHour = EmParameters.CurrentOperatingDatehour.Value;
-                    int currentReportingPeriod = EmParameters.CurrentReportingPeriod.Value;
+                    DateTime currentOperatingHour = emParams.CurrentOperatingDatehour.Value;
+                    int currentReportingPeriod = emParams.CurrentReportingPeriod.Value;
 
-                    Dictionary<string, LastQualityAssuredValueSupplementalData> supplementalDataDictionary = EmParameters.LastQualityAssuredValueSuppDataDictionaryArray[EmParameters.CurrentMonitorPlanLocationPostion.Value];
+                    Dictionary<string, LastQualityAssuredValueSupplementalData> supplementalDataDictionary = emParams.LastQualityAssuredValueSuppDataDictionaryArray[emParams.CurrentMonitorPlanLocationPostion.Value];
 
                     for (int choice = 0; choice < 3; choice++)
                     {
@@ -3463,181 +3463,181 @@ namespace ECMPS.Checks.EmissionsChecks
                         includeComponent = (choice == 2);
 
                         /* CurrentCo2ConcDerivedHourlyRecord */
-                        if (EmParameters.CurrentCo2ConcDerivedHourlyRecord != null)
+                        if (emParams.CurrentCo2ConcDerivedHourlyRecord != null)
                         {
                             HOUROP50_SuppUpdate(currentReportingPeriod,
-                                                EmParameters.CurrentCo2ConcDerivedHourlyRecord.MonLocId,
-                                                EmParameters.CurrentCo2ConcDerivedHourlyRecord.ParameterCd,
+                                                emParams.CurrentCo2ConcDerivedHourlyRecord.MonLocId,
+                                                emParams.CurrentCo2ConcDerivedHourlyRecord.ParameterCd,
                                                 null,
                                                 eHourlyType.Derived, 
-                                                EmParameters.CurrentCo2ConcDerivedHourlyRecord.MonSysId,
+                                                emParams.CurrentCo2ConcDerivedHourlyRecord.MonSysId,
                                                 null,
-                                                EmParameters.CurrentCo2ConcDerivedHourlyRecord.ModcCd,
+                                                emParams.CurrentCo2ConcDerivedHourlyRecord.ModcCd,
                                                 currentOperatingHour,
-                                                EmParameters.CurrentCo2ConcDerivedHourlyRecord.UnadjustedHrlyValue,
-                                                EmParameters.CurrentCo2ConcDerivedHourlyRecord.AdjustedHrlyValue,
+                                                emParams.CurrentCo2ConcDerivedHourlyRecord.UnadjustedHrlyValue,
+                                                emParams.CurrentCo2ConcDerivedHourlyRecord.AdjustedHrlyValue,
                                                 includeSystem, includeComponent,
                                                 supplementalDataDictionary);
                         }
 
                         /* CurrentCo2ConcMonitorHourlyRecord */
-                        if (EmParameters.CurrentCo2ConcMonitorHourlyRecord != null)
+                        if (emParams.CurrentCo2ConcMonitorHourlyRecord != null)
                         {
                             HOUROP50_SuppUpdate(currentReportingPeriod,
-                                                EmParameters.CurrentCo2ConcMonitorHourlyRecord.MonLocId,
-                                                EmParameters.CurrentCo2ConcMonitorHourlyRecord.ParameterCd,
-                                                EmParameters.CurrentCo2ConcMonitorHourlyRecord.MoistureBasis,
+                                                emParams.CurrentCo2ConcMonitorHourlyRecord.MonLocId,
+                                                emParams.CurrentCo2ConcMonitorHourlyRecord.ParameterCd,
+                                                emParams.CurrentCo2ConcMonitorHourlyRecord.MoistureBasis,
                                                 eHourlyType.Monitor,
-                                                EmParameters.CurrentCo2ConcMonitorHourlyRecord.MonSysId,
-                                                EmParameters.CurrentCo2ConcMonitorHourlyRecord.ComponentId,
-                                                EmParameters.CurrentCo2ConcMonitorHourlyRecord.ModcCd,
+                                                emParams.CurrentCo2ConcMonitorHourlyRecord.MonSysId,
+                                                emParams.CurrentCo2ConcMonitorHourlyRecord.ComponentId,
+                                                emParams.CurrentCo2ConcMonitorHourlyRecord.ModcCd,
                                                 currentOperatingHour,
-                                                EmParameters.CurrentCo2ConcMonitorHourlyRecord.UnadjustedHrlyValue,
-                                                EmParameters.CurrentCo2ConcMonitorHourlyRecord.AdjustedHrlyValue,
+                                                emParams.CurrentCo2ConcMonitorHourlyRecord.UnadjustedHrlyValue,
+                                                emParams.CurrentCo2ConcMonitorHourlyRecord.AdjustedHrlyValue,
                                                 includeSystem, includeComponent,
                                                 supplementalDataDictionary);
                         }
 
                         /* CurrentFlowMonitorHourlyRecord */
-                        if (EmParameters.CurrentFlowMonitorHourlyRecord != null)
+                        if (emParams.CurrentFlowMonitorHourlyRecord != null)
                         {
                             HOUROP50_SuppUpdate(currentReportingPeriod,
-                                                EmParameters.CurrentFlowMonitorHourlyRecord.MonLocId,
-                                                EmParameters.CurrentFlowMonitorHourlyRecord.ParameterCd,
-                                                EmParameters.CurrentFlowMonitorHourlyRecord.MoistureBasis,
+                                                emParams.CurrentFlowMonitorHourlyRecord.MonLocId,
+                                                emParams.CurrentFlowMonitorHourlyRecord.ParameterCd,
+                                                emParams.CurrentFlowMonitorHourlyRecord.MoistureBasis,
                                                 eHourlyType.Monitor,
-                                                EmParameters.CurrentFlowMonitorHourlyRecord.MonSysId,
-                                                EmParameters.CurrentFlowMonitorHourlyRecord.ComponentId,
-                                                EmParameters.CurrentFlowMonitorHourlyRecord.ModcCd,
+                                                emParams.CurrentFlowMonitorHourlyRecord.MonSysId,
+                                                emParams.CurrentFlowMonitorHourlyRecord.ComponentId,
+                                                emParams.CurrentFlowMonitorHourlyRecord.ModcCd,
                                                 currentOperatingHour,
-                                                EmParameters.CurrentFlowMonitorHourlyRecord.UnadjustedHrlyValue,
-                                                EmParameters.CurrentFlowMonitorHourlyRecord.AdjustedHrlyValue,
+                                                emParams.CurrentFlowMonitorHourlyRecord.UnadjustedHrlyValue,
+                                                emParams.CurrentFlowMonitorHourlyRecord.AdjustedHrlyValue,
                                                 includeSystem, includeComponent,
                                                 supplementalDataDictionary);
                         }
 
                         /* CurrentH2oDerivedHourlyRecord */
-                        if (EmParameters.CurrentH2oDerivedHourlyRecord != null)
+                        if (emParams.CurrentH2oDerivedHourlyRecord != null)
                         {
                             HOUROP50_SuppUpdate(currentReportingPeriod,
-                                                EmParameters.CurrentH2oDerivedHourlyRecord.MonLocId,
-                                                EmParameters.CurrentH2oDerivedHourlyRecord.ParameterCd,
+                                                emParams.CurrentH2oDerivedHourlyRecord.MonLocId,
+                                                emParams.CurrentH2oDerivedHourlyRecord.ParameterCd,
                                                 null,
                                                 eHourlyType.Derived,
-                                                EmParameters.CurrentH2oDerivedHourlyRecord.MonSysId,
+                                                emParams.CurrentH2oDerivedHourlyRecord.MonSysId,
                                                 null,
-                                                EmParameters.CurrentH2oDerivedHourlyRecord.ModcCd,
+                                                emParams.CurrentH2oDerivedHourlyRecord.ModcCd,
                                                 currentOperatingHour,
-                                                EmParameters.CurrentH2oDerivedHourlyRecord.UnadjustedHrlyValue,
-                                                EmParameters.CurrentH2oDerivedHourlyRecord.AdjustedHrlyValue,
+                                                emParams.CurrentH2oDerivedHourlyRecord.UnadjustedHrlyValue,
+                                                emParams.CurrentH2oDerivedHourlyRecord.AdjustedHrlyValue,
                                                 includeSystem, includeComponent,
                                                 supplementalDataDictionary);
                         }
 
                         /* CurrentH2oMonitorHourlyRecord */
-                        if (EmParameters.CurrentH2oMonitorHourlyRecord != null)
+                        if (emParams.CurrentH2oMonitorHourlyRecord != null)
                         {
                             HOUROP50_SuppUpdate(currentReportingPeriod,
-                                                EmParameters.CurrentH2oMonitorHourlyRecord.MonLocId,
-                                                EmParameters.CurrentH2oMonitorHourlyRecord.ParameterCd,
-                                                EmParameters.CurrentH2oMonitorHourlyRecord.MoistureBasis,
+                                                emParams.CurrentH2oMonitorHourlyRecord.MonLocId,
+                                                emParams.CurrentH2oMonitorHourlyRecord.ParameterCd,
+                                                emParams.CurrentH2oMonitorHourlyRecord.MoistureBasis,
                                                 eHourlyType.Monitor,
-                                                EmParameters.CurrentH2oMonitorHourlyRecord.MonSysId,
-                                                EmParameters.CurrentH2oMonitorHourlyRecord.ComponentId,
-                                                EmParameters.CurrentH2oMonitorHourlyRecord.ModcCd,
+                                                emParams.CurrentH2oMonitorHourlyRecord.MonSysId,
+                                                emParams.CurrentH2oMonitorHourlyRecord.ComponentId,
+                                                emParams.CurrentH2oMonitorHourlyRecord.ModcCd,
                                                 currentOperatingHour,
-                                                EmParameters.CurrentH2oMonitorHourlyRecord.UnadjustedHrlyValue,
-                                                EmParameters.CurrentH2oMonitorHourlyRecord.AdjustedHrlyValue,
+                                                emParams.CurrentH2oMonitorHourlyRecord.UnadjustedHrlyValue,
+                                                emParams.CurrentH2oMonitorHourlyRecord.AdjustedHrlyValue,
                                                 includeSystem, includeComponent,
                                                 supplementalDataDictionary);
                         }
 
                         /* CurrentNoxConcMonitorHourlyRecord */
-                        if (EmParameters.CurrentNoxConcMonitorHourlyRecord != null)
+                        if (emParams.CurrentNoxConcMonitorHourlyRecord != null)
                         {
                             HOUROP50_SuppUpdate(currentReportingPeriod,
-                                                EmParameters.CurrentNoxConcMonitorHourlyRecord.MonLocId,
-                                                EmParameters.CurrentNoxConcMonitorHourlyRecord.ParameterCd,
-                                                EmParameters.CurrentNoxConcMonitorHourlyRecord.MoistureBasis,
+                                                emParams.CurrentNoxConcMonitorHourlyRecord.MonLocId,
+                                                emParams.CurrentNoxConcMonitorHourlyRecord.ParameterCd,
+                                                emParams.CurrentNoxConcMonitorHourlyRecord.MoistureBasis,
                                                 eHourlyType.Monitor,
-                                                EmParameters.CurrentNoxConcMonitorHourlyRecord.MonSysId,
-                                                EmParameters.CurrentNoxConcMonitorHourlyRecord.ComponentId,
-                                                EmParameters.CurrentNoxConcMonitorHourlyRecord.ModcCd,
+                                                emParams.CurrentNoxConcMonitorHourlyRecord.MonSysId,
+                                                emParams.CurrentNoxConcMonitorHourlyRecord.ComponentId,
+                                                emParams.CurrentNoxConcMonitorHourlyRecord.ModcCd,
                                                 currentOperatingHour,
-                                                EmParameters.CurrentNoxConcMonitorHourlyRecord.UnadjustedHrlyValue,
-                                                EmParameters.CurrentNoxConcMonitorHourlyRecord.AdjustedHrlyValue,
+                                                emParams.CurrentNoxConcMonitorHourlyRecord.UnadjustedHrlyValue,
+                                                emParams.CurrentNoxConcMonitorHourlyRecord.AdjustedHrlyValue,
                                                 includeSystem, includeComponent,
                                                 supplementalDataDictionary);
                         }
 
                         /* CurrentNoxrDerivedHourlyRecord */
-                        if (EmParameters.CurrentNoxrDerivedHourlyRecord != null)
+                        if (emParams.CurrentNoxrDerivedHourlyRecord != null)
                         {
                             HOUROP50_SuppUpdate(currentReportingPeriod,
-                                                EmParameters.CurrentNoxrDerivedHourlyRecord.MonLocId,
-                                                EmParameters.CurrentNoxrDerivedHourlyRecord.ParameterCd,
+                                                emParams.CurrentNoxrDerivedHourlyRecord.MonLocId,
+                                                emParams.CurrentNoxrDerivedHourlyRecord.ParameterCd,
                                                 null,
                                                 eHourlyType.Derived,
-                                                EmParameters.CurrentNoxrDerivedHourlyRecord.MonSysId,
+                                                emParams.CurrentNoxrDerivedHourlyRecord.MonSysId,
                                                 null,
-                                                EmParameters.CurrentNoxrDerivedHourlyRecord.ModcCd,
+                                                emParams.CurrentNoxrDerivedHourlyRecord.ModcCd,
                                                 currentOperatingHour,
-                                                EmParameters.CurrentNoxrDerivedHourlyRecord.UnadjustedHrlyValue,
-                                                EmParameters.CurrentNoxrDerivedHourlyRecord.AdjustedHrlyValue,
+                                                emParams.CurrentNoxrDerivedHourlyRecord.UnadjustedHrlyValue,
+                                                emParams.CurrentNoxrDerivedHourlyRecord.AdjustedHrlyValue,
                                                 includeSystem, includeComponent,
                                                 supplementalDataDictionary);
                         }
 
                         /* CurrentO2DryMonitorHourlyRecord */
-                        if (EmParameters.CurrentO2DryMonitorHourlyRecord != null)
+                        if (emParams.CurrentO2DryMonitorHourlyRecord != null)
                         {
                             HOUROP50_SuppUpdate(currentReportingPeriod,
-                                                EmParameters.CurrentO2DryMonitorHourlyRecord.MonLocId,
-                                                EmParameters.CurrentO2DryMonitorHourlyRecord.ParameterCd,
-                                                EmParameters.CurrentO2DryMonitorHourlyRecord.MoistureBasis,
+                                                emParams.CurrentO2DryMonitorHourlyRecord.MonLocId,
+                                                emParams.CurrentO2DryMonitorHourlyRecord.ParameterCd,
+                                                emParams.CurrentO2DryMonitorHourlyRecord.MoistureBasis,
                                                 eHourlyType.Monitor,
-                                                EmParameters.CurrentO2DryMonitorHourlyRecord.MonSysId,
-                                                EmParameters.CurrentO2DryMonitorHourlyRecord.ComponentId,
-                                                EmParameters.CurrentO2DryMonitorHourlyRecord.ModcCd,
+                                                emParams.CurrentO2DryMonitorHourlyRecord.MonSysId,
+                                                emParams.CurrentO2DryMonitorHourlyRecord.ComponentId,
+                                                emParams.CurrentO2DryMonitorHourlyRecord.ModcCd,
                                                 currentOperatingHour,
-                                                EmParameters.CurrentO2DryMonitorHourlyRecord.UnadjustedHrlyValue,
-                                                EmParameters.CurrentO2DryMonitorHourlyRecord.AdjustedHrlyValue,
+                                                emParams.CurrentO2DryMonitorHourlyRecord.UnadjustedHrlyValue,
+                                                emParams.CurrentO2DryMonitorHourlyRecord.AdjustedHrlyValue,
                                                 includeSystem, includeComponent,
                                                 supplementalDataDictionary);
                         }
 
                         /* CurrentO2WetMonitorHourlyRecord */
-                        if (EmParameters.CurrentO2WetMonitorHourlyRecord != null)
+                        if (emParams.CurrentO2WetMonitorHourlyRecord != null)
                         {
                             HOUROP50_SuppUpdate(currentReportingPeriod,
-                                                EmParameters.CurrentO2WetMonitorHourlyRecord.MonLocId,
-                                                EmParameters.CurrentO2WetMonitorHourlyRecord.ParameterCd,
-                                                EmParameters.CurrentO2WetMonitorHourlyRecord.MoistureBasis,
+                                                emParams.CurrentO2WetMonitorHourlyRecord.MonLocId,
+                                                emParams.CurrentO2WetMonitorHourlyRecord.ParameterCd,
+                                                emParams.CurrentO2WetMonitorHourlyRecord.MoistureBasis,
                                                 eHourlyType.Monitor,
-                                                EmParameters.CurrentO2WetMonitorHourlyRecord.MonSysId,
-                                                EmParameters.CurrentO2WetMonitorHourlyRecord.ComponentId,
-                                                EmParameters.CurrentO2WetMonitorHourlyRecord.ModcCd,
+                                                emParams.CurrentO2WetMonitorHourlyRecord.MonSysId,
+                                                emParams.CurrentO2WetMonitorHourlyRecord.ComponentId,
+                                                emParams.CurrentO2WetMonitorHourlyRecord.ModcCd,
                                                 currentOperatingHour,
-                                                EmParameters.CurrentO2WetMonitorHourlyRecord.UnadjustedHrlyValue,
-                                                EmParameters.CurrentO2WetMonitorHourlyRecord.AdjustedHrlyValue,
+                                                emParams.CurrentO2WetMonitorHourlyRecord.UnadjustedHrlyValue,
+                                                emParams.CurrentO2WetMonitorHourlyRecord.AdjustedHrlyValue,
                                                 includeSystem, includeComponent,
                                                 supplementalDataDictionary);
                         }
 
                         /* CurrentSo2MonitorHourlyRecord */
-                        if (EmParameters.CurrentSo2MonitorHourlyRecord != null)
+                        if (emParams.CurrentSo2MonitorHourlyRecord != null)
                         {
                             HOUROP50_SuppUpdate(currentReportingPeriod,
-                                                EmParameters.CurrentSo2MonitorHourlyRecord.MonLocId,
-                                                EmParameters.CurrentSo2MonitorHourlyRecord.ParameterCd,
-                                                EmParameters.CurrentSo2MonitorHourlyRecord.MoistureBasis,
+                                                emParams.CurrentSo2MonitorHourlyRecord.MonLocId,
+                                                emParams.CurrentSo2MonitorHourlyRecord.ParameterCd,
+                                                emParams.CurrentSo2MonitorHourlyRecord.MoistureBasis,
                                                 eHourlyType.Monitor,
-                                                EmParameters.CurrentSo2MonitorHourlyRecord.MonSysId,
-                                                EmParameters.CurrentSo2MonitorHourlyRecord.ComponentId,
-                                                EmParameters.CurrentSo2MonitorHourlyRecord.ModcCd,
+                                                emParams.CurrentSo2MonitorHourlyRecord.MonSysId,
+                                                emParams.CurrentSo2MonitorHourlyRecord.ComponentId,
+                                                emParams.CurrentSo2MonitorHourlyRecord.ModcCd,
                                                 currentOperatingHour,
-                                                EmParameters.CurrentSo2MonitorHourlyRecord.UnadjustedHrlyValue,
-                                                EmParameters.CurrentSo2MonitorHourlyRecord.AdjustedHrlyValue,
+                                                emParams.CurrentSo2MonitorHourlyRecord.UnadjustedHrlyValue,
+                                                emParams.CurrentSo2MonitorHourlyRecord.AdjustedHrlyValue,
                                                 includeSystem, includeComponent,
                                                 supplementalDataDictionary);
                         }
@@ -3669,7 +3669,7 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="includeSystem">The current operating hour being processed.</param>
         /// <param name="currentOperatingHour">Indicates whether to update the value for the specific system, if reported.</param>
         /// <param name="includeComponent">Indicates whether to update the value for the specific component, if reported.</param>
-        public static void HOUROP50_SuppUpdate(int rptPeriodId, string monLocId, string parameterCd, string moistureBasis, eHourlyType hourlyType, string monSysId, string componentId, 
+        public  void HOUROP50_SuppUpdate(int rptPeriodId, string monLocId, string parameterCd, string moistureBasis, eHourlyType hourlyType, string monSysId, string componentId, 
                                                 string modcCd, DateTime currentOperatingHour, 
                                                 decimal? unadjustedHourlyValue, decimal? adjustedHourlyValue,
                                                 bool includeSystem, bool includeComponent,
@@ -3706,7 +3706,7 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        #region Public Static Methods: Checks (51 - 60)
+        #region Public  Methods: Checks (51 - 60)
 
         /// <summary>
         /// 
@@ -3714,34 +3714,34 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOUROP51(cCategory category, ref bool log)
+        public  string HOUROP51(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.PrimaryBypassActiveForHour = false;
-                EmParameters.PrimaryBypassActivePrimarySystemId = null;
-                EmParameters.PrimaryBypassActiveBypassSystemId = null;
+                emParams.PrimaryBypassActiveForHour = false;
+                emParams.PrimaryBypassActivePrimarySystemId = null;
+                emParams.PrimaryBypassActiveBypassSystemId = null;
 
-                if (EmParameters.PrimaryBypassActiveInQuarter == true)
+                if (emParams.PrimaryBypassActiveInQuarter == true)
                 {
                     VwMpMonitorSystemRow monitorSystemRecord;
 
                     // Get Primary Bypass System for the hour
-                    monitorSystemRecord = EmParameters.MonitorSystemRecordsByHourLocation.FindRow(new cFilterCondition("SYS_TYPE_CD", "NOX"), new cFilterCondition("SYS_DESIGNATION_CD", "PB"));
+                    monitorSystemRecord = emParams.MonitorSystemRecordsByHourLocation.FindRow(new cFilterCondition("SYS_TYPE_CD", "NOX"), new cFilterCondition("SYS_DESIGNATION_CD", "PB"));
 
                     if (monitorSystemRecord != null)
                     {
-                        EmParameters.PrimaryBypassActiveForHour = true;
-                        EmParameters.PrimaryBypassActiveBypassSystemId = monitorSystemRecord.MonSysId;
+                        emParams.PrimaryBypassActiveForHour = true;
+                        emParams.PrimaryBypassActiveBypassSystemId = monitorSystemRecord.MonSysId;
 
                         // Get Primary System for the hour
-                        monitorSystemRecord = EmParameters.MonitorSystemRecordsByHourLocation.FindRow(new cFilterCondition("SYS_TYPE_CD", "NOX"), new cFilterCondition("SYS_DESIGNATION_CD", "P"));
+                        monitorSystemRecord = emParams.MonitorSystemRecordsByHourLocation.FindRow(new cFilterCondition("SYS_TYPE_CD", "NOX"), new cFilterCondition("SYS_DESIGNATION_CD", "P"));
 
                         if (monitorSystemRecord != null)
                         {
-                            EmParameters.PrimaryBypassActivePrimarySystemId = monitorSystemRecord.MonSysId;
+                            emParams.PrimaryBypassActivePrimarySystemId = monitorSystemRecord.MonSysId;
                         }
 
                     }
@@ -3761,30 +3761,30 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOUROP52(cCategory category, ref bool log)
+        public  string HOUROP52(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                decimal currentOpTime = EmParameters.CurrentHourlyOpRecord.OpTime.Value;
+                decimal currentOpTime = emParams.CurrentHourlyOpRecord.OpTime.Value;
 
-                if (EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded == true)
                 {
                     Dictionary<string, decimal> systemOpTimeDictionary = new Dictionary<string, decimal>();
 
                     // Add systems to the system list if a primary bypass is active for the hour.
-                    if (EmParameters.PrimaryBypassActiveForHour == true)
+                    if (emParams.PrimaryBypassActiveForHour == true)
                     {
                         // Add used and maybe the unused NOx system if a NOx DHV exists with a P or PB system.
-                        if ((EmParameters.CurrentNoxrDerivedHourlyRecord != null) && (EmParameters.CurrentNoxrDerivedHourlyRecord.MonSysId != null)
-                                                                                  && (EmParameters.CurrentNoxrDerivedHourlyRecord.SysTypeCd == "NOX")
-                                                                                  && (EmParameters.CurrentNoxrDerivedHourlyRecord.SysDesignationCd == "P" || 
-                                                                                      EmParameters.CurrentNoxrDerivedHourlyRecord.SysDesignationCd == "PB"))
+                        if ((emParams.CurrentNoxrDerivedHourlyRecord != null) && (emParams.CurrentNoxrDerivedHourlyRecord.MonSysId != null)
+                                                                                  && (emParams.CurrentNoxrDerivedHourlyRecord.SysTypeCd == "NOX")
+                                                                                  && (emParams.CurrentNoxrDerivedHourlyRecord.SysDesignationCd == "P" || 
+                                                                                      emParams.CurrentNoxrDerivedHourlyRecord.SysDesignationCd == "PB"))
                         {
-                            systemOpTimeDictionary.Add(EmParameters.CurrentNoxrDerivedHourlyRecord.MonSysId, currentOpTime);
+                            systemOpTimeDictionary.Add(emParams.CurrentNoxrDerivedHourlyRecord.MonSysId, currentOpTime);
 
-                            foreach (NoxrPrimaryAndPrimaryBypassMhv mhvRecordsForUnusedNoxSystem in EmParameters.NoxrPrimaryOrPrimaryBypassMhvRecords)
+                            foreach (NoxrPrimaryAndPrimaryBypassMhv mhvRecordsForUnusedNoxSystem in emParams.NoxrPrimaryOrPrimaryBypassMhvRecords)
                             {
                                 if ((mhvRecordsForUnusedNoxSystem.NotReportedNoxrMonSysId != null) && !systemOpTimeDictionary.ContainsKey(mhvRecordsForUnusedNoxSystem.NotReportedNoxrMonSysId))
                                 {
@@ -3795,21 +3795,21 @@ namespace ECMPS.Checks.EmissionsChecks
 
 
                         // Add Primary Bypass system id as not operating if it is not already in the system op time dictionary.
-                        if (!systemOpTimeDictionary.ContainsKey(EmParameters.PrimaryBypassActiveBypassSystemId))
+                        if (!systemOpTimeDictionary.ContainsKey(emParams.PrimaryBypassActiveBypassSystemId))
                         {
-                            systemOpTimeDictionary.Add(EmParameters.PrimaryBypassActiveBypassSystemId, 0m);
+                            systemOpTimeDictionary.Add(emParams.PrimaryBypassActiveBypassSystemId, 0m);
                         }
 
                         // Add Primary system id as not operating if it is not already in the system op time dictionary.
-                        if ((EmParameters.PrimaryBypassActivePrimarySystemId != null) && !systemOpTimeDictionary.ContainsKey(EmParameters.PrimaryBypassActivePrimarySystemId))
+                        if ((emParams.PrimaryBypassActivePrimarySystemId != null) && !systemOpTimeDictionary.ContainsKey(emParams.PrimaryBypassActivePrimarySystemId))
                         {
-                            systemOpTimeDictionary.Add(EmParameters.PrimaryBypassActivePrimarySystemId, 0m);
+                            systemOpTimeDictionary.Add(emParams.PrimaryBypassActivePrimarySystemId, 0m);
                         }
                     }
 
                     // Update operating information for the location and if a primary bypass is active, for the primary and primary bypass systems.
-                    EmParameters.MostRecentDailyCalibrationTestObject.UpdateOperatingInformation(EmParameters.CurrentHourlyOpRecord.MonLocId, 
-                                                                                                 EmParameters.CurrentHourlyOpRecord.BeginDatehour.Value, 
+                    emParams.MostRecentDailyCalibrationTestObject.UpdateOperatingInformation(emParams.CurrentHourlyOpRecord.MonLocId, 
+                                                                                                 emParams.CurrentHourlyOpRecord.BeginDatehour.Value, 
                                                                                                  currentOpTime, 
                                                                                                  systemOpTimeDictionary);
                 }
@@ -3831,20 +3831,20 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOUROP53(cCategory category, ref bool log)
+        public  string HOUROP53(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                decimal currentOpTime = EmParameters.CurrentHourlyOpRecord.OpTime.Value;
+                decimal currentOpTime = emParams.CurrentHourlyOpRecord.OpTime.Value;
 
-                if (EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded == true)
                 {
                     // Update operating information for the location and if a primary bypass is active, for the primary and primary bypass systems.
-                    EmParameters.LatestDailyInterferenceCheckObject.UpdateOperatingInformation(EmParameters.CurrentMonitorLocationId,
-                                                                                               EmParameters.CurrentOperatingDatehour.Value,
-                                                                                               EmParameters.CurrentOperatingTime.Value);
+                    emParams.LatestDailyInterferenceCheckObject.UpdateOperatingInformation(emParams.CurrentMonitorLocationId,
+                                                                                               emParams.CurrentOperatingDatehour.Value,
+                                                                                               emParams.CurrentOperatingTime.Value);
                 }
             }
             catch (Exception ex)
@@ -3861,36 +3861,36 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">The category in which the check is running.</param>
         /// <param name="log">Obsolete.</param>
         /// <returns></returns>
-        public static string HOUROP54(cCategory category, ref bool log)
+        public  string HOUROP54(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.LinearityOfflineList = "";
+                emParams.LinearityOfflineList = "";
 
                 // Ensure that an issues does not exist with HRLY_OP_DATA for the hour and the location did not operate.
-                if ((EmParameters.DerivedHourlyChecksNeeded == true) && (EmParameters.CurrentOperatingTime == 0.00m))
+                if ((emParams.DerivedHourlyChecksNeeded == true) && (emParams.CurrentOperatingTime == 0.00m))
                 {
                     // Quick check that any linearities exist for the location.
-                    if (EmParameters.LinearityExistsLocationArray[EmParameters.CurrentMonitorPlanLocationPostion.Value])
+                    if (emParams.LinearityExistsLocationArray[emParams.CurrentMonitorPlanLocationPostion.Value])
                     {
                         // Check for linearities for the location where the begin or end hour equal the current hour.
-                        foreach (VwQaSuppDataHourlyStatusRow linearitySuppDataRecord in EmParameters.LinearityTestRecordsByLocationForQaStatus)
+                        foreach (VwQaSuppDataHourlyStatusRow linearitySuppDataRecord in emParams.LinearityTestRecordsByLocationForQaStatus)
                         {
-                            if ((linearitySuppDataRecord.MonLocId == EmParameters.CurrentMonitorLocationId) &&
-                                ((linearitySuppDataRecord.BeginDatehour == EmParameters.CurrentOperatingDatehour) || 
-                                 (linearitySuppDataRecord.EndDatehour == EmParameters.CurrentOperatingDatehour)))
+                            if ((linearitySuppDataRecord.MonLocId == emParams.CurrentMonitorLocationId) &&
+                                ((linearitySuppDataRecord.BeginDatehour == emParams.CurrentOperatingDatehour) || 
+                                 (linearitySuppDataRecord.EndDatehour == emParams.CurrentOperatingDatehour)))
                             {
                                 // Add linearities to the list of linearities during non operating hours.
-                                EmParameters.LinearityOfflineList = EmParameters.LinearityOfflineList.ListAdd("'" + linearitySuppDataRecord.TestNum + "'");
+                                emParams.LinearityOfflineList = emParams.LinearityOfflineList.ListAdd("'" + linearitySuppDataRecord.TestNum + "'");
                             }
                         }
 
                         // Return a result if any linearities during non-operating hours exist.
-                        if (EmParameters.LinearityOfflineList != "")
+                        if (emParams.LinearityOfflineList != "")
                         {
-                            EmParameters.LinearityOfflineList = EmParameters.LinearityOfflineList.FormatList(); // Format the list of linearities.
+                            emParams.LinearityOfflineList = emParams.LinearityOfflineList.FormatList(); // Format the list of linearities.
                             category.CheckCatalogResult = "A";
                         }
                     }
@@ -3910,132 +3910,132 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">The category in which the check is running.</param>
         /// <param name="log">Obsolete.</param>
         /// <returns></returns>
-        public static string HOUROP55(cCategory category, ref bool log)
+        public  string HOUROP55(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.DerivedHourlyChecksNeeded.Default(false) && (EmParameters.CurrentOperatingTime.Value > 0))
+                if (emParams.DerivedHourlyChecksNeeded.Default(false) && (emParams.CurrentOperatingTime.Value > 0))
                 {
-                    MissingDataPmaTracking missingDataPmaTracking = EmParameters.MissingDataPmaTracking;
-                    int locationPosition = EmParameters.CurrentMonitorPlanLocationPostion.Value;
-                    DateTime opHour = EmParameters.CurrentOperatingDatehour.Value;
-                    decimal opTime = EmParameters.CurrentOperatingTime.Value;
+                    MissingDataPmaTracking missingDataPmaTracking = emParams.MissingDataPmaTracking;
+                    int locationPosition = emParams.CurrentMonitorPlanLocationPostion.Value;
+                    DateTime opHour = emParams.CurrentOperatingDatehour.Value;
+                    decimal opTime = emParams.CurrentOperatingTime.Value;
 
 
                     // Derived CO2C
-                    if (EmParameters.CurrentCo2ConcDerivedHourlyRecord != null)
+                    if (emParams.CurrentCo2ConcDerivedHourlyRecord != null)
                     {
                         missingDataPmaTracking.Update(locationPosition, opHour, opTime,
                                                       MissingDataPmaTracking.eHourlyParameter.DerivedCo2c,
-                                                      EmParameters.CurrentCo2ConcDerivedHourlyRecord.ModcCd,
-                                                      EmParameters.CurrentCo2ConcDerivedHourlyRecord.PctAvailable);
+                                                      emParams.CurrentCo2ConcDerivedHourlyRecord.ModcCd,
+                                                      emParams.CurrentCo2ConcDerivedHourlyRecord.PctAvailable);
                     }
 
                     // Derived H2O
-                    if (EmParameters.CurrentH2oDerivedHourlyRecord != null)
+                    if (emParams.CurrentH2oDerivedHourlyRecord != null)
                     {
                         missingDataPmaTracking.Update(locationPosition, opHour, opTime,
                                                   MissingDataPmaTracking.eHourlyParameter.DerivedH2o,
-                                                  EmParameters.CurrentH2oDerivedHourlyRecord.ModcCd,
-                                                  EmParameters.CurrentH2oDerivedHourlyRecord.PctAvailable);
+                                                  emParams.CurrentH2oDerivedHourlyRecord.ModcCd,
+                                                  emParams.CurrentH2oDerivedHourlyRecord.PctAvailable);
                     }
 
                     // Derived NOXR
-                    if (EmParameters.CurrentNoxrDerivedHourlyRecord != null)
+                    if (emParams.CurrentNoxrDerivedHourlyRecord != null)
                     {
                         missingDataPmaTracking.Update(locationPosition, opHour, opTime,
                                                   MissingDataPmaTracking.eHourlyParameter.DerivedNoxr,
-                                                  EmParameters.CurrentNoxrDerivedHourlyRecord.ModcCd,
-                                                  EmParameters.CurrentNoxrDerivedHourlyRecord.PctAvailable);
+                                                  emParams.CurrentNoxrDerivedHourlyRecord.ModcCd,
+                                                  emParams.CurrentNoxrDerivedHourlyRecord.PctAvailable);
                     }
 
                     // Monitor CO2C
-                    if (EmParameters.CurrentCo2ConcMonitorHourlyRecord != null)
+                    if (emParams.CurrentCo2ConcMonitorHourlyRecord != null)
                     {
                         missingDataPmaTracking.Update(locationPosition, opHour, opTime,
                                                   MissingDataPmaTracking.eHourlyParameter.MonitorCo2c,
-                                                  EmParameters.CurrentCo2ConcMonitorHourlyRecord.ModcCd,
-                                                  EmParameters.CurrentCo2ConcMonitorHourlyRecord.PctAvailable);
+                                                  emParams.CurrentCo2ConcMonitorHourlyRecord.ModcCd,
+                                                  emParams.CurrentCo2ConcMonitorHourlyRecord.PctAvailable);
                     }
 
-                    if (EmParameters.CurrentCo2ConcMissingDataMonitorHourlyRecord != null)
+                    if (emParams.CurrentCo2ConcMissingDataMonitorHourlyRecord != null)
                     {
                         missingDataPmaTracking.Update(locationPosition, opHour, opTime,
                                                   MissingDataPmaTracking.eHourlyParameter.MonitorCo2c,
-                                                  EmParameters.CurrentCo2ConcMissingDataMonitorHourlyRecord.ModcCd,
-                                                  EmParameters.CurrentCo2ConcMissingDataMonitorHourlyRecord.PctAvailable);
+                                                  emParams.CurrentCo2ConcMissingDataMonitorHourlyRecord.ModcCd,
+                                                  emParams.CurrentCo2ConcMissingDataMonitorHourlyRecord.PctAvailable);
                     }
 
                     // Monitor FLOW
-                    if (EmParameters.CurrentFlowMonitorHourlyRecord != null)
+                    if (emParams.CurrentFlowMonitorHourlyRecord != null)
                     {
                         missingDataPmaTracking.Update(locationPosition, opHour, opTime,
                                                   MissingDataPmaTracking.eHourlyParameter.MonitorFlow,
-                                                  EmParameters.CurrentFlowMonitorHourlyRecord.ModcCd,
-                                                  EmParameters.CurrentFlowMonitorHourlyRecord.PctAvailable);
+                                                  emParams.CurrentFlowMonitorHourlyRecord.ModcCd,
+                                                  emParams.CurrentFlowMonitorHourlyRecord.PctAvailable);
                     }
 
                     // Monitor H2O
-                    if (EmParameters.CurrentH2oMonitorHourlyRecord != null)
+                    if (emParams.CurrentH2oMonitorHourlyRecord != null)
                     {
                         missingDataPmaTracking.Update(locationPosition, opHour, opTime,
                                                   MissingDataPmaTracking.eHourlyParameter.MonitorH2o,
-                                                  EmParameters.CurrentH2oMonitorHourlyRecord.ModcCd,
-                                                  EmParameters.CurrentH2oMonitorHourlyRecord.PctAvailable);
+                                                  emParams.CurrentH2oMonitorHourlyRecord.ModcCd,
+                                                  emParams.CurrentH2oMonitorHourlyRecord.PctAvailable);
                     }
 
                     // Monitor NOXC
-                    if (EmParameters.CurrentNoxConcMonitorHourlyRecord != null)
+                    if (emParams.CurrentNoxConcMonitorHourlyRecord != null)
                     {
                         missingDataPmaTracking.Update(locationPosition, opHour, opTime,
                                                   MissingDataPmaTracking.eHourlyParameter.MonitorNoxc,
-                                                  EmParameters.CurrentNoxConcMonitorHourlyRecord.ModcCd,
-                                                  EmParameters.CurrentNoxConcMonitorHourlyRecord.PctAvailable);
+                                                  emParams.CurrentNoxConcMonitorHourlyRecord.ModcCd,
+                                                  emParams.CurrentNoxConcMonitorHourlyRecord.PctAvailable);
                     }
 
                     // Monitor O2C Dry
-                    if (EmParameters.CurrentO2DryMonitorHourlyRecord != null)
+                    if (emParams.CurrentO2DryMonitorHourlyRecord != null)
                     {
                         missingDataPmaTracking.Update(locationPosition, opHour, opTime,
                                                   MissingDataPmaTracking.eHourlyParameter.MonitorO2d,
-                                                  EmParameters.CurrentO2DryMonitorHourlyRecord.ModcCd,
-                                                  EmParameters.CurrentO2DryMonitorHourlyRecord.PctAvailable);
+                                                  emParams.CurrentO2DryMonitorHourlyRecord.ModcCd,
+                                                  emParams.CurrentO2DryMonitorHourlyRecord.PctAvailable);
                     }
 
-                    if (EmParameters.CurrentO2DryMissingDataMonitorHourlyRecord != null)
+                    if (emParams.CurrentO2DryMissingDataMonitorHourlyRecord != null)
                     {
                         missingDataPmaTracking.Update(locationPosition, opHour, opTime,
                                                   MissingDataPmaTracking.eHourlyParameter.MonitorO2d,
-                                                  EmParameters.CurrentO2DryMissingDataMonitorHourlyRecord.ModcCd,
-                                                  EmParameters.CurrentO2DryMissingDataMonitorHourlyRecord.PctAvailable);
+                                                  emParams.CurrentO2DryMissingDataMonitorHourlyRecord.ModcCd,
+                                                  emParams.CurrentO2DryMissingDataMonitorHourlyRecord.PctAvailable);
                     }
 
                     // Monitor O2C Wet
-                    if (EmParameters.CurrentO2WetMonitorHourlyRecord != null)
+                    if (emParams.CurrentO2WetMonitorHourlyRecord != null)
                     {
                         missingDataPmaTracking.Update(locationPosition, opHour, opTime,
                                                   MissingDataPmaTracking.eHourlyParameter.MonitorO2w,
-                                                  EmParameters.CurrentO2WetMonitorHourlyRecord.ModcCd,
-                                                  EmParameters.CurrentO2WetMonitorHourlyRecord.PctAvailable);
+                                                  emParams.CurrentO2WetMonitorHourlyRecord.ModcCd,
+                                                  emParams.CurrentO2WetMonitorHourlyRecord.PctAvailable);
                     }
 
-                    if (EmParameters.CurrentO2WetMissingDataMonitorHourlyRecord != null)
+                    if (emParams.CurrentO2WetMissingDataMonitorHourlyRecord != null)
                     {
                         missingDataPmaTracking.Update(locationPosition, opHour, opTime,
                                                   MissingDataPmaTracking.eHourlyParameter.MonitorO2w,
-                                                  EmParameters.CurrentO2WetMissingDataMonitorHourlyRecord.ModcCd,
-                                                  EmParameters.CurrentO2WetMissingDataMonitorHourlyRecord.PctAvailable);
+                                                  emParams.CurrentO2WetMissingDataMonitorHourlyRecord.ModcCd,
+                                                  emParams.CurrentO2WetMissingDataMonitorHourlyRecord.PctAvailable);
                     }
 
                     // Monitor SO2C
-                    if (EmParameters.CurrentSo2MonitorHourlyRecord != null)
+                    if (emParams.CurrentSo2MonitorHourlyRecord != null)
                     {
                         missingDataPmaTracking.Update(locationPosition, opHour, opTime,
                                                   MissingDataPmaTracking.eHourlyParameter.MonitorSo2c,
-                                                  EmParameters.CurrentSo2MonitorHourlyRecord.ModcCd,
-                                                  EmParameters.CurrentSo2MonitorHourlyRecord.PctAvailable);
+                                                  emParams.CurrentSo2MonitorHourlyRecord.ModcCd,
+                                                  emParams.CurrentSo2MonitorHourlyRecord.PctAvailable);
                     }
                 }
             }
@@ -4058,74 +4058,74 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">The category in which the check is running.</param>
         /// <param name="log">Obsolete.</param>
         /// <returns></returns>
-        public static string HOUROP56(cCategory category, ref bool log)
+        public  string HOUROP56(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MissingModc46ParameterForModc46 = null;
-                EmParameters.MissingModc46ParameterForNon46 = null;
-                EmParameters.MissingModc46Non46ModcCode = null;
+                emParams.MissingModc46ParameterForModc46 = null;
+                emParams.MissingModc46ParameterForNon46 = null;
+                emParams.MissingModc46Non46ModcCode = null;
 
-                if ((EmParameters.DerivedHourlyChecksNeeded == true) && (EmParameters.CurrentOperatingTime > 0m))
+                if ((emParams.DerivedHourlyChecksNeeded == true) && (emParams.CurrentOperatingTime > 0m))
                 {
-                    if (((EmParameters.NoxConcNeededForNoxRateCalc == true) && (EmParameters.CurrentNoxConcMonitorHourlyRecord != null)) &&
-                        (((EmParameters.Co2DiluentChecksNeededForNoxRateCalc == true) && (EmParameters.CurrentCo2ConcMonitorHourlyRecord != null)) ||
-                         ((EmParameters.O2DryChecksNeededForNoxRateCalc == true) && (EmParameters.CurrentO2DryMonitorHourlyRecord != null)) ||
-                         ((EmParameters.O2WetChecksNeededForNoxRateCalc == true) && (EmParameters.CurrentO2WetMonitorHourlyRecord != null))))
+                    if (((emParams.NoxConcNeededForNoxRateCalc == true) && (emParams.CurrentNoxConcMonitorHourlyRecord != null)) &&
+                        (((emParams.Co2DiluentChecksNeededForNoxRateCalc == true) && (emParams.CurrentCo2ConcMonitorHourlyRecord != null)) ||
+                         ((emParams.O2DryChecksNeededForNoxRateCalc == true) && (emParams.CurrentO2DryMonitorHourlyRecord != null)) ||
+                         ((emParams.O2WetChecksNeededForNoxRateCalc == true) && (emParams.CurrentO2WetMonitorHourlyRecord != null))))
                     {
 
-                        if ((EmParameters.Co2ConcChecksNeededForCo2MassCalc != true) &&
-                            (EmParameters.Co2ConcChecksNeededForHeatInput != true) &&
-                            (EmParameters.Co2DiluentNeededForMats != true) &&
-                            (EmParameters.O2DryChecksNeededForH2o != true) &&
-                            (EmParameters.O2DryChecksNeededForHeatInput != true) &&
-                            (EmParameters.O2DryNeededForMats != true) &&
-                            (EmParameters.O2DryNeededToSupportCo2Calculation != true) &&
-                            (EmParameters.O2WetChecksNeededForH2o != true) &&
-                            (EmParameters.O2WetChecksNeededForHeatInput != true) &&
-                            (EmParameters.O2WetNeededForMats != true) &&
-                            (EmParameters.O2WetNeededToSupportCo2Calculation != true))
+                        if ((emParams.Co2ConcChecksNeededForCo2MassCalc != true) &&
+                            (emParams.Co2ConcChecksNeededForHeatInput != true) &&
+                            (emParams.Co2DiluentNeededForMats != true) &&
+                            (emParams.O2DryChecksNeededForH2o != true) &&
+                            (emParams.O2DryChecksNeededForHeatInput != true) &&
+                            (emParams.O2DryNeededForMats != true) &&
+                            (emParams.O2DryNeededToSupportCo2Calculation != true) &&
+                            (emParams.O2WetChecksNeededForH2o != true) &&
+                            (emParams.O2WetChecksNeededForHeatInput != true) &&
+                            (emParams.O2WetNeededForMats != true) &&
+                            (emParams.O2WetNeededToSupportCo2Calculation != true))
                         {
                             bool dilentRecordIsNull;  string diluentModcCode, diluentParameter;
                             {
-                                if ((EmParameters.Co2DiluentChecksNeededForNoxRateCalc == true) && (EmParameters.CurrentCo2ConcMonitorHourlyRecord != null))
+                                if ((emParams.Co2DiluentChecksNeededForNoxRateCalc == true) && (emParams.CurrentCo2ConcMonitorHourlyRecord != null))
                                 {
-                                    dilentRecordIsNull = (EmParameters.CurrentCo2ConcMonitorHourlyRecord == null);
-                                    diluentModcCode = !dilentRecordIsNull ? EmParameters.CurrentCo2ConcMonitorHourlyRecord.ModcCd : null;
+                                    dilentRecordIsNull = (emParams.CurrentCo2ConcMonitorHourlyRecord == null);
+                                    diluentModcCode = !dilentRecordIsNull ? emParams.CurrentCo2ConcMonitorHourlyRecord.ModcCd : null;
                                     diluentParameter = "CO2 Concentration";
                                 }
-                                else if ((EmParameters.O2DryChecksNeededForNoxRateCalc == true) && (EmParameters.CurrentO2DryMonitorHourlyRecord != null))
+                                else if ((emParams.O2DryChecksNeededForNoxRateCalc == true) && (emParams.CurrentO2DryMonitorHourlyRecord != null))
                                 {
-                                    dilentRecordIsNull = (EmParameters.CurrentO2DryMonitorHourlyRecord == null);
-                                    diluentModcCode = !dilentRecordIsNull ? EmParameters.CurrentO2DryMonitorHourlyRecord.ModcCd : null;
+                                    dilentRecordIsNull = (emParams.CurrentO2DryMonitorHourlyRecord == null);
+                                    diluentModcCode = !dilentRecordIsNull ? emParams.CurrentO2DryMonitorHourlyRecord.ModcCd : null;
                                     diluentParameter = "O2 Dry";
                                 }
-                                else // Otherwise ((EmParameters.O2WetChecksNeededForNoxRateCalc == true) && (EmParameters.CurrentO2WetMonitorHourlyRecord != null))
+                                else // Otherwise ((emParams.O2WetChecksNeededForNoxRateCalc == true) && (emParams.CurrentO2WetMonitorHourlyRecord != null))
                                 {
-                                    dilentRecordIsNull = (EmParameters.CurrentO2WetMonitorHourlyRecord == null);
-                                    diluentModcCode = !dilentRecordIsNull ? EmParameters.CurrentO2WetMonitorHourlyRecord.ModcCd : null;
+                                    dilentRecordIsNull = (emParams.CurrentO2WetMonitorHourlyRecord == null);
+                                    diluentModcCode = !dilentRecordIsNull ? emParams.CurrentO2WetMonitorHourlyRecord.ModcCd : null;
                                     diluentParameter = "O2 Wet";
                                 }
                             }
 
 
-                            if ((EmParameters.CurrentNoxConcMonitorHourlyRecord.ModcCd == "46") && (diluentModcCode != "46"))
+                            if ((emParams.CurrentNoxConcMonitorHourlyRecord.ModcCd == "46") && (diluentModcCode != "46"))
                             {
-                                EmParameters.MissingModc46ParameterForModc46 = "NOx Concentration";
-                                EmParameters.MissingModc46ParameterForNon46 = diluentParameter;
-                                EmParameters.MissingModc46Non46ModcCode = diluentModcCode;
+                                emParams.MissingModc46ParameterForModc46 = "NOx Concentration";
+                                emParams.MissingModc46ParameterForNon46 = diluentParameter;
+                                emParams.MissingModc46Non46ModcCode = diluentModcCode;
 
                                 category.CheckCatalogResult = "A";
                             }
 
                             else if (!dilentRecordIsNull && (diluentModcCode == "46") &&
-                                ((EmParameters.CurrentNoxConcMonitorHourlyRecord == null) || (EmParameters.CurrentNoxConcMonitorHourlyRecord.ModcCd != "46")))
+                                ((emParams.CurrentNoxConcMonitorHourlyRecord == null) || (emParams.CurrentNoxConcMonitorHourlyRecord.ModcCd != "46")))
                             {
-                                EmParameters.MissingModc46ParameterForModc46 = diluentParameter;
-                                EmParameters.MissingModc46ParameterForNon46 = "NOx Concentration";
-                                EmParameters.MissingModc46Non46ModcCode = EmParameters.CurrentNoxConcMonitorHourlyRecord.ModcCd;
+                                emParams.MissingModc46ParameterForModc46 = diluentParameter;
+                                emParams.MissingModc46ParameterForNon46 = "NOx Concentration";
+                                emParams.MissingModc46Non46ModcCode = emParams.CurrentNoxConcMonitorHourlyRecord.ModcCd;
 
                                 category.CheckCatalogResult = "A";
                             }
@@ -4144,9 +4144,9 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        #region Public Static Methods: Cancelled
+        #region Public  Methods: Cancelled
 
-        public static string HOUROP10(cCategory Category, ref bool Log)
+        public  string HOUROP10(cCategory Category, ref bool Log)
         // Determine Current SO2 Monitoring Method
         // Formerly Hourly-52
         {
@@ -4184,7 +4184,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP11(cCategory Category, ref bool Log)
+        public  string HOUROP11(cCategory Category, ref bool Log)
         // Determine Current NOx Rate Monitoring Method Type
         // Formerly Hourly-83
         {
@@ -4210,7 +4210,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP15(cCategory Category, ref bool Log)
+        public  string HOUROP15(cCategory Category, ref bool Log)
         // Determine Current CO2 Monitoring Method
         // Formerly Hourly-134
         {
@@ -4247,7 +4247,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP16(cCategory Category, ref bool Log)
+        public  string HOUROP16(cCategory Category, ref bool Log)
         // Determine Current Heat Input Monitor Method
         // Formerly Hourly-166
         {
@@ -4284,7 +4284,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOUROP26(cCategory Category, ref bool Log)
+        public  string HOUROP26(cCategory Category, ref bool Log)
         // (old) Detect Appendix E Reporting Method
         {
             string ReturnVal = "";

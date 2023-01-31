@@ -17,13 +17,15 @@ namespace ECMPS.Checks.EmissionsReport
     {
 
         #region Constructors
-
-        public cDailyInterferenceStatusCategory(cCategoryHourly categoryEmission, string categoryCd = "INTSTAT")
-          : base(categoryEmission.CheckEngine,
+        public EmParameters emParams;
+        public cDailyInterferenceStatusCategory(cCategoryHourly categoryEmission, EmParameters emparams, string categoryCd = "INTSTAT")
+            : base(categoryEmission.CheckEngine,
                  categoryEmission.EmissionsReportProcess,
                  categoryEmission,
                  categoryCd)
         {
+            emParams = emparams;
+
         }
 
         #endregion
@@ -58,7 +60,7 @@ namespace ECMPS.Checks.EmissionsReport
 
         protected override void SetRecordIdentifier()
         {
-            RecordIdentifier = String.Format("Component ID {0}", EmParameters.QaStatusComponentIdentifier);
+            RecordIdentifier = String.Format("Component ID {0}", emParams.QaStatusComponentIdentifier);
         }
 
         protected override bool SetErrorSuppressValues()

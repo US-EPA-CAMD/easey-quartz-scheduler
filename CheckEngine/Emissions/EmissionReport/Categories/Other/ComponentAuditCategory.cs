@@ -14,7 +14,7 @@ namespace ECMPS.Checks.EmissionsReport
     {
 
         #region Constructors
-
+        public EmParameters emParams;
         /// <summary>
         /// Creates a category with a specific parent category and category code.
         /// </summary>
@@ -23,9 +23,10 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="componentIdentifier">The component identifier associated with the test.</param>
         /// <param name="componentTypeCd">The type of the component associated with the test.</param>
         /// <param name="testDateHour">The date and hour of the test.</param>
-        public ComponentAuditCategory(cCategory parentCategory) 
+        public ComponentAuditCategory(cCategory parentCategory, EmParameters emparams)
             : base(parentCategory, "CMPAUDT")
         {
+            emParams = emparams;
         }
 
         #endregion
@@ -41,17 +42,17 @@ namespace ECMPS.Checks.EmissionsReport
             {
                 foreach (DataRowView componentRow in Process.SourceData.Tables["COMPONENT"].DefaultView)
                 {
-                    EmParameters.ComponentRecordForAudit = new VwMpComponentRow(componentRow);
+                    emParams.ComponentRecordForAudit = new VwMpComponentRow(componentRow);
 
                     try
                     {
-                        result = ProcessChecks(EmParameters.ComponentRecordForAudit.MonLocId, EmParameters.LocationPositionLookup[EmParameters.ComponentRecordForAudit.MonLocId]) && result;
+                        result = ProcessChecks(emParams.ComponentRecordForAudit.MonLocId, emParams.LocationPositionLookup[emParams.ComponentRecordForAudit.MonLocId]) && result;
 
                         EraseParameters();
                     }
                     catch (Exception ex)
                     {
-                        Process.UpdateErrors("Component Audit - [" + EmParameters.ComponentRecordForAudit.ComponentId + "]: " + ex.Message);
+                        Process.UpdateErrors("Component Audit - [" + emParams.ComponentRecordForAudit.ComponentId + "]: " + ex.Message);
                     }
                 }
             }
@@ -80,8 +81,8 @@ namespace ECMPS.Checks.EmissionsReport
 
         protected override void SetRecordIdentifier()
         {
-            if (EmParameters.ComponentRecordForAudit != null)
-                RecordIdentifier = EmParameters.ComponentRecordForAudit.ComponentIdentifier;
+            if (emParams.ComponentRecordForAudit != null)
+                RecordIdentifier = emParams.ComponentRecordForAudit.ComponentIdentifier;
             else
                 RecordIdentifier = null;
         }
@@ -89,8 +90,8 @@ namespace ECMPS.Checks.EmissionsReport
         protected override bool SetErrorSuppressValues()
         {
             ErrorSuppressValues = new cErrorSuppressValues(CheckEngine.FacilityID,
-                                                           EmParameters.ComponentRecordForAudit.LocationName, 
-                                                           "COMPTYP", EmParameters.ComponentRecordForAudit.ComponentTypeCd, 
+                                                           emParams.ComponentRecordForAudit.LocationName, 
+                                                           "COMPTYP", emParams.ComponentRecordForAudit.ComponentTypeCd, 
                                                            "QUARTER", CheckEngine.ReportingPeriod.BeganDate);
             return true;
         }

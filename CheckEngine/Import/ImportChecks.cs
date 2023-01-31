@@ -1786,11 +1786,11 @@ namespace ECMPS.Checks.ImportChecks
 
 			try
 			{
-				if (EmImportParameters.CurrentWorkspaceWeeklyTestSummary.TestTypeCd != "HGSI1")
+				if (emImportParameters.CurrentWorkspaceWeeklyTestSummary.TestTypeCd != "HGSI1")
 				{
-					DataView WWSIRecords = cRowFilter.FindRows(EmImportParameters.WorkspaceWeeklySystemIntegrityRecords.SourceView,
+					DataView WWSIRecords = cRowFilter.FindRows(emImportParameters.WorkspaceWeeklySystemIntegrityRecords.SourceView,
 							new cFilterCondition[] {
-								new cFilterCondition("WTSD_FK", EmImportParameters.CurrentWorkspaceWeeklyTestSummary.WtsdPk.AsString())
+								new cFilterCondition("WTSD_FK", emImportParameters.CurrentWorkspaceWeeklyTestSummary.WtsdPk.AsString())
 							});
 					if (WWSIRecords.Count > 0)
 					{

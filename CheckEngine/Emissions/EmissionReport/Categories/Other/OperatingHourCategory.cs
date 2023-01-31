@@ -20,10 +20,10 @@ namespace ECMPS.Checks.EmissionsReport
     {
 
         #region Constructors
-
+        public EmParameters emParams;
         public cOperatingHourCategory(cCheckEngine ACheckEngine,
                                       cEmissionsReportProcess AHourlyEmissionsData,
-                                      cHourlyConfigurationInitializationCategory AHourlyConfigurationInitializationCategory)
+                                      cHourlyConfigurationInitializationCategory AHourlyConfigurationInitializationCategory, EmParameters emparams)
           : base("OPHOUR",
                  (cEmissionsReportProcess)AHourlyEmissionsData,
                  (cCategory)AHourlyConfigurationInitializationCategory,
@@ -32,6 +32,7 @@ namespace ECMPS.Checks.EmissionsReport
                  null,
                  "Hourly_Operating_Data_Records_By_Hour_Location")
         {
+            emParams = emparams;
         }
 
 
@@ -85,7 +86,7 @@ namespace ECMPS.Checks.EmissionsReport
                 eParameterDataType.DataView);
 
             SetCheckParameter("MATS_Hourly_GFM_Records_for_Hour_and_Location",
-                              FilterHourly("MatsHourlyGfm", MatsHourlyGfm, EmParameters.CurrentDateHour.Value, CurrentMonLocId),
+                              FilterHourly("MatsHourlyGfm", MatsHourlyGfm, emParams.CurrentDateHour.Value, CurrentMonLocId),
                               eParameterDataType.DataView);
 
             SetCheckParameter("System_Operating_Supp_Data_Records_by_Location", FilterLocation("SystemOpSuppData", SystemOpSuppData, CurrentMonLocId), eParameterDataType.DataView);

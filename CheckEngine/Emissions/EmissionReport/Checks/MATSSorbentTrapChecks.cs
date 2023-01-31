@@ -55,22 +55,22 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp1(cCategory category, ref bool log)
+        public  string MatsTrp1(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSorbentTrapBeginDateValid = false;
+                emParams.MatsSorbentTrapBeginDateValid = false;
 
-                if (EmParameters.MatsSorbentTrapRecord.BeginDate == null)
+                if (emParams.MatsSorbentTrapRecord.BeginDate == null)
                 {
-                    EmParameters.MatsSorbentTrapEvaluationNeeded = false;
+                    emParams.MatsSorbentTrapEvaluationNeeded = false;
                     category.CheckCatalogResult = "A";
                 }
                 else
                 {
-                    EmParameters.MatsSorbentTrapBeginDateValid = true;
+                    emParams.MatsSorbentTrapBeginDateValid = true;
                 }
             }
             catch (Exception ex)
@@ -89,29 +89,29 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp2(cCategory category, ref bool log)
+        public  string MatsTrp2(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSorbentTrapBeginDateHourValid = false;
+                emParams.MatsSorbentTrapBeginDateHourValid = false;
 
-                if (EmParameters.MatsSorbentTrapBeginDateValid.Default(false))
+                if (emParams.MatsSorbentTrapBeginDateValid.Default(false))
                 {
-                    if (EmParameters.MatsSorbentTrapRecord.BeginHour == null)
+                    if (emParams.MatsSorbentTrapRecord.BeginHour == null)
                     {
-                        EmParameters.MatsSorbentTrapEvaluationNeeded = false;
+                        emParams.MatsSorbentTrapEvaluationNeeded = false;
                         category.CheckCatalogResult = "A";
                     }
-                    else if ((EmParameters.MatsSorbentTrapRecord.BeginHour < 0) || (23 < EmParameters.MatsSorbentTrapRecord.BeginHour))
+                    else if ((emParams.MatsSorbentTrapRecord.BeginHour < 0) || (23 < emParams.MatsSorbentTrapRecord.BeginHour))
                     {
-                        EmParameters.MatsSorbentTrapEvaluationNeeded = false;
+                        emParams.MatsSorbentTrapEvaluationNeeded = false;
                         category.CheckCatalogResult = "B";
                     }
                     else
                     {
-                        EmParameters.MatsSorbentTrapBeginDateHourValid = true;
+                        emParams.MatsSorbentTrapBeginDateHourValid = true;
                     }
                 }
             }
@@ -131,22 +131,22 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp3(cCategory category, ref bool log)
+        public  string MatsTrp3(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSorbentTrapEndDateValid = false;
+                emParams.MatsSorbentTrapEndDateValid = false;
 
-                if (EmParameters.MatsSorbentTrapRecord.EndDate == null)
+                if (emParams.MatsSorbentTrapRecord.EndDate == null)
                 {
-                    EmParameters.MatsSorbentTrapEvaluationNeeded = false;
+                    emParams.MatsSorbentTrapEvaluationNeeded = false;
                     category.CheckCatalogResult = "A";
                 }
                 else
                 {
-                    EmParameters.MatsSorbentTrapEndDateValid = true;
+                    emParams.MatsSorbentTrapEndDateValid = true;
                 }
             }
             catch (Exception ex)
@@ -165,29 +165,29 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp4(cCategory category, ref bool log)
+        public  string MatsTrp4(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSorbentTrapEndDateHourValid = false;
+                emParams.MatsSorbentTrapEndDateHourValid = false;
 
-                if (EmParameters.MatsSorbentTrapEndDateValid.Default(false))
+                if (emParams.MatsSorbentTrapEndDateValid.Default(false))
                 {
-                    if (EmParameters.MatsSorbentTrapRecord.EndHour == null)
+                    if (emParams.MatsSorbentTrapRecord.EndHour == null)
                     {
-                        EmParameters.MatsSorbentTrapEvaluationNeeded = false;
+                        emParams.MatsSorbentTrapEvaluationNeeded = false;
                         category.CheckCatalogResult = "A";
                     }
-                    else if ((EmParameters.MatsSorbentTrapRecord.EndHour < 0) || (23 < EmParameters.MatsSorbentTrapRecord.EndHour))
+                    else if ((emParams.MatsSorbentTrapRecord.EndHour < 0) || (23 < emParams.MatsSorbentTrapRecord.EndHour))
                     {
-                        EmParameters.MatsSorbentTrapEvaluationNeeded = false;
+                        emParams.MatsSorbentTrapEvaluationNeeded = false;
                         category.CheckCatalogResult = "B";
                     }
                     else
                     {
-                        EmParameters.MatsSorbentTrapEndDateHourValid = true;
+                        emParams.MatsSorbentTrapEndDateHourValid = true;
                     }
                 }
             }
@@ -207,23 +207,23 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp5(cCategory category, ref bool log)
+        public  string MatsTrp5(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSorbentTrapDatesAndHoursConsistent = false;
+                emParams.MatsSorbentTrapDatesAndHoursConsistent = false;
 
-                if (EmParameters.MatsSorbentTrapBeginDateHourValid.Default(false) && EmParameters.MatsSorbentTrapEndDateHourValid.Default(false))
+                if (emParams.MatsSorbentTrapBeginDateHourValid.Default(false) && emParams.MatsSorbentTrapEndDateHourValid.Default(false))
                 {
-                    if (EmParameters.MatsSorbentTrapRecord.BeginDatehour.Value > EmParameters.MatsSorbentTrapRecord.EndDatehour.Value)
+                    if (emParams.MatsSorbentTrapRecord.BeginDatehour.Value > emParams.MatsSorbentTrapRecord.EndDatehour.Value)
                     {
-                        EmParameters.MatsSorbentTrapEvaluationNeeded = false;
+                        emParams.MatsSorbentTrapEvaluationNeeded = false;
                         category.CheckCatalogResult = "A";
                     }
                     else
-                        EmParameters.MatsSorbentTrapDatesAndHoursConsistent = true;
+                        emParams.MatsSorbentTrapDatesAndHoursConsistent = true;
                 }
             }
             catch (Exception ex)
@@ -243,24 +243,24 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp6(cCategory category, ref bool log)
+        public  string MatsTrp6(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
                 CheckDataView<MatsSorbentTrapRecord> sorbentTrapRecords
-                  = EmParameters.MatsSorbentTrapRecords.FindRows(new cFilterCondition[]
+                  = emParams.MatsSorbentTrapRecords.FindRows(new cFilterCondition[]
                                                                      {
-                                                               new cFilterCondition("MON_SYS_ID", EmParameters.MatsSorbentTrapRecord.MonSysId),
-                                                               new cFilterCondition("TRAP_ID", EmParameters.MatsSorbentTrapRecord.TrapId, true),
-                                                               new cFilterCondition("BEGIN_DATEHOUR", EmParameters.MatsSorbentTrapRecord.EndDatehour, eFilterDataType.DateBegan, eFilterConditionRelativeCompare.LessThan),
-                                                               new cFilterCondition("END_DATEHOUR", EmParameters.MatsSorbentTrapRecord.BeginDatehour, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.GreaterThan)
+                                                               new cFilterCondition("MON_SYS_ID", emParams.MatsSorbentTrapRecord.MonSysId),
+                                                               new cFilterCondition("TRAP_ID", emParams.MatsSorbentTrapRecord.TrapId, true),
+                                                               new cFilterCondition("BEGIN_DATEHOUR", emParams.MatsSorbentTrapRecord.EndDatehour, eFilterDataType.DateBegan, eFilterConditionRelativeCompare.LessThan),
+                                                               new cFilterCondition("END_DATEHOUR", emParams.MatsSorbentTrapRecord.BeginDatehour, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.GreaterThan)
                                                                      });
 
                 if (sorbentTrapRecords.Count > 0)
                 {
-                    EmParameters.MatsSorbentTrapEvaluationNeeded = false;
+                    emParams.MatsSorbentTrapEvaluationNeeded = false;
                     category.CheckCatalogResult = "A";
                 }
             }
@@ -280,36 +280,36 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp7(cCategory category, ref bool log)
+        public  string MatsTrp7(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSorbentTrapValidExists = false;
-                EmParameters.MatsSorbentTrapSamplingTrainList = null;
-                EmParameters.MatsSamplingTrainProblemComponentExists = false;
+                emParams.MatsSorbentTrapValidExists = false;
+                emParams.MatsSorbentTrapSamplingTrainList = null;
+                emParams.MatsSamplingTrainProblemComponentExists = false;
 
                 SorbentTrapEvalInformation sorbentTrapEvalInformation = new SorbentTrapEvalInformation();
                 {
                     sorbentTrapEvalInformation.SorbentTrapValidExists = true;
-                    sorbentTrapEvalInformation.IsBorderTrap = (EmParameters.MatsSorbentTrapRecord.BorderTrapInd == 1);
-                    sorbentTrapEvalInformation.IsSupplementalData = (EmParameters.MatsSorbentTrapRecord.SuppDataInd == 1);
-                    sorbentTrapEvalInformation.SorbentTrapId = EmParameters.MatsSorbentTrapRecord.TrapId;
-                    sorbentTrapEvalInformation.SorbentTrapBeginDateHour = EmParameters.MatsSorbentTrapRecord.BeginDatehour;
-                    sorbentTrapEvalInformation.SorbentTrapEndDateHour = EmParameters.MatsSorbentTrapRecord.EndDatehour;
-                    sorbentTrapEvalInformation.SorbentTrapModcCd = EmParameters.MatsSorbentTrapRecord.ModcCd;
+                    sorbentTrapEvalInformation.IsBorderTrap = (emParams.MatsSorbentTrapRecord.BorderTrapInd == 1);
+                    sorbentTrapEvalInformation.IsSupplementalData = (emParams.MatsSorbentTrapRecord.SuppDataInd == 1);
+                    sorbentTrapEvalInformation.SorbentTrapId = emParams.MatsSorbentTrapRecord.TrapId;
+                    sorbentTrapEvalInformation.SorbentTrapBeginDateHour = emParams.MatsSorbentTrapRecord.BeginDatehour;
+                    sorbentTrapEvalInformation.SorbentTrapEndDateHour = emParams.MatsSorbentTrapRecord.EndDatehour;
+                    sorbentTrapEvalInformation.SorbentTrapModcCd = emParams.MatsSorbentTrapRecord.ModcCd;
                     sorbentTrapEvalInformation.SamplingTrainProblemComponentExists = false;
                     //Setting of SamplingTrainList and OperatingDateList happen through object references
                 }
 
-                string trapId = EmParameters.MatsSorbentTrapRecord.TrapId;
+                string trapId = emParams.MatsSorbentTrapRecord.TrapId;
 
-                EmParameters.MatsSorbentTrapDictionary[trapId] = sorbentTrapEvalInformation;
-                EmParameters.MatsSorbentTrapListByLocationArray[EmParameters.CurrentMonitorPlanLocationPostion.Value].Add(sorbentTrapEvalInformation);
+                emParams.MatsSorbentTrapDictionary[trapId] = sorbentTrapEvalInformation;
+                emParams.MatsSorbentTrapListByLocationArray[emParams.CurrentMonitorPlanLocationPostion.Value].Add(sorbentTrapEvalInformation);
 
-                EmParameters.MatsSorbentTrapValidExists = EmParameters.MatsSorbentTrapDictionary[trapId].SorbentTrapValidExists;
-                EmParameters.MatsSorbentTrapSamplingTrainList = EmParameters.MatsSorbentTrapDictionary[trapId].SamplingTrainList;
+                emParams.MatsSorbentTrapValidExists = emParams.MatsSorbentTrapDictionary[trapId].SorbentTrapValidExists;
+                emParams.MatsSorbentTrapSamplingTrainList = emParams.MatsSorbentTrapDictionary[trapId].SamplingTrainList;
             }
             catch (Exception ex)
             {
@@ -327,26 +327,26 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp8(cCategory category, ref bool log)
+        public  string MatsTrp8(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.MatsSorbentTrapRecord.MonSysId == null)
+                if (emParams.MatsSorbentTrapRecord.MonSysId == null)
                 {
-                    EmParameters.MatsSorbentTrapValidExists = false;
+                    emParams.MatsSorbentTrapValidExists = false;
                     category.CheckCatalogResult = "A";
                 }
-                else if (EmParameters.MatsSorbentTrapRecord.SysTypeCd != "ST")
+                else if (emParams.MatsSorbentTrapRecord.SysTypeCd != "ST")
                 {
-                    EmParameters.MatsSorbentTrapValidExists = false;
+                    emParams.MatsSorbentTrapValidExists = false;
                     category.CheckCatalogResult = "B";
                 }
-                else if ((EmParameters.MatsSorbentTrapRecord.SystemBeginDatehour.Default(DateTime.MinValue) > EmParameters.MatsSorbentTrapRecord.BeginDatehour.Default(DateTime.MinValue)) ||
-                         (EmParameters.MatsSorbentTrapRecord.SystemEndDatehour.Default(DateTime.MaxValue) < EmParameters.MatsSorbentTrapRecord.EndDatehour.Default(DateTime.MaxValue)))
+                else if ((emParams.MatsSorbentTrapRecord.SystemBeginDatehour.Default(DateTime.MinValue) > emParams.MatsSorbentTrapRecord.BeginDatehour.Default(DateTime.MinValue)) ||
+                         (emParams.MatsSorbentTrapRecord.SystemEndDatehour.Default(DateTime.MaxValue) < emParams.MatsSorbentTrapRecord.EndDatehour.Default(DateTime.MaxValue)))
                 {
-                    EmParameters.MatsSorbentTrapValidExists = false;
+                    emParams.MatsSorbentTrapValidExists = false;
                     category.CheckCatalogResult = "C";
                 }
             }
@@ -366,29 +366,29 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp9(cCategory category, ref bool log)
+        public  string MatsTrp9(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSamplingTrainsValid = false;
+                emParams.MatsSamplingTrainsValid = false;
 
-                if (EmParameters.MatsSamplingTrainProblemComponentExists == false)
+                if (emParams.MatsSamplingTrainProblemComponentExists == false)
                 {
-                    if (EmParameters.MatsSorbentTrapSamplingTrainList.Count != 2)
+                    if (emParams.MatsSorbentTrapSamplingTrainList.Count != 2)
                     {
-                        EmParameters.MatsSorbentTrapValidExists = false;
+                        emParams.MatsSorbentTrapValidExists = false;
                         category.CheckCatalogResult = "A";
                     }
                     // Check that SamplingTrainValid for both sampling trains is equal to true.
-                    else if (EmParameters.MatsSorbentTrapSamplingTrainList.Count(item => item.SamplingTrainValid.Default(false) == false) > 0)
+                    else if (emParams.MatsSorbentTrapSamplingTrainList.Count(item => item.SamplingTrainValid.Default(false) == false) > 0)
                     {
-                        EmParameters.MatsSorbentTrapValidExists = false;
+                        emParams.MatsSorbentTrapValidExists = false;
                     }
                     else
                     {
-                        EmParameters.MatsSamplingTrainsValid = true;
+                        emParams.MatsSamplingTrainsValid = true;
                     }
                 }
             }
@@ -408,88 +408,88 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp10(cCategory category, ref bool log)
+        public  string MatsTrp10(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSorbentTrapModcCodeValid = false;
+                emParams.MatsSorbentTrapModcCodeValid = false;
 
-                if (EmParameters.MatsSorbentTrapRecord.ModcCd.NotInList("01,02,32,33,34,35,43,44"))
+                if (emParams.MatsSorbentTrapRecord.ModcCd.NotInList("01,02,32,33,34,35,43,44"))
                 {
-                    EmParameters.MatsSorbentTrapValidExists = false;
+                    emParams.MatsSorbentTrapValidExists = false;
                     category.CheckCatalogResult = "A";
                 }
 
-                else if (EmParameters.MatsSamplingTrainsValid.Default(false)) // Insures that two valid sampling trains exist.
+                else if (emParams.MatsSamplingTrainsValid.Default(false)) // Insures that two valid sampling trains exist.
                 {
-                    if (EmParameters.MatsSorbentTrapRecord.ModcCd.InList("01,02,43"))
+                    if (emParams.MatsSorbentTrapRecord.ModcCd.InList("01,02,43"))
                     {
-                        if (EmParameters.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "PASSED") == 2)
+                        if (emParams.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "PASSED") == 2)
                         {
-                            EmParameters.MatsSorbentTrapModcCodeValid = true;
+                            emParams.MatsSorbentTrapModcCodeValid = true;
                         }
                         else
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "B";
                         }
                     }
 
-                    else if (EmParameters.MatsSorbentTrapRecord.ModcCd.InList("32,44"))
+                    else if (emParams.MatsSorbentTrapRecord.ModcCd.InList("32,44"))
                     {
-                        if ((EmParameters.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "PASSED") == 1) &&
-                            (EmParameters.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode.InList("FAILED,LOST")) == 1))
+                        if ((emParams.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "PASSED") == 1) &&
+                            (emParams.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode.InList("FAILED,LOST")) == 1))
                         {
-                            EmParameters.MatsSorbentTrapModcCodeValid = true;
+                            emParams.MatsSorbentTrapModcCodeValid = true;
                         }
                         else
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "C";
                         }
                     }
 
-                    else if (EmParameters.MatsSorbentTrapRecord.ModcCd == "33")
+                    else if (emParams.MatsSorbentTrapRecord.ModcCd == "33")
                     {
-                        if (EmParameters.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "UNCERTAIN") == 2)
+                        if (emParams.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "UNCERTAIN") == 2)
                         {
-                            EmParameters.MatsSorbentTrapModcCodeValid = true;
+                            emParams.MatsSorbentTrapModcCodeValid = true;
                         }
                         else
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "D";
                         }
                     }
 
-                    else if (EmParameters.MatsSorbentTrapRecord.ModcCd == "34")
+                    else if (emParams.MatsSorbentTrapRecord.ModcCd == "34")
                     {
-                        if (EmParameters.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "FAILED") == 2)
+                        if (emParams.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "FAILED") == 2)
                         {
-                            EmParameters.MatsSorbentTrapModcCodeValid = true;
+                            emParams.MatsSorbentTrapModcCodeValid = true;
                         }
-                        else if (EmParameters.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "UNCERTAIN") == 2)
+                        else if (emParams.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "UNCERTAIN") == 2)
                         {
-                            EmParameters.MatsSorbentTrapModcCodeValid = true;
+                            emParams.MatsSorbentTrapModcCodeValid = true;
                         }
-                        else if ((EmParameters.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "LOST") >= 1) ||
-                                 (EmParameters.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "EXPIRED") >= 1) ||
-                                 (EmParameters.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "INC") >= 1))
+                        else if ((emParams.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "LOST") >= 1) ||
+                                 (emParams.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "EXPIRED") >= 1) ||
+                                 (emParams.MatsSorbentTrapSamplingTrainList.Count(item => item.TrainQAStatusCode == "INC") >= 1))
                         {
-                            EmParameters.MatsSorbentTrapModcCodeValid = true;
+                            emParams.MatsSorbentTrapModcCodeValid = true;
                         }
                         else
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "E";
                         }
                     }
 
-                    else if (EmParameters.MatsSorbentTrapRecord.ModcCd == "35")
+                    else if (emParams.MatsSorbentTrapRecord.ModcCd == "35")
                     {
-                        EmParameters.MatsSorbentTrapModcCodeValid = true;
+                        emParams.MatsSorbentTrapModcCodeValid = true;
                     }
                 }
             }
@@ -514,36 +514,36 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp11(cCategory category, ref bool log)
+        public  string MatsTrp11(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSorbentTrapPairedTrapAgreementValid = false;
-                EmParameters.MatsCalcTrapAbsoluteDifference = null;
-                EmParameters.MatsCalcTrapPercentDifference = null;
+                emParams.MatsSorbentTrapPairedTrapAgreementValid = false;
+                emParams.MatsCalcTrapAbsoluteDifference = null;
+                emParams.MatsCalcTrapPercentDifference = null;
 
-                if (EmParameters.MatsSorbentTrapModcCodeValid.Default(false))
+                if (emParams.MatsSorbentTrapModcCodeValid.Default(false))
                 {
                     /* Paired Trap Agreement is null */
-                    if (EmParameters.MatsSorbentTrapRecord.PairedTrapAgreement == null)
+                    if (emParams.MatsSorbentTrapRecord.PairedTrapAgreement == null)
                     {
                         /* Check for bad MODC */
-                        if (EmParameters.MatsSorbentTrapRecord.ModcCd.NotInList("32,34,35,44"))
+                        if (emParams.MatsSorbentTrapRecord.ModcCd.NotInList("32,34,35,44"))
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "A";
                         }
                         /* Check for Absolute Difference Indicator not equal to null */
-                        else if (EmParameters.MatsSorbentTrapRecord.AbsoluteDifferenceInd != null)
+                        else if (emParams.MatsSorbentTrapRecord.AbsoluteDifferenceInd != null)
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "B";
                         }
                         else
                         {
-                            EmParameters.MatsSorbentTrapPairedTrapAgreementValid = true;
+                            emParams.MatsSorbentTrapPairedTrapAgreementValid = true;
                         }
                     }
 
@@ -551,78 +551,78 @@ namespace ECMPS.Checks.EmissionsChecks
                     else
                     {
                         /* Check for bad MODC */
-                        if (EmParameters.MatsSorbentTrapRecord.ModcCd.NotInList("01,02,33,43"))
+                        if (emParams.MatsSorbentTrapRecord.ModcCd.NotInList("01,02,33,43"))
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "C";
                         }
                         /* Check for Paired Trap Agreement not rounded to 2 */
-                        else if (EmParameters.MatsSorbentTrapRecord.PairedTrapAgreement != Math.Round(EmParameters.MatsSorbentTrapRecord.PairedTrapAgreement.Value, 2, MidpointRounding.AwayFromZero))
+                        else if (emParams.MatsSorbentTrapRecord.PairedTrapAgreement != Math.Round(emParams.MatsSorbentTrapRecord.PairedTrapAgreement.Value, 2, MidpointRounding.AwayFromZero))
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "D";
                         }
                         /* Handle when absolute difference indicator is 0 or 1 (not null) */
-                        else if ((EmParameters.MatsSorbentTrapRecord.AbsoluteDifferenceInd == 0) || (EmParameters.MatsSorbentTrapRecord.AbsoluteDifferenceInd == 1))
+                        else if ((emParams.MatsSorbentTrapRecord.AbsoluteDifferenceInd == 0) || (emParams.MatsSorbentTrapRecord.AbsoluteDifferenceInd == 1))
                         {
-                            decimal hgConcentration1 = EmParameters.MatsSorbentTrapSamplingTrainList[0].HgConcentration.Value;
-                            decimal hgConcentration2 = EmParameters.MatsSorbentTrapSamplingTrainList[1].HgConcentration.Value;
+                            decimal hgConcentration1 = emParams.MatsSorbentTrapSamplingTrainList[0].HgConcentration.Value;
+                            decimal hgConcentration2 = emParams.MatsSorbentTrapSamplingTrainList[1].HgConcentration.Value;
 
-                            EmParameters.MatsCalcTrapAbsoluteDifference = Math.Abs(hgConcentration1 - hgConcentration2);
-                            EmParameters.MatsCalcTrapPercentDifference = ((hgConcentration1 + hgConcentration2) != 0) ?  100 * EmParameters.MatsCalcTrapAbsoluteDifference / (hgConcentration1 + hgConcentration2) : 0m;
-                            EmParameters.MatsCalcTrapAbsoluteDifference = Math.Round(EmParameters.MatsCalcTrapAbsoluteDifference.Value, 2, MidpointRounding.AwayFromZero);
-                            EmParameters.MatsCalcTrapPercentDifference = Math.Round(EmParameters.MatsCalcTrapPercentDifference.Value, 2, MidpointRounding.AwayFromZero);
+                            emParams.MatsCalcTrapAbsoluteDifference = Math.Abs(hgConcentration1 - hgConcentration2);
+                            emParams.MatsCalcTrapPercentDifference = ((hgConcentration1 + hgConcentration2) != 0) ?  100 * emParams.MatsCalcTrapAbsoluteDifference / (hgConcentration1 + hgConcentration2) : 0m;
+                            emParams.MatsCalcTrapAbsoluteDifference = Math.Round(emParams.MatsCalcTrapAbsoluteDifference.Value, 2, MidpointRounding.AwayFromZero);
+                            emParams.MatsCalcTrapPercentDifference = Math.Round(emParams.MatsCalcTrapPercentDifference.Value, 2, MidpointRounding.AwayFromZero);
 
                             /* Check when Absolute Difference Indicator is 0 */
-                            if (EmParameters.MatsSorbentTrapRecord.AbsoluteDifferenceInd == 0)
+                            if (emParams.MatsSorbentTrapRecord.AbsoluteDifferenceInd == 0)
                             {
                                 /* Check for Percent Difference Discrepancy */
-                                if (EmParameters.MatsSorbentTrapRecord.PairedTrapAgreement != EmParameters.MatsCalcTrapPercentDifference)
+                                if (emParams.MatsSorbentTrapRecord.PairedTrapAgreement != emParams.MatsCalcTrapPercentDifference)
                                 {
-                                    EmParameters.MatsSorbentTrapValidExists = false;
+                                    emParams.MatsSorbentTrapValidExists = false;
                                     category.CheckCatalogResult = "G";
                                 }
 
                                 /* Handle when Paired Trap Agreement is less than or equal to 10 */
-                                else if (EmParameters.MatsSorbentTrapRecord.PairedTrapAgreement <= 10)
+                                else if (emParams.MatsSorbentTrapRecord.PairedTrapAgreement <= 10)
                                 {
-                                    if (EmParameters.MatsSorbentTrapRecord.ModcCd.NotInList("01,02,43"))
+                                    if (emParams.MatsSorbentTrapRecord.ModcCd.NotInList("01,02,43"))
                                     {
-                                        EmParameters.MatsSorbentTrapValidExists = false;
+                                        emParams.MatsSorbentTrapValidExists = false;
                                         category.CheckCatalogResult = "H";
                                     }
                                     else
                                     {
-                                        EmParameters.MatsSorbentTrapPairedTrapAgreementValid = true;
+                                        emParams.MatsSorbentTrapPairedTrapAgreementValid = true;
                                     }
                                 }
 
                                 /* Handle when Paired Trap Agreement is less than or equal to 20, and concentration is less than or equal to 1.0 */
-                                else if ((EmParameters.MatsSorbentTrapRecord.PairedTrapAgreement <= 20) &&
-                                         (EmParameters.MatsSorbentTrapRecord.HgConcentration.ScientificNotationtoDecimal() <= 1.0m))
+                                else if ((emParams.MatsSorbentTrapRecord.PairedTrapAgreement <= 20) &&
+                                         (emParams.MatsSorbentTrapRecord.HgConcentration.ScientificNotationtoDecimal() <= 1.0m))
                                 {
-                                    if (EmParameters.MatsSorbentTrapRecord.ModcCd.NotInList("01,02,43"))
+                                    if (emParams.MatsSorbentTrapRecord.ModcCd.NotInList("01,02,43"))
                                     {
-                                        EmParameters.MatsSorbentTrapValidExists = false;
+                                        emParams.MatsSorbentTrapValidExists = false;
                                         category.CheckCatalogResult = "I";
                                     }
                                     else
                                     {
-                                        EmParameters.MatsSorbentTrapPairedTrapAgreementValid = true;
+                                        emParams.MatsSorbentTrapPairedTrapAgreementValid = true;
                                     }
                                 }
 
                                 /* Handle Paired Trap Aggreement Failed */
                                 else
                                 {
-                                    if (EmParameters.MatsSorbentTrapRecord.ModcCd != "33")
+                                    if (emParams.MatsSorbentTrapRecord.ModcCd != "33")
                                     {
-                                        EmParameters.MatsSorbentTrapValidExists = false;
+                                        emParams.MatsSorbentTrapValidExists = false;
                                         category.CheckCatalogResult = "J";
                                     }
                                     else
                                     {
-                                        EmParameters.MatsSorbentTrapPairedTrapAgreementValid = true;
+                                        emParams.MatsSorbentTrapPairedTrapAgreementValid = true;
                                     }
                                 }
                             }
@@ -631,22 +631,22 @@ namespace ECMPS.Checks.EmissionsChecks
                             else
                             {
                                 /* Ensure that Paired Trap Agreement is less than or equal to 0.03 */
-                                if (EmParameters.MatsSorbentTrapRecord.PairedTrapAgreement.Value <= 0.03m)
+                                if (emParams.MatsSorbentTrapRecord.PairedTrapAgreement.Value <= 0.03m)
                                 {
                                     /* Check for Absolute Difference Discrepancy */
-                                    if (EmParameters.MatsSorbentTrapRecord.PairedTrapAgreement != EmParameters.MatsCalcTrapAbsoluteDifference)
+                                    if (emParams.MatsSorbentTrapRecord.PairedTrapAgreement != emParams.MatsCalcTrapAbsoluteDifference)
                                     {
-                                        EmParameters.MatsSorbentTrapValidExists = false;
+                                        emParams.MatsSorbentTrapValidExists = false;
                                         category.CheckCatalogResult = "E";
                                     }
                                     else
                                     {
-                                        EmParameters.MatsSorbentTrapPairedTrapAgreementValid = true;
+                                        emParams.MatsSorbentTrapPairedTrapAgreementValid = true;
                                     }
                                 }
                                 else
                                 {
-                                    EmParameters.MatsSorbentTrapValidExists = false;
+                                    emParams.MatsSorbentTrapValidExists = false;
                                     category.CheckCatalogResult = "F";
                                 }
                             }
@@ -655,7 +655,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         /* Absolute Difference is null (not 0 or 1) */
                         else
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "K";
                         }
                     }
@@ -677,69 +677,69 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp12(cCategory category, ref bool log)
+        public  string MatsTrp12(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsCalcHgSystemConcentration = null;
+                emParams.MatsCalcHgSystemConcentration = null;
 
-                if (EmParameters.MatsSorbentTrapPairedTrapAgreementValid.Default(false))
+                if (emParams.MatsSorbentTrapPairedTrapAgreementValid.Default(false))
                 {
-                    if (EmParameters.MatsSorbentTrapRecord.HgConcentration == null)
+                    if (emParams.MatsSorbentTrapRecord.HgConcentration == null)
                     {
-                        if (EmParameters.MatsSorbentTrapRecord.ModcCd.NotInList("34,35"))
+                        if (emParams.MatsSorbentTrapRecord.ModcCd.NotInList("34,35"))
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "A";
                         }
                     }
                     else
                     {
-                        if (EmParameters.MatsSorbentTrapRecord.ModcCd.NotInList("01,02,32,33,43,44"))
+                        if (emParams.MatsSorbentTrapRecord.ModcCd.NotInList("01,02,32,33,43,44"))
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "B";
                         }
-                        else if (!EmParameters.MatsSorbentTrapRecord.HgConcentration.MatsSignificantDigitsValid(EmParameters.MatsSorbentTrapRecord.EndDate.Value))
+                        else if (!emParams.MatsSorbentTrapRecord.HgConcentration.MatsSignificantDigitsValid(emParams.MatsSorbentTrapRecord.EndDate.Value))
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "C";
                         }
-                        else if (ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.MatsSorbentTrapRecord.HgConcentration) == 0)
+                        else if (ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.MatsSorbentTrapRecord.HgConcentration) == 0)
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "E";
                         }
-                        else if (EmParameters.MatsSorbentTrapSamplingTrainList.Any(item => item.HgConcentration == 0 ))
+                        else if (emParams.MatsSorbentTrapSamplingTrainList.Any(item => item.HgConcentration == 0 ))
                         {
-                            EmParameters.MatsSorbentTrapValidExists = false;
+                            emParams.MatsSorbentTrapValidExists = false;
                             category.CheckCatalogResult = "F";
                         }
                         else
                         {
                             decimal hgConcentrationCalculation;
 
-                            if (EmParameters.MatsSorbentTrapRecord.ModcCd.InList("32,44"))
+                            if (emParams.MatsSorbentTrapRecord.ModcCd.InList("32,44"))
                             {
-                                hgConcentrationCalculation = 1.111m * EmParameters.MatsSorbentTrapSamplingTrainList.First(train => train.TrainQAStatusCode == "PASSED").HgConcentration.Value;
+                                hgConcentrationCalculation = 1.111m * emParams.MatsSorbentTrapSamplingTrainList.First(train => train.TrainQAStatusCode == "PASSED").HgConcentration.Value;
                             }
-                            else if (EmParameters.MatsSorbentTrapRecord.ModcCd == "33")
+                            else if (emParams.MatsSorbentTrapRecord.ModcCd == "33")
                             {
-                                hgConcentrationCalculation = EmParameters.MatsSorbentTrapSamplingTrainList.Select(item => item.HgConcentration.Value).ToList().Max();
+                                hgConcentrationCalculation = emParams.MatsSorbentTrapSamplingTrainList.Select(item => item.HgConcentration.Value).ToList().Max();
                             }
                             else // MODC 01, 02 or 43
                             {
-                                hgConcentrationCalculation = EmParameters.MatsSorbentTrapSamplingTrainList.Sum(item => item.HgConcentration.Value) / 2;
+                                hgConcentrationCalculation = emParams.MatsSorbentTrapSamplingTrainList.Sum(item => item.HgConcentration.Value) / 2;
                             }
 
-                            EmParameters.MatsCalcHgSystemConcentration = hgConcentrationCalculation.MatsSignificantDigitsFormat(EmParameters.MatsSorbentTrapRecord.EndDate.Value, 
-                                                                                                                                EmParameters.MatsSorbentTrapRecord.HgConcentration);
+                            emParams.MatsCalcHgSystemConcentration = hgConcentrationCalculation.MatsSignificantDigitsFormat(emParams.MatsSorbentTrapRecord.EndDate.Value, 
+                                                                                                                                emParams.MatsSorbentTrapRecord.HgConcentration);
 
-                            if (EmParameters.MatsSorbentTrapRecord.HgConcentration != EmParameters.MatsCalcHgSystemConcentration)
+                            if (emParams.MatsSorbentTrapRecord.HgConcentration != emParams.MatsCalcHgSystemConcentration)
                             {
-                                EmParameters.MatsSorbentTrapValidExists = false;
+                                emParams.MatsSorbentTrapValidExists = false;
                                 category.CheckCatalogResult = "D";
                             }
                         }
@@ -763,14 +763,14 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp13(cCategory category, ref bool log)
+        public  string MatsTrp13(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSorbentTrapDictionary[EmParameters.MatsSorbentTrapRecord.TrapId].SorbentTrapValidExists = EmParameters.MatsSorbentTrapValidExists;
-                EmParameters.MatsSorbentTrapDictionary[EmParameters.MatsSorbentTrapRecord.TrapId].SamplingTrainProblemComponentExists = EmParameters.MatsSamplingTrainProblemComponentExists;
+                emParams.MatsSorbentTrapDictionary[emParams.MatsSorbentTrapRecord.TrapId].SorbentTrapValidExists = emParams.MatsSorbentTrapValidExists;
+                emParams.MatsSorbentTrapDictionary[emParams.MatsSorbentTrapRecord.TrapId].SamplingTrainProblemComponentExists = emParams.MatsSamplingTrainProblemComponentExists;
             }
             catch (Exception ex)
             {
@@ -788,16 +788,16 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MatsTrp14(cCategory category, ref bool log)
+        public  string MatsTrp14(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
 
-                if (EmParameters.MatsSorbentTrapRecord.ModcCd != "34")
+                if (emParams.MatsSorbentTrapRecord.ModcCd != "34")
                 {
-                    if (EmParameters.MatsSorbentTrapDictionary[EmParameters.MatsSorbentTrapRecord.TrapId].OperatingDateList.Count > 15)
+                    if (emParams.MatsSorbentTrapDictionary[emParams.MatsSorbentTrapRecord.TrapId].OperatingDateList.Count > 15)
                     {
                         category.CheckCatalogResult = "A";
                     }
@@ -817,17 +817,17 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrp15(cCategory category, ref bool log)
+        public  string MatsTrp15(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                DateTime trapBeginDateHour = EmParameters.MatsSorbentTrapRecord.BeginDatehour.Default(DateTime.MinValue);
-                DateTime trapEndDateHour = EmParameters.MatsSorbentTrapRecord.EndDatehour.Default(DateTime.MaxValue);
+                DateTime trapBeginDateHour = emParams.MatsSorbentTrapRecord.BeginDatehour.Default(DateTime.MinValue);
+                DateTime trapEndDateHour = emParams.MatsSorbentTrapRecord.EndDatehour.Default(DateTime.MaxValue);
 
                 CheckDataView<VwMonitorMethodRow> methodView 
-                    = EmParameters.MethodRecords.FindRows(new cFilterCondition("METHOD_CD", "ST,CEMST", eFilterConditionStringCompare.InList),
+                    = emParams.MethodRecords.FindRows(new cFilterCondition("METHOD_CD", "ST,CEMST", eFilterConditionStringCompare.InList),
                                                           new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual, trapEndDateHour, eNullDateDefault.Min),
                                                           new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual, trapBeginDateHour, eNullDateDefault.Max));
 

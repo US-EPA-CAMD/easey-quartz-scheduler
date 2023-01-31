@@ -43,9 +43,9 @@ namespace
         #endregion
 
 
-        #region Public Static Methods: Checks
+        #region Public  Methods: Checks
 
-        public static string HOURAE1(cCategory Category, ref bool Log)
+        public  string HOURAE1(cCategory Category, ref bool Log)
         //Initialize AE Reporting Method
         {
             string ReturnVal = "";
@@ -80,7 +80,7 @@ namespace
             return ReturnVal;
         }
 
-        public static string HOURAE2(cCategory Category, ref bool Log)
+        public  string HOURAE2(cCategory Category, ref bool Log)
         // Validate NOXR Record
         {
             string ReturnVal = "";
@@ -153,7 +153,7 @@ namespace
             return ReturnVal;
         }
 
-        public static string HOURAE4(cCategory Category, ref bool Log)
+        public  string HOURAE4(cCategory Category, ref bool Log)
         // Check for Extraneous Fields in NOXR Record
         {
             string ReturnVal = "";
@@ -186,7 +186,7 @@ namespace
             return ReturnVal;
         }
 
-        public static string HOURAE5(cCategory category, ref bool log)
+        public  string HOURAE5(cCategory category, ref bool log)
         // Check Monitoring System Data for Appendix E NOXR
         {
             string returnVal = "";
@@ -243,7 +243,7 @@ namespace
             return returnVal;
         }
 
-        public static string HOURAE7(cCategory Category, ref bool Log)
+        public  string HOURAE7(cCategory Category, ref bool Log)
         // Retrieve Appendix E Correlation Test Results or Default  Value
         {
             string ReturnVal = "";
@@ -353,7 +353,7 @@ namespace
             return ReturnVal;
         }
 
-        public static string HOURAE8(cCategory Category, ref bool Log)
+        public  string HOURAE8(cCategory Category, ref bool Log)
         // Determine Appendix E Curve Segment
         {
             string ReturnVal = "";
@@ -451,7 +451,7 @@ namespace
             return ReturnVal;
         }
 
-        public static string HOURAE9(cCategory Category, ref bool Log)
+        public  string HOURAE9(cCategory Category, ref bool Log)
         // Validate Appendix E NOXR Calculation
         {
             string ReturnVal = "";
@@ -650,7 +650,7 @@ namespace
             return ReturnVal;
         }
 
-        public static string HOURAE13(cCategory Category, ref bool Log)
+        public  string HOURAE13(cCategory Category, ref bool Log)
         // Check Reported NOx Emission Rate
         {
             string ReturnVal = "";
@@ -677,7 +677,7 @@ namespace
             return ReturnVal;
         }
 
-        public static string HOURAE14(cCategory Category, ref bool Log)
+        public  string HOURAE14(cCategory Category, ref bool Log)
         // Check NOXR Units Of Measure
         {
             string ReturnVal = "";
@@ -700,7 +700,7 @@ namespace
             return ReturnVal;
         }
 
-        public static string HOURAE15(cCategory category, ref bool log)
+        public  string HOURAE15(cCategory category, ref bool log)
         // Determine Appendix E Measure Code
         {
             string ReturnVal = "";
@@ -749,19 +749,19 @@ namespace
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOURAE16(cCategory category, ref bool log)
+        public  string HOURAE16(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.DerivedHourlyChecksNeeded.Default(false) && (EmParameters.CurrentOperatingTime.Value > 0))
+                if (emParams.DerivedHourlyChecksNeeded.Default(false) && (emParams.CurrentOperatingTime.Value > 0))
                 {
-                    string monSysId = (EmParameters.CurrentAppENoxrRecord != null) ? EmParameters.CurrentAppENoxrRecord.MonSysId : null;
+                    string monSysId = (emParams.CurrentAppENoxrRecord != null) ? emParams.CurrentAppENoxrRecord.MonSysId : null;
 
                     if (monSysId.IsNotEmpty())
                     {
-                        Dictionary<string, SystemOperatingSupplementalData> supplementalDataDictionary = EmParameters.SystemOperatingSuppDataDictionaryArray[EmParameters.CurrentMonitorPlanLocationPostion.Value];
+                        Dictionary<string, SystemOperatingSupplementalData> supplementalDataDictionary = emParams.SystemOperatingSuppDataDictionaryArray[emParams.CurrentMonitorPlanLocationPostion.Value];
 
                         // Get or created supplemental data record
                         SystemOperatingSupplementalData supplementalDataRecord;
@@ -772,9 +772,9 @@ namespace
                             }
                             else
                             {
-                                supplementalDataRecord = new SystemOperatingSupplementalData(EmParameters.CurrentReportingPeriod.Value,
+                                supplementalDataRecord = new SystemOperatingSupplementalData(emParams.CurrentReportingPeriod.Value,
                                                                                              monSysId,
-                                                                                             EmParameters.CurrentAppENoxrRecord.MonLocId,
+                                                                                             emParams.CurrentAppENoxrRecord.MonLocId,
                                                                                              true);
 
                                 supplementalDataDictionary.Add(monSysId, supplementalDataRecord);
@@ -782,7 +782,7 @@ namespace
                         }
 
                         // Update with null modcCd will skip Quality Assured and Monitor Available counting, witch are not needed.
-                        supplementalDataRecord.IncreamentForCurrentHour(EmParameters.CurrentOperatingDatehour.Value, null);
+                        supplementalDataRecord.IncreamentForCurrentHour(emParams.CurrentOperatingDatehour.Value, null);
                     }
                 }
             }
@@ -799,7 +799,7 @@ namespace
 
         #region Private Methods: Utilities
 
-        private static decimal GetTolerance(string AParameterCd, String AUom, cCategory ACategory)
+        private  decimal GetTolerance(string AParameterCd, String AUom, cCategory ACategory)
         {
             DataView ToleranceView = (DataView)ACategory.GetCheckParameter("Hourly_Emissions_Tolerances_Cross_Check_Table").ParameterValue;
             DataRowView ToleranceRow;
@@ -819,7 +819,7 @@ namespace
 
         #region Obsolete
 
-        public static string HOURAE3(cCategory Category, ref bool Log)
+        public  string HOURAE3(cCategory Category, ref bool Log)
         // Set Current Fuel Source Record and NOXR record for App E
         {
             string ReturnVal = "";
@@ -864,7 +864,7 @@ namespace
             return ReturnVal;
         }
 
-        public static string HOURAE6(cCategory Category, ref bool Log)
+        public  string HOURAE6(cCategory Category, ref bool Log)
         // Set up Operating Condition Code Check for Appendix E NOXR Record
         {
             string ReturnVal = "";
@@ -889,7 +889,7 @@ namespace
             return ReturnVal;
         }
 
-        public static string HOURAE10(cCategory Category, ref bool Log)
+        public  string HOURAE10(cCategory Category, ref bool Log)
         //Find NOXR record associated with current oil fuel flow
         {
             string ReturnVal = "";
@@ -937,7 +937,7 @@ namespace
             return ReturnVal;
         }
 
-        public static string HOURAE11(cCategory Category, ref bool Log)
+        public  string HOURAE11(cCategory Category, ref bool Log)
         //Verify Overall NOx Emission Rate at Unit
         {
             string ReturnVal = "";

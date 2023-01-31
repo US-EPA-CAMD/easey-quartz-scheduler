@@ -28,44 +28,44 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region Checks 1-10
 
-        public static string EMAUDIT1(cCategory category, ref bool log)
+        public  string EMAUDIT1(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.LikeKindHours = null;
+                emParams.LikeKindHours = null;
 
-                if (EmParameters.ComponentRecordForAudit.ComponentIdentifier.StartsWith("LK"))
+                if (emParams.ComponentRecordForAudit.ComponentIdentifier.StartsWith("LK"))
                 {
-                    int? locationPosition = EmParameters.LocationPositionLookup.ContainsKey(EmParameters.ComponentRecordForAudit.MonLocId)
-                                          ? EmParameters.LocationPositionLookup[EmParameters.ComponentRecordForAudit.MonLocId]
+                    int? locationPosition = emParams.LocationPositionLookup.ContainsKey(emParams.ComponentRecordForAudit.MonLocId)
+                                          ? emParams.LocationPositionLookup[emParams.ComponentRecordForAudit.MonLocId]
                                           : (int?)null;
 
-                    if (EmParameters.ComponentOperatingSuppDataDictionaryArray[locationPosition.Value].ContainsKey(EmParameters.ComponentRecordForAudit.ComponentId))
+                    if (emParams.ComponentOperatingSuppDataDictionaryArray[locationPosition.Value].ContainsKey(emParams.ComponentRecordForAudit.ComponentId))
                     {
-                        int hours = EmParameters.ComponentOperatingSuppDataDictionaryArray[locationPosition.Value]
-                                                                                             [EmParameters.ComponentRecordForAudit.ComponentId]
+                        int hours = emParams.ComponentOperatingSuppDataDictionaryArray[locationPosition.Value]
+                                                                                             [emParams.ComponentRecordForAudit.ComponentId]
                                                                                              .QuarterlyOperatingCounts
                                                                                              .Hours;
 
                         if (hours > 0)
                         {
-                            EmParameters.LikeKindHours = hours;
+                            emParams.LikeKindHours = hours;
 
                             CheckDataView<ComponentOpSuppData> supplementalRecords
-                                = EmParameters.ComponentOperatingSuppDataRecordsForMpAndYear
-                                              .FindRows(new cFilterCondition("COMPONENT_ID", EmParameters.ComponentRecordForAudit.ComponentId),
-                                                        new cFilterCondition("CALENDAR_YEAR", EmParameters.CurrentReportingPeriodObject.Year),
-                                                        new cFilterCondition("QUARTER", eFilterConditionRelativeCompare.LessThan, (int)EmParameters.CurrentReportingPeriodObject.Quarter),
+                                = emParams.ComponentOperatingSuppDataRecordsForMpAndYear
+                                              .FindRows(new cFilterCondition("COMPONENT_ID", emParams.ComponentRecordForAudit.ComponentId),
+                                                        new cFilterCondition("CALENDAR_YEAR", emParams.CurrentReportingPeriodObject.Year),
+                                                        new cFilterCondition("QUARTER", eFilterConditionRelativeCompare.LessThan, (int)emParams.CurrentReportingPeriodObject.Quarter),
                                                         new cFilterCondition("OP_SUPP_DATA_TYPE_CD", "OP"));
 
                             foreach (ComponentOpSuppData supplementalRecord in supplementalRecords)
                             {
-                                EmParameters.LikeKindHours += supplementalRecord.Hours;
+                                emParams.LikeKindHours += supplementalRecord.Hours;
                             }
 
-                            if (EmParameters.LikeKindHours > 720)
+                            if (emParams.LikeKindHours > 720)
                             {
                                 category.CheckCatalogResult = "A";
                             }

@@ -59,11 +59,11 @@ namespace ECMPS.Checks.EmissionsChecks
 
     #endregion
 
-    #region Public Static Methods: Checks
+    #region Public  Methods: Checks
 
     #region Checks 1 - 10
 
-    public static string HOURCV1(cCategory Category, ref bool Log)
+    public  string HOURCV1(cCategory Category, ref bool Log)
     // Calculate Percent H2O
     // Formerly Hourly-78
     {
@@ -135,7 +135,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV2(cCategory Category, ref bool Log)
+    public  string HOURCV2(cCategory Category, ref bool Log)
     // Generate Final H2O Value
     // Formerly Hourly-68
     {
@@ -190,7 +190,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV3(cCategory Category, ref bool Log)
+    public  string HOURCV3(cCategory Category, ref bool Log)
     //Determine Diluent Cap and Moisture for CO2 Concentration Calculation Verification
     {
       string ReturnVal = "";
@@ -257,7 +257,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV4(cCategory Category, ref bool Log)
+    public  string HOURCV4(cCategory Category, ref bool Log)
     // Calculate CO2 Concentration
     {
       string ReturnVal = "";
@@ -325,7 +325,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV6(cCategory Category, ref bool Log)
+    public  string HOURCV6(cCategory Category, ref bool Log)
     //Determine Diluent Cap and Moisture for Heat Input Calculation Verification
     {
       string ReturnVal = "";
@@ -441,7 +441,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV7(cCategory Category, ref bool Log)
+    public  string HOURCV7(cCategory Category, ref bool Log)
     // Calculate Heat Input        
     {
       string ReturnVal = "";
@@ -697,7 +697,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV9(cCategory Category, ref bool Log)
+    public  string HOURCV9(cCategory Category, ref bool Log)
     //Calculate SO2 Mass Emissions
     // Formerly Hourly-34
     {
@@ -834,7 +834,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
     #region Checks 11 - 20
 
-    public static string HOURCV12(cCategory Category, ref bool Log)
+    public  string HOURCV12(cCategory Category, ref bool Log)
     //Determine Diluent Cap, Moisture, and NOXC for NOx Rate Calculation Verification        
     {
       string ReturnVal = "";
@@ -941,7 +941,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV13(cCategory Category, ref bool Log)
+    public  string HOURCV13(cCategory Category, ref bool Log)
     // Calculate NOx Emissions Rate
     // Formerly Hourly-115
     {
@@ -1223,7 +1223,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV15(cCategory Category, ref bool Log)
+    public  string HOURCV15(cCategory Category, ref bool Log)
     // Pre-Verify NOx Mass Calculation Requirements
     // Formerly Hourly-124
     {
@@ -1262,7 +1262,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV16(cCategory Category, ref bool Log)
+    public  string HOURCV16(cCategory Category, ref bool Log)
     //Calculate NOx Mass Emissions        
     {
       string ReturnVal = "";
@@ -1432,7 +1432,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV18(cCategory Category, ref bool Log)
+    public  string HOURCV18(cCategory Category, ref bool Log)
     //Determine Diluent Cap and Moisture for CO2 Mass Calculation Verification
     {
       string ReturnVal = "";
@@ -1505,7 +1505,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV19(cCategory Category, ref bool Log)
+    public  string HOURCV19(cCategory Category, ref bool Log)
     //Calculate CO2 Mass Emissions
     {
       string ReturnVal = "";
@@ -1635,7 +1635,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
     #region Checks 21 - 30
 
-    public static string HOURCV25(cCategory Category, ref bool Log)
+    public  string HOURCV25(cCategory Category, ref bool Log)
     //Determine BAF Value for NOx Emission Rate System
     {
       string ReturnVal = "";
@@ -1665,7 +1665,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV30(cCategory Category, ref bool Log)
+    public  string HOURCV30(cCategory Category, ref bool Log)
     //Initialize SO2 Calculated Hourly Data
     {
       string ReturnVal = "";
@@ -1690,7 +1690,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
     #region Checks 31 - 40
 
-    public static string HOURCV31(cCategory Category, ref bool Log)
+    public  string HOURCV31(cCategory Category, ref bool Log)
     //Initialize NOX Calculated Hourly Data
     {
       string ReturnVal = "";
@@ -1711,7 +1711,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV32(cCategory Category, ref bool Log)
+    public  string HOURCV32(cCategory Category, ref bool Log)
     //Initialize NOXR Calculated Hourly Data
     {
       string ReturnVal = "";
@@ -1731,13 +1731,13 @@ namespace ECMPS.Checks.EmissionsChecks
         Category.SetCheckParameter("RATA_Status_BAF", null, eParameterDataType.Decimal);
         Category.SetCheckParameter("Current_Hourly_Record_for_RATA_Status", CurrentNOxRDHVRec, eParameterDataType.DataRowView);
 
-        EmParameters.QaStatusComponentId = null;
-        EmParameters.QaStatusComponentIdentifier = null;
-        EmParameters.QaStatusComponentTypeCode = null;
-        EmParameters.QaStatusSystemDesignationCode = EmParameters.CurrentDhvRecord.SysDesignationCd;
-        EmParameters.QaStatusSystemId = EmParameters.CurrentDhvRecord.MonSysId;
-        EmParameters.QaStatusSystemIdentifier = EmParameters.CurrentDhvRecord.SystemIdentifier;
-        EmParameters.QaStatusSystemTypeCode = EmParameters.CurrentDhvRecord.SysTypeCd;
+        emParams.QaStatusComponentId = null;
+        emParams.QaStatusComponentIdentifier = null;
+        emParams.QaStatusComponentTypeCode = null;
+        emParams.QaStatusSystemDesignationCode = emParams.CurrentDhvRecord.SysDesignationCd;
+        emParams.QaStatusSystemId = emParams.CurrentDhvRecord.MonSysId;
+        emParams.QaStatusSystemIdentifier = emParams.CurrentDhvRecord.SystemIdentifier;
+        emParams.QaStatusSystemTypeCode = emParams.CurrentDhvRecord.SysTypeCd;
       }
       catch (Exception ex)
       {
@@ -1747,7 +1747,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV33(cCategory Category, ref bool Log)
+    public  string HOURCV33(cCategory Category, ref bool Log)
     //Initialize CO2 Calculated Hourly Data
     {
       string ReturnVal = "";
@@ -1769,7 +1769,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV34(cCategory Category, ref bool Log)
+    public  string HOURCV34(cCategory Category, ref bool Log)
     //Initialize CO2C Calculated Hourly Data
     {
       string ReturnVal = "";
@@ -1792,7 +1792,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV35(cCategory Category, ref bool Log)
+    public  string HOURCV35(cCategory Category, ref bool Log)
     //Initialize H2O Calculated Hourly Data
     {
       string ReturnVal = "";
@@ -1808,13 +1808,13 @@ namespace ECMPS.Checks.EmissionsChecks
         string ModcCd = cDBConvert.ToString(DHVRec["MODC_CD"]);
         Category.SetCheckParameter("Current_DHV_Record", DHVRec, eParameterDataType.DataRowView);
 
-        EmParameters.QaStatusComponentId = null;
-        EmParameters.QaStatusComponentIdentifier = null;
-        EmParameters.QaStatusComponentTypeCode = null;
-        EmParameters.QaStatusSystemDesignationCode = EmParameters.CurrentDhvRecord.SysDesignationCd;
-        EmParameters.QaStatusSystemId = EmParameters.CurrentDhvRecord.MonSysId;
-        EmParameters.QaStatusSystemIdentifier = EmParameters.CurrentMhvRecord.SystemIdentifier;
-        EmParameters.QaStatusSystemTypeCode = EmParameters.CurrentDhvRecord.SysTypeCd;
+        emParams.QaStatusComponentId = null;
+        emParams.QaStatusComponentIdentifier = null;
+        emParams.QaStatusComponentTypeCode = null;
+        emParams.QaStatusSystemDesignationCode = emParams.CurrentDhvRecord.SysDesignationCd;
+        emParams.QaStatusSystemId = emParams.CurrentDhvRecord.MonSysId;
+        emParams.QaStatusSystemIdentifier = emParams.CurrentMhvRecord.SystemIdentifier;
+        emParams.QaStatusSystemTypeCode = emParams.CurrentDhvRecord.SysTypeCd;
 
         if (SysTypeCd == "H2O" && ModcCd.InList("01,02,03,21,53"))
           Category.SetCheckParameter("RATA_Status_Required", true, eParameterDataType.Boolean);
@@ -1827,7 +1827,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV36(cCategory Category, ref bool Log)
+    public  string HOURCV36(cCategory Category, ref bool Log)
     //Initialize CO2C Calculated Hourly Data
     {
       string ReturnVal = "";
@@ -1844,13 +1844,13 @@ namespace ECMPS.Checks.EmissionsChecks
         Category.SetCheckParameter("RATA_Status_Required", false, eParameterDataType.Boolean);
         Category.SetCheckParameter("Current_Hourly_Record_for_RATA_Status", CurrentHIDHVRec, eParameterDataType.DataRowView);
 
-        EmParameters.QaStatusComponentId = null;
-        EmParameters.QaStatusComponentIdentifier = null;
-        EmParameters.QaStatusComponentTypeCode = null;
-        EmParameters.QaStatusSystemDesignationCode = EmParameters.CurrentDhvRecord.SysDesignationCd;
-        EmParameters.QaStatusSystemId = EmParameters.CurrentDhvRecord.MonSysId;
-        EmParameters.QaStatusSystemIdentifier = EmParameters.CurrentDhvRecord.SystemIdentifier;
-        EmParameters.QaStatusSystemTypeCode = EmParameters.CurrentDhvRecord.SysTypeCd;
+        emParams.QaStatusComponentId = null;
+        emParams.QaStatusComponentIdentifier = null;
+        emParams.QaStatusComponentTypeCode = null;
+        emParams.QaStatusSystemDesignationCode = emParams.CurrentDhvRecord.SysDesignationCd;
+        emParams.QaStatusSystemId = emParams.CurrentDhvRecord.MonSysId;
+        emParams.QaStatusSystemIdentifier = emParams.CurrentDhvRecord.SystemIdentifier;
+        emParams.QaStatusSystemTypeCode = emParams.CurrentDhvRecord.SysTypeCd;
       }
       catch (Exception ex)
       {
@@ -1860,7 +1860,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV37(cCategory category, ref bool log)
+    public  string HOURCV37(cCategory category, ref bool log)
     //Check Unadjusted Value
     {
       string returnVal = "";
@@ -1927,7 +1927,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return returnVal;
     }
 
-    public static string HOURCV38(cCategory Category, ref bool Log)
+    public  string HOURCV38(cCategory Category, ref bool Log)
     //Determine Maximum or Minimum Value for Parameter in DHV Record
     {
       string ReturnVal = "";
@@ -2159,7 +2159,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV39(cCategory Category, ref bool Log)
+    public  string HOURCV39(cCategory Category, ref bool Log)
     //Check Adjusted Hourly Value in DHV Record
     {
       string ReturnVal = "";
@@ -2496,7 +2496,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURCV40(cCategory Category, ref bool Log)
+    public  string HOURCV40(cCategory Category, ref bool Log)
     //Determine Moisture for SO2 Mass Calculation Verification
     {
       string ReturnVal = "";
@@ -2538,7 +2538,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
     #region Checks 41 - 50
 
-    public static string HOURCV41(cCategory Category, ref bool Log)
+    public  string HOURCV41(cCategory Category, ref bool Log)
     //Check BAF Calculation in NOx Rate DHV Record
     {
       string ReturnVal = "";
@@ -2658,7 +2658,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-        public static string HOURCV42(cCategory Category, ref bool Log)
+        public  string HOURCV42(cCategory Category, ref bool Log)
         // Check HI System in DHV Record
         {
             string ReturnVal = "";
@@ -2734,7 +2734,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-    public static string HOURCV43(cCategory category, ref bool log)
+    public  string HOURCV43(cCategory category, ref bool log)
     // Determine DHV Measure Code
     {
       string returnVal = "";
@@ -3035,7 +3035,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
     #region Private Methods: Utilities
 
-    private static decimal GetTolerance(string AParameterCd, String AUom, cCategory ACategory)
+    private  decimal GetTolerance(string AParameterCd, String AUom, cCategory ACategory)
     {
       DataView ToleranceView = (DataView)ACategory.GetCheckParameter("Hourly_Emissions_Tolerances_Cross_Check_Table").ParameterValue;
       DataRowView ToleranceRow;

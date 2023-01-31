@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-
+using ECMPS.Checks.Em.Parameters;
 using ECMPS.Checks.TypeUtilities;
 using ECMPS.Definitions.Extensions;
 using ECMPS.Definitions.SeverityCode;
@@ -18,17 +18,18 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
     {
 
         #region Public Constructors
-
+        public EmParameters emParams;
         /// <summary>
         /// Instantiates a cDailyCalibrationRunningData object.
         /// </summary>
         /// <param name="dailyCalibrationSeverityCd">The daily alibration category object's severity code.</param>
-        public cDailyCalibrationData(eSeverityCd dailyCalibrationSeverityCd)
+        public cDailyCalibrationData(eSeverityCd dailyCalibrationSeverityCd, EmParameters emparams)
         {
             DailyCalibrationSeverityCd = dailyCalibrationSeverityCd;
 
             ComponentData = new Dictionary<string, cDailyCalibrationComponentData>();
             LocationComponentList = new Dictionary<string, List<string>>();
+            emParams = emparams;
         }
 
         #endregion
@@ -374,7 +375,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 
             try
             {
-                cDailyCalibrationTestData testData = new cDailyCalibrationTestData(DailyCalibrationSeverityCd);
+                cDailyCalibrationTestData testData = new cDailyCalibrationTestData(DailyCalibrationSeverityCd, emParams);
 
                 cDailyCalibrationComponentData componentData;
                 {
