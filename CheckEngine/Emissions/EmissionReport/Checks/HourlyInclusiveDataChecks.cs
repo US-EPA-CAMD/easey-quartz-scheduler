@@ -27,9 +27,9 @@ namespace ECMPS.Checks.EmissionsChecks
 
     #endregion
 
-    #region Public Static Methods: Checks
+    #region Public  Methods: Checks
 
-    public static string HOURIV1(cCategory Category, ref bool Log)
+    public  string HOURIV1(cCategory Category, ref bool Log)
     // H2O Inclusive PMA Checks
     // Formerly Hourly-51
     {
@@ -112,7 +112,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURIV2(cCategory Category, ref bool Log)
+    public  string HOURIV2(cCategory Category, ref bool Log)
     // H2O Inclusive Reported Value Check
     // Formerly Hourly-55
     {
@@ -143,7 +143,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-      public static string HOURIV3(cCategory Category, ref bool Log)
+      public  string HOURIV3(cCategory Category, ref bool Log)
       // H2O Inclusive Monitor System Checks
       // Formerly Hourly-56
       {
@@ -229,7 +229,7 @@ namespace ECMPS.Checks.EmissionsChecks
           return ReturnVal;
       }
 
-    public static string HOURIV4(cCategory Category, ref bool Log)
+    public  string HOURIV4(cCategory Category, ref bool Log)
     // Check H2O Missing Data Period Lengths
     // Formerly Hourly-63
     {
@@ -276,7 +276,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURIV5(cCategory Category, ref bool Log)
+    public  string HOURIV5(cCategory Category, ref bool Log)
     // Check prior H2O QA'd Hours for MODC 07
     // Formerly Hourly-64
     {
@@ -307,7 +307,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string HOURIV6(cCategory Category, ref bool Log)
+    public  string HOURIV6(cCategory Category, ref bool Log)
     // H2O Inclusive Final Check
     // Formerly Hourly-57
     {

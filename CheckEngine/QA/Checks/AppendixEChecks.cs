@@ -78,7 +78,7 @@ namespace ECMPS.Checks.AppendixEChecks
 
     #region AppendixE Checks
 
-    public static string AppendixE1(cCategory Category, ref bool Log)
+    public  string AppendixE1(cCategory Category, ref bool Log)
     //Initialize Appendix E Test Variables
     {
       string ReturnVal = "";
@@ -104,7 +104,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE2(cCategory Category, ref bool Log)
+    public  string AppendixE2(cCategory Category, ref bool Log)
     //System Type Valid
     {
       string ReturnVal = "";
@@ -137,7 +137,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE3(cCategory Category, ref bool Log)
+    public  string AppendixE3(cCategory Category, ref bool Log)
     //Appendix E Test Reason Code Valid
     {
       string ReturnVal = "";
@@ -168,7 +168,7 @@ namespace ECMPS.Checks.AppendixEChecks
 
       return ReturnVal;
     }
-    public static string AppendixE4(cCategory Category, ref bool Log)
+    public  string AppendixE4(cCategory Category, ref bool Log)
     //Identification of Previously Reported Test or Test Number for Appendix E Test
     {
       string ReturnVal = "";
@@ -244,7 +244,7 @@ namespace ECMPS.Checks.AppendixEChecks
     }
 
 
-    public static string AppendixE5(cCategory Category, ref bool Log)
+    public  string AppendixE5(cCategory Category, ref bool Log)
     //Determine Run Sequence
     {
       string ReturnVal = "";
@@ -340,7 +340,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE6(cCategory Category, ref bool Log)
+    public  string AppendixE6(cCategory Category, ref bool Log)
     //Fuel System Consistency Check
     {
       string ReturnVal = "";
@@ -391,7 +391,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE7(cCategory Category, ref bool Log)
+    public  string AppendixE7(cCategory Category, ref bool Log)
     //Simultaneous Runs
     {
       string ReturnVal = "";
@@ -414,7 +414,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE8(cCategory Category, ref bool Log)
+    public  string AppendixE8(cCategory Category, ref bool Log)
     //Out of Sequence or Missing Runs
     {
       string ReturnVal = "";
@@ -461,7 +461,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE9(cCategory Category, ref bool Log)
+    public  string AppendixE9(cCategory Category, ref bool Log)
     //Concurrent Appendix E Tests
     {
       string ReturnVal = "";
@@ -509,7 +509,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE10(cCategory Category, ref bool Log)
+    public  string AppendixE10(cCategory Category, ref bool Log)
     //Appendix E Test Begin Time Consistent with Run Times
     {
       string ReturnVal = "";
@@ -539,7 +539,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE11(cCategory Category, ref bool Log)
+    public  string AppendixE11(cCategory Category, ref bool Log)
     //Appendix E Test End Time Consistent with Run Times
     {
       string ReturnVal = "";
@@ -569,7 +569,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE12(cCategory Category, ref bool Log)
+    public  string AppendixE12(cCategory Category, ref bool Log)
     //Initialize Variables for Operating Level
     {
       string ReturnVal = "";
@@ -590,7 +590,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE13(cCategory Category, ref bool Log)
+    public  string AppendixE13(cCategory Category, ref bool Log)
     //Operating Level for Run Valid
     {
       string ReturnVal = "";
@@ -613,7 +613,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE14(cCategory Category, ref bool Log)
+    public  string AppendixE14(cCategory Category, ref bool Log)
     //Mean Reference Value for Level Valid
     {
       string ReturnVal = "";
@@ -645,7 +645,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE15(cCategory Category, ref bool Log)
+    public  string AppendixE15(cCategory Category, ref bool Log)
     //F-Factor Valid
     {
       string ReturnVal = "";
@@ -668,7 +668,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE16(cCategory Category, ref bool Log)
+    public  string AppendixE16(cCategory Category, ref bool Log)
     //Average Hourly Heat Input for Level Valid
     {
       string ReturnVal = "";
@@ -691,7 +691,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE17(cCategory Category, ref bool Log)
+    public  string AppendixE17(cCategory Category, ref bool Log)
     //Initialize Variables for Run
     {
       string ReturnVal = "";
@@ -746,7 +746,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE18(cCategory Category, ref bool Log)
+    public  string AppendixE18(cCategory Category, ref bool Log)
     //Run Number Valid
     {
       string ReturnVal = "";
@@ -769,7 +769,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE19(cCategory Category, ref bool Log)
+    public  string AppendixE19(cCategory Category, ref bool Log)
     //Run Begin Time Valid
     {
       string ReturnVal = "";
@@ -790,7 +790,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE20(cCategory Category, ref bool Log)
+    public  string AppendixE20(cCategory Category, ref bool Log)
     //Run End Time Valid
     {
       string ReturnVal = "";
@@ -830,7 +830,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE21(cCategory Category, ref bool Log)
+    public  string AppendixE21(cCategory Category, ref bool Log)
     //Response Time Valid
     {
       string ReturnVal = "";
@@ -851,7 +851,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE22(cCategory Category, ref bool Log)
+    public  string AppendixE22(cCategory Category, ref bool Log)
     //Reference Value for Run Valid
     {
       string ReturnVal = "";
@@ -886,7 +886,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE23(cCategory Category, ref bool Log)
+    public  string AppendixE23(cCategory Category, ref bool Log)
     //Hourly Heat Input Rate for Run Valid
     {
       string ReturnVal = "";
@@ -912,7 +912,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE24(cCategory Category, ref bool Log)
+    public  string AppendixE24(cCategory Category, ref bool Log)
     //Total Heat Input for Run Valid
     {
       string ReturnVal = "";
@@ -935,7 +935,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE25(cCategory Category, ref bool Log)
+    public  string AppendixE25(cCategory Category, ref bool Log)
     //Determine Oil System Type 
     {
       string ReturnVal = "";
@@ -965,7 +965,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE26(cCategory Category, ref bool Log)
+    public  string AppendixE26(cCategory Category, ref bool Log)
     //Volumetric Oil Flow Valid
     {
       string ReturnVal = "";
@@ -992,7 +992,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE27(cCategory Category, ref bool Log)
+    public  string AppendixE27(cCategory Category, ref bool Log)
     //Volumetric Oil Units of Measure Valid
     {
       string ReturnVal = "";
@@ -1030,7 +1030,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE28(cCategory Category, ref bool Log)
+    public  string AppendixE28(cCategory Category, ref bool Log)
     //Oil Density Units of Measure Valid
     {
       string ReturnVal = "";
@@ -1078,7 +1078,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE29(cCategory Category, ref bool Log)
+    public  string AppendixE29(cCategory Category, ref bool Log)
     //Oil Density Valid
     {
       string ReturnVal = "";
@@ -1119,7 +1119,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE30(cCategory Category, ref bool Log)
+    public  string AppendixE30(cCategory Category, ref bool Log)
     //Mass Oil Flow Valid
     {
       string ReturnVal = "";
@@ -1170,7 +1170,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE31(cCategory Category, ref bool Log)
+    public  string AppendixE31(cCategory Category, ref bool Log)
     //Oil GCV Units of Measure Valid
     {
       string ReturnVal = "";
@@ -1228,7 +1228,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE32(cCategory Category, ref bool Log)
+    public  string AppendixE32(cCategory Category, ref bool Log)
     //Oil GCV Valid
     {
       string ReturnVal = "";
@@ -1263,7 +1263,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE33(cCategory Category, ref bool Log)
+    public  string AppendixE33(cCategory Category, ref bool Log)
     //Heat Input from Oil Valid
     {
       string ReturnVal = "";
@@ -1338,7 +1338,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE34(cCategory Category, ref bool Log)
+    public  string AppendixE34(cCategory Category, ref bool Log)
     //Gas Volume Valid
     {
       string ReturnVal = "";
@@ -1362,7 +1362,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE35(cCategory Category, ref bool Log)
+    public  string AppendixE35(cCategory Category, ref bool Log)
     //Gas GCV Valid
     {
       string ReturnVal = "";
@@ -1408,7 +1408,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE36(cCategory Category, ref bool Log)
+    public  string AppendixE36(cCategory Category, ref bool Log)
     //Heat Input for Gas Valid
     {
       string ReturnVal = "";
@@ -1468,7 +1468,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE37(cCategory Category, ref bool Log)
+    public  string AppendixE37(cCategory Category, ref bool Log)
     //Reported Total HI for Run Consistent with Recalculated Value
     {
       string ReturnVal = "";
@@ -1511,7 +1511,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE38(cCategory Category, ref bool Log)
+    public  string AppendixE38(cCategory Category, ref bool Log)
     //Insufficient Number of Runs
     {
       string ReturnVal = "";
@@ -1529,7 +1529,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE39(cCategory Category, ref bool Log)
+    public  string AppendixE39(cCategory Category, ref bool Log)
     //Heat Input Rate for Run Consistent with Operating Level
     {
       string ReturnVal = "";
@@ -1558,7 +1558,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE40(cCategory Category, ref bool Log)
+    public  string AppendixE40(cCategory Category, ref bool Log)
     //Reported Arithmetic Mean of Reference Values for Level Consistent with Recalculated Value
     {
       string ReturnVal = "";
@@ -1612,7 +1612,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE41(cCategory Category, ref bool Log)
+    public  string AppendixE41(cCategory Category, ref bool Log)
     //Reported Average Heat Input Rate for Level Consistent with Recalculated Value
     {
       string ReturnVal = "";
@@ -1664,7 +1664,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE42(cCategory Category, ref bool Log)
+    public  string AppendixE42(cCategory Category, ref bool Log)
     //Insufficient Number of Operating Levels
     {
       string ReturnVal = "";
@@ -1686,7 +1686,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE43(cCategory Category, ref bool Log)
+    public  string AppendixE43(cCategory Category, ref bool Log)
     //Appendix E Oil and Gas Records Consistent
     {
       string ReturnVal = "";
@@ -1754,7 +1754,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE44(cCategory Category, ref bool Log)
+    public  string AppendixE44(cCategory Category, ref bool Log)
     //Hourly Heat Input Rate Consistent with Recalculated Value
     {
       string ReturnVal = "";
@@ -1820,7 +1820,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE45(cCategory Category, ref bool Log)
+    public  string AppendixE45(cCategory Category, ref bool Log)
     //Gas Monitoring System ID Valid
     {
       string ReturnVal = "";
@@ -1839,7 +1839,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE46(cCategory Category, ref bool Log)
+    public  string AppendixE46(cCategory Category, ref bool Log)
     //Duplicate Appendix E Test
     {
       string ReturnVal = "";
@@ -1892,7 +1892,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE47(cCategory Category, ref bool Log)
+    public  string AppendixE47(cCategory Category, ref bool Log)
     //Appendix E Monitoring System ID Valid
     {
       string ReturnVal = "";
@@ -1911,7 +1911,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE48(cCategory Category, ref bool Log)
+    public  string AppendixE48(cCategory Category, ref bool Log)
     //Duplicate Appendix E Summary
     {
       string ReturnVal = "";
@@ -1942,7 +1942,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE49(cCategory Category, ref bool Log)
+    public  string AppendixE49(cCategory Category, ref bool Log)
     //Duplicate Appendix E Run
     {
       string ReturnVal = "";
@@ -1974,7 +1974,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE50(cCategory Category, ref bool Log)
+    public  string AppendixE50(cCategory Category, ref bool Log)
     //Duplicate Appendix E Oil Record
     {
       string ReturnVal = "";
@@ -2007,7 +2007,7 @@ namespace ECMPS.Checks.AppendixEChecks
 
       return ReturnVal;
     }
-    public static string AppendixE51(cCategory Category, ref bool Log)
+    public  string AppendixE51(cCategory Category, ref bool Log)
     //Duplicate Appendix E Gas Record
     {
       string ReturnVal = "";
@@ -2041,7 +2041,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE52(cCategory Category, ref bool Log)
+    public  string AppendixE52(cCategory Category, ref bool Log)
     //Maximum NOx Rate Consistent with NORX Default
     {
       string ReturnVal = "";
@@ -2092,7 +2092,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE53(cCategory Category, ref bool Log)
+    public  string AppendixE53(cCategory Category, ref bool Log)
     //Calculate Heat Input for Gas
     {
       string ReturnVal = "";
@@ -2119,7 +2119,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE54(cCategory Category, ref bool Log)
+    public  string AppendixE54(cCategory Category, ref bool Log)
     //Calculate Heat Input for Oil
     {
       string ReturnVal = "";
@@ -2199,7 +2199,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE55(cCategory Category, ref bool Log)
+    public  string AppendixE55(cCategory Category, ref bool Log)
     //Calculate Appendix E Run
     {
       string ReturnVal = "";
@@ -2284,7 +2284,7 @@ namespace ECMPS.Checks.AppendixEChecks
       return ReturnVal;
     }
 
-    public static string AppendixE56(cCategory Category, ref bool Log)
+    public  string AppendixE56(cCategory Category, ref bool Log)
     //Calculate Appendix E Summary
     {
       string ReturnVal = "";

@@ -59,7 +59,7 @@ namespace ECMPS.Checks.CalibrationChecks
 
 		#region Calibration Checks
 
-		public static string SEVNDAY1(cCategory Category, ref bool Log)
+		public  string SEVNDAY1(cCategory Category, ref bool Log)
 		//Initialize 7-Day Calibration Test Variables
 		{
 			string ReturnVal = "";
@@ -95,7 +95,7 @@ namespace ECMPS.Checks.CalibrationChecks
 		}
 
 
-		public static string SEVNDAY2(cCategory Category, ref bool Log)
+		public  string SEVNDAY2(cCategory Category, ref bool Log)
 		//7-Day Calibration Test Component Type Valid
 		{
 			string ReturnVal = "";
@@ -126,7 +126,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY3(cCategory Category, ref bool Log)
+		public  string SEVNDAY3(cCategory Category, ref bool Log)
 		//7-Day Calibration Test Reason Code Valid
 		{
 			string ReturnVal = "";
@@ -160,7 +160,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY4(cCategory Category, ref bool Log)
+		public  string SEVNDAY4(cCategory Category, ref bool Log)
 		//Aborted 7-Day Calibration Test Not Evaluated
 		{
 			string ReturnVal = "";
@@ -186,7 +186,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY5(cCategory Category, ref bool Log)
+		public  string SEVNDAY5(cCategory Category, ref bool Log)
 		//Identification of Previously Reported Test or Test Number for 7-Day Calibration Test
 		{
 			string ReturnVal = "";
@@ -322,7 +322,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY6(cCategory Category, ref bool Log)
+		public  string SEVNDAY6(cCategory Category, ref bool Log)
 		//Zero Injection Time Valid
 		{
 			string ReturnVal = "";
@@ -364,7 +364,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY7(cCategory Category, ref bool Log)
+		public  string SEVNDAY7(cCategory Category, ref bool Log)
 		//Upscale Injection Time Valid
 		{
 			string ReturnVal = "";
@@ -402,7 +402,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY8(cCategory Category, ref bool Log)
+		public  string SEVNDAY8(cCategory Category, ref bool Log)
 		//Zero Calibration Error Valid
 		{
 			string ReturnVal = "";
@@ -425,7 +425,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY9(cCategory Category, ref bool Log)
+		public  string SEVNDAY9(cCategory Category, ref bool Log)
 		//Upscale Calibration Error Valid
 		{
 			string ReturnVal = "";
@@ -448,7 +448,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY10(cCategory Category, ref bool Log)
+		public  string SEVNDAY10(cCategory Category, ref bool Log)
 		//Injection Upscale Gas Level Code Valid
 		{
 			string ReturnVal = "";
@@ -477,7 +477,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY11(cCategory Category, ref bool Log)
+		public  string SEVNDAY11(cCategory Category, ref bool Log)
 		//Zero Measured Value Valid
 		{
 			string ReturnVal = "";
@@ -499,7 +499,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY12(cCategory Category, ref bool Log)
+		public  string SEVNDAY12(cCategory Category, ref bool Log)
 		//Upscale Measured Value Valid
 		{
 			string ReturnVal = "";
@@ -521,7 +521,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY13(cCategory Category, ref bool Log)
+		public  string SEVNDAY13(cCategory Category, ref bool Log)
 		//Zero Reference Value Valid
 		{
 			string ReturnVal = "";
@@ -561,7 +561,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY14(cCategory Category, ref bool Log)
+		public  string SEVNDAY14(cCategory Category, ref bool Log)
 		//Upscale Reference Value Valid
 		{
 			string ReturnVal = "";
@@ -601,7 +601,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY15(cCategory Category, ref bool Log)
+		public  string SEVNDAY15(cCategory Category, ref bool Log)
 		//Calculate Zero Injection Results
 		{
 			string ReturnVal = "";
@@ -861,7 +861,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY16(cCategory Category, ref bool Log)
+		public  string SEVNDAY16(cCategory Category, ref bool Log)
 		//Calculate Upscale Injection Results
 		{
 			string ReturnVal = "";
@@ -1063,7 +1063,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY17(cCategory Category, ref bool Log)
+		public  string SEVNDAY17(cCategory Category, ref bool Log)
 		//Reported Zero Injection Results Consistent with Recalculated Values
 		{
 			string ReturnVal = "";
@@ -1148,7 +1148,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY18(cCategory Category, ref bool Log)
+		public  string SEVNDAY18(cCategory Category, ref bool Log)
 		//Reported Upscale Injection Results Consistent with Recalculated Values
 		{
 			string ReturnVal = "";
@@ -1243,7 +1243,7 @@ namespace ECMPS.Checks.CalibrationChecks
 		}
 
 
-		public static string SEVNDAY19(cCategory Category, ref bool Log)
+		public  string SEVNDAY19(cCategory Category, ref bool Log)
 		//7-Day Calibration Test Begin Time Consistent with Injection Times
 		{
 			string ReturnVal = "";
@@ -1272,7 +1272,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY20(cCategory Category, ref bool Log)
+		public  string SEVNDAY20(cCategory Category, ref bool Log)
 		//7-Day Calibration Test End Time Consistent with Injection Times
 		{
 			string ReturnVal = "";
@@ -1301,7 +1301,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY21(cCategory Category, ref bool Log)
+		public  string SEVNDAY21(cCategory Category, ref bool Log)
 		//Correct Number of Injections
 		{
 			string ReturnVal = "";
@@ -1322,7 +1322,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY22(cCategory Category, ref bool Log)
+		public  string SEVNDAY22(cCategory Category, ref bool Log)
 		//Upscale Gas Level Codes Valid
 		{
 			string ReturnVal = "";
@@ -1351,7 +1351,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY23(cCategory Category, ref bool Log)
+		public  string SEVNDAY23(cCategory Category, ref bool Log)
 		//Reference Values Consistent with Gas Level
 		{
 			string ReturnVal = "";
@@ -1378,7 +1378,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY24(cCategory Category, ref bool Log)
+		public  string SEVNDAY24(cCategory Category, ref bool Log)
 		//Zero Injection Reference Value Consistent with Span
 		{
 			string ReturnVal = "";
@@ -1388,7 +1388,7 @@ namespace ECMPS.Checks.CalibrationChecks
 				if (Category.GetCheckParameter("Calibration_Maximum_Zero_Reference_Value").ParameterValue != null &&
 					Category.GetCheckParameter("Test_Span_Value").ParameterValue != null)
 				{
-					if (QaParameters.Current7DayCalibrationTest.ComponentTypeCd != "HG")
+					if (qaParams.Current7DayCalibrationTest.ComponentTypeCd != "HG")
 					{
 						decimal MaxZeroRefVal = Convert.ToDecimal(Category.GetCheckParameter("Calibration_Maximum_Zero_Reference_Value").ParameterValue);
 						decimal TestSpanVal = Convert.ToDecimal(Category.GetCheckParameter("Test_Span_Value").ParameterValue);
@@ -1417,7 +1417,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY25(cCategory Category, ref bool Log)
+		public  string SEVNDAY25(cCategory Category, ref bool Log)
 		//Upscale Injection Reference Value Consistent with Span          
 		{
 			string ReturnVal = "";
@@ -1527,7 +1527,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY26(cCategory Category, ref bool Log)
+		public  string SEVNDAY26(cCategory Category, ref bool Log)
 		//Injections Performed at Appropriate Times
 		{
 			string ReturnVal = "";
@@ -1549,7 +1549,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY27(cCategory Category, ref bool Log)
+		public  string SEVNDAY27(cCategory Category, ref bool Log)
 		//Determination of Overall 7-Day Calibration Test Status
 		{
 			string ReturnVal = "";
@@ -1596,7 +1596,7 @@ namespace ECMPS.Checks.CalibrationChecks
 		}
 
 
-		public static string SEVNDAY28(cCategory Category, ref bool Log)
+		public  string SEVNDAY28(cCategory Category, ref bool Log)
 		//7-Day Calibration Test Result Code Valid
 		{
 			string ReturnVal = "";
@@ -1628,7 +1628,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY29(cCategory Category, ref bool Log)
+		public  string SEVNDAY29(cCategory Category, ref bool Log)
 		//Duplicate Calibration Test
 		{
 			string ReturnVal = "";
@@ -1680,7 +1680,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY30(cCategory Category, ref bool Log)
+		public  string SEVNDAY30(cCategory Category, ref bool Log)
 		//Component ID Valid
 		{
 			string ReturnVal = "";
@@ -1699,7 +1699,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY31(cCategory Category, ref bool Log)
+		public  string SEVNDAY31(cCategory Category, ref bool Log)
 		//Online Offline Indicator Valid
 		{
 			string ReturnVal = "";
@@ -1722,7 +1722,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY32(cCategory Category, ref bool Log)
+		public  string SEVNDAY32(cCategory Category, ref bool Log)
 		//Zero APS Indicator Valid
 		{
 			string ReturnVal = "";
@@ -1740,7 +1740,7 @@ namespace ECMPS.Checks.CalibrationChecks
 
 			return ReturnVal;
 		}
-		public static string SEVNDAY33(cCategory Category, ref bool Log)
+		public  string SEVNDAY33(cCategory Category, ref bool Log)
 		//Upscale APS Indicator Valid
 		{
 			string ReturnVal = "";
@@ -1759,7 +1759,7 @@ namespace ECMPS.Checks.CalibrationChecks
 			return ReturnVal;
 		}
 
-		public static string SEVNDAY34(cCategory Category, ref bool Log)
+		public  string SEVNDAY34(cCategory Category, ref bool Log)
 		//Calculate 7-Day Calibration
 		{
 			string ReturnVal = "";
@@ -1947,7 +1947,7 @@ namespace ECMPS.Checks.CalibrationChecks
 
 		#region Private Methods: Utilities
 
-		private static decimal GetTolerance(string ATestTypeCd, String AFieldDescription, cCategory ACategory)
+		private  decimal GetTolerance(string ATestTypeCd, String AFieldDescription, cCategory ACategory)
 		{
 			DataView ToleranceView = (DataView)ACategory.GetCheckParameter("Test_Tolerances_Cross_Check_Table").ParameterValue;
 			DataRowView ToleranceRow;

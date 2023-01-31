@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
@@ -35,6 +36,8 @@ namespace Epa.Camd.Quartz.Scheduler
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+
+      AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
       Utils.Configuration = Configuration;
 
@@ -178,6 +181,8 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddOptions();
 
+      EvaluationJobQueue.RegisterWithQuartz(services);
+      CheckEngineEvaluation.RegisterWithQuartz(services);
       BulkFileJobQueue.RegisterWithQuartz(services);
       AllowanceHoldingsBulkDataFiles.RegisterWithQuartz(services);
       AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
@@ -188,7 +193,6 @@ namespace Epa.Camd.Quartz.Scheduler
       BulkDataFileMaintenance.RegisterWithQuartz(services);
       ApportionedEmissionsBulkData.RegisterWithQuartz(services);
       SendMail.RegisterWithQuartz(services);
-      CheckEngineEvaluation.RegisterWithQuartz(services);
       RemoveExpiredUserSession.RegisterWithQuartz(services);
       RemoveExpiredCheckoutRecord.RegisterWithQuartz(services);
     }
@@ -250,6 +254,8 @@ namespace Epa.Camd.Quartz.Scheduler
           new CheckEngineEvaluationListener(Configuration),
           GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS)
       );
+
+      EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
 
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
       AllowanceHoldingsBulkDataFiles.ScheduleWithQuartz(scheduler, app);

@@ -34,7 +34,7 @@ namespace ECMPS.Checks.TEEChecks
 
         #region Cert Event Checks
 
-        public static string EXTEXEM1(cCategory Category, ref bool Log)
+        public  string EXTEXEM1(cCategory Category, ref bool Log)
         //Test Extension/Exemption Year and Quarter Valid
         {
             string ReturnVal = "";
@@ -71,7 +71,7 @@ namespace ECMPS.Checks.TEEChecks
             return ReturnVal;
         }
 
-        public static string EXTEXEM2(cCategory Category, ref bool Log)
+        public  string EXTEXEM2(cCategory Category, ref bool Log)
         //Test Extension/Exemption Extension or Exemption Code Valid
         {
             string ReturnVal = "";
@@ -121,7 +121,7 @@ namespace ECMPS.Checks.TEEChecks
             return ReturnVal;
         }
 
-        public static string EXTEXEM3(cCategory Category, ref bool Log)
+        public  string EXTEXEM3(cCategory Category, ref bool Log)
         //Test Extension/Exemption System Valid
         {
             string ReturnVal = "";
@@ -177,7 +177,7 @@ namespace ECMPS.Checks.TEEChecks
             return ReturnVal;
         }
 
-        public static string EXTEXEM4(cCategory Category, ref bool Log)
+        public  string EXTEXEM4(cCategory Category, ref bool Log)
         //Test Extension/Exemption Component Valid
         {
             string ReturnVal = "";
@@ -273,7 +273,7 @@ namespace ECMPS.Checks.TEEChecks
             return ReturnVal;
         }
 
-        public static string EXTEXEM5(cCategory Category, ref bool Log)
+        public  string EXTEXEM5(cCategory Category, ref bool Log)
         //Test Extension/Exemption Span Scale Valid
         {
             string ReturnVal = "";
@@ -300,7 +300,7 @@ namespace ECMPS.Checks.TEEChecks
             return ReturnVal;
         }
 
-        public static string EXTEXEM6(cCategory Category, ref bool Log)
+        public  string EXTEXEM6(cCategory Category, ref bool Log)
         //Test Extension/Exemption Fuel Code Valid
         {
             string ReturnVal = "";
@@ -347,7 +347,7 @@ namespace ECMPS.Checks.TEEChecks
             return ReturnVal;
         }
 
-        public static string EXTEXEM7(cCategory Category, ref bool Log)
+        public  string EXTEXEM7(cCategory Category, ref bool Log)
         //Test Extension/Exemption Hours Used Valid
         {
             string ReturnVal = "";
@@ -407,7 +407,7 @@ namespace ECMPS.Checks.TEEChecks
             return ReturnVal;
         }
 
-        public static string EXTEXEM8(cCategory Category, ref bool Log)
+        public  string EXTEXEM8(cCategory Category, ref bool Log)
         //Duplicate Test Extension/Exemption
         {
             string ReturnVal = "";
@@ -479,7 +479,7 @@ namespace ECMPS.Checks.TEEChecks
             return ReturnVal;
         }
 
-        public static string EXTEXEM9(cCategory Category, ref bool Log)
+        public  string EXTEXEM9(cCategory Category, ref bool Log)
         //MP Evaluation Check
         {
             string ReturnVal = "";

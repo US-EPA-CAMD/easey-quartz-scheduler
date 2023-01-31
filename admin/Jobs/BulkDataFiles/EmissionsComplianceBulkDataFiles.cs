@@ -36,14 +36,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
-      if (!await scheduler.CheckExists(WithJobKey()))
-      {
+      if(await scheduler.CheckExists(WithJobKey())){
+        await scheduler.DeleteJob(WithJobKey());
+      }
+
+      
         if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EMISSIONS_COMPLIANCE_SCHEDULE"] != null){
           app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EMISSIONS_COMPLIANCE_SCHEDULE"]));
         }
         else
           app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(WithCronSchedule("0 0/10 1-5 15 * ? *"));
-      }
+      
     }
 
     public EmissionsComplianceBulkDataFiles (NpgSqlContext dbContext, IConfiguration configuration)
@@ -88,11 +91,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         
         List<List<Object>> rowsPerPrg = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_emissions_based_compliance_bulk_files_to_generate", 2);
 
-        for(int row = 0; row < rowsPerPrg.Count; row++){
-          decimal year = (decimal) rowsPerPrg[row][0];
-          string urlParams = "year=" + year;
-
-          await _dbContext.CreateBulkFileJob(year, null, null, "Compliance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance?" + urlParams, "compliance/emissions-compliance-arpnox-" + year + ".csv", job_id, "ARP");
+        if(rowsPerPrg.Count > 0){
+          await this._dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance", "compliance/compliance-arpnox.csv", job_id, "ARP");
         }
                 
         jl.StatusCd = "COMPLETE";
@@ -135,7 +135,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       return TriggerBuilder.Create()
           .WithIdentity(WithTriggerKey())
           .WithDescription(Identity.TriggerDescription)
-          .WithCronSchedule(cronExpression);
+          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }

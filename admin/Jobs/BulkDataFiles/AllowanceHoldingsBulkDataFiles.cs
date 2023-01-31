@@ -36,14 +36,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
-      if (!await scheduler.CheckExists(WithJobKey()))
-      {
+      if(await scheduler.CheckExists(WithJobKey())){
+        await scheduler.DeleteJob(WithJobKey());
+      }
+
+
         if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_HOLDINGS_SCHEDULE"] != null){
           app.UseQuartzJob<AllowanceHoldingsBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_HOLDINGS_SCHEDULE"]));
         }
         else
           app.UseQuartzJob<AllowanceHoldingsBulkDataFiles>(WithCronSchedule("0 0/10 1-5 ? * * *"));
-      }
+      
     }
 
     public AllowanceHoldingsBulkDataFiles(NpgSqlContext dbContext, IConfiguration configuration)
@@ -60,7 +63,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       if(jobAlreadyExists.Count != 0){
         return; // Job already exists , do not run again
       }
-
       
       // Does data mart nightly exists for current date and has it completed
       if(Utils.Configuration["EASEY_DATAMART_BYPASS"] != "true"){
@@ -69,7 +71,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           return;
         }
       }
-      
 
       JobLog jl = new JobLog(); 
 
@@ -88,7 +89,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.JobLogs.Add(jl);
         await _dbContext.SaveChangesAsync();
         
-        List<List<Object>> programCodeRows = await this._dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code pc WHERE pc.active = 1", 1);
+        List<List<Object>> programCodeRows = await this._dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code pc WHERE pc.bulk_file_active = 1", 1);
         string[] programCodes = new string[programCodeRows.Count];
 
         for(int i = 0; i < programCodeRows.Count; i++){
@@ -143,7 +144,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       return TriggerBuilder.Create()
           .WithIdentity(WithTriggerKey())
           .WithDescription(Identity.TriggerDescription)
-          .WithCronSchedule(cronExpression);
+          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }

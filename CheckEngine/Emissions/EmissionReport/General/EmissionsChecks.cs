@@ -2,6 +2,7 @@
 using System.Data;
 
 using ECMPS.Checks.CheckEngine;
+using ECMPS.Checks.Em.Parameters;
 using ECMPS.Checks.EmissionsReport;
 using ECMPS.Checks.Parameters;
 using ECMPS.Checks.TypeUtilities;
@@ -31,13 +32,21 @@ namespace ECMPS.Checks.EmissionsChecks
       ReportingPeriod = emissionsReportProcess.CheckEngine.ReportingPeriod;
     }
 
+        protected cEmissionsChecks(cEmissionsReportProcess emissionsReportProcess, EmParameters emparams)
+        {
+            CheckEngine = emissionsReportProcess.CheckEngine;
+            EmManualParameters = emissionsReportProcess.EmManualParameters;
+            ReportingPeriod = emissionsReportProcess.CheckEngine.ReportingPeriod;
+            emParams = emparams;
+        }
 
-    /// <summary>
-    /// Creates an instance.
-    /// </summary>
-    /// <param name="checkEngine">The current check engine.</param>
-    /// <param name="emissionParameters">The current emission parameters.</param>
-    protected cEmissionsChecks(cCheckEngine checkEngine, cEmissionsCheckParameters emissionParameters)
+
+        /// <summary>
+        /// Creates an instance.
+        /// </summary>
+        /// <param name="checkEngine">The current check engine.</param>
+        /// <param name="emissionParameters">The current emission parameters.</param>
+        protected cEmissionsChecks(cCheckEngine checkEngine, cEmissionsCheckParameters emissionParameters)
     {
       CheckEngine = checkEngine;
       EmManualParameters = emissionParameters;
@@ -72,12 +81,13 @@ namespace ECMPS.Checks.EmissionsChecks
     /// </summary>
     public cReportingPeriod ReportingPeriod { get; private set; }
 
-    #endregion
+   public EmParameters emParams;
+        #endregion
 
 
-    #region Protected Properties: Check Parameters
+        #region Protected Properties: Check Parameters
 
-    protected cCheckParameterBooleanValue AnnualReportingRequirement { get { return EmManualParameters.AnnualReportingRequirement; } }
+        protected cCheckParameterBooleanValue AnnualReportingRequirement { get { return EmManualParameters.AnnualReportingRequirement; } }
     protected cCheckParameterBooleanValue DailyIntNoPriorTestCheckIndicator { get { return EmManualParameters.DailyIntNoPriorTestCheckIndicator; } }
     protected cCheckParameterBooleanValue DailyIntStatusRequired { get { return EmManualParameters.DailyIntStatusRequired; } }
     protected cCheckParameterBooleanValue EmTestDateValid { get { return EmManualParameters.EmTestDateValid; } }

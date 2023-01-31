@@ -23,13 +23,13 @@ namespace ECMPS.Checks.EmImport.Parameters
     {
         
         // Storage field for property 'Process'
-        private static cProcess _process;
+        private  cProcess _process;
         
         // Storage field for property 'Category'
-        private static cCategory _category;
+        private  cCategory _category;
         
         /// The process object for the current evaluation process.  Set by the actual process during initialization.
-        public static cProcess Process
+        public  cProcess Process
         {
             get
             {
@@ -38,7 +38,7 @@ namespace ECMPS.Checks.EmImport.Parameters
         }
         
         /// The current category object set at the beginning of the category's processing of checks and nulled at the end of the processing.
-        public static cCategory Category
+        public  cCategory Category
         {
             get
             {
@@ -53,11 +53,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// Component Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwComponentRow> ComponentRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwComponentRow> ComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmImportParameters.GetCheckParameter("Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -71,11 +71,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Component_Records", null);
+                    SetCheckParameter("Component_Records", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Component_Records", value.SourceView);
+                    SetCheckParameter("Component_Records", value.SourceView);
                 }
             }
         }
@@ -83,11 +83,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// The current Daily Test Summary record in the workspace.
         /// </summary>
-        public static ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmDailytestsummaryRow CurrentWorkspaceDailyTestSummary
+        public  ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmDailytestsummaryRow CurrentWorkspaceDailyTestSummary
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmImportParameters.GetCheckParameter("Current_Workspace_Daily_Test_Summary")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Workspace_Daily_Test_Summary")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -101,11 +101,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Current_Workspace_Daily_Test_Summary", null);
+                    SetCheckParameter("Current_Workspace_Daily_Test_Summary", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Current_Workspace_Daily_Test_Summary", value.SourceRow);
+                    SetCheckParameter("Current_Workspace_Daily_Test_Summary", value.SourceRow);
                 }
             }
         }
@@ -113,11 +113,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// The current WeeklyTest Summary record in the workspace.
         /// </summary>
-        public static ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmWeeklytestsummaryRow CurrentWorkspaceWeeklyTestSummary
+        public  ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmWeeklytestsummaryRow CurrentWorkspaceWeeklyTestSummary
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(EmImportParameters.GetCheckParameter("Current_Workspace_Weekly_Test_Summary")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Workspace_Weekly_Test_Summary")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -131,11 +131,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Current_Workspace_Weekly_Test_Summary", null);
+                    SetCheckParameter("Current_Workspace_Weekly_Test_Summary", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Current_Workspace_Weekly_Test_Summary", value.SourceRow);
+                    SetCheckParameter("Current_Workspace_Weekly_Test_Summary", value.SourceRow);
                 }
             }
         }
@@ -143,11 +143,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// Formula records with formula info included
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorFormulaRow> FormulaRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorFormulaRow> FormulaRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmImportParameters.GetCheckParameter("Formula_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Formula_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -161,11 +161,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Formula_Records", null);
+                    SetCheckParameter("Formula_Records", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Formula_Records", value.SourceView);
+                    SetCheckParameter("Formula_Records", value.SourceView);
                 }
             }
         }
@@ -173,86 +173,86 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// An invalid UnitID StackPipeID combination
         /// </summary>
-        public static string InvalidImportLocation
+        public  string InvalidImportLocation
         {
             get
             {
-                return ((string)(EmImportParameters.GetCheckParameter("Invalid_Import_Location")));
+                return ((string)(GetCheckParameter("Invalid_Import_Location")));
             }
             set
             {
-                EmImportParameters.SetCheckParameter("Invalid_Import_Location", value);
+                SetCheckParameter("Invalid_Import_Location", value);
             }
         }
         
         /// <summary>
         /// A list of SystemIDs in the workspace LTFF table that are not valid LTFF systems.
         /// </summary>
-        public static string InvalidLtffSystems
+        public  string InvalidLtffSystems
         {
             get
             {
-                return ((string)(EmImportParameters.GetCheckParameter("Invalid_LTFF_Systems")));
+                return ((string)(GetCheckParameter("Invalid_LTFF_Systems")));
             }
             set
             {
-                EmImportParameters.SetCheckParameter("Invalid_LTFF_Systems", value);
+                SetCheckParameter("Invalid_LTFF_Systems", value);
             }
         }
         
         /// <summary>
         /// A list of ComponentIDs in the workspace that are not present in the production database.
         /// </summary>
-        public static string MissingEmComponents
+        public  string MissingEmComponents
         {
             get
             {
-                return ((string)(EmImportParameters.GetCheckParameter("Missing_EM_Components")));
+                return ((string)(GetCheckParameter("Missing_EM_Components")));
             }
             set
             {
-                EmImportParameters.SetCheckParameter("Missing_EM_Components", value);
+                SetCheckParameter("Missing_EM_Components", value);
             }
         }
         
         /// <summary>
         /// A list of FormulaIDs in the workspace that are not present in the production database.
         /// </summary>
-        public static string MissingEmFormulas
+        public  string MissingEmFormulas
         {
             get
             {
-                return ((string)(EmImportParameters.GetCheckParameter("Missing_EM_Formulas")));
+                return ((string)(GetCheckParameter("Missing_EM_Formulas")));
             }
             set
             {
-                EmImportParameters.SetCheckParameter("Missing_EM_Formulas", value);
+                SetCheckParameter("Missing_EM_Formulas", value);
             }
         }
         
         /// <summary>
         /// A list of SystemIDs in the workspace that are not present in the production database.
         /// </summary>
-        public static string MissingEmSystems
+        public  string MissingEmSystems
         {
             get
             {
-                return ((string)(EmImportParameters.GetCheckParameter("Missing_EM_Systems")));
+                return ((string)(GetCheckParameter("Missing_EM_Systems")));
             }
             set
             {
-                EmImportParameters.SetCheckParameter("Missing_EM_Systems", value);
+                SetCheckParameter("Missing_EM_Systems", value);
             }
         }
         
         /// <summary>
         /// System Records at location.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow> MonitorSystemRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorSystemRow> MonitorSystemRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmImportParameters.GetCheckParameter("Monitor_System_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_System_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -266,11 +266,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Monitor_System_Records", null);
+                    SetCheckParameter("Monitor_System_Records", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Monitor_System_Records", value.SourceView);
+                    SetCheckParameter("Monitor_System_Records", value.SourceView);
                 }
             }
         }
@@ -278,11 +278,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// The component records and associated data in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaComponentsRow> WorkspaceComponentRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaComponentsRow> WorkspaceComponentRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmImportParameters.GetCheckParameter("Workspace_Component_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Component_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -296,11 +296,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Component_Records", null);
+                    SetCheckParameter("Workspace_Component_Records", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Component_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Component_Records", value.SourceView);
                 }
             }
         }
@@ -308,11 +308,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// All Daily Calibration records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.EmDailycalibrationRow> WorkspaceDailyCalibrationRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.EmDailycalibrationRow> WorkspaceDailyCalibrationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmImportParameters.GetCheckParameter("Workspace_Daily_Calibration_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Daily_Calibration_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -326,11 +326,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Daily_Calibration_Records", null);
+                    SetCheckParameter("Workspace_Daily_Calibration_Records", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Daily_Calibration_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Daily_Calibration_Records", value.SourceView);
                 }
             }
         }
@@ -338,11 +338,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// The min and max date values from the workspace DailyEmission, DailyTestSummary, and HourlyOperating tables
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmDatesRow> WorkspaceDateRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmDatesRow> WorkspaceDateRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmImportParameters.GetCheckParameter("Workspace_Date_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Date_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -356,11 +356,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Date_Records", null);
+                    SetCheckParameter("Workspace_Date_Records", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Date_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Date_Records", value.SourceView);
                 }
             }
         }
@@ -368,11 +368,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// All UnitIDs and StackPipeIDs in the emissions file
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmLocationsRow> WorkspaceEmLocationRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmLocationsRow> WorkspaceEmLocationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmImportParameters.GetCheckParameter("Workspace_EM_Location_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_EM_Location_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -386,11 +386,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_EM_Location_Records", null);
+                    SetCheckParameter("Workspace_EM_Location_Records", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_EM_Location_Records", value.SourceView);
+                    SetCheckParameter("Workspace_EM_Location_Records", value.SourceView);
                 }
             }
         }
@@ -398,11 +398,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// Formula records in the workspace tables
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmFormulasRow> WorkspaceFormulaRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmFormulasRow> WorkspaceFormulaRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmImportParameters.GetCheckParameter("Workspace_Formula_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Formula_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -416,11 +416,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Formula_Records", null);
+                    SetCheckParameter("Workspace_Formula_Records", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Formula_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Formula_Records", value.SourceView);
                 }
             }
         }
@@ -428,11 +428,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// Location records in the workspace tables
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaLocationsRow> WorkspaceLocationRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaLocationsRow> WorkspaceLocationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmImportParameters.GetCheckParameter("Workspace_Location_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Location_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -446,11 +446,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Location_Records", null);
+                    SetCheckParameter("Workspace_Location_Records", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Location_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Location_Records", value.SourceView);
                 }
             }
         }
@@ -458,11 +458,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// The Long Term Fuel Flow Records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmLongtermfuelflowRow> WorkspaceLongTermFuelFlowRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmLongtermfuelflowRow> WorkspaceLongTermFuelFlowRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmImportParameters.GetCheckParameter("Workspace_Long_Term_Fuel_Flow_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Long_Term_Fuel_Flow_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -476,11 +476,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Long_Term_Fuel_Flow_Records", null);
+                    SetCheckParameter("Workspace_Long_Term_Fuel_Flow_Records", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Long_Term_Fuel_Flow_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Long_Term_Fuel_Flow_Records", value.SourceView);
                 }
             }
         }
@@ -488,11 +488,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// All system identifiers in workspace TestSummary and QACertEvent tables or Emissions tables
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaSystemsRow> WorkspaceSystemRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckQaSystemsRow> WorkspaceSystemRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmImportParameters.GetCheckParameter("Workspace_System_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_System_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -506,11 +506,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_System_Records", null);
+                    SetCheckParameter("Workspace_System_Records", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_System_Records", value.SourceView);
+                    SetCheckParameter("Workspace_System_Records", value.SourceView);
                 }
             }
         }
@@ -518,11 +518,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// The records in the Unit table in the Workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmLocationsRow> WorkspaceUnitRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwCheckEmLocationsRow> WorkspaceUnitRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmImportParameters.GetCheckParameter("Workspace_Unit_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Unit_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -536,11 +536,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Unit_Records", null);
+                    SetCheckParameter("Workspace_Unit_Records", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Unit_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Unit_Records", value.SourceView);
                 }
             }
         }
@@ -548,11 +548,11 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// All Weekly System Integrity records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.EmWeeklysystemintegrityRow> WorkspaceWeeklySystemIntegrityRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.Table.EmWeeklysystemintegrityRow> WorkspaceWeeklySystemIntegrityRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(EmImportParameters.GetCheckParameter("Workspace_Weekly_System_Integrity_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_Weekly_System_Integrity_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -566,11 +566,11 @@ namespace ECMPS.Checks.EmImport.Parameters
             {
                 if ((value == null))
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Weekly_System_Integrity_Records", null);
+                    SetCheckParameter("Workspace_Weekly_System_Integrity_Records", null);
                 }
                 else
                 {
-                    EmImportParameters.SetCheckParameter("Workspace_Weekly_System_Integrity_Records", value.SourceView);
+                    SetCheckParameter("Workspace_Weekly_System_Integrity_Records", value.SourceView);
                 }
             }
         }
@@ -580,20 +580,20 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <returns>Returns the requested check parameter as an object if it exists, and as a null if it does not.</returns>
-        public static object GetCheckParameter(string parameterId)
+        public  object GetCheckParameter(string parameterId)
         {
             cLegacyCheckParameter checkParameter;
-            if (((EmImportParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                checkParameter = EmImportParameters.Category.GetCheckParameter(parameterId);
+                checkParameter = Category.GetCheckParameter(parameterId);
             }
             else
             {
-                if (((EmImportParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    checkParameter = EmImportParameters.Process.GetCheckParameter(parameterId);
+                    checkParameter = Process.GetCheckParameter(parameterId);
                 }
                 else
                 {
@@ -615,19 +615,19 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <param name="parameterValue">The value to which to set the parameter.</param>
-        public static void SetCheckParameter(string parameterId, object parameterValue)
+        public  void SetCheckParameter(string parameterId, object parameterValue)
         {
-            if (((EmImportParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                EmImportParameters.Category.SetCheckParameter(parameterId, parameterValue);
+                Category.SetCheckParameter(parameterId, parameterValue);
             }
             else
             {
-                if (((EmImportParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    EmImportParameters.Process.SetCheckParameter(parameterId, parameterValue);
+                    Process.SetCheckParameter(parameterId, parameterValue);
                 }
             }
         }
@@ -635,20 +635,20 @@ namespace ECMPS.Checks.EmImport.Parameters
         /// <summary>
         /// Initializes the values in the check parameter object.
         /// </summary>
-        public static void Init(cProcess process)
+        public  void Init(cProcess process)
         {
-            EmImportParameters._process = process;
-            EmImportParameters.Category = null;
-            EmImportParameters.RegisterParameters();
+            _process = process;
+            Category = null;
+            RegisterParameters();
         }
         
         /// <summary>
         /// Registers each check parameter.
         /// </summary>
-        public static void RegisterParameters()
+        public  void RegisterParameters()
         {
-            if (((EmImportParameters.Process == null) 
-                        || (EmImportParameters.Process.ProcessParameters == null)))
+            if (((Process == null) 
+                        || (Process.ProcessParameters == null)))
             {
                 return;
             }

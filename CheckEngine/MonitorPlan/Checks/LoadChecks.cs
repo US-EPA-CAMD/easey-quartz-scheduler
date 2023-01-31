@@ -44,7 +44,7 @@ namespace ECMPS.Checks.LoadChecks
 			//CheckProcedures[27] = new dCheckProcedure(LOAD27);
         }
 
-        public static string LOAD1(cCategory Category, ref bool Log) //Load Analysis Date Valid
+        public string LOAD1(cCategory Category, ref bool Log) //Load Analysis Date Valid
         {
             string ReturnVal = "";
             try
@@ -56,17 +56,17 @@ namespace ECMPS.Checks.LoadChecks
                     if (CurrentLoad["load_analysis_date"] != DBNull.Value)
                     {
                         int lmeMethodCount
-                            = MpParameters.MethodRecords.CountRows(new cFilterCondition[] {
+                            = mpParams.MethodRecords.CountRows(new cFilterCondition[] {
                                                                                             new cFilterCondition("METHOD_CD", 
                                                                                                                  "LME,LTFF,MHHI", 
                                                                                                                  eFilterConditionStringCompare.InList),
                                                                                             new cFilterCondition("BEGIN_DATEHOUR", 
                                                                                                                  eFilterConditionRelativeCompare.LessThanOrEqual,
-                                                                                                                 MpParameters.CurrentLoad.EndDatehour.HasValue ? MpParameters.CurrentLoad.EndDatehour.Value : DateTime.MaxValue,
+                                                                                                                 mpParams.CurrentLoad.EndDatehour.HasValue ? mpParams.CurrentLoad.EndDatehour.Value : DateTime.MaxValue,
                                                                                                                  eNullDateDefault.Min),
                                                                                             new cFilterCondition("END_DATEHOUR",
                                                                                                                  eFilterConditionRelativeCompare.GreaterThanOrEqual,
-                                                                                                                 MpParameters.CurrentLoad.BeginDatehour.Value,
+                                                                                                                 mpParams.CurrentLoad.BeginDatehour.Value,
                                                                                                                  eNullDateDefault.Max)
                                                                                           });
                         if (lmeMethodCount > 0)
@@ -125,7 +125,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD2(cCategory Category, ref bool Log) //Load Begin Date Valid
+        public string LOAD2(cCategory Category, ref bool Log) //Load Begin Date Valid
         {
             string ReturnVal = "";
             try
@@ -154,7 +154,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD3(cCategory Category, ref bool Log) //Load Begin Hour Valid
+        public string LOAD3(cCategory Category, ref bool Log) //Load Begin Hour Valid
         {
             string ReturnVal = "";
             try
@@ -183,7 +183,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD4(cCategory Category, ref bool Log) //Load End Date Valid
+        public string LOAD4(cCategory Category, ref bool Log) //Load End Date Valid
         {
             string ReturnVal = "";
             try
@@ -207,7 +207,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD5(cCategory Category, ref bool Log) //Load End Hour Valid
+        public string LOAD5(cCategory Category, ref bool Log) //Load End Hour Valid
         {
             string ReturnVal = "";
             try
@@ -230,7 +230,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD6(cCategory Category, ref bool Log) //Load Dates and Hours Consistent
+        public string LOAD6(cCategory Category, ref bool Log) //Load Dates and Hours Consistent
         {
             string ReturnVal = "";
             try
@@ -249,7 +249,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD7(cCategory Category, ref bool Log) //Load Active Status
+        public string LOAD7(cCategory Category, ref bool Log) //Load Active Status
         {
             string ReturnVal = "";
             try
@@ -272,7 +272,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD8(cCategory Category, ref bool Log) //Maximum Load Value Valid
+        public string LOAD8(cCategory Category, ref bool Log) //Maximum Load Value Valid
         {
             string ReturnVal = "";
             try
@@ -303,7 +303,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD9(cCategory Category, ref bool Log) //Load Upper Operation Boundary Valid
+        public string LOAD9(cCategory Category, ref bool Log) //Load Upper Operation Boundary Valid
         {
             string ReturnVal = "";
             try
@@ -332,7 +332,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD10(cCategory Category, ref bool Log) //Load Lower Operation Boundary Valid
+        public string LOAD10(cCategory Category, ref bool Log) //Load Lower Operation Boundary Valid
         {
             string ReturnVal = "";
             try
@@ -361,7 +361,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD11(cCategory Category, ref bool Log) //Load Normal Level Code Valid
+        public string LOAD11(cCategory Category, ref bool Log) //Load Normal Level Code Valid
         {
             string ReturnVal = "";
             try
@@ -399,7 +399,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD12(cCategory Category, ref bool Log) //Load Second Level Code Valid
+        public string LOAD12(cCategory Category, ref bool Log) //Load Second Level Code Valid
         {
             string ReturnVal = "";
             try
@@ -438,7 +438,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD13(cCategory Category, ref bool Log) //Maximum Load Units of Measure Valid
+        public string LOAD13(cCategory Category, ref bool Log) //Maximum Load Units of Measure Valid
         {
             string ReturnVal = "";
             try
@@ -484,7 +484,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD17(cCategory Category, ref bool Log) //Overlapping Loads
+        public string LOAD17(cCategory Category, ref bool Log) //Overlapping Loads
         {
             string ReturnVal = "";
             try
@@ -526,7 +526,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD19(cCategory Category, ref bool Log) //Load Units of Measure Consistent Across Linked Locations
+        public string LOAD19(cCategory Category, ref bool Log) //Load Units of Measure Consistent Across Linked Locations
         {
             string ReturnVal = "";
             try
@@ -587,7 +587,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD20(cCategory Category, ref bool Log) //Determine Load Requirement
+        public string LOAD20(cCategory Category, ref bool Log) //Determine Load Requirement
         {
             string ReturnVal = "";
             try
@@ -744,7 +744,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD21(cCategory Category, ref bool Log) //Second Normal Indicator Valid
+        public string LOAD21(cCategory Category, ref bool Log) //Second Normal Indicator Valid
         {
             string ReturnVal = "";
             try
@@ -771,7 +771,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD22(cCategory Category, ref bool Log) //Duplicate Load Records
+        public string LOAD22(cCategory Category, ref bool Log) //Duplicate Load Records
         {
             string ReturnVal = "";
             try
@@ -814,7 +814,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD23(cCategory Category, ref bool Log) //Load Analysis Date Valid
+        public string LOAD23(cCategory Category, ref bool Log) //Load Analysis Date Valid
         {
             string ReturnVal = "";
             try
@@ -838,7 +838,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD24(cCategory Category, ref bool Log) //Load Upper Operation Boundary Valid
+        public string LOAD24(cCategory Category, ref bool Log) //Load Upper Operation Boundary Valid
         {
             string ReturnVal = "";
             try
@@ -861,7 +861,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD25(cCategory Category, ref bool Log) //Load Lower Operation Boundary Valid
+        public string LOAD25(cCategory Category, ref bool Log) //Load Lower Operation Boundary Valid
         {
             string ReturnVal = "";
             try
@@ -884,7 +884,7 @@ namespace ECMPS.Checks.LoadChecks
             }
             return ReturnVal;
         }
-        public static string LOAD26(cCategory Category, ref bool Log) //Load Level Codes Valid
+        public string LOAD26(cCategory Category, ref bool Log) //Load Level Codes Valid
         {
             string ReturnVal = "";
             try

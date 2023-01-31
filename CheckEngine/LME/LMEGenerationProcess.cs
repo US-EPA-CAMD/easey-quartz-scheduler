@@ -20,7 +20,7 @@ namespace ECMPS.Checks.LME
     public class cLMEGenerationProcess : cProcess
     {
         # region Constructors
-
+        EmParameters emParams = new EmParameters();
         public cLMEGenerationProcess( cCheckEngine CheckEngine )
             : base( CheckEngine, "LMEGEN" )
         {
@@ -204,7 +204,7 @@ namespace ECMPS.Checks.LME
         /// </summary>
         protected override void InitStaticParameterClass()
         {
-          EmParameters.Init(this);
+            emParams.Init(this);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace ECMPS.Checks.LME
         /// <param name="category"></param>
         public override void SetStaticParameterCategory(cCategory category)
         {
-          EmParameters.Category = category;
+            emParams.Category = category;
         }
 
         #endregion

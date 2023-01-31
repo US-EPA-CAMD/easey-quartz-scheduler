@@ -38,9 +38,9 @@ namespace ECMPS.Checks.EmissionsChecks
     #endregion
 
 
-    #region Public Static Methods: Checks
+    #region Public  Methods: Checks
 
-    public static string DAILY1(cCategory Category, ref bool Log)
+    public  string DAILY1(cCategory Category, ref bool Log)
     // Determine Need for Daily CO2 Emissions Record        
     {
       string ReturnVal = "";
@@ -122,7 +122,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string DAILY2(cCategory Category, ref bool log)
+    public  string DAILY2(cCategory Category, ref bool log)
     // Check Total Daily Emissions Value        
     {
       string returnVal = "";
@@ -222,7 +222,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return returnVal;
     }
 
-    public static string DAILY3(cCategory Category, ref bool Log)
+    public  string DAILY3(cCategory Category, ref bool Log)
     // Check Adjusted Daily Emissions Value        
     {
       string ReturnVal = "";
@@ -258,7 +258,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string DAILY4(cCategory Category, ref bool Log)
+    public  string DAILY4(cCategory Category, ref bool Log)
     // Check Sorbent Related Emissions        
     {
       string ReturnVal = "";
@@ -285,7 +285,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string DAILY5(cCategory Category, ref bool Log)
+    public  string DAILY5(cCategory Category, ref bool Log)
     // Validate Presence of Adjusted Daily Emissions        
     {
       string ReturnVal = "";
@@ -321,7 +321,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string DAILY6(cCategory Category, ref bool Log)
+    public  string DAILY6(cCategory Category, ref bool Log)
     // Validate Presence of Sorbent Related Emissions        
     {
       string ReturnVal = "";
@@ -371,7 +371,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return ReturnVal;
     }
 
-    public static string DAILY7(cCategory category, ref bool log)
+    public  string DAILY7(cCategory category, ref bool log)
     // Check Unadjusted Daily Emissions Value        
     {
       string returnVal = "";
@@ -426,7 +426,7 @@ namespace ECMPS.Checks.EmissionsChecks
       return returnVal;
     }
 
-    public static string DAILY8(cCategory Category, ref bool Log)
+    public  string DAILY8(cCategory Category, ref bool Log)
     // Check Fuel in Daily Fuel Record        
     {
         string ReturnVal = "";
@@ -452,7 +452,7 @@ namespace ECMPS.Checks.EmissionsChecks
         return ReturnVal;
     }
 
-    public static string DAILY9(cCategory Category, ref bool Log)
+    public  string DAILY9(cCategory Category, ref bool Log)
     // Check Daily Fuel Feed  
     {
         string ReturnVal = "";
@@ -473,7 +473,7 @@ namespace ECMPS.Checks.EmissionsChecks
         return ReturnVal;
     }
 
-    public static string DAILY10(cCategory Category, ref bool Log)
+    public  string DAILY10(cCategory Category, ref bool Log)
     // Check Carbon Content Used      
     {
         string ReturnVal = "";
@@ -497,7 +497,7 @@ namespace ECMPS.Checks.EmissionsChecks
         return ReturnVal;
     }
 
-    public static string DAILY11(cCategory Category, ref bool Log)
+    public  string DAILY11(cCategory Category, ref bool Log)
     // Check Fuel Carbon Burned    
     {
         string ReturnVal = "";
@@ -550,7 +550,7 @@ namespace ECMPS.Checks.EmissionsChecks
         return ReturnVal;
     }
 
-    public static string DAILY12(cCategory Category, ref bool Log)
+    public  string DAILY12(cCategory Category, ref bool Log)
     // Intialize Daily Emissions        
     {
         string ReturnVal = "";
@@ -567,7 +567,7 @@ namespace ECMPS.Checks.EmissionsChecks
         return ReturnVal;
     }
 
-    public static string DAILY13(cCategory Category, ref bool Log)
+    public  string DAILY13(cCategory Category, ref bool Log)
     // Check Unadjusted Daily Emissions Value        
     {
         string ReturnVal = "";
@@ -620,7 +620,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
     #region Private Methods: Utilities
 
-    private static decimal GetTolerance(string AParameterCd, String AUom, cCategory ACategory)
+    private  decimal GetTolerance(string AParameterCd, String AUom, cCategory ACategory)
     {
       DataView ToleranceView = (DataView)ACategory.GetCheckParameter("Hourly_Emissions_Tolerances_Cross_Check_Table").ParameterValue;
       DataRowView ToleranceRow;

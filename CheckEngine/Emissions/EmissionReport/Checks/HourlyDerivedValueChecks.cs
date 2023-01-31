@@ -480,7 +480,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                     case "H2O":
                         {
-                            EmParameters.H2oDhvModc = EmParameters.CurrentDhvRecord.ModcCd;
+                            emParams.H2oDhvModc = emParams.CurrentDhvRecord.ModcCd;
                             if (CurrentDhvMethod == "MWD")
                             {
                                 if (!ModcCd.InList("01,02,03,04,05,06,07,08,09,10,12,21,53,54,55"))
@@ -697,7 +697,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                 QualityAssuredHours = Category.ModcHourCounts;
                         }
 
-                        string monSysId = ((Category.GetCheckParameter("Current_DHV_Parameter").ValueAsString() == "NOXR") && (EmParameters.PrimaryBypassActiveForHour == true))
+                        string monSysId = ((Category.GetCheckParameter("Current_DHV_Parameter").ValueAsString() == "NOXR") && (emParams.PrimaryBypassActiveForHour == true))
                                         ? CurrentDhvRecord["MON_SYS_ID"].AsString()
                                         : null;
 
@@ -779,7 +779,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
                         else
                         {
-                            string monSysId = ((CurrentDhvParameter == "NOXR") && (EmParameters.PrimaryBypassActiveForHour == true)) 
+                            string monSysId = ((CurrentDhvParameter == "NOXR") && (emParams.PrimaryBypassActiveForHour == true)) 
                                             ? CurrentDhvRecord["MON_SYS_ID"].AsString()
                                             : null;
 
@@ -797,7 +797,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     }
                     else if (Modc == "11")
                     {
-                        string monSysId = ((Category.GetCheckParameter("Current_DHV_Parameter").ValueAsString() == "NOXR") && (EmParameters.PrimaryBypassActiveForHour == true))
+                        string monSysId = ((Category.GetCheckParameter("Current_DHV_Parameter").ValueAsString() == "NOXR") && (emParams.PrimaryBypassActiveForHour == true))
                                         ? CurrentDhvRecord["MON_SYS_ID"].AsString()
                                         : null;
 
@@ -1887,7 +1887,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                         DataRowView CurrentDhvRecord = Category.GetCheckParameter("Current_DHV_Record").ValueAsDataRowView();
 
-                        if (EmParameters.DerivedHourlyModcStatus == true)
+                        if (emParams.DerivedHourlyModcStatus == true)
                         {
                             if (NoxcMonitorHourlyCount == 0)
                             {
@@ -3093,7 +3093,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                if ((EmParameters.DerivedHourlyModcStatus != false) && EmParameters.CurrentDhvRecord.ModcCd.InList("53,54,55"))
+                if ((emParams.DerivedHourlyModcStatus != false) && emParams.CurrentDhvRecord.ModcCd.InList("53,54,55"))
                 {
                     category.CheckCatalogResult = "A";
                 }

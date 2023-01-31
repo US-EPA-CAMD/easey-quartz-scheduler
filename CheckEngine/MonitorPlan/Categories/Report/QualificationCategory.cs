@@ -41,12 +41,15 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "MONITOR_QUALIFICATION";
     }
 
+    public cQualificationCategory(){}
+
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cQualificationCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cQualificationCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cQualificationCategory Category;
       string ErrorMessage = "";

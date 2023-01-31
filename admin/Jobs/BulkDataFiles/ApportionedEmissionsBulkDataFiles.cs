@@ -35,14 +35,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
-      if (!await scheduler.CheckExists(WithJobKey()))
-      {
+      if(await scheduler.CheckExists(WithJobKey())){
+        await scheduler.DeleteJob(WithJobKey());
+      }
+
+      
         if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_APPORTIONED_EMISSIONS_SCHEDULE"] != null){
           app.UseQuartzJob<ApportionedEmissionsBulkData>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_APPORTIONED_EMISSIONS_SCHEDULE"]));
         }
         else
           app.UseQuartzJob<ApportionedEmissionsBulkData>(WithCronSchedule("0 0/10 4-8 ? * * *"));
-      }
+      
     }
 
     public ApportionedEmissionsBulkData(NpgSqlContext dbContext, IConfiguration configuration)
@@ -167,7 +170,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       return TriggerBuilder.Create()
           .WithIdentity(WithTriggerKey())
           .WithDescription(Identity.TriggerDescription)
-          .WithCronSchedule(cronExpression);
+          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }

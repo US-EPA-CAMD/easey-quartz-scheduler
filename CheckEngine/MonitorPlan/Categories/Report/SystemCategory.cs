@@ -32,6 +32,8 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "MONITOR_SYSTEM";
     }
 
+    public cSystemCategory(){}
+
     #endregion
 
 
@@ -43,9 +45,9 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cSystemCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cSystemCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cSystemCategory Category;
       string ErrorMessage = "";

@@ -196,13 +196,13 @@ namespace ECMPS.Checks.TestChecks
                         {
                             category.CheckCatalogResult = "B";
                         }
-                        else if (!QaParameters.CurrentProtocolGasRecord.CylinderId.All(letter => "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-&.".Contains(letter.ToString())))
+                        else if (!qaParams.CurrentProtocolGasRecord.CylinderId.All(letter => "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-&.".Contains(letter.ToString())))
                         {
                             category.CheckCatalogResult = "C";
                         }
 						else
 						{
-							QaParameters.ProtocolGasCylinderIdList = QaParameters.ProtocolGasCylinderIdList.ListAdd(QaParameters.CurrentProtocolGasRecord.CylinderId, ",", true);
+							qaParams.ProtocolGasCylinderIdList = qaParams.ProtocolGasCylinderIdList.ListAdd(qaParams.CurrentProtocolGasRecord.CylinderId, ",", true);
 						}
 					}
 				}
@@ -1094,15 +1094,15 @@ namespace ECMPS.Checks.TestChecks
 
 			try
 			{
-				if (QaParameters.CurrentTest.TestTypeCd.InList("RATA,LINE,APPE,UNITDEF"))
+				if (qaParams.CurrentTest.TestTypeCd.InList("RATA,LINE,APPE,UNITDEF"))
 				{
-					if (QaParameters.ProtocolGasCylinderIdList != null)
+					if (qaParams.ProtocolGasCylinderIdList != null)
 					{
-						string[] IdArray = QaParameters.ProtocolGasCylinderIdList.Split(new char[] { ',' });
+						string[] IdArray = qaParams.ProtocolGasCylinderIdList.Split(new char[] { ',' });
 						int count;
 						foreach (string item in IdArray)
 						{
-							count = QaParameters.ProtocolGasCylinderIdList.ListItemCount(item, ",");
+							count = qaParams.ProtocolGasCylinderIdList.ListItemCount(item, ",");
 							if (count > 1)
 							{
 								category.CheckCatalogResult = "A";

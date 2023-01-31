@@ -382,12 +382,15 @@ namespace ECMPS.Checks.MonitorPlanImport
             AddSourceDataTable( "PROD_Facility", "FACILITY", "WHERE ORIS_CODE=" + mCheckEngine.ORISCode, mCheckEngine.DbDataConnection );
         }
 
+        private MpImportParameters mpImportParams = new MpImportParameters();
+
         /// <summary>
         /// This method initializes the class containing static properties enabling strongly typed access to the parameters used by the process.
         /// </summary>
         protected override void InitStaticParameterClass()
         {
-          MpImportParameters.Init(this);
+          
+          mpImportParams.Init(this);
         }
 
         /// <summary>
@@ -396,7 +399,7 @@ namespace ECMPS.Checks.MonitorPlanImport
         /// <param name="category"></param>
         public override void SetStaticParameterCategory(cCategory category)
         {
-          MpImportParameters.Category = category;
+          mpImportParams.Category = category;
         }
 
         #endregion

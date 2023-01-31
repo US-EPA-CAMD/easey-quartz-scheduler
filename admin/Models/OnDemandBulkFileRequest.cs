@@ -15,6 +15,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public bool emissionsCompliance {get; set;}
     public bool allowanceHoldings {get; set;}
 
+    public bool allowanceTransactions {get; set;}
+
     public bool generateStateMATS{get; set;}
 
     public bool generateQuarterMATS{get; set;}

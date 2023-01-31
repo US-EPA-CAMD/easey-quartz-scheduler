@@ -17,9 +17,11 @@ namespace ECMPS.Checks.EmissionsReport
     {
 
         #region Constructors
+         public EmParameters emParams;
 
-        public cRataStatusCategory(cCategory parentCategory, string categoryCd) : base(parentCategory, categoryCd)
+        public cRataStatusCategory(cCategory parentCategory, string categoryCd,  EmParameters emparams) : base(parentCategory, categoryCd)
         {
+            emParams = emparams;
         }
 
         #endregion
@@ -56,19 +58,19 @@ namespace ECMPS.Checks.EmissionsReport
 
         protected override void SetRecordIdentifier()
         {
-            RecordIdentifier = "Monitor System ID " + EmParameters.QaStatusSystemIdentifier;
+            RecordIdentifier = "Monitor System ID " + emParams.QaStatusSystemIdentifier;
         }
 
         protected override bool SetErrorSuppressValues()
         {
-            VwCeMpMonitorLocationRow currentMonitorPlanLocationRecord = EmParameters.CurrentMonitorPlanLocationRecord;
+            VwCeMpMonitorLocationRow currentMonitorPlanLocationRecord = emParams.CurrentMonitorPlanLocationRecord;
 
             if (currentMonitorPlanLocationRecord != null)
             {
                 long facId = CheckEngine.FacilityID;
                 string locationName = currentMonitorPlanLocationRecord.LocationName;
-                string matchDataValue = EmParameters.QaStatusHourlyParameterCode;
-                DateTime? matchTimeValue = EmParameters.CurrentOperatingDatehour;
+                string matchDataValue = emParams.QaStatusHourlyParameterCode;
+                DateTime? matchTimeValue = emParams.CurrentOperatingDatehour;
 
                 ErrorSuppressValues = new cErrorSuppressValues(facId, locationName, "PARAM", matchDataValue, "HOUR", matchTimeValue);
                 return true;

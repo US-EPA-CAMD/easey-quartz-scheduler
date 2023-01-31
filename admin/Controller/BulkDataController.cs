@@ -70,7 +70,7 @@ namespace Epa.Camd.Quartz.Scheduler
     private async Task<string[]> getProgramCodeList(string[] programCodes){
       string[] programCodesToReturn;
       if(programCodes.Length == 0 || programCodes[0] == "*"){
-        List<List<Object>> programCodeRows = await this.dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code pc WHERE pc.active = 1", 1);
+        List<List<Object>> programCodeRows = await this.dbContext.ExecuteSqlQuery("SELECT prg_cd FROM camdmd.program_code pc WHERE pc.bulk_file_active = 1", 1);
         programCodesToReturn = new string[programCodeRows.Count];
 
         for(int i = 0; i < programCodeRows.Count; i++){
@@ -119,7 +119,7 @@ namespace Epa.Camd.Quartz.Scheduler
     }
 
     private async Task generateMassEmissionsCompliance(){
-      await this.dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance", "compliance/emissions-compliance-arpnox.csv", job_id, "ARP");
+      await this.dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance", "compliance/compliance-arpnox.csv", job_id, "ARP");
     }
 
     private async Task generateMassAllowanceHoldingsJobs(string[] programCodes){
@@ -143,15 +143,14 @@ namespace Epa.Camd.Quartz.Scheduler
       }  
     }
 
-    private async Task generateMassAllowanceTransactionsJobs(int? from, int? to, string[] programCodes){
+    private async Task generateMassAllowanceTransactionsJobs(string[] programCodes){
       string[] codes = await getProgramCodeList(programCodes);
-      for(int? year = from; year <= to; year++){
-        foreach (string code in codes)
-        {
-          string urlParams = "transactionBeginDate=" + year + "-01-01&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
-          await this.dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code);
-        }  
-      }
+      decimal year = DateTime.Now.ToUniversalTime().Year - 1;
+      foreach (string code in codes)
+      {
+        string urlParams = "transactionBeginDate=1993-03-23&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
+        await this.dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-"+ code.ToLower() + ".csv", job_id, code);
+      }  
     }
 
     private async Task generateMassMATsForStates(int? from, int? to, string[] stateCodes){
@@ -263,15 +262,13 @@ namespace Epa.Camd.Quartz.Scheduler
           await generateMassAllowanceHoldingsJobs(massRequest.ProgramCodes);
         }
 
-        if(massRequest.ProgramCodes != null){
-          if(massRequest.To == null || massRequest.From == null){
-            Console.WriteLine("Generating Mass Allowance Compliance Data");
-            await generateMassAllowanceComplianceJobs(massRequest.ProgramCodes);
-          }
-          else if(massRequest.To != null && massRequest.From != null){
-            Console.WriteLine("Generating Mass Transactions Compliance Data");
-            await generateMassAllowanceTransactionsJobs(massRequest.From, massRequest.To, massRequest.ProgramCodes);
-          }
+        if(massRequest.allowanceTransactions){
+          await generateMassAllowanceTransactionsJobs(massRequest.ProgramCodes);
+        }
+
+        if(massRequest.ProgramCodes != null && (massRequest.To == null || massRequest.From == null)){
+          Console.WriteLine("Generating Mass Allowance Compliance Data");
+          await generateMassAllowanceComplianceJobs(massRequest.ProgramCodes);
         }
         else if(massRequest.To != null && massRequest.From != null){
           if(massRequest.SubTypes != null){

@@ -23,13 +23,13 @@ namespace ECMPS.Checks.LmeImport.Parameters
     {
         
         // Storage field for property 'Process'
-        private static cProcess _process;
+        private  cProcess _process;
         
         // Storage field for property 'Category'
-        private static cCategory _category;
+        private  cCategory _category;
         
         /// The process object for the current evaluation process.  Set by the actual process during initialization.
-        public static cProcess Process
+        public  cProcess Process
         {
             get
             {
@@ -38,7 +38,7 @@ namespace ECMPS.Checks.LmeImport.Parameters
         }
         
         /// The current category object set at the beginning of the category's processing of checks and nulled at the end of the processing.
-        public static cCategory Category
+        public  cCategory Category
         {
             get
             {
@@ -53,11 +53,11 @@ namespace ECMPS.Checks.LmeImport.Parameters
         /// <summary>
         /// The current LME hourly record and associated data in the workspace.
         /// </summary>
-        public static ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwEmLmeimportRow CurrentWorkspaceLmeHour
+        public  ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwEmLmeimportRow CurrentWorkspaceLmeHour
         {
             get
             {
-                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(LmeImportParameters.GetCheckParameter("Current_Workspace_LME_Hour")));
+                System.Data.DataRowView sourceRow = ((System.Data.DataRowView)(GetCheckParameter("Current_Workspace_LME_Hour")));
                 if ((sourceRow == null))
                 {
                     return null;
@@ -71,11 +71,11 @@ namespace ECMPS.Checks.LmeImport.Parameters
             {
                 if ((value == null))
                 {
-                    LmeImportParameters.SetCheckParameter("Current_Workspace_LME_Hour", null);
+                    SetCheckParameter("Current_Workspace_LME_Hour", null);
                 }
                 else
                 {
-                    LmeImportParameters.SetCheckParameter("Current_Workspace_LME_Hour", value.SourceRow);
+                    SetCheckParameter("Current_Workspace_LME_Hour", value.SourceRow);
                 }
             }
         }
@@ -83,11 +83,11 @@ namespace ECMPS.Checks.LmeImport.Parameters
         /// <summary>
         /// A lookup table of Fuel codes.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.FuelCodeRow> FuelCodeLookupTable
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.Table.FuelCodeRow> FuelCodeLookupTable
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(LmeImportParameters.GetCheckParameter("Fuel_Code_Lookup_Table")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Fuel_Code_Lookup_Table")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -101,11 +101,11 @@ namespace ECMPS.Checks.LmeImport.Parameters
             {
                 if ((value == null))
                 {
-                    LmeImportParameters.SetCheckParameter("Fuel_Code_Lookup_Table", null);
+                    SetCheckParameter("Fuel_Code_Lookup_Table", null);
                 }
                 else
                 {
-                    LmeImportParameters.SetCheckParameter("Fuel_Code_Lookup_Table", value.SourceView);
+                    SetCheckParameter("Fuel_Code_Lookup_Table", value.SourceView);
                 }
             }
         }
@@ -117,86 +117,86 @@ namespace ECMPS.Checks.LmeImport.Parameters
         ///
         ///[LocationName]: [BeginDate as YYYY-MM-DD] [BeginHour as HH24]
         /// </summary>
-        public static string LmeDuplicateHourlyOpImportList
+        public  string LmeDuplicateHourlyOpImportList
         {
             get
             {
-                return ((string)(LmeImportParameters.GetCheckParameter("LME_Duplicate_Hourly_Op_Import_List")));
+                return ((string)(GetCheckParameter("LME_Duplicate_Hourly_Op_Import_List")));
             }
             set
             {
-                LmeImportParameters.SetCheckParameter("LME_Duplicate_Hourly_Op_Import_List", value);
+                SetCheckParameter("LME_Duplicate_Hourly_Op_Import_List", value);
             }
         }
         
         /// <summary>
         /// The facility ID of the facility in the LME Import file in the workspace.
         /// </summary>
-        public static string LmeFacilityId
+        public  string LmeFacilityId
         {
             get
             {
-                return ((string)(LmeImportParameters.GetCheckParameter("LME_Facility_ID")));
+                return ((string)(GetCheckParameter("LME_Facility_ID")));
             }
             set
             {
-                LmeImportParameters.SetCheckParameter("LME_Facility_ID", value);
+                SetCheckParameter("LME_Facility_ID", value);
             }
         }
         
         /// <summary>
         /// The Monitoring Plan ID of the MP in the LME Import file in the workspace.
         /// </summary>
-        public static string LmeMpId
+        public  string LmeMpId
         {
             get
             {
-                return ((string)(LmeImportParameters.GetCheckParameter("LME_MP_ID")));
+                return ((string)(GetCheckParameter("LME_MP_ID")));
             }
             set
             {
-                LmeImportParameters.SetCheckParameter("LME_MP_ID", value);
+                SetCheckParameter("LME_MP_ID", value);
             }
         }
         
         /// <summary>
         /// The ORIS Code of the facility in the LME Import file in the workspace.
         /// </summary>
-        public static string LmeOrisCode
+        public  string LmeOrisCode
         {
             get
             {
-                return ((string)(LmeImportParameters.GetCheckParameter("LME_ORIS_Code")));
+                return ((string)(GetCheckParameter("LME_ORIS_Code")));
             }
             set
             {
-                LmeImportParameters.SetCheckParameter("LME_ORIS_Code", value);
+                SetCheckParameter("LME_ORIS_Code", value);
             }
         }
         
         /// <summary>
         /// The Reporting Period ID of the data in the LME Import file in the workspace.
         /// </summary>
-        public static string LmeReportingPeriodId
+        public  string LmeReportingPeriodId
         {
             get
             {
-                return ((string)(LmeImportParameters.GetCheckParameter("LME_Reporting_Period_ID")));
+                return ((string)(GetCheckParameter("LME_Reporting_Period_ID")));
             }
             set
             {
-                LmeImportParameters.SetCheckParameter("LME_Reporting_Period_ID", value);
+                SetCheckParameter("LME_Reporting_Period_ID", value);
             }
         }
         
         /// <summary>
         /// Records for Methods at Location
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorMethodRow> MethodRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMonitorMethodRow> MethodRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(LmeImportParameters.GetCheckParameter("Method_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Method_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -210,11 +210,11 @@ namespace ECMPS.Checks.LmeImport.Parameters
             {
                 if ((value == null))
                 {
-                    LmeImportParameters.SetCheckParameter("Method_Records", null);
+                    SetCheckParameter("Method_Records", null);
                 }
                 else
                 {
-                    LmeImportParameters.SetCheckParameter("Method_Records", value.SourceView);
+                    SetCheckParameter("Method_Records", value.SourceView);
                 }
             }
         }
@@ -222,11 +222,11 @@ namespace ECMPS.Checks.LmeImport.Parameters
         /// <summary>
         /// Records for MonitoringPlanLocation.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorLocationRow> MonitoringPlanLocationRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorLocationRow> MonitoringPlanLocationRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(LmeImportParameters.GetCheckParameter("Monitoring_Plan_Location_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitoring_Plan_Location_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -240,11 +240,11 @@ namespace ECMPS.Checks.LmeImport.Parameters
             {
                 if ((value == null))
                 {
-                    LmeImportParameters.SetCheckParameter("Monitoring_Plan_Location_Records", null);
+                    SetCheckParameter("Monitoring_Plan_Location_Records", null);
                 }
                 else
                 {
-                    LmeImportParameters.SetCheckParameter("Monitoring_Plan_Location_Records", value.SourceView);
+                    SetCheckParameter("Monitoring_Plan_Location_Records", value.SourceView);
                 }
             }
         }
@@ -252,11 +252,11 @@ namespace ECMPS.Checks.LmeImport.Parameters
         /// <summary>
         /// Monitor Plan Records
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorPlanRow> MonitorPlanRecords
+        public  CheckDataView<ECMPS.Checks.Data.Ecmps.Dbo.View.VwMpMonitorPlanRow> MonitorPlanRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(LmeImportParameters.GetCheckParameter("Monitor_Plan_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Monitor_Plan_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -270,11 +270,11 @@ namespace ECMPS.Checks.LmeImport.Parameters
             {
                 if ((value == null))
                 {
-                    LmeImportParameters.SetCheckParameter("Monitor_Plan_Records", null);
+                    SetCheckParameter("Monitor_Plan_Records", null);
                 }
                 else
                 {
-                    LmeImportParameters.SetCheckParameter("Monitor_Plan_Records", value.SourceView);
+                    SetCheckParameter("Monitor_Plan_Records", value.SourceView);
                 }
             }
         }
@@ -282,11 +282,11 @@ namespace ECMPS.Checks.LmeImport.Parameters
         /// <summary>
         /// All LME import records in the workspace.
         /// </summary>
-        public static CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwEmLmeimportRow> WorkspaceLmeRecords
+        public  CheckDataView<ECMPS.Checks.Data.EcmpsWs.Dbo.View.VwEmLmeimportRow> WorkspaceLmeRecords
         {
             get
             {
-                System.Data.DataView sourceView = ((System.Data.DataView)(LmeImportParameters.GetCheckParameter("Workspace_LME_Records")));
+                System.Data.DataView sourceView = ((System.Data.DataView)(GetCheckParameter("Workspace_LME_Records")));
                 if ((sourceView == null))
                 {
                     return null;
@@ -300,11 +300,11 @@ namespace ECMPS.Checks.LmeImport.Parameters
             {
                 if ((value == null))
                 {
-                    LmeImportParameters.SetCheckParameter("Workspace_LME_Records", null);
+                    SetCheckParameter("Workspace_LME_Records", null);
                 }
                 else
                 {
-                    LmeImportParameters.SetCheckParameter("Workspace_LME_Records", value.SourceView);
+                    SetCheckParameter("Workspace_LME_Records", value.SourceView);
                 }
             }
         }
@@ -314,20 +314,20 @@ namespace ECMPS.Checks.LmeImport.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <returns>Returns the requested check parameter as an object if it exists, and as a null if it does not.</returns>
-        public static object GetCheckParameter(string parameterId)
+        public  object GetCheckParameter(string parameterId)
         {
             cLegacyCheckParameter checkParameter;
-            if (((LmeImportParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                checkParameter = LmeImportParameters.Category.GetCheckParameter(parameterId);
+                checkParameter = Category.GetCheckParameter(parameterId);
             }
             else
             {
-                if (((LmeImportParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    checkParameter = LmeImportParameters.Process.GetCheckParameter(parameterId);
+                    checkParameter = Process.GetCheckParameter(parameterId);
                 }
                 else
                 {
@@ -349,19 +349,19 @@ namespace ECMPS.Checks.LmeImport.Parameters
         /// </summary>
         /// <param name="parameterId">The string id used to access the parameter in the check parameter collection.</param>
         /// <param name="parameterValue">The value to which to set the parameter.</param>
-        public static void SetCheckParameter(string parameterId, object parameterValue)
+        public  void SetCheckParameter(string parameterId, object parameterValue)
         {
-            if (((LmeImportParameters.Category == null) 
+            if (((Category == null) 
                         == false))
             {
-                LmeImportParameters.Category.SetCheckParameter(parameterId, parameterValue);
+                Category.SetCheckParameter(parameterId, parameterValue);
             }
             else
             {
-                if (((LmeImportParameters.Process == null) 
+                if (((Process == null) 
                             == false))
                 {
-                    LmeImportParameters.Process.SetCheckParameter(parameterId, parameterValue);
+                    Process.SetCheckParameter(parameterId, parameterValue);
                 }
             }
         }
@@ -369,20 +369,20 @@ namespace ECMPS.Checks.LmeImport.Parameters
         /// <summary>
         /// Initializes the values in the check parameter object.
         /// </summary>
-        public static void Init(cProcess process)
+        public  void Init(cProcess process)
         {
-            LmeImportParameters._process = process;
-            LmeImportParameters.Category = null;
-            LmeImportParameters.RegisterParameters();
+            _process = process;
+            Category = null;
+            RegisterParameters();
         }
         
         /// <summary>
         /// Registers each check parameter.
         /// </summary>
-        public static void RegisterParameters()
+        public  void RegisterParameters()
         {
-            if (((LmeImportParameters.Process == null) 
-                        || (LmeImportParameters.Process.ProcessParameters == null)))
+            if (((Process == null) 
+                        || (Process.ProcessParameters == null)))
             {
                 return;
             }

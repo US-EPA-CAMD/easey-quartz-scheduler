@@ -24,7 +24,7 @@ namespace ECMPS.Checks.QAEvaluation
     {
 
         #region Constructors
-
+        private QaParameters qaParams = new QaParameters();
         public cQAMain(cCheckEngine checkEngine)
             : base(checkEngine)
         {
@@ -64,6 +64,23 @@ namespace ECMPS.Checks.QAEvaluation
         #region Abstract Overrides
 
         /// <summary>
+        /// This method initializes the class containing static properties enabling strongly typed access to the parameters used by the process.
+        /// </summary>
+        protected override void InitStaticParameterClass()
+        {
+            qaParams.Init(this);
+        }
+
+        /// <summary>
+        /// Allows the setting of the current category for which parameters will be set.
+        /// </summary>
+        /// <param name="category"></param>
+        public override void SetStaticParameterCategory(cCategory category)
+        {
+            qaParams.Category = category;
+        }
+
+        /// <summary>
         /// Loads the Check Procedure delegates needed for a process code.
         /// </summary>
         /// <param name="checksDllPath">The path of the checks DLLs.</param>
@@ -77,10 +94,14 @@ namespace ECMPS.Checks.QAEvaluation
             {
                 Checks[21] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.LinearityChecks.cLinearityChecks").Unwrap();
+                Checks[21].setQaParamsForCheck(ref qaParams);
                 Checks[22] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.RATAChecks.cRATAChecks").Unwrap();
+                Checks[22].setQaParamsForCheck(ref qaParams);
                 Checks[23] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.CalibrationChecks.cCalibrationChecks").Unwrap();
+                Checks[23].setQaParamsForCheck(ref qaParams);
+
                 Checks[24] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.FlowLoadReferenceChecks.cFlowLoadReferenceChecks").Unwrap();
                 Checks[25] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
@@ -89,12 +110,16 @@ namespace ECMPS.Checks.QAEvaluation
                                                                    "ECMPS.Checks.CycleTimeChecks.cCycleTimeChecks").Unwrap();
                 Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
+                Checks[27].setQaParamsForCheck(ref qaParams);
+
                 Checks[29] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.OOCChecks.cOOCChecks").Unwrap();
                 Checks[30] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.FFACC_Checks.cFFACC_Checks").Unwrap();
+                Checks[30].setQaParamsForCheck(ref qaParams);
                 Checks[31] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.FFACCTTChecks.cFFACCTTChecks").Unwrap();
+                Checks[31].setQaParamsForCheck(ref qaParams);
                 Checks[32] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                    "ECMPS.Checks.FF2LBASChecks.cFF2LBASChecks").Unwrap();
                 Checks[33] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
@@ -120,12 +145,14 @@ namespace ECMPS.Checks.QAEvaluation
                                                                            true, 0, null,
                                                                            constructorArgements,
                                                                            null, null).Unwrap();
+                    Checks[53].setQaParamsForCheck(ref qaParams);
 
                     Checks[54] = (cPgvpChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
                                                                            "ECMPS.Checks.TestChecks.cPgvpChecks",
                                                                            true, 0, null,
                                                                            constructorArgements,
                                                                            null, null).Unwrap();
+                    Checks[54].setQaParamsForCheck(ref qaParams);
                 }
 
                 result = true;
@@ -365,11 +392,11 @@ namespace ECMPS.Checks.QAEvaluation
                             NewRow = QA.mCalculatedLinearitySummary.NewRow();
                             NewRow["LIN_SUM_ID"] = Convert.ToString(drLinearitySummary["lin_sum_id"]);
                         }
-                        NewRow["TEST_SUM_ID"] = TestSummaryId;
-                        NewRow["CALC_MEAN_REF_VALUE"] = null;
-                        NewRow["CALC_MEAN_MEASURED_VALUE"] = null;
-                        NewRow["CALC_APS_IND"] = null;
-                        NewRow["CALC_PERCENT_ERROR"] = null;
+
+                        NewRow["CALC_MEAN_REF_VALUE"] = DBNull.Value;
+                        NewRow["CALC_MEAN_MEASURED_VALUE"] = DBNull.Value;
+                        NewRow["CALC_APS_IND"] = DBNull.Value;
+                        NewRow["CALC_PERCENT_ERROR"] = DBNull.Value;
 
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
@@ -428,11 +455,10 @@ namespace ECMPS.Checks.QAEvaluation
                                     NewRow["LIN_SUM_ID"] = LinearitySummaryId;
                                 }
 
-                                NewRow["TEST_SUM_ID"] = TestSummaryId;
-                                NewRow["CALC_MEAN_REF_VALUE"] = null;
-                                NewRow["CALC_MEAN_MEASURED_VALUE"] = null;
-                                NewRow["CALC_APS_IND"] = null;
-                                NewRow["CALC_PERCENT_ERROR"] = null;
+                                NewRow["CALC_MEAN_REF_VALUE"] = DBNull.Value;
+                                NewRow["CALC_MEAN_MEASURED_VALUE"] = DBNull.Value;
+                                NewRow["CALC_APS_IND"] = DBNull.Value;
+                                NewRow["CALC_PERCENT_ERROR"] = DBNull.Value;
 
                                 NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
@@ -488,13 +514,14 @@ namespace ECMPS.Checks.QAEvaluation
                                             NewRow["LIN_SUM_ID"] = LinearitySummaryId;
                                         }
                                         if (QA.GetCheckParameter("Linearity_Summary_Mean_Reference_Value").ParameterValue != null)
-                                            NewRow["CALC_MEAN_REF_VALUE"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Linearity_Summary_Mean_Reference_Value").ParameterValue);
+                                            NewRow["CALC_MEAN_REF_VALUE"] = qaParams.LinearitySummaryMeanReferenceValue.DbValue();
                                         if (QA.GetCheckParameter("Linearity_Summary_Mean_Measured_Value").ParameterValue != null)
-                                            NewRow["CALC_MEAN_MEASURED_VALUE"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Linearity_Summary_Mean_Measured_Value").ParameterValue);
+                                            NewRow["CALC_MEAN_MEASURED_VALUE"] = qaParams.LinearitySummaryMeanMeasuredValue.DbValue();
                                         if (QA.GetCheckParameter("Linearity_Summary_APS_Indicator").ParameterValue != null)
-                                            NewRow["CALC_APS_IND"] = cDBConvert.ToString((int)QA.GetCheckParameter("Linearity_Summary_APS_Indicator").ParameterValue);
+                                            NewRow["CALC_APS_IND"] = qaParams.LinearitySummaryApsIndicator.DbValue();
                                         if (QA.GetCheckParameter("Linearity_Summary_Percent_Error").ParameterValue != null)
-                                            NewRow["CALC_PERCENT_ERROR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Linearity_Summary_Percent_Error").ParameterValue);
+
+                                            NewRow["CALC_PERCENT_ERROR"] = qaParams.LinearitySummaryPercentError.DbValue();
 
                                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
@@ -552,7 +579,8 @@ namespace ECMPS.Checks.QAEvaluation
                         }
 
                         if (QA.GetCheckParameter("Test_Span_Value").ParameterValue != null)
-                            NewRow["CALC_SPAN_VALUE"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Test_Span_Value").ParameterValue);
+                            NewRow["CALC_SPAN_VALUE"] = qaParams.TestSpanValue.DbValue();
+
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                         QA.mCalculatedTestSummary.Rows.Add(NewRow);
                         if (QA.CheckEngine.SeverityCd != eSeverityCd.FATAL)
@@ -571,25 +599,31 @@ namespace ECMPS.Checks.QAEvaluation
                             NewRow["TEST_TYPE_CD"] = cDBConvert.ToString(drTest["TEST_TYPE_CD"]);//"LINE" or "HGSI"
                             NewRow["MON_LOC_ID"] = (string)drTest["mon_loc_id"];
                             NewRow["COMPONENT_ID"] = (string)drTest["component_id"];
+                            
                             if (drTest["test_reason_cd"] != DBNull.Value)
                                 NewRow["TEST_REASON_CD"] = (string)drTest["test_reason_cd"];
+                            
                             NewRow["TEST_NUM"] = (string)drTest["test_num"];
+                            
                             if (drTest["span_scale_cd"] != DBNull.Value)
                                 NewRow["SPAN_SCALE"] = (string)drTest["span_scale_cd"];
+
                             if (drTest["begin_date"] != DBNull.Value)
-                                NewRow["BEGIN_DATE"] = cDBConvert.ToString((DateTime)drTest["begin_date"]);
+                                NewRow["BEGIN_DATE"] = (DateTime)drTest["begin_date"];
                             if (drTest["begin_hour"] != DBNull.Value)
-                                NewRow["BEGIN_HOUR"] = cDBConvert.ToString((Decimal)drTest["begin_hour"]);
+                                NewRow["BEGIN_HOUR"] = (Decimal)drTest["begin_hour"];
                             if (drTest["begin_min"] != DBNull.Value)
-                                NewRow["BEGIN_MIN"] = cDBConvert.ToString((Decimal)drTest["begin_min"]);
+                                NewRow["BEGIN_MIN"] = (Decimal)drTest["begin_min"];
+                            
                             if (drTest["end_date"] != DBNull.Value)
-                                NewRow["END_DATE"] = cDBConvert.ToString((DateTime)drTest["end_date"]);
+                                NewRow["END_DATE"] = (DateTime)drTest["end_date"];
                             if (drTest["end_hour"] != DBNull.Value)
-                                NewRow["END_HOUR"] = cDBConvert.ToString((Decimal)drTest["end_hour"]);
+                                NewRow["END_HOUR"] = (Decimal)drTest["end_hour"];
                             if (drTest["end_min"] != DBNull.Value)
-                                NewRow["END_MIN"] = cDBConvert.ToString((Decimal)drTest["end_min"]);
+                                NewRow["END_MIN"] = (Decimal)drTest["end_min"];
+                            
                             if (cDBConvert.ToInteger(drTest["gp_ind"]) == 1)
-                                NewRow["GP_IND"] = "1";
+                                NewRow["GP_IND"] = 1;
 
 
                             NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
@@ -630,7 +664,7 @@ namespace ECMPS.Checks.QAEvaluation
             cRATA RATA;
             cCheckParameterBands RATAChecks = GetCheckBands("RATA");
 
-            RATA = new cRATA(mCheckEngine, QA, MonitorLocationId, TestSummaryId);
+            RATA = new cRATA(mCheckEngine, QA, MonitorLocationId, TestSummaryId, ref qaParams);
             RATA.SetCheckBands(RATAChecks);
 
             RunResult = RATA.ProcessChecks();
@@ -1300,7 +1334,7 @@ namespace ECMPS.Checks.QAEvaluation
                     if (drTest["test_reason_cd"] != DBNull.Value)
                         NewRow["TEST_REASON_CD"] = (string)drTest["test_reason_cd"];
                     if (drTest["rpt_period_id"] != DBNull.Value)
-                        NewRow["RPT_PERIOD_ID"] = (int)drTest["rpt_period_id"];
+                        NewRow["RPT_PERIOD_ID"] = Decimal.ToInt64((decimal)drTest["rpt_period_id"]); // camdecmpswks.vw_qa_test_summary returns RPT_PERIOD_ID as a decimal for ECMPS 2.0
                     if (OpLevelCd != "")
                         NewRow["OP_LEVEL_CD"] = OpLevelCd;
 
@@ -1575,10 +1609,10 @@ namespace ECMPS.Checks.QAEvaluation
                     {
                         NewRow = QA.mCalculatedCalibrationInjection.NewRow();
                         NewRow["CAL_INJ_ID"] = cDBConvert.ToString(drCalibrationInjection["cal_inj_id"]);
-                        NewRow["CALC_ZERO_APS_IND"] = null;
-                        NewRow["CALC_ZERO_CAL_ERROR"] = null;
-                        NewRow["CALC_UPSCALE_APS_IND"] = null;
-                        NewRow["CALC_UPSCALE_CAL_ERROR"] = null;
+                        NewRow["CALC_ZERO_APS_IND"] = DBNull.Value;
+                        NewRow["CALC_ZERO_CAL_ERROR"] = DBNull.Value;
+                        NewRow["CALC_UPSCALE_APS_IND"] = DBNull.Value;
+                        NewRow["CALC_UPSCALE_CAL_ERROR"] = DBNull.Value;
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                         QA.mCalculatedCalibrationInjection.Rows.Add(NewRow);
                     }
@@ -1747,7 +1781,7 @@ namespace ECMPS.Checks.QAEvaluation
                     {
                         NewRow = QA.mCalculatedCycleTimeInjection.NewRow();
                         NewRow["CYCLE_TIME_INJ_ID"] = cDBConvert.ToString(drCycleTimeInjection["cycle_time_inj_id"]);
-                        NewRow["CALC_INJECTION_CYCLE_TIME"] = null;
+                        NewRow["CALC_INJECTION_CYCLE_TIME"] = DBNull.Value;
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                         QA.mCalculatedCycleTimeInjection.Rows.Add(NewRow);
                     }
@@ -1805,7 +1839,7 @@ namespace ECMPS.Checks.QAEvaluation
                             NewRow["CALC_TEST_RESULT_CD"] = CalcTestResCdParameter;
                         else
                             if (QA.CheckEngine.SeverityCd == eSeverityCd.FATAL || QA.CheckEngine.SeverityCd == eSeverityCd.CRIT1)
-                            NewRow["CALC_TEST_RESULT_CD"] = null;
+                            NewRow["CALC_TEST_RESULT_CD"] = DBNull.Value;
                         else
                                 if (QA.CheckEngine.SeverityCd == eSeverityCd.CRIT2)
                             NewRow["CALC_TEST_RESULT_CD"] = "INVALID";
@@ -1832,7 +1866,7 @@ namespace ECMPS.Checks.QAEvaluation
                                 NewRow["TEST_RESULT_CD"] = CalcTestResCdParameter;
                             else
                                 if (QA.CheckEngine.SeverityCd == eSeverityCd.CRIT1)
-                                NewRow["TEST_RESULT_CD"] = null;
+                                NewRow["TEST_RESULT_CD"] = DBNull.Value;
                             else
                                     if (QA.CheckEngine.SeverityCd == eSeverityCd.CRIT2)
                                 NewRow["TEST_RESULT_CD"] = "INVALID";
@@ -2186,7 +2220,7 @@ namespace ECMPS.Checks.QAEvaluation
                     if (drTest["end_hour"] != DBNull.Value)
                         NewRow["END_HOUR"] = cDBConvert.ToString((Decimal)drTest["end_hour"]);
                     if (drTest["rpt_period_id"] != DBNull.Value)
-                        NewRow["RPT_PERIOD_ID"] = (int)drTest["rpt_period_id"];
+                        NewRow["RPT_PERIOD_ID"] = Decimal.ToInt64((decimal)drTest["rpt_period_id"]); // camdecmpswks.vw_qa_test_summary returns RPT_PERIOD_ID as a decimal for ECMPS 2.0
                     NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                     QA.mQASupp.Rows.Add(NewRow);
                 }
@@ -3374,7 +3408,7 @@ namespace ECMPS.Checks.QAEvaluation
                             SourceDataTable = new DataTable("QASuppAttribute");
 
                             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.QA_SUPP_ATTRIBUTE " +
-                              "LEFT OUTER JOIN QA_SUPP_DATA ON QA_SUPP_ATTRIBUTE.QA_SUPP_DATA_ID = QA_SUPP_DATA.QA_SUPP_DATA_ID " +
+                              "LEFT OUTER JOIN camdecmpswks.QA_SUPP_DATA ON QA_SUPP_ATTRIBUTE.QA_SUPP_DATA_ID = QA_SUPP_DATA.QA_SUPP_DATA_ID " +
                               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM camdecmpswks.TEST_SUMMARY " +
                               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
                             // this defaults to 30 seconds if we don't override it
@@ -4168,23 +4202,6 @@ namespace ECMPS.Checks.QAEvaluation
             {
                 System.Diagnostics.Debug.WriteLine("cQAMain.InitSourceData failed: " + ex.Message);
             }
-        }
-
-        /// <summary>
-        /// This method initializes the class containing static properties enabling strongly typed access to the parameters used by the process.
-        /// </summary>
-        protected override void InitStaticParameterClass()
-        {
-            QaParameters.Init(this);
-        }
-
-        /// <summary>
-        /// Allows the setting of the current category for which parameters will be set.
-        /// </summary>
-        /// <param name="category"></param>
-        public override void SetStaticParameterCategory(cCategory category)
-        {
-            QaParameters.Category = category;
         }
 
         #endregion

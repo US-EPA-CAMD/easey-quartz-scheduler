@@ -41,12 +41,14 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       TableName = "MONITOR_QUALIFICATION_PCT";
     }
 
+    public cQualificationPercentCategory(){}
+
     #endregion
 
 
-    #region Public Static Methods
+    #region Public  Methods
 
-    public static cQualificationPercentCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public  cQualificationPercentCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
       cQualificationPercentCategory Category;
       string ErrorMessage = "";

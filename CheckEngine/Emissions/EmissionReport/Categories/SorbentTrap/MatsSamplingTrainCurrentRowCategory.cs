@@ -21,17 +21,19 @@ namespace ECMPS.Checks.EmissionsReport
   public class MatsSamplingTrainCurrentRowCategory : cCategoryHourly
   {
 
-    #region Constructors
+        #region Constructors
+        public EmParameters emParams;
 
-    /// <summary>
-    /// Creates a category object to represent the category indicated by the passed code, 
-    /// and links that object to a parent category object.
-    /// </summary>
-    /// <param name="parentCategory">The parent category.</param>
-    /// <param name="categoryCd">The category code of the category the object will represent.</param>
-    public MatsSamplingTrainCurrentRowCategory(cCategory parentCategory, string categoryCd)
+        /// <summary>
+        /// Creates a category object to represent the category indicated by the passed code, 
+        /// and links that object to a parent category object.
+        /// </summary>
+        /// <param name="parentCategory">The parent category.</param>
+        /// <param name="categoryCd">The category code of the category the object will represent.</param>
+        public MatsSamplingTrainCurrentRowCategory(cCategory parentCategory, string categoryCd, EmParameters emparams)        
       : base(parentCategory, categoryCd)
     {
+            emParams = emparams;
     }
 
     #endregion
@@ -55,8 +57,8 @@ namespace ECMPS.Checks.EmissionsReport
 
     protected override void SetRecordIdentifier()
     {
-      if (EmParameters.MatsSamplingTrainRecord != null)
-        RecordIdentifier = EmParameters.MatsSamplingTrainRecord.Description;
+      if (emParams.MatsSamplingTrainRecord != null)
+        RecordIdentifier = emParams.MatsSamplingTrainRecord.Description;
       else
         RecordIdentifier = null;
     }
@@ -67,12 +69,12 @@ namespace ECMPS.Checks.EmissionsReport
     /// <returns></returns>
     protected override bool SetErrorSuppressValues()
     {
-      if (EmParameters.MatsSamplingTrainRecord != null)
+      if (emParams.MatsSamplingTrainRecord != null)
       {
         long facId = CheckEngine.FacilityID;
-        string locationName = EmParameters.MatsSamplingTrainRecord.LocationName;
-        string matchDataValue = EmParameters.MatsSamplingTrainRecord.ComponentIdentifier;
-        DateTime? matchTimeValue = EmParameters.MatsSamplingTrainRecord.BeginDatehour;
+        string locationName = emParams.MatsSamplingTrainRecord.LocationName;
+        string matchDataValue = emParams.MatsSamplingTrainRecord.ComponentIdentifier;
+        DateTime? matchTimeValue = emParams.MatsSamplingTrainRecord.BeginDatehour;
 
         ErrorSuppressValues = new cErrorSuppressValues(facId, locationName, "PARAM", matchDataValue, "HOUR", matchTimeValue);
         return true;

@@ -46,26 +46,26 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region Checks 1-10
 
-        public static string MATSCHV1(cCategory Category, ref bool Log)
+        public  string MATSCHV1(cCategory Category, ref bool Log)
         //This check sets generic parameters and output parameters for subsequent Calculated hourly checks for HGRE.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("6.24E-11");
-                EmParameters.CurrentDhvParameter = EmParameters.MatsHgDhvParameter;
-                EmParameters.CurrentDhvRecordValid = EmParameters.MatsHgDhvValid;
-                EmParameters.MatsDhvRecord = EmParameters.MatsHgDhvRecord;
-                EmParameters.MatsMhvCalculatedValue = EmParameters.MatsMhvCalculatedHgcValue;
-                EmParameters.MatsMhvRecord = EmParameters.MatsHgcMhvRecord;
-                EmParameters.MatsMoistureEquationList = "A-3";
+                emParams.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("6.24E-11");
+                emParams.CurrentDhvParameter = emParams.MatsHgDhvParameter;
+                emParams.CurrentDhvRecordValid = emParams.MatsHgDhvValid;
+                emParams.MatsDhvRecord = emParams.MatsHgDhvRecord;
+                emParams.MatsMhvCalculatedValue = emParams.MatsMhvCalculatedHgcValue;
+                emParams.MatsMhvRecord = emParams.MatsHgcMhvRecord;
+                emParams.MatsMoistureEquationList = "A-3";
 
-                EmParameters.MatsDhvMeasuredModcList = "36,39";
-                EmParameters.MatsDhvUnavailableModcList = "38";
+                emParams.MatsDhvMeasuredModcList = "36,39";
+                emParams.MatsDhvUnavailableModcList = "38";
 
-                EmParameters.FinalConversionFactor = (EmParameters.CurrentHourlyOpRecord.MatsHourLoad.Default(0m) != 0)
-                                                   ? 1000 / EmParameters.CurrentHourlyOpRecord.MatsHourLoad.Value
+                emParams.FinalConversionFactor = (emParams.CurrentHourlyOpRecord.MatsHourLoad.Default(0m) != 0)
+                                                   ? 1000 / emParams.CurrentHourlyOpRecord.MatsHourLoad.Value
                                                    : (decimal?) null;
             }
             catch (Exception ex)
@@ -76,26 +76,26 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string MATSCHV2(cCategory Category, ref bool Log)
+        public  string MATSCHV2(cCategory Category, ref bool Log)
         //This check sets generic parameters and output parameters for subsequent Calculated hourly checks for HCLRE. 
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("9.43E-8");
-                EmParameters.CurrentDhvParameter = EmParameters.MatsHclDhvParameter;
-                EmParameters.CurrentDhvRecordValid = EmParameters.MatsHclDhvValid;
-                EmParameters.MatsDhvRecord = EmParameters.MatsHclDhvRecord;
-                EmParameters.MatsMhvCalculatedValue = EmParameters.MatsMhvCalculatedHclcValue;
-                EmParameters.MatsMhvRecord = EmParameters.MatsHclcMhvRecord;
-                EmParameters.MatsMoistureEquationList = "HC-3";
+                emParams.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("9.43E-8");
+                emParams.CurrentDhvParameter = emParams.MatsHclDhvParameter;
+                emParams.CurrentDhvRecordValid = emParams.MatsHclDhvValid;
+                emParams.MatsDhvRecord = emParams.MatsHclDhvRecord;
+                emParams.MatsMhvCalculatedValue = emParams.MatsMhvCalculatedHclcValue;
+                emParams.MatsMhvRecord = emParams.MatsHclcMhvRecord;
+                emParams.MatsMoistureEquationList = "HC-3";
 
-                EmParameters.MatsDhvMeasuredModcList = "36,39";
-                EmParameters.MatsDhvUnavailableModcList = "38";
+                emParams.MatsDhvMeasuredModcList = "36,39";
+                emParams.MatsDhvUnavailableModcList = "38";
 
-                EmParameters.FinalConversionFactor = (EmParameters.CurrentHourlyOpRecord.MatsHourLoad.Default(0m) != 0)
-                                                   ? 1 / EmParameters.CurrentHourlyOpRecord.MatsHourLoad.Value
+                emParams.FinalConversionFactor = (emParams.CurrentHourlyOpRecord.MatsHourLoad.Default(0m) != 0)
+                                                   ? 1 / emParams.CurrentHourlyOpRecord.MatsHourLoad.Value
                                                    : (decimal?)null;
             }
             catch (Exception ex)
@@ -106,26 +106,26 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string MATSCHV3(cCategory Category, ref bool Log)
+        public  string MATSCHV3(cCategory Category, ref bool Log)
         //This check sets generic parameters and output parameters for subsequent Calculated hourly checks for HFRE.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("5.18E-8");
-                EmParameters.CurrentDhvParameter = EmParameters.MatsHfDhvParameter;
-                EmParameters.CurrentDhvRecordValid = EmParameters.MatsHfDhvValid;
-                EmParameters.MatsDhvRecord = EmParameters.MatsHfDhvRecord;
-                EmParameters.MatsMhvCalculatedValue = EmParameters.MatsMhvCalculatedHfcValue;
-                EmParameters.MatsMhvRecord = EmParameters.MatsHfcMhvRecord;
-                EmParameters.MatsMoistureEquationList = "HF-3";
+                emParams.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("5.18E-8");
+                emParams.CurrentDhvParameter = emParams.MatsHfDhvParameter;
+                emParams.CurrentDhvRecordValid = emParams.MatsHfDhvValid;
+                emParams.MatsDhvRecord = emParams.MatsHfDhvRecord;
+                emParams.MatsMhvCalculatedValue = emParams.MatsMhvCalculatedHfcValue;
+                emParams.MatsMhvRecord = emParams.MatsHfcMhvRecord;
+                emParams.MatsMoistureEquationList = "HF-3";
 
-                EmParameters.MatsDhvMeasuredModcList = "36,39";
-                EmParameters.MatsDhvUnavailableModcList = "38";
+                emParams.MatsDhvMeasuredModcList = "36,39";
+                emParams.MatsDhvUnavailableModcList = "38";
 
-                EmParameters.FinalConversionFactor = (EmParameters.CurrentHourlyOpRecord.MatsHourLoad.Default(0m) != 0)
-                                                   ? 1 / EmParameters.CurrentHourlyOpRecord.MatsHourLoad.Value
+                emParams.FinalConversionFactor = (emParams.CurrentHourlyOpRecord.MatsHourLoad.Default(0m) != 0)
+                                                   ? 1 / emParams.CurrentHourlyOpRecord.MatsHourLoad.Value
                                                    : (decimal?)null;
             }
             catch (Exception ex)
@@ -136,24 +136,24 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string MATSCHV4(cCategory Category, ref bool Log)
+        public  string MATSCHV4(cCategory Category, ref bool Log)
         //This check sets generic parameters and output parameters for subsequent Calculated hourly checks for SO2RE.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("1.66E-7");
-                EmParameters.CurrentDhvParameter = EmParameters.MatsSo2DhvParameter;
-                EmParameters.CurrentDhvRecordValid = EmParameters.MatsSo2DhvValid;
-                EmParameters.MatsDhvRecord = EmParameters.MatsSo2DhvRecord;
-                EmParameters.MatsMoistureEquationList = "S-3";
+                emParams.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("1.66E-7");
+                emParams.CurrentDhvParameter = emParams.MatsSo2DhvParameter;
+                emParams.CurrentDhvRecordValid = emParams.MatsSo2DhvValid;
+                emParams.MatsDhvRecord = emParams.MatsSo2DhvRecord;
+                emParams.MatsMoistureEquationList = "S-3";
 
-                EmParameters.MatsDhvMeasuredModcList = "36,39";
-                EmParameters.MatsDhvUnavailableModcList = "38";
+                emParams.MatsDhvMeasuredModcList = "36,39";
+                emParams.MatsDhvUnavailableModcList = "38";
 
-                EmParameters.FinalConversionFactor = (EmParameters.CurrentHourlyOpRecord.MatsHourLoad.Default(0m) != 0)
-                                                   ? 1 / EmParameters.CurrentHourlyOpRecord.MatsHourLoad.Value
+                emParams.FinalConversionFactor = (emParams.CurrentHourlyOpRecord.MatsHourLoad.Default(0m) != 0)
+                                                   ? 1 / emParams.CurrentHourlyOpRecord.MatsHourLoad.Value
                                                    : (decimal?)null;
             }
             catch (Exception ex)
@@ -164,25 +164,25 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string MATSCHV5(cCategory Category, ref bool Log)
+        public  string MATSCHV5(cCategory Category, ref bool Log)
         //This check sets generic parameters and output parameters for subsequent Calculated hourly checks for HGRH. 
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("6.24E-11");
-                EmParameters.CurrentDhvParameter = EmParameters.MatsHgDhvParameter;
-                EmParameters.CurrentDhvRecordValid = EmParameters.MatsHgDhvValid;
-                EmParameters.MatsDhvRecord = EmParameters.MatsHgDhvRecord;
-                EmParameters.MatsMhvCalculatedValue = EmParameters.MatsMhvCalculatedHgcValue;
-                EmParameters.MatsMhvRecord = EmParameters.MatsHgcMhvRecord;
-                EmParameters.MatsMoistureEquationList = "19-3,19-3D,19-4,19-5,19-8,19-9";
+                emParams.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("6.24E-11");
+                emParams.CurrentDhvParameter = emParams.MatsHgDhvParameter;
+                emParams.CurrentDhvRecordValid = emParams.MatsHgDhvValid;
+                emParams.MatsDhvRecord = emParams.MatsHgDhvRecord;
+                emParams.MatsMhvCalculatedValue = emParams.MatsMhvCalculatedHgcValue;
+                emParams.MatsMhvRecord = emParams.MatsHgcMhvRecord;
+                emParams.MatsMoistureEquationList = "19-3,19-3D,19-4,19-5,19-8,19-9";
 
-                EmParameters.MatsDhvMeasuredModcList = "36,37";
-                EmParameters.MatsDhvUnavailableModcList = "38";
+                emParams.MatsDhvMeasuredModcList = "36,37";
+                emParams.MatsDhvUnavailableModcList = "38";
 
-                EmParameters.FinalConversionFactor = 1000000m;
+                emParams.FinalConversionFactor = 1000000m;
             }
             catch (Exception ex)
             {
@@ -192,25 +192,25 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string MATSCHV6(cCategory Category, ref bool Log)
+        public  string MATSCHV6(cCategory Category, ref bool Log)
         //This check sets generic parameters and output parameters for subsequent Calculated hourly checks for HCLRH. 
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("9.43E-8");
-                EmParameters.CurrentDhvParameter = EmParameters.MatsHclDhvParameter;
-                EmParameters.CurrentDhvRecordValid = EmParameters.MatsHclDhvValid;
-                EmParameters.MatsDhvRecord = EmParameters.MatsHclDhvRecord;
-                EmParameters.MatsMhvCalculatedValue = EmParameters.MatsMhvCalculatedHclcValue;
-                EmParameters.MatsMhvRecord = EmParameters.MatsHclcMhvRecord;
-                EmParameters.MatsMoistureEquationList = "19-3,19-3D,19-4,19-5,19-8,19-9";
+                emParams.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("9.43E-8");
+                emParams.CurrentDhvParameter = emParams.MatsHclDhvParameter;
+                emParams.CurrentDhvRecordValid = emParams.MatsHclDhvValid;
+                emParams.MatsDhvRecord = emParams.MatsHclDhvRecord;
+                emParams.MatsMhvCalculatedValue = emParams.MatsMhvCalculatedHclcValue;
+                emParams.MatsMhvRecord = emParams.MatsHclcMhvRecord;
+                emParams.MatsMoistureEquationList = "19-3,19-3D,19-4,19-5,19-8,19-9";
 
-                EmParameters.MatsDhvMeasuredModcList = "36,37";
-                EmParameters.MatsDhvUnavailableModcList = "38";
+                emParams.MatsDhvMeasuredModcList = "36,37";
+                emParams.MatsDhvUnavailableModcList = "38";
 
-                EmParameters.FinalConversionFactor = 1m;
+                emParams.FinalConversionFactor = 1m;
             }
             catch (Exception ex)
             {
@@ -220,25 +220,25 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string MATSCHV7(cCategory Category, ref bool Log)
+        public  string MATSCHV7(cCategory Category, ref bool Log)
         //This check sets generic parameters and output parameters for subsequent Calculated hourly checks for HFRH. 
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("5.18E-8");
-                EmParameters.CurrentDhvParameter = EmParameters.MatsHfDhvParameter;
-                EmParameters.CurrentDhvRecordValid = EmParameters.MatsHfDhvValid;
-                EmParameters.MatsDhvRecord = EmParameters.MatsHfDhvRecord;
-                EmParameters.MatsMhvCalculatedValue = EmParameters.MatsMhvCalculatedHfcValue;
-                EmParameters.MatsMhvRecord = EmParameters.MatsHfcMhvRecord;
-                EmParameters.MatsMoistureEquationList = "19-3,19-3D,19-4,19-5,19-8,19-9";
+                emParams.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("5.18E-8");
+                emParams.CurrentDhvParameter = emParams.MatsHfDhvParameter;
+                emParams.CurrentDhvRecordValid = emParams.MatsHfDhvValid;
+                emParams.MatsDhvRecord = emParams.MatsHfDhvRecord;
+                emParams.MatsMhvCalculatedValue = emParams.MatsMhvCalculatedHfcValue;
+                emParams.MatsMhvRecord = emParams.MatsHfcMhvRecord;
+                emParams.MatsMoistureEquationList = "19-3,19-3D,19-4,19-5,19-8,19-9";
 
-                EmParameters.MatsDhvMeasuredModcList = "36,37";
-                EmParameters.MatsDhvUnavailableModcList = "38";
+                emParams.MatsDhvMeasuredModcList = "36,37";
+                emParams.MatsDhvUnavailableModcList = "38";
 
-                EmParameters.FinalConversionFactor = 1m;
+                emParams.FinalConversionFactor = 1m;
             }
             catch (Exception ex)
             {
@@ -248,23 +248,23 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string MATSCHV8(cCategory Category, ref bool Log)
+        public  string MATSCHV8(cCategory Category, ref bool Log)
         //This check sets generic parameters and output parameters for subsequent Calculated hourly checks for SO2RH. 
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("1.66E-7");
-                EmParameters.CurrentDhvParameter = EmParameters.MatsSo2DhvParameter;
-                EmParameters.CurrentDhvRecordValid = EmParameters.MatsSo2DhvValid;
-                EmParameters.MatsDhvRecord = EmParameters.MatsSo2DhvRecord;
-                EmParameters.MatsMoistureEquationList = "19-3,19-3D,19-4,19-5,19-8,19-9";
+                emParams.CalculationConversionFactor = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal("1.66E-7");
+                emParams.CurrentDhvParameter = emParams.MatsSo2DhvParameter;
+                emParams.CurrentDhvRecordValid = emParams.MatsSo2DhvValid;
+                emParams.MatsDhvRecord = emParams.MatsSo2DhvRecord;
+                emParams.MatsMoistureEquationList = "19-3,19-3D,19-4,19-5,19-8,19-9";
 
-                EmParameters.MatsDhvMeasuredModcList = "36,37";
-                EmParameters.MatsDhvUnavailableModcList = "38";
+                emParams.MatsDhvMeasuredModcList = "36,37";
+                emParams.MatsDhvUnavailableModcList = "38";
 
-                EmParameters.FinalConversionFactor = 1m;
+                emParams.FinalConversionFactor = 1m;
             }
             catch (Exception ex)
             {
@@ -275,25 +275,25 @@ namespace ECMPS.Checks.EmissionsChecks
         }
 
         #region MATSCHV9
-        public static string MATSCHV9(cCategory Category, ref bool Log)
+        public  string MATSCHV9(cCategory Category, ref bool Log)
         //Determines the main concentration value to use in calculations.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculationConcentration = null;
-                EmParameters.CalculationConcentrationSubstituted = false;
+                emParams.CalculationConcentration = null;
+                emParams.CalculationConcentrationSubstituted = false;
 
-                if ((bool)EmParameters.CurrentDhvRecordValid && (EmParameters.MatsDhvRecord.ModcCd.InList(EmParameters.MatsDhvMeasuredModcList.ToString())))
+                if ((bool)emParams.CurrentDhvRecordValid && (emParams.MatsDhvRecord.ModcCd.InList(emParams.MatsDhvMeasuredModcList.ToString())))
                 {
-                    if (EmParameters.MatsMhvCalculatedValue != null)
+                    if (emParams.MatsMhvCalculatedValue != null)
                     {
-                        EmParameters.CalculationConcentration = EmParameters.MatsMhvCalculatedValue.ScientificNotationtoDecimal();
+                        emParams.CalculationConcentration = emParams.MatsMhvCalculatedValue.ScientificNotationtoDecimal();
                     }
-                    if ((EmParameters.MatsMhvRecord != null) && EmParameters.MatsMhvRecord.ModcCd.InList("34,35"))
+                    if ((emParams.MatsMhvRecord != null) && emParams.MatsMhvRecord.ModcCd.InList("34,35"))
                     {
-                        EmParameters.CalculationConcentrationSubstituted = true;
+                        emParams.CalculationConcentrationSubstituted = true;
                     }
                 }
             }
@@ -307,25 +307,25 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSCHV10
-        public static string MATSCHV10(cCategory Category, ref bool Log)
+        public  string MATSCHV10(cCategory Category, ref bool Log)
         //Determines the SO2 concentration value to use in calculations.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculationConcentration = null;
-                EmParameters.CalculationConcentrationSubstituted = false;
+                emParams.CalculationConcentration = null;
+                emParams.CalculationConcentrationSubstituted = false;
 
-                if ((bool)EmParameters.CurrentDhvRecordValid && (EmParameters.MatsDhvRecord.ModcCd.InList(EmParameters.MatsDhvMeasuredModcList.ToString())))
+                if ((bool)emParams.CurrentDhvRecordValid && (emParams.MatsDhvRecord.ModcCd.InList(emParams.MatsDhvMeasuredModcList.ToString())))
                 {
-                    if (EmParameters.CurrentSo2MonitorHourlyRecord != null)
+                    if (emParams.CurrentSo2MonitorHourlyRecord != null)
                     {
-                        EmParameters.CalculationConcentration = EmParameters.CurrentSo2MonitorHourlyRecord.UnadjustedHrlyValue;
+                        emParams.CalculationConcentration = emParams.CurrentSo2MonitorHourlyRecord.UnadjustedHrlyValue;
 
-                        if (EmParameters.CurrentSo2MonitorHourlyRecord.ModcCd.InList("05,06,07,08,09,10,12,13,15,18,23,55"))
+                        if (emParams.CurrentSo2MonitorHourlyRecord.ModcCd.InList("05,06,07,08,09,10,12,13,15,18,23,55"))
                         {
-                            EmParameters.CalculationConcentrationSubstituted = true;
+                            emParams.CalculationConcentrationSubstituted = true;
                         }
                     }
                 }
@@ -344,31 +344,31 @@ namespace ECMPS.Checks.EmissionsChecks
         #region Checks 11-20
 
         #region MATSCHV11
-        public static string MATSCHV11(cCategory Category, ref bool Log)
+        public  string MATSCHV11(cCategory Category, ref bool Log)
         //
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculationFlow = null;
-                EmParameters.CalculationFlowSubstituted = false;
+                emParams.CalculationFlow = null;
+                emParams.CalculationFlowSubstituted = false;
 
-                if (EmParameters.CurrentDhvRecordValid.Default(false) && (EmParameters.MatsDhvRecord.ModcCd.InList(EmParameters.MatsDhvMeasuredModcList.ToString())))
+                if (emParams.CurrentDhvRecordValid.Default(false) && (emParams.MatsDhvRecord.ModcCd.InList(emParams.MatsDhvMeasuredModcList.ToString())))
                 {
-                    if (EmParameters.CurrentFlowMonitorHourlyRecord != null)
+                    if (emParams.CurrentFlowMonitorHourlyRecord != null)
                     {
-                        EmParameters.CalculationFlow = EmParameters.CurrentFlowMonitorHourlyRecord.UnadjustedHrlyValue;
+                        emParams.CalculationFlow = emParams.CurrentFlowMonitorHourlyRecord.UnadjustedHrlyValue;
 
-                        if (EmParameters.CurrentFlowMonitorHourlyRecord.ModcCd.NotInList("01,02,03,04,20,53,54"))
+                        if (emParams.CurrentFlowMonitorHourlyRecord.ModcCd.NotInList("01,02,03,04,20,53,54"))
                         {
-                            EmParameters.CalculationFlowSubstituted = true;
+                            emParams.CalculationFlowSubstituted = true;
                         }
                     }
                     else
                     {
-                        EmParameters.CalculationFlow = null;
-                        EmParameters.CalculationFlowSubstituted = false;
+                        emParams.CalculationFlow = null;
+                        emParams.CalculationFlowSubstituted = false;
                     }
                 }
             }
@@ -389,23 +389,23 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category">Category object for category in which the check is running.</param>
         /// <param name="Log">Obsolete flag indicating whether to update the log.</param>
         /// <returns></returns>
-        public static string MATSCHV12(cCategory Category, ref bool Log)
+        public  string MATSCHV12(cCategory Category, ref bool Log)
         //
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculationDiluent = null;
-                EmParameters.CalculationDiluentSubstituted = false;
+                emParams.CalculationDiluent = null;
+                emParams.CalculationDiluentSubstituted = false;
 
-                if ((bool)EmParameters.CurrentDhvRecordValid && (EmParameters.MatsDhvRecord.ModcCd.InList(EmParameters.MatsDhvMeasuredModcList.ToString())))
+                if ((bool)emParams.CurrentDhvRecordValid && (emParams.MatsDhvRecord.ModcCd.InList(emParams.MatsDhvMeasuredModcList.ToString())))
                 {
-                    if (EmParameters.MatsDhvRecord.EquationCd.InList("19-3D,19-5D") || EmParameters.MatsDhvRecord.ModcCd == "37")
+                    if (emParams.MatsDhvRecord.EquationCd.InList("19-3D,19-5D") || emParams.MatsDhvRecord.ModcCd == "37")
                     {
-                        if (EmParameters.MatsDhvRecord.EquationCd.InList("19-1,19-2,19-3,19-3D,19-4,19-5,19-5D"))
+                        if (emParams.MatsDhvRecord.EquationCd.InList("19-1,19-2,19-3,19-3D,19-4,19-5,19-5D"))
                         {
-                            DataView O2MonitorDefaultRecords = cRowFilter.FindRows(EmParameters.MonitorDefaultRecordsByHourLocation.SourceView,
+                            DataView O2MonitorDefaultRecords = cRowFilter.FindRows(emParams.MonitorDefaultRecordsByHourLocation.SourceView,
                                 new cFilterCondition[] {
                                 new cFilterCondition("PARAMETER_CD", "O2X"),
                                 new cFilterCondition("DEFAULT_PURPOSE_CD", "DC"),
@@ -430,13 +430,13 @@ namespace ECMPS.Checks.EmissionsChecks
                                 }
                                 else
                                 {
-                                    EmParameters.CalculationDiluent = O2MonitorDefaultRecord["DEFAULT_VALUE"].AsDecimal();
+                                    emParams.CalculationDiluent = O2MonitorDefaultRecord["DEFAULT_VALUE"].AsDecimal();
                                 }
                             }
                         }
-                        else if (EmParameters.MatsDhvRecord.EquationCd.InList("19-6,19-7,19-8,19-9"))
+                        else if (emParams.MatsDhvRecord.EquationCd.InList("19-6,19-7,19-8,19-9"))
                         {
-                            DataView Co2MonitorDefaultRecords = cRowFilter.FindRows(EmParameters.MonitorDefaultRecordsByHourLocation.SourceView,
+                            DataView Co2MonitorDefaultRecords = cRowFilter.FindRows(emParams.MonitorDefaultRecordsByHourLocation.SourceView,
                                 new cFilterCondition[] {
                                 new cFilterCondition("PARAMETER_CD", "CO2N"),
                                 new cFilterCondition("DEFAULT_PURPOSE_CD", "DC"),
@@ -460,36 +460,36 @@ namespace ECMPS.Checks.EmissionsChecks
                                 }
                                 else
                                 {
-                                    EmParameters.CalculationDiluent = Co2MonitorDefaultRecord["DEFAULT_VALUE"].AsDecimal();
+                                    emParams.CalculationDiluent = Co2MonitorDefaultRecord["DEFAULT_VALUE"].AsDecimal();
                                 }
                             }
                         }
                     }
 
                     else //not Equation 19-3D,19-5D or Modc 14
-                        if (EmParameters.MatsDhvRecord.EquationCd.InList("19-1,19-4") && EmParameters.O2DryNeededForMats == true)
+                        if (emParams.MatsDhvRecord.EquationCd.InList("19-1,19-4") && emParams.O2DryNeededForMats == true)
                     {
-                        EmParameters.CalculationDiluent = EmParameters.O2DryCalculatedAdjustedValue;
-                        if (EmParameters.O2DryModc.NotInList("01,02,03,04,17,20,53,54"))
+                        emParams.CalculationDiluent = emParams.O2DryCalculatedAdjustedValue;
+                        if (emParams.O2DryModc.NotInList("01,02,03,04,17,20,53,54"))
                         {
-                            EmParameters.CalculationDiluentSubstituted = true;
+                            emParams.CalculationDiluentSubstituted = true;
                         }
                     }
-                    else if (EmParameters.MatsDhvRecord.EquationCd.InList("19-2,19-3,19-5") && EmParameters.O2WetNeededForMats == true)
+                    else if (emParams.MatsDhvRecord.EquationCd.InList("19-2,19-3,19-5") && emParams.O2WetNeededForMats == true)
                     {
-                        EmParameters.CalculationDiluent = EmParameters.O2WetCalculatedAdjustedValue;
+                        emParams.CalculationDiluent = emParams.O2WetCalculatedAdjustedValue;
 
-                        if (EmParameters.O2WetModc.NotInList("01,02,03,04,17,20,53,54"))
+                        if (emParams.O2WetModc.NotInList("01,02,03,04,17,20,53,54"))
                         {
-                            EmParameters.CalculationDiluentSubstituted = true;
+                            emParams.CalculationDiluentSubstituted = true;
                         }
                     }
-                    else if (EmParameters.MatsDhvRecord.EquationCd.InList("19-6,19-7,19-8,19-9") && EmParameters.Co2DiluentNeededForMats == true)
+                    else if (emParams.MatsDhvRecord.EquationCd.InList("19-6,19-7,19-8,19-9") && emParams.Co2DiluentNeededForMats == true)
                     {
-                        EmParameters.CalculationDiluent = EmParameters.Co2cMhvCalculatedAdjustedValue;
-                        if (EmParameters.Co2cMhvModc.NotInList("01,02,03,04,17,20,21,53,54"))
+                        emParams.CalculationDiluent = emParams.Co2cMhvCalculatedAdjustedValue;
+                        if (emParams.Co2cMhvModc.NotInList("01,02,03,04,17,20,21,53,54"))
                         {
-                            EmParameters.CalculationDiluentSubstituted = true;
+                            emParams.CalculationDiluentSubstituted = true;
                         }
                     }
                 }
@@ -503,50 +503,50 @@ namespace ECMPS.Checks.EmissionsChecks
         }
 
         #region MATSCHV13
-        public static string MATSCHV13(cCategory Category, ref bool Log)
+        public  string MATSCHV13(cCategory Category, ref bool Log)
         //
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculationMoisture = null;
-                EmParameters.CalculationMoistureSubstituted = false;
+                emParams.CalculationMoisture = null;
+                emParams.CalculationMoistureSubstituted = false;
 
-                if ((bool)EmParameters.CurrentDhvRecordValid && EmParameters.MatsDhvRecord.ModcCd.InList(EmParameters.MatsDhvMeasuredModcList.ToString()))
+                if ((bool)emParams.CurrentDhvRecordValid && emParams.MatsDhvRecord.ModcCd.InList(emParams.MatsDhvMeasuredModcList.ToString()))
                 {
-                    if (EmParameters.MatsDhvRecord.EquationCd.InList(EmParameters.MatsMoistureEquationList.ToString()))
+                    if (emParams.MatsDhvRecord.EquationCd.InList(emParams.MatsMoistureEquationList.ToString()))
                     {
-                        if ((EmParameters.H2oMethodCode == "MWD") && (bool)EmParameters.H2oDerivedHourlyChecksNeeded && (EmParameters.H2oDhvCalculatedAdjustedValue != null))
+                        if ((emParams.H2oMethodCode == "MWD") && (bool)emParams.H2oDerivedHourlyChecksNeeded && (emParams.H2oDhvCalculatedAdjustedValue != null))
                         {
-                            EmParameters.CalculationMoisture = EmParameters.H2oDhvCalculatedAdjustedValue;
+                            emParams.CalculationMoisture = emParams.H2oDhvCalculatedAdjustedValue;
 
-                            if (EmParameters.H2oDhvModc.NotInList("01,02,03,04,05,06,07,08,09,10,12,21,53,54,55"))
+                            if (emParams.H2oDhvModc.NotInList("01,02,03,04,05,06,07,08,09,10,12,21,53,54,55"))
                             {
-                                EmParameters.CalculationMoistureSubstituted = true;
+                                emParams.CalculationMoistureSubstituted = true;
                             }
                         }
-                        else if (EmParameters.H2oMethodCode.InList("MMS,MTB") && (bool)EmParameters.H2oMonitorHourlyChecksNeeded && EmParameters.H2oMhvCalculatedAdjustedValue != null)
+                        else if (emParams.H2oMethodCode.InList("MMS,MTB") && (bool)emParams.H2oMonitorHourlyChecksNeeded && emParams.H2oMhvCalculatedAdjustedValue != null)
                         {
-                            EmParameters.CalculationMoisture = EmParameters.H2oMhvCalculatedAdjustedValue;
+                            emParams.CalculationMoisture = emParams.H2oMhvCalculatedAdjustedValue;
 
-                            if (EmParameters.H2oMhvModc.NotInList("01,02,03,04,06,07,08,09,10,12,21,53,54,55"))
+                            if (emParams.H2oMhvModc.NotInList("01,02,03,04,06,07,08,09,10,12,21,53,54,55"))
                             {
-                                EmParameters.CalculationMoistureSubstituted = true;
+                                emParams.CalculationMoistureSubstituted = true;
                             }
                         }
-                        else if (EmParameters.H2oMethodCode == "MDF" && (bool)EmParameters.H2oDerivedHourlyChecksNeeded && EmParameters.H2oDhvCalculatedAdjustedValue != null)
+                        else if (emParams.H2oMethodCode == "MDF" && (bool)emParams.H2oDerivedHourlyChecksNeeded && emParams.H2oDhvCalculatedAdjustedValue != null)
                         {
-                            EmParameters.CalculationMoisture = EmParameters.H2oDhvCalculatedAdjustedValue;
+                            emParams.CalculationMoisture = emParams.H2oDhvCalculatedAdjustedValue;
 
-                            if (EmParameters.H2oDhvModc.NotInList("01,02,03,04,05,06,07,08,09,10,12,21,53,54,55"))
+                            if (emParams.H2oDhvModc.NotInList("01,02,03,04,05,06,07,08,09,10,12,21,53,54,55"))
                             {
-                                EmParameters.CalculationMoistureSubstituted = true;
+                                emParams.CalculationMoistureSubstituted = true;
                             }
                         }
-                        else if (EmParameters.H2oMethodCode == "MDF" && (bool)EmParameters.H2oDerivedHourlyChecksNeeded == false && EmParameters.H2oDefaultValue != null)
+                        else if (emParams.H2oMethodCode == "MDF" && (bool)emParams.H2oDerivedHourlyChecksNeeded == false && emParams.H2oDefaultValue != null)
                         {
-                            EmParameters.CalculationMoisture = EmParameters.H2oDefaultValue;
+                            emParams.CalculationMoisture = emParams.H2oDefaultValue;
                         }
                     }
                 }
@@ -566,44 +566,44 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category">Check category in which the check is running.</param>
         /// <param name="Log">Obsolete parameter.</param>
         /// <returns>Returns the exception message if the check fails to run.</returns>
-        public static string MATSCHV14(cCategory Category, ref bool Log)
+        public  string MATSCHV14(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculatedUnadjustedValue = null;
+                emParams.CalculatedUnadjustedValue = null;
 
-                if (EmParameters.CurrentDhvRecordValid.Default(false))
+                if (emParams.CurrentDhvRecordValid.Default(false))
                 {
                     /* Measured MODC */
-                    if (EmParameters.MatsDhvRecord.ModcCd.InList(EmParameters.MatsDhvMeasuredModcList))
+                    if (emParams.MatsDhvRecord.ModcCd.InList(emParams.MatsDhvMeasuredModcList))
                     {
-                        if (EmParameters.MatsDhvRecord.EquationCd != null)
+                        if (emParams.MatsDhvRecord.EquationCd != null)
                         {
                             /* Moisture Equation */
-                            if (EmParameters.MatsDhvRecord.EquationCd.InList(EmParameters.MatsMoistureEquationList))
+                            if (emParams.MatsDhvRecord.EquationCd.InList(emParams.MatsMoistureEquationList))
                             {
                                 /* An equation input was substituted */
-                                if (EmParameters.CalculationConcentrationSubstituted.Default(false) || EmParameters.CalculationFlowSubstituted.Default(false) || EmParameters.CalculationMoistureSubstituted.Default(false))
+                                if (emParams.CalculationConcentrationSubstituted.Default(false) || emParams.CalculationFlowSubstituted.Default(false) || emParams.CalculationMoistureSubstituted.Default(false))
                                 {
                                     Category.CheckCatalogResult = "A";
                                 }
 
                                 /* An equation input is null */
-                                else if ((EmParameters.CalculationConcentration == null) || (EmParameters.CalculationFlow == null) || (EmParameters.CalculationMoisture == null))
+                                else if ((emParams.CalculationConcentration == null) || (emParams.CalculationFlow == null) || (emParams.CalculationMoisture == null))
                                 {
                                     Category.CheckCatalogResult = "B";
                                 }
 
                                 /* Calculate that baby! */
-                                else if (EmParameters.FinalConversionFactor.HasValue)
+                                else if (emParams.FinalConversionFactor.HasValue)
                                 {
-                                    EmParameters.CalculatedUnadjustedValue = EmParameters.CalculationConversionFactor.Value
-                                                                           * EmParameters.CalculationConcentration.Value
-                                                                           * EmParameters.CalculationFlow.Value
-                                                                           * (1m - EmParameters.CalculationMoisture.Value / 100)
-                                                                           * EmParameters.FinalConversionFactor.Value;
+                                    emParams.CalculatedUnadjustedValue = emParams.CalculationConversionFactor.Value
+                                                                           * emParams.CalculationConcentration.Value
+                                                                           * emParams.CalculationFlow.Value
+                                                                           * (1m - emParams.CalculationMoisture.Value / 100)
+                                                                           * emParams.FinalConversionFactor.Value;
                                 }
                             }
 
@@ -611,24 +611,24 @@ namespace ECMPS.Checks.EmissionsChecks
                             else
                             {
                                 /* An equation input was substituted */
-                                if (EmParameters.CalculationConcentrationSubstituted.Default(false) || EmParameters.CalculationFlowSubstituted.Default(false))
+                                if (emParams.CalculationConcentrationSubstituted.Default(false) || emParams.CalculationFlowSubstituted.Default(false))
                                 {
                                     Category.CheckCatalogResult = "C";
                                 }
 
                                 /* An equation input is null */
-                                else if ((EmParameters.CalculationConcentration == null) || (EmParameters.CalculationFlow == null))
+                                else if ((emParams.CalculationConcentration == null) || (emParams.CalculationFlow == null))
                                 {
                                     Category.CheckCatalogResult = "D";
                                 }
 
                                 /* Calculate that baby! */
-                                else if (EmParameters.FinalConversionFactor.HasValue)
+                                else if (emParams.FinalConversionFactor.HasValue)
                                 {
-                                    EmParameters.CalculatedUnadjustedValue = EmParameters.CalculationConversionFactor.Value
-                                                                           * EmParameters.CalculationConcentration.Value
-                                                                           * EmParameters.CalculationFlow.Value
-                                                                           * EmParameters.FinalConversionFactor.Value;
+                                    emParams.CalculatedUnadjustedValue = emParams.CalculationConversionFactor.Value
+                                                                           * emParams.CalculationConcentration.Value
+                                                                           * emParams.CalculationFlow.Value
+                                                                           * emParams.FinalConversionFactor.Value;
                                 }
                             }
                         }
@@ -653,54 +653,54 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category">Check category in which the check is running.</param>
         /// <param name="Log">Obsolete parameter.</param>
         /// <returns>Returns the exception message if the check fails to run.</returns>
-        public static string MATSCHV15(cCategory Category, ref bool Log)
+        public  string MATSCHV15(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculatedUnadjustedValue = null;
+                emParams.CalculatedUnadjustedValue = null;
 
-                if (EmParameters.CurrentDhvRecordValid.Default(false))
+                if (emParams.CurrentDhvRecordValid.Default(false))
                 {
                     /* Measured MODC */
-                    if (EmParameters.MatsDhvRecord.ModcCd.InList(EmParameters.MatsDhvMeasuredModcList))
+                    if (emParams.MatsDhvRecord.ModcCd.InList(emParams.MatsDhvMeasuredModcList))
                     {
-                        if (EmParameters.MatsDhvRecord.EquationCd != null)
+                        if (emParams.MatsDhvRecord.EquationCd != null)
                         {
-                            switch (EmParameters.MatsDhvRecord.EquationCd)
+                            switch (emParams.MatsDhvRecord.EquationCd)
                             {
 
                                 case "19-1":
                                     {
-                                        if (EmParameters.CalculationConcentrationSubstituted.Default(true) || EmParameters.CalculationDiluentSubstituted.Default(true))
+                                        if (emParams.CalculationConcentrationSubstituted.Default(true) || emParams.CalculationDiluentSubstituted.Default(true))
                                         {
                                             Category.CheckCatalogResult = "A";
                                         }
-                                        else if (EmParameters.CalculationDiluent == null || EmParameters.CalculationConcentration == null || EmParameters.ValidFdFactorExists.Default(false) == false)
+                                        else if (emParams.CalculationDiluent == null || emParams.CalculationConcentration == null || emParams.ValidFdFactorExists.Default(false) == false)
                                         {
                                             Category.CheckCatalogResult = "C";
                                         }
-                                        else if (EmParameters.CalculationDiluent == (decimal)20.9)
+                                        else if (emParams.CalculationDiluent == (decimal)20.9)
                                         {
                                             Category.CheckCatalogResult = "D";
                                         }
-                                        else if (EmParameters.FinalConversionFactor.HasValue)
+                                        else if (emParams.FinalConversionFactor.HasValue)
                                         {
-                                            EmParameters.CalculatedUnadjustedValue = (EmParameters.CalculationConversionFactor * EmParameters.CalculationConcentration * EmParameters.CurrentHourlyOpRecord.FdFactor * ((decimal)20.9 / ((decimal)20.9 - EmParameters.CalculationDiluent))) * EmParameters.FinalConversionFactor.Value;
+                                            emParams.CalculatedUnadjustedValue = (emParams.CalculationConversionFactor * emParams.CalculationConcentration * emParams.CurrentHourlyOpRecord.FdFactor * ((decimal)20.9 / ((decimal)20.9 - emParams.CalculationDiluent))) * emParams.FinalConversionFactor.Value;
                                         }
                                         break;
                                     }
                                 case "19-2":
                                     {
-                                        if (EmParameters.CalculationConcentrationSubstituted.Default(true) || EmParameters.CalculationDiluentSubstituted.Default(true))
+                                        if (emParams.CalculationConcentrationSubstituted.Default(true) || emParams.CalculationDiluentSubstituted.Default(true))
                                         {
                                             Category.CheckCatalogResult = "A";
                                         }
                                         else
                                         {
                                             decimal? MoistureFraction = null;
-                                            DataView BwaDefaultRecords = cRowFilter.FindRows(EmParameters.MonitorDefaultRecordsByHourLocation.SourceView,
+                                            DataView BwaDefaultRecords = cRowFilter.FindRows(emParams.MonitorDefaultRecordsByHourLocation.SourceView,
                                                                                                               new cFilterCondition[] {
                                                                                         new cFilterCondition("PARAMETER_CD", "BWA")
                                                                                                           });
@@ -727,17 +727,17 @@ namespace ECMPS.Checks.EmissionsChecks
 
                                             if (Category.CheckCatalogResult == null)
                                             {
-                                                if (EmParameters.CalculationDiluent == null || EmParameters.CalculationConcentration == null || EmParameters.ValidFwFactorExists.Default(false) == false || MoistureFraction == null)
+                                                if (emParams.CalculationDiluent == null || emParams.CalculationConcentration == null || emParams.ValidFwFactorExists.Default(false) == false || MoistureFraction == null)
                                                 {
                                                     Category.CheckCatalogResult = "C";
                                                 }
-                                                else if (EmParameters.CalculationDiluent == (decimal)20.9 * (1 - MoistureFraction))
+                                                else if (emParams.CalculationDiluent == (decimal)20.9 * (1 - MoistureFraction))
                                                 {
                                                     Category.CheckCatalogResult = "D";
                                                 }
-                                                else if (EmParameters.FinalConversionFactor.HasValue)
+                                                else if (emParams.FinalConversionFactor.HasValue)
                                                 {
-                                                    EmParameters.CalculatedUnadjustedValue = (EmParameters.CalculationConversionFactor * EmParameters.CalculationConcentration * EmParameters.CurrentHourlyOpRecord.FwFactor * ((decimal)20.9 / ((decimal)20.9 * (1 - MoistureFraction) - EmParameters.CalculationDiluent))) * EmParameters.FinalConversionFactor.Value;
+                                                    emParams.CalculatedUnadjustedValue = (emParams.CalculationConversionFactor * emParams.CalculationConcentration * emParams.CurrentHourlyOpRecord.FwFactor * ((decimal)20.9 / ((decimal)20.9 * (1 - MoistureFraction) - emParams.CalculationDiluent))) * emParams.FinalConversionFactor.Value;
                                                 }
                                             }
                                         }
@@ -746,24 +746,24 @@ namespace ECMPS.Checks.EmissionsChecks
 
                                 case "19-3":
                                     {
-                                        if (EmParameters.CalculationConcentrationSubstituted.Default(true) || EmParameters.CalculationDiluentSubstituted.Default(true) || EmParameters.CalculationMoistureSubstituted.Default(true))
+                                        if (emParams.CalculationConcentrationSubstituted.Default(true) || emParams.CalculationDiluentSubstituted.Default(true) || emParams.CalculationMoistureSubstituted.Default(true))
                                         {
                                             Category.CheckCatalogResult = "A";
                                         }
-                                        else if (EmParameters.CalculationDiluent == null || EmParameters.CalculationConcentration == null || EmParameters.ValidFdFactorExists.Default(false) == false || EmParameters.CalculationMoisture == null)
+                                        else if (emParams.CalculationDiluent == null || emParams.CalculationConcentration == null || emParams.ValidFdFactorExists.Default(false) == false || emParams.CalculationMoisture == null)
                                         {
                                             Category.CheckCatalogResult = "C";
                                         }
-                                        else if (EmParameters.CalculationDiluent == (decimal)20.9 * ((100 - EmParameters.CalculationMoisture) / 100))
+                                        else if (emParams.CalculationDiluent == (decimal)20.9 * ((100 - emParams.CalculationMoisture) / 100))
                                         {
                                             Category.CheckCatalogResult = "D";
                                         }
-                                        else if (EmParameters.FinalConversionFactor.HasValue)
+                                        else if (emParams.FinalConversionFactor.HasValue)
                                         {
-                                            decimal h2oFactor = ((decimal)100 - (decimal)EmParameters.CalculationMoisture) / (decimal)100.0;
-                                            decimal denom = ((decimal)20.9 * h2oFactor) - (decimal)EmParameters.CalculationDiluent;
+                                            decimal h2oFactor = ((decimal)100 - (decimal)emParams.CalculationMoisture) / (decimal)100.0;
+                                            decimal denom = ((decimal)20.9 * h2oFactor) - (decimal)emParams.CalculationDiluent;
 
-                                            EmParameters.CalculatedUnadjustedValue = (EmParameters.CalculationConversionFactor * EmParameters.CalculationConcentration * EmParameters.CurrentHourlyOpRecord.FdFactor * ((decimal)20.9 / denom)) * EmParameters.FinalConversionFactor.Value;
+                                            emParams.CalculatedUnadjustedValue = (emParams.CalculationConversionFactor * emParams.CalculationConcentration * emParams.CurrentHourlyOpRecord.FdFactor * ((decimal)20.9 / denom)) * emParams.FinalConversionFactor.Value;
                                         }
 
                                         break;
@@ -771,26 +771,26 @@ namespace ECMPS.Checks.EmissionsChecks
 
                                 case "19-3D":
                                     {
-                                        if (EmParameters.CalculationConcentrationSubstituted.Default(true) || EmParameters.CalculationDiluentSubstituted.Default(true) || EmParameters.CalculationMoistureSubstituted.Default(true))
+                                        if (emParams.CalculationConcentrationSubstituted.Default(true) || emParams.CalculationDiluentSubstituted.Default(true) || emParams.CalculationMoistureSubstituted.Default(true))
                                         {
                                             Category.CheckCatalogResult = "A";
                                         }
-                                        else if (EmParameters.CalculationDiluent == null || EmParameters.CalculationConcentration == null || EmParameters.ValidFdFactorExists.Default(false) == false || EmParameters.CalculationMoisture == null)
+                                        else if (emParams.CalculationDiluent == null || emParams.CalculationConcentration == null || emParams.ValidFdFactorExists.Default(false) == false || emParams.CalculationMoisture == null)
                                         {
                                             Category.CheckCatalogResult = "C";
                                         }
 
-                                        else if (EmParameters.CalculationDiluent == (decimal)20.9)
+                                        else if (emParams.CalculationDiluent == (decimal)20.9)
                                         {
                                             Category.CheckCatalogResult = "D";
                                         }
 
-                                        else if (EmParameters.FinalConversionFactor.HasValue)
+                                        else if (emParams.FinalConversionFactor.HasValue)
                                         {
-                                            decimal h2oFactor = ((decimal)100 - (decimal)EmParameters.CalculationMoisture) / (decimal)100.0;
-                                            decimal denom = ((decimal)20.9 * h2oFactor) - ((decimal)EmParameters.CalculationDiluent * h2oFactor);
+                                            decimal h2oFactor = ((decimal)100 - (decimal)emParams.CalculationMoisture) / (decimal)100.0;
+                                            decimal denom = ((decimal)20.9 * h2oFactor) - ((decimal)emParams.CalculationDiluent * h2oFactor);
 
-                                            EmParameters.CalculatedUnadjustedValue = (EmParameters.CalculationConversionFactor * EmParameters.CalculationConcentration * EmParameters.CurrentHourlyOpRecord.FdFactor * ((decimal)20.9 / denom)) * EmParameters.FinalConversionFactor.Value;
+                                            emParams.CalculatedUnadjustedValue = (emParams.CalculationConversionFactor * emParams.CalculationConcentration * emParams.CurrentHourlyOpRecord.FdFactor * ((decimal)20.9 / denom)) * emParams.FinalConversionFactor.Value;
                                         }
 
                                         break;
@@ -798,46 +798,46 @@ namespace ECMPS.Checks.EmissionsChecks
 
                                 case "19-4":
                                     {
-                                        if (EmParameters.CalculationConcentrationSubstituted.Default(true) || EmParameters.CalculationDiluentSubstituted.Default(true) || EmParameters.CalculationMoistureSubstituted.Default(true))
+                                        if (emParams.CalculationConcentrationSubstituted.Default(true) || emParams.CalculationDiluentSubstituted.Default(true) || emParams.CalculationMoistureSubstituted.Default(true))
                                         {
                                             Category.CheckCatalogResult = "A";
                                         }
-                                        else if (EmParameters.CalculationDiluent == null || EmParameters.CalculationConcentration == null || EmParameters.ValidFdFactorExists.Default(false) == false || EmParameters.CalculationMoisture == null)
+                                        else if (emParams.CalculationDiluent == null || emParams.CalculationConcentration == null || emParams.ValidFdFactorExists.Default(false) == false || emParams.CalculationMoisture == null)
                                         {
                                             Category.CheckCatalogResult = "C";
                                         }
-                                        else if (EmParameters.CalculationDiluent == (decimal)20.9 || EmParameters.CalculationMoisture == 100)
+                                        else if (emParams.CalculationDiluent == (decimal)20.9 || emParams.CalculationMoisture == 100)
                                         {
                                             Category.CheckCatalogResult = "D";
                                         }
-                                        else if (EmParameters.FinalConversionFactor.HasValue)
+                                        else if (emParams.FinalConversionFactor.HasValue)
                                         {
-                                            EmParameters.CalculatedUnadjustedValue = (EmParameters.CalculationConversionFactor * ((EmParameters.CalculationConcentration * EmParameters.CurrentHourlyOpRecord.FdFactor) / ((100 - EmParameters.CalculationMoisture) / (decimal)100.0)) * ((decimal)20.9 / ((decimal)20.9 - EmParameters.CalculationDiluent))) * EmParameters.FinalConversionFactor.Value;
+                                            emParams.CalculatedUnadjustedValue = (emParams.CalculationConversionFactor * ((emParams.CalculationConcentration * emParams.CurrentHourlyOpRecord.FdFactor) / ((100 - emParams.CalculationMoisture) / (decimal)100.0)) * ((decimal)20.9 / ((decimal)20.9 - emParams.CalculationDiluent))) * emParams.FinalConversionFactor.Value;
                                         }
 
                                         break;
                                     }
                                 case "19-5":
                                     {
-                                        if (EmParameters.CalculationConcentrationSubstituted.Default(true) || EmParameters.CalculationDiluentSubstituted.Default(true) || EmParameters.CalculationMoistureSubstituted.Default(true))
+                                        if (emParams.CalculationConcentrationSubstituted.Default(true) || emParams.CalculationDiluentSubstituted.Default(true) || emParams.CalculationMoistureSubstituted.Default(true))
                                         {
                                             Category.CheckCatalogResult = "A";
                                         }
-                                        else if (EmParameters.CalculationDiluent == null || EmParameters.CalculationConcentration == null || EmParameters.ValidFdFactorExists.Default(false) == false || EmParameters.CalculationMoisture == null)
+                                        else if (emParams.CalculationDiluent == null || emParams.CalculationConcentration == null || emParams.ValidFdFactorExists.Default(false) == false || emParams.CalculationMoisture == null)
                                         {
                                             Category.CheckCatalogResult = "C";
                                         }
-                                        else if (EmParameters.CalculationDiluent == (decimal)20.9 || EmParameters.CalculationMoisture == 100)
+                                        else if (emParams.CalculationDiluent == (decimal)20.9 || emParams.CalculationMoisture == 100)
                                         {
                                             Category.CheckCatalogResult = "D";
                                         }
 
-                                        else if (EmParameters.FinalConversionFactor.HasValue)
+                                        else if (emParams.FinalConversionFactor.HasValue)
                                         {
-                                            decimal h2oFactor = (100 - (decimal)EmParameters.CalculationMoisture) / (decimal)100.0;
-                                            decimal denom = (decimal)20.9 - (decimal)EmParameters.CalculationDiluent / h2oFactor;
+                                            decimal h2oFactor = (100 - (decimal)emParams.CalculationMoisture) / (decimal)100.0;
+                                            decimal denom = (decimal)20.9 - (decimal)emParams.CalculationDiluent / h2oFactor;
 
-                                            EmParameters.CalculatedUnadjustedValue = (EmParameters.CalculationConversionFactor * EmParameters.CalculationConcentration * EmParameters.CurrentHourlyOpRecord.FdFactor * (decimal)20.9 / denom) * EmParameters.FinalConversionFactor.Value;
+                                            emParams.CalculatedUnadjustedValue = (emParams.CalculationConversionFactor * emParams.CalculationConcentration * emParams.CurrentHourlyOpRecord.FdFactor * (decimal)20.9 / denom) * emParams.FinalConversionFactor.Value;
                                         }
 
 
@@ -846,21 +846,21 @@ namespace ECMPS.Checks.EmissionsChecks
 
                                 case "19-5D":
                                     {
-                                        if (EmParameters.CalculationConcentrationSubstituted.Default(true) || EmParameters.CalculationDiluentSubstituted.Default(true))
+                                        if (emParams.CalculationConcentrationSubstituted.Default(true) || emParams.CalculationDiluentSubstituted.Default(true))
                                         {
                                             Category.CheckCatalogResult = "A";
                                         }
-                                        else if (EmParameters.CalculationDiluent == null || EmParameters.CalculationConcentration == null || EmParameters.ValidFdFactorExists.Default(false) == false)
+                                        else if (emParams.CalculationDiluent == null || emParams.CalculationConcentration == null || emParams.ValidFdFactorExists.Default(false) == false)
                                         {
                                             Category.CheckCatalogResult = "C";
                                         }
-                                        else if (EmParameters.CalculationDiluent == (decimal)20.9)
+                                        else if (emParams.CalculationDiluent == (decimal)20.9)
                                         {
                                             Category.CheckCatalogResult = "D";
                                         }
-                                        else if (EmParameters.FinalConversionFactor.HasValue)
+                                        else if (emParams.FinalConversionFactor.HasValue)
                                         {
-                                            EmParameters.CalculatedUnadjustedValue = (EmParameters.CalculationConversionFactor * EmParameters.CalculationConcentration * EmParameters.CurrentHourlyOpRecord.FdFactor * ((decimal)20.9 / ((decimal)20.9 - EmParameters.CalculationDiluent))) * EmParameters.FinalConversionFactor.Value;
+                                            emParams.CalculatedUnadjustedValue = (emParams.CalculationConversionFactor * emParams.CalculationConcentration * emParams.CurrentHourlyOpRecord.FdFactor * ((decimal)20.9 / ((decimal)20.9 - emParams.CalculationDiluent))) * emParams.FinalConversionFactor.Value;
                                         }
 
                                         break;
@@ -870,68 +870,68 @@ namespace ECMPS.Checks.EmissionsChecks
                                 case "19-7":
                                 case "":
                                     {
-                                        if (EmParameters.CalculationConcentrationSubstituted.Default(true) || EmParameters.CalculationDiluentSubstituted.Default(true))
+                                        if (emParams.CalculationConcentrationSubstituted.Default(true) || emParams.CalculationDiluentSubstituted.Default(true))
                                         {
                                             Category.CheckCatalogResult = "A";
                                         }
-                                        else if (EmParameters.CalculationDiluent == null || EmParameters.CalculationConcentration == null || EmParameters.ValidFcFactorExists.Default(false) == false)
+                                        else if (emParams.CalculationDiluent == null || emParams.CalculationConcentration == null || emParams.ValidFcFactorExists.Default(false) == false)
                                         {
                                             Category.CheckCatalogResult = "C";
                                         }
 
-                                        else if (EmParameters.CalculationDiluent == (decimal)0.0)
+                                        else if (emParams.CalculationDiluent == (decimal)0.0)
                                         {
                                             Category.CheckCatalogResult = "D";
                                         }
 
-                                        else if (EmParameters.FinalConversionFactor.HasValue)
+                                        else if (emParams.FinalConversionFactor.HasValue)
                                         {
-                                            EmParameters.CalculatedUnadjustedValue = (EmParameters.CalculationConversionFactor * EmParameters.CalculationConcentration * EmParameters.CurrentHourlyOpRecord.FcFactor * ((decimal)100.0 / EmParameters.CalculationDiluent)) * EmParameters.FinalConversionFactor.Value;
+                                            emParams.CalculatedUnadjustedValue = (emParams.CalculationConversionFactor * emParams.CalculationConcentration * emParams.CurrentHourlyOpRecord.FcFactor * ((decimal)100.0 / emParams.CalculationDiluent)) * emParams.FinalConversionFactor.Value;
                                         }
                                         break;
                                     }
 
                                 case "19-8":
                                     {
-                                        if (EmParameters.CalculationConcentrationSubstituted.Default(true) || EmParameters.CalculationDiluentSubstituted.Default(true) || EmParameters.CalculationMoistureSubstituted.Default(true))
+                                        if (emParams.CalculationConcentrationSubstituted.Default(true) || emParams.CalculationDiluentSubstituted.Default(true) || emParams.CalculationMoistureSubstituted.Default(true))
                                         {
                                             Category.CheckCatalogResult = "A";
                                         }
-                                        else if (EmParameters.CalculationDiluent == null || EmParameters.CalculationConcentration == null || EmParameters.ValidFcFactorExists.Default(false) == false || EmParameters.CalculationMoisture == null)
+                                        else if (emParams.CalculationDiluent == null || emParams.CalculationConcentration == null || emParams.ValidFcFactorExists.Default(false) == false || emParams.CalculationMoisture == null)
                                         {
                                             Category.CheckCatalogResult = "C";
                                         }
-                                        else if (EmParameters.CalculationDiluent == (decimal)0.0 || EmParameters.CalculationMoisture == 100)
+                                        else if (emParams.CalculationDiluent == (decimal)0.0 || emParams.CalculationMoisture == 100)
                                         {
                                             Category.CheckCatalogResult = "D";
                                         }
-                                        else if (EmParameters.FinalConversionFactor.HasValue)
+                                        else if (emParams.FinalConversionFactor.HasValue)
                                         {
-                                            EmParameters.CalculatedUnadjustedValue = (EmParameters.CalculationConversionFactor * ((EmParameters.CalculationConcentration * EmParameters.CurrentHourlyOpRecord.FcFactor) / (((decimal)100 - EmParameters.CalculationMoisture) / (decimal)100.0)) * ((decimal)100.0 / EmParameters.CalculationDiluent)) * EmParameters.FinalConversionFactor.Value;
+                                            emParams.CalculatedUnadjustedValue = (emParams.CalculationConversionFactor * ((emParams.CalculationConcentration * emParams.CurrentHourlyOpRecord.FcFactor) / (((decimal)100 - emParams.CalculationMoisture) / (decimal)100.0)) * ((decimal)100.0 / emParams.CalculationDiluent)) * emParams.FinalConversionFactor.Value;
                                         }
                                         break;
                                     }
 
                                 case "19-9":
                                     {
-                                        if (EmParameters.CalculationConcentrationSubstituted.Default(true) || EmParameters.CalculationDiluentSubstituted.Default(true) || EmParameters.CalculationMoistureSubstituted.Default(true))
+                                        if (emParams.CalculationConcentrationSubstituted.Default(true) || emParams.CalculationDiluentSubstituted.Default(true) || emParams.CalculationMoistureSubstituted.Default(true))
                                         {
                                             Category.CheckCatalogResult = "A";
                                         }
-                                        else if (EmParameters.CalculationDiluent == null || EmParameters.CalculationConcentration == null || EmParameters.ValidFcFactorExists.Default(false) == false || EmParameters.CalculationMoisture == null)
+                                        else if (emParams.CalculationDiluent == null || emParams.CalculationConcentration == null || emParams.ValidFcFactorExists.Default(false) == false || emParams.CalculationMoisture == null)
                                         {
                                             Category.CheckCatalogResult = "C";
                                         }
-                                        else if (EmParameters.CalculationDiluent == (decimal)0.0)
+                                        else if (emParams.CalculationDiluent == (decimal)0.0)
                                         {
                                             Category.CheckCatalogResult = "D";
                                         }
-                                        else if (EmParameters.FinalConversionFactor.HasValue)
+                                        else if (emParams.FinalConversionFactor.HasValue)
                                         {
-                                            decimal h2oFactor = (100 - (decimal)EmParameters.CalculationMoisture) / (decimal)100.0;
-                                            decimal co2Term = (decimal)100.0 / (decimal)EmParameters.CalculationDiluent;
+                                            decimal h2oFactor = (100 - (decimal)emParams.CalculationMoisture) / (decimal)100.0;
+                                            decimal co2Term = (decimal)100.0 / (decimal)emParams.CalculationDiluent;
 
-                                            EmParameters.CalculatedUnadjustedValue = (EmParameters.CalculationConversionFactor * EmParameters.CalculationConcentration * EmParameters.CurrentHourlyOpRecord.FcFactor * h2oFactor * co2Term) * EmParameters.FinalConversionFactor.Value;
+                                            emParams.CalculatedUnadjustedValue = (emParams.CalculationConversionFactor * emParams.CalculationConcentration * emParams.CurrentHourlyOpRecord.FcFactor * h2oFactor * co2Term) * emParams.FinalConversionFactor.Value;
                                         }
                                         break;
                                     }
@@ -958,14 +958,14 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-        public static string MATSCHV16(cCategory Category, ref bool Log)
+        public  string MATSCHV16(cCategory Category, ref bool Log)
         
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsCalculatedHgRateValue = EmParameters.CalculatedUnadjustedValue.MatsSignificantDigitsFormat(EmParameters.CurrentOperatingDate.Value, EmParameters.MatsDhvRecord.UnadjustedHrlyValue);
+                emParams.MatsCalculatedHgRateValue = emParams.CalculatedUnadjustedValue.MatsSignificantDigitsFormat(emParams.CurrentOperatingDate.Value, emParams.MatsDhvRecord.UnadjustedHrlyValue);
             }
             catch (Exception ex)
             {
@@ -983,14 +983,14 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-        public static string MATSCHV17(cCategory Category, ref bool Log)
+        public  string MATSCHV17(cCategory Category, ref bool Log)
         
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsCalculatedHclRateValue = EmParameters.CalculatedUnadjustedValue.MatsSignificantDigitsFormat(EmParameters.CurrentOperatingDate.Value, EmParameters.MatsDhvRecord.UnadjustedHrlyValue);
+                emParams.MatsCalculatedHclRateValue = emParams.CalculatedUnadjustedValue.MatsSignificantDigitsFormat(emParams.CurrentOperatingDate.Value, emParams.MatsDhvRecord.UnadjustedHrlyValue);
             }
             catch (Exception ex)
             {
@@ -1007,14 +1007,14 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-        public static string MATSCHV18(cCategory Category, ref bool Log)
+        public  string MATSCHV18(cCategory Category, ref bool Log)
         
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsCalculatedHfRateValue = EmParameters.CalculatedUnadjustedValue.MatsSignificantDigitsFormat(EmParameters.CurrentOperatingDate.Value, EmParameters.MatsDhvRecord.UnadjustedHrlyValue);
+                emParams.MatsCalculatedHfRateValue = emParams.CalculatedUnadjustedValue.MatsSignificantDigitsFormat(emParams.CurrentOperatingDate.Value, emParams.MatsDhvRecord.UnadjustedHrlyValue);
             }
             catch (Exception ex)
             {
@@ -1031,14 +1031,14 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-        public static string MATSCHV19(cCategory Category, ref bool Log)
+        public  string MATSCHV19(cCategory Category, ref bool Log)
         
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsCalculatedSo2RateValue = EmParameters.CalculatedUnadjustedValue.MatsSignificantDigitsFormat(EmParameters.CurrentOperatingDate.Value, EmParameters.MatsDhvRecord.UnadjustedHrlyValue);
+                emParams.MatsCalculatedSo2RateValue = emParams.CalculatedUnadjustedValue.MatsSignificantDigitsFormat(emParams.CurrentOperatingDate.Value, emParams.MatsDhvRecord.UnadjustedHrlyValue);
             }
             catch (Exception ex)
             {
@@ -1057,25 +1057,25 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MATSCHV20(cCategory category, ref bool log)
+        public  string MATSCHV20(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
 
-                if (EmParameters.CurrentDhvRecordValid.Default(false))
+                if (emParams.CurrentDhvRecordValid.Default(false))
                 {
-                    if (EmParameters.MatsDhvRecord.ModcCd.InList(EmParameters.MatsDhvMeasuredModcList)
-                        && EmParameters.MatsDhvRecord.UnadjustedHrlyValue != null
-                        && EmParameters.CalculatedUnadjustedValue != null)
+                    if (emParams.MatsDhvRecord.ModcCd.InList(emParams.MatsDhvMeasuredModcList)
+                        && emParams.MatsDhvRecord.UnadjustedHrlyValue != null
+                        && emParams.CalculatedUnadjustedValue != null)
                     {
-                        if (EmParameters.CurrentSo2MonitorHourlyRecord == null || 
-                                (EmParameters.CurrentSo2MonitorHourlyRecord.ModcCd != "16" || !EmParameters.MatsDhvRecord.ParameterCd.InList("SO2RE,SO2RH", ","))
+                        if (emParams.CurrentSo2MonitorHourlyRecord == null || 
+                                (emParams.CurrentSo2MonitorHourlyRecord.ModcCd != "16" || !emParams.MatsDhvRecord.ParameterCd.InList("SO2RE,SO2RH", ","))
                            )
                         {
-                            decimal reportedValue = EmParameters.MatsDhvRecord.UnadjustedHrlyValue.ScientificNotationtoDecimal();
-                            decimal calculatedValue = EmParameters.CalculatedUnadjustedValue.MatsSignificantDigitsFormat(EmParameters.CurrentOperatingDate.Value, EmParameters.MatsDhvRecord.UnadjustedHrlyValue).ScientificNotationtoDecimal();
+                            decimal reportedValue = emParams.MatsDhvRecord.UnadjustedHrlyValue.ScientificNotationtoDecimal();
+                            decimal calculatedValue = emParams.CalculatedUnadjustedValue.MatsSignificantDigitsFormat(emParams.CurrentOperatingDate.Value, emParams.MatsDhvRecord.UnadjustedHrlyValue).ScientificNotationtoDecimal();
 
                             if ((reportedValue + calculatedValue) != 0)
                             {

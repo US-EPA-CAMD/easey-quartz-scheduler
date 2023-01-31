@@ -38,7 +38,7 @@ namespace ECMPS.Checks.EmissionsChecks
     #endregion
 
 
-    #region Check Methods (static)
+    #region Check Methods ()
 
     /// <summary>
     /// Initialize Parameters
@@ -46,14 +46,14 @@ namespace ECMPS.Checks.EmissionsChecks
     /// <param name="category">Category Object</param>
     /// <param name="log">Indicates whether to log results.</param>
     /// <returns>Returns error message if check fails to run correctly.</returns>
-    public static string EMWTS1(cCategory category, ref bool log)
+    public  string EMWTS1(cCategory category, ref bool log)
     {
       string returnVal = "";
 
       try
       {
-        EmParameters.WeeklyTestSummaryValid = true;
-        EmParameters.CalculatedWeeklyTestSummaryResult = null;
+        emParams.WeeklyTestSummaryValid = true;
+        emParams.CalculatedWeeklyTestSummaryResult = null;
       }
       catch (Exception ex)
       {
@@ -70,15 +70,15 @@ namespace ECMPS.Checks.EmissionsChecks
     /// <param name="category">Category Object</param>
     /// <param name="log">Indicates whether to log results.</param>
     /// <returns>Returns error message if check fails to run correctly.</returns>
-    public static string EMWTS2(cCategory category, ref bool log)
+    public  string EMWTS2(cCategory category, ref bool log)
     {
       string returnVal = "";
 
       try
       {
-        if (EmParameters.CurrentWeeklyTestSummary.TestTypeCd != "HGSI1")
+        if (emParams.CurrentWeeklyTestSummary.TestTypeCd != "HGSI1")
         {
-          EmParameters.WeeklyTestSummaryValid = false;
+          emParams.WeeklyTestSummaryValid = false;
           category.CheckCatalogResult = "A";
         }
       }
@@ -97,17 +97,17 @@ namespace ECMPS.Checks.EmissionsChecks
     /// <param name="category">Category Object</param>
     /// <param name="log">Indicates whether to log results.</param>
     /// <returns>Returns error message if check fails to run correctly.</returns>
-    public static string EMWTS3(cCategory category, ref bool log)
+    public  string EMWTS3(cCategory category, ref bool log)
     {
       string returnVal = "";
 
       try
       {
-        if (EmParameters.CurrentWeeklyTestSummary.TestTypeCd == "HGSI1")
+        if (emParams.CurrentWeeklyTestSummary.TestTypeCd == "HGSI1")
         {
-          if (EmParameters.CurrentWeeklyTestSummary.MonSysId != null)
+          if (emParams.CurrentWeeklyTestSummary.MonSysId != null)
           {
-            EmParameters.WeeklyTestSummaryValid = false;
+            emParams.WeeklyTestSummaryValid = false;
             category.CheckCatalogResult = "A";
           }
         }
@@ -127,22 +127,22 @@ namespace ECMPS.Checks.EmissionsChecks
     /// <param name="category">Category Object</param>
     /// <param name="log">Indicates whether to log results.</param>
     /// <returns>Returns error message if check fails to run correctly.</returns>
-    public static string EMWTS4(cCategory category, ref bool log)
+    public  string EMWTS4(cCategory category, ref bool log)
     {
       string returnVal = "";
 
       try
       {
-        if (EmParameters.CurrentWeeklyTestSummary.TestTypeCd == "HGSI1")
+        if (emParams.CurrentWeeklyTestSummary.TestTypeCd == "HGSI1")
         {
-          if (EmParameters.CurrentWeeklyTestSummary.ComponentId == null)
+          if (emParams.CurrentWeeklyTestSummary.ComponentId == null)
           {
-            EmParameters.WeeklyTestSummaryValid = false;
+            emParams.WeeklyTestSummaryValid = false;
             category.CheckCatalogResult = "A";
           }
-          else if (EmParameters.CurrentWeeklyTestSummary.ComponentTypeCd != "HG")
+          else if (emParams.CurrentWeeklyTestSummary.ComponentTypeCd != "HG")
           {
-            EmParameters.WeeklyTestSummaryValid = false;
+            emParams.WeeklyTestSummaryValid = false;
             category.CheckCatalogResult = "B";
           }
         }
@@ -162,28 +162,28 @@ namespace ECMPS.Checks.EmissionsChecks
     /// <param name="category">Category Object</param>
     /// <param name="log">Indicates whether to log results.</param>
     /// <returns>Returns error message if check fails to run correctly.</returns>
-    public static string EMWTS5(cCategory category, ref bool log)
+    public  string EMWTS5(cCategory category, ref bool log)
     {
       string returnVal = "";
 
       try
       {
-        EmParameters.TestDateValid = false;
+        emParams.TestDateValid = false;
 
-        if (EmParameters.CurrentWeeklyTestSummary.TestDate == null)
+        if (emParams.CurrentWeeklyTestSummary.TestDate == null)
         {
-          EmParameters.WeeklyTestSummaryValid = false;
+          emParams.WeeklyTestSummaryValid = false;
           category.CheckCatalogResult = "A";
         }
-        else if ((EmParameters.CurrentWeeklyTestSummary.TestDate < (new DateTime(1993, 1, 1))) ||
-                 (EmParameters.CurrentWeeklyTestSummary.TestDate > EmParameters.CurrentReportingPeriodEndHour))
+        else if ((emParams.CurrentWeeklyTestSummary.TestDate < (new DateTime(1993, 1, 1))) ||
+                 (emParams.CurrentWeeklyTestSummary.TestDate > emParams.CurrentReportingPeriodEndHour))
         {
-          EmParameters.WeeklyTestSummaryValid = false;
+          emParams.WeeklyTestSummaryValid = false;
           category.CheckCatalogResult = "B";
         }
         else
         {
-          EmParameters.TestDateValid = true;
+          emParams.TestDateValid = true;
         }
       }
       catch (Exception ex)
@@ -201,27 +201,27 @@ namespace ECMPS.Checks.EmissionsChecks
     /// <param name="category">Category Object</param>
     /// <param name="log">Indicates whether to log results.</param>
     /// <returns>Returns error message if check fails to run correctly.</returns>
-    public static string EMWTS6(cCategory category, ref bool log)
+    public  string EMWTS6(cCategory category, ref bool log)
     {
       string returnVal = "";
 
       try
       {
-        EmParameters.TestHourValid = false;
+        emParams.TestHourValid = false;
 
-        if (EmParameters.CurrentWeeklyTestSummary.TestHour == null)
+        if (emParams.CurrentWeeklyTestSummary.TestHour == null)
         {
-          EmParameters.WeeklyTestSummaryValid = false;
+          emParams.WeeklyTestSummaryValid = false;
           category.CheckCatalogResult = "A";
         }
-        else if ((EmParameters.CurrentWeeklyTestSummary.TestHour < 0) || (23 < EmParameters.CurrentWeeklyTestSummary.TestHour))
+        else if ((emParams.CurrentWeeklyTestSummary.TestHour < 0) || (23 < emParams.CurrentWeeklyTestSummary.TestHour))
         {
-          EmParameters.WeeklyTestSummaryValid = false;
+          emParams.WeeklyTestSummaryValid = false;
           category.CheckCatalogResult = "B";
         }
         else
         {
-          EmParameters.TestHourValid = EmParameters.TestDateValid;
+          emParams.TestHourValid = emParams.TestDateValid;
         }
       }
       catch (Exception ex)
@@ -239,36 +239,36 @@ namespace ECMPS.Checks.EmissionsChecks
     /// <param name="category">Category Object</param>
     /// <param name="log">Indicates whether to log results.</param>
     /// <returns>Returns error message if check fails to run correctly.</returns>
-    public static string EMWTS7(cCategory category, ref bool log)
+    public  string EMWTS7(cCategory category, ref bool log)
     {
       string returnVal = "";
 
       try
       {
-        EmParameters.TestDateTimeValid = false;
+        emParams.TestDateTimeValid = false;
 
-        if (EmParameters.CurrentWeeklyTestSummary.TestMin == null)
+        if (emParams.CurrentWeeklyTestSummary.TestMin == null)
         {
-          EmParameters.WeeklyTestSummaryValid = false;
+          emParams.WeeklyTestSummaryValid = false;
           category.CheckCatalogResult = "A";
         }
-        else if ((EmParameters.CurrentWeeklyTestSummary.TestMin < 0) || (59 < EmParameters.CurrentWeeklyTestSummary.TestMin))
+        else if ((emParams.CurrentWeeklyTestSummary.TestMin < 0) || (59 < emParams.CurrentWeeklyTestSummary.TestMin))
         {
-          EmParameters.WeeklyTestSummaryValid = false;
+          emParams.WeeklyTestSummaryValid = false;
           category.CheckCatalogResult = "B";
         }
-        else if (EmParameters.TestHourValid.Default(false))
+        else if (emParams.TestHourValid.Default(false))
         {
-          DateTime calcTestDateTime = EmParameters.CurrentWeeklyTestSummary.TestDate.Value.AddHours(EmParameters.CurrentWeeklyTestSummary.TestHour.Value).AddMinutes(EmParameters.CurrentWeeklyTestSummary.TestMin.Value);
+          DateTime calcTestDateTime = emParams.CurrentWeeklyTestSummary.TestDate.Value.AddHours(emParams.CurrentWeeklyTestSummary.TestHour.Value).AddMinutes(emParams.CurrentWeeklyTestSummary.TestMin.Value);
 
-          if (EmParameters.CurrentWeeklyTestSummary.TestDatetime != calcTestDateTime)
+          if (emParams.CurrentWeeklyTestSummary.TestDatetime != calcTestDateTime)
           {
-            EmParameters.WeeklyTestSummaryValid = false;
+            emParams.WeeklyTestSummaryValid = false;
             category.CheckCatalogResult = "C";
           }
           else
           {
-            EmParameters.TestDateTimeValid = true;
+            emParams.TestDateTimeValid = true;
           }
         }
       }
@@ -287,27 +287,27 @@ namespace ECMPS.Checks.EmissionsChecks
     /// <param name="category">Category Object</param>
     /// <param name="log">Indicates whether to log results.</param>
     /// <returns>Returns error message if check fails to run correctly.</returns>
-    public static string EMWTS8(cCategory category, ref bool log)
+    public  string EMWTS8(cCategory category, ref bool log)
     {
       string returnVal = "";
 
       try
       {
-        if (EmParameters.CurrentWeeklyTestSummary.SpanScaleCd == null)
+        if (emParams.CurrentWeeklyTestSummary.SpanScaleCd == null)
         {
-          EmParameters.WeeklyTestSummaryValid = false;
+          emParams.WeeklyTestSummaryValid = false;
           category.CheckCatalogResult = "A";
         }
-        else if (EmParameters.CurrentWeeklyTestSummary.SpanScaleCd.NotInList("H,M,L"))
+        else if (emParams.CurrentWeeklyTestSummary.SpanScaleCd.NotInList("H,M,L"))
         {
-          EmParameters.WeeklyTestSummaryValid = false;
+          emParams.WeeklyTestSummaryValid = false;
           category.CheckCatalogResult = "B";
         }
-        else if (EmParameters.CurrentWeeklyTestSummary.TestTypeCd == "HGSI1")
+        else if (emParams.CurrentWeeklyTestSummary.TestTypeCd == "HGSI1")
         {
-          if (EmParameters.CurrentWeeklyTestSummary.SpanScaleCd != "H")
+          if (emParams.CurrentWeeklyTestSummary.SpanScaleCd != "H")
           {
-            EmParameters.WeeklyTestSummaryValid = false;
+            emParams.WeeklyTestSummaryValid = false;
             category.CheckCatalogResult = "C";
           }
         }
@@ -327,39 +327,39 @@ namespace ECMPS.Checks.EmissionsChecks
     /// <param name="category">Category Object</param>
     /// <param name="log">Indicates whether to log results.</param>
     /// <returns>Returns error message if check fails to run correctly.</returns>
-    public static string EMWTS9(cCategory category, ref bool log)
+    public  string EMWTS9(cCategory category, ref bool log)
     {
       string returnVal = "";
 
       try
       {
-        EmParameters.TestResultValid = false;
+        emParams.TestResultValid = false;
 
-        if (EmParameters.CurrentWeeklyTestSummary.TestResultCd == null)
+        if (emParams.CurrentWeeklyTestSummary.TestResultCd == null)
         {
-          EmParameters.WeeklyTestSummaryValid = false;
+          emParams.WeeklyTestSummaryValid = false;
           category.CheckCatalogResult = "A";
         }
-        else if (EmParameters.CurrentWeeklyTestSummary.TestResultCd.NotInList(EmParameters.TestResultCodeList))
+        else if (emParams.CurrentWeeklyTestSummary.TestResultCd.NotInList(emParams.TestResultCodeList))
         {
-          EmParameters.WeeklyTestSummaryValid = false;
+          emParams.WeeklyTestSummaryValid = false;
           category.CheckCatalogResult = "B";
         }
-        else if (EmParameters.CurrentWeeklyTestSummary.TestTypeCd == "HGSI1")
+        else if (emParams.CurrentWeeklyTestSummary.TestTypeCd == "HGSI1")
         {
-          if (EmParameters.CurrentWeeklyTestSummary.TestResultCd.NotInList("PASSED,PASSAPS,FAILED"))
+          if (emParams.CurrentWeeklyTestSummary.TestResultCd.NotInList("PASSED,PASSAPS,FAILED"))
           {
-            EmParameters.WeeklyTestSummaryValid = false;
+            emParams.WeeklyTestSummaryValid = false;
             category.CheckCatalogResult = "C";
           }
           else
           {
-            EmParameters.TestResultValid = true;
+            emParams.TestResultValid = true;
           }
         }
         else
         {
-          EmParameters.TestResultValid = true;
+          emParams.TestResultValid = true;
         }
       }
       catch (Exception ex)

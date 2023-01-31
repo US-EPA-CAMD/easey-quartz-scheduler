@@ -77,7 +77,7 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        #region Public Static Methods: Checks
+        #region Public  Methods: Checks
 
         #region Checks (1 - 10)
 
@@ -105,19 +105,19 @@ namespace ECMPS.Checks.EmissionsChecks
 					{
 						Category.SetCheckParameter("Daily_Cal_Component_Type_Valid", true, eParameterDataType.Boolean);
 					}
-                    else if ((EmParameters.CurrentDailyCalibrationTest.ComponentTypeCd == "HG") && (EmParameters.CurrentDailyCalibrationTest.DailyTestDate.Default(DateTime.MinValue) >= September9th2020))
+                    else if ((emParams.CurrentDailyCalibrationTest.ComponentTypeCd == "HG") && (emParams.CurrentDailyCalibrationTest.DailyTestDate.Default(DateTime.MinValue) >= September9th2020))
                     {
-                        EmParameters.DailyCalComponentTypeValid = true;
+                        emParams.DailyCalComponentTypeValid = true;
                     }
-                    else if (EmParameters.CurrentDailyCalibrationTest.ComponentTypeCd.InList("HG,HCL"))
+                    else if (emParams.CurrentDailyCalibrationTest.ComponentTypeCd.InList("HG,HCL"))
 					{
-						if (EmParameters.CurrentDailyCalibrationTest.OnlineOfflineInd == 1)
+						if (emParams.CurrentDailyCalibrationTest.OnlineOfflineInd == 1)
 						{
-							EmParameters.DailyCalComponentTypeValid = true;
+							emParams.DailyCalComponentTypeValid = true;
 						}
 						else
 						{
-							EmParameters.DailyCalComponentTypeValid = false;
+							emParams.DailyCalComponentTypeValid = false;
 							Category.CheckCatalogResult = "C";
 						}
 					}
@@ -214,12 +214,12 @@ namespace ECMPS.Checks.EmissionsChecks
 				{
 					Category.CheckCatalogResult = "A";
 				}
-				else if (EmParameters.CurrentDailyCalibrationTest.ComponentTypeCd.InList("HG,HCL"))
+				else if (emParams.CurrentDailyCalibrationTest.ComponentTypeCd.InList("HG,HCL"))
 				{
 
-                    if ((EmParameters.CurrentDailyCalibrationTest.OnlineOfflineInd.Default(0) == 1) && (EmParameters.DailyCalCalcOnlineInd.Default(0) == 0))
+                    if ((emParams.CurrentDailyCalibrationTest.OnlineOfflineInd.Default(0) == 1) && (emParams.DailyCalCalcOnlineInd.Default(0) == 0))
                     {
-                        if ((EmParameters.CurrentDailyCalibrationTest.ComponentTypeCd == "HG") && (EmParameters.CurrentDailyCalibrationTest.DailyTestDate.Value >= September9th2020))
+                        if ((emParams.CurrentDailyCalibrationTest.ComponentTypeCd == "HG") && (emParams.CurrentDailyCalibrationTest.DailyTestDate.Value >= September9th2020))
                         {
                             Category.CheckCatalogResult = "B";
                         }
@@ -320,7 +320,7 @@ namespace ECMPS.Checks.EmissionsChecks
 					DataRowView CurrentDayCalTest = (DataRowView)Category.GetCheckParameter("Current_Daily_Calibration_Test").ParameterValue;
 					string SpanScaleCd = cDBConvert.ToString(CurrentDayCalTest["SPAN_SCALE_CD"]);
 
-					if (EmParameters.CurrentDailyCalibrationTest.ComponentTypeCd.NotInList("FLOW,HG,HCL"))
+					if (emParams.CurrentDailyCalibrationTest.ComponentTypeCd.NotInList("FLOW,HG,HCL"))
 					{
 						if (SpanScaleCd == "")
 						{
@@ -360,16 +360,16 @@ namespace ECMPS.Checks.EmissionsChecks
 									}
 								}
 					}
-					else if (EmParameters.CurrentDailyCalibrationTest.ComponentTypeCd.InList("HG,HCL"))
+					else if (emParams.CurrentDailyCalibrationTest.ComponentTypeCd.InList("HG,HCL"))
 					{
-						if (EmParameters.CurrentDailyCalibrationTest.SpanScaleCd == null)
+						if (emParams.CurrentDailyCalibrationTest.SpanScaleCd == null)
 						{
-							EmParameters.DailyCalSpanScaleValid = false;
+							emParams.DailyCalSpanScaleValid = false;
 							Category.CheckCatalogResult = "A";
 						}
-						else if (EmParameters.CurrentDailyCalibrationTest.SpanScaleCd != "H")
+						else if (emParams.CurrentDailyCalibrationTest.SpanScaleCd != "H")
 						{
-							EmParameters.DailyCalSpanScaleValid = false;
+							emParams.DailyCalSpanScaleValid = false;
 							Category.CheckCatalogResult = "B";
 						}
 					}
@@ -846,7 +846,7 @@ namespace ECMPS.Checks.EmissionsChecks
 				decimal ZeroRefVal = cDBConvert.ToDecimal(CurrentDayCalTest["ZERO_REF_VALUE"]);
 				if (SpanVal != decimal.MinValue && ZeroRefVal >= 0)
 				{
-					if (EmParameters.CurrentDailyCalibrationTest.ComponentTypeCd != "HG")
+					if (emParams.CurrentDailyCalibrationTest.ComponentTypeCd != "HG")
 					{
 						decimal ZeroRefPercOfSpan = Math.Round(ZeroRefVal / SpanVal * 100, 1, MidpointRounding.AwayFromZero);
 						Category.SetCheckParameter("Zero_Reference_Percent_of_Span", ZeroRefPercOfSpan, eParameterDataType.Decimal);
@@ -1184,38 +1184,38 @@ namespace ECMPS.Checks.EmissionsChecks
 
 							case "HG":
 								{
-									EmParameters.DailyCalZeroInjectionCalcResult = Math.Min(Math.Round(Diff / EmParameters.DailyCalSpanValue.Value * 100, 1, MidpointRounding.AwayFromZero), 9999.9m);
+									emParams.DailyCalZeroInjectionCalcResult = Math.Min(Math.Round(Diff / emParams.DailyCalSpanValue.Value * 100, 1, MidpointRounding.AwayFromZero), 9999.9m);
 									Diff = Math.Round(Diff, 1, MidpointRounding.AwayFromZero);
-									if ((EmParameters.DailyCalZeroInjectionCalcResult > 5.0m) && (Diff <= 1.0m))
+									if ((emParams.DailyCalZeroInjectionCalcResult > 5.0m) && (Diff <= 1.0m))
 									{
-										EmParameters.DailyCalZeroInjectionCalcResult = Diff;
-										EmParameters.DailyCalZeroInjectionCalcApsIndicator = 1;
-										if (EmParameters.DailyCalCalcResult.NotInList("INC,FAILED,INVALID,IGNORED"))
-											EmParameters.DailyCalCalcResult = "PASSAPS";
+										emParams.DailyCalZeroInjectionCalcResult = Diff;
+										emParams.DailyCalZeroInjectionCalcApsIndicator = 1;
+										if (emParams.DailyCalCalcResult.NotInList("INC,FAILED,INVALID,IGNORED"))
+											emParams.DailyCalCalcResult = "PASSAPS";
 									}
 									else
 									{
-										if (EmParameters.DailyCalZeroInjectionCalcResult > 5)
+										if (emParams.DailyCalZeroInjectionCalcResult > 5)
 										{
-											if (EmParameters.DailyCalCalcResult.NotInList("INVALID,IGNORED"))
+											if (emParams.DailyCalCalcResult.NotInList("INVALID,IGNORED"))
 												if (ZeroAPSInd != 1 && 0 <= ZeroCalError && ZeroCalError <= 5)
 												{
 													decimal Tol = GetTolerance("7DAY", "CalibrationError", Category);
-													if (Math.Abs(EmParameters.DailyCalZeroInjectionCalcResult.GetValueOrDefault() - ZeroCalError) <= Tol)
+													if (Math.Abs(emParams.DailyCalZeroInjectionCalcResult.GetValueOrDefault() - ZeroCalError) <= Tol)
 													{
-														if (EmParameters.DailyCalCalcResult.NotInList("PASSAPS,INC,FAILED"))
-															EmParameters.DailyCalCalcResult = "PASSED";
+														if (emParams.DailyCalCalcResult.NotInList("PASSAPS,INC,FAILED"))
+															emParams.DailyCalCalcResult = "PASSED";
 													}
 													else
 													{
-														EmParameters.DailyCalCalcResult = "FAILED";
-														if (EmParameters.DailyCalInjectionTimesValid == true)
-															if (EmParameters.DailyCalFailDate == DateTime.MinValue
-																|| EmParameters.DailyCalFailDate > ZeroInjDate
-																|| (EmParameters.DailyCalFailDate == ZeroInjDate && EmParameters.DailyCalFailHour > ZeroInjHour))
+														emParams.DailyCalCalcResult = "FAILED";
+														if (emParams.DailyCalInjectionTimesValid == true)
+															if (emParams.DailyCalFailDate == DateTime.MinValue
+																|| emParams.DailyCalFailDate > ZeroInjDate
+																|| (emParams.DailyCalFailDate == ZeroInjDate && emParams.DailyCalFailHour > ZeroInjHour))
 															{
-																EmParameters.DailyCalFailDate = ZeroInjDate;
-																EmParameters.DailyCalFailHour = ZeroInjHour;
+																emParams.DailyCalFailDate = ZeroInjDate;
+																emParams.DailyCalFailHour = ZeroInjHour;
 															}
 													}
 												}
@@ -1226,39 +1226,39 @@ namespace ECMPS.Checks.EmissionsChecks
 														decimal Tol = GetTolerance("7DAY", "DifferenceUGSCM", Category);
 														if (Math.Abs(Diff - ZeroCalError) <= Tol)
 														{
-															if (EmParameters.DailyCalCalcResult.NotInList("INC,FAILED"))
-																EmParameters.DailyCalCalcResult = "PASSAPS";
+															if (emParams.DailyCalCalcResult.NotInList("INC,FAILED"))
+																emParams.DailyCalCalcResult = "PASSAPS";
 														}
 														else
 														{
-															EmParameters.DailyCalCalcResult = "FAILED";
-															if (EmParameters.DailyCalInjectionTimesValid == true)
-																if (EmParameters.DailyCalFailDate == DateTime.MinValue
-																	|| EmParameters.DailyCalFailDate > ZeroInjDate
-																	|| (EmParameters.DailyCalFailDate == ZeroInjDate && EmParameters.DailyCalFailHour > ZeroInjHour))
+															emParams.DailyCalCalcResult = "FAILED";
+															if (emParams.DailyCalInjectionTimesValid == true)
+																if (emParams.DailyCalFailDate == DateTime.MinValue
+																	|| emParams.DailyCalFailDate > ZeroInjDate
+																	|| (emParams.DailyCalFailDate == ZeroInjDate && emParams.DailyCalFailHour > ZeroInjHour))
 																{
-																	EmParameters.DailyCalFailDate = ZeroInjDate;
-																	EmParameters.DailyCalFailHour = ZeroInjHour;
+																	emParams.DailyCalFailDate = ZeroInjDate;
+																	emParams.DailyCalFailHour = ZeroInjHour;
 																}
 														}
 													}
 													else
 													{
-														EmParameters.DailyCalCalcResult = "FAILED";
-														if (EmParameters.DailyCalInjectionTimesValid == true)
-															if (EmParameters.DailyCalFailDate == DateTime.MinValue
-																|| EmParameters.DailyCalFailDate > ZeroInjDate
-																|| (EmParameters.DailyCalFailDate == ZeroInjDate && EmParameters.DailyCalFailHour > ZeroInjHour))
+														emParams.DailyCalCalcResult = "FAILED";
+														if (emParams.DailyCalInjectionTimesValid == true)
+															if (emParams.DailyCalFailDate == DateTime.MinValue
+																|| emParams.DailyCalFailDate > ZeroInjDate
+																|| (emParams.DailyCalFailDate == ZeroInjDate && emParams.DailyCalFailHour > ZeroInjHour))
 															{
-																EmParameters.DailyCalFailDate = ZeroInjDate;
-																EmParameters.DailyCalFailHour = ZeroInjHour;
+																emParams.DailyCalFailDate = ZeroInjDate;
+																emParams.DailyCalFailHour = ZeroInjHour;
 															}
 													}
 												}
 										}
 										else
-											if (EmParameters.DailyCalCalcResult.NotInList("INC,FAILED,PASSAPS,IGNORED"))
-												EmParameters.DailyCalCalcResult = "PASSED";
+											if (emParams.DailyCalCalcResult.NotInList("INC,FAILED,PASSAPS,IGNORED"))
+												emParams.DailyCalCalcResult = "PASSED";
 									}
 									break;
 
@@ -1514,39 +1514,39 @@ namespace ECMPS.Checks.EmissionsChecks
 
 							case "HG":
 								{
-									EmParameters.DailyCalUpscaleInjectionCalcResult = Math.Min(Math.Round(Diff / EmParameters.DailyCalSpanValue.GetValueOrDefault() * 100, 1, MidpointRounding.AwayFromZero), (decimal)9999.9);
+									emParams.DailyCalUpscaleInjectionCalcResult = Math.Min(Math.Round(Diff / emParams.DailyCalSpanValue.GetValueOrDefault() * 100, 1, MidpointRounding.AwayFromZero), (decimal)9999.9);
 									Diff = Math.Round(Diff, 1, MidpointRounding.AwayFromZero);
 
-									if (EmParameters.DailyCalUpscaleInjectionCalcResult > 5 && Diff <= 1)
+									if (emParams.DailyCalUpscaleInjectionCalcResult > 5 && Diff <= 1)
 									{
-										EmParameters.DailyCalUpscaleInjectionCalcResult = Diff;
-										EmParameters.DailyCalUpscaleInjectionCalcApsIndicator = 1;
-										if (EmParameters.DailyCalCalcResult.NotInList("INC,FAILED,INVALID,IGNORED"))
-											EmParameters.DailyCalCalcResult = "PASSAPS";
+										emParams.DailyCalUpscaleInjectionCalcResult = Diff;
+										emParams.DailyCalUpscaleInjectionCalcApsIndicator = 1;
+										if (emParams.DailyCalCalcResult.NotInList("INC,FAILED,INVALID,IGNORED"))
+											emParams.DailyCalCalcResult = "PASSAPS";
 									}
 									else
 									{
-										if (EmParameters.DailyCalUpscaleInjectionCalcResult > 5)
+										if (emParams.DailyCalUpscaleInjectionCalcResult > 5)
 										{
-											if (EmParameters.DailyCalCalcResult.NotInList("INVALID,IGNORED"))
+											if (emParams.DailyCalCalcResult.NotInList("INVALID,IGNORED"))
 												if (UpsAPSInd != 1 && 0 <= UpsCalError && UpsCalError <= 5)
 												{
 													decimal Tol = GetTolerance("7DAY", "CalibrationError", Category);
-													if (Math.Abs(EmParameters.DailyCalUpscaleInjectionCalcResult.GetValueOrDefault() - UpsCalError) <= Tol)
+													if (Math.Abs(emParams.DailyCalUpscaleInjectionCalcResult.GetValueOrDefault() - UpsCalError) <= Tol)
 													{
-														if (EmParameters.DailyCalCalcResult.NotInList("PASSAPS,INC,FAILED"))
-															EmParameters.DailyCalCalcResult = "PASSED";
+														if (emParams.DailyCalCalcResult.NotInList("PASSAPS,INC,FAILED"))
+															emParams.DailyCalCalcResult = "PASSED";
 													}
 													else
 													{
-														EmParameters.DailyCalCalcResult = "FAILED";
-														if (EmParameters.DailyCalInjectionTimesValid == true)
-                              if (EmParameters.DailyCalFailDate == null
-																|| EmParameters.DailyCalFailDate > UpsInjDate
-																|| (EmParameters.DailyCalFailDate == UpsInjDate && EmParameters.DailyCalFailHour > UpsInjHour))
+														emParams.DailyCalCalcResult = "FAILED";
+														if (emParams.DailyCalInjectionTimesValid == true)
+                              if (emParams.DailyCalFailDate == null
+																|| emParams.DailyCalFailDate > UpsInjDate
+																|| (emParams.DailyCalFailDate == UpsInjDate && emParams.DailyCalFailHour > UpsInjHour))
 															{
-																EmParameters.DailyCalFailDate = UpsInjDate;
-																EmParameters.DailyCalFailHour = UpsInjHour;
+																emParams.DailyCalFailDate = UpsInjDate;
+																emParams.DailyCalFailHour = UpsInjHour;
 															}
 													}
 												}
@@ -1557,39 +1557,39 @@ namespace ECMPS.Checks.EmissionsChecks
 														decimal Tol = GetTolerance("7DAY", "DifferenceUGSCM", Category);
 														if (Math.Abs(Diff - UpsCalError) <= Tol)
 														{
-															if (EmParameters.DailyCalCalcResult.NotInList("INC,FAILED"))
-																EmParameters.DailyCalCalcResult = "PASSED";
+															if (emParams.DailyCalCalcResult.NotInList("INC,FAILED"))
+																emParams.DailyCalCalcResult = "PASSED";
 														}
 														else
 														{
-															EmParameters.DailyCalCalcResult = "FAILED";
-															if (EmParameters.DailyCalInjectionTimesValid == true)
-                                if (EmParameters.DailyCalFailDate == null
-																	|| EmParameters.DailyCalFailDate > UpsInjDate
-																	|| (EmParameters.DailyCalFailDate == UpsInjDate && EmParameters.DailyCalFailHour > UpsInjHour))
+															emParams.DailyCalCalcResult = "FAILED";
+															if (emParams.DailyCalInjectionTimesValid == true)
+                                if (emParams.DailyCalFailDate == null
+																	|| emParams.DailyCalFailDate > UpsInjDate
+																	|| (emParams.DailyCalFailDate == UpsInjDate && emParams.DailyCalFailHour > UpsInjHour))
 																{
-																	EmParameters.DailyCalFailDate = UpsInjDate;
-																	EmParameters.DailyCalFailHour = UpsInjHour;
+																	emParams.DailyCalFailDate = UpsInjDate;
+																	emParams.DailyCalFailHour = UpsInjHour;
 																}
 														}
 													}
 													else
 													{
-														EmParameters.DailyCalCalcResult = "FAILED";
-														if (EmParameters.DailyCalInjectionTimesValid == true)
-															if (EmParameters.DailyCalFailDate == null
-																|| EmParameters.DailyCalFailDate > UpsInjDate
-																|| (EmParameters.DailyCalFailDate == UpsInjDate && EmParameters.DailyCalFailHour > UpsInjHour))
+														emParams.DailyCalCalcResult = "FAILED";
+														if (emParams.DailyCalInjectionTimesValid == true)
+															if (emParams.DailyCalFailDate == null
+																|| emParams.DailyCalFailDate > UpsInjDate
+																|| (emParams.DailyCalFailDate == UpsInjDate && emParams.DailyCalFailHour > UpsInjHour))
 															{
-																EmParameters.DailyCalFailDate = UpsInjDate;
-																EmParameters.DailyCalFailHour = UpsInjHour;
+																emParams.DailyCalFailDate = UpsInjDate;
+																emParams.DailyCalFailHour = UpsInjHour;
 															}
 													}
 												}
 										}
 										else
-											if (EmParameters.DailyCalCalcResult.NotInList("INC,FAILED,PASSAPS,IGNORED"))
-												EmParameters.DailyCalCalcResult = "PASSED";
+											if (emParams.DailyCalCalcResult.NotInList("INC,FAILED,PASSAPS,IGNORED"))
+												emParams.DailyCalCalcResult = "PASSED";
 									}
 									break;
 								}
@@ -2023,11 +2023,11 @@ namespace ECMPS.Checks.EmissionsChecks
 						{
 							category.CheckCatalogResult = "C";
                         }
-                        else if (!EmParameters.CurrentDailyCalibrationTest.CylinderId.All(letter => "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-&.".Contains(letter.ToString())))
+                        else if (!emParams.CurrentDailyCalibrationTest.CylinderId.All(letter => "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-&.".Contains(letter.ToString())))
                         {
-                            if (!EmParameters.InvalidCylinderIdList.Contains(EmParameters.CurrentDailyCalibrationTest.CylinderId))
+                            if (!emParams.InvalidCylinderIdList.Contains(emParams.CurrentDailyCalibrationTest.CylinderId))
                             {
-                                EmParameters.InvalidCylinderIdList.Add(EmParameters.CurrentDailyCalibrationTest.CylinderId);
+                                emParams.InvalidCylinderIdList.Add(emParams.CurrentDailyCalibrationTest.CylinderId);
                             }
                         }
                     }
@@ -2363,7 +2363,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
 		#region Private Methods: Utilities
 
-		private static decimal GetTolerance(string ATestTypeCd, String AFieldDescription, cCategory ACategory)
+		private  decimal GetTolerance(string ATestTypeCd, String AFieldDescription, cCategory ACategory)
 		{
 			DataView ToleranceView = (DataView)ACategory.GetCheckParameter("Test_Tolerances_Cross_Check_Table").ParameterValue;
 			DataRowView ToleranceRow;
@@ -2378,7 +2378,7 @@ namespace ECMPS.Checks.EmissionsChecks
 				return decimal.MinValue;
 		}
 
-		private static DataView FilterRanged(DataView ASourceView, DateTime AOpDate, int AOpHour, bool Inclusive)
+		private  DataView FilterRanged(DataView ASourceView, DateTime AOpDate, int AOpHour, bool Inclusive)
 		{
 			DataTable AFilterTable = ASourceView.Table.Clone();
 			DataRow FilterRow;

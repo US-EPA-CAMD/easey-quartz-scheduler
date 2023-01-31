@@ -62,7 +62,7 @@ namespace ECMPS.Checks.QualificationChecks
 
         #region qualification
 
-        public static string QUAL1(cCategory Category, ref bool Log) //Monitoring Qualification Type Consistent with Non Load Based Indicator
+        public string QUAL1(cCategory Category, ref bool Log) //Monitoring Qualification Type Consistent with Non Load Based Indicator
         {
             string ReturnVal = "";
 
@@ -89,7 +89,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL3(cCategory Category, ref bool Log) //Monitoring Qualification Type Consistent with Fuel
+        public string QUAL3(cCategory Category, ref bool Log) //Monitoring Qualification Type Consistent with Fuel
         {
             string ReturnVal = "";
 
@@ -128,7 +128,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL5(cCategory Category, ref bool Log) //Monitoring Qualification Type Consistent with Program and Reporting Frequency
+        public string QUAL5(cCategory Category, ref bool Log) //Monitoring Qualification Type Consistent with Program and Reporting Frequency
         {
             string ReturnVal = "";
 
@@ -194,7 +194,7 @@ namespace ECMPS.Checks.QualificationChecks
                                                 new cFilterCondition[]
                                       {
                                         new cFilterCondition("PARAMETER_CD", "NOX"),
-                                        new cFilterCondition("PRG_CD", MpParameters.ProgramIsOzoneSeasonList, eFilterConditionStringCompare.InList),
+                                        new cFilterCondition("PRG_CD", mpParams.ProgramIsOzoneSeasonList, eFilterConditionStringCompare.InList),
                                         new cFilterCondition("CLASS", "A,B", eFilterConditionStringCompare.InList),
                                         //UMCB Date check for less than Evaluation End and not null
                                         new cFilterCondition("UMCB_DATE", EvalEndDate, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.LessThanOrEqual),
@@ -217,7 +217,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL12(cCategory Category, ref bool Log) //Required LME Qualification for Program and Reporting Frequency
+        public string QUAL12(cCategory Category, ref bool Log) //Required LME Qualification for Program and Reporting Frequency
         {
             string ReturnVal = "";
 
@@ -338,7 +338,7 @@ namespace ECMPS.Checks.QualificationChecks
                                                     new cFilterCondition[]
                                       {
                                         new cFilterCondition("PARAMETER_CD", "NOX"),
-                                        new cFilterCondition("PRG_CD", MpParameters.ProgramIsOzoneSeasonList, eFilterConditionStringCompare.InList),
+                                        new cFilterCondition("PRG_CD", mpParams.ProgramIsOzoneSeasonList, eFilterConditionStringCompare.InList),
                                         new cFilterCondition("REQUIRED_IND", 1, eFilterDataType.Integer),
                                         new cFilterCondition("CLASS", "A,B", eFilterConditionStringCompare.InList),
                                         //UMCB Date check for less than Evaluation End and not null
@@ -385,7 +385,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL14(cCategory Category, ref bool Log) //Required Monitoring System for Qualification
+        public string QUAL14(cCategory Category, ref bool Log) //Required Monitoring System for Qualification
         {
             string ReturnVal = "";
 
@@ -420,7 +420,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL16(cCategory Category, ref bool Log) //Monitoring Qualification Qualification Type Code Valid
+        public string QUAL16(cCategory Category, ref bool Log) //Monitoring Qualification Qualification Type Code Valid
         {
             string ReturnVal = "";
 
@@ -451,15 +451,15 @@ namespace ECMPS.Checks.QualificationChecks
                          * The active check should use the earlier of the UMCB and ERB. 
                          * The ERB could be null and the could accounts for this by defaulting a null ERB to the max date.
                          */
-                        if ((MpParameters.LocationProgramRecords.FindRows(
+                        if ((mpParams.LocationProgramRecords.FindRows(
                                                                             new cFilterCondition("PRG_CD", "MATS"),
-                                                                            new cFilterCondition("UNIT_MONITOR_CERT_BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, MpParameters.CurrentQualification.EndDate.Default(DateTime.MaxValue)),
-                                                                            new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, MpParameters.CurrentQualification.BeginDate.Value, eNullDateDefault.Max)
+                                                                            new cFilterCondition("UNIT_MONITOR_CERT_BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, mpParams.CurrentQualification.EndDate.Default(DateTime.MaxValue)),
+                                                                            new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, mpParams.CurrentQualification.BeginDate.Value, eNullDateDefault.Max)
                                                                          ).Count > 0) ||
-                            (MpParameters.LocationProgramRecords.FindRows(
+                            (mpParams.LocationProgramRecords.FindRows(
                                                                             new cFilterCondition("PRG_CD", "MATS"),
-                                                                            new cFilterCondition("EMISSIONS_RECORDING_BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, MpParameters.CurrentQualification.EndDate.Default(DateTime.MaxValue), eNullDateDefault.Max),
-                                                                            new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, MpParameters.CurrentQualification.BeginDate.Value, eNullDateDefault.Max)
+                                                                            new cFilterCondition("EMISSIONS_RECORDING_BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, mpParams.CurrentQualification.EndDate.Default(DateTime.MaxValue), eNullDateDefault.Max),
+                                                                            new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, mpParams.CurrentQualification.BeginDate.Value, eNullDateDefault.Max)
                                                                          ).Count > 0))
                         {
                             if (LcnType.InList("MS,CP,MP"))
@@ -491,7 +491,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL18(cCategory Category, ref bool Log) //Monitoring Qualification Begin Date Valid
+        public string QUAL18(cCategory Category, ref bool Log) //Monitoring Qualification Begin Date Valid
         {
             string ReturnVal = "";
 
@@ -533,7 +533,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL19(cCategory Category, ref bool Log) //Monitoring Qualification End Date Valid
+        public string QUAL19(cCategory Category, ref bool Log) //Monitoring Qualification End Date Valid
         {
             string ReturnVal = "";
 
@@ -546,7 +546,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL20(cCategory Category, ref bool Log) //Monitoring Qualification Dates Consistent
+        public string QUAL20(cCategory Category, ref bool Log) //Monitoring Qualification Dates Consistent
         {
             string ReturnVal = "";
 
@@ -560,7 +560,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL34(cCategory Category, ref bool Log) //Monitoring Qualification Data Active
+        public string QUAL34(cCategory Category, ref bool Log) //Monitoring Qualification Data Active
         {
             string ReturnVal = "";
 
@@ -579,7 +579,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL35(cCategory Category, ref bool Log) //Duplicate Monitoring Qualification Records
+        public string QUAL35(cCategory Category, ref bool Log) //Duplicate Monitoring Qualification Records
         {
             string ReturnVal = "";
 
@@ -616,7 +616,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL38(cCategory Category, ref bool Log) //Monitoring Qualification Child Records Valid
+        public string QUAL38(cCategory Category, ref bool Log) //Monitoring Qualification Child Records Valid
         {
             string ReturnVal = "";
 
@@ -754,9 +754,9 @@ namespace ECMPS.Checks.QualificationChecks
                     }
                     else if (qualTypeCd == "LEE")
                     {
-                        if ((bool)MpParameters.QualificationTypeCodeValid)
+                        if ((bool)mpParams.QualificationTypeCodeValid)
                         {
-                            if (MpParameters.QualificationleeRecords.SourceView.Count == 0)
+                            if (mpParams.QualificationleeRecords.SourceView.Count == 0)
                             {
                                 Category.CheckCatalogResult = "F";
                             }
@@ -774,7 +774,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL39(cCategory Category, ref bool Log) //Overlapping Monitoring Qualification Record
+        public string QUAL39(cCategory Category, ref bool Log) //Overlapping Monitoring Qualification Record
         {
             string ReturnVal = "";
 
@@ -832,7 +832,7 @@ namespace ECMPS.Checks.QualificationChecks
 
         #region qualification percent
 
-        public static string QUAL7(cCategory Category, ref bool Log) //Monitoring Qualification Percent Qualification Year Valid
+        public string QUAL7(cCategory Category, ref bool Log) //Monitoring Qualification Percent Qualification Year Valid
         {
             string ReturnVal = "";
 
@@ -879,7 +879,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL8(cCategory Category, ref bool Log) //Monitoring Qualification Percent Average Percent Value Valid
+        public string QUAL8(cCategory Category, ref bool Log) //Monitoring Qualification Percent Average Percent Value Valid
         {
             string ReturnVal = "";
 
@@ -915,7 +915,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL11(cCategory Category, ref bool Log) //Qualification Eligibility Valid
+        public string QUAL11(cCategory Category, ref bool Log) //Qualification Eligibility Valid
         {
             string ReturnVal = "";
 
@@ -971,7 +971,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL27(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year1 Data Type Code Valid
+        public string QUAL27(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year1 Data Type Code Valid
         {
             string ReturnVal = "";
 
@@ -1016,7 +1016,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL28(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year1 Data Year Valid
+        public string QUAL28(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year1 Data Year Valid
         {
             string ReturnVal = "";
 
@@ -1049,7 +1049,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL29(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year1 Percentage Value Valid
+        public string QUAL29(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year1 Percentage Value Valid
         {
             string ReturnVal = "";
 
@@ -1071,7 +1071,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL36(cCategory Category, ref bool Log) //Duplicate Monitoring Qualification Percent Records
+        public string QUAL36(cCategory Category, ref bool Log) //Duplicate Monitoring Qualification Percent Records
         {
             string ReturnVal = "";
 
@@ -1100,7 +1100,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL40(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year2 Data Type Code Valid
+        public string QUAL40(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year2 Data Type Code Valid
         {
             string ReturnVal = "";
 
@@ -1134,7 +1134,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL41(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year2 Percentage Value Valid
+        public string QUAL41(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year2 Percentage Value Valid
         {
             string ReturnVal = "";
 
@@ -1155,7 +1155,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL42(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year2 Data Year Valid
+        public string QUAL42(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year2 Data Year Valid
         {
             string ReturnVal = "";
 
@@ -1189,7 +1189,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL43(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year3 Data Type Code Valid
+        public string QUAL43(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year3 Data Type Code Valid
         {
             string ReturnVal = "";
 
@@ -1223,7 +1223,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL44(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year3 Percentage Value Valid
+        public string QUAL44(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year3 Percentage Value Valid
         {
             string ReturnVal = "";
 
@@ -1244,7 +1244,7 @@ namespace ECMPS.Checks.QualificationChecks
 
             return ReturnVal;
         }
-        public static string QUAL45(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year3 Data Year Valid
+        public string QUAL45(cCategory Category, ref bool Log) //Monitoring Qualification Percent Year3 Data Year Valid
         {
             string ReturnVal = "";
 
@@ -1283,7 +1283,7 @@ namespace ECMPS.Checks.QualificationChecks
 
         #region qualification lme
 
-        public static string QUAL22(cCategory Category, ref bool Log) //Monitoring Qualification LME Data Qualification Year Valid
+        public string QUAL22(cCategory Category, ref bool Log) //Monitoring Qualification LME Data Qualification Year Valid
         {
             string ReturnVal = "";
 
@@ -1306,7 +1306,7 @@ namespace ECMPS.Checks.QualificationChecks
             return ReturnVal;
         }
 
-        public static string QUAL23(cCategory Category, ref bool Log) //Monitoring Qualification LME Data SO2 Tons Valid
+        public string QUAL23(cCategory Category, ref bool Log) //Monitoring Qualification LME Data SO2 Tons Valid
         {
             string ReturnVal = "";
 
@@ -1338,7 +1338,7 @@ namespace ECMPS.Checks.QualificationChecks
             return ReturnVal;
         }
 
-        public static string QUAL24(cCategory Category, ref bool Log) //Monitoring Qualification LME Data NOx Tons Valid
+        public string QUAL24(cCategory Category, ref bool Log) //Monitoring Qualification LME Data NOx Tons Valid
         {
             string ReturnVal = "";
 
@@ -1400,7 +1400,7 @@ namespace ECMPS.Checks.QualificationChecks
             return ReturnVal;
         }
 
-        public static string QUAL25(cCategory Category, ref bool Log) //Monitoring Qualification LME Data Operating Hours Valid
+        public string QUAL25(cCategory Category, ref bool Log) //Monitoring Qualification LME Data Operating Hours Valid
         {
             string ReturnVal = "";
 
@@ -1421,7 +1421,7 @@ namespace ECMPS.Checks.QualificationChecks
         }
 
 
-        public static string QUAL37(cCategory Category, ref bool Log) //Duplicate Monitoring Qualification Percent Records
+        public string QUAL37(cCategory Category, ref bool Log) //Duplicate Monitoring Qualification Percent Records
         {
             string ReturnVal = "";
 
@@ -1451,7 +1451,7 @@ namespace ECMPS.Checks.QualificationChecks
             return ReturnVal;
         }
 
-        public static string QUAL46(cCategory Category, ref bool Log) //Monitoring Qualification LME Data NOx Tons Valid
+        public string QUAL46(cCategory Category, ref bool Log) //Monitoring Qualification LME Data NOx Tons Valid
         {
             string ReturnVal = "";
 
@@ -1504,7 +1504,7 @@ namespace ECMPS.Checks.QualificationChecks
             return ReturnVal;
         }
 
-        public static string QUAL47(cCategory Category, ref bool Log) //Monitoring Qualification LME Data SO2 Tons Valid
+        public string QUAL47(cCategory Category, ref bool Log) //Monitoring Qualification LME Data SO2 Tons Valid
         {
             string ReturnVal = "";
 

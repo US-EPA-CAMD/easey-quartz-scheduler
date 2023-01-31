@@ -49,10 +49,12 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// </summary>
     public cGenerationParameters GenerationParameters { get { return (cGenerationParameters)ProcessParameters; } }
 
+      EmGenerationParameters emGenerationParameters;
+
     /// <summary>
     /// The table containing the generated Hrly Op Data rows
     /// </summary>
-    public DataTable HrlyOpDataTable { get; private set; }
+        public DataTable HrlyOpDataTable { get; private set; }
 
     /// <summary>
     /// Indicates whether the migration of generated data should occur.
@@ -82,11 +84,11 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
         resultMessage = null;
         result = true;
 
-        cGenerationCategory locationCategory = new cGenerationCategory(this, "EMGENLC");
-        cGenerationCategory locationHourlyCategory = new cGenerationCategory(locationCategory, "EMGENHR");
-        cGenerationCategory locationSummaryCategory = new cGenerationCategory(locationCategory, "EMGENSV");
+        cGenerationCategory locationCategory = new cGenerationCategory(this, "EMGENLC",emGenerationParameters);
+        cGenerationCategory locationHourlyCategory = new cGenerationCategory(locationCategory, "EMGENHR", emGenerationParameters);
+                cGenerationCategory locationSummaryCategory = new cGenerationCategory(locationCategory, "EMGENSV", emGenerationParameters);
 
-        if (!locationCategory.InitCheckBands(CheckEngine.DbAuxConnection, ref resultMessage) ||
+                if (!locationCategory.InitCheckBands(CheckEngine.DbAuxConnection, ref resultMessage) ||
             !locationHourlyCategory.InitCheckBands(CheckEngine.DbAuxConnection, ref resultMessage) ||
             !locationSummaryCategory.InitCheckBands(CheckEngine.DbAuxConnection, ref resultMessage))
         {
@@ -391,6 +393,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
         Checks[52] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.Emissions.dll",
                                                            "ECMPS.Checks.NonOperatingEmissionGeneration.cGenerationChecks",
                                                            true, 0, null, arguments, null, null ).Unwrap();
+                Checks[52].emGenerationParameters = emGenerationParameters;
 
         result = true;
       }
@@ -501,7 +504,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// </summary>
     protected override void InitStaticParameterClass()
     {
-      EmGenerationParameters.Init(this);
+            emGenerationParameters.Init(this);
     }
 
     /// <summary>
@@ -510,7 +513,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// <param name="category"></param>
     public override void SetStaticParameterCategory(cCategory category)
     {
-      EmGenerationParameters.Category = category;
+            emGenerationParameters.Category = category;
     }
 
     #endregion

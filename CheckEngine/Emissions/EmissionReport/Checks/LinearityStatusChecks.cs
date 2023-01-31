@@ -43,9 +43,9 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #endregion
 
-        #region Public Static Methods: Checks
+        #region Public emParams. Methods: Checks
 
-        public static string LINSTAT1(cCategory Category, ref bool Log)
+        public string LINSTAT1(cCategory Category, ref bool Log)
         //Check Analyzer Range Exemption For Linearity Status       
         {
             string ReturnVal = "";
@@ -57,9 +57,9 @@ namespace ECMPS.Checks.EmissionsChecks
                 {
                     DataView MonitorSpanRecsFound;
                     sFilterPair[] SpanFilter = new sFilterPair[2];
-                    SpanFilter[0].Set("COMPONENT_TYPE_CD", EmParameters.QaStatusComponentTypeCode);
-                    SpanFilter[1].Set("SPAN_SCALE_CD", EmParameters.CurrentAnalyzerRangeUsed);
-                    MonitorSpanRecsFound = FindRows(EmParameters.MonitorSpanRecordsByHourLocation.SourceView, SpanFilter);
+                    SpanFilter[0].Set("COMPONENT_TYPE_CD", emParams.QaStatusComponentTypeCode);
+                    SpanFilter[1].Set("SPAN_SCALE_CD", emParams.CurrentAnalyzerRangeUsed);
+                    MonitorSpanRecsFound = FindRows(emParams.MonitorSpanRecordsByHourLocation.SourceView, SpanFilter);
                     if (MonitorSpanRecsFound.Count != 1 || cDBConvert.ToDecimal(MonitorSpanRecsFound[0]["SPAN_VALUE"]) <= 0)
                         LinStat = "Invalid Monitor Span";
                     else
@@ -78,7 +78,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string LINSTAT2(cCategory Category, ref bool Log)
+        public string LINSTAT2(cCategory Category, ref bool Log)
         //Locate Most Recent Prior Linearity Test       
         {
             string ReturnVal = "";
@@ -93,8 +93,8 @@ namespace ECMPS.Checks.EmissionsChecks
                     string AnalyzerRangeUsed = Convert.ToString(Category.GetCheckParameter("Current_Analyzer_Range_Used").ParameterValue);
                     DataView LinTestRecs = Category.GetCheckParameter("Linearity_Test_Records_By_Location_For_QA_Status").ValueAsDataView();
                     DataView PriorLinTestRecsFound;
-                    DateTime CurrentDate = EmParameters.CurrentDateHour.AsStartDate();
-                    int CurrentHour = EmParameters.CurrentDateHour.AsStartHour();
+                    DateTime CurrentDate = emParams.CurrentDateHour.AsStartDate();
+                    int CurrentHour = emParams.CurrentDateHour.AsStartHour();
 
                     sFilterPair[] Filter = new sFilterPair[3];
                     Filter[0].Set("COMPONENT_ID", ApplCompId);
@@ -194,7 +194,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string LINSTAT3(cCategory Category, ref bool Log)
+        public string LINSTAT3(cCategory Category, ref bool Log)
         //Locate Most Recent Prior Event       
         {
             string ReturnVal = "";
@@ -221,7 +221,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         DataView MonSpanRecs = Category.GetCheckParameter("Monitor_Span_Records_By_Hour_Location").ValueAsDataView();
                         DataView MonSpanRecsFound;
                         sFilterPair[] MonSpanFilter = new sFilterPair[2];
-                        string CompTypeCd = EmParameters.QaStatusComponentTypeCode;
+                        string CompTypeCd = emParams.QaStatusComponentTypeCode;
 
                         foreach (DataRowView drv in QACertRecsFound)
                         {
@@ -286,7 +286,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string LINSTAT4(cCategory Category, ref bool Log)
+        public string LINSTAT4(cCategory Category, ref bool Log)
         //Determine Expiration Dates For Most Recent Prior Linearity Test       
         {
             string ReturnVal = "";
@@ -375,12 +375,12 @@ namespace ECMPS.Checks.EmissionsChecks
                                 {
                                     //Added 11/11/2014 RAB
                                     DateTime? AlternateTestDate = null;
-                                    if (EmParameters.PriorLinearityRecord.ComponentTypeCd == "HG")
+                                    if (emParams.PriorLinearityRecord.ComponentTypeCd == "HG")
                                     {
                                         cFilterCondition[] ProgramFilter = new cFilterCondition[] { new cFilterCondition("PRG_CD", "MATS") };
 
-                                        DataRowView LatestProgramRec = cRowFilter.FindMostRecentRow(EmParameters.LocationProgramRecordsByHourLocation.SourceView,
-                                          EmParameters.QaStatusComponentBeginDate.Default(DateTypes.START),
+                                        DataRowView LatestProgramRec = cRowFilter.FindMostRecentRow(emParams.LocationProgramRecordsByHourLocation.SourceView,
+                                          emParams.QaStatusComponentBeginDate.Default(DateTypes.START),
                                           "EMISSIONS_RECORDING_BEGIN_DATE",
                                           ProgramFilter, eFilterConditionRelativeCompare.LessThanOrEqual);
 
@@ -393,7 +393,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                                     DateTime PriorRecBeginDate = cDBConvert.ToDate(PriorLinRec["BEGIN_DATE"], DateTypes.START);
                                     int PriorRecBeginHour = cDBConvert.ToHour(PriorLinRec["BEGIN_HOUR"], DateTypes.START);
-                                    CertEventFilter[0].Set("COMPONENT_ID", EmParameters.ApplicableComponentId);
+                                    CertEventFilter[0].Set("COMPONENT_ID", emParams.ApplicableComponentId);
                                     CertEventFilter[1].Set("LINEARITY_REQUIRED", "Y");
                                     CertRecsFound = FindActiveRows(CertEventRecs, DateTime.MinValue, 0, PriorRecBeginDate, PriorRecBeginHour, "QA_CERT_EVENT_DATE", "QA_CERT_EVENT_HOUR", "QA_CERT_EVENT_DATE", "QA_CERT_EVENT_HOUR", CertEventFilter);
 
@@ -468,8 +468,8 @@ namespace ECMPS.Checks.EmissionsChecks
                                 }
                                 PriorLinRec["TEST_EXP_DATE"] = PriorTestExpDate;
                             }
-                            DateTime CurrentDate = EmParameters.CurrentDateHour.AsStartDate();
-                            int CurrentHour = EmParameters.CurrentDateHour.AsStartHour();
+                            DateTime CurrentDate = emParams.CurrentDateHour.AsStartDate();
+                            int CurrentHour = emParams.CurrentDateHour.AsStartHour();
 
                             if (CurrentDate <= PriorTestExpDate)
                                 LinStatus = "IC";
@@ -538,10 +538,10 @@ namespace ECMPS.Checks.EmissionsChecks
                                                 else
                                                 {
                                                     /* Selects operating hour counts based on system if Primary/Primary-Bypass systems (stacks) are invovled. */
-                                                    if ((EmParameters.PrimaryBypassActiveForHour == true) && EmParameters.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
+                                                    if ((emParams.PrimaryBypassActiveForHour == true) && emParams.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
                                                     {
                                                         CheckDataView<SystemOpSuppData>  systemOpSuppData 
-                                                            = EmParameters.SystemOperatingSuppDataRecordsByLocation.FindRows(new cFilterCondition("MON_SYS_ID", EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId),
+                                                            = emParams.SystemOperatingSuppDataRecordsByLocation.FindRows(new cFilterCondition("MON_SYS_ID", emParams.QaStatusPrimaryOrPrimaryBypassSystemId),
                                                                                                                              new cFilterCondition("CALENDAR_YEAR", i),
                                                                                                                              new cFilterCondition("QUARTER", j),
                                                                                                                              new cFilterCondition("OP_SUPP_DATA_TYPE_CD", "OP"));
@@ -565,7 +565,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                                                     if ((operatingHoursCount != null) && (operatingHoursCount.Value < 168))
                                                         NumExtQtrs++;
-                                                    else if (EmParameters.PriorLinearityRecord.ComponentTypeCd != "HG")
+                                                    else if (emParams.PriorLinearityRecord.ComponentTypeCd != "HG")
                                                     {
                                                         TEEFilterRange[3].Set("CALENDAR_YEAR", i, eFilterDataType.Integer);
                                                         TEEFilterRange[4].Set("QUARTER", j, eFilterDataType.Integer);
@@ -648,7 +648,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                             break;
                                     }
 
-                                    if (EmParameters.PriorLinearityRecord.ComponentTypeCd != "HG")
+                                    if (emParams.PriorLinearityRecord.ComponentTypeCd != "HG")
                                     {
                                         DateTime start = new DateTime(PriorTestYear, 3 * (PriorTestQtr - 1) + 1, 1);
                                         DateTime newStart = start.AddMonths(3 * NumExtQtrs);
@@ -694,9 +694,9 @@ namespace ECMPS.Checks.EmissionsChecks
                                     int currentOpHours;
 
                                     /* Selects operating hour counts based on system if Primary/Primary-Bypass systems (stacks) are invovled. */
-                                    if ((EmParameters.PrimaryBypassActiveForHour == true) && EmParameters.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
+                                    if ((emParams.PrimaryBypassActiveForHour == true) && emParams.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
                                     {
-                                        currentOpHours = EmParameters.SystemOperatingSuppDataDictionaryArray[Category.CurrentMonLocPos][EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId].QuarterlyOperatingCounts.Hours;
+                                        currentOpHours = emParams.SystemOperatingSuppDataDictionaryArray[Category.CurrentMonLocPos][emParams.QaStatusPrimaryOrPrimaryBypassSystemId].QuarterlyOperatingCounts.Hours;
                                     }
                                     else
                                     {
@@ -744,10 +744,10 @@ namespace ECMPS.Checks.EmissionsChecks
                                                         if (EarliestLocRptDate <= cDateFunctions.LastDateThisQuarter(i, j))
                                                         {
                                                             /* Selects operating hour counts based on system if Primary/Primary-Bypass systems (stacks) are invovled. */
-                                                            if ((EmParameters.PrimaryBypassActiveForHour == true) && EmParameters.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
+                                                            if ((emParams.PrimaryBypassActiveForHour == true) && emParams.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
                                                             {
                                                                 CheckDataView<SystemOpSuppData> systemOpSuppData
-                                                                    = EmParameters.SystemOperatingSuppDataRecordsByLocation.FindRows(new cFilterCondition("MON_SYS_ID", EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId),
+                                                                    = emParams.SystemOperatingSuppDataRecordsByLocation.FindRows(new cFilterCondition("MON_SYS_ID", emParams.QaStatusPrimaryOrPrimaryBypassSystemId),
                                                                                                                                      new cFilterCondition("CALENDAR_YEAR", i),
                                                                                                                                      new cFilterCondition("QUARTER", j),
                                                                                                                                      new cFilterCondition("OP_SUPP_DATA_TYPE_CD", "OP"));
@@ -813,7 +813,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string LINSTAT5(cCategory Category, ref bool Log)
+        public string LINSTAT5(cCategory Category, ref bool Log)
         //Determine Event Conditional Status       
         {
             string ReturnVal = "";
@@ -828,8 +828,8 @@ namespace ECMPS.Checks.EmissionsChecks
                 {
                     DateTime CondBeginDate = cDBConvert.ToDate(PriorLinEventRec["CONDITIONAL_DATA_BEGIN_DATE"], DateTypes.START);
                     int CondBeginHour = cDBConvert.ToHour(PriorLinEventRec["CONDITIONAL_DATA_BEGIN_HOUR"], DateTypes.START);
-                    DateTime CurrentDate = EmParameters.CurrentDateHour.AsStartDate();
-                    int CurrentHour = EmParameters.CurrentDateHour.AsStartHour();
+                    DateTime CurrentDate = emParams.CurrentDateHour.AsStartDate();
+                    int CurrentHour = emParams.CurrentDateHour.AsStartHour();
                     int CurrentYear = CurrentDate.Year;
                     int CurrentQtr = cDateFunctions.ThisQuarter(CurrentDate);
                     if (CondBeginDate == DateTime.MinValue || PriorLinEventRec["CONDITIONAL_DATA_BEGIN_HOUR"] == DBNull.Value ||
@@ -925,7 +925,7 @@ namespace ECMPS.Checks.EmissionsChecks
                             int[] OpDaysAccumArray = Category.GetCheckParameter("Rpt_Period_Op_Days_Accumulator_Array").ValueAsIntArray();
                             int CurrentPosition = Category.GetCheckParameter("Current_Monitor_Plan_Location_Postion").ValueAsInt();
                             DateTime EarliestLocRptDate = Category.GetCheckParameter("Earliest_Location_Report_Date").ValueAsDateTime(DateTypes.START);
-                            if (cDBConvert.ToString(PriorLinEventRec["LINEARITY_CERT_EVENT"]) == "Y" && EmParameters.PriorLinearityEventRecord.SysTypeCd.NotInList("ST"))
+                            if (cDBConvert.ToString(PriorLinEventRec["LINEARITY_CERT_EVENT"]) == "Y" && emParams.PriorLinearityEventRecord.SysTypeCd.NotInList("ST"))
                             {
                                 if (EventCd == "125")
                                 {
@@ -945,12 +945,12 @@ namespace ECMPS.Checks.EmissionsChecks
                                             if (SysTypeCd == "SO2")
                                             {
                                                 LocProgFilter = new sFilterPair[1];
-                                                LocProgFilter[0].Set("PRG_CD", EmParameters.ProgramRequiresSo2SystemCertificationList, eFilterPairStringCompare.InList);
+                                                LocProgFilter[0].Set("PRG_CD", emParams.ProgramRequiresSo2SystemCertificationList, eFilterPairStringCompare.InList);
                                                 LocProgramRecsFound = FindActiveRows(LocProgramRecs, DateTime.MinValue, SysBeginDate, "UNIT_MONITOR_CERT_BEGIN_DATE", "UNIT_MONITOR_CERT_BEGIN_DATE", true, true, LocProgFilter);
                                                 if (LocProgramRecsFound.Count == 0)
                                                 {
                                                     LocProgFilter = new sFilterPair[2];
-                                                    LocProgFilter[0].Set("PRG_CD", EmParameters.ProgramRequiresSo2SystemCertificationList, eFilterPairStringCompare.InList);
+                                                    LocProgFilter[0].Set("PRG_CD", emParams.ProgramRequiresSo2SystemCertificationList, eFilterPairStringCompare.InList);
                                                     LocProgFilter[1].Set("EMISSIONS_RECORDING_BEGIN_DATE", DateTime.MinValue, eFilterDataType.DateBegan, true);
                                                     LocProgramRecsFound = FindActiveRows(LocProgramRecs, DateTime.MinValue, SysBeginDate, "EMISSIONS_RECORDING_BEGIN_DATE", "EMISSIONS_RECORDING_BEGIN_DATE", true, true, LocProgFilter);
                                                 }
@@ -959,12 +959,12 @@ namespace ECMPS.Checks.EmissionsChecks
                                                 if (SysTypeCd == "NOX")
                                             {
                                                 LocProgFilter = new sFilterPair[1];
-                                                LocProgFilter[0].Set("PRG_CD", EmParameters.ProgramRequiresNoxSystemCertificationList, eFilterPairStringCompare.InList);
+                                                LocProgFilter[0].Set("PRG_CD", emParams.ProgramRequiresNoxSystemCertificationList, eFilterPairStringCompare.InList);
                                                 LocProgramRecsFound = FindActiveRows(LocProgramRecs, DateTime.MinValue, SysBeginDate, "UNIT_MONITOR_CERT_BEGIN_DATE", "UNIT_MONITOR_CERT_BEGIN_DATE", true, true, LocProgFilter);
                                                 if (LocProgramRecsFound.Count == 0)
                                                 {
                                                     LocProgFilter = new sFilterPair[2];
-                                                    LocProgFilter[0].Set("PRG_CD", EmParameters.ProgramRequiresNoxSystemCertificationList, eFilterPairStringCompare.InList);
+                                                    LocProgFilter[0].Set("PRG_CD", emParams.ProgramRequiresNoxSystemCertificationList, eFilterPairStringCompare.InList);
                                                     LocProgFilter[1].Set("EMISSIONS_RECORDING_BEGIN_DATE", DateTime.MinValue, eFilterDataType.DateBegan, true);
                                                     LocProgramRecsFound = FindActiveRows(LocProgramRecs, DateTime.MinValue, SysBeginDate, "EMISSIONS_RECORDING_BEGIN_DATE", "EMISSIONS_RECORDING_BEGIN_DATE", true, true, LocProgFilter);
                                                 }
@@ -973,12 +973,12 @@ namespace ECMPS.Checks.EmissionsChecks
                                                     if (SysTypeCd == "NOXC")
                                             {
                                                 LocProgFilter = new sFilterPair[1];
-                                                LocProgFilter[0].Set("PRG_CD", EmParameters.ProgramRequiresNoxcSystemCertificationList, eFilterPairStringCompare.InList);
+                                                LocProgFilter[0].Set("PRG_CD", emParams.ProgramRequiresNoxcSystemCertificationList, eFilterPairStringCompare.InList);
                                                 LocProgramRecsFound = FindActiveRows(LocProgramRecs, DateTime.MinValue, SysBeginDate, "UNIT_MONITOR_CERT_BEGIN_DATE", "UNIT_MONITOR_CERT_BEGIN_DATE", true, true, LocProgFilter);
                                                 if (LocProgramRecsFound.Count == 0)
                                                 {
                                                     LocProgFilter = new sFilterPair[2];
-                                                    LocProgFilter[0].Set("PRG_CD", EmParameters.ProgramRequiresNoxcSystemCertificationList, eFilterPairStringCompare.InList);
+                                                    LocProgFilter[0].Set("PRG_CD", emParams.ProgramRequiresNoxcSystemCertificationList, eFilterPairStringCompare.InList);
                                                     LocProgFilter[1].Set("EMISSIONS_RECORDING_BEGIN_DATE", DateTime.MinValue, eFilterDataType.DateBegan, true);
                                                     LocProgramRecsFound = FindActiveRows(LocProgramRecs, DateTime.MinValue, SysBeginDate, "EMISSIONS_RECORDING_BEGIN_DATE", "EMISSIONS_RECORDING_BEGIN_DATE", true, true, LocProgFilter);
                                                 }
@@ -1042,7 +1042,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                             if (DateDiff + 1 > 90)// add one for inclusivity
                                             {
                                                 /* Selects operating hour counts based on system if Primary/Primary-Bypass systems (stacks) are invovled. */
-                                                if ((EmParameters.PrimaryBypassActiveForHour == true) && EmParameters.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
+                                                if ((emParams.PrimaryBypassActiveForHour == true) && emParams.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
                                                 {
                                                     int? dayCount;
 
@@ -1088,10 +1088,10 @@ namespace ECMPS.Checks.EmissionsChecks
                                                     if (EarliestLocRptDate <= cDateFunctions.LastDateThisQuarter(i, j))
                                                     {
                                                         /* Selects operating hour counts based on system if Primary/Primary-Bypass systems (stacks) are invovled. */
-                                                        if ((EmParameters.PrimaryBypassActiveForHour == true) && EmParameters.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
+                                                        if ((emParams.PrimaryBypassActiveForHour == true) && emParams.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
                                                         {
                                                             CheckDataView<SystemOpSuppData> systemOpSuppData
-                                                                = EmParameters.SystemOperatingSuppDataRecordsByLocation.FindRows(new cFilterCondition("MON_SYS_ID", EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId),
+                                                                = emParams.SystemOperatingSuppDataRecordsByLocation.FindRows(new cFilterCondition("MON_SYS_ID", emParams.QaStatusPrimaryOrPrimaryBypassSystemId),
                                                                                                                                  new cFilterCondition("CALENDAR_YEAR", i),
                                                                                                                                  new cFilterCondition("QUARTER", j),
                                                                                                                                  new cFilterCondition("OP_SUPP_DATA_TYPE_CD", "OP"));
@@ -1126,7 +1126,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                                                 // Determine whether supplemental count exists, try system specific for Primary-Bypass situation first.
                                                                 int? supplementalCount = null;
                                                                 {
-                                                                    if ((EmParameters.PrimaryBypassActiveForHour == true) && EmParameters.QaStatusComponentTypeCode.InList("CO2,NOX,O2") &&
+                                                                    if ((emParams.PrimaryBypassActiveForHour == true) && emParams.QaStatusComponentTypeCode.InList("CO2,NOX,O2") &&
                                                                         (PriorLinEventRec["QA_CERT_EVENT_DATE_SYSTEM_SUPP_DATA_EXISTS_IND"].AsInteger() == 1))
                                                                     {
                                                                         supplementalCount = PriorLinEventRec["QA_CERT_EVENT_SYSTEM_OP_DAY_COUNT"].AsShort(0);
@@ -1174,9 +1174,9 @@ namespace ECMPS.Checks.EmissionsChecks
                                             int currentOpDays;
 
                                             /* Selects operating hour counts based on system if Primary/Primary-Bypass systems (stacks) are invovled. */
-                                            if ((EmParameters.PrimaryBypassActiveForHour == true) && EmParameters.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
+                                            if ((emParams.PrimaryBypassActiveForHour == true) && emParams.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
                                             {
-                                                currentOpDays = EmParameters.SystemOperatingSuppDataDictionaryArray[Category.CurrentMonLocPos][EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId].QuarterlyOperatingCounts.Days;
+                                                currentOpDays = emParams.SystemOperatingSuppDataDictionaryArray[Category.CurrentMonLocPos][emParams.QaStatusPrimaryOrPrimaryBypassSystemId].QuarterlyOperatingCounts.Days;
                                             }
                                             else
                                             {
@@ -1206,7 +1206,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                 if (CondBeginDate.Year == CurrentYear && CondBeginQtr == CurrentQtr)
                                 {
                                     /* Selects operating hour counts based on system if Primary/Primary-Bypass systems (stacks) are invovled. */
-                                    if ((EmParameters.PrimaryBypassActiveForHour == true) && EmParameters.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
+                                    if ((emParams.PrimaryBypassActiveForHour == true) && emParams.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
                                     {
                                         int? hourCount;
 
@@ -1250,12 +1250,12 @@ namespace ECMPS.Checks.EmissionsChecks
                                                 if (EarliestLocRptDate <= cDateFunctions.LastDateThisQuarter(i, j))
                                                 {
                                                     /* Selects operating hour counts based on system if Primary/Primary-Bypass systems (stacks) are invovled. */
-                                                    if ((EmParameters.PrimaryBypassActiveForHour == true) && EmParameters.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
+                                                    if ((emParams.PrimaryBypassActiveForHour == true) && emParams.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
                                                     {
-                                                        string opSuppDataTypeCd = (EmParameters.AnnualReportingRequirement == true) || (j != 2) ? "OP" : "OPMJ";
+                                                        string opSuppDataTypeCd = (emParams.AnnualReportingRequirement == true) || (j != 2) ? "OP" : "OPMJ";
 
                                                         CheckDataView<SystemOpSuppData> systemOpSuppData
-                                                            = EmParameters.SystemOperatingSuppDataRecordsByLocation.FindRows(new cFilterCondition("MON_SYS_ID", EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId),
+                                                            = emParams.SystemOperatingSuppDataRecordsByLocation.FindRows(new cFilterCondition("MON_SYS_ID", emParams.QaStatusPrimaryOrPrimaryBypassSystemId),
                                                                                                                              new cFilterCondition("CALENDAR_YEAR", i),
                                                                                                                              new cFilterCondition("QUARTER", j),
                                                                                                                              new cFilterCondition("OP_SUPP_DATA_TYPE_CD", opSuppDataTypeCd));
@@ -1304,7 +1304,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                                             // Determine whether supplemental count exists, try system specific for Primary-Bypass situation first.
                                                             int? supplementalCount = null;
                                                             {
-                                                                if ((EmParameters.PrimaryBypassActiveForHour == true) && EmParameters.QaStatusComponentTypeCode.InList("CO2,NOX,O2") &&
+                                                                if ((emParams.PrimaryBypassActiveForHour == true) && emParams.QaStatusComponentTypeCode.InList("CO2,NOX,O2") &&
                                                                     (PriorLinEventRec["CONDITIONAL_BEGIN_HOUR_SYSTEM_SUPP_DATA_EXISTS_IND"].AsInteger() == 1))
                                                                 {
                                                                     supplementalCount = PriorLinEventRec["CONDITIONAL_BEGIN_SYSTEM_OP_HOUR_COUNT"].AsShort(0);
@@ -1350,9 +1350,9 @@ namespace ECMPS.Checks.EmissionsChecks
                                     int currentOpHours;
 
                                     /* Selects operating hour counts based on system if Primary/Primary-Bypass systems (stacks) are invovled. */
-                                    if ((EmParameters.PrimaryBypassActiveForHour == true) && EmParameters.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
+                                    if ((emParams.PrimaryBypassActiveForHour == true) && emParams.QaStatusComponentTypeCode.InList("CO2,NOX,O2"))
                                     {
-                                        currentOpHours = EmParameters.SystemOperatingSuppDataDictionaryArray[Category.CurrentMonLocPos][EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId].QuarterlyOperatingCounts.Hours;
+                                        currentOpHours = emParams.SystemOperatingSuppDataDictionaryArray[Category.CurrentMonLocPos][emParams.QaStatusPrimaryOrPrimaryBypassSystemId].QuarterlyOperatingCounts.Hours;
                                     }
                                     else
                                     {
@@ -1407,15 +1407,15 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="locationPosition">The position of the location to which the qa cert event belongs.</param>
         /// <param name="eventId">The QA_CERT_EVENT_ID of the qa cert event.</param>
         /// <returns>The count of operating days on or after the QA cert event date in the quarter of the date.</returns>
-        public static int? LinStat5QaCertEventDays(int locationPosition, string eventId)
+        public int? LinStat5QaCertEventDays(int locationPosition, string eventId)
         {
             int? result;
 
             string dictionaryKey = QaCertificationSupplementalData.FormatKey(eventId, eQaCertificationSupplementalDataTargetDateHour.QaCertEventDate);
 
-            if (EmParameters.QaCertEventSuppDataDictionaryArray[locationPosition].ContainsKey(dictionaryKey))
+            if (emParams.QaCertEventSuppDataDictionaryArray[locationPosition].ContainsKey(dictionaryKey))
             {
-                result = EmParameters.QaCertEventSuppDataDictionaryArray[locationPosition][dictionaryKey].QuarterlySystemOperatingCounts.Count;
+                result = emParams.QaCertEventSuppDataDictionaryArray[locationPosition][dictionaryKey].QuarterlySystemOperatingCounts.Count;
             }
             else
             {
@@ -1432,15 +1432,15 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="locationPosition">The position of the location to which the qa cert event belongs.</param>
         /// <param name="eventId">The QA_CERT_EVENT_ID of the qa cert event.</param>
         /// <returns>The count of operating hours on or after the conditional data begin hour in the quarter of the hour.</returns>
-        public static int? LinStat5ConditionalDataBeginHours(int locationPosition, string eventId)
+        public int? LinStat5ConditionalDataBeginHours(int locationPosition, string eventId)
         {
             int? result;
 
             string dictionaryKey = QaCertificationSupplementalData.FormatKey(eventId, eQaCertificationSupplementalDataTargetDateHour.ConditionalDataBeginHour);
 
-            if (EmParameters.QaCertEventSuppDataDictionaryArray[locationPosition].ContainsKey(dictionaryKey))
+            if (emParams.QaCertEventSuppDataDictionaryArray[locationPosition].ContainsKey(dictionaryKey))
             {
-                result = EmParameters.QaCertEventSuppDataDictionaryArray[locationPosition][dictionaryKey].QuarterlySystemOperatingCounts.Count;
+                result = emParams.QaCertEventSuppDataDictionaryArray[locationPosition][dictionaryKey].QuarterlySystemOperatingCounts.Count;
             }
             else
             {
@@ -1453,7 +1453,7 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        public static string LINSTAT6(cCategory Category, ref bool Log)
+        public string LINSTAT6(cCategory Category, ref bool Log)
         //Determine Final Linearity Status       
         {
             string ReturnVal = "";
@@ -1513,7 +1513,7 @@ namespace ECMPS.Checks.EmissionsChecks
                             {
                                 DataView MonSpanRecs = Category.GetCheckParameter("Monitor_Span_Records_By_Hour_Location").ValueAsDataView();
                                 sFilterPair[] MonSpanFilter = new sFilterPair[2];
-                                MonSpanFilter[0].Set("COMPONENT_TYPE_CD", EmParameters.QaStatusComponentTypeCode);
+                                MonSpanFilter[0].Set("COMPONENT_TYPE_CD", emParams.QaStatusComponentTypeCode);
                                 MonSpanFilter[1].Set("SPAN_SCALE_CD", AltAnalyzerRange);
                                 DataView MonSpanRecsFound = FindRows(MonSpanRecs, MonSpanFilter);
                                 if (MonSpanRecsFound.Count == 0 || MonSpanRecsFound.Count > 1 || cDBConvert.ToDecimal(MonSpanRecsFound[0]["SPAN_VALUE"]) <= 0)
@@ -1534,8 +1534,8 @@ namespace ECMPS.Checks.EmissionsChecks
                             }
                             if (string.IsNullOrEmpty(Category.CheckCatalogResult))
                             {
-                                DateTime CurrentDate = EmParameters.CurrentDateHour.AsStartDate();
-                                int CurrentHour = EmParameters.CurrentDateHour.AsStartHour();
+                                DateTime CurrentDate = emParams.CurrentDateHour.AsStartDate();
+                                int CurrentHour = emParams.CurrentDateHour.AsStartHour();
 
                                 DataView LinTestRecs = Category.GetCheckParameter("Linearity_Test_Records_By_Location_For_QA_Status").ValueAsDataView();
 
@@ -1549,14 +1549,14 @@ namespace ECMPS.Checks.EmissionsChecks
                                             new cFilterCondition("COMPONENT_ID", AltComponentID),
                                             new cFilterCondition("SPAN_SCALE_CD", AltAnalyzerRange),
                                             new cFilterCondition("TEST_RESULT_CD", "INVALID", true),
-                                            new cFilterCondition("END_DATEHOUR", EmParameters.CurrentDateHour.AsStartDateTime(), eFilterDataType.DateEnded, eFilterConditionRelativeCompare.LessThan)
+                                            new cFilterCondition("END_DATEHOUR", emParams.CurrentDateHour.AsStartDateTime(), eFilterDataType.DateEnded, eFilterConditionRelativeCompare.LessThan)
                                                         },
                                                         new cFilterCondition[]
                                                         {
                                             new cFilterCondition("COMPONENT_ID", AltComponentID),
                                             new cFilterCondition("SPAN_SCALE_CD", AltAnalyzerRange),
                                             new cFilterCondition("TEST_RESULT_CD", "PASSED,PASSAPS", eFilterConditionStringCompare.InList),
-                                            new cFilterCondition("END_DATEHOUR", EmParameters.CurrentDateHour.AsStartDateTime(), eFilterDataType.DateEnded),
+                                            new cFilterCondition("END_DATEHOUR", emParams.CurrentDateHour.AsStartDateTime(), eFilterDataType.DateEnded),
                                             new cFilterCondition("END_MIN", 45, eFilterDataType.Integer, eFilterConditionRelativeCompare.LessThan)
                                                         }
                                                        );
@@ -1733,55 +1733,55 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">The category object for the category in which the check is runnig.</param>
         /// <param name="log">obsolete</param>
         /// <returns></returns>
-        public static string LINSTAT7(cCategory category, ref bool log)
+        public string LINSTAT7(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsCheckForHgsi3Ran = false;
+                emParams.MatsCheckForHgsi3Ran = false;
 
-                if ((EmParameters.CurrentLinearityStatus == "IC") ||
-                    (EmParameters.CurrentLinearityStatus == "IC-Extension") || 
-                    (EmParameters.CurrentLinearityStatus == "IC-Grace"))
+                if ((emParams.CurrentLinearityStatus == "IC") ||
+                    (emParams.CurrentLinearityStatus == "IC-Extension") || 
+                    (emParams.CurrentLinearityStatus == "IC-Grace"))
                 {
-                    if (EmParameters.PriorLinearityRecord.ComponentTypeCd == "HG")
+                    if (emParams.PriorLinearityRecord.ComponentTypeCd == "HG")
                     {
                         VwQaSuppDataHourlyStatusRow linearityTestRecord 
-                            = EmParameters.LinearityTestRecordsByLocationForQaStatus.FindMostRecentRow(
-                                                                                                            EmParameters.CurrentDateHour.Value,
+                            = emParams.LinearityTestRecordsByLocationForQaStatus.FindMostRecentRow(
+                                                                                                            emParams.CurrentDateHour.Value,
                                                                                                             "END_DATEHOUR",
                                                                                                             new cFilterCondition[]
                                                                                                             {
-                                                                                                                new cFilterCondition("COMPONENT_ID", EmParameters.PriorLinearityRecord.ComponentId),
+                                                                                                                new cFilterCondition("COMPONENT_ID", emParams.PriorLinearityRecord.ComponentId),
                                                                                                                 new cFilterCondition("TEST_TYPE_CD", "HGSI3"),
                                                                                                                 new cFilterCondition("TEST_RESULT_CD", "PASSED,PASSAPS", eFilterConditionStringCompare.InList)
                                                                                                             }
                                                                                                       );
                         if (linearityTestRecord == null)
                         {
-                            EmParameters.CurrentLinearityStatus = "OOC-No Prior 3-Point SI or Event";
+                            emParams.CurrentLinearityStatus = "OOC-No Prior 3-Point SI or Event";
                         }
                         else
                         {
                             int certOrRecertEventCount
-                                = EmParameters.QaCertificationEventRecords.CountRows(
+                                = emParams.QaCertificationEventRecords.CountRows(
                                                                                         new cFilterCondition[]
                                                                                         {
-                                                                                            new cFilterCondition("COMPONENT_ID", EmParameters.PriorLinearityRecord.ComponentId),
+                                                                                            new cFilterCondition("COMPONENT_ID", emParams.PriorLinearityRecord.ComponentId),
                                                                                             new cFilterCondition("QA_CERT_EVENT_CD", "120,125", eFilterConditionStringCompare.InList),
-                                                                                            new cFilterCondition("QA_CERT_EVENT_DATEHOUR", eFilterConditionRelativeCompare.LessThan, EmParameters.CurrentDateHour.Value),
+                                                                                            new cFilterCondition("QA_CERT_EVENT_DATEHOUR", eFilterConditionRelativeCompare.LessThan, emParams.CurrentDateHour.Value),
                                                                                             new cFilterCondition("QA_CERT_EVENT_DATEHOUR", eFilterConditionRelativeCompare.GreaterThan, linearityTestRecord.EndDatehour.Value)
                                                                                         }
                                                                                     );
 
                             if (certOrRecertEventCount > 0)
                             {
-                                EmParameters.CurrentLinearityStatus = "OOC-No Prior 3-Point SI or Event";
+                                emParams.CurrentLinearityStatus = "OOC-No Prior 3-Point SI or Event";
                             }
                         }
 
-                        EmParameters.MatsCheckForHgsi3Ran = true;
+                        emParams.MatsCheckForHgsi3Ran = true;
                     }
                 }
             }
@@ -1797,7 +1797,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region Private Methods: Utilities
 
-        private static DataView FindCertEventRecs(DataTable SourceTable, string LinearityRecordParameterName, string ApplCompId, string AnalyzerRangeUsed, cCategory ACategory)
+        private DataView FindCertEventRecs(DataTable SourceTable, string LinearityRecordParameterName, string ApplCompId, string AnalyzerRangeUsed, cCategory ACategory)
         {
             DataView ReturnView = null;//method returns null if no records found
 
@@ -1808,8 +1808,8 @@ namespace ECMPS.Checks.EmissionsChecks
             DataRow FilterRow;
             string CompId;
             string MonSysId;
-            DateTime CurrentDate = EmParameters.CurrentDateHour.AsStartDate();
-            int CurrentHour = EmParameters.CurrentDateHour.AsStartHour();
+            DateTime CurrentDate = emParams.CurrentDateHour.AsStartDate();
+            int CurrentHour = emParams.CurrentDateHour.AsStartHour();
 
             DateTime CondBeginDate;
             int CondBeginHour;
@@ -1860,7 +1860,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnView;
         }
 
-        private static DataView FindCertEventRecs2(DataTable SourceTable, string LinearityRecordParameterName, string ApplCompId, string AnalyzerRangeUsed, cCategory ACategory)
+        private  DataView FindCertEventRecs2(DataTable SourceTable, string LinearityRecordParameterName, string ApplCompId, string AnalyzerRangeUsed, cCategory ACategory)
         {
             DataView ReturnView = null;//method returns null if no records found
 
@@ -1871,8 +1871,8 @@ namespace ECMPS.Checks.EmissionsChecks
             DataRow FilterRow;
             string CompId;
             string MonSysId;
-            DateTime CurrentDate = EmParameters.CurrentDateHour.AsStartDate();
-            int CurrentHour = EmParameters.CurrentDateHour.AsStartHour();
+            DateTime CurrentDate = emParams.CurrentDateHour.AsStartDate();
+            int CurrentHour = emParams.CurrentDateHour.AsStartHour();
 
             DateTime CondBeginDate;
             int CondBeginHour;
@@ -1921,7 +1921,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnView;
         }
 
-        private static DataView FindCertEventRecs3(DataTable SourceTable, string LinearityRecordParameterName, string ApplCompId, string AnalyzerRangeUsed, cCategory ACategory)
+        private DataView FindCertEventRecs3(DataTable SourceTable, string LinearityRecordParameterName, string ApplCompId, string AnalyzerRangeUsed, cCategory ACategory)
         {
             DataView ReturnView = null;//method returns null if no records found
 
@@ -1932,8 +1932,8 @@ namespace ECMPS.Checks.EmissionsChecks
             DataRow FilterRow;
             string CompId;
             string MonSysId;
-            DateTime CurrentDate = EmParameters.CurrentDateHour.AsStartDate();
-            int CurrentHour = EmParameters.CurrentDateHour.AsStartHour();
+            DateTime CurrentDate = emParams.CurrentDateHour.AsStartDate();
+            int CurrentHour = emParams.CurrentDateHour.AsStartHour();
 
             DateTime CondBeginDate;
             int CondBeginHour;

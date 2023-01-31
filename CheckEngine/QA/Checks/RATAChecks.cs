@@ -161,7 +161,7 @@ namespace ECMPS.Checks.RATAChecks
 
         #region 1 - 10
 
-        public static string RATA1(cCategory Category, ref bool Log)
+        public  string RATA1(cCategory Category, ref bool Log)
         //Determine Run Sequence
         {
             string ReturnVal = "", LevelList = null, Simultaneous = null;
@@ -283,7 +283,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA2(cCategory Category, ref bool Log) //Validate System
+        public  string RATA2(cCategory Category, ref bool Log) //Validate System
         {
             string ReturnVal = "";
 
@@ -316,7 +316,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA3(cCategory Category, ref bool Log) // Test Aborted
+        public  string RATA3(cCategory Category, ref bool Log) // Test Aborted
         {
             string ReturnVal = "";
 
@@ -352,7 +352,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA4(cCategory Category, ref bool Log) // Validate Test Reason Code
+        public  string RATA4(cCategory Category, ref bool Log) // Validate Test Reason Code
         {
             string ReturnVal = "";
 
@@ -382,7 +382,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA5(cCategory Category, ref bool Log) // Simultaneous Runs
+        public  string RATA5(cCategory Category, ref bool Log) // Simultaneous Runs
         {
             string ReturnVal = "";
 
@@ -402,7 +402,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA6(cCategory Category, ref bool Log) // CEM Value Consistent with MPC/MPF/MER
+        public  string RATA6(cCategory Category, ref bool Log) // CEM Value Consistent with MPC/MPF/MER
         {
             string ReturnVal = "", OldFilter = "";
 
@@ -552,7 +552,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA7(cCategory Category, ref bool Log) // Rounded Flow Values
+        public  string RATA7(cCategory Category, ref bool Log) // Rounded Flow Values
         {
             string ReturnVal = "";
 
@@ -575,7 +575,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA8(cCategory Category, ref bool Log) // Test Claim Code Valid
+        public  string RATA8(cCategory Category, ref bool Log) // Test Claim Code Valid
         {
             string ReturnVal = "";
 
@@ -674,7 +674,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA9(cCategory Category, ref bool Log)
+        public  string RATA9(cCategory Category, ref bool Log)
         // SLC High Load Pct Valid
         {
             string ReturnVal = "";
@@ -722,7 +722,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA10(cCategory Category, ref bool Log) // SLC Mid Load Pct Valid
+        public  string RATA10(cCategory Category, ref bool Log) // SLC Mid Load Pct Valid
         {
             string ReturnVal = "";
 
@@ -778,7 +778,7 @@ namespace ECMPS.Checks.RATAChecks
 
         #region 11 - 20
 
-        public static string RATA11(cCategory Category, ref bool Log) // SLC Low Load Pct Valid
+        public  string RATA11(cCategory Category, ref bool Log) // SLC Low Load Pct Valid
         {
             string ReturnVal = "";
 
@@ -828,7 +828,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA12(cCategory Category, ref bool Log) // Claim Begin Date Valid
+        public  string RATA12(cCategory Category, ref bool Log) // Claim Begin Date Valid
         {
             string ReturnVal = "";
 
@@ -891,7 +891,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA13(cCategory Category, ref bool Log) // Claim End Date Valid
+        public  string RATA13(cCategory Category, ref bool Log) // Claim End Date Valid
         {
             string ReturnVal = "";
 
@@ -936,7 +936,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA14(cCategory Category, ref bool Log)
+        public  string RATA14(cCategory Category, ref bool Log)
         //Initialize RATA Summary Variables
         {
             string ReturnVal = "";
@@ -976,7 +976,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA15(cCategory Category, ref bool Log)
+        public  string RATA15(cCategory Category, ref bool Log)
         //Operating Level Valid
         {
             string ReturnVal = "";
@@ -1073,7 +1073,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA16(cCategory Category, ref bool Log) //Ref Method Valid
+        public  string RATA16(cCategory Category, ref bool Log) //Ref Method Valid
         {
             string ReturnVal = "";
 
@@ -1153,7 +1153,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA17(cCategory Category, ref bool Log) // Validate Mean CEM Value
+        public  string RATA17(cCategory Category, ref bool Log) // Validate Mean CEM Value
         {
             string ReturnVal = "";
 
@@ -1165,7 +1165,7 @@ namespace ECMPS.Checks.RATAChecks
                 //  EC-2481 MJ 2016-01-26
                 if (MeanValue == decimal.MinValue)
                     Category.CheckCatalogResult = "A";
-                else if (QaParameters.CurrentRata.SysTypeCd == "HG"
+                else if (qaParams.CurrentRata.SysTypeCd == "HG"
                          && MeanValue == 0)
                     Category.CheckCatalogResult = "C";
                 else if (MeanValue <= 0)
@@ -1179,7 +1179,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA18(cCategory Category, ref bool Log) // Validate Mean Reference Value
+        public  string RATA18(cCategory Category, ref bool Log) // Validate Mean Reference Value
         {
             string ReturnVal = "";
 
@@ -1202,7 +1202,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA19(cCategory Category, ref bool Log) // Validate Mean Difference
+        public  string RATA19(cCategory Category, ref bool Log) // Validate Mean Difference
         {
             string ReturnVal = "";
 
@@ -1222,7 +1222,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA20(cCategory Category, ref bool Log) // Validate Stnd Dev Diff
+        public  string RATA20(cCategory Category, ref bool Log) // Validate Stnd Dev Diff
         {
             string ReturnVal = "";
 
@@ -1247,7 +1247,7 @@ namespace ECMPS.Checks.RATAChecks
 
         #region 21 - 30
 
-        public static string RATA21(cCategory Category, ref bool Log) // Validate Conf Coef
+        public  string RATA21(cCategory Category, ref bool Log) // Validate Conf Coef
         {
             string ReturnVal = "";
 
@@ -1267,7 +1267,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA22(cCategory Category, ref bool Log) // Validate T Value
+        public  string RATA22(cCategory Category, ref bool Log) // Validate T Value
         {
             string ReturnVal = "";
 
@@ -1287,7 +1287,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA23(cCategory Category, ref bool Log) // Validate Avg Gross Unit Load
+        public  string RATA23(cCategory Category, ref bool Log) // Validate Avg Gross Unit Load
         {
             string ReturnVal = "";
 
@@ -1310,7 +1310,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA24(cCategory Category, ref bool Log) // Validate Relative Accuracy
+        public  string RATA24(cCategory Category, ref bool Log) // Validate Relative Accuracy
         {
             string ReturnVal = "";
 
@@ -1333,7 +1333,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA25(cCategory Category, ref bool Log) // Validate Run Number
+        public  string RATA25(cCategory Category, ref bool Log) // Validate Run Number
         {
             string ReturnVal = "";
 
@@ -1379,7 +1379,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA26(cCategory Category, ref bool Log) // Validate Gross Unit Load
+        public  string RATA26(cCategory Category, ref bool Log) // Validate Gross Unit Load
         {
             string ReturnVal = "";
 
@@ -1421,7 +1421,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA27(cCategory Category, ref bool Log) // Validate CEM Value
+        public  string RATA27(cCategory Category, ref bool Log) // Validate CEM Value
         {
             string ReturnVal = "";
 
@@ -1450,7 +1450,7 @@ namespace ECMPS.Checks.RATAChecks
                                 cDBConvert.ToDecimal(Category.GetCheckParameter("RATA_Sum_CEM_Values").ParameterValue) + CEMValue,
                                 eParameterDataType.Decimal);
 
-                            if ((QaParameters.CurrentRataRun.SysTypeCd != null) && QaParameters.CurrentRataRun.SysTypeCd.NotInList("HCL,HF,HG,ST"))
+                            if ((qaParams.CurrentRataRun.SysTypeCd != null) && qaParams.CurrentRataRun.SysTypeCd.NotInList("HCL,HF,HG,ST"))
                             {
                                 if (CEMValue != Math.Round(CEMValue, 3, MidpointRounding.AwayFromZero))
                                 {
@@ -1471,7 +1471,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA28(cCategory Category, ref bool Log) // Check for Flow RATA Run Record
+        public  string RATA28(cCategory Category, ref bool Log) // Check for Flow RATA Run Record
         {
             string ReturnVal = "";
 
@@ -1523,38 +1523,38 @@ namespace ECMPS.Checks.RATAChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-        public static string RATA29(cCategory category, ref bool log)
+        public  string RATA29(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                string runStatusCd = QaParameters.CurrentRataRun.RunStatusCd;
+                string runStatusCd = qaParams.CurrentRataRun.RunStatusCd;
 
                 if (runStatusCd.IsWhitespace())
                 {
-                    QaParameters.RataLevelValid = false;
+                    qaParams.RataLevelValid = false;
                     category.CheckCatalogResult = "A";
                 }
                 else if (runStatusCd == "RUNUSED")
                 {
-                    QaParameters.RataRunCount += 1;
+                    qaParams.RataRunCount += 1;
                 }
                 else if (runStatusCd == "NOTUSED")
                 {
-                    QaParameters.RataUnusedRunCount += 1;
+                    qaParams.RataUnusedRunCount += 1;
                 }
                 else if (runStatusCd == "IGNORED")
                 {
-                    if (QaParameters.CurrentRata.SysTypeCd != "ST")
+                    if (qaParams.CurrentRata.SysTypeCd != "ST")
                     {
-                        QaParameters.RataLevelValid = false;
+                        qaParams.RataLevelValid = false;
                         category.CheckCatalogResult = "C";
                     }
                 }
                 else
                 {
-                    QaParameters.RataLevelValid = false;
+                    qaParams.RataLevelValid = false;
                     category.CheckCatalogResult = "B";
                 }
             }
@@ -1566,7 +1566,7 @@ namespace ECMPS.Checks.RATAChecks
             return returnVal;
         }
 
-        public static string RATA30(cCategory Category, ref bool Log) // Valid Run Begin Time
+        public  string RATA30(cCategory Category, ref bool Log) // Valid Run Begin Time
         {
             string ReturnVal = "";
 
@@ -1597,7 +1597,7 @@ namespace ECMPS.Checks.RATAChecks
 
         #region 31 - 40
 
-        public static string RATA31(cCategory Category, ref bool Log) // Valid Run End Time
+        public  string RATA31(cCategory Category, ref bool Log) // Valid Run End Time
         {
             string ReturnVal = "";
 
@@ -1642,7 +1642,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA32(cCategory Category, ref bool Log) // Valid Run Length
+        public  string RATA32(cCategory Category, ref bool Log) // Valid Run Length
         {
             string ReturnVal = "";
 
@@ -1700,7 +1700,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA33(cCategory Category, ref bool Log) // Validate Reference Value
+        public  string RATA33(cCategory Category, ref bool Log) // Validate Reference Value
         {
             string ReturnVal = "";
 
@@ -1744,7 +1744,7 @@ namespace ECMPS.Checks.RATAChecks
                             }
 
 
-                            if ((QaParameters.CurrentRataRun.SysTypeCd != null) && QaParameters.CurrentRataRun.SysTypeCd.NotInList("HCL,HF,HG,ST"))
+                            if ((qaParams.CurrentRataRun.SysTypeCd != null) && qaParams.CurrentRataRun.SysTypeCd.NotInList("HCL,HF,HG,ST"))
                             {
                                 if (RefValue != Math.Round(RefValue, 3, MidpointRounding.AwayFromZero))
                                 {
@@ -1765,7 +1765,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA34(cCategory Category, ref bool Log) // Validate Run Count
+        public  string RATA34(cCategory Category, ref bool Log) // Validate Run Count
         {
             string ReturnVal = "";
 
@@ -1798,7 +1798,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA35(cCategory Category, ref bool Log) // Calculate RA
+        public  string RATA35(cCategory Category, ref bool Log) // Calculate RA
         {
             string ReturnVal = "";
 
@@ -1936,7 +1936,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA36(cCategory Category, ref bool Log) // Calculate Avg Gross Unit Load
+        public  string RATA36(cCategory Category, ref bool Log) // Calculate Avg Gross Unit Load
         {
             string ReturnVal = "";
 
@@ -2009,7 +2009,7 @@ namespace ECMPS.Checks.RATAChecks
         /// <param name="Category">Category object for the category in which the check is running.</param>
         /// <param name="Log">obsolete.</param>
         /// <returns></returns>
-        public static string RATA37(cCategory Category, ref bool Log)
+        public  string RATA37(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 
@@ -2851,7 +2851,7 @@ namespace ECMPS.Checks.RATAChecks
 
                         case "HCL":
                             {
-                                RAParameter = Math.Round(QaParameters.RataSummaryRelativeAccuracy.Default(), 1, MidpointRounding.AwayFromZero);
+                                RAParameter = Math.Round(qaParams.RataSummaryRelativeAccuracy.Default(), 1, MidpointRounding.AwayFromZero);
 
                                 if (RAParameter <= Convert.ToDecimal(20.0))
                                 {
@@ -2868,7 +2868,7 @@ namespace ECMPS.Checks.RATAChecks
                                         TestToleranceRecords.RowFilter = AddToDataViewFilter(OldFilter, FilterStringRA);
                                         ToleranceValue = Convert.ToDecimal(TestToleranceRecords[0]["Tolerance"]);
 
-                                        RAParameter = Math.Round(QaParameters.RataSummaryRelativeAccuracy.Default(), 2, MidpointRounding.AwayFromZero);
+                                        RAParameter = Math.Round(qaParams.RataSummaryRelativeAccuracy.Default(), 2, MidpointRounding.AwayFromZero);
 
                                         if (Math.Abs(RAParameter - RARecord) <= ToleranceValue)
                                         {
@@ -2950,7 +2950,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA38(cCategory Category, ref bool Log) // Avg Gross Unit Load Consistent w/ Range
+        public  string RATA38(cCategory Category, ref bool Log) // Avg Gross Unit Load Consistent w/ Range
         {
             string ReturnVal = "";
 
@@ -2959,11 +2959,11 @@ namespace ECMPS.Checks.RATAChecks
                 DataRowView CurrentRATASummary = (DataRowView)Category.GetCheckParameter("Current_RATA_Summary").ParameterValue;
                 String OpLevelCd = cDBConvert.ToString(CurrentRATASummary["Op_Level_Cd"]);
 
-                if (OpLevelCd.InList("H,L,M") && QaParameters.CurrentRataSummary.SysTypeCd.NotInList("HG,ST,HCL,HF"))
+                if (OpLevelCd.InList("H,L,M") && qaParams.CurrentRataSummary.SysTypeCd.NotInList("HG,ST,HCL,HF"))
                 {
                     if (Convert.ToBoolean(Category.GetCheckParameter("Calculate_RATA_Level").ParameterValue) &&
                         Convert.ToBoolean(Category.GetCheckParameter("Test_Dates_Consistent").ParameterValue) &&
-                        QaParameters.RataClaimCode.NotInList("ORE,NLE"))
+                        qaParams.RataClaimCode.NotInList("ORE,NLE"))
                     {
                         DataView LoadRecords = (DataView)Category.GetCheckParameter("Load_Records").ParameterValue;
                         string OldFilter = LoadRecords.RowFilter;
@@ -3023,7 +3023,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA39(cCategory Category, ref bool Log) // Calculate BAF
+        public  string RATA39(cCategory Category, ref bool Log) // Calculate BAF
         {
             string ReturnVal = "";
 
@@ -3119,7 +3119,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA40(cCategory Category, ref bool Log) // Reported Summary Values Consistent with Calc Value
+        public  string RATA40(cCategory Category, ref bool Log) // Reported Summary Values Consistent with Calc Value
         {
             string ReturnVal = "";
 
@@ -3208,7 +3208,7 @@ namespace ECMPS.Checks.RATAChecks
 
         #region 41 - 50
 
-        public static string RATA41(cCategory Category, ref bool Log) // Number of Load Levels Valid
+        public  string RATA41(cCategory Category, ref bool Log) // Number of Load Levels Valid
         {
             string ReturnVal = "";
 
@@ -3295,7 +3295,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA42(cCategory Category, ref bool Log)
+        public  string RATA42(cCategory Category, ref bool Log)
         //Low Level Gross Unit Load Consistent with Higher Level Gross Unit Load
         {
             string ReturnVal = "";
@@ -3350,7 +3350,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA43(cCategory Category, ref bool Log) // High & Mid Load Separation Valid
+        public  string RATA43(cCategory Category, ref bool Log) // High & Mid Load Separation Valid
         {
             string ReturnVal = "";
 
@@ -3388,7 +3388,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA44(cCategory Category, ref bool Log) // RATA Begin Time Valid
+        public  string RATA44(cCategory Category, ref bool Log) // RATA Begin Time Valid
         {
             string ReturnVal = "";
 
@@ -3417,7 +3417,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA45(cCategory Category, ref bool Log) // Validate Test End Date
+        public  string RATA45(cCategory Category, ref bool Log) // Validate Test End Date
         {
             string ReturnVal = "";
 
@@ -3446,7 +3446,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA46(cCategory Category, ref bool Log) // RATA Duration Valid
+        public  string RATA46(cCategory Category, ref bool Log) // RATA Duration Valid
         {
             string ReturnVal = "";
 
@@ -3499,7 +3499,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA47(cCategory Category, ref bool Log) // Op Levels Consistent with Normal Levels
+        public  string RATA47(cCategory Category, ref bool Log) // Op Levels Consistent with Normal Levels
         {
             string ReturnVal = "";
 
@@ -3615,7 +3615,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA48(cCategory Category, ref bool Log) // Overall RA Valid
+        public  string RATA48(cCategory Category, ref bool Log) // Overall RA Valid
         {
             string ReturnVal = "";
 
@@ -3665,7 +3665,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA49(cCategory Category, ref bool Log) // Duplicate Test and Test Number
+        public  string RATA49(cCategory Category, ref bool Log) // Duplicate Test and Test Number
         {
             string ReturnVal = "";
 
@@ -3758,7 +3758,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA50(cCategory Category, ref bool Log) //Concurrent Test
+        public  string RATA50(cCategory Category, ref bool Log) //Concurrent Test
         {
             string ReturnVal = "";
 
@@ -3850,7 +3850,7 @@ namespace ECMPS.Checks.RATAChecks
 
         #region 51 - 60
 
-        public static string RATA51(cCategory Category, ref bool Log) // Determine Overall BAF
+        public  string RATA51(cCategory Category, ref bool Log) // Determine Overall BAF
         {
             string ReturnVal = "";
 
@@ -3950,7 +3950,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA52(cCategory Category, ref bool Log) // Determine RATA Frequency
+        public  string RATA52(cCategory Category, ref bool Log) // Determine RATA Frequency
         {
             string ReturnVal = "";
 
@@ -4078,7 +4078,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA53(cCategory Category, ref bool Log) // Compare Final Test Result to Reported Result
+        public  string RATA53(cCategory Category, ref bool Log) // Compare Final Test Result to Reported Result
         {
             string ReturnVal = "";
 
@@ -4130,7 +4130,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA54(cCategory Category, ref bool Log) //Initialize RATA Variables
+        public  string RATA54(cCategory Category, ref bool Log) //Initialize RATA Variables
         {
             string ReturnVal = "";
 
@@ -4171,7 +4171,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA55(cCategory Category, ref bool Log)
+        public  string RATA55(cCategory Category, ref bool Log)
         //CO2/O2 Reference Method Code Valid
         {
             string ReturnVal = "";
@@ -4206,7 +4206,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA56(cCategory Category, ref bool Log)
+        public  string RATA56(cCategory Category, ref bool Log)
         //Stack Diameter Valid
         {
             string ReturnVal = "";
@@ -4254,7 +4254,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA57(cCategory Category, ref bool Log)
+        public  string RATA57(cCategory Category, ref bool Log)
         //Stack Area Valid
         {
             string ReturnVal = "";
@@ -4314,7 +4314,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA58(cCategory Category, ref bool Log)
+        public  string RATA58(cCategory Category, ref bool Log)
         //Calculated WAF Valid
         {
             string ReturnVal = "";
@@ -4381,7 +4381,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA59(cCategory Category, ref bool Log)
+        public  string RATA59(cCategory Category, ref bool Log)
         //Default WAF Valid
         {
             string ReturnVal = "";
@@ -4483,7 +4483,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA60(cCategory Category, ref bool Log)
+        public  string RATA60(cCategory Category, ref bool Log)
         //Reference Method Consistent with Rectangular Duct WAF Reporting
         {
             string ReturnVal = "";
@@ -4536,7 +4536,7 @@ namespace ECMPS.Checks.RATAChecks
 
         #region 61 - 70
 
-        public static string RATA61(cCategory Category, ref bool Log)
+        public  string RATA61(cCategory Category, ref bool Log)
         //Number of Traverse Points Valid
         {
             string ReturnVal = "";
@@ -4575,7 +4575,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA62(cCategory Category, ref bool Log)
+        public  string RATA62(cCategory Category, ref bool Log)
         //Initialize Flow Run Variables
         {
             string ReturnVal = "";
@@ -4604,7 +4604,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA63(cCategory Category, ref bool Log)
+        public  string RATA63(cCategory Category, ref bool Log)
         //Barometric Pressure Valid
         {
             string ReturnVal = "";
@@ -4633,8 +4633,8 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA64(cCategory Category, ref bool Log)
-        //Static Stack Pressure Valid
+        public  string RATA64(cCategory Category, ref bool Log)
+        // Stack Pressure Valid
         {
             string ReturnVal = "";
 
@@ -4642,7 +4642,7 @@ namespace ECMPS.Checks.RATAChecks
             {
                 Category.SetCheckParameter("RATA_Calc_Stack_Pressure", null, eParameterDataType.Decimal);
                 DataRowView CurrentFlowRATARun = (DataRowView)Category.GetCheckParameter("Current_Flow_RATA_Run").ParameterValue;
-                decimal StackStatPress = cDBConvert.ToDecimal(CurrentFlowRATARun["STATIC_STACK_PRESSURE"]);
+                decimal StackStatPress = cDBConvert.ToDecimal(CurrentFlowRATARun["_STACK_PRESSURE"]);
                 decimal BarPress = cDBConvert.ToDecimal(CurrentFlowRATARun["BAROMETRIC_PRESSURE"]);
                 if (StackStatPress == decimal.MinValue)
                 {
@@ -4676,7 +4676,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA65(cCategory Category, ref bool Log)
+        public  string RATA65(cCategory Category, ref bool Log)
         //Percent CO2 Valid
         {
             string ReturnVal = "";
@@ -4708,7 +4708,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA66(cCategory Category, ref bool Log)
+        public  string RATA66(cCategory Category, ref bool Log)
         //Percent O2 Valid
         {
             string ReturnVal = "";
@@ -4740,7 +4740,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA67(cCategory Category, ref bool Log)
+        public  string RATA67(cCategory Category, ref bool Log)
         //Percent Moisture Valid
         {
             string ReturnVal = "";
@@ -4772,7 +4772,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA68(cCategory Category, ref bool Log)
+        public  string RATA68(cCategory Category, ref bool Log)
         //Dry Molecular Weight Valid
         {
             string ReturnVal = "";
@@ -4816,7 +4816,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA69(cCategory Category, ref bool Log)
+        public  string RATA69(cCategory Category, ref bool Log)
         //Wet Molecular Weight Valid
         {
             string ReturnVal = "";
@@ -4862,7 +4862,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA70(cCategory Category, ref bool Log)
+        public  string RATA70(cCategory Category, ref bool Log)
         //Method Traverse Point ID Valid
         {
             string ReturnVal = "";
@@ -4917,7 +4917,7 @@ namespace ECMPS.Checks.RATAChecks
 
         #region 71 - 80
 
-        public static string RATA71(cCategory Category, ref bool Log)
+        public  string RATA71(cCategory Category, ref bool Log)
         //Probe ID Valid
         {
             string ReturnVal = "";
@@ -4936,7 +4936,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA72(cCategory Category, ref bool Log)
+        public  string RATA72(cCategory Category, ref bool Log)
         //Probe Type Valid
         {
             string ReturnVal = "";
@@ -4999,7 +4999,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA73(cCategory Category, ref bool Log)
+        public  string RATA73(cCategory Category, ref bool Log)
         //Pressure Measure Code Valid
         {
             string ReturnVal = "";
@@ -5025,7 +5025,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA74(cCategory Category, ref bool Log)
+        public  string RATA74(cCategory Category, ref bool Log)
         //Velocity Calibration Coefficient Valid
         {
             string ReturnVal = "";
@@ -5054,7 +5054,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA75(cCategory Category, ref bool Log)
+        public  string RATA75(cCategory Category, ref bool Log)
         //Last Probe Calibration Date Valid
         {
             string ReturnVal = "";
@@ -5085,7 +5085,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA76(cCategory Category, ref bool Log)
+        public  string RATA76(cCategory Category, ref bool Log)
         //Velocity Differential Pressure Valid
         {
             string ReturnVal = "";
@@ -5118,7 +5118,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA77(cCategory Category, ref bool Log)
+        public  string RATA77(cCategory Category, ref bool Log)
         //StackTemperature Valid
         {
             string ReturnVal = "";
@@ -5147,7 +5147,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA78(cCategory Category, ref bool Log)
+        public  string RATA78(cCategory Category, ref bool Log)
         //Yaw Angle Valid
         {
             string ReturnVal = "";
@@ -5190,7 +5190,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA79(cCategory Category, ref bool Log)
+        public  string RATA79(cCategory Category, ref bool Log)
         //Pitch Angle Valid
         {
             string ReturnVal = "";
@@ -5232,7 +5232,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA80(cCategory Category, ref bool Log)
+        public  string RATA80(cCategory Category, ref bool Log)
         //Calculate Traverse Point Velocity Without Wall Effects
         {
             string ReturnVal = "";
@@ -5315,7 +5315,7 @@ namespace ECMPS.Checks.RATAChecks
 
         #region 81 - 90
 
-        public static string RATA81(cCategory Category, ref bool Log)
+        public  string RATA81(cCategory Category, ref bool Log)
         //Exterior Method 1 Traverse Point Identifier Valid
         {
             string ReturnVal = "";
@@ -5362,7 +5362,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA82(cCategory Category, ref bool Log)
+        public  string RATA82(cCategory Category, ref bool Log)
         //Number of Wall Effects Points Valid
         {
             string ReturnVal = "";
@@ -5420,7 +5420,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA83(cCategory Category, ref bool Log)
+        public  string RATA83(cCategory Category, ref bool Log)
         //Replacement Velocity Valid
         {
             string ReturnVal = "";
@@ -5483,7 +5483,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA84(cCategory Category, ref bool Log)
+        public  string RATA84(cCategory Category, ref bool Log)
         //Calculated Velocity Valid
         {
             string ReturnVal = "";
@@ -5527,7 +5527,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA85(cCategory Category, ref bool Log)
+        public  string RATA85(cCategory Category, ref bool Log)
         //Number of Traverse Points Valid
         {
             string ReturnVal = "";
@@ -5590,7 +5590,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA86(cCategory Category, ref bool Log)
+        public  string RATA86(cCategory Category, ref bool Log)
         //Probe Types Consistent
         {
             string ReturnVal = "";
@@ -5608,7 +5608,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA87(cCategory Category, ref bool Log)
+        public  string RATA87(cCategory Category, ref bool Log)
         //Calculate Average Run Velocity Without Wall Effects
         {
             string ReturnVal = "";
@@ -5641,7 +5641,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA88(cCategory Category, ref bool Log)
+        public  string RATA88(cCategory Category, ref bool Log)
         //Calculate Average Run Velocity With Wall Effects and Calculated WAF
         {
             string ReturnVal = "";
@@ -5684,7 +5684,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA89(cCategory Category, ref bool Log)
+        public  string RATA89(cCategory Category, ref bool Log)
         //Average Run Velocity with Wall Effects Valid
         {
             string ReturnVal = "";
@@ -5747,7 +5747,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA90(cCategory Category, ref bool Log)
+        public  string RATA90(cCategory Category, ref bool Log)
         //Average Velocity Without Wall Effects Valid
         {
             string ReturnVal = "";
@@ -5808,7 +5808,7 @@ namespace ECMPS.Checks.RATAChecks
 
         #region 91 - 100
 
-        public static string RATA91(cCategory Category, ref bool Log)
+        public  string RATA91(cCategory Category, ref bool Log)
         //Calculate Adjusted WAF for the Run
         {
             string ReturnVal = "";
@@ -5870,7 +5870,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA92(cCategory Category, ref bool Log)
+        public  string RATA92(cCategory Category, ref bool Log)
         //Calculated WAF for the Run Valid
         {
             string ReturnVal = "";
@@ -5923,7 +5923,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA93(cCategory Category, ref bool Log)
+        public  string RATA93(cCategory Category, ref bool Log)
         //Calculate Average Wet Stack Flow 
         {
             string ReturnVal = "";
@@ -6038,7 +6038,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA94(cCategory Category, ref bool Log)
+        public  string RATA94(cCategory Category, ref bool Log)
         //Average Wet Stack Flow Rate Valid
         {
             string ReturnVal = "";
@@ -6070,7 +6070,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA95(cCategory Category, ref bool Log)
+        public  string RATA95(cCategory Category, ref bool Log)
         //Calculate WAF for Operating Level
         {
             string ReturnVal = "";
@@ -6133,7 +6133,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA96(cCategory Category, ref bool Log)
+        public  string RATA96(cCategory Category, ref bool Log)
         //Calculated WAF for Operating Level Reasonable
         {
             string ReturnVal = "";
@@ -6172,7 +6172,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA97(cCategory Category, ref bool Log)
+        public  string RATA97(cCategory Category, ref bool Log)
         //Determine WAF Applicability
         {
             string ReturnVal = "";
@@ -6209,7 +6209,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA98(cCategory Category, ref bool Log)
+        public  string RATA98(cCategory Category, ref bool Log)
         //Calculate Average Wet Stack Flow for Method 2H
         {
             string ReturnVal = "";
@@ -6311,7 +6311,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA100(cCategory Category, ref bool Log)
+        public  string RATA100(cCategory Category, ref bool Log)
         //Test Result Code Valid
         {
             string ReturnVal = "";
@@ -6345,7 +6345,7 @@ namespace ECMPS.Checks.RATAChecks
 
         #region 101 - 110
 
-        public static string RATA101(cCategory Category, ref bool Log)
+        public  string RATA101(cCategory Category, ref bool Log)
         //RATA Run Values Rounded
         {
             string ReturnVal = "";
@@ -6377,7 +6377,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA102(cCategory Category, ref bool Log)
+        public  string RATA102(cCategory Category, ref bool Log)
         //Number of Load Levels Valid
         {
             string ReturnVal = "";
@@ -6411,7 +6411,7 @@ namespace ECMPS.Checks.RATAChecks
 
             return ReturnVal;
         }
-        public static string RATA103(cCategory Category, ref bool Log)
+        public  string RATA103(cCategory Category, ref bool Log)
         //Overall Relative Accuracy Valid
         {
             string ReturnVal = "";
@@ -6441,7 +6441,7 @@ namespace ECMPS.Checks.RATAChecks
 
             return ReturnVal;
         }
-        public static string RATA104(cCategory Category, ref bool Log)
+        public  string RATA104(cCategory Category, ref bool Log)
         //Overall BAF Valid
         {
             string ReturnVal = "";
@@ -6472,7 +6472,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA105(cCategory Category, ref bool Log)
+        public  string RATA105(cCategory Category, ref bool Log)
         //RATA Frequency Valid
         {
             string ReturnVal = "";
@@ -6517,7 +6517,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA106(cCategory Category, ref bool Log)
+        public  string RATA106(cCategory Category, ref bool Log)
         //Duplicate RATA
         {
             string ReturnVal = "";
@@ -6571,7 +6571,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA107(cCategory Category, ref bool Log)
+        public  string RATA107(cCategory Category, ref bool Log)
         //Duplicate RATA Summary
         {
             string ReturnVal = "";
@@ -6602,7 +6602,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA108(cCategory Category, ref bool Log)
+        public  string RATA108(cCategory Category, ref bool Log)
         //Duplicate RATA Run
         {
             string ReturnVal = "";
@@ -6635,7 +6635,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA109(cCategory Category, ref bool Log)
+        public  string RATA109(cCategory Category, ref bool Log)
         //Duplicate Flow RATA Run
         {
             string ReturnVal = "";
@@ -6668,7 +6668,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA110(cCategory Category, ref bool Log)
+        public  string RATA110(cCategory Category, ref bool Log)
         //Duplicate RATA Traverse
         {
             string ReturnVal = "";
@@ -6709,7 +6709,7 @@ namespace ECMPS.Checks.RATAChecks
 
         #region 111 - 120
 
-        public static string RATA111(cCategory Category, ref bool Log)
+        public  string RATA111(cCategory Category, ref bool Log)
         //Reported Calculated Velocity Valid
         {
             string ReturnVal = "";
@@ -6732,7 +6732,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA112(cCategory Category, ref bool Log)
+        public  string RATA112(cCategory Category, ref bool Log)
         //Reported Operating Level Valid
         {
             string ReturnVal = "";
@@ -6760,7 +6760,7 @@ namespace ECMPS.Checks.RATAChecks
 
             return ReturnVal;
         }
-        public static string RATA113(cCategory Category, ref bool Log)
+        public  string RATA113(cCategory Category, ref bool Log)
         //Reported Run Number Valid
         {
             string ReturnVal = "";
@@ -6786,7 +6786,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA114(cCategory Category, ref bool Log)
+        public  string RATA114(cCategory Category, ref bool Log)
         //Reported Average Velocity With Wall Effects Valid
         {
             string ReturnVal = "";
@@ -6823,7 +6823,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA115(cCategory Category, ref bool Log)
+        public  string RATA115(cCategory Category, ref bool Log)
         //Reported Average Velocity Without Wall Effects Valid
         {
             string ReturnVal = "";
@@ -6846,7 +6846,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA116(cCategory Category, ref bool Log)
+        public  string RATA116(cCategory Category, ref bool Log)
         //Reported WAF for the Run Valid
         {
             string ReturnVal = "";
@@ -6881,7 +6881,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA117(cCategory Category, ref bool Log)
+        public  string RATA117(cCategory Category, ref bool Log)
         //System ID Valid
         {
             string ReturnVal = "";
@@ -6900,7 +6900,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA118(cCategory Category, ref bool Log)
+        public  string RATA118(cCategory Category, ref bool Log)
         //Test Claim Code Valid
         {
             string ReturnVal = "";
@@ -6959,7 +6959,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA119(cCategory Category, ref bool Log)
+        public  string RATA119(cCategory Category, ref bool Log)
         //Single-Level Claim Begin Date Valid
         {
             string ReturnVal = "";
@@ -6991,7 +6991,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA120(cCategory Category, ref bool Log)
+        public  string RATA120(cCategory Category, ref bool Log)
         //Single-Level Claim End Date Valid
         {
             string ReturnVal = "";
@@ -7035,7 +7035,7 @@ namespace ECMPS.Checks.RATAChecks
 
         #region 121 - 130
 
-        public static string RATA121(cCategory Category, ref bool Log)
+        public  string RATA121(cCategory Category, ref bool Log)
         //Duplicate Test Claim
         {
             string ReturnVal = "";
@@ -7066,7 +7066,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA122(cCategory Category, ref bool Log)
+        public  string RATA122(cCategory Category, ref bool Log)
         //Zero Value Reported
         {
             string ReturnVal = "";
@@ -7075,9 +7075,9 @@ namespace ECMPS.Checks.RATAChecks
             {
                 //  EC-2481 MJ 2016-01-26
                 if (Convert.ToBoolean(Category.GetCheckParameter("RATA_Zero_Value").ParameterValue))
-                    if (QaParameters.CurrentRata.SysTypeCd != "HG")
+                    if (qaParams.CurrentRata.SysTypeCd != "HG")
                         Category.CheckCatalogResult = "A";
-                    else if (QaParameters.CurrentRata.SysTypeCd == "HG")
+                    else if (qaParams.CurrentRata.SysTypeCd == "HG")
                         Category.CheckCatalogResult = "B";
             }
             catch (Exception ex)
@@ -7088,7 +7088,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA123(cCategory Category, ref bool Log)
+        public  string RATA123(cCategory Category, ref bool Log)
         //Zero Value Reported
         {
             string ReturnVal = "";
@@ -7107,7 +7107,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA124(cCategory Category, ref bool Log)
+        public  string RATA124(cCategory Category, ref bool Log)
         //Flow RATA Record Valid
         {
             string ReturnVal = "";
@@ -7143,7 +7143,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA125(cCategory Category, ref bool Log)
+        public  string RATA125(cCategory Category, ref bool Log)
         //Calculate RATA Summary Values
         {
             string ReturnVal = "";
@@ -7501,7 +7501,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA126(cCategory Category, ref bool Log)
+        public  string RATA126(cCategory Category, ref bool Log)
         //Calculate Overall RATA Values
         {
             string ReturnVal = "";
@@ -7682,7 +7682,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA127(cCategory Category, ref bool Log)
+        public  string RATA127(cCategory Category, ref bool Log)
         //Calculate Flow RATA Run Values
         {
             string ReturnVal = "";
@@ -7745,7 +7745,7 @@ namespace ECMPS.Checks.RATAChecks
                     }
                     else
                     {
-                        decimal StackPress = cDBConvert.ToDecimal(CurrentFlowRATARun["STATIC_STACK_PRESSURE"]);
+                        decimal StackPress = cDBConvert.ToDecimal(CurrentFlowRATARun["_STACK_PRESSURE"]);
                         decimal BarPress = cDBConvert.ToDecimal(CurrentFlowRATARun["BAROMETRIC_PRESSURE"]);
                         decimal StackDiam = cDBConvert.ToDecimal(CurrentRATASummary["STACK_DIAMETER"]);
                         if (StackDiam <= 0 || BarPress < 20 || 35 < BarPress || StackPress < -30 || 30 < StackPress ||
@@ -7966,7 +7966,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA128(cCategory Category, ref bool Log)
+        public  string RATA128(cCategory Category, ref bool Log)
         //Calculate RATA Traverse Point Values
         {
             string ReturnVal = "";
@@ -7988,7 +7988,7 @@ namespace ECMPS.Checks.RATAChecks
                         Category.CheckCatalogResult = "B";
                     else
                     {
-                        decimal StackPress = cDBConvert.ToDecimal(CurrentFlowRATARun["STATIC_STACK_PRESSURE"]);
+                        decimal StackPress = cDBConvert.ToDecimal(CurrentFlowRATARun["_STACK_PRESSURE"]);
                         decimal BarPress = cDBConvert.ToDecimal(CurrentFlowRATARun["BAROMETRIC_PRESSURE"]);
                         decimal VelCalCoef = cDBConvert.ToDecimal(CurrentRATATraverse["VEL_CAL_COEF"]);
                         decimal TStackTemp = cDBConvert.ToDecimal(CurrentRATATraverse["T_STACK_TEMP"]);
@@ -8068,7 +8068,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA129(cCategory Category, ref bool Log)
+        public  string RATA129(cCategory Category, ref bool Log)
         //Calculate Run Reference Value for Method 2H RATA
         {
             string ReturnVal = "";
@@ -8114,7 +8114,7 @@ namespace ECMPS.Checks.RATAChecks
                         decimal PercCO2 = cDBConvert.ToDecimal(drv1["PERCENT_CO2"]);
                         decimal PercO2 = cDBConvert.ToDecimal(drv1["PERCENT_O2"]);
                         decimal PercMoist = cDBConvert.ToDecimal(drv1["PERCENT_MOISTURE"]);
-                        decimal StackPress = cDBConvert.ToDecimal(drv1["STATIC_STACK_PRESSURE"]);
+                        decimal StackPress = cDBConvert.ToDecimal(drv1["_STACK_PRESSURE"]);
                         decimal BarPress = cDBConvert.ToDecimal(drv1["BAROMETRIC_PRESSURE"]);
                         decimal StackDiam = cDBConvert.ToDecimal(drv1["STACK_DIAMETER"]);
                         int NumTravPt = cDBConvert.ToInteger(drv1["NUM_TRAVERSE_POINT"]);
@@ -8388,7 +8388,7 @@ namespace ECMPS.Checks.RATAChecks
             return ReturnVal;
         }
 
-        public static string RATA130(cCategory Category, ref bool Log)
+        public  string RATA130(cCategory Category, ref bool Log)
         //RATA Run valid for HG
         {
             string ReturnVal = "";
@@ -8396,7 +8396,7 @@ namespace ECMPS.Checks.RATAChecks
             try
             {
                 //For a RATA run with valid begin and end times and a RunStatusCode equal to "RUNUSED":
-                if (QaParameters.RataRunBeginTimeValid == true && QaParameters.RataRunEndTimeValid == true && QaParameters.CurrentRataRun.RunStatusCd == "RUNUSED")
+                if (qaParams.RataRunBeginTimeValid == true && qaParams.RataRunEndTimeValid == true && qaParams.CurrentRataRun.RunStatusCd == "RUNUSED")
                 {
                     DataRowView drvCurrentRataRun = Category.GetCheckParameter("Current_RATA_Run").AsDataRowView();
                     DateTime BeginDateTime = cDateFunctions.CombineToHour(drvCurrentRataRun, "BEGIN_DATE", "BEGIN_HOUR", "BEGIN_MIN").Default(DateTime.MinValue);
@@ -8404,7 +8404,7 @@ namespace ECMPS.Checks.RATAChecks
                     TimeSpan span = (EndDateTime.Subtract(BeginDateTime));
 
                     //If the associated SystemTypeCode of the RATA is equal to "FLOW",
-                    if (QaParameters.CurrentRata.SysTypeCd == "FLOW")
+                    if (qaParams.CurrentRata.SysTypeCd == "FLOW")
                     {
                         //If the difference between the Run Begin Time and End Time is less than 4 minutes,
                         //return result A.
@@ -8414,7 +8414,7 @@ namespace ECMPS.Checks.RATAChecks
                         }
                     }
                     //If the associated SystemTypeCode of the RATA does not begin with  "HG",
-                    else if (!QaParameters.CurrentRata.SysTypeCd.StartsWith("HG"))
+                    else if (!qaParams.CurrentRata.SysTypeCd.StartsWith("HG"))
                     {
                         //If the difference between the Run Begin Time and End Time is less than 20 minutes,
                         //return result B.
@@ -8447,23 +8447,23 @@ namespace ECMPS.Checks.RATAChecks
         /// <param name="category">The category object for the category in which the check will run.</param>
         /// <param name="log">Obsolete.</param>
         /// <returns></returns>
-        public static string RATA131(cCategory category, ref bool log)
+        public  string RATA131(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (QaParameters.CurrentRataSummary.ApsCd != null)
+                if (qaParams.CurrentRataSummary.ApsCd != null)
                 {
-                    if (QaParameters.CurrentRataSummary.SysTypeCd != "HCL")
+                    if (qaParams.CurrentRataSummary.SysTypeCd != "HCL")
                     {
                         category.CheckCatalogResult = "A";
                     }
-                    else if (QaParameters.CurrentRataSummary.ApsInd != 1)
+                    else if (qaParams.CurrentRataSummary.ApsInd != 1)
                     {
                         category.CheckCatalogResult = "B";
                     }
-                    else if (QaParameters.ApsCodeLookupTable.CountRows(new cFilterCondition[] { new cFilterCondition("APS_CD", QaParameters.CurrentRataSummary.ApsCd) }) == 0)
+                    else if (qaParams.ApsCodeLookupTable.CountRows(new cFilterCondition[] { new cFilterCondition("APS_CD", qaParams.CurrentRataSummary.ApsCd) }) == 0)
                     {
                         category.CheckCatalogResult = "C";
                     }
@@ -8488,52 +8488,52 @@ namespace ECMPS.Checks.RATAChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string RATA132(cCategory category, ref bool log)
+        public  string RATA132(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                QaParameters.RataFieldsWithBadRounding = null;
+                qaParams.RataFieldsWithBadRounding = null;
 
-                VwQaRataSummaryRow currentRataSummary = QaParameters.CurrentRataSummary;
+                VwQaRataSummaryRow currentRataSummary = qaParams.CurrentRataSummary;
                 {
                     if (currentRataSummary.SysTypeCd.NotInList("HCL,HF,HG,ST"))
                     {
                         if (currentRataSummary.ConfidenceCoef.HasValue &&
                             (currentRataSummary.ConfidenceCoef.Value != Math.Round(currentRataSummary.ConfidenceCoef.Value, 3, MidpointRounding.AwayFromZero)))
                         {
-                            QaParameters.RataFieldsWithBadRounding = QaParameters.RataFieldsWithBadRounding.ListAdd("ConfidenceCoefficient");
+                            qaParams.RataFieldsWithBadRounding = qaParams.RataFieldsWithBadRounding.ListAdd("ConfidenceCoefficient");
                         }
 
                         if (currentRataSummary.MeanCemValue.HasValue &&
                             (currentRataSummary.MeanCemValue.Value != Math.Round(currentRataSummary.MeanCemValue.Value, 3, MidpointRounding.AwayFromZero)))
                         {
-                            QaParameters.RataFieldsWithBadRounding = QaParameters.RataFieldsWithBadRounding.ListAdd("MeanCEMValue");
+                            qaParams.RataFieldsWithBadRounding = qaParams.RataFieldsWithBadRounding.ListAdd("MeanCEMValue");
                         }
 
                         if (currentRataSummary.MeanDiff.HasValue &&
                             (currentRataSummary.MeanDiff.Value != Math.Round(currentRataSummary.MeanDiff.Value, 3, MidpointRounding.AwayFromZero)))
                         {
-                            QaParameters.RataFieldsWithBadRounding = QaParameters.RataFieldsWithBadRounding.ListAdd("MeanDifference");
+                            qaParams.RataFieldsWithBadRounding = qaParams.RataFieldsWithBadRounding.ListAdd("MeanDifference");
                         }
 
                         if (currentRataSummary.MeanRataRefValue.HasValue &&
                             (currentRataSummary.MeanRataRefValue.Value != Math.Round(currentRataSummary.MeanRataRefValue.Value, 3, MidpointRounding.AwayFromZero)))
                         {
-                            QaParameters.RataFieldsWithBadRounding = QaParameters.RataFieldsWithBadRounding.ListAdd("MeanRATAReferenceValue");
+                            qaParams.RataFieldsWithBadRounding = qaParams.RataFieldsWithBadRounding.ListAdd("MeanRATAReferenceValue");
                         }
 
                         if (currentRataSummary.StndDevDiff.HasValue &&
                             (currentRataSummary.StndDevDiff.Value != Math.Round(currentRataSummary.StndDevDiff.Value, 3, MidpointRounding.AwayFromZero)))
                         {
-                            QaParameters.RataFieldsWithBadRounding = QaParameters.RataFieldsWithBadRounding.ListAdd("StandardDeviationDifference");
+                            qaParams.RataFieldsWithBadRounding = qaParams.RataFieldsWithBadRounding.ListAdd("StandardDeviationDifference");
                         }
 
                         
-                        if (QaParameters.RataFieldsWithBadRounding != null)
+                        if (qaParams.RataFieldsWithBadRounding != null)
                         {
-                            QaParameters.RataFieldsWithBadRounding = QaParameters.RataFieldsWithBadRounding.FormatList();
+                            qaParams.RataFieldsWithBadRounding = qaParams.RataFieldsWithBadRounding.FormatList();
                             category.CheckCatalogResult = "A";
                         }
                     }

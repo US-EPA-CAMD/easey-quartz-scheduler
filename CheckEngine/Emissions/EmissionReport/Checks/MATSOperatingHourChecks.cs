@@ -52,20 +52,20 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-        public static string MATSHOD1(cCategory Category, ref bool Log)
+        public  string MATSHOD1(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsHgMethodRecord = null;
-                EmParameters.MatsHgParameterCode = null;
-                EmParameters.MatsHgMethodCode = null;
+                emParams.MatsHgMethodRecord = null;
+                emParams.MatsHgParameterCode = null;
+                emParams.MatsHgMethodCode = null;
 
-                if (EmParameters.DerivedHourlyChecksNeeded != null && EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded != null && emParams.DerivedHourlyChecksNeeded == true)
                 {
                     //Locate MonitorMethodRecordsByHourLocation records where ParameterCode is equal to "HGRE" or "HGRH".
-                    DataView MMRecords = cRowFilter.FindRows(EmParameters.MonitorMethodRecordsByHourLocation.SourceView,
+                    DataView MMRecords = cRowFilter.FindRows(emParams.MonitorMethodRecordsByHourLocation.SourceView,
                                              new cFilterCondition[] { new cFilterCondition("PARAMETER_CD", "HGRE,HGRH", eFilterConditionStringCompare.InList) });
                     if (MMRecords.Count > 1)
                     {
@@ -74,13 +74,13 @@ namespace ECMPS.Checks.EmissionsChecks
                     else if (MMRecords.Count == 1)
                     {
                         DataRowView MMRow = MMRecords[0];
-                        EmParameters.MatsHgParameterCode = MMRow["PARAMETER_CD"].ToString();
-                        EmParameters.MatsHgMethodCode = MMRow["METHOD_CD"].ToString();
+                        emParams.MatsHgParameterCode = MMRow["PARAMETER_CD"].ToString();
+                        emParams.MatsHgMethodCode = MMRow["METHOD_CD"].ToString();
                         Category.SetCheckParameter("Mats_Hg_Method_Record", MMRow);
 
-                        if (EmParameters.MatsHgMethodCode.InList("ST,CEMST"))
+                        if (emParams.MatsHgMethodCode.InList("ST,CEMST"))
                         {
-                            EmParameters.FlowMhvOptionallyAllowed = true;
+                            emParams.FlowMhvOptionallyAllowed = true;
                         }
                     }
                 }
@@ -99,20 +99,20 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-		public static string MATSHOD2(cCategory Category, ref bool Log)
+		public  string MATSHOD2(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsHclMethodRecord = null;
-                EmParameters.MatsHclParameterCode = null;
-                EmParameters.MatsHclMethodCode = null;
+                emParams.MatsHclMethodRecord = null;
+                emParams.MatsHclParameterCode = null;
+                emParams.MatsHclMethodCode = null;
 
-                if (EmParameters.DerivedHourlyChecksNeeded != null && EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded != null && emParams.DerivedHourlyChecksNeeded == true)
                 {
                     //Locate MonitorMethodRecordsByHourLocation records where ParameterCode is equal to "HCLRE" or "HCLRH".
-                    DataView MMRecords = cRowFilter.FindRows(EmParameters.MonitorMethodRecordsByHourLocation.SourceView,
+                    DataView MMRecords = cRowFilter.FindRows(emParams.MonitorMethodRecordsByHourLocation.SourceView,
                                              new cFilterCondition[] { new cFilterCondition("PARAMETER_CD", "HCLRE,HCLRH", eFilterConditionStringCompare.InList) });
                     if (MMRecords.Count > 1)
                     {
@@ -121,8 +121,8 @@ namespace ECMPS.Checks.EmissionsChecks
                     else if (MMRecords.Count == 1)
                     {
                         DataRowView MMRow = MMRecords[0];
-                        EmParameters.MatsHclParameterCode = MMRow["PARAMETER_CD"].ToString();
-                        EmParameters.MatsHclMethodCode = MMRow["METHOD_CD"].ToString();
+                        emParams.MatsHclParameterCode = MMRow["PARAMETER_CD"].ToString();
+                        emParams.MatsHclMethodCode = MMRow["METHOD_CD"].ToString();
                         Category.SetCheckParameter("Mats_Hcl_Method_Record", MMRow);
                     }
                 }
@@ -141,20 +141,20 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-		public static string MATSHOD3(cCategory Category, ref bool Log)
+		public  string MATSHOD3(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsHfMethodRecord = null;
-                EmParameters.MatsHfParameterCode = null;
-                EmParameters.MatsHfMethodCode = null;
+                emParams.MatsHfMethodRecord = null;
+                emParams.MatsHfParameterCode = null;
+                emParams.MatsHfMethodCode = null;
 
-                if (EmParameters.DerivedHourlyChecksNeeded != null && EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded != null && emParams.DerivedHourlyChecksNeeded == true)
                 {
                     //Locate MonitorMethodRecordsByHourLocation records where ParameterCode is equal to "HFRE" or "HFRH".
-                    DataView MMRecords = cRowFilter.FindRows(EmParameters.MonitorMethodRecordsByHourLocation.SourceView,
+                    DataView MMRecords = cRowFilter.FindRows(emParams.MonitorMethodRecordsByHourLocation.SourceView,
                                              new cFilterCondition[] { new cFilterCondition("PARAMETER_CD", "HFRE,HFRH", eFilterConditionStringCompare.InList) });
                     if (MMRecords.Count > 1)
                     {
@@ -163,8 +163,8 @@ namespace ECMPS.Checks.EmissionsChecks
                     else if (MMRecords.Count == 1)
                     {
                         DataRowView MMRow = MMRecords[0];
-                        EmParameters.MatsHfParameterCode = MMRow["PARAMETER_CD"].ToString();
-                        EmParameters.MatsHfMethodCode = MMRow["METHOD_CD"].ToString();
+                        emParams.MatsHfParameterCode = MMRow["PARAMETER_CD"].ToString();
+                        emParams.MatsHfMethodCode = MMRow["METHOD_CD"].ToString();
                         Category.SetCheckParameter("Mats_Hf_Method_Record", MMRow);
                     }
                 }
@@ -183,20 +183,20 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-		public static string MATSHOD4(cCategory Category, ref bool Log)
+		public  string MATSHOD4(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsSo2MethodRecord = null;
-                EmParameters.MatsSo2ParameterCode = null;
-                EmParameters.MatsSo2MethodCode = null;
+                emParams.MatsSo2MethodRecord = null;
+                emParams.MatsSo2ParameterCode = null;
+                emParams.MatsSo2MethodCode = null;
 
-                if (EmParameters.DerivedHourlyChecksNeeded != null && EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded != null && emParams.DerivedHourlyChecksNeeded == true)
                 {
                     //Locate MonitorMethodRecordsByHourLocation records where ParameterCode is equal to "SO2RE" or "SO2RH".
-                    DataView MMRecords = cRowFilter.FindRows(EmParameters.MonitorMethodRecordsByHourLocation.SourceView,
+                    DataView MMRecords = cRowFilter.FindRows(emParams.MonitorMethodRecordsByHourLocation.SourceView,
                                              new cFilterCondition[] { new cFilterCondition("PARAMETER_CD", "SO2RE,SO2RH", eFilterConditionStringCompare.InList) });
                     if (MMRecords.Count > 1)
                     {
@@ -205,8 +205,8 @@ namespace ECMPS.Checks.EmissionsChecks
                     else if (MMRecords.Count == 1)
                     {
                         DataRowView MMRow = MMRecords[0];
-                        EmParameters.MatsSo2ParameterCode = MMRow["PARAMETER_CD"].ToString();
-                        EmParameters.MatsSo2MethodCode = MMRow["METHOD_CD"].ToString();
+                        emParams.MatsSo2ParameterCode = MMRow["PARAMETER_CD"].ToString();
+                        emParams.MatsSo2MethodCode = MMRow["METHOD_CD"].ToString();
                         Category.SetCheckParameter("Mats_So2_Method_Record", MMRow);
                     }
                 }
@@ -220,23 +220,23 @@ namespace ECMPS.Checks.EmissionsChecks
         }
 
         #region MATSHOD5
-        public static string MATSHOD5(cCategory Category, ref bool Log)
+        public  string MATSHOD5(cCategory Category, ref bool Log)
         // MATS: Set MATS Expected Flag
         {
             string ReturnVal = "";
 
             try
             {
-                if (EmParameters.MatsHgParameterCode != null
-                    || EmParameters.MatsHclParameterCode != null
-                    || EmParameters.MatsHfParameterCode != null
-                    || EmParameters.MatsSo2ParameterCode != null)
+                if (emParams.MatsHgParameterCode != null
+                    || emParams.MatsHclParameterCode != null
+                    || emParams.MatsHfParameterCode != null
+                    || emParams.MatsSo2ParameterCode != null)
                 {
-                    EmParameters.MatsExpected = true;
+                    emParams.MatsExpected = true;
                 }
                 else
                 {
-                    EmParameters.MatsExpected = false;
+                    emParams.MatsExpected = false;
                 }
             }
             catch (Exception ex)
@@ -285,33 +285,33 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category">Object for the category running the check.</param>
         /// <param name="Log"><obsolete></obsolete></param>
         /// <returns>Returns an error message if an exception occurs, otherwise returns a null string.</returns>
-        public static string MATSHOD6(cCategory Category, ref bool Log)
+        public  string MATSHOD6(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsHgreDhvChecksNeeded = false;
-                EmParameters.MatsHgrhDhvChecksNeeded = false;
-                EmParameters.MatsHgcNeeded = false;
-                EmParameters.MatsHgDhvRecord = null;
-                EmParameters.MatsHgDhvParameterDescription = "MATS Hg Rate";
+                emParams.MatsHgreDhvChecksNeeded = false;
+                emParams.MatsHgrhDhvChecksNeeded = false;
+                emParams.MatsHgcNeeded = false;
+                emParams.MatsHgDhvRecord = null;
+                emParams.MatsHgDhvParameterDescription = "MATS Hg Rate";
 
-                if (EmParameters.DerivedHourlyChecksNeeded != null && EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded != null && emParams.DerivedHourlyChecksNeeded == true)
                 {
                     //set RecordCount
                     int RecordCount = 0;
                     DataView DHVRecords = null;
-                    if (EmParameters.MatsDhvRecordsByHourLocation != null)
+                    if (emParams.MatsDhvRecordsByHourLocation != null)
                     {
-                        DHVRecords = cRowFilter.FindRows(EmParameters.MatsDhvRecordsByHourLocation.SourceView,
+                        DHVRecords = cRowFilter.FindRows(emParams.MatsDhvRecordsByHourLocation.SourceView,
                                                          new cFilterCondition[] { new cFilterCondition("PARAMETER_CD", "HGRE,HGRH", eFilterConditionStringCompare.InList) });
                         RecordCount = DHVRecords.Count;
                     }
 
-                    if (EmParameters.CurrentHourlyOpRecord != null && EmParameters.CurrentHourlyOpRecord.OpTime > 0)
+                    if (emParams.CurrentHourlyOpRecord != null && emParams.CurrentHourlyOpRecord.OpTime > 0)
                     {
-                        if (EmParameters.MatsHgParameterCode == null)
+                        if (emParams.MatsHgParameterCode == null)
                         {
                             if (RecordCount > 0)
                             {
@@ -331,49 +331,49 @@ namespace ECMPS.Checks.EmissionsChecks
                             else  /* RecordCount is equal to 1 */
                             {
                                 Category.SetCheckParameter("Mats_Hg_Dhv_Record", DHVRecords[0]);
-                                Category.SetArrayParameter("Apportionment_Hg_Rate_Array", (int)EmParameters.CurrentMonitorPlanLocationPostion, EmParameters.MatsHgDhvRecord.UnadjustedHrlyValue);
-                                Category.SetArrayParameter("MATS_MS1_Hg_MODC_Code_Array", (int)EmParameters.CurrentMonitorPlanLocationPostion, EmParameters.MatsHgDhvRecord.ModcCd);
+                                Category.SetArrayParameter("Apportionment_Hg_Rate_Array", (int)emParams.CurrentMonitorPlanLocationPostion, emParams.MatsHgDhvRecord.UnadjustedHrlyValue);
+                                Category.SetArrayParameter("MATS_MS1_Hg_MODC_Code_Array", (int)emParams.CurrentMonitorPlanLocationPostion, emParams.MatsHgDhvRecord.ModcCd);
 
-                                if (EmParameters.MatsHgDhvRecord.ParameterCd == EmParameters.MatsHgParameterCode)
+                                if (emParams.MatsHgDhvRecord.ParameterCd == emParams.MatsHgParameterCode)
                                 {
-                                    if (EmParameters.MatsHgMethodCode == "CALC")
+                                    if (emParams.MatsHgMethodCode == "CALC")
                                     {
-                                        if (EmParameters.MatsHgDhvRecord.EquationCd == null)
+                                        if (emParams.MatsHgDhvRecord.EquationCd == null)
                                         {
-                                            if (EmParameters.MatsHgDhvRecord.ModcCd != "38")
+                                            if (emParams.MatsHgDhvRecord.ModcCd != "38")
                                                 Category.CheckCatalogResult = "F";
                                             else
                                                 Category.CheckCatalogResult = "H";
                                         }
                                         else
                                         {
-                                            if (EmParameters.MatsHgDhvRecord.EquationCd != "MS-1")
+                                            if (emParams.MatsHgDhvRecord.EquationCd != "MS-1")
                                                 Category.CheckCatalogResult = "F";
-                                            else if (EmParameters.MatsHgDhvRecord.ModcCd != "38")
+                                            else if (emParams.MatsHgDhvRecord.ModcCd != "38")
                                             {
-                                                EmParameters.MatsMs1HgDhvId = EmParameters.MatsHgDhvRecord.MatsDhvId;
-                                                EmParameters.MatsMs1HgUnadjustedHourlyValue = EmParameters.MatsHgDhvRecord.UnadjustedHrlyValue;
-                                                EmParameters.MatsParameterPluginHg = EmParameters.MatsHgDhvRecord.ParameterCd.ToUpper();
+                                                emParams.MatsMs1HgDhvId = emParams.MatsHgDhvRecord.MatsDhvId;
+                                                emParams.MatsMs1HgUnadjustedHourlyValue = emParams.MatsHgDhvRecord.UnadjustedHrlyValue;
+                                                emParams.MatsParameterPluginHg = emParams.MatsHgDhvRecord.ParameterCd.ToUpper();
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        if (EmParameters.MatsHgDhvRecord.EquationCd == "MS-1")
+                                        if (emParams.MatsHgDhvRecord.EquationCd == "MS-1")
                                         {
                                             Category.CheckCatalogResult = "G";
                                         }
                                         else
                                         {
-                                            EmParameters.MatsHgcNeeded = true;
+                                            emParams.MatsHgcNeeded = true;
 
-                                            if (EmParameters.MatsHgDhvRecord.ParameterCd == "HGRE")
+                                            if (emParams.MatsHgDhvRecord.ParameterCd == "HGRE")
                                             {
-                                                EmParameters.MatsHgreDhvChecksNeeded = true;
+                                                emParams.MatsHgreDhvChecksNeeded = true;
                                             }
-                                            else if (EmParameters.MatsHgDhvRecord.ParameterCd == "HGRH")
+                                            else if (emParams.MatsHgDhvRecord.ParameterCd == "HGRH")
                                             {
-                                                EmParameters.MatsHgrhDhvChecksNeeded = true;
+                                                emParams.MatsHgrhDhvChecksNeeded = true;
                                             }
                                         }
                                     }
@@ -440,33 +440,33 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category">Object for the category running the check.</param>
         /// <param name="Log"><obsolete></obsolete></param>
         /// <returns>Returns an error message if an exception occurs, otherwise returns a null string.</returns>
-		public static string MATSHOD7(cCategory Category, ref bool Log)
+		public  string MATSHOD7(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsHclreDhvChecksNeeded = false;
-                EmParameters.MatsHclrhDhvChecksNeeded = false;
-                EmParameters.MatsHclcNeeded = false;
-                EmParameters.MatsHclDhvRecord = null;
-                EmParameters.MatsHclDhvParameterDescription = "MATS HCl Rate";
+                emParams.MatsHclreDhvChecksNeeded = false;
+                emParams.MatsHclrhDhvChecksNeeded = false;
+                emParams.MatsHclcNeeded = false;
+                emParams.MatsHclDhvRecord = null;
+                emParams.MatsHclDhvParameterDescription = "MATS HCl Rate";
 
-                if (EmParameters.DerivedHourlyChecksNeeded != null && EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded != null && emParams.DerivedHourlyChecksNeeded == true)
                 {
                     //set RecordCount
                     int RecordCount = 0;
                     DataView DHVRecords = null;
-                    if (EmParameters.MatsDhvRecordsByHourLocation != null)
+                    if (emParams.MatsDhvRecordsByHourLocation != null)
                     {
-                        DHVRecords = cRowFilter.FindRows(EmParameters.MatsDhvRecordsByHourLocation.SourceView,
+                        DHVRecords = cRowFilter.FindRows(emParams.MatsDhvRecordsByHourLocation.SourceView,
                                              new cFilterCondition[] { new cFilterCondition("PARAMETER_CD", "HCLRE,HCLRH", eFilterConditionStringCompare.InList) });
                         RecordCount = DHVRecords.Count;
                     }
 
-                    if (EmParameters.CurrentHourlyOpRecord != null && EmParameters.CurrentHourlyOpRecord.OpTime > 0)
+                    if (emParams.CurrentHourlyOpRecord != null && emParams.CurrentHourlyOpRecord.OpTime > 0)
                     {
-                        if (EmParameters.MatsHclParameterCode == null)
+                        if (emParams.MatsHclParameterCode == null)
                         {
                             if (RecordCount > 0)
                             {
@@ -486,49 +486,49 @@ namespace ECMPS.Checks.EmissionsChecks
                             else /* RecordCount is equal to 1 */
                             {
                                 Category.SetCheckParameter("Mats_Hcl_Dhv_Record", DHVRecords[0]);
-                                Category.SetArrayParameter("Apportionment_HCL_Rate_Array", (int)EmParameters.CurrentMonitorPlanLocationPostion, EmParameters.MatsHclDhvRecord.UnadjustedHrlyValue);
-                                Category.SetArrayParameter("MATS_MS1_HCL_MODC_Code_Array", (int)EmParameters.CurrentMonitorPlanLocationPostion, EmParameters.MatsHclDhvRecord.ModcCd);
+                                Category.SetArrayParameter("Apportionment_HCL_Rate_Array", (int)emParams.CurrentMonitorPlanLocationPostion, emParams.MatsHclDhvRecord.UnadjustedHrlyValue);
+                                Category.SetArrayParameter("MATS_MS1_HCL_MODC_Code_Array", (int)emParams.CurrentMonitorPlanLocationPostion, emParams.MatsHclDhvRecord.ModcCd);
 
-                                if (EmParameters.MatsHclDhvRecord.ParameterCd == EmParameters.MatsHclParameterCode)
+                                if (emParams.MatsHclDhvRecord.ParameterCd == emParams.MatsHclParameterCode)
                                 {
-                                    if (EmParameters.MatsHclMethodCode == "CALC")
+                                    if (emParams.MatsHclMethodCode == "CALC")
                                     {
-                                        if (EmParameters.MatsHclDhvRecord.EquationCd == null)
+                                        if (emParams.MatsHclDhvRecord.EquationCd == null)
                                         {
-                                            if (EmParameters.MatsHclDhvRecord.ModcCd != "38")
+                                            if (emParams.MatsHclDhvRecord.ModcCd != "38")
                                                 Category.CheckCatalogResult = "F";
                                             else
                                                 Category.CheckCatalogResult = "H";
                                         }
                                         else
                                         {
-                                            if (EmParameters.MatsHclDhvRecord.EquationCd != "MS-1")
+                                            if (emParams.MatsHclDhvRecord.EquationCd != "MS-1")
                                                 Category.CheckCatalogResult = "F";
-                                            else if (EmParameters.MatsHclDhvRecord.ModcCd != "38")
+                                            else if (emParams.MatsHclDhvRecord.ModcCd != "38")
                                             {
-                                                EmParameters.MatsMs1HclDhvId = EmParameters.MatsHclDhvRecord.MatsDhvId;
-                                                EmParameters.MatsMs1HclUnadjustedHourlyValue = EmParameters.MatsHclDhvRecord.UnadjustedHrlyValue;
-                                                EmParameters.MatsParameterPluginHcl = EmParameters.MatsHclDhvRecord.ParameterCd.ToUpper();
+                                                emParams.MatsMs1HclDhvId = emParams.MatsHclDhvRecord.MatsDhvId;
+                                                emParams.MatsMs1HclUnadjustedHourlyValue = emParams.MatsHclDhvRecord.UnadjustedHrlyValue;
+                                                emParams.MatsParameterPluginHcl = emParams.MatsHclDhvRecord.ParameterCd.ToUpper();
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        if (EmParameters.MatsHclDhvRecord.EquationCd == "MS-1")
+                                        if (emParams.MatsHclDhvRecord.EquationCd == "MS-1")
                                         {
                                             Category.CheckCatalogResult = "G";
                                         }
                                         else
                                         {
-                                            EmParameters.MatsHclcNeeded = true;
+                                            emParams.MatsHclcNeeded = true;
 
-                                            if (EmParameters.MatsHclDhvRecord.ParameterCd == "HCLRE")
+                                            if (emParams.MatsHclDhvRecord.ParameterCd == "HCLRE")
                                             {
-                                                EmParameters.MatsHclreDhvChecksNeeded = true;
+                                                emParams.MatsHclreDhvChecksNeeded = true;
                                             }
-                                            else if (EmParameters.MatsHclDhvRecord.ParameterCd == "HCLRH")
+                                            else if (emParams.MatsHclDhvRecord.ParameterCd == "HCLRH")
                                             {
-                                                EmParameters.MatsHclrhDhvChecksNeeded = true;
+                                                emParams.MatsHclrhDhvChecksNeeded = true;
                                             }
                                         }
                                     }
@@ -593,33 +593,33 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category">Object for the category running the check.</param>
         /// <param name="Log"><obsolete></obsolete></param>
         /// <returns>Returns an error message if an exception occurs, otherwise returns a null string.</returns>
-		public static string MATSHOD8(cCategory Category, ref bool Log)
+		public  string MATSHOD8(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsHfreDhvChecksNeeded = false;
-                EmParameters.MatsHfrhDhvChecksNeeded = false;
-                EmParameters.MatsHfcNeeded = false;
-                EmParameters.MatsHfDhvRecord = null;
-                EmParameters.MatsHfDhvParameterDescription = "MATS HF Rate";
+                emParams.MatsHfreDhvChecksNeeded = false;
+                emParams.MatsHfrhDhvChecksNeeded = false;
+                emParams.MatsHfcNeeded = false;
+                emParams.MatsHfDhvRecord = null;
+                emParams.MatsHfDhvParameterDescription = "MATS HF Rate";
 
-                if (EmParameters.DerivedHourlyChecksNeeded != null && EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded != null && emParams.DerivedHourlyChecksNeeded == true)
                 {
                     //set RecordCount
                     int RecordCount = 0;
                     DataView DHVRecords = null;
-                    if (EmParameters.MatsDhvRecordsByHourLocation != null)
+                    if (emParams.MatsDhvRecordsByHourLocation != null)
                     {
-                        DHVRecords = cRowFilter.FindRows(EmParameters.MatsDhvRecordsByHourLocation.SourceView,
+                        DHVRecords = cRowFilter.FindRows(emParams.MatsDhvRecordsByHourLocation.SourceView,
                                              new cFilterCondition[] { new cFilterCondition("PARAMETER_CD", "HFRE,HFRH", eFilterConditionStringCompare.InList) });
                         RecordCount = DHVRecords.Count;
                     }
 
-                    if (EmParameters.CurrentHourlyOpRecord != null && EmParameters.CurrentHourlyOpRecord.OpTime > 0)
+                    if (emParams.CurrentHourlyOpRecord != null && emParams.CurrentHourlyOpRecord.OpTime > 0)
                     {
-                        if (EmParameters.MatsHfParameterCode == null)
+                        if (emParams.MatsHfParameterCode == null)
                         {
                             if (RecordCount > 0)
                             {
@@ -639,49 +639,49 @@ namespace ECMPS.Checks.EmissionsChecks
                             else /* RecordCount is equal to 1 */
                             {
                                 Category.SetCheckParameter("Mats_Hf_Dhv_Record", DHVRecords[0]);
-                                Category.SetArrayParameter("Apportionment_HF_Rate_Array", (int)EmParameters.CurrentMonitorPlanLocationPostion, EmParameters.MatsHfDhvRecord.UnadjustedHrlyValue);
-                                Category.SetArrayParameter("MATS_MS1_HF_MODC_Code_Array", (int)EmParameters.CurrentMonitorPlanLocationPostion, EmParameters.MatsHfDhvRecord.ModcCd);
+                                Category.SetArrayParameter("Apportionment_HF_Rate_Array", (int)emParams.CurrentMonitorPlanLocationPostion, emParams.MatsHfDhvRecord.UnadjustedHrlyValue);
+                                Category.SetArrayParameter("MATS_MS1_HF_MODC_Code_Array", (int)emParams.CurrentMonitorPlanLocationPostion, emParams.MatsHfDhvRecord.ModcCd);
 
-                                if (EmParameters.MatsHfDhvRecord.ParameterCd == EmParameters.MatsHfParameterCode)
+                                if (emParams.MatsHfDhvRecord.ParameterCd == emParams.MatsHfParameterCode)
                                 {
-                                    if (EmParameters.MatsHfMethodCode == "CALC")
+                                    if (emParams.MatsHfMethodCode == "CALC")
                                     {
-                                        if (EmParameters.MatsHfDhvRecord.EquationCd == null)
+                                        if (emParams.MatsHfDhvRecord.EquationCd == null)
                                         {
-                                            if (EmParameters.MatsHfDhvRecord.ModcCd != "38")
+                                            if (emParams.MatsHfDhvRecord.ModcCd != "38")
                                                 Category.CheckCatalogResult = "F";
                                             else
                                                 Category.CheckCatalogResult = "H";
                                         }
                                         else
                                         {
-                                            if (EmParameters.MatsHfDhvRecord.EquationCd != "MS-1")
+                                            if (emParams.MatsHfDhvRecord.EquationCd != "MS-1")
                                                 Category.CheckCatalogResult = "F";
-                                            else if (EmParameters.MatsHfDhvRecord.ModcCd != "38")
+                                            else if (emParams.MatsHfDhvRecord.ModcCd != "38")
                                             {
-                                                EmParameters.MatsMs1HfDhvId = EmParameters.MatsHfDhvRecord.MatsDhvId;
-                                                EmParameters.MatsMs1HfUnadjustedHourlyValue = EmParameters.MatsHfDhvRecord.UnadjustedHrlyValue;
-                                                EmParameters.MatsParameterPluginHf = EmParameters.MatsHfDhvRecord.ParameterCd.ToUpper();
+                                                emParams.MatsMs1HfDhvId = emParams.MatsHfDhvRecord.MatsDhvId;
+                                                emParams.MatsMs1HfUnadjustedHourlyValue = emParams.MatsHfDhvRecord.UnadjustedHrlyValue;
+                                                emParams.MatsParameterPluginHf = emParams.MatsHfDhvRecord.ParameterCd.ToUpper();
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        if (EmParameters.MatsHfDhvRecord.EquationCd == "MS-1")
+                                        if (emParams.MatsHfDhvRecord.EquationCd == "MS-1")
                                         {
                                             Category.CheckCatalogResult = "G";
                                         }
                                         else
                                         {
-                                            EmParameters.MatsHfcNeeded = true;
+                                            emParams.MatsHfcNeeded = true;
 
-                                            if (EmParameters.MatsHfDhvRecord.ParameterCd == "HFRE")
+                                            if (emParams.MatsHfDhvRecord.ParameterCd == "HFRE")
                                             {
-                                                EmParameters.MatsHfreDhvChecksNeeded = true;
+                                                emParams.MatsHfreDhvChecksNeeded = true;
                                             }
-                                            else if (EmParameters.MatsHfDhvRecord.ParameterCd == "HFRH")
+                                            else if (emParams.MatsHfDhvRecord.ParameterCd == "HFRH")
                                             {
-                                                EmParameters.MatsHfrhDhvChecksNeeded = true;
+                                                emParams.MatsHfrhDhvChecksNeeded = true;
                                             }
                                         }
                                     }
@@ -746,33 +746,33 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category">Object for the category running the check.</param>
         /// <param name="Log"><obsolete></obsolete></param>
         /// <returns>Returns an error message if an exception occurs, otherwise returns a null string.</returns>
-		public static string MATSHOD9(cCategory Category, ref bool Log)
+		public  string MATSHOD9(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsSo2reDhvChecksNeeded = false;
-                EmParameters.MatsSo2rhDhvChecksNeeded = false;
-                EmParameters.MatsSo2cNeeded = false;
-                EmParameters.MatsSo2DhvRecord = null;
-                EmParameters.MatsSo2DhvParameterDescription = "MATS SO2 Rate";
+                emParams.MatsSo2reDhvChecksNeeded = false;
+                emParams.MatsSo2rhDhvChecksNeeded = false;
+                emParams.MatsSo2cNeeded = false;
+                emParams.MatsSo2DhvRecord = null;
+                emParams.MatsSo2DhvParameterDescription = "MATS SO2 Rate";
 
-                if (EmParameters.DerivedHourlyChecksNeeded != null && EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded != null && emParams.DerivedHourlyChecksNeeded == true)
                 {
                     //set RecordCount
                     int RecordCount = 0;
                     DataView DHVRecords = null;
-                    if (EmParameters.MatsDhvRecordsByHourLocation != null)
+                    if (emParams.MatsDhvRecordsByHourLocation != null)
                     {
-                        DHVRecords = cRowFilter.FindRows(EmParameters.MatsDhvRecordsByHourLocation.SourceView,
+                        DHVRecords = cRowFilter.FindRows(emParams.MatsDhvRecordsByHourLocation.SourceView,
                                              new cFilterCondition[] { new cFilterCondition("PARAMETER_CD", "SO2RE,SO2RH", eFilterConditionStringCompare.InList) });
                         RecordCount = DHVRecords.Count;
                     }
 
-                    if (EmParameters.CurrentHourlyOpRecord != null && EmParameters.CurrentHourlyOpRecord.OpTime > 0)
+                    if (emParams.CurrentHourlyOpRecord != null && emParams.CurrentHourlyOpRecord.OpTime > 0)
                     {
-                        if (EmParameters.MatsSo2ParameterCode == null)
+                        if (emParams.MatsSo2ParameterCode == null)
                         {
                             if (RecordCount > 0)
                             {
@@ -792,49 +792,49 @@ namespace ECMPS.Checks.EmissionsChecks
                             else /* RecordCount is equal to 1 */
                             {
                                 Category.SetCheckParameter("Mats_So2_Dhv_Record", DHVRecords[0]);
-                                Category.SetArrayParameter("Apportionment_SO2_Rate_Array", (int)EmParameters.CurrentMonitorPlanLocationPostion, EmParameters.MatsSo2DhvRecord.UnadjustedHrlyValue);
-                                Category.SetArrayParameter("MATS_MS1_SO2_MODC_Code_Array", (int)EmParameters.CurrentMonitorPlanLocationPostion, EmParameters.MatsSo2DhvRecord.ModcCd);
+                                Category.SetArrayParameter("Apportionment_SO2_Rate_Array", (int)emParams.CurrentMonitorPlanLocationPostion, emParams.MatsSo2DhvRecord.UnadjustedHrlyValue);
+                                Category.SetArrayParameter("MATS_MS1_SO2_MODC_Code_Array", (int)emParams.CurrentMonitorPlanLocationPostion, emParams.MatsSo2DhvRecord.ModcCd);
 
-                                if (EmParameters.MatsSo2DhvRecord.ParameterCd == EmParameters.MatsSo2ParameterCode)
+                                if (emParams.MatsSo2DhvRecord.ParameterCd == emParams.MatsSo2ParameterCode)
                                 {
-                                    if (EmParameters.MatsSo2MethodCode == "CALC")
+                                    if (emParams.MatsSo2MethodCode == "CALC")
                                     {
-                                        if (EmParameters.MatsSo2DhvRecord.EquationCd == null)
+                                        if (emParams.MatsSo2DhvRecord.EquationCd == null)
                                         {
-                                            if (EmParameters.MatsSo2DhvRecord.ModcCd != "38")
+                                            if (emParams.MatsSo2DhvRecord.ModcCd != "38")
                                                 Category.CheckCatalogResult = "F";
                                             else
                                                 Category.CheckCatalogResult = "H";
                                         }
                                         else
                                         {
-                                            if (EmParameters.MatsSo2DhvRecord.EquationCd != "MS-1")
+                                            if (emParams.MatsSo2DhvRecord.EquationCd != "MS-1")
                                                 Category.CheckCatalogResult = "F";
-                                            else if (EmParameters.MatsSo2DhvRecord.ModcCd != "38")
+                                            else if (emParams.MatsSo2DhvRecord.ModcCd != "38")
                                             {
-                                                EmParameters.MatsMs1So2DhvId = EmParameters.MatsSo2DhvRecord.MatsDhvId;
-                                                EmParameters.MatsMs1So2UnadjustedHourlyValue = EmParameters.MatsSo2DhvRecord.UnadjustedHrlyValue;
-                                                EmParameters.MatsParameterPluginSo2 = EmParameters.MatsSo2DhvRecord.ParameterCd.ToUpper();
+                                                emParams.MatsMs1So2DhvId = emParams.MatsSo2DhvRecord.MatsDhvId;
+                                                emParams.MatsMs1So2UnadjustedHourlyValue = emParams.MatsSo2DhvRecord.UnadjustedHrlyValue;
+                                                emParams.MatsParameterPluginSo2 = emParams.MatsSo2DhvRecord.ParameterCd.ToUpper();
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        if (EmParameters.MatsSo2DhvRecord.EquationCd == "MS-1")
+                                        if (emParams.MatsSo2DhvRecord.EquationCd == "MS-1")
                                         {
                                             Category.CheckCatalogResult = "G";
                                         }
                                         else
                                         {
-                                            EmParameters.MatsSo2cNeeded = true;
+                                            emParams.MatsSo2cNeeded = true;
 
-                                            if (EmParameters.MatsSo2DhvRecord.ParameterCd == "SO2RE")
+                                            if (emParams.MatsSo2DhvRecord.ParameterCd == "SO2RE")
                                             {
-                                                EmParameters.MatsSo2reDhvChecksNeeded = true;
+                                                emParams.MatsSo2reDhvChecksNeeded = true;
                                             }
-                                            else if (EmParameters.MatsSo2DhvRecord.ParameterCd == "SO2RH")
+                                            else if (emParams.MatsSo2DhvRecord.ParameterCd == "SO2RH")
                                             {
-                                                EmParameters.MatsSo2rhDhvChecksNeeded = true;
+                                                emParams.MatsSo2rhDhvChecksNeeded = true;
                                             }
                                         }
                                     }
@@ -878,30 +878,30 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-		public static string MATSHOD10(cCategory Category, ref bool Log)
+		public  string MATSHOD10(cCategory Category, ref bool Log)
         // MATS Hg: Locate Monitor Hourly Record
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsHgcMhvChecksNeeded = false;
-                EmParameters.MatsHgcMhvRecord = null;
+                emParams.MatsHgcMhvChecksNeeded = false;
+                emParams.MatsHgcMhvRecord = null;
 
-                if (EmParameters.DerivedHourlyChecksNeeded != null && EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded != null && emParams.DerivedHourlyChecksNeeded == true)
                 {
                     //set RecordCount
                     int RecordCount = 0;
                     DataView MHVRecords = null;
-                    if (EmParameters.MatsMhvHgcRecordsByHourLocation != null)
+                    if (emParams.MatsMhvHgcRecordsByHourLocation != null)
                     {
-                        MHVRecords = cRowFilter.FindRows(EmParameters.MatsMhvHgcRecordsByHourLocation.SourceView,
+                        MHVRecords = cRowFilter.FindRows(emParams.MatsMhvHgcRecordsByHourLocation.SourceView,
                                              new cFilterCondition[] { new cFilterCondition("PARAMETER_CD", "HGC", eFilterConditionStringCompare.InList) });
                         RecordCount = MHVRecords.Count;
                     }
-                    if (EmParameters.CurrentHourlyOpRecord != null && EmParameters.CurrentHourlyOpRecord.OpTime > 0)
+                    if (emParams.CurrentHourlyOpRecord != null && emParams.CurrentHourlyOpRecord.OpTime > 0)
                     {
-                        if (EmParameters.MatsHgcNeeded == false)
+                        if (emParams.MatsHgcNeeded == false)
                         {
                             if (RecordCount > 0)
                             {
@@ -919,11 +919,11 @@ namespace ECMPS.Checks.EmissionsChecks
                         else
                         {
                             Category.SetCheckParameter("Mats_Hgc_Mhv_Record", MHVRecords[0]);
-                            EmParameters.MatsHgcMhvChecksNeeded = true;
+                            emParams.MatsHgcMhvChecksNeeded = true;
 
-                            if (EmParameters.MatsHgcMhvRecord.SysTypeCd == "ST")
+                            if (emParams.MatsHgcMhvRecord.SysTypeCd == "ST")
                             {
-                                EmParameters.FlowMonitorHourlyChecksNeeded = true;
+                                emParams.FlowMonitorHourlyChecksNeeded = true;
                             }
                         }
                     }
@@ -949,30 +949,30 @@ namespace ECMPS.Checks.EmissionsChecks
         #region Checks 11-20
 
         #region MATSHOD11
-        public static string MATSHOD11(cCategory Category, ref bool Log)
+        public  string MATSHOD11(cCategory Category, ref bool Log)
         // MATS HCl: Locate Monitor Hourly Record
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsHclcMhvChecksNeeded = false;
-                EmParameters.MatsHclcMhvRecord = null;
+                emParams.MatsHclcMhvChecksNeeded = false;
+                emParams.MatsHclcMhvRecord = null;
 
-                if (EmParameters.DerivedHourlyChecksNeeded != null && EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded != null && emParams.DerivedHourlyChecksNeeded == true)
                 {
                     //set RecordCount
                     int RecordCount = 0;
                     DataView MHVRecords = null;
-                    if (EmParameters.MatsMhvHclcRecordsByHourLocation != null)
+                    if (emParams.MatsMhvHclcRecordsByHourLocation != null)
                     {
-                        MHVRecords = cRowFilter.FindRows(EmParameters.MatsMhvHclcRecordsByHourLocation.SourceView,
+                        MHVRecords = cRowFilter.FindRows(emParams.MatsMhvHclcRecordsByHourLocation.SourceView,
                                                          new cFilterCondition[] { new cFilterCondition("PARAMETER_CD", "HCLC", eFilterConditionStringCompare.InList) });
                         RecordCount = MHVRecords.Count;
                     }
-                    if (EmParameters.CurrentHourlyOpRecord != null && EmParameters.CurrentHourlyOpRecord.OpTime > 0)
+                    if (emParams.CurrentHourlyOpRecord != null && emParams.CurrentHourlyOpRecord.OpTime > 0)
                     {
-                        if (EmParameters.MatsHclcNeeded == false)
+                        if (emParams.MatsHclcNeeded == false)
                         {
                             if (RecordCount > 0)
                             {
@@ -990,7 +990,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         else
                         {
                             Category.SetCheckParameter("Mats_Hclc_Mhv_Record", MHVRecords[0]);
-                            EmParameters.MatsHclcMhvChecksNeeded = true;
+                            emParams.MatsHclcMhvChecksNeeded = true;
                         }
                     }
                     else //OpTime <=0
@@ -1013,30 +1013,30 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSHOD12
-        public static string MATSHOD12(cCategory Category, ref bool Log)
+        public  string MATSHOD12(cCategory Category, ref bool Log)
         // MATS HF: Locate Monitor Hourly Record
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsHfcMhvChecksNeeded = false;
-                EmParameters.MatsHfcMhvRecord = null;
+                emParams.MatsHfcMhvChecksNeeded = false;
+                emParams.MatsHfcMhvRecord = null;
 
-                if (EmParameters.DerivedHourlyChecksNeeded != null && EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded != null && emParams.DerivedHourlyChecksNeeded == true)
                 {
                     //set RecordCount
                     int RecordCount = 0;
                     DataView MHVRecords = null;
-                    if (EmParameters.MatsMhvHfcRecordsByHourLocation != null)
+                    if (emParams.MatsMhvHfcRecordsByHourLocation != null)
                     {
-                        MHVRecords = cRowFilter.FindRows(EmParameters.MatsMhvHfcRecordsByHourLocation.SourceView,
+                        MHVRecords = cRowFilter.FindRows(emParams.MatsMhvHfcRecordsByHourLocation.SourceView,
                                                          new cFilterCondition[] { new cFilterCondition("PARAMETER_CD", "HFC", eFilterConditionStringCompare.InList) });
                         RecordCount = MHVRecords.Count;
                     }
-                    if (EmParameters.CurrentHourlyOpRecord != null && EmParameters.CurrentHourlyOpRecord.OpTime > 0)
+                    if (emParams.CurrentHourlyOpRecord != null && emParams.CurrentHourlyOpRecord.OpTime > 0)
                     {
-                        if (EmParameters.MatsHfcNeeded == false)
+                        if (emParams.MatsHfcNeeded == false)
                         {
                             if (RecordCount > 0)
                             {
@@ -1054,7 +1054,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         else
                         {
                             Category.SetCheckParameter("Mats_Hfc_Mhv_Record", MHVRecords[0]);
-                            EmParameters.MatsHfcMhvChecksNeeded = true;
+                            emParams.MatsHfcMhvChecksNeeded = true;
                         }
                     }
                     else //OpTime <=0
@@ -1085,36 +1085,36 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MATSHOD13(cCategory category, ref bool log)
+        public  string MATSHOD13(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                category.SetIntegerArrayParameter("Apportionment_MATS_Load_Array", EmParameters.CurrentMonitorPlanLocationPostion.Value, null);
+                category.SetIntegerArrayParameter("Apportionment_MATS_Load_Array", emParams.CurrentMonitorPlanLocationPostion.Value, null);
 
-                if (EmParameters.CurrentHourlyOpRecord != null)
+                if (emParams.CurrentHourlyOpRecord != null)
                 {
-                    if (EmParameters.CurrentHourlyOpRecord.OpTime > 0)
+                    if (emParams.CurrentHourlyOpRecord.OpTime > 0)
                     {
                         /* Require  */
-                        int count = EmParameters.MonitorMethodRecordsByHour.CountRows(new cFilterCondition[] { new cFilterCondition("PARAMETER_CD", "HGRE,HCLRE,HFRE,SO2RE", eFilterConditionStringCompare.InList) });
+                        int count = emParams.MonitorMethodRecordsByHour.CountRows(new cFilterCondition[] { new cFilterCondition("PARAMETER_CD", "HGRE,HCLRE,HFRE,SO2RE", eFilterConditionStringCompare.InList) });
 
                         if (count > 0)
                         {
-                            category.SetIntegerArrayParameter("Apportionment_MATS_Load_Array", EmParameters.CurrentMonitorPlanLocationPostion.Value,
-                                                                                               (int?)EmParameters.CurrentHourlyOpRecord.MatsHourLoad);
+                            category.SetIntegerArrayParameter("Apportionment_MATS_Load_Array", emParams.CurrentMonitorPlanLocationPostion.Value,
+                                                                                               (int?)emParams.CurrentHourlyOpRecord.MatsHourLoad);
 
-                            if (EmParameters.CurrentHourlyOpRecord.MatsHourLoad == null)
+                            if (emParams.CurrentHourlyOpRecord.MatsHourLoad == null)
                             {
                                 category.CheckCatalogResult = "A";
                             }
                             else
                             {
-                                if ((EmParameters.CurrentHourlyOpRecord.LoadUomCd == "MW") &&
-                                    (EmParameters.CurrentHourlyOpRecord.MatsHourLoad < EmParameters.CurrentHourlyOpRecord.HrLoad))
+                                if ((emParams.CurrentHourlyOpRecord.LoadUomCd == "MW") &&
+                                    (emParams.CurrentHourlyOpRecord.MatsHourLoad < emParams.CurrentHourlyOpRecord.HrLoad))
                                 {
-                                    if (EmParameters.MpStackConfigForHourlyChecks != "MS")
+                                    if (emParams.MpStackConfigForHourlyChecks != "MS")
                                     {
                                         category.CheckCatalogResult = "D";
                                     }
@@ -1123,7 +1123,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
                         else
                         {
-                            if (EmParameters.CurrentHourlyOpRecord.MatsHourLoad != null)
+                            if (emParams.CurrentHourlyOpRecord.MatsHourLoad != null)
                             {
                                 category.CheckCatalogResult = "B";
                             }
@@ -1131,7 +1131,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     }
                     else
                     {
-                        if (EmParameters.CurrentHourlyOpRecord.MatsHourLoad != null)
+                        if (emParams.CurrentHourlyOpRecord.MatsHourLoad != null)
                         {
                             category.CheckCatalogResult = "C";
                         }
@@ -1152,22 +1152,22 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category">The category object for the category in which the check is running.</param>
         /// <param name="Log">Obsolete.</param>
         /// <returns>Returns an exception message if the check fails to run normally.</returns>
-        public static string MATSHOD14(cCategory Category, ref bool Log)
+        public  string MATSHOD14(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 
             try
             {
-                if (EmParameters.CurrentHourlyOpRecord != null)
+                if (emParams.CurrentHourlyOpRecord != null)
                 {
-                    foreach (SorbentTrapEvalInformation sorbentTrap in EmParameters.MatsSorbentTrapListByLocationArray[EmParameters.CurrentMonitorPlanLocationPostion.Value])
+                    foreach (SorbentTrapEvalInformation sorbentTrap in emParams.MatsSorbentTrapListByLocationArray[emParams.CurrentMonitorPlanLocationPostion.Value])
                     {
-                        if ((EmParameters.CurrentHourlyOpRecord.OpTime > 0) &&
-                            (EmParameters.CurrentOperatingDate.Value >= sorbentTrap.SorbentTrapBeginDateHour.Value.Date) &&
-                            (EmParameters.CurrentOperatingDate.Value <= sorbentTrap.SorbentTrapEndDateHour.Value.Date) &&
-                            (!sorbentTrap.OperatingDateList.Contains(EmParameters.CurrentOperatingDate.Value)))
+                        if ((emParams.CurrentHourlyOpRecord.OpTime > 0) &&
+                            (emParams.CurrentOperatingDate.Value >= sorbentTrap.SorbentTrapBeginDateHour.Value.Date) &&
+                            (emParams.CurrentOperatingDate.Value <= sorbentTrap.SorbentTrapEndDateHour.Value.Date) &&
+                            (!sorbentTrap.OperatingDateList.Contains(emParams.CurrentOperatingDate.Value)))
                         {
-                            sorbentTrap.OperatingDateList.Add(EmParameters.CurrentOperatingDate.Value);
+                            sorbentTrap.OperatingDateList.Add(emParams.CurrentOperatingDate.Value);
                         }
                     }
                 }
@@ -1180,20 +1180,20 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string MATSHOD15(cCategory category, ref bool log)
+        public  string MATSHOD15(cCategory category, ref bool log)
         // For operating hours, this check inserts the current date into the SorbentTrapDictionary.OperatingDateList for the currrent monitoring location.
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsHclDhvParameterDescription = "HCLRE or HCLRH";
-                EmParameters.MatsHclMhvParameterDescription = "HCLC";
-                EmParameters.MatsHfDhvParameterDescription = "HFRE or HFRH";
-                EmParameters.MatsHfMhvParameterDescription = "HFC";
-                EmParameters.MatsHgDhvParameterDescription = "HGRE or HGRH";
-                EmParameters.MatsHgMhvParameterDescription = "HGC";
-                EmParameters.MatsSo2DhvParameterDescription = "SO2RE or SO2RH";
+                emParams.MatsHclDhvParameterDescription = "HCLRE or HCLRH";
+                emParams.MatsHclMhvParameterDescription = "HCLC";
+                emParams.MatsHfDhvParameterDescription = "HFRE or HFRH";
+                emParams.MatsHfMhvParameterDescription = "HFC";
+                emParams.MatsHgDhvParameterDescription = "HGRE or HGRH";
+                emParams.MatsHgMhvParameterDescription = "HGC";
+                emParams.MatsSo2DhvParameterDescription = "SO2RE or SO2RH";
             }
             catch (Exception ex)
             {
@@ -1214,35 +1214,35 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category">The category object for the category in which the check is running.</param>
         /// <param name="Log">Obsolete.</param>
         /// <returns>Returns an exception message if the check fails to run normally.</returns>
-        public static string MATSHOD16(cCategory category, ref bool log)
+        public  string MATSHOD16(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsMissingGfmList = "";
-                EmParameters.MatsMultipleGfmList = "";
+                emParams.MatsMissingGfmList = "";
+                emParams.MatsMultipleGfmList = "";
 
-                if (EmParameters.DerivedHourlyChecksNeeded == true)
+                if (emParams.DerivedHourlyChecksNeeded == true)
                 {
-                    if (EmParameters.CurrentHourlyOpRecord.OpTime > 0)
+                    if (emParams.CurrentHourlyOpRecord.OpTime > 0)
                     {
-                        if ((EmParameters.MatsHgcMhvRecord == null) || (EmParameters.MatsHgcMhvRecord.ModcCd.NotInList("41,42")))
+                        if ((emParams.MatsHgcMhvRecord == null) || (emParams.MatsHgcMhvRecord.ModcCd.NotInList("41,42")))
                         {
                             CheckDataView<MatsSamplingTrainRecord> locatedMatsSamplingTrainRecords
-                                = EmParameters.MatsSamplingTrainRecords.FindRows(new cFilterCondition("MON_LOC_ID", EmParameters.CurrentHourlyOpRecord.MonLocId),
-                                                                                 new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual, EmParameters.CurrentDateHour.Value, eNullDateDefault.Min),
-                                                                                 new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual, EmParameters.CurrentDateHour.Value, eNullDateDefault.Max));
+                                = emParams.MatsSamplingTrainRecords.FindRows(new cFilterCondition("MON_LOC_ID", emParams.CurrentHourlyOpRecord.MonLocId),
+                                                                                 new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual, emParams.CurrentDateHour.Value, eNullDateDefault.Min),
+                                                                                 new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual, emParams.CurrentDateHour.Value, eNullDateDefault.Max));
 
                             foreach (MatsSamplingTrainRecord matsSamplingTrainRecord in locatedMatsSamplingTrainRecords)
                             {
-                                int gfmCount = EmParameters.MatsHourlyGfmRecordsForHourAndLocation.CountRows(new cFilterCondition[] { new cFilterCondition("COMPONENT_ID", matsSamplingTrainRecord.ComponentId) });
+                                int gfmCount = emParams.MatsHourlyGfmRecordsForHourAndLocation.CountRows(new cFilterCondition[] { new cFilterCondition("COMPONENT_ID", matsSamplingTrainRecord.ComponentId) });
 
                                 if (gfmCount == 0)
                                 {
-                                    if (matsSamplingTrainRecord.TrainQaStatusCd.InList("PASSED,UNCERTAIN") && ((EmParameters.MatsHgcMhvRecord == null) || (EmParameters.MatsHgcMhvRecord.ModcCd != "34")))
+                                    if (matsSamplingTrainRecord.TrainQaStatusCd.InList("PASSED,UNCERTAIN") && ((emParams.MatsHgcMhvRecord == null) || (emParams.MatsHgcMhvRecord.ModcCd != "34")))
                                     {
-                                        if ((EmParameters.MatsHgcMhvRecord != null) && (EmParameters.MatsHgcMhvRecord.ModcCd == "32"))
+                                        if ((emParams.MatsHgcMhvRecord != null) && (emParams.MatsHgcMhvRecord.ModcCd == "32"))
                                         {
                                             int trainCount = locatedMatsSamplingTrainRecords.CountRows(new cFilterCondition[] {
                                                                                                                                 new cFilterCondition("COMPONENT_ID", matsSamplingTrainRecord.ComponentId),
@@ -1252,41 +1252,41 @@ namespace ECMPS.Checks.EmissionsChecks
 
                                             if (trainCount == 0)
                                             {
-                                                EmParameters.MatsMissingGfmList = EmParameters.MatsMissingGfmList.ListAdd(matsSamplingTrainRecord.Description);
+                                                emParams.MatsMissingGfmList = emParams.MatsMissingGfmList.ListAdd(matsSamplingTrainRecord.Description);
                                             }
                                         }
                                         else
                                         {
-                                            EmParameters.MatsMissingGfmList = EmParameters.MatsMissingGfmList.ListAdd(matsSamplingTrainRecord.Description);
+                                            emParams.MatsMissingGfmList = emParams.MatsMissingGfmList.ListAdd(matsSamplingTrainRecord.Description);
                                         }
                                     }
                                 }
                                 else if (gfmCount > 1)
                                 {
-                                    EmParameters.MatsMultipleGfmList = EmParameters.MatsMultipleGfmList.ListAdd(matsSamplingTrainRecord.Description);
+                                    emParams.MatsMultipleGfmList = emParams.MatsMultipleGfmList.ListAdd(matsSamplingTrainRecord.Description);
                                 }
                             }
 
-                            if ((EmParameters.MatsMissingGfmList != "") && (EmParameters.MatsMultipleGfmList != ""))
+                            if ((emParams.MatsMissingGfmList != "") && (emParams.MatsMultipleGfmList != ""))
                             {
                                 category.CheckCatalogResult = "A";
                             }
-                            else if (EmParameters.MatsMissingGfmList != "")
+                            else if (emParams.MatsMissingGfmList != "")
                             {
                                 category.CheckCatalogResult = "B";
                             }
-                            else if (EmParameters.MatsMultipleGfmList != "")
+                            else if (emParams.MatsMultipleGfmList != "")
                             {
                                 category.CheckCatalogResult = "C";
                             }
 
-                            EmParameters.MatsMissingGfmList = EmParameters.MatsMissingGfmList.FormatList();
-                            EmParameters.MatsMultipleGfmList = EmParameters.MatsMultipleGfmList.FormatList();
+                            emParams.MatsMissingGfmList = emParams.MatsMissingGfmList.FormatList();
+                            emParams.MatsMultipleGfmList = emParams.MatsMultipleGfmList.FormatList();
                         }
                     }
                     else
                     {
-                        if (EmParameters.MatsHourlyGfmRecordsForHourAndLocation.CountRows(new cFilterCondition[] { new cFilterCondition("MON_LOC_ID", EmParameters.CurrentHourlyOpRecord.MonLocId) }) > 0)
+                        if (emParams.MatsHourlyGfmRecordsForHourAndLocation.CountRows(new cFilterCondition[] { new cFilterCondition("MON_LOC_ID", emParams.CurrentHourlyOpRecord.MonLocId) }) > 0)
                         {
                             category.CheckCatalogResult = "D";
                         }

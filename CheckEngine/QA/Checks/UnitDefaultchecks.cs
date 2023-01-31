@@ -53,7 +53,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
 
         #region UnitDefault Checks
 
-        public static string UNITDEF1(cCategory Category, ref bool Log)
+        public  string UNITDEF1(cCategory Category, ref bool Log)
         //Initialize Unit Default Test Variables
         {
             string ReturnVal = "";
@@ -82,7 +82,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF2(cCategory Category, ref bool Log)
+        public  string UNITDEF2(cCategory Category, ref bool Log)
         //Unit Default Test Fuel Code Valid
         {
             string ReturnVal = "";
@@ -119,7 +119,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF3(cCategory Category, ref bool Log)
+        public  string UNITDEF3(cCategory Category, ref bool Log)
         //Unit Default Test Operating Condition Code Valid
         {
             string ReturnVal = "";
@@ -140,7 +140,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF4(cCategory Category, ref bool Log)
+        public  string UNITDEF4(cCategory Category, ref bool Log)
         //Unit Default Test Operating Condition Code Valid
         {
             string ReturnVal = "";
@@ -178,7 +178,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF5(cCategory Category, ref bool Log)
+        public  string UNITDEF5(cCategory Category, ref bool Log)
         //Unit Default Test NOx Default Rate Valid
         {
             string ReturnVal = "";
@@ -201,7 +201,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF6(cCategory Category, ref bool Log)
+        public  string UNITDEF6(cCategory Category, ref bool Log)
         //Identification of Previously Reported Test or Test Number for Unit Default Test
         {
             string ReturnVal = "";
@@ -290,7 +290,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF7(cCategory Category, ref bool Log)
+        public  string UNITDEF7(cCategory Category, ref bool Log)
         //Determine Run Sequence
         {
             string ReturnVal = "";
@@ -373,7 +373,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF8(cCategory Category, ref bool Log)
+        public  string UNITDEF8(cCategory Category, ref bool Log)
         //Unit Default Test Number of Units in Group Valid
         {
             string ReturnVal = "";
@@ -402,7 +402,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF9(cCategory Category, ref bool Log)
+        public  string UNITDEF9(cCategory Category, ref bool Log)
         //Unit Default Test Number of Tests for Group Valid
         {
             string ReturnVal = "";
@@ -456,7 +456,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF10(cCategory Category, ref bool Log)
+        public  string UNITDEF10(cCategory Category, ref bool Log)
         //Unit Default Test Begin Time Consistent with Run Times
         {
             string ReturnVal = "";
@@ -485,7 +485,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF11(cCategory Category, ref bool Log)
+        public  string UNITDEF11(cCategory Category, ref bool Log)
         //Unit Default Test End Time Consistent with Run Times
         {
             string ReturnVal = "";
@@ -514,7 +514,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF12(cCategory Category, ref bool Log)
+        public  string UNITDEF12(cCategory Category, ref bool Log)
         //Unit Default Test Consistent with Methodology
         {
             string ReturnVal = "";
@@ -545,7 +545,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF13(cCategory Category, ref bool Log)
+        public  string UNITDEF13(cCategory Category, ref bool Log)
         //Simultaneous Runs
         {
             string ReturnVal = "";
@@ -568,7 +568,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF14(cCategory Category, ref bool Log)
+        public  string UNITDEF14(cCategory Category, ref bool Log)
         //Concurrent Unit Default Tests
         {
             string ReturnVal = "";
@@ -635,7 +635,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF15(cCategory Category, ref bool Log)
+        public  string UNITDEF15(cCategory Category, ref bool Log)
         //Insufficient Number of Runs
         {
             string ReturnVal = "";
@@ -716,7 +716,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF16(cCategory Category, ref bool Log)
+        public  string UNITDEF16(cCategory Category, ref bool Log)
         //Operating Level for Run Valid
         {
             string ReturnVal = "";
@@ -739,7 +739,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF17(cCategory Category, ref bool Log)
+        public  string UNITDEF17(cCategory Category, ref bool Log)
         //Run Begin Time Valid
         {
             string ReturnVal = "";
@@ -761,7 +761,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF18(cCategory Category, ref bool Log)
+        public  string UNITDEF18(cCategory Category, ref bool Log)
         //Run End Time Valid
         {
             string ReturnVal = "";
@@ -799,7 +799,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF19(cCategory Category, ref bool Log)
+        public  string UNITDEF19(cCategory Category, ref bool Log)
         //Response Time Valid
         {
             string ReturnVal = "";
@@ -822,7 +822,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF20(cCategory Category, ref bool Log)
+        public  string UNITDEF20(cCategory Category, ref bool Log)
         //Run Number Valid
         {
             string ReturnVal = "";
@@ -876,7 +876,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF21(cCategory Category, ref bool Log)
+        public  string UNITDEF21(cCategory Category, ref bool Log)
         //Reference Value for Run Valid
         {
             string ReturnVal = "";
@@ -917,7 +917,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF22(cCategory Category, ref bool Log)
+        public  string UNITDEF22(cCategory Category, ref bool Log)
         //Out of Sequence or Missing Runs
         {
             string ReturnVal = "";
@@ -958,7 +958,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF23(cCategory Category, ref bool Log)
+        public  string UNITDEF23(cCategory Category, ref bool Log)
         //Insufficient Number of Runs for Highest Operating Level
         {
             string ReturnVal = "";
@@ -1005,7 +1005,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF24(cCategory Category, ref bool Log)
+        public  string UNITDEF24(cCategory Category, ref bool Log)
         //Unit Default Test Run Used Indicators Consistent with Default NOx Rate
         {
             string ReturnVal = "";
@@ -1045,7 +1045,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF25(cCategory Category, ref bool Log)
+        public  string UNITDEF25(cCategory Category, ref bool Log)
         //Unit Default Test NOx Rate Consistent with Recalculated Value
         {
             string ReturnVal = "";
@@ -1079,7 +1079,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF26(cCategory Category, ref bool Log)
+        public  string UNITDEF26(cCategory Category, ref bool Log)
         //Unit Default Test NOx Rate Consistent with Default Value
         {
             string ReturnVal = "";
@@ -1198,7 +1198,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF27(cCategory Category, ref bool Log)
+        public  string UNITDEF27(cCategory Category, ref bool Log)
         //Unit Default Validation of Base and Peak Load Unit Default Tests
         {
             string ReturnVal = "";
@@ -1276,7 +1276,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF28(cCategory Category, ref bool Log)
+        public  string UNITDEF28(cCategory Category, ref bool Log)
         //Duplicate Unit Default Test
         {
             string ReturnVal = "";
@@ -1330,7 +1330,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
             return ReturnVal;
         }
 
-        public static string UNITDEF29(cCategory Category, ref bool Log)
+        public  string UNITDEF29(cCategory Category, ref bool Log)
         //Duplicate Unit Default Test Run
         {
             string ReturnVal = "";
@@ -1368,7 +1368,7 @@ namespace ECMPS.Checks.UnitDefaultChecks
         }
 
 
-        public static string UNITDEF30(cCategory Category, ref bool Log)
+        public  string UNITDEF30(cCategory Category, ref bool Log)
         //Calculate Unit Default NOx Rate
         {
             string ReturnVal = "";

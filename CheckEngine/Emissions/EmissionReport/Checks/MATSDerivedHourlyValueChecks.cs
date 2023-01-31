@@ -47,17 +47,17 @@ namespace ECMPS.Checks.EmissionsChecks
         #region Checks 1-10
 
         #region MATSDHV1
-        public static string MATSDHV1(cCategory Category, ref bool Log)
+        public  string MATSDHV1(cCategory Category, ref bool Log)
         // This check sets generic parameters and output parameters for subsequent derived hourly checks for Hg      
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CurrentDhvParameter = "HGRE";
-                EmParameters.MatsDhvRecord = EmParameters.MatsHgDhvRecord;
-                EmParameters.MatsEquationCodeWithH2o = "A-3";
-                EmParameters.MatsEquationCodeWithoutH2o = "A-2";
+                emParams.CurrentDhvParameter = "HGRE";
+                emParams.MatsDhvRecord = emParams.MatsHgDhvRecord;
+                emParams.MatsEquationCodeWithH2o = "A-3";
+                emParams.MatsEquationCodeWithoutH2o = "A-2";
             }
             catch (Exception ex)
             {
@@ -69,15 +69,15 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV2
-        public static string MATSDHV2(cCategory Category, ref bool Log)
+        public  string MATSDHV2(cCategory Category, ref bool Log)
         // This check sets generic parameters and output parameters for subsequent derived hourly checks for Hg
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CurrentDhvParameter = "HGRH";
-                EmParameters.MatsDhvRecord = EmParameters.MatsHgDhvRecord;
+                emParams.CurrentDhvParameter = "HGRH";
+                emParams.MatsDhvRecord = emParams.MatsHgDhvRecord;
             }
             catch (Exception ex)
             {
@@ -89,17 +89,17 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV3
-        public static string MATSDHV3(cCategory Category, ref bool Log)
+        public  string MATSDHV3(cCategory Category, ref bool Log)
         // This check sets generic parameters and output parameters for subsequent derived hourly checks for HCL
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CurrentDhvParameter = "HCLRE";
-                EmParameters.MatsDhvRecord = EmParameters.MatsHclDhvRecord;
-                EmParameters.MatsEquationCodeWithH2o = "HC-3";
-                EmParameters.MatsEquationCodeWithoutH2o = "HC-2";
+                emParams.CurrentDhvParameter = "HCLRE";
+                emParams.MatsDhvRecord = emParams.MatsHclDhvRecord;
+                emParams.MatsEquationCodeWithH2o = "HC-3";
+                emParams.MatsEquationCodeWithoutH2o = "HC-2";
             }
             catch (Exception ex)
             {
@@ -111,15 +111,15 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV4
-        public static string MATSDHV4(cCategory Category, ref bool Log)
+        public  string MATSDHV4(cCategory Category, ref bool Log)
         // This check sets generic parameters and output parameters for subsequent derived hourly checks for HCL
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CurrentDhvParameter = "HCLRH";
-                EmParameters.MatsDhvRecord = EmParameters.MatsHclDhvRecord;
+                emParams.CurrentDhvParameter = "HCLRH";
+                emParams.MatsDhvRecord = emParams.MatsHclDhvRecord;
             }
             catch (Exception ex)
             {
@@ -131,17 +131,17 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV5
-        public static string MATSDHV5(cCategory Category, ref bool Log)
+        public  string MATSDHV5(cCategory Category, ref bool Log)
         // This check sets generic parameters and output parameters for subsequent derived hourly checks for HF
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CurrentDhvParameter = "HFRE";
-                EmParameters.MatsDhvRecord = EmParameters.MatsHfDhvRecord;
-                EmParameters.MatsEquationCodeWithH2o = "HF-3";
-                EmParameters.MatsEquationCodeWithoutH2o = "HF-2";
+                emParams.CurrentDhvParameter = "HFRE";
+                emParams.MatsDhvRecord = emParams.MatsHfDhvRecord;
+                emParams.MatsEquationCodeWithH2o = "HF-3";
+                emParams.MatsEquationCodeWithoutH2o = "HF-2";
             }
             catch (Exception ex)
             {
@@ -153,15 +153,15 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV6
-        public static string MATSDHV6(cCategory Category, ref bool Log)
+        public  string MATSDHV6(cCategory Category, ref bool Log)
         // This check sets generic parameters and output parameters for subsequent derived hourly checks for HF
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CurrentDhvParameter = "HFRH";
-                EmParameters.MatsDhvRecord = EmParameters.MatsHfDhvRecord;
+                emParams.CurrentDhvParameter = "HFRH";
+                emParams.MatsDhvRecord = emParams.MatsHfDhvRecord;
             }
             catch (Exception ex)
             {
@@ -173,17 +173,17 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV7
-        public static string MATSDHV7(cCategory Category, ref bool Log)
+        public  string MATSDHV7(cCategory Category, ref bool Log)
         // This check sets generic parameters and output parameters for subsequent derived hourly checks for SO2
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CurrentDhvParameter = "SO2RE";
-                EmParameters.MatsDhvRecord = EmParameters.MatsSo2DhvRecord;
-                EmParameters.MatsEquationCodeWithH2o = "S-3";
-                EmParameters.MatsEquationCodeWithoutH2o = "S-2";
+                emParams.CurrentDhvParameter = "SO2RE";
+                emParams.MatsDhvRecord = emParams.MatsSo2DhvRecord;
+                emParams.MatsEquationCodeWithH2o = "S-3";
+                emParams.MatsEquationCodeWithoutH2o = "S-2";
             }
             catch (Exception ex)
             {
@@ -195,15 +195,15 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV8
-        public static string MATSDHV8(cCategory Category, ref bool Log)
+        public  string MATSDHV8(cCategory Category, ref bool Log)
         // This check sets generic parameters and output parameters for subsequent derived hourly checks for SO2
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CurrentDhvParameter = "SO2RH";
-                EmParameters.MatsDhvRecord = EmParameters.MatsSo2DhvRecord;
+                emParams.CurrentDhvParameter = "SO2RH";
+                emParams.MatsDhvRecord = emParams.MatsSo2DhvRecord;
             }
             catch (Exception ex)
             {
@@ -215,35 +215,35 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV9
-        public static string MATSDHV9(cCategory Category, ref bool Log)
+        public  string MATSDHV9(cCategory Category, ref bool Log)
         // Basic check to ensure that Mats MODC reported in the DHV record is valid.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.DerivedHourlyModcStatus = false;
+                emParams.DerivedHourlyModcStatus = false;
 
-                if (EmParameters.MatsDhvRecord.ModcCd.InList("36,38"))
+                if (emParams.MatsDhvRecord.ModcCd.InList("36,38"))
                 {
-                    EmParameters.DerivedHourlyModcStatus = true;
+                    emParams.DerivedHourlyModcStatus = true;
                 }
 
-                else if (EmParameters.MatsDhvRecord.ModcCd == "37")
+                else if (emParams.MatsDhvRecord.ModcCd == "37")
                 {
-                    if (EmParameters.MatsDhvRecord.ParameterCd.InList("HGRH,HCLRH,HFRH,SO2RH") && (EmParameters.CurrentHourlyOpRecord.MatsStartupShutdownFlg != null))
+                    if (emParams.MatsDhvRecord.ParameterCd.InList("HGRH,HCLRH,HFRH,SO2RH") && (emParams.CurrentHourlyOpRecord.MatsStartupShutdownFlg != null))
                     {
-                        EmParameters.DerivedHourlyModcStatus = true;
+                        emParams.DerivedHourlyModcStatus = true;
                     }
                     else
                         Category.CheckCatalogResult = "B";
                 }
 
-                else if (EmParameters.MatsDhvRecord.ModcCd == "39")
+                else if (emParams.MatsDhvRecord.ModcCd == "39")
                 {
-                    if (EmParameters.MatsDhvRecord.ParameterCd.InList("HGRE,HCLRE,HFRE,SO2RE") && (EmParameters.CurrentHourlyOpRecord.MatsStartupShutdownFlg != null))
+                    if (emParams.MatsDhvRecord.ParameterCd.InList("HGRE,HCLRE,HFRE,SO2RE") && (emParams.CurrentHourlyOpRecord.MatsStartupShutdownFlg != null))
                     {
-                        EmParameters.DerivedHourlyModcStatus = true;
+                        emParams.DerivedHourlyModcStatus = true;
                     }
                     else
                         Category.CheckCatalogResult = "C";
@@ -263,20 +263,20 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV10
-        public static string MATSDHV10(cCategory Category, ref bool Log)
+        public  string MATSDHV10(cCategory Category, ref bool Log)
         // Checks the Formula ID in the MATS Derived Hourly Value record and ensures that it can be used for the calculation
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.DerivedHourlyFormulaStatus = false;
+                emParams.DerivedHourlyFormulaStatus = false;
 
-                if (EmParameters.DerivedHourlyModcStatus == true)
+                if (emParams.DerivedHourlyModcStatus == true)
                 {
-                    if (EmParameters.MatsDhvRecord.MonFormId == null)
+                    if (emParams.MatsDhvRecord.MonFormId == null)
                     {
-                        if (EmParameters.MatsDhvRecord.ModcCd == "38")
+                        if (emParams.MatsDhvRecord.ModcCd == "38")
                         {
                             Category.CheckCatalogResult = "G";
                         }
@@ -288,25 +288,25 @@ namespace ECMPS.Checks.EmissionsChecks
 
                     else  //EquationCode not null
                     {
-                        if (EmParameters.MatsDhvRecord.FormulaActiveInd != 1)
+                        if (emParams.MatsDhvRecord.FormulaActiveInd != 1)
                         {
                             Category.CheckCatalogResult = "B";
                         }
-                        else if (EmParameters.MatsDhvRecord.FormulaParameterCd != EmParameters.CurrentDhvParameter)
+                        else if (emParams.MatsDhvRecord.FormulaParameterCd != emParams.CurrentDhvParameter)
                         {
                             Category.CheckCatalogResult = "C";
                         }
-                        else if (EmParameters.CurrentDhvParameter.InList("HGRE,HCLRE,HFRE,SO2RE") && EmParameters.MatsDhvRecord.ModcCd == "37")
+                        else if (emParams.CurrentDhvParameter.InList("HGRE,HCLRE,HFRE,SO2RE") && emParams.MatsDhvRecord.ModcCd == "37")
                         {
                             Category.CheckCatalogResult = "D";
                         }
-                        else if (EmParameters.CurrentDhvParameter.InList("HGRH,HCLRH,HFRH,SO2RH") && EmParameters.MatsDhvRecord.ModcCd == "39")
+                        else if (emParams.CurrentDhvParameter.InList("HGRH,HCLRH,HFRH,SO2RH") && emParams.MatsDhvRecord.ModcCd == "39")
                         {
                             Category.CheckCatalogResult = "E";
                         }
                         else
                         {
-                            EmParameters.DerivedHourlyFormulaStatus = true;
+                            emParams.DerivedHourlyFormulaStatus = true;
                         }
                     }
                 }
@@ -325,31 +325,31 @@ namespace ECMPS.Checks.EmissionsChecks
         #region Checks 11-20
 
         #region MATSDHV11
-        public static string MATSDHV11(cCategory Category, ref bool Log)
+        public  string MATSDHV11(cCategory Category, ref bool Log)
         // Gets Equation Code from Mats Active Monitor Formula Record and verifies that it is an appropriate equation for calculation of HCLRE,HFRE,HGRE,SO2RE
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.DerivedHourlyEquationStatus = false;
+                emParams.DerivedHourlyEquationStatus = false;
 
-                if (EmParameters.DerivedHourlyFormulaStatus == true)
+                if (emParams.DerivedHourlyFormulaStatus == true)
                 {
-                    if (EmParameters.MatsDhvRecord.EquationCd != null)
+                    if (emParams.MatsDhvRecord.EquationCd != null)
                     {
 
-                        if (EmParameters.MatsDhvRecord.EquationCd == EmParameters.MatsEquationCodeWithoutH2o)
+                        if (emParams.MatsDhvRecord.EquationCd == emParams.MatsEquationCodeWithoutH2o)
                         {
-                            EmParameters.DerivedHourlyEquationStatus = true;
-                            EmParameters.FlowMonitorHourlyChecksNeeded = true;
+                            emParams.DerivedHourlyEquationStatus = true;
+                            emParams.FlowMonitorHourlyChecksNeeded = true;
                         }
-                        else if (EmParameters.MatsDhvRecord.EquationCd == EmParameters.MatsEquationCodeWithH2o)
+                        else if (emParams.MatsDhvRecord.EquationCd == emParams.MatsEquationCodeWithH2o)
                         {
-                            EmParameters.DerivedHourlyEquationStatus = true;
-                            EmParameters.FlowMonitorHourlyChecksNeeded = true;
-                            EmParameters.MoistureNeeded = true;
-                            EmParameters.H2oMissingDataApproach = EmParameters.H2oMissingDataApproach.ListAdd("MIN");
+                            emParams.DerivedHourlyEquationStatus = true;
+                            emParams.FlowMonitorHourlyChecksNeeded = true;
+                            emParams.MoistureNeeded = true;
+                            emParams.H2oMissingDataApproach = emParams.H2oMissingDataApproach.ListAdd("MIN");
                         }
                         else
                         {
@@ -358,7 +358,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     }
                     else
                     {
-                        EmParameters.DerivedHourlyEquationStatus = true;
+                        emParams.DerivedHourlyEquationStatus = true;
                     }
                 }
             }
@@ -372,48 +372,48 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV12
-        public static string MATSDHV12(cCategory Category, ref bool Log)
+        public  string MATSDHV12(cCategory Category, ref bool Log)
         // Gets Mats Equation Code from Active Mats Monitor Formula Record and verifies that it is an appropriate equation for Mats Current parameter.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.DerivedHourlyEquationStatus = false;
+                emParams.DerivedHourlyEquationStatus = false;
 
-                if (EmParameters.DerivedHourlyFormulaStatus == true)
+                if (emParams.DerivedHourlyFormulaStatus == true)
                 {
-                    if (EmParameters.MatsDhvRecord.EquationCd != null)
+                    if (emParams.MatsDhvRecord.EquationCd != null)
                     {
 
-                        if (EmParameters.MatsDhvRecord.EquationCd.InList("19-1,19-2,19-3,19-3D,19-4,19-5,19-5D,19-6,19-7,19-8,19-9"))
+                        if (emParams.MatsDhvRecord.EquationCd.InList("19-1,19-2,19-3,19-3D,19-4,19-5,19-5D,19-6,19-7,19-8,19-9"))
                         {
 
-                            EmParameters.DerivedHourlyEquationStatus = true;
+                            emParams.DerivedHourlyEquationStatus = true;
 
-                            if (EmParameters.MatsDhvRecord.EquationCd.InList("19-1,19-4"))
+                            if (emParams.MatsDhvRecord.EquationCd.InList("19-1,19-4"))
                             {
-                                EmParameters.O2DryNeededForMats = true;
-                                EmParameters.FdFactorNeeded = true;
+                                emParams.O2DryNeededForMats = true;
+                                emParams.FdFactorNeeded = true;
                             }
-                            else if (EmParameters.MatsDhvRecord.EquationCd.InList("19-3,19-3D,19-5,19-5D"))
+                            else if (emParams.MatsDhvRecord.EquationCd.InList("19-3,19-3D,19-5,19-5D"))
                             {
-                                EmParameters.O2WetNeededForMats = true;
-                                EmParameters.FdFactorNeeded = true;
+                                emParams.O2WetNeededForMats = true;
+                                emParams.FdFactorNeeded = true;
                             }
-                            else if (EmParameters.MatsDhvRecord.EquationCd.InList("19-2"))
+                            else if (emParams.MatsDhvRecord.EquationCd.InList("19-2"))
                             {
-                                EmParameters.O2WetNeededForMats = true;
-                                EmParameters.FwFactorNeeded = true;
+                                emParams.O2WetNeededForMats = true;
+                                emParams.FwFactorNeeded = true;
                             }
-                            else if (EmParameters.MatsDhvRecord.EquationCd.InList("19-6,19-7,19-8,19-9"))
+                            else if (emParams.MatsDhvRecord.EquationCd.InList("19-6,19-7,19-8,19-9"))
                             {
-                                EmParameters.Co2DiluentNeededForMats = true;
-                                EmParameters.FcFactorNeeded = true;
+                                emParams.Co2DiluentNeededForMats = true;
+                                emParams.FcFactorNeeded = true;
                             }
-                            if (EmParameters.MatsDhvRecord.EquationCd.InList("19-3,19-3D,19-4,19-5,19-8,19-9"))
+                            if (emParams.MatsDhvRecord.EquationCd.InList("19-3,19-3D,19-4,19-5,19-8,19-9"))
                             {
-                                EmParameters.MoistureNeeded = true;
+                                emParams.MoistureNeeded = true;
                             }
                         }
                         else
@@ -423,7 +423,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     }
                     else
                     {
-                        EmParameters.DerivedHourlyEquationStatus = true;
+                        emParams.DerivedHourlyEquationStatus = true;
                     }
                 }
             }
@@ -437,15 +437,15 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV13
-        public static string MATSDHV13(cCategory Category, ref bool Log)
+        public  string MATSDHV13(cCategory Category, ref bool Log)
         // This check assigns parameter specific check parameters used by the associated calculation checks.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsHgDhvParameter = EmParameters.CurrentDhvParameter;
-                EmParameters.MatsHgDhvValid = EmParameters.DerivedHourlyEquationStatus;
+                emParams.MatsHgDhvParameter = emParams.CurrentDhvParameter;
+                emParams.MatsHgDhvValid = emParams.DerivedHourlyEquationStatus;
             }
             catch (Exception ex)
             {
@@ -457,15 +457,15 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV14
-        public static string MATSDHV14(cCategory Category, ref bool Log)
+        public  string MATSDHV14(cCategory Category, ref bool Log)
         // This check assigns parameter specific check parameters used by the associated calculation checks.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsHclDhvParameter = EmParameters.CurrentDhvParameter;
-                EmParameters.MatsHclDhvValid = EmParameters.DerivedHourlyEquationStatus;
+                emParams.MatsHclDhvParameter = emParams.CurrentDhvParameter;
+                emParams.MatsHclDhvValid = emParams.DerivedHourlyEquationStatus;
             }
             catch (Exception ex)
             {
@@ -477,15 +477,15 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV15
-        public static string MATSDHV15(cCategory Category, ref bool Log)
+        public  string MATSDHV15(cCategory Category, ref bool Log)
         // This check assigns parameter specific check parameters used by the associated calculation checks.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsHfDhvParameter = EmParameters.CurrentDhvParameter;
-                EmParameters.MatsHfDhvValid = EmParameters.DerivedHourlyEquationStatus;
+                emParams.MatsHfDhvParameter = emParams.CurrentDhvParameter;
+                emParams.MatsHfDhvValid = emParams.DerivedHourlyEquationStatus;
             }
             catch (Exception ex)
             {
@@ -497,15 +497,15 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSDHV16
-        public static string MATSDHV16(cCategory Category, ref bool Log)
+        public  string MATSDHV16(cCategory Category, ref bool Log)
         // This check assigns parameter specific check parameters used by the associated calculation checks.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsSo2DhvParameter = EmParameters.CurrentDhvParameter;
-                EmParameters.MatsSo2DhvValid = EmParameters.DerivedHourlyEquationStatus;
+                emParams.MatsSo2DhvParameter = emParams.CurrentDhvParameter;
+                emParams.MatsSo2DhvValid = emParams.DerivedHourlyEquationStatus;
             }
             catch (Exception ex)
             {
@@ -523,48 +523,48 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-        public static string MATSDHV17(cCategory Category, ref bool Log)
+        public  string MATSDHV17(cCategory Category, ref bool Log)
         
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.DerivedHourlyUnadjustedValueStatus = false;
+                emParams.DerivedHourlyUnadjustedValueStatus = false;
 
-                if (EmParameters.DerivedHourlyModcStatus == true)
+                if (emParams.DerivedHourlyModcStatus == true)
                 {
-                    if (EmParameters.MatsDhvRecord.ModcCd.InList("36,37,39"))
+                    if (emParams.MatsDhvRecord.ModcCd.InList("36,37,39"))
                     {
-                        if (string.IsNullOrEmpty(EmParameters.MatsDhvRecord.UnadjustedHrlyValue))
+                        if (string.IsNullOrEmpty(emParams.MatsDhvRecord.UnadjustedHrlyValue))
                         {
                             Category.CheckCatalogResult = "A";
                         }
 
-                        else if (!EmParameters.MatsDhvRecord.UnadjustedHrlyValue.MatsSignificantDigitsValid(EmParameters.CurrentOperatingDate.Value))
+                        else if (!emParams.MatsDhvRecord.UnadjustedHrlyValue.MatsSignificantDigitsValid(emParams.CurrentOperatingDate.Value))
                         {
                             Category.CheckCatalogResult = "B";
                         }
 
-                        else if (EmParameters.MatsDhvRecord.UnadjustedHrlyValue.ScientificNotationtoDecimal() < 0)
+                        else if (emParams.MatsDhvRecord.UnadjustedHrlyValue.ScientificNotationtoDecimal() < 0)
                         {
                             Category.CheckCatalogResult = "C";
                         }
 
                         else
                         {
-                            EmParameters.DerivedHourlyUnadjustedValueStatus = true;
+                            emParams.DerivedHourlyUnadjustedValueStatus = true;
                         }
                     }
                     else // MODC 38
                     {
-                        if (!string.IsNullOrEmpty(EmParameters.MatsDhvRecord.UnadjustedHrlyValue))
+                        if (!string.IsNullOrEmpty(emParams.MatsDhvRecord.UnadjustedHrlyValue))
                         {
                             Category.CheckCatalogResult = "D";
                         }
                         else
                         {
-                            EmParameters.DerivedHourlyUnadjustedValueStatus = true;
+                            emParams.DerivedHourlyUnadjustedValueStatus = true;
                         }
                     }
                 }
@@ -588,22 +588,22 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-        public static string MATSDHV18(cCategory category, ref bool log)
+        public  string MATSDHV18(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if ((EmParameters.DerivedHourlyEquationStatus == true) && (EmParameters.DerivedHourlyModcStatus == true) && EmParameters.MatsDhvRecord.ModcCd.InList("36,37,39"))
+                if ((emParams.DerivedHourlyEquationStatus == true) && (emParams.DerivedHourlyModcStatus == true) && emParams.MatsDhvRecord.ModcCd.InList("36,37,39"))
                 {
-                    if (EmParameters.Co2DiluentNeededForMats == true)
-                        EmParameters.Co2DiluentNeededForMatsCalculation = true;
+                    if (emParams.Co2DiluentNeededForMats == true)
+                        emParams.Co2DiluentNeededForMatsCalculation = true;
 
-                    if (EmParameters.O2DryNeededForMats == true)
-                        EmParameters.O2DryNeededForMatsCalculation = true;
+                    if (emParams.O2DryNeededForMats == true)
+                        emParams.O2DryNeededForMatsCalculation = true;
 
-                    if (EmParameters.O2WetNeededForMats == true)
-                        EmParameters.O2WetNeededForMatsCalculation = true;
+                    if (emParams.O2WetNeededForMats == true)
+                        emParams.O2WetNeededForMatsCalculation = true;
                 }
             }
             catch (Exception ex)

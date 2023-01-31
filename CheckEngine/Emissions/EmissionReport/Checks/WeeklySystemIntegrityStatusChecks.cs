@@ -37,7 +37,7 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        #region Check Methods (static)
+        #region Check Methods ()
 
         /// <summary>
         /// Initialize Status Checking
@@ -45,14 +45,14 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string WSISTAT1(cCategory category, ref bool log)
+        public  string WSISTAT1(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.WsiStatus = null;
-                EmParameters.WsiPluginEventRecord = null;
+                emParams.WsiStatus = null;
+                emParams.WsiPluginEventRecord = null;
             }
             catch (Exception ex)
             {
@@ -68,19 +68,19 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string WSISTAT2(cCategory category, ref bool log)
+        public  string WSISTAT2(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.WsiTestDictionary.ContainsKey(EmParameters.QaStatusComponentId))
+                if (emParams.WsiTestDictionary.ContainsKey(emParams.QaStatusComponentId))
                 {
-                    EmParameters.WsiPriorTestRecord = EmParameters.WsiTestDictionary[EmParameters.QaStatusComponentId].MostRecentTestRecord;
+                    emParams.WsiPriorTestRecord = emParams.WsiTestDictionary[emParams.QaStatusComponentId].MostRecentTestRecord;
                 }
                 else
                 {
-                    EmParameters.WsiPriorTestRecord = null;
+                    emParams.WsiPriorTestRecord = null;
                 }
             }
             catch (Exception ex)
@@ -97,57 +97,57 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string WSISTAT3(cCategory category, ref bool log)
+        public  string WSISTAT3(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.WsiInterveningEventRecord = null;
+                emParams.WsiInterveningEventRecord = null;
 
-                if (EmParameters.WsiStatus == null)
+                if (emParams.WsiStatus == null)
                 {
                     /* WsiPriorTestRecord should exist if WsiStatus is null. */
 
                     VwQaCertEventRow interveningEventRecord
-                      = EmParameters.QaCertificationEventRecords.FindMostRecentRow(
-                                                                                    EmParameters.CurrentDateHour.Value,
+                      = emParams.QaCertificationEventRecords.FindMostRecentRow(
+                                                                                    emParams.CurrentDateHour.Value,
                                                                                     "QA_CERT_EVENT_DATEHOUR",
                                                                                     new cFilterCondition[]
                                                                                     {
-                                                                            new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId),
-                                                                            new cFilterCondition("QA_CERT_EVENT_DATEHOUR", EmParameters.WsiPriorTestRecord.TestDatehour, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.GreaterThan),
+                                                                            new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId),
+                                                                            new cFilterCondition("QA_CERT_EVENT_DATEHOUR", emParams.WsiPriorTestRecord.TestDatehour, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.GreaterThan),
                                                                             new cFilterCondition("QA_CERT_EVENT_CD", "110,130", eFilterConditionStringCompare.InList)
                                                                                     }
                                                                                   );
 
                     if (interveningEventRecord != null)
                     {
-                        EmParameters.WsiInterveningEventRecord = interveningEventRecord;
-                        EmParameters.WsiPluginEventRecord = interveningEventRecord;
-                        EmParameters.WsiStatus = "OOC-Event";
+                        emParams.WsiInterveningEventRecord = interveningEventRecord;
+                        emParams.WsiPluginEventRecord = interveningEventRecord;
+                        emParams.WsiStatus = "OOC-Event";
                     }
                     else
                     {
-                        if (EmParameters.WsiPriorTestRecord.TestResultCd == null)
+                        if (emParams.WsiPriorTestRecord.TestResultCd == null)
                         {
-                            EmParameters.WsiStatus = "OOC-Test Has Critical Errors";
+                            emParams.WsiStatus = "OOC-Test Has Critical Errors";
                         }
-                        else if (EmParameters.WsiPriorTestRecord.TestResultCd == "FAILED")
+                        else if (emParams.WsiPriorTestRecord.TestResultCd == "FAILED")
                         {
-                            EmParameters.WsiStatus = "OOC-Test Failed";
+                            emParams.WsiStatus = "OOC-Test Failed";
                         }
                         else
                         {
-                            WsiTestStatusInformation wsiTestEntry = EmParameters.WsiTestDictionary[EmParameters.QaStatusComponentId];
+                            WsiTestStatusInformation wsiTestEntry = emParams.WsiTestDictionary[emParams.QaStatusComponentId];
                             {
                                 if ((wsiTestEntry.OperatingDateList != null) && (wsiTestEntry.OperatingDateList.Count > 7))
                                 {
-                                    EmParameters.WsiStatus = "OOC-Expired";
+                                    emParams.WsiStatus = "OOC-Expired";
                                 }
                                 else
                                 {
-                                    EmParameters.WsiStatus = "IC";
+                                    emParams.WsiStatus = "IC";
                                 }
                             }
                         }
@@ -168,15 +168,15 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string WSISTAT4(cCategory category, ref bool log)
+        public  string WSISTAT4(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (!EmParameters.WsiStatus.StartsWith("IC"))
+                if (!emParams.WsiStatus.StartsWith("IC"))
                 {
-                    category.CheckCatalogResult = EmParameters.WsiStatus;
+                    category.CheckCatalogResult = emParams.WsiStatus;
                 }
             }
             catch (Exception ex)
@@ -213,77 +213,77 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string WSISTAT5(cCategory category, ref bool log)
+        public  string WSISTAT5(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.WsiInterveningLikeKindEventRecord = null;
+                emParams.WsiInterveningLikeKindEventRecord = null;
 
                 cFilterCondition[] filterCondition;
                 {
-                    if (EmParameters.WsiPriorTestRecord == null)
+                    if (emParams.WsiPriorTestRecord == null)
                         filterCondition = new cFilterCondition[]
                                             {
-                                  new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId),
+                                  new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId),
                                   new cFilterCondition("QA_CERT_EVENT_CD", "140,141", eFilterConditionStringCompare.InList)
                                             };
                     else
                         filterCondition = new cFilterCondition[]
                                             {
-                                  new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId),
+                                  new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId),
                                   new cFilterCondition("QA_CERT_EVENT_CD", "140,141", eFilterConditionStringCompare.InList),
-                                  new cFilterCondition("QA_CERT_EVENT_DATEHOUR", EmParameters.WsiPriorTestRecord.TestDatehour.AsEndDateTime(),
+                                  new cFilterCondition("QA_CERT_EVENT_DATEHOUR", emParams.WsiPriorTestRecord.TestDatehour.AsEndDateTime(),
                                                        eFilterDataType.DateBegan, eFilterConditionRelativeCompare.GreaterThan)
                                             };
                 }
 
                 VwQaCertEventRow interveningEventRecord
-                  = EmParameters.QaCertificationEventRecords.FindMostRecentRow(EmParameters.CurrentDateHour.Value, "QA_CERT_EVENT_DATEHOUR", filterCondition);
+                  = emParams.QaCertificationEventRecords.FindMostRecentRow(emParams.CurrentDateHour.Value, "QA_CERT_EVENT_DATEHOUR", filterCondition);
 
                 if (interveningEventRecord != null)
                 {
-                    EmParameters.WsiInterveningLikeKindEventRecord = interveningEventRecord;
+                    emParams.WsiInterveningLikeKindEventRecord = interveningEventRecord;
 
-                    DateTime earliestOperatingDate = EmParameters.WsiInterveningLikeKindEventRecord.QaCertEventDate.Default(DateTime.MinValue).AddDays(1);
+                    DateTime earliestOperatingDate = emParams.WsiInterveningLikeKindEventRecord.QaCertEventDate.Default(DateTime.MinValue).AddDays(1);
 
-                    if (EmParameters.OperatingDateArray[EmParameters.CurrentMonitorPlanLocationPostion.Value].Count(item => item >= earliestOperatingDate) > 7)
+                    if (emParams.OperatingDateArray[emParams.CurrentMonitorPlanLocationPostion.Value].Count(item => item >= earliestOperatingDate) > 7)
                     {
-                        if (EmParameters.WsiPriorTestRecord == null)
+                        if (emParams.WsiPriorTestRecord == null)
                         {
-                            EmParameters.WsiStatus = "OOC-No Prior Test";
+                            emParams.WsiStatus = "OOC-No Prior Test";
                         }
                         else
                         {
-                            EmParameters.WsiPluginEventRecord = EmParameters.WsiInterveningLikeKindEventRecord;
-                            EmParameters.WsiStatus = "OOC-Event";
+                            emParams.WsiPluginEventRecord = emParams.WsiInterveningLikeKindEventRecord;
+                            emParams.WsiStatus = "OOC-Event";
                         }
                     }
                     else
                     {
-                        EmParameters.WsiStatus = "IC-Undetermined";
+                        emParams.WsiStatus = "IC-Undetermined";
                     }
                 }
                 else
                 {
-                    if (EmParameters.WsiPriorTestRecord == null)
+                    if (emParams.WsiPriorTestRecord == null)
                     {
                         DateTime earliestOperatingDate;
                         {
-                            if ((EmParameters.QaStatusMatsErbDate != null) && (EmParameters.QaStatusMatsErbDate.Default(DateTime.MinValue) > EmParameters.QaStatusComponentBeginDate.Default(DateTime.MinValue)))
-                                earliestOperatingDate = EmParameters.QaStatusMatsErbDate.Value.AddDays(1);
+                            if ((emParams.QaStatusMatsErbDate != null) && (emParams.QaStatusMatsErbDate.Default(DateTime.MinValue) > emParams.QaStatusComponentBeginDate.Default(DateTime.MinValue)))
+                                earliestOperatingDate = emParams.QaStatusMatsErbDate.Value.AddDays(1);
                             else
-                                earliestOperatingDate = EmParameters.QaStatusComponentBeginDate.Default(DateTime.MinValue).AddDays(1);
+                                earliestOperatingDate = emParams.QaStatusComponentBeginDate.Default(DateTime.MinValue).AddDays(1);
                         }
 
-                        if (EmParameters.OperatingDateArray[EmParameters.CurrentMonitorPlanLocationPostion.Value].Count(item => item >= earliestOperatingDate) > 7)
+                        if (emParams.OperatingDateArray[emParams.CurrentMonitorPlanLocationPostion.Value].Count(item => item >= earliestOperatingDate) > 7)
                         {
-                            EmParameters.WsiStatus = "OOC-No Prior Test";
+                            emParams.WsiStatus = "OOC-No Prior Test";
                         }
                         else
                         {
-                            EmParameters.WsiStatus = "IC-Undetermined";
+                            emParams.WsiStatus = "IC-Undetermined";
                         }
                     }
                 }

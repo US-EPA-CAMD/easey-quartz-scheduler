@@ -43,7 +43,7 @@ namespace ECMPS.Checks.CertEventChecks
     #region Cert Event Checks
 
     #region Check 1-10
-    public static string QACERT1(cCategory Category, ref bool Log)
+    public  string QACERT1(cCategory Category, ref bool Log)
     //QA Cert Event Code  Valid
     {
       string ReturnVal = "";
@@ -67,7 +67,7 @@ namespace ECMPS.Checks.CertEventChecks
       return ReturnVal;
     }
 
-    public static string QACERT2(cCategory Category, ref bool Log)
+    public  string QACERT2(cCategory Category, ref bool Log)
     //QA Cert Event Date Valid
     {
       string ReturnVal = "";
@@ -94,7 +94,7 @@ namespace ECMPS.Checks.CertEventChecks
       return ReturnVal;
     }
 
-    public static string QACERT3(cCategory Category, ref bool Log)
+    public  string QACERT3(cCategory Category, ref bool Log)
     //QA Cert Event Hour Valid
     {
       string ReturnVal = "";
@@ -129,7 +129,7 @@ namespace ECMPS.Checks.CertEventChecks
       return ReturnVal;
     }
 
-    public static string QACERT4(cCategory Category, ref bool Log)
+    public  string QACERT4(cCategory Category, ref bool Log)
     //QA Cert Event System Valid
     {
       string ReturnVal = "";
@@ -182,7 +182,7 @@ namespace ECMPS.Checks.CertEventChecks
       return ReturnVal;
     }
 
-    public static string QACERT5(cCategory Category, ref bool Log)
+    public  string QACERT5(cCategory Category, ref bool Log)
     //QA Cert Event Component Valid
     {
       string ReturnVal = "";
@@ -245,7 +245,7 @@ namespace ECMPS.Checks.CertEventChecks
       return ReturnVal;
     }
 
-    public static string QACERT6(cCategory Category, ref bool Log)
+    public  string QACERT6(cCategory Category, ref bool Log)
     //QA Cert Event Conditional Begin Date and Hour Valid
     {
       string ReturnVal = "";
@@ -285,7 +285,7 @@ namespace ECMPS.Checks.CertEventChecks
     }
 
     //QA Cert Event Completion Test Date and Hour Valid
-    public static string QACERT7(cCategory Category, ref bool Log)
+    public  string QACERT7(cCategory Category, ref bool Log)
     {
       string ReturnVal = "";
 
@@ -330,7 +330,7 @@ namespace ECMPS.Checks.CertEventChecks
       return ReturnVal;
     }
 
-    public static string QACERT8(cCategory Category, ref bool Log)
+    public  string QACERT8(cCategory Category, ref bool Log)
     //QA Cert Event Required Test Code Valid
     {
       string ReturnVal = "";
@@ -364,7 +364,7 @@ namespace ECMPS.Checks.CertEventChecks
       return ReturnVal;
     }
 
-    public static string QACERT9(cCategory Category, ref bool Log)
+    public  string QACERT9(cCategory Category, ref bool Log)
     //QA Cert Event Conditional Begin Hour Consistent with Event Hour
     {
       string ReturnVal = "";
@@ -403,7 +403,7 @@ namespace ECMPS.Checks.CertEventChecks
       return ReturnVal;
     }
 
-    public static string QACERT10(cCategory Category, ref bool Log)
+    public  string QACERT10(cCategory Category, ref bool Log)
     //QA Cert Event Completion Test Hour Consistent with Event and Conditional Hour
     {
       string ReturnVal = "";
@@ -449,7 +449,7 @@ namespace ECMPS.Checks.CertEventChecks
     #endregion
 
     #region 11-20
-    public static string QACERT11(cCategory Category, ref bool Log)
+    public  string QACERT11(cCategory Category, ref bool Log)
     //Duplicate QA Cert Event
     {
       string ReturnVal = "";
@@ -502,7 +502,7 @@ namespace ECMPS.Checks.CertEventChecks
       return ReturnVal;
     }
 
-    public static string QACERT12(cCategory Category, ref bool Log)
+    public  string QACERT12(cCategory Category, ref bool Log)
     //QA Cert Event System/Component Type Consistent with Event Code
     {
       string ReturnVal = "";
@@ -510,7 +510,7 @@ namespace ECMPS.Checks.CertEventChecks
       try
       {
           // EC-1568  MJ  01/05/2016  Added HCL,HF
-          if (QaParameters.QaCertEventSystemType.NotInList("HG,ST,HCL,HF") && QaParameters.QaCertEventComponentType.NotInList("HG,STRAIN,HCL,HF"))
+          if (qaParams.QaCertEventSystemType.NotInList("HG,ST,HCL,HF") && qaParams.QaCertEventComponentType.NotInList("HG,STRAIN,HCL,HF"))
         {
           DataRowView CurrentCertEvent = (DataRowView)Category.GetCheckParameter("Current_QA_Cert_Event").ParameterValue;
           int EventCd;
@@ -661,7 +661,7 @@ namespace ECMPS.Checks.CertEventChecks
       return ReturnVal;
     }
 
-    public static string QACERT13(cCategory Category, ref bool Log)
+    public  string QACERT13(cCategory Category, ref bool Log)
     //QA Cert Event Required Test Code Consistent with System and Component
     {
       string ReturnVal = "";
@@ -669,7 +669,7 @@ namespace ECMPS.Checks.CertEventChecks
       try
       {
         //  EC-1568  MJ  01/05/2016  Added HCL,HF
-        if (QaParameters.QaCertEventSystemType.NotInList("HG,ST,HCL,HF") && QaParameters.QaCertEventComponentType.NotInList("HG,STRAIN,HCL,HF"))
+        if (qaParams.QaCertEventSystemType.NotInList("HG,ST,HCL,HF") && qaParams.QaCertEventComponentType.NotInList("HG,STRAIN,HCL,HF"))
         {
           DataRowView CurrentCertEvent = (DataRowView)Category.GetCheckParameter("Current_QA_Cert_Event").ParameterValue;
           string RequCd = cDBConvert.ToString(CurrentCertEvent["REQUIRED_TEST_CD"]);
@@ -785,7 +785,7 @@ namespace ECMPS.Checks.CertEventChecks
       return ReturnVal;
     }
 
-    public static string QACERT14(cCategory Category, ref bool Log)
+    public  string QACERT14(cCategory Category, ref bool Log)
     //QA Cert Event Date Consistent with Other Data
     {
       string ReturnVal = "";
@@ -947,7 +947,7 @@ namespace ECMPS.Checks.CertEventChecks
       return ReturnVal;
     }
 
-    public static string QACERT15(cCategory Category, ref bool Log)
+    public  string QACERT15(cCategory Category, ref bool Log)
     //QA Cert Event Code Consistent with Required Test Code
     {
       string ReturnVal = "";
@@ -959,7 +959,7 @@ namespace ECMPS.Checks.CertEventChecks
         DateTime EventDate = cDBConvert.ToDate(CurrentCertEvent["QA_CERT_EVENT_DATE"], DateTypes.START);
 
         if (Category.GetCheckParameter("QA_Cert_Event_and_Type_Consistent").ValueAsBool() && ReqTestCd != "" &&
-            QaParameters.QaCertEventSystemType.NotInList("HG,ST") && QaParameters.QaCertEventComponentType.NotInList("HG,STRAIN"))
+            qaParams.QaCertEventSystemType.NotInList("HG,ST") && qaParams.QaCertEventComponentType.NotInList("HG,STRAIN"))
         {
           string MissingTestTypes = "";
           string CertEvSysType = Category.GetCheckParameter("QA_Cert_Event_System_Type").ValueAsString();
@@ -1138,7 +1138,7 @@ namespace ECMPS.Checks.CertEventChecks
       return ReturnVal;
     }
 
-    public static string QACERT16(cCategory Category, ref bool Log)
+    public  string QACERT16(cCategory Category, ref bool Log)
     //MP Evaluation Check
     {
       string ReturnVal = "";

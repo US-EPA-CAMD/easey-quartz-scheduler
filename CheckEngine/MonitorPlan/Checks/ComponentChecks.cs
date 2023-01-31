@@ -80,7 +80,7 @@ namespace ECMPS.Checks.ComponentChecks
 
 		#region Checks 11 - 20
 
-		public static string COMPON13(cCategory Category, ref bool Log)
+		public string COMPON13(cCategory Category, ref bool Log)
 		// Component Sample Acquisiton Method Code Valid
 		{
 			string ReturnVal = "";
@@ -178,7 +178,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON14(cCategory Category, ref bool Log)
+		public string COMPON14(cCategory Category, ref bool Log)
 		// Component Basis Code Valid
 		{
 			string ReturnVal = "";
@@ -270,7 +270,7 @@ namespace ECMPS.Checks.ComponentChecks
 
 		#region Checks 71 - 80
 
-		public static string COMPON80(cCategory category, ref bool log)
+		public string COMPON80(cCategory category, ref bool log)
 		// Overlapping System Component Records
 		{
 			string returnValue = "";
@@ -335,7 +335,7 @@ namespace ECMPS.Checks.ComponentChecks
 
 		#region Check 81 - 90
 
-		public static string COMPON81(cCategory category, ref bool log)
+		public string COMPON81(cCategory category, ref bool log)
 		// Hg Converter Indicator
 		{
 			string returnValue = "";
@@ -344,20 +344,20 @@ namespace ECMPS.Checks.ComponentChecks
 			{
 				//DataRowView CurrentComponent = MpReportParameters.CurrentComponent;
 
-				if (MpParameters.ComponentComponentTypeValid.AsBoolean().Default(false))
+				if (mpParams.ComponentComponentTypeValid.AsBoolean().Default(false))
 				{
-					if (MpParameters.CurrentComponent.ComponentTypeCd == "HG")
+					if (mpParams.CurrentComponent.ComponentTypeCd == "HG")
 					{
-						if (MpParameters.CurrentComponent.HgConverterInd == null)
+						if (mpParams.CurrentComponent.HgConverterInd == null)
 						{
 							category.CheckCatalogResult = "A";
 						}
-						else if (MpParameters.CurrentComponent.HgConverterInd != 1 && MpParameters.CurrentComponent.HgConverterInd != 0)
+						else if (mpParams.CurrentComponent.HgConverterInd != 1 && mpParams.CurrentComponent.HgConverterInd != 0)
 						{
 							category.CheckCatalogResult = "B";
 						}
 					}
-					else if (MpParameters.CurrentComponent.HgConverterInd != null)
+					else if (mpParams.CurrentComponent.HgConverterInd != null)
 					{
 						category.CheckCatalogResult = "C";
 					}
@@ -379,7 +379,7 @@ namespace ECMPS.Checks.ComponentChecks
 
 		#region Analyzer Range Checks
 
-		public static string COMPON16(cCategory Category, ref bool Log) //Analyzer Range Code Valid
+		public string COMPON16(cCategory Category, ref bool Log) //Analyzer Range Code Valid
 		{
 			string ReturnVal = "";
 
@@ -401,7 +401,7 @@ namespace ECMPS.Checks.ComponentChecks
 						Category.CheckCatalogResult = "B";
 						Category.SetCheckParameter("Analyzer_Range_Code_Valid", false, eParameterDataType.Boolean);
 					}
-					else if (MpParameters.CurrentComponent.ComponentTypeCd == "HG" && AnalyzerRangeCode != "H")
+					else if (mpParams.CurrentComponent.ComponentTypeCd == "HG" && AnalyzerRangeCode != "H")
 					{
 						Category.CheckCatalogResult = "C";
 					}
@@ -418,7 +418,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON18(cCategory Category, ref bool Log) //Analyzer Range Start Date Valid
+		public string COMPON18(cCategory Category, ref bool Log) //Analyzer Range Start Date Valid
 		{
 			string ReturnVal = "";
 
@@ -434,7 +434,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON19(cCategory Category, ref bool Log) //Analyzer Range Start Hour Valid
+		public string COMPON19(cCategory Category, ref bool Log) //Analyzer Range Start Hour Valid
 		{
 			string ReturnVal = "";
 
@@ -450,7 +450,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON20(cCategory Category, ref bool Log) //Analyzer Range End Date Valid
+		public string COMPON20(cCategory Category, ref bool Log) //Analyzer Range End Date Valid
 		{
 			string ReturnVal = "";
 
@@ -466,7 +466,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON21(cCategory Category, ref bool Log) //Analyzer Range End Hour Valid
+		public string COMPON21(cCategory Category, ref bool Log) //Analyzer Range End Hour Valid
 		{
 			string ReturnVal = "";
 
@@ -482,7 +482,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON22(cCategory Category, ref bool Log)
+		public string COMPON22(cCategory Category, ref bool Log)
 		// Analyzer Range Dates and Hours Consistent
 		{
 			string ReturnVal = "";
@@ -505,7 +505,7 @@ namespace ECMPS.Checks.ComponentChecks
 
 		}
 
-		public static string COMPON34(cCategory Category, ref bool Log)
+		public string COMPON34(cCategory Category, ref bool Log)
 		// Required Second Component Reported for Dual Range Analyzer
 		{
 			string ReturnVal = "";
@@ -598,7 +598,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON36(cCategory Category, ref bool Log) //Analyzer Range Record Valid
+		public string COMPON36(cCategory Category, ref bool Log) //Analyzer Range Record Valid
 		{
 			string ReturnVal = "";
 
@@ -621,7 +621,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON37(cCategory Category, ref bool Log) //Dual Range Indicator Consistent with Analyzer Range Code
+		public string COMPON37(cCategory Category, ref bool Log) //Dual Range Indicator Consistent with Analyzer Range Code
 		{
 			string ReturnVal = "";
 
@@ -636,7 +636,7 @@ namespace ECMPS.Checks.ComponentChecks
 				{
 					int DualRangeIndicator = cDBConvert.ToInteger(CurrentAnalyzerRange["dual_range_ind"]);
 
-					if ((MpParameters.CurrentComponent.ComponentTypeCd == "HG") && (DualRangeIndicator != 0))
+					if ((mpParams.CurrentComponent.ComponentTypeCd == "HG") && (DualRangeIndicator != 0))
 					{
 						Category.CheckCatalogResult = "C";
 					}
@@ -654,7 +654,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON38(cCategory Category, ref bool Log)
+		public string COMPON38(cCategory Category, ref bool Log)
 		// Analyzer Range Active Status
 		{
 			string ReturnVal = "";
@@ -683,7 +683,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON45(cCategory Category, ref bool Log)
+		public string COMPON45(cCategory Category, ref bool Log)
 		// Required High-Scale Span Reported for Component
 		{
 			string ReturnVal = "";
@@ -749,7 +749,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON48(cCategory Category, ref bool Log)
+		public string COMPON48(cCategory Category, ref bool Log)
 		// Component and Analyzer Range Dates Consistent
 		{
 			string ReturnVal = "";
@@ -789,7 +789,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON51(cCategory Category, ref bool Log) //Required Low-Scale Span Reported for Component
+		public string COMPON51(cCategory Category, ref bool Log) //Required Low-Scale Span Reported for Component
 		{
 			string ReturnVal = "";
 
@@ -842,7 +842,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON54(cCategory Category, ref bool Log)
+		public string COMPON54(cCategory Category, ref bool Log)
 		// Duplicate Analyzer Range Records
 		{
 			string ReturnVal = "";
@@ -889,7 +889,7 @@ namespace ECMPS.Checks.ComponentChecks
 
 		#region Component Checks
 
-		public static string COMPON8(cCategory Category, ref bool Log)
+		public string COMPON8(cCategory Category, ref bool Log)
 		// Component Identifier Valid
 		{
 			string ReturnVal = "";
@@ -913,7 +913,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON10(cCategory Category, ref bool Log) //Component Serial Number Valid
+		public string COMPON10(cCategory Category, ref bool Log) //Component Serial Number Valid
 		{
 			string ReturnVal = "";
 
@@ -939,7 +939,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON11(cCategory Category, ref bool Log) //Component Manufacturer Valid
+		public string COMPON11(cCategory Category, ref bool Log) //Component Manufacturer Valid
 		{
 			string ReturnVal = "";
 
@@ -964,7 +964,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON12(cCategory Category, ref bool Log)
+		public string COMPON12(cCategory Category, ref bool Log)
 		// Component Type Code Valid
 		{
 			string ReturnVal = "";
@@ -1019,7 +1019,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON26(cCategory Category, ref bool Log) //Component Active Status
+		public string COMPON26(cCategory Category, ref bool Log) //Component Active Status
 		{
 			string ReturnVal = "";
 
@@ -1148,7 +1148,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON30(cCategory Category, ref bool Log) //Required Analyzer Range Reported for Component
+		public string COMPON30(cCategory Category, ref bool Log) //Required Analyzer Range Reported for Component
 		{
 			string ReturnVal = "";
 
@@ -1187,7 +1187,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON47(cCategory Category, ref bool Log) //Duplicate Analyzer Range Reported for Component
+		public string COMPON47(cCategory Category, ref bool Log) //Duplicate Analyzer Range Reported for Component
 		{
 			string ReturnVal = "";
 
@@ -1220,7 +1220,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON52(cCategory Category, ref bool Log) //Required FLOW Span Reported for Component
+		public string COMPON52(cCategory Category, ref bool Log) //Required FLOW Span Reported for Component
 		{
 			string ReturnVal = "";
 
@@ -1265,7 +1265,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON57(cCategory Category, ref bool Log) //Hg Converter Indicator Valid
+		public string COMPON57(cCategory Category, ref bool Log) //Hg Converter Indicator Valid
 		{
 			string ReturnVal = "";
 
@@ -1289,7 +1289,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON67(cCategory Category, ref bool Log) //Required Calibration Standard Data Reported for Component
+		public string COMPON67(cCategory Category, ref bool Log) //Required Calibration Standard Data Reported for Component
 		{
 			string ReturnVal = "";
 
@@ -1360,7 +1360,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON69(cCategory Category, ref bool Log) //Overlapping Calibration Standard Data Reported for Component
+		public string COMPON69(cCategory Category, ref bool Log) //Overlapping Calibration Standard Data Reported for Component
 		{
 			string ReturnVal = "";
 
@@ -1402,7 +1402,7 @@ namespace ECMPS.Checks.ComponentChecks
 
 		#region System Component Checks
 
-		public static string COMPON3(cCategory Category, ref bool Log)
+		public string COMPON3(cCategory Category, ref bool Log)
 		// system component Begin Date Valid
 		{
 			string ReturnVal = "";
@@ -1422,7 +1422,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON4(cCategory Category, ref bool Log)
+		public string COMPON4(cCategory Category, ref bool Log)
 		// system component Begin Hour Valid
 		{
 			string ReturnVal = "";
@@ -1442,7 +1442,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON5(cCategory Category, ref bool Log)
+		public string COMPON5(cCategory Category, ref bool Log)
 		// system component End Date Valid
 		{
 			string ReturnVal = "";
@@ -1462,7 +1462,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON6(cCategory Category, ref bool Log)
+		public string COMPON6(cCategory Category, ref bool Log)
 		// system component End Hour Valid
 		{
 			string ReturnVal = "";
@@ -1482,7 +1482,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON7(cCategory Category, ref bool Log)
+		public string COMPON7(cCategory Category, ref bool Log)
 		// System Component Dates and Hours Consistent
 		{
 			string ReturnVal = "";
@@ -1504,7 +1504,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON33(cCategory Category, ref bool Log)
+		public string COMPON33(cCategory Category, ref bool Log)
 		// System And Component Dates Consistent
 		{
 			string ReturnVal = "";
@@ -1556,7 +1556,7 @@ namespace ECMPS.Checks.ComponentChecks
 
 		}
 
-		public static string COMPON39(cCategory Category, ref bool Log)
+		public string COMPON39(cCategory Category, ref bool Log)
 		// System Component Active Status
 		{
 			string ReturnVal = "";
@@ -1584,7 +1584,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON44(cCategory Category, ref bool Log)
+		public string COMPON44(cCategory Category, ref bool Log)
 		// Required Formula Reported for System and Component
 		{
 			string ReturnVal = "";
@@ -1941,7 +1941,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON46(cCategory Category, ref bool Log)
+		public string COMPON46(cCategory Category, ref bool Log)
 		// System Type Consistent with Component Type
 		{
 			string ReturnVal = "";
@@ -1997,7 +1997,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON53(cCategory Category, ref bool Log)
+		public string COMPON53(cCategory Category, ref bool Log)
 		// Duplicate Component Records
 		{
 			string ReturnVal = "";
@@ -2027,7 +2027,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON55(cCategory Category, ref bool Log)
+		public string COMPON55(cCategory Category, ref bool Log)
 		// System Component Record Valid
 		{
 			string ReturnVal = "";
@@ -2085,7 +2085,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON56(cCategory Category, ref bool Log)
+		public string COMPON56(cCategory Category, ref bool Log)
 		// Required Default Reported for System and Component
 		{
 			string ReturnVal = "";
@@ -2184,7 +2184,7 @@ namespace ECMPS.Checks.ComponentChecks
 
 		#region Component Calibration Standard Data
 
-		public static string COMPON58(cCategory Category, ref bool Log) //Calibration Standard Data Active Status
+		public string COMPON58(cCategory Category, ref bool Log) //Calibration Standard Data Active Status
 		{
 			string ReturnVal = "";
 
@@ -2206,7 +2206,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON59(cCategory Category, ref bool Log) //Calibration Standard Data Begin Date Valid
+		public string COMPON59(cCategory Category, ref bool Log) //Calibration Standard Data Begin Date Valid
 		{
 			string ReturnVal = "";
 
@@ -2225,7 +2225,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON60(cCategory Category, ref bool Log) //Calibration Standard Data Begin Hour Valid
+		public string COMPON60(cCategory Category, ref bool Log) //Calibration Standard Data Begin Hour Valid
 		{
 			string ReturnVal = "";
 
@@ -2243,7 +2243,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON61(cCategory Category, ref bool Log) //Calibration Standard Data End Date Valid
+		public string COMPON61(cCategory Category, ref bool Log) //Calibration Standard Data End Date Valid
 		{
 			string ReturnVal = "";
 
@@ -2262,7 +2262,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON62(cCategory Category, ref bool Log) //Calibration Standard Data End Hour Valid
+		public string COMPON62(cCategory Category, ref bool Log) //Calibration Standard Data End Hour Valid
 		{
 			string ReturnVal = "";
 
@@ -2280,7 +2280,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON63(cCategory Category, ref bool Log) //Calibration Standard Data Dates and Hours Consistent
+		public string COMPON63(cCategory Category, ref bool Log) //Calibration Standard Data Dates and Hours Consistent
 		{
 			string ReturnVal = "";
 
@@ -2299,7 +2299,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON64(cCategory Category, ref bool Log) //Calibration Standard Code Valid
+		public string COMPON64(cCategory Category, ref bool Log) //Calibration Standard Code Valid
 		{
 			string ReturnVal = "";
 
@@ -2353,7 +2353,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON65(cCategory Category, ref bool Log)
+		public string COMPON65(cCategory Category, ref bool Log)
 		// Calibration Source Code Valid
 		{
 			string ReturnVal = "";
@@ -2411,7 +2411,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON66(cCategory Category, ref bool Log) //Component and Calibration Standard Data Dates Consistent
+		public string COMPON66(cCategory Category, ref bool Log) //Component and Calibration Standard Data Dates Consistent
 		{
 			string ReturnVal = "";
 
@@ -2449,7 +2449,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON70(cCategory Category, ref bool Log) //Calibration Standard Data Record Valid
+		public string COMPON70(cCategory Category, ref bool Log) //Calibration Standard Data Record Valid
 		{
 			string ReturnVal = "";
 
@@ -2469,7 +2469,7 @@ namespace ECMPS.Checks.ComponentChecks
 			return ReturnVal;
 		}
 
-		public static string COMPON68(cCategory Category, ref bool Log) //Duplicate Calibration Standard Data Records
+		public string COMPON68(cCategory Category, ref bool Log) //Duplicate Calibration Standard Data Records
 		{
 			string ReturnVal = "";
 
