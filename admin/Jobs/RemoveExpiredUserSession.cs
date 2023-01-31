@@ -31,10 +31,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
-      if (!await scheduler.CheckExists(WithJobKey()))
-      {
-        app.UseQuartzJob<RemoveExpiredUserSession>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_REMOVE_EXPIRED_SESSION_SCHEDULE"]));
+
+      if(await scheduler.CheckExists(WithJobKey())){
+        await scheduler.DeleteJob(WithJobKey());
       }
+
+      if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_REMOVE_EXPIRED_SESSION_SCHEDULE"] != null){
+        app.UseQuartzJob<AllowanceComplianceBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_REMOVE_EXPIRED_SESSION_SCHEDULE"]));
+      }
+      else
+        app.UseQuartzJob<AllowanceComplianceBulkDataFiles>(WithCronSchedule("0 0/20 * 1/1 * ? *"));
+      
     }
 
     public RemoveExpiredUserSession(NpgSqlContext dbContext)
@@ -91,7 +98,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       return TriggerBuilder.Create()
           .WithIdentity(WithTriggerKey())
           .WithDescription(Identity.TriggerDescription)
-          .WithCronSchedule(cronExpression);
+          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }

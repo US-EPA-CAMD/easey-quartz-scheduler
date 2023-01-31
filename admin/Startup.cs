@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
@@ -35,6 +36,8 @@ namespace Epa.Camd.Quartz.Scheduler
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+
+      AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
       Utils.Configuration = Configuration;
 
