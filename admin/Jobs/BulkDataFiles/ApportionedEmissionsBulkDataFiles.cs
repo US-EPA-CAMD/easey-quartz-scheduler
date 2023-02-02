@@ -66,7 +66,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
       if(Utils.Configuration["EASEY_EMISSIONS_NIGHTLY_BYPASS"] != "true"){
         // Does emissions nightly exists for current date and has it completed
-        List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Emissions Nightly' AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
+        List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Emission Nightly' AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
         if(datamartExists.Count == 0){
           return;
         }
