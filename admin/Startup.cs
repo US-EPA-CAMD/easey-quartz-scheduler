@@ -84,64 +84,65 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddSession();
 
-      services.AddSwaggerGen(c =>
-      {
-        c.SwaggerDoc(
-          "v1",
-          new OpenApiInfo
+        services.AddSwaggerGen(c =>
+        {
+          c.SwaggerDoc(
+            "v1",
+            new OpenApiInfo
+            {
+              Title = "Quartz Job Management OpenAPI Specification",
+              Version = "v1",
+            }
+          );
+
+          string host = Configuration["EASEY_QUARTZ_SCHEDULER_HOST"];
+          string apiHost = Configuration["EASEY_API_GATEWAY_HOST"];
+
+          if (!string.IsNullOrWhiteSpace(host) && host != "localhost")
           {
-            Title = "Quartz Job Management OpenAPI Specification",
-            Version = "v1",
+            c.AddServer(new OpenApiServer() {
+              Url = $"https://{apiHost}",
+            });
           }
-        );
 
-        string host = Configuration["EASEY_QUARTZ_SCHEDULER_HOST"];
-        string apiHost = Configuration["EASEY_API_GATEWAY_HOST"];
+          var bearerKeyScheme = new OpenApiSecurityScheme
+          {
+            Name = "Bearer",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+            Description = "Authorization by bearer request token!",
+            Scheme = "Bearer",
+            Reference = new OpenApiReference {
+              Id = "BearerToken",
+              Type = ReferenceType.SecurityScheme,
+            }
+          };       
 
-        if (!string.IsNullOrWhiteSpace(host) && host != "localhost")
-        {
-          c.AddServer(new OpenApiServer() {
-            Url = $"https://{apiHost}",
-          });
-        }
+          var apiKeyScheme = new OpenApiSecurityScheme {
+            Name = "x-api-key",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+            Description = "Authorization by x-api-key request header!",
+            Scheme = "ApiKeyScheme",
+            Reference = new OpenApiReference {
+              Id = "ApiKey",
+              Type = ReferenceType.SecurityScheme,
+            }
+          };
 
-        var bearerKeyScheme = new OpenApiSecurityScheme
-        {
-          Name = "Bearer",
-          In = ParameterLocation.Header,
-          Type = SecuritySchemeType.ApiKey,
-          Description = "Authorization by bearer request token!",
-          Scheme = "Bearer",
-          Reference = new OpenApiReference {
-            Id = "BearerToken",
-            Type = ReferenceType.SecurityScheme,
-          }
-        };       
-
-        var apiKeyScheme = new OpenApiSecurityScheme {
-          Name = "x-api-key",
-          In = ParameterLocation.Header,
-          Type = SecuritySchemeType.ApiKey,
-          Description = "Authorization by x-api-key request header!",
-          Scheme = "ApiKeyScheme",
-          Reference = new OpenApiReference {
-            Id = "ApiKey",
-            Type = ReferenceType.SecurityScheme,
-          }
-        };
-
-        c.AddSecurityDefinition("BearerToken", bearerKeyScheme);
-        c.AddSecurityDefinition("ApiKey", apiKeyScheme);
-        c.AddSecurityRequirement(
-          new OpenApiSecurityRequirement {{
-            apiKeyScheme,
-            new List<string>()
+          c.AddSecurityDefinition("BearerToken", bearerKeyScheme);
+          c.AddSecurityDefinition("ApiKey", apiKeyScheme);
+          c.AddSecurityRequirement(
+            new OpenApiSecurityRequirement {{
+              apiKeyScheme,
+              new List<string>()
+            }});
+          c.AddSecurityRequirement( new OpenApiSecurityRequirement {{
+              bearerKeyScheme,
+              new List<string>()
           }});
-        c.AddSecurityRequirement( new OpenApiSecurityRequirement {{
-            bearerKeyScheme,
-            new List<string>()
-        }});
-      });
+        });
+      
 
       services.AddRazorPages();
       services.AddControllers();
@@ -224,16 +225,18 @@ namespace Epa.Camd.Quartz.Scheduler
 
       string apiPath = Configuration["EASEY_QUARTZ_SCHEDULER_API_PATH"];
 
-      app.UseSwagger(c =>
-      {
-        c.RouteTemplate = apiPath + "/swagger/{documentname}/swagger.json";
-      });
+      if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SWAGGER"])){
+        app.UseSwagger(c =>
+        {
+          c.RouteTemplate = apiPath + "/swagger/{documentname}/swagger.json";
+        });
 
-      app.UseSwaggerUI(c =>
-      {
-        c.SwaggerEndpoint($"./v1/swagger.json", "Quartz API v1");
-        c.RoutePrefix = $"{apiPath}/swagger";
-      });
+        app.UseSwaggerUI(c =>
+        {
+          c.SwaggerEndpoint($"./v1/swagger.json", "Quartz API v1");
+          c.RoutePrefix = $"{apiPath}/swagger";
+        });
+      }
 
       IScheduler scheduler = app.GetScheduler();
 

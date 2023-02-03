@@ -46,7 +46,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_MAINTENANCE_SCHEDULE"]));
         }
         else
-          app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule("0 0 8 ? * * *"));
+          app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule("0 0 6 ? * * *"));
       
     }
 

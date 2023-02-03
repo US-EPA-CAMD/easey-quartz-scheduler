@@ -45,7 +45,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           app.UseQuartzJob<AllowanceHoldingsBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_HOLDINGS_SCHEDULE"]));
         }
         else
-          app.UseQuartzJob<AllowanceHoldingsBulkDataFiles>(WithCronSchedule("0 0/10 1-5 ? * * *"));
+          app.UseQuartzJob<AllowanceHoldingsBulkDataFiles>(WithCronSchedule("0 0/10 2-4 ? * * *"));
       
     }
 

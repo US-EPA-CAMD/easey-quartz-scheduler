@@ -46,7 +46,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           app.UseQuartzJob<FacilityAttributesBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_FACILITY_ATTRIBUTES_SCHEDULE"]));
         }
         else
-          app.UseQuartzJob<FacilityAttributesBulkDataFiles>(WithCronSchedule("0 0/10 1-5 ? * * *"));
+          app.UseQuartzJob<FacilityAttributesBulkDataFiles>(WithCronSchedule("0 0/10 2-4 ? * * *"));
       
     }
 
