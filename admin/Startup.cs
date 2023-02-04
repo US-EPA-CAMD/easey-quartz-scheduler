@@ -35,7 +35,6 @@ namespace Epa.Camd.Quartz.Scheduler
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-
       AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
       Utils.Configuration = Configuration;
@@ -47,18 +46,15 @@ namespace Epa.Camd.Quartz.Scheduler
       );
 
       NpgSqlContext dbContext = services.BuildServiceProvider().GetService<NpgSqlContext>();
-
-      // CORS Configuration ---
       List<CorsOptions> options =  dbContext.CorsOptions.ToListAsync<CorsOptions>().Result;
 
       List<string> allowedOrigins = new List<string>();
+      List<string> allowedMethods = new List<string>();
+      List<string> allowedHeaders = new List<string>();
 
       if(Configuration["EASEY_QUARTZ_SCHEDULER_ENV"] != "production"){
           allowedOrigins.Add("http://localhost:3000");
       }
-
-      List<string> allowedMethods = new List<string>();
-      List<string> allowedHeaders = new List<string>();
 
       foreach(CorsOptions opts in options){
         switch(opts.Key){
@@ -75,80 +71,78 @@ namespace Epa.Camd.Quartz.Scheduler
       }
       
       services.AddCors(options => {
-          options.AddPolicy(corsPolicy, builder => {
-              builder.WithOrigins(allowedOrigins.ToArray())
-              .WithHeaders(allowedHeaders.ToArray())
-              .WithMethods(allowedMethods.ToArray());
-          });
+        options.AddPolicy(corsPolicy, builder => {
+          builder.WithOrigins(allowedOrigins.ToArray())
+            .WithHeaders(allowedHeaders.ToArray())
+            .WithMethods(allowedMethods.ToArray());
+        });
       });
 
       services.AddSession();
 
-        services.AddSwaggerGen(c =>
-        {
-          c.SwaggerDoc(
-            "v1",
-            new OpenApiInfo
-            {
-              Title = "Quartz Job Management OpenAPI Specification",
-              Version = "v1",
-            }
-          );
-
-          string host = Configuration["EASEY_QUARTZ_SCHEDULER_HOST"];
-          string apiHost = Configuration["EASEY_API_GATEWAY_HOST"];
-
-          if (!string.IsNullOrWhiteSpace(host) && host != "localhost")
+      services.AddSwaggerGen(c => {
+        c.SwaggerDoc(
+          "v1",
+          new OpenApiInfo
           {
-            c.AddServer(new OpenApiServer() {
-              Url = $"https://{apiHost}",
-            });
+            Title = "Quartz Job Management OpenAPI Specification",
+            Version = "v1",
           }
+        );
 
-          var bearerKeyScheme = new OpenApiSecurityScheme
-          {
-            Name = "Bearer",
-            In = ParameterLocation.Header,
-            Type = SecuritySchemeType.ApiKey,
-            Description = "Authorization by bearer request token!",
-            Scheme = "Bearer",
-            Reference = new OpenApiReference {
-              Id = "BearerToken",
-              Type = ReferenceType.SecurityScheme,
-            }
-          };       
+        string host = Configuration["EASEY_QUARTZ_SCHEDULER_HOST"];
+        string apiHost = Configuration["EASEY_API_GATEWAY_HOST"];
 
-          var apiKeyScheme = new OpenApiSecurityScheme {
-            Name = "x-api-key",
-            In = ParameterLocation.Header,
-            Type = SecuritySchemeType.ApiKey,
-            Description = "Authorization by x-api-key request header!",
-            Scheme = "ApiKeyScheme",
-            Reference = new OpenApiReference {
-              Id = "ApiKey",
-              Type = ReferenceType.SecurityScheme,
-            }
-          };
+        if (!string.IsNullOrWhiteSpace(host) && host != "localhost")
+        {
+          c.AddServer(new OpenApiServer() {
+            Url = $"https://{apiHost}",
+          });
+        }
 
-          c.AddSecurityDefinition("BearerToken", bearerKeyScheme);
-          c.AddSecurityDefinition("ApiKey", apiKeyScheme);
-          c.AddSecurityRequirement(
-            new OpenApiSecurityRequirement {{
-              apiKeyScheme,
-              new List<string>()
-            }});
-          c.AddSecurityRequirement( new OpenApiSecurityRequirement {{
-              bearerKeyScheme,
-              new List<string>()
-          }});
-        });
-      
+        var bearerKeyScheme = new OpenApiSecurityScheme
+        {
+          Name = "Bearer",
+          In = ParameterLocation.Header,
+          Type = SecuritySchemeType.ApiKey,
+          Description = "Authorization by bearer request token!",
+          Scheme = "Bearer",
+          Reference = new OpenApiReference {
+            Id = "BearerToken",
+            Type = ReferenceType.SecurityScheme,
+          }
+        };       
+
+        var apiKeyScheme = new OpenApiSecurityScheme {
+          Name = "x-api-key",
+          In = ParameterLocation.Header,
+          Type = SecuritySchemeType.ApiKey,
+          Description = "Authorization by x-api-key request header!",
+          Scheme = "ApiKeyScheme",
+          Reference = new OpenApiReference {
+            Id = "ApiKey",
+            Type = ReferenceType.SecurityScheme,
+          }
+        };
+
+        c.AddSecurityDefinition("BearerToken", bearerKeyScheme);
+        c.AddSecurityDefinition("ApiKey", apiKeyScheme);
+        c.AddSecurityRequirement(
+          new OpenApiSecurityRequirement {{
+            apiKeyScheme,
+            new List<string>()
+          }}
+        );
+        c.AddSecurityRequirement( new OpenApiSecurityRequirement {{
+          bearerKeyScheme,
+          new List<string>()
+        }});
+      });
 
       services.AddRazorPages();
       services.AddControllers();
       
-      services.AddSilkierQuartz(options =>
-      {
+      services.AddSilkierQuartz(options => {
         options.VirtualPathRoot = "/quartz";
         options.UseLocalTime = true;
         options.DefaultDateFormat = "yyyy-MM-dd";
@@ -158,12 +152,10 @@ namespace Epa.Camd.Quartz.Scheduler
           DayOfWeekStartIndexZero = false //Quartz uses 1-7 as the range
         };
       },
-      authenticationOptions =>
-      {
+      authenticationOptions => {
         authenticationOptions.AccessRequirement = SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowOnlyAuthenticated;
       },
-      nameValueCollection =>
-      {
+      nameValueCollection => {
         var quartzConfig = Configuration.GetSection("Quartz").GetChildren().GetEnumerator();
 
         while (quartzConfig.MoveNext())
@@ -184,7 +176,6 @@ namespace Epa.Camd.Quartz.Scheduler
       BulkDataFile.RegisterWithQuartz(services);
       BulkDataFileMaintenance.RegisterWithQuartz(services);
       ApportionedEmissionsBulkData.RegisterWithQuartz(services);
-      SendMail.RegisterWithQuartz(services);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -209,30 +200,25 @@ namespace Epa.Camd.Quartz.Scheduler
       bool displayFlag = bool.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_DISPLAY_UI"]);
       app.UseSilkierQuartz(displayUi: displayFlag);
 
-      app.Use(async (context, next) =>
-      {
-          context.Response.Headers.Add("Vary", "Origin");
-          context.Response.Headers.Add("Cache-Control", "no-cache, no-store, must-revalidate");
-          context.Response.Headers.Add("Pragma", "no-cache");
-          context.Response.Headers.Add("Expires", "0");
-          await next();
+      app.Use(async (context, next) => {
+        context.Response.Headers.Add("Vary", "Origin");
+        context.Response.Headers.Add("Cache-Control", "no-cache, no-store, must-revalidate");
+        context.Response.Headers.Add("Pragma", "no-cache");
+        context.Response.Headers.Add("Expires", "0");
+        await next();
       });
 
-      app.UseEndpoints(endpoints =>
-      {
+      app.UseEndpoints(endpoints => {
         endpoints.MapControllers();
       });
 
-      string apiPath = Configuration["EASEY_QUARTZ_SCHEDULER_API_PATH"];
-
       if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SWAGGER"])){
-        app.UseSwagger(c =>
-        {
+        string apiPath = Configuration["EASEY_QUARTZ_SCHEDULER_API_PATH"];
+        app.UseSwagger(c => {
           c.RouteTemplate = apiPath + "/swagger/{documentname}/swagger.json";
         });
 
-        app.UseSwaggerUI(c =>
-        {
+        app.UseSwaggerUI(c => {
           c.SwaggerEndpoint($"./v1/swagger.json", "Quartz API v1");
           c.RoutePrefix = $"{apiPath}/swagger";
         });
