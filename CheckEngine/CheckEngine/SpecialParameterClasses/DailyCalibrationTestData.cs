@@ -24,7 +24,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// 
         /// </summary>
         /// <param name="dailyCalibrationSeverityCd">The daily alibration category object's severity code.</param>
-        public cDailyCalibrationTestData(eSeverityCd dailyCalibrationSeverityCd)
+        public cDailyCalibrationTestData(eSeverityCd dailyCalibrationSeverityCd, EmParameters emParams)
         {
             string errorMessage;
 
@@ -37,9 +37,9 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 
 
 
-            DailyCalibrationRow = EmParameters.CurrentDailyCalibrationTest.SourceRow;
-            Online = (EmParameters.DailyCalCalcOnlineInd.Default(1) == 1);
-            CalculatedTestResultCd = EmParameters.DailyCalCalcResult;
+            DailyCalibrationRow = emParams.CurrentDailyCalibrationTest.SourceRow;
+            Online = (emParams.DailyCalCalcOnlineInd.Default(1) == 1);
+            CalculatedTestResultCd = emParams.DailyCalCalcResult;
 
             if (CalculatedTestResultCd.InList("INC,IGNORED"))
                 Valid = null;
@@ -57,8 +57,8 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                 {
                     case "FAILED":
                         {
-                            DailyTestDate = EmParameters.DailyCalFailDate.Default(DateTypes.START);
-                            DailyTestHour = EmParameters.DailyCalFailHour.Default(0);
+                            DailyTestDate = emParams.DailyCalFailDate.Default(DateTypes.START);
+                            DailyTestHour = emParams.DailyCalFailHour.Default(0);
                             DailyTestMinute = 0;//arbitrary value
                         }
                         break;
@@ -97,10 +97,10 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                 }
 
 
-                if (EmParameters.PrimaryBypassActiveForHour.Default(false)) // Component type should only include CO2, NOX or O2.
+                if (emParams.PrimaryBypassActiveForHour.Default(false)) // Component type should only include CO2, NOX or O2.
                 {
                     CheckDataView<VwMpMonitorSystemComponentRow> monitorSystemComponentRecords
-                        = EmParameters.MonitorSystemComponentRecordsByHourLocation.FindRows(new cFilterCondition("COMPONENT_ID", ComponentId),
+                        = emParams.MonitorSystemComponentRecordsByHourLocation.FindRows(new cFilterCondition("COMPONENT_ID", ComponentId),
                                                                                             new cFilterCondition("SYS_TYPE_CD", "NOX"),
                                                                                             new cFilterCondition("SYS_DESIGNATION_CD", "P,PB", eFilterConditionStringCompare.InList));
 

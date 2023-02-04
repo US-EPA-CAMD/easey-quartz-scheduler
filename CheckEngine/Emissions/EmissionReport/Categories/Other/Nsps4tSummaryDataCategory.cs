@@ -19,7 +19,7 @@ namespace ECMPS.Checks.EmissionsReport
 
     public class Nsps4tSummaryDataCategory : cCategoryHourly
     {
-
+        public EmParameters emParams;
         /// <summary>
         /// The NSPS4T Summary Data Category class always useds "NSPS4T" as the category code for the class.  No setup speicifc
         /// to the category occurs.
@@ -27,8 +27,9 @@ namespace ECMPS.Checks.EmissionsReport
         /// The category contains its own run check loop.
         /// </summary>
         /// <param name="parentCategory"></param>
-        public Nsps4tSummaryDataCategory(cSummaryValueInitializationCategory parentCategory) : base(parentCategory, "NSPS4T")
+        public Nsps4tSummaryDataCategory(cSummaryValueInitializationCategory parentCategory, EmParameters emparams) : base(parentCategory, "NSPS4T")
         {
+            emParams = emparams;
         }
 
 
@@ -41,13 +42,13 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="summaryValueInitializationCategory">The parent Summary Value Initialization Category object.</param>
         /// <param name="MonitorLocationView">The view containing the monitor location rows for the MP.</param>
         /// <returns>Returns true if the checks were successfully executed.</returns>
-        public static bool ExecuteChecks(cSummaryValueInitializationCategory summaryValueInitializationCategory, DataView MonitorLocationView)
+        public static bool ExecuteChecks(cSummaryValueInitializationCategory summaryValueInitializationCategory, DataView MonitorLocationView, EmParameters emparams)
         {
             bool result = true;
 
 
             /* Create the NSPS4T Summary Data check category object */
-            Nsps4tSummaryDataCategory nsps4tSummaryDataCategory = new Nsps4tSummaryDataCategory(summaryValueInitializationCategory);
+            Nsps4tSummaryDataCategory nsps4tSummaryDataCategory = new Nsps4tSummaryDataCategory(summaryValueInitializationCategory, emparams);
 
             try
             {
@@ -57,22 +58,22 @@ namespace ECMPS.Checks.EmissionsReport
                 {
                     /* Setup non changing check parameters needed by the checks */
                     DataSet sourceDataSet = summaryValueInitializationCategory.Process.SourceData;
-                    EmParameters.Nsps4tSummaryRecords = new CheckDataView<Nsps4tSummary>(new DataView(sourceDataSet.Tables["Nsps4tSummary"]));
-                    EmParameters.Nsps4tCompliancePeriodRecords = new CheckDataView<Nsps4tCompliancePeriod>(new DataView(sourceDataSet.Tables["Nsps4tCompliancePeriod"]));
-                    EmParameters.Nsps4tAnnualRecords = new CheckDataView<Nsps4tAnnual>(new DataView(sourceDataSet.Tables["Nsps4tAnnual"]));
+                    emparams.Nsps4tSummaryRecords = new CheckDataView<Nsps4tSummary>(new DataView(sourceDataSet.Tables["Nsps4tSummary"]));
+                    emparams.Nsps4tCompliancePeriodRecords = new CheckDataView<Nsps4tCompliancePeriod>(new DataView(sourceDataSet.Tables["Nsps4tCompliancePeriod"]));
+                    emparams.Nsps4tAnnualRecords = new CheckDataView<Nsps4tAnnual>(new DataView(sourceDataSet.Tables["Nsps4tAnnual"]));
 
                     /* Loop through each location in the MP */
                     for (int MonitorLocationDex = 0; MonitorLocationDex < MonitorLocationView.Count; MonitorLocationDex++)
                     {
                         /* Setup loop dependent check parameters needed by the checks */
-                        EmParameters.CurrentMonitorPlanLocationRecord = new VwCeMpMonitorLocationRow(MonitorLocationView[MonitorLocationDex]);
-                        EmParameters.EmLocationProgramRecords 
+                        emparams.CurrentMonitorPlanLocationRecord = new VwCeMpMonitorLocationRow(MonitorLocationView[MonitorLocationDex]);
+                        emparams.EmLocationProgramRecords 
                             = new CheckDataView<VwMpLocationProgramRow>(nsps4tSummaryDataCategory.FilterLocation("LocationProgram", 
                                                                                                                  nsps4tSummaryDataCategory.LocationProgram,
-                                                                                                                 EmParameters.CurrentMonitorPlanLocationRecord.MonLocId));
+                                                                                                                 emparams.CurrentMonitorPlanLocationRecord.MonLocId));
 
                         /* Set CurrentMonLocId in the category object */
-                        nsps4tSummaryDataCategory.CurrentMonLocId = EmParameters.CurrentMonitorPlanLocationRecord.MonLocId;
+                        nsps4tSummaryDataCategory.CurrentMonLocId = emparams.CurrentMonitorPlanLocationRecord.MonLocId;
 
 
                         /* Execute the actual checks */
@@ -162,7 +163,7 @@ namespace ECMPS.Checks.EmissionsReport
         protected override bool SetErrorSuppressValues()
         {
             long facId = CheckEngine.FacilityID;
-            string locationName = EmParameters.CurrentMonitorPlanLocationRecord.LocationName;
+            string locationName = emParams.CurrentMonitorPlanLocationRecord.LocationName;
             DateTime? matchTimeValue = CheckEngine.ReportingPeriod.BeganDate;
 
             ErrorSuppressValues = new cErrorSuppressValues(facId, locationName, null, null, "QUARTER", matchTimeValue);

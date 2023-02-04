@@ -39,9 +39,9 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
 
-        #region Public Static Methods: Checks
+        #region Public  Methods: Checks
 
-        public static string HOURAPP1(cCategory Category, ref bool Log)
+        public  string HOURAPP1(cCategory Category, ref bool Log)
         // Determine Monitoring Plan Configuration 
         {
             string ReturnVal = "";
@@ -294,7 +294,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAPP2(cCategory Category, ref bool Log)
+        public  string HOURAPP2(cCategory Category, ref bool Log)
         // Pre-Validate Heat Input Calculation
         {
             string ReturnVal = "";
@@ -519,7 +519,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAPP3(cCategory Category, ref bool Log)
+        public  string HOURAPP3(cCategory Category, ref bool Log)
         // Calculate Apportioned or Summed Heat Input Rate
         {
             string ReturnVal = "";
@@ -873,7 +873,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAPP4(cCategory Category, ref bool Log)
+        public  string HOURAPP4(cCategory Category, ref bool Log)
         // Calculate NOx Mass Rate from Apportioned or Summed Heat Input Rate 
         {
             string ReturnVal = "";
@@ -976,7 +976,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAPP5(cCategory Category, ref bool Log)
+        public  string HOURAPP5(cCategory Category, ref bool Log)
         // Sum Weighted NOx Emission Rate from Multiple Stacks
         {
             string ReturnVal = "";
@@ -1024,7 +1024,7 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string HOURAPP6(cCategory Category, ref bool Log)
+        public  string HOURAPP6(cCategory Category, ref bool Log)
         // Invitialize Values for calculatubg Appendix E Nox Rate from Apptnd HI
         {
             string ReturnVal = "";
@@ -1100,7 +1100,7 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOURAPP7(cCategory category, ref bool log)
+        public  string HOURAPP7(cCategory category, ref bool log)
         {
             string returnVal = "";
 
@@ -1142,19 +1142,19 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOURAPP9(cCategory category, ref bool log)
+        public  string HOURAPP9(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.CalculatedMatsMsLoad = null;
+                emParams.CalculatedMatsMsLoad = null;
 
-                if ((EmParameters.MpStackConfigForHourlyChecks == "MS") && (EmParameters.CurrentMonitorPlanLocationRecord.StackPipeId != null))
+                if ((emParams.MpStackConfigForHourlyChecks == "MS") && (emParams.CurrentMonitorPlanLocationRecord.StackPipeId != null))
                 {
                     int?[] apportionmentMatsLoadArray = (int?[])category.GetCheckParameter("Apportionment_MATS_Load_Array").ParameterValue;
 
-                    int? currentMsLoad = apportionmentMatsLoadArray[EmParameters.CurrentMonitorPlanLocationPostion.Value];
+                    int? currentMsLoad = apportionmentMatsLoadArray[emParams.CurrentMonitorPlanLocationPostion.Value];
 
                     if (currentMsLoad.HasValue)
                     {
@@ -1183,14 +1183,14 @@ namespace ECMPS.Checks.EmissionsChecks
 
                         if (msStackFlowNoNulls)
                         {
-                            decimal currentMsFlow = apportionmentStackFlowArray[EmParameters.CurrentMonitorPlanLocationPostion.Value].Value 
-                                                  * apportionmentOpTimeArray[EmParameters.CurrentMonitorPlanLocationPostion.Value];
+                            decimal currentMsFlow = apportionmentStackFlowArray[emParams.CurrentMonitorPlanLocationPostion.Value].Value 
+                                                  * apportionmentOpTimeArray[emParams.CurrentMonitorPlanLocationPostion.Value];
 
                             if ((msStackFlowSum > 0) && (unitLoad.HasValue && unitLoad.Value > 0))
                             {
-                                EmParameters.CalculatedMatsMsLoad = (int)Math.Round((decimal)unitLoad.Value * currentMsFlow / msStackFlowSum, 0, MidpointRounding.AwayFromZero);
+                                emParams.CalculatedMatsMsLoad = (int)Math.Round((decimal)unitLoad.Value * currentMsFlow / msStackFlowSum, 0, MidpointRounding.AwayFromZero);
 
-                                if (Math.Abs(currentMsLoad.Value - EmParameters.CalculatedMatsMsLoad.Value) > EmParameters.MwLoadHourlyTolerance.Value)
+                                if (Math.Abs(currentMsLoad.Value - emParams.CalculatedMatsMsLoad.Value) > emParams.MwLoadHourlyTolerance.Value)
                                 {
                                     category.CheckCatalogResult = "A";
                                 }
@@ -1214,24 +1214,24 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOURAPP10(cCategory category, ref bool log)
+        public  string HOURAPP10(cCategory category, ref bool log)
         {
             string ReturnVal = "";
 			
             try
             {
-                EmParameters.CalculatedFlowWeightedHg = null;
-                EmParameters.MatsReportedPluginHg = null;
+                emParams.CalculatedFlowWeightedHg = null;
+                emParams.MatsReportedPluginHg = null;
 
                 //MatsMs1HgDhvId is being used to verify that MS-1 calculation is needed
-                if ((EmParameters.MpStackConfigForHourlyChecks == "MS") && (EmParameters.CurrentMonitorPlanLocationRecord.UnitId != null) && (EmParameters.MatsMs1HgDhvId != null))
+                if ((emParams.MpStackConfigForHourlyChecks == "MS") && (emParams.CurrentMonitorPlanLocationRecord.UnitId != null) && (emParams.MatsMs1HgDhvId != null))
                 {
                     decimal[] apportionmentOpTimeArray = (decimal[])category.GetCheckParameter("Apportionment_Optime_Array").ParameterValue;
 					decimal?[] apportionmentStackFlowArray = (decimal?[])category.GetCheckParameter("Apportionment_Stack_Flow_Array").ParameterValue;
                     string[] apportionmentHgRateArray = (string[])category.GetCheckParameter("Apportionment_Hg_Rate_Array").ParameterValue;
                     string[] matsMS1HgModcCodeArray  = (string[])category.GetCheckParameter("MATS_MS1_Hg_MODC_Code_Array").ParameterValue;
 					string[] locationNameArray = (string[])category.GetCheckParameter("Location_Name_Array").ParameterValue;
-                    EmParameters.MatsReportedPluginHg = EmParameters.MatsMs1HgUnadjustedHourlyValue;
+                    emParams.MatsReportedPluginHg = emParams.MatsMs1HgUnadjustedHourlyValue;
 
                     bool modc38Used = false;
                     bool stackOperated = false;
@@ -1274,18 +1274,18 @@ namespace ECMPS.Checks.EmissionsChecks
                     }
 
                     /* Valid data was reported at each operating stack but unit data was not provided */
-                    if (!modc38Used && stackOperated && EmParameters.MatsMs1HgUnadjustedHourlyValue == null)
+                    if (!modc38Used && stackOperated && emParams.MatsMs1HgUnadjustedHourlyValue == null)
                     {
                         category.CheckCatalogResult = "B";
                     }
                     /* Validate the data for the special condition of only 1 stack operating */
                     else if (numOperatingStacks == 1)
                     {
-                        EmParameters.CalculatedFlowWeightedHg = singleStackHgRate.MatsSignificantDigitsFormat(EmParameters.CurrentOperatingDate.Value, 
-                                                                                                              EmParameters.MatsMs1HgUnadjustedHourlyValue);
+                        emParams.CalculatedFlowWeightedHg = singleStackHgRate.MatsSignificantDigitsFormat(emParams.CurrentOperatingDate.Value, 
+                                                                                                              emParams.MatsMs1HgUnadjustedHourlyValue);
 
                         //Convert the checking values to decimals from sci notation
-                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.MatsMs1HgUnadjustedHourlyValue);
+                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.MatsMs1HgUnadjustedHourlyValue);
 
                         /* The rates must match when only 1 stack is operating */
                         if (singleStackHgRate != reportedValue)
@@ -1294,19 +1294,19 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
                     }
                     /* Unit data was provided but valid data was not reported at each operating stack */
-                    else if (stackMissingData && EmParameters.MatsMs1HgUnadjustedHourlyValue != null)
+                    else if (stackMissingData && emParams.MatsMs1HgUnadjustedHourlyValue != null)
                     {
                         category.CheckCatalogResult = "C";
                     }
-                    else if (msStackFlowSum > 0 && EmParameters.MatsMs1HgUnadjustedHourlyValue != null)
+                    else if (msStackFlowSum > 0 && emParams.MatsMs1HgUnadjustedHourlyValue != null)
                     { //All good continue with check
-                        EmParameters.CalculatedFlowWeightedHg = (msStackEmissionRateFlow / msStackFlowSum).MatsSignificantDigitsFormat(EmParameters.CurrentOperatingDate.Value, 
-                                                                                                                                       EmParameters.MatsMs1HgUnadjustedHourlyValue);
+                        emParams.CalculatedFlowWeightedHg = (msStackEmissionRateFlow / msStackFlowSum).MatsSignificantDigitsFormat(emParams.CurrentOperatingDate.Value, 
+                                                                                                                                       emParams.MatsMs1HgUnadjustedHourlyValue);
 
 
                         //Convert the checking values to decimals from sci notation
-                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.MatsMs1HgUnadjustedHourlyValue);
-                        decimal calculatedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.CalculatedFlowWeightedHg);
+                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.MatsMs1HgUnadjustedHourlyValue);
+                        decimal calculatedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.CalculatedFlowWeightedHg);
                         if ((reportedValue + calculatedValue) != 0)
                         {
                             decimal percentDifference = Math.Round(100 * Math.Abs(reportedValue - calculatedValue) / ((reportedValue + calculatedValue) / 2), 1, MidpointRounding.AwayFromZero);
@@ -1334,24 +1334,24 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOURAPP11(cCategory category, ref bool log)
+        public  string HOURAPP11(cCategory category, ref bool log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculatedFlowWeightedHcl = null;
-                EmParameters.MatsReportedPluginHcl = null;
+                emParams.CalculatedFlowWeightedHcl = null;
+                emParams.MatsReportedPluginHcl = null;
 
                 //MatsMs1HclDhvId is being used to verify that MS-1 calculation is needed
-                if ((EmParameters.MpStackConfigForHourlyChecks == "MS") && (EmParameters.CurrentMonitorPlanLocationRecord.UnitId != null) && (EmParameters.MatsMs1HclDhvId != null))
+                if ((emParams.MpStackConfigForHourlyChecks == "MS") && (emParams.CurrentMonitorPlanLocationRecord.UnitId != null) && (emParams.MatsMs1HclDhvId != null))
                 {
                     decimal[] apportionmentOpTimeArray = (decimal[])category.GetCheckParameter("Apportionment_Optime_Array").ParameterValue;
                     decimal?[] apportionmentStackFlowArray = (decimal?[])category.GetCheckParameter("Apportionment_Stack_Flow_Array").ParameterValue;
                     string[] apportionmentHclRateArray = (string[])category.GetCheckParameter("Apportionment_HCL_Rate_Array").ParameterValue;
                     string[] matsMS1HclModcCodeArray = (string[])category.GetCheckParameter("MATS_MS1_HCL_MODC_Code_Array").ParameterValue;
                     string[] locationNameArray = (string[])category.GetCheckParameter("Location_Name_Array").ParameterValue;
-                    EmParameters.MatsReportedPluginHcl = EmParameters.MatsMs1HclUnadjustedHourlyValue;
+                    emParams.MatsReportedPluginHcl = emParams.MatsMs1HclUnadjustedHourlyValue;
 
                     bool modc38Used = false;
                     bool stackOperated = false;
@@ -1395,19 +1395,19 @@ namespace ECMPS.Checks.EmissionsChecks
                     }
 
                     /* Valid data was reported at each operating stack but unit data was not provided */
-                    if (!modc38Used && stackOperated && EmParameters.MatsMs1HclUnadjustedHourlyValue == null)
+                    if (!modc38Used && stackOperated && emParams.MatsMs1HclUnadjustedHourlyValue == null)
                     {
                         category.CheckCatalogResult = "B";
                     }
                     /* Validate the data for the special condition of only 1 stack operating */
                     else if (numOperatingStacks == 1)
                     {
-                        EmParameters.CalculatedFlowWeightedHcl = ECMPS.Definitions.Extensions.cExtensions.DecimaltoScientificNotation(singleStackHclRate);
-                        EmParameters.CalculatedFlowWeightedHcl = singleStackHclRate.MatsSignificantDigitsFormat(EmParameters.CurrentOperatingDate.Value,
-                                                                                                                EmParameters.MatsMs1HclUnadjustedHourlyValue);
+                        emParams.CalculatedFlowWeightedHcl = ECMPS.Definitions.Extensions.cExtensions.DecimaltoScientificNotation(singleStackHclRate);
+                        emParams.CalculatedFlowWeightedHcl = singleStackHclRate.MatsSignificantDigitsFormat(emParams.CurrentOperatingDate.Value,
+                                                                                                                emParams.MatsMs1HclUnadjustedHourlyValue);
 
                         //Convert the checking values to decimals from sci notation
-                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.MatsMs1HclUnadjustedHourlyValue);
+                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.MatsMs1HclUnadjustedHourlyValue);
 
                         /* The rates must match when only 1 stack is operating */
                         if (singleStackHclRate != reportedValue)
@@ -1416,18 +1416,18 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
                     }
                     /* Unit data was provided but valid data was not reported at each operating stack */
-                    else if (stackMissingData && EmParameters.MatsMs1HclUnadjustedHourlyValue != null)
+                    else if (stackMissingData && emParams.MatsMs1HclUnadjustedHourlyValue != null)
                     {
                         category.CheckCatalogResult = "C";
                     }
-                    else if (msStackFlowSum > 0 && EmParameters.MatsMs1HclUnadjustedHourlyValue != null)
+                    else if (msStackFlowSum > 0 && emParams.MatsMs1HclUnadjustedHourlyValue != null)
                     { //All good continue with check
-                        EmParameters.CalculatedFlowWeightedHcl = (msStackEmissionRateFlow / msStackFlowSum).MatsSignificantDigitsFormat(EmParameters.CurrentOperatingDate.Value,
-                                                                                                                                        EmParameters.MatsMs1HclUnadjustedHourlyValue);
+                        emParams.CalculatedFlowWeightedHcl = (msStackEmissionRateFlow / msStackFlowSum).MatsSignificantDigitsFormat(emParams.CurrentOperatingDate.Value,
+                                                                                                                                        emParams.MatsMs1HclUnadjustedHourlyValue);
 
                         //Convert the checking values to decimals from sci notation
-                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.MatsMs1HclUnadjustedHourlyValue);
-                        decimal calculatedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.CalculatedFlowWeightedHcl);
+                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.MatsMs1HclUnadjustedHourlyValue);
+                        decimal calculatedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.CalculatedFlowWeightedHcl);
                         if ((reportedValue + calculatedValue) != 0)
                         {
                             decimal percentDifference = Math.Round(100 * Math.Abs(reportedValue - calculatedValue) / ((reportedValue + calculatedValue) / 2), 1, MidpointRounding.AwayFromZero);
@@ -1455,24 +1455,24 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOURAPP12(cCategory category, ref bool log)
+        public  string HOURAPP12(cCategory category, ref bool log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculatedFlowWeightedHf = null;
-                EmParameters.MatsReportedPluginHf = null;
+                emParams.CalculatedFlowWeightedHf = null;
+                emParams.MatsReportedPluginHf = null;
 
                 //MatsMs1HfDhvId is being used to verify that MS-1 calculation is needed
-                if ((EmParameters.MpStackConfigForHourlyChecks == "MS") && (EmParameters.CurrentMonitorPlanLocationRecord.UnitId != null) && (EmParameters.MatsMs1HfDhvId != null))
+                if ((emParams.MpStackConfigForHourlyChecks == "MS") && (emParams.CurrentMonitorPlanLocationRecord.UnitId != null) && (emParams.MatsMs1HfDhvId != null))
                 {
                     decimal[] apportionmentOpTimeArray = (decimal[])category.GetCheckParameter("Apportionment_Optime_Array").ParameterValue;
                     decimal?[] apportionmentStackFlowArray = (decimal?[])category.GetCheckParameter("Apportionment_Stack_Flow_Array").ParameterValue;
                     string[] apportionmentHfRateArray = (string[])category.GetCheckParameter("Apportionment_HF_Rate_Array").ParameterValue;
                     string[] matsMS1HfModcCodeArray = (string[])category.GetCheckParameter("MATS_MS1_HF_MODC_Code_Array").ParameterValue;
                     string[] locationNameArray = (string[])category.GetCheckParameter("Location_Name_Array").ParameterValue;
-                    EmParameters.MatsReportedPluginHf = EmParameters.MatsMs1HfUnadjustedHourlyValue;
+                    emParams.MatsReportedPluginHf = emParams.MatsMs1HfUnadjustedHourlyValue;
 
                     bool modc38Used = false;
                     bool stackOperated = false;
@@ -1516,18 +1516,18 @@ namespace ECMPS.Checks.EmissionsChecks
                     }
 
                     /* Valid data was reported at each operating stack but unit data was not provided */
-                    if (!modc38Used && stackOperated && EmParameters.MatsMs1HfUnadjustedHourlyValue == null)
+                    if (!modc38Used && stackOperated && emParams.MatsMs1HfUnadjustedHourlyValue == null)
                     {
                         category.CheckCatalogResult = "B";
                     }
                     /* Validate the data for the special condition of only 1 stack operating */
                     else if (numOperatingStacks == 1)
                     {
-                        EmParameters.CalculatedFlowWeightedHf = singleStackHfRate.MatsSignificantDigitsFormat(EmParameters.CurrentOperatingDate.Value,
-                                                                                                              EmParameters.MatsMs1HfUnadjustedHourlyValue);
+                        emParams.CalculatedFlowWeightedHf = singleStackHfRate.MatsSignificantDigitsFormat(emParams.CurrentOperatingDate.Value,
+                                                                                                              emParams.MatsMs1HfUnadjustedHourlyValue);
 
                         //Convert the checking values to decimals from sci notation
-                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.MatsMs1HfUnadjustedHourlyValue);
+                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.MatsMs1HfUnadjustedHourlyValue);
 
                         /* The rates must match when only 1 stack is operating */
                         if (singleStackHfRate != reportedValue)
@@ -1536,18 +1536,18 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
                     }
                     /* Unit data was provided but valid data was not reported at each operating stack */
-                    else if (stackMissingData && EmParameters.MatsMs1HfUnadjustedHourlyValue != null)
+                    else if (stackMissingData && emParams.MatsMs1HfUnadjustedHourlyValue != null)
                     {
                         category.CheckCatalogResult = "C";
                     }
-                    else if (msStackFlowSum > 0 && EmParameters.MatsMs1HfUnadjustedHourlyValue != null)
+                    else if (msStackFlowSum > 0 && emParams.MatsMs1HfUnadjustedHourlyValue != null)
                     { //All good continue with check
-                        EmParameters.CalculatedFlowWeightedHf = (msStackEmissionRateFlow / msStackFlowSum).MatsSignificantDigitsFormat(EmParameters.CurrentOperatingDate.Value,
-                                                                                                                                       EmParameters.MatsMs1HfUnadjustedHourlyValue);
+                        emParams.CalculatedFlowWeightedHf = (msStackEmissionRateFlow / msStackFlowSum).MatsSignificantDigitsFormat(emParams.CurrentOperatingDate.Value,
+                                                                                                                                       emParams.MatsMs1HfUnadjustedHourlyValue);
 
                         //Convert the checking values to decimals from sci notation
-                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.MatsMs1HfUnadjustedHourlyValue);
-                        decimal calculatedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.CalculatedFlowWeightedHf);
+                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.MatsMs1HfUnadjustedHourlyValue);
+                        decimal calculatedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.CalculatedFlowWeightedHf);
                         if ((reportedValue + calculatedValue) != 0)
                         {
                             decimal percentDifference = Math.Round(100 * Math.Abs(reportedValue - calculatedValue) / ((reportedValue + calculatedValue) / 2), 1, MidpointRounding.AwayFromZero);
@@ -1575,24 +1575,24 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOURAPP13(cCategory category, ref bool log)
+        public  string HOURAPP13(cCategory category, ref bool log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CalculatedFlowWeightedSo2 = null;
-                EmParameters.MatsReportedPluginSo2 = null;
+                emParams.CalculatedFlowWeightedSo2 = null;
+                emParams.MatsReportedPluginSo2 = null;
 
                 //MatsMs1So2DhvId is being used to verify that MS-1 calculation is needed
-                if ((EmParameters.MpStackConfigForHourlyChecks == "MS") && (EmParameters.CurrentMonitorPlanLocationRecord.UnitId != null) && (EmParameters.MatsMs1So2DhvId != null))
+                if ((emParams.MpStackConfigForHourlyChecks == "MS") && (emParams.CurrentMonitorPlanLocationRecord.UnitId != null) && (emParams.MatsMs1So2DhvId != null))
                 {
                     decimal[] apportionmentOpTimeArray = (decimal[])category.GetCheckParameter("Apportionment_Optime_Array").ParameterValue;
                     decimal?[] apportionmentStackFlowArray = (decimal?[])category.GetCheckParameter("Apportionment_Stack_Flow_Array").ParameterValue;
                     string[] apportionmentSo2RateArray = (string[])category.GetCheckParameter("Apportionment_SO2_Rate_Array").ParameterValue;
                     string[] matsMS1So2ModcCodeArray = (string[])category.GetCheckParameter("MATS_MS1_SO2_MODC_Code_Array").ParameterValue;
                     string[] locationNameArray = (string[])category.GetCheckParameter("Location_Name_Array").ParameterValue;
-                    EmParameters.MatsReportedPluginSo2 = EmParameters.MatsMs1So2UnadjustedHourlyValue;
+                    emParams.MatsReportedPluginSo2 = emParams.MatsMs1So2UnadjustedHourlyValue;
 
                     bool modc38Used = false;
                     bool stackOperated = false;
@@ -1636,18 +1636,18 @@ namespace ECMPS.Checks.EmissionsChecks
                     }
 
                     /* Valid data was reported at each operating stack but unit data was not provided */
-                    if (!modc38Used && stackOperated && EmParameters.MatsMs1So2UnadjustedHourlyValue == null)
+                    if (!modc38Used && stackOperated && emParams.MatsMs1So2UnadjustedHourlyValue == null)
                     {
                         category.CheckCatalogResult = "B";
                     }
                     /* Validate the data for the special condition of only 1 stack operating */
                     else if (numOperatingStacks == 1)
                     {
-                        EmParameters.CalculatedFlowWeightedSo2 = singleStackSo2Rate.MatsSignificantDigitsFormat(EmParameters.CurrentOperatingDate.Value,
-                                                                                                                EmParameters.MatsMs1So2UnadjustedHourlyValue);
+                        emParams.CalculatedFlowWeightedSo2 = singleStackSo2Rate.MatsSignificantDigitsFormat(emParams.CurrentOperatingDate.Value,
+                                                                                                                emParams.MatsMs1So2UnadjustedHourlyValue);
 
                         //Convert the checking values to decimals from sci notation
-                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.MatsMs1So2UnadjustedHourlyValue);
+                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.MatsMs1So2UnadjustedHourlyValue);
 
                         /* The rates must match when only 1 stack is operating */
                         if (singleStackSo2Rate != reportedValue)
@@ -1656,18 +1656,18 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
                     }
                     /* Unit data was provided but valid data was not reported at each operating stack */
-                    else if (stackMissingData && EmParameters.MatsMs1So2UnadjustedHourlyValue != null)
+                    else if (stackMissingData && emParams.MatsMs1So2UnadjustedHourlyValue != null)
                     {
                         category.CheckCatalogResult = "C";
                     }
-                    else if (msStackFlowSum > 0 && EmParameters.MatsMs1So2UnadjustedHourlyValue != null)
+                    else if (msStackFlowSum > 0 && emParams.MatsMs1So2UnadjustedHourlyValue != null)
                     { //All good continue with check
-                        EmParameters.CalculatedFlowWeightedSo2 = (msStackEmissionRateFlow / msStackFlowSum).MatsSignificantDigitsFormat(EmParameters.CurrentOperatingDate.Value,
-                                                                                                                                        EmParameters.MatsMs1So2UnadjustedHourlyValue);
+                        emParams.CalculatedFlowWeightedSo2 = (msStackEmissionRateFlow / msStackFlowSum).MatsSignificantDigitsFormat(emParams.CurrentOperatingDate.Value,
+                                                                                                                                        emParams.MatsMs1So2UnadjustedHourlyValue);
 
                         //Convert the checking values to decimals from sci notation
-                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.MatsMs1So2UnadjustedHourlyValue);
-                        decimal calculatedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.CalculatedFlowWeightedSo2);
+                        decimal reportedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.MatsMs1So2UnadjustedHourlyValue);
+                        decimal calculatedValue = ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.CalculatedFlowWeightedSo2);
                         if ((reportedValue + calculatedValue) != 0)
                         {
                             decimal percentDifference = Math.Round(100 * Math.Abs(reportedValue - calculatedValue) / ((reportedValue + calculatedValue) / 2), 1, MidpointRounding.AwayFromZero);
@@ -1695,23 +1695,23 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string HOURAPP14(cCategory category, ref bool log)
+        public  string HOURAPP14(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (((EmParameters.MpStackConfigForHourlyChecks == "COMPLEX") || (EmParameters.MpStackConfigForHourlyChecks == "CSMS")) && (EmParameters.ConfigurationChangeOccuredDurringQuarter != true))
+                if (((emParams.MpStackConfigForHourlyChecks == "COMPLEX") || (emParams.MpStackConfigForHourlyChecks == "CSMS")) && (emParams.ConfigurationChangeOccuredDurringQuarter != true))
                 {
-                    if (EmParameters.StackHeatinputtimesoptimeAccumulator.HasValue && (EmParameters.StackHeatinputtimesoptimeAccumulator.Value >= 0) &&
-                        EmParameters.UnitHeatinputtimesoptimeAccumulator.HasValue && (EmParameters.UnitHeatinputtimesoptimeAccumulator.Value >= 0))
+                    if (emParams.StackHeatinputtimesoptimeAccumulator.HasValue && (emParams.StackHeatinputtimesoptimeAccumulator.Value >= 0) &&
+                        emParams.UnitHeatinputtimesoptimeAccumulator.HasValue && (emParams.UnitHeatinputtimesoptimeAccumulator.Value >= 0))
                     {
                         decimal heatInputTolerance = GetTolerance("HI", "MMBTUHR", category);
 
                         // Return result if total stack and unit heat input are not within tolerance (HI Tolerance * number of locations).
                         if ((heatInputTolerance == Decimal.MinValue) || 
-                            (Math.Abs(EmParameters.StackHeatinputtimesoptimeAccumulator.Value - EmParameters.UnitHeatinputtimesoptimeAccumulator.Value) 
-                             > (heatInputTolerance * EmParameters.CurrentLocationCount.Value)))
+                            (Math.Abs(emParams.StackHeatinputtimesoptimeAccumulator.Value - emParams.UnitHeatinputtimesoptimeAccumulator.Value) 
+                             > (heatInputTolerance * emParams.CurrentLocationCount.Value)))
                         {
                             category.CheckCatalogResult = "A";
                         }
@@ -1732,7 +1732,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region Private Methods: Utilities
 
-        private static decimal GetTolerance(string AParameterCd, String AUom, cCategory ACategory)
+        private  decimal GetTolerance(string AParameterCd, String AUom, cCategory ACategory)
         {
             DataView ToleranceView = (DataView)ACategory.GetCheckParameter("Hourly_Emissions_Tolerances_Cross_Check_Table").ParameterValue;
             DataRowView ToleranceRow;

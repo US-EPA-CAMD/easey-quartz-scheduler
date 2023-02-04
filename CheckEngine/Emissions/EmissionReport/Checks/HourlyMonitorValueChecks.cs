@@ -19,10 +19,12 @@ namespace ECMPS.Checks.EmissionsChecks
     public class cHourlyMonitorValueChecks : cEmissionsChecks
     {
         #region Constructors
+        cHourlyOperatingDataChecks ChourlyOperatingDataChecks;
 
         public cHourlyMonitorValueChecks(cEmissionsReportProcess emissionReportProcess)
             : base(emissionReportProcess)
         {
+            ChourlyOperatingDataChecks = new cHourlyOperatingDataChecks(emissionReportProcess);
             CheckProcedures = new dCheckProcedure[42];
 
             CheckProcedures[1] = new dCheckProcedure(HOURMHV1);
@@ -291,7 +293,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                 if (MODCCode == "46")
                                 {
                                     /* MODC 46 allowed when NOXC is only used for a NOx rate diluent system */
-                                    EmParameters.MonitorHourlyModcStatus = true;
+                                    emParams.MonitorHourlyModcStatus = true;
                                 }
                                 else
                                     Category.CheckCatalogResult = "B";
@@ -342,7 +344,7 @@ namespace ECMPS.Checks.EmissionsChecks
                             Category.SetCheckParameter("Current_MHV_Component_Type", "CO2", eParameterDataType.String);
                             Category.SetCheckParameter("Current_MHV_System_Type", "CO2", eParameterDataType.String);
                             Category.SetCheckParameter("Current_MHV_Default_Parameter", "CO2X", eParameterDataType.String);
-                            EmParameters.Co2cMhvModc = EmParameters.CurrentCo2ConcMonitorHourlyRecord.ModcCd;
+                            emParams.Co2cMhvModc = emParams.CurrentCo2ConcMonitorHourlyRecord.ModcCd;
 
                             if ((Category.GetCheckParameter("CO2_Conc_Checks_Needed_For_CO2_Mass_Calc").ValueAsBool() &&
                                  Category.GetCheckParameter("CO2_Fuel_Specific_Missing_Data").ValueAsBool()) ||
@@ -363,10 +365,10 @@ namespace ECMPS.Checks.EmissionsChecks
                                 {
                                     Category.SetCheckParameter("Monitor_Hourly_MODC_Status", true, eParameterDataType.Boolean);
 
-                                    if (EmParameters.CurrentCo2ConcMissingDataMonitorHourlyRecord != null)
+                                    if (emParams.CurrentCo2ConcMissingDataMonitorHourlyRecord != null)
                                     {
-                                        if ((EmParameters.Co2DiluentChecksNeededForNoxRateCalc.Default(false) ||
-                                               EmParameters.Co2DiluentNeededForMats.Default(false))
+                                        if ((emParams.Co2DiluentChecksNeededForNoxRateCalc.Default(false) ||
+                                               emParams.Co2DiluentNeededForMats.Default(false))
                                             && !modcCd.InList("01,02,03,04,17,20,21,53,54"))
                                         {
                                             Category.CheckCatalogResult = "E";
@@ -383,7 +385,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                     if (modcCd == "46")
                                     {
                                         /* MODC 46 allowed when CO2C is only used for a NOx rate diluent system or MATS */
-                                        EmParameters.MonitorHourlyModcStatus = true;
+                                        emParams.MonitorHourlyModcStatus = true;
                                     }
                                     else
                                         Category.CheckCatalogResult = "C";
@@ -402,7 +404,7 @@ namespace ECMPS.Checks.EmissionsChecks
                             Category.SetCheckParameter("Current_MHV_Component_Type", "O2", eParameterDataType.String);
                             Category.SetCheckParameter("Current_MHV_System_Type", null, eParameterDataType.String);
                             Category.SetCheckParameter("Current_MHV_Default_Parameter", "O2N", eParameterDataType.String);
-                            EmParameters.O2DryModc = EmParameters.CurrentO2DryMonitorHourlyRecord.ModcCd;
+                            emParams.O2DryModc = emParams.CurrentO2DryMonitorHourlyRecord.ModcCd;
 
                             string moistureBasis = currentMhvRecord["MOISTURE_BASIS"].AsString();
 
@@ -427,10 +429,10 @@ namespace ECMPS.Checks.EmissionsChecks
                                 {
                                     Category.SetCheckParameter("Monitor_Hourly_MODC_Status", true, eParameterDataType.Boolean);
 
-                                    if (EmParameters.CurrentO2DryMissingDataMonitorHourlyRecord != null)
+                                    if (emParams.CurrentO2DryMissingDataMonitorHourlyRecord != null)
                                     {
-                                        if ((EmParameters.O2DryChecksNeededForNoxRateCalc.Default(false) ||
-                                        EmParameters.O2DryNeededForMats.Default(false))
+                                        if ((emParams.O2DryChecksNeededForNoxRateCalc.Default(false) ||
+                                        emParams.O2DryNeededForMats.Default(false))
                                         && !modcCd.InList("01,02,03,04,17,20,53,54"))
                                         {
                                             Category.CheckCatalogResult = "E";
@@ -447,7 +449,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                     if (modcCd == "46")
                                     {
                                         /* MODC 46 allowed when O2 Dry is used for a NOx rate diluent system, H2O, Co2C or MATS */
-                                        EmParameters.MonitorHourlyModcStatus = true;
+                                        emParams.MonitorHourlyModcStatus = true;
                                     }
                                     else
                                         Category.CheckCatalogResult = "D";
@@ -466,7 +468,7 @@ namespace ECMPS.Checks.EmissionsChecks
                             Category.SetCheckParameter("Current_MHV_Component_Type", "O2", eParameterDataType.String);
                             Category.SetCheckParameter("Current_MHV_System_Type", null, eParameterDataType.String);
                             Category.SetCheckParameter("Current_MHV_Default_Parameter", "O2N", eParameterDataType.String);
-                            EmParameters.O2WetModc = EmParameters.CurrentO2WetMonitorHourlyRecord.ModcCd;
+                            emParams.O2WetModc = emParams.CurrentO2WetMonitorHourlyRecord.ModcCd;
 
                             string moistureBasis = currentMhvRecord["MOISTURE_BASIS"].AsString();
 
@@ -491,10 +493,10 @@ namespace ECMPS.Checks.EmissionsChecks
                                 {
                                     Category.SetCheckParameter("Monitor_Hourly_MODC_Status", true, eParameterDataType.Boolean);
 
-                                    if (EmParameters.CurrentO2WetMissingDataMonitorHourlyRecord != null)
+                                    if (emParams.CurrentO2WetMissingDataMonitorHourlyRecord != null)
                                     {
-                                        if ((EmParameters.O2WetChecksNeededForNoxRateCalc.Default(false) ||
-                                        EmParameters.O2WetNeededForMats.Default(false))
+                                        if ((emParams.O2WetChecksNeededForNoxRateCalc.Default(false) ||
+                                        emParams.O2WetNeededForMats.Default(false))
                                         && !modcCd.InList("01,02,03,04,17,20,53,54"))
                                         {
                                             Category.CheckCatalogResult = "E";
@@ -511,7 +513,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                     if (modcCd == "46")
                                     {
                                         /* MODC 46 allowed when O2 Wet is used for a NOx rate diluent system, H2O, Co2C or MATS */
-                                        EmParameters.MonitorHourlyModcStatus = true;
+                                        emParams.MonitorHourlyModcStatus = true;
                                     }
                                     else
                                         Category.CheckCatalogResult = "D";
@@ -526,7 +528,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         CurrentMHVRecord = (DataRowView)Category.GetCheckParameter("Current_H2O_Monitor_Hourly_Record").ParameterValue;
                         Category.SetCheckParameter("Current_MHV_Record", CurrentMHVRecord, eParameterDataType.DataRowView);
                         Category.SetCheckParameter("Current_MHV_Parameter", "H2O", eParameterDataType.String);
-                        EmParameters.H2oMhvModc = EmParameters.CurrentH2oMonitorHourlyRecord.ModcCd;
+                        emParams.H2oMhvModc = emParams.CurrentH2oMonitorHourlyRecord.ModcCd;
 
                         if (Convert.ToString(Category.GetCheckParameter("H2O_Method_Code").ParameterValue) == "MMS")
                             Category.SetCheckParameter("Current_MHV_Component_Type", "H2O", eParameterDataType.String);
@@ -971,24 +973,24 @@ namespace ECMPS.Checks.EmissionsChecks
                         MonSysStatus = true;
                 else if (MHVParameter == "CO2C" && !Convert.ToBoolean(Category.GetCheckParameter("CO2_Conc_Checks_Needed_for_Heat_Input").ParameterValue) 
                                                 && !Convert.ToBoolean(Category.GetCheckParameter("CO2_Conc_Checks_Needed_For_CO2_Mass_Calc").ParameterValue)
-                                                && (EmParameters.Co2DiluentNeededForMats == false))
+                                                && (emParams.Co2DiluentNeededForMats == false))
                     if (MonSysID != "" && !LegDataEval)
                         Category.CheckCatalogResult = "B";
                     else
                         MonSysStatus = true;
                 else if ((MHVParameter == "O2W" && !Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Checks_Needed_for_Heat_Input").ParameterValue) 
                                                 && !Convert.ToBoolean(Category.GetCheckParameter("O2_Wet_Needed_To_Support_Co2_Calculation").ParameterValue)
-                                                && (EmParameters.O2WetNeededForMats == false)) ||
+                                                && (emParams.O2WetNeededForMats == false)) ||
                          (MHVParameter == "O2D" && !Convert.ToBoolean(Category.GetCheckParameter("O2_Dry_Checks_Needed_for_Heat_Input").ParameterValue) 
                                                 && !Convert.ToBoolean(Category.GetCheckParameter("O2_Dry_Needed_To_Support_Co2_Calculation").ParameterValue)
-                                                && (EmParameters.O2DryNeededForMats == false)))
+                                                && (emParams.O2DryNeededForMats == false)))
                     if (MonSysID != "" && !LegDataEval)
                         Category.CheckCatalogResult = "G";
                     else
                         MonSysStatus = true;
                 else
                 {
-                    if (EmParameters.MonitorHourlyModcStatus.Default(false))
+                    if (emParams.MonitorHourlyModcStatus.Default(false))
                     {
                         if (MonSysID == "")
                         {
@@ -1162,7 +1164,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         if (MHVParameter == "FLOW" && MonSysId != "")
                         {
                             CheckDataView<VwMpMonitorSystemComponentRow> flowAveragingComponentRecords 
-                                = EmParameters.MonitorSystemComponentRecordsByHourLocation.FindRows(new cFilterCondition("MON_SYS_ID", MonSysId), 
+                                = emParams.MonitorSystemComponentRecordsByHourLocation.FindRows(new cFilterCondition("MON_SYS_ID", MonSysId), 
                                                                                                     new cFilterCondition("COMPONENT_TYPE_CD", "FLOW"));
 
                             if (flowAveragingComponentRecords.Count < 2)
@@ -1230,7 +1232,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     }
                 }
 
-                EmParameters.FlowAveragingComponentList = flowAveragingComponentList;
+                emParams.FlowAveragingComponentList = flowAveragingComponentList;
                 Category.SetCheckParameter("Monitor_Hourly_Component_Status", CompStatus, eParameterDataType.Boolean);
             }
 
@@ -2296,13 +2298,13 @@ namespace ECMPS.Checks.EmissionsChecks
                 DailyIntStatusRequired.SetValue(false, Category);
                 LeakStatusRequired.SetValue(false, Category);
 
-                EmParameters.QaStatusComponentId = EmParameters.CurrentMhvRecord.ComponentId;
-                EmParameters.QaStatusComponentIdentifier = EmParameters.CurrentMhvRecord.ComponentIdentifier;
-                EmParameters.QaStatusComponentTypeCode = EmParameters.CurrentMhvRecord.ComponentTypeCd;
-                EmParameters.QaStatusSystemDesignationCode = EmParameters.CurrentMhvRecord.SysDesignationCd;
-                EmParameters.QaStatusSystemId = EmParameters.CurrentMhvRecord.MonSysId;
-                EmParameters.QaStatusSystemIdentifier = EmParameters.CurrentMhvRecord.SystemIdentifier;
-                EmParameters.QaStatusSystemTypeCode = EmParameters.CurrentMhvRecord.SysTypeCd;
+                emParams.QaStatusComponentId = emParams.CurrentMhvRecord.ComponentId;
+                emParams.QaStatusComponentIdentifier = emParams.CurrentMhvRecord.ComponentIdentifier;
+                emParams.QaStatusComponentTypeCode = emParams.CurrentMhvRecord.ComponentTypeCd;
+                emParams.QaStatusSystemDesignationCode = emParams.CurrentMhvRecord.SysDesignationCd;
+                emParams.QaStatusSystemId = emParams.CurrentMhvRecord.MonSysId;
+                emParams.QaStatusSystemIdentifier = emParams.CurrentMhvRecord.SystemIdentifier;
+                emParams.QaStatusSystemTypeCode = emParams.CurrentMhvRecord.SysTypeCd;
 
                 /* 
                  * Set QaStatusPrimaryOrPrimaryBypassSystemId which is used by status checks to handle Primary/Primary-Bypass systems differently.
@@ -2310,54 +2312,54 @@ namespace ECMPS.Checks.EmissionsChecks
                  * They are actually stacks represented as systems and various location specific counting in status checks need to treat these
                  * sysetems as separate stacks.
                  */
-                if (EmParameters.PrimaryBypassActiveForHour == false)
+                if (emParams.PrimaryBypassActiveForHour == false)
                 {
                     // Always null if a primary bypass system is not active for the hour.
-                    EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId = null; 
+                    emParams.QaStatusPrimaryOrPrimaryBypassSystemId = null; 
                 }
-                else if (EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord != null)
+                else if (emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord != null)
                 {
                     /* 
                      * CurrentNoxrPrimaryOrPrimaryBypassMhvRecord will be null except for MHV with MODC 47 or 48, 
                      * which indicate the MHV are associated with the NOx system not used to report NOx rate. 
                      */
-                    EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId = EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.NotReportedNoxrMonSysId;
+                    emParams.QaStatusPrimaryOrPrimaryBypassSystemId = emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.NotReportedNoxrMonSysId;
                 }
-                else if (EmParameters.CurrentNoxrDerivedHourlyRecord != null)
+                else if (emParams.CurrentNoxrDerivedHourlyRecord != null)
                 {
                     // Only sets QaStatusPrimaryOrPrimaryBypassSystemId if the component is connected to the NOx system reported in the NOXR DHV record.
-                    int count = EmParameters.MonitorSystemComponentRecordsByHourLocation.CountRows(new cFilterCondition[] 
+                    int count = emParams.MonitorSystemComponentRecordsByHourLocation.CountRows(new cFilterCondition[] 
                                                                                                    {
-                                                                                                        new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId),
-                                                                                                        new cFilterCondition("MON_SYS_ID", EmParameters.CurrentNoxrDerivedHourlyRecord.MonSysId)
+                                                                                                        new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId),
+                                                                                                        new cFilterCondition("MON_SYS_ID", emParams.CurrentNoxrDerivedHourlyRecord.MonSysId)
                                                                                                    });
 
                     if (count > 0)
-                        EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId = EmParameters.CurrentNoxrDerivedHourlyRecord.MonSysId;
+                        emParams.QaStatusPrimaryOrPrimaryBypassSystemId = emParams.CurrentNoxrDerivedHourlyRecord.MonSysId;
                     else
-                        EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId = null;
+                        emParams.QaStatusPrimaryOrPrimaryBypassSystemId = null;
                 }
                 else
                 {
-                    EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId = null;
+                    emParams.QaStatusPrimaryOrPrimaryBypassSystemId = null;
                 }
 
-                EmParameters.QaStatusComponentBeginDate = null;
-                EmParameters.QaStatusComponentBeginDatehour = null;
+                emParams.QaStatusComponentBeginDate = null;
+                emParams.QaStatusComponentBeginDatehour = null;
                 {
                     VwMpMonitorSystemComponentRow monitorSystemComponentRow 
-                        = EmParameters.MonitorSystemComponentRecordsByHourLocation.FindEarliestRow
+                        = emParams.MonitorSystemComponentRecordsByHourLocation.FindEarliestRow
                         (
                             new cFilterCondition[]
                             {
-                                new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId)
+                                new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId)
                             }
                         );
 
                     if (monitorSystemComponentRow != null)
                     {
-                        EmParameters.QaStatusComponentBeginDate = monitorSystemComponentRow.BeginDate;
-                        EmParameters.QaStatusComponentBeginDatehour = monitorSystemComponentRow.BeginDatehour;
+                        emParams.QaStatusComponentBeginDate = monitorSystemComponentRow.BeginDate;
+                        emParams.QaStatusComponentBeginDatehour = monitorSystemComponentRow.BeginDatehour;
                     }
                 }
 
@@ -2623,12 +2625,12 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                switch (EmParameters.CurrentMhvParameter)
+                switch (emParams.CurrentMhvParameter)
                 {
                     case "CO2C":
                     case "CO2CSD":
                         {
-                            if ((EmParameters.CurrentMhvRecord.UnadjustedHrlyValue > 16m) && EmParameters.CurrentMhvRecord.ModcCd.InList("01,02"))
+                            if ((emParams.CurrentMhvRecord.UnadjustedHrlyValue > 16m) && emParams.CurrentMhvRecord.ModcCd.InList("01,02"))
                                 category.CheckCatalogResult = "A";
                         }
                         break;
@@ -2637,7 +2639,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     case "O2W":
                     case "O2CSD":
                         {
-                            if ((EmParameters.CurrentMhvRecord.UnadjustedHrlyValue > 22m) && EmParameters.CurrentMhvRecord.ModcCd.InList("01,02"))
+                            if ((emParams.CurrentMhvRecord.UnadjustedHrlyValue > 22m) && emParams.CurrentMhvRecord.ModcCd.InList("01,02"))
                                 category.CheckCatalogResult = "B";
                         }
                         break;
@@ -2666,33 +2668,33 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.CurrentMhvRecord = new VwMpMonitorHrlyValueRow(EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.SourceRow);
+                emParams.CurrentMhvRecord = new VwMpMonitorHrlyValueRow(emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.SourceRow);
 
-                EmParameters.CurrentMhvComponentType = null;
-                EmParameters.CurrentMhvDefaultParameter = null;
-                EmParameters.CurrentMhvParameter = null;
-                EmParameters.CurrentMhvParameterDescription = null;
-                EmParameters.CurrentMhvParameterStatus = false;
+                emParams.CurrentMhvComponentType = null;
+                emParams.CurrentMhvDefaultParameter = null;
+                emParams.CurrentMhvParameter = null;
+                emParams.CurrentMhvParameterDescription = null;
+                emParams.CurrentMhvParameterStatus = false;
 
-                EmParameters.CompleteMhvRecordNeeded = false;
-                EmParameters.CurrentMhvFuelSpecificHour = false;
-                EmParameters.CurrentMhvHbhaValue = null;
-                EmParameters.CurrentMhvSystemType = null;
-                EmParameters.MonitorHourlyModcStatus = true;
+                emParams.CompleteMhvRecordNeeded = false;
+                emParams.CurrentMhvFuelSpecificHour = false;
+                emParams.CurrentMhvHbhaValue = null;
+                emParams.CurrentMhvSystemType = null;
+                emParams.MonitorHourlyModcStatus = true;
                 
 
-                switch (EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.ParameterCd)
+                switch (emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.ParameterCd)
                 {
                     case "CO2C":
                         {
-                            if (EmParameters.Co2DiluentChecksNeededForNoxRateCalc == true)
+                            if (emParams.Co2DiluentChecksNeededForNoxRateCalc == true)
                             {
-                                EmParameters.CurrentMhvComponentType = "CO2";
-                                EmParameters.CurrentMhvDefaultParameter = "CO2X";
-                                EmParameters.CurrentMhvParameter = "CO2C";
-                                EmParameters.CurrentMhvParameterDescription = "CO2C";
+                                emParams.CurrentMhvComponentType = "CO2";
+                                emParams.CurrentMhvDefaultParameter = "CO2X";
+                                emParams.CurrentMhvParameter = "CO2C";
+                                emParams.CurrentMhvParameterDescription = "CO2C";
 
-                                EmParameters.CurrentMhvParameterStatus = true;
+                                emParams.CurrentMhvParameterStatus = true;
                             }
                             else
                             {
@@ -2703,35 +2705,35 @@ namespace ECMPS.Checks.EmissionsChecks
 
                     case "NOXC":
                         {
-                            EmParameters.CurrentMhvComponentType = "NOX";
-                            EmParameters.CurrentMhvDefaultParameter = "NOCX";
-                            EmParameters.CurrentMhvParameter = "NOXC";
-                            EmParameters.CurrentMhvParameterDescription = "NOXC";
+                            emParams.CurrentMhvComponentType = "NOX";
+                            emParams.CurrentMhvDefaultParameter = "NOCX";
+                            emParams.CurrentMhvParameter = "NOXC";
+                            emParams.CurrentMhvParameterDescription = "NOXC";
 
-                            EmParameters.CurrentMhvParameterStatus = true;
+                            emParams.CurrentMhvParameterStatus = true;
                         }
                         break;
 
                     case "O2C":
                         {
-                            if ((EmParameters.O2DryChecksNeededForNoxRateCalc == true) && (EmParameters.O2WetChecksNeededForNoxRateCalc != true))
+                            if ((emParams.O2DryChecksNeededForNoxRateCalc == true) && (emParams.O2WetChecksNeededForNoxRateCalc != true))
                             {
-                                EmParameters.CurrentMhvComponentType = "O2";
-                                EmParameters.CurrentMhvDefaultParameter = "O2N";
-                                EmParameters.CurrentMhvParameter = "O2D";
-                                EmParameters.CurrentMhvParameterDescription = "O2 Dry";
+                                emParams.CurrentMhvComponentType = "O2";
+                                emParams.CurrentMhvDefaultParameter = "O2N";
+                                emParams.CurrentMhvParameter = "O2D";
+                                emParams.CurrentMhvParameterDescription = "O2 Dry";
 
-                                EmParameters.CurrentMhvParameterStatus = true;
+                                emParams.CurrentMhvParameterStatus = true;
                             }
 
-                            else if ((EmParameters.O2DryChecksNeededForNoxRateCalc != true) && (EmParameters.O2WetChecksNeededForNoxRateCalc == true))
+                            else if ((emParams.O2DryChecksNeededForNoxRateCalc != true) && (emParams.O2WetChecksNeededForNoxRateCalc == true))
                             {
-                                EmParameters.CurrentMhvComponentType = "O2";
-                                EmParameters.CurrentMhvDefaultParameter = "O2N";
-                                EmParameters.CurrentMhvParameter = "O2W";
-                                EmParameters.CurrentMhvParameterDescription = "O2 Wet";
+                                emParams.CurrentMhvComponentType = "O2";
+                                emParams.CurrentMhvDefaultParameter = "O2N";
+                                emParams.CurrentMhvParameter = "O2W";
+                                emParams.CurrentMhvParameterDescription = "O2 Wet";
 
-                                EmParameters.CurrentMhvParameterStatus = true;
+                                emParams.CurrentMhvParameterStatus = true;
                             }
 
                             else
@@ -2768,24 +2770,24 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.MonitorHourlyComponentStatus = false;
-                EmParameters.MonitorHourlySystemStatus = false;
+                emParams.MonitorHourlyComponentStatus = false;
+                emParams.MonitorHourlySystemStatus = false;
 
-                if (EmParameters.CurrentMhvParameterStatus == true)
+                if (emParams.CurrentMhvParameterStatus == true)
                 {
-                    NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
+                    NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
 
                     if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.ComponentId == null)
                     {
                         category.CheckCatalogResult = "A";
                     }
-                    else if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.ComponentTypeCd != EmParameters.CurrentMhvComponentType)
+                    else if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.ComponentTypeCd != emParams.CurrentMhvComponentType)
                     {
                         category.CheckCatalogResult = "B";
                     }
                     else
                     {
-                        EmParameters.MonitorHourlyComponentStatus = true;
+                        emParams.MonitorHourlyComponentStatus = true;
 
                         if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.NotReportedNoxrSystemCount != 1)
                         {
@@ -2793,7 +2795,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
                         else
                         {
-                            EmParameters.MonitorHourlySystemStatus = true;
+                            emParams.MonitorHourlySystemStatus = true;
                         }
                     }
                 }
@@ -2823,19 +2825,19 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.CurrentMhvMaxMinValue = null;
-                EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = null;
+                emParams.CurrentMhvMaxMinValue = null;
+                emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = null;
 
-                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
+                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
 
-                if ((EmParameters.CurrentMhvParameterStatus == true) && (currentNoxrPrimaryOrPrimaryBypassMhvRecord.ModcCd == "47"))
+                if ((emParams.CurrentMhvParameterStatus == true) && (currentNoxrPrimaryOrPrimaryBypassMhvRecord.ModcCd == "47"))
                 {
 
-                    switch (EmParameters.CurrentMhvParameter)
+                    switch (emParams.CurrentMhvParameter)
                     {
                         case "CO2C":
                             {
-                                EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "CO2 Span High Range";
+                                emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "CO2 Span High Range";
 
                                 /* Ensure a high span record exists. */
                                 if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.HighSpanCount == 0)
@@ -2861,7 +2863,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                                     if ((maxValue != null) && (maxValue > 0m))
                                     {
-                                        EmParameters.CurrentMhvMaxMinValue = maxValue;
+                                        emParams.CurrentMhvMaxMinValue = maxValue;
                                     }
                                     else
                                     {
@@ -2876,18 +2878,18 @@ namespace ECMPS.Checks.EmissionsChecks
                                 /* Ensure either a high or low span record exists. */
                                 if ((currentNoxrPrimaryOrPrimaryBypassMhvRecord.HighSpanCount == 0) && (currentNoxrPrimaryOrPrimaryBypassMhvRecord.LowSpanCount == 0))
                                 {
-                                    EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span";
+                                    emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span";
                                     category.CheckCatalogResult = "D";
                                 }
                                 /* Ensure no more than one high or one low span record exists. */
                                 else if ((currentNoxrPrimaryOrPrimaryBypassMhvRecord.HighSpanCount > 1) || (currentNoxrPrimaryOrPrimaryBypassMhvRecord.LowSpanCount > 1))
                                 {
                                     if ((currentNoxrPrimaryOrPrimaryBypassMhvRecord.HighSpanCount > 1) && (currentNoxrPrimaryOrPrimaryBypassMhvRecord.LowSpanCount == 0))
-                                        EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span High Range";
+                                        emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span High Range";
                                     else if ((currentNoxrPrimaryOrPrimaryBypassMhvRecord.HighSpanCount == 0) && (currentNoxrPrimaryOrPrimaryBypassMhvRecord.LowSpanCount > 1))
-                                        EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span Low Range";
+                                        emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span Low Range";
                                     else
-                                        EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span";
+                                        emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span";
 
                                     category.CheckCatalogResult = "E";
                                 }
@@ -2897,7 +2899,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                                     if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.HighSpanDefaultHighRange != null)
                                     {
-                                        EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span Low Range";
+                                        emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span Low Range";
 
                                         maxValue = currentNoxrPrimaryOrPrimaryBypassMhvRecord.LowSpanFullScaleRange != null
                                                  ? 2 * currentNoxrPrimaryOrPrimaryBypassMhvRecord.LowSpanFullScaleRange.Value
@@ -2905,13 +2907,13 @@ namespace ECMPS.Checks.EmissionsChecks
 
                                         if ((maxValue == null) || (currentNoxrPrimaryOrPrimaryBypassMhvRecord.HighSpanDefaultHighRange.Value > maxValue))
                                         {
-                                            EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span High Range";
+                                            emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span High Range";
                                             maxValue = currentNoxrPrimaryOrPrimaryBypassMhvRecord.HighSpanDefaultHighRange;
                                         }
                                     }
                                     else
                                     {
-                                        EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span High Range";
+                                        emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvMaxValueDescription = "NOX Span High Range";
 
                                         if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.HighSpanFullScaleRange != null)
                                             maxValue = 2 * currentNoxrPrimaryOrPrimaryBypassMhvRecord.HighSpanFullScaleRange.Value;
@@ -2921,7 +2923,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                                     if ((maxValue != null) && (maxValue > 0m))
                                     {
-                                        EmParameters.CurrentMhvMaxMinValue = maxValue;
+                                        emParams.CurrentMhvMaxMinValue = maxValue;
                                     }
                                     else
                                     {
@@ -2934,7 +2936,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         case "O2D":
                         case "O2W":
                             {
-                                EmParameters.CurrentMhvMaxMinValue = 0m;
+                                emParams.CurrentMhvMaxMinValue = 0m;
                             }
                             break;
                     }
@@ -2961,35 +2963,35 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.CurrentMhvExtraneousFields = "";
+                emParams.CurrentMhvExtraneousFields = "";
 
-                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
+                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
 
 
                 if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.AdjustedHrlyValue != null)
                 {
-                    EmParameters.CurrentMhvExtraneousFields = EmParameters.CurrentMhvExtraneousFields.ListAdd("AdjustedHourlyValue");
+                    emParams.CurrentMhvExtraneousFields = emParams.CurrentMhvExtraneousFields.ListAdd("AdjustedHourlyValue");
                 }
 
                 if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.MoistureBasis != null)
                 {
-                    EmParameters.CurrentMhvExtraneousFields = EmParameters.CurrentMhvExtraneousFields.ListAdd("MoistureBasis");
+                    emParams.CurrentMhvExtraneousFields = emParams.CurrentMhvExtraneousFields.ListAdd("MoistureBasis");
                 }
 
                 if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.MonSysId != null)
                 {
-                    EmParameters.CurrentMhvExtraneousFields = EmParameters.CurrentMhvExtraneousFields.ListAdd("MonitorSystemID");
+                    emParams.CurrentMhvExtraneousFields = emParams.CurrentMhvExtraneousFields.ListAdd("MonitorSystemID");
                 }
 
                 if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.PctAvailable != null)
                 {
-                    EmParameters.CurrentMhvExtraneousFields = EmParameters.CurrentMhvExtraneousFields.ListAdd("PercentAvailable");
+                    emParams.CurrentMhvExtraneousFields = emParams.CurrentMhvExtraneousFields.ListAdd("PercentAvailable");
                 }
 
 
-                if (EmParameters.CurrentMhvExtraneousFields != "")
+                if (emParams.CurrentMhvExtraneousFields != "")
                 {
-                    EmParameters.CurrentMhvExtraneousFields = EmParameters.CurrentMhvExtraneousFields.FormatList();
+                    emParams.CurrentMhvExtraneousFields = emParams.CurrentMhvExtraneousFields.FormatList();
                     category.CheckCatalogResult = "A";
                 }
             }
@@ -3014,8 +3016,8 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                string currentMhvParameter = EmParameters.CurrentMhvParameter;
-                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
+                string currentMhvParameter = emParams.CurrentMhvParameter;
+                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
 
 
                 if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.UnadjustedHrlyValue == null)
@@ -3047,11 +3049,11 @@ namespace ECMPS.Checks.EmissionsChecks
                     {
                         category.CheckCatalogResult = "F";
                     }
-                    else if ((currentMhvParameter == "CO2C") && (currentNoxrPrimaryOrPrimaryBypassMhvRecord.UnadjustedHrlyValue == 0.0m) && (EmParameters.CurrentHourlyOpRecord.LoadRange > 1))
+                    else if ((currentMhvParameter == "CO2C") && (currentNoxrPrimaryOrPrimaryBypassMhvRecord.UnadjustedHrlyValue == 0.0m) && (emParams.CurrentHourlyOpRecord.LoadRange > 1))
                     {
                         category.CheckCatalogResult = "G";
                     }
-                    else if (currentMhvParameter.InList("CO2C,NOXC") && (EmParameters.CurrentMhvMaxMinValue != null) && (currentNoxrPrimaryOrPrimaryBypassMhvRecord.UnadjustedHrlyValue > EmParameters.CurrentMhvMaxMinValue))
+                    else if (currentMhvParameter.InList("CO2C,NOXC") && (emParams.CurrentMhvMaxMinValue != null) && (currentNoxrPrimaryOrPrimaryBypassMhvRecord.UnadjustedHrlyValue > emParams.CurrentMhvMaxMinValue))
                     {
                         category.CheckCatalogResult = "H";
                     }
@@ -3078,7 +3080,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                if (EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.PrimaryBypassExistInd != 1)
+                if (emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.PrimaryBypassExistInd != 1)
                 {
                     category.CheckCatalogResult = "A";
                 }
@@ -3104,37 +3106,37 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.CurrentMhvMissing = "";
+                emParams.CurrentMhvMissing = "";
 
-                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
+                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
 
 
                 if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.PrimaryBypassExistInd == 1)
                 {
                     if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.UsedNoxcCount == 0)
                     {
-                        EmParameters.CurrentMhvMissing = EmParameters.CurrentMhvMissing.ListAdd("Used NOXC");
+                        emParams.CurrentMhvMissing = emParams.CurrentMhvMissing.ListAdd("Used NOXC");
                     }
 
                     if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.UsedDiluentCount == 0)
                     {
-                        EmParameters.CurrentMhvMissing = EmParameters.CurrentMhvMissing.ListAdd("Used CO2C/O2C");
+                        emParams.CurrentMhvMissing = emParams.CurrentMhvMissing.ListAdd("Used CO2C/O2C");
                     }
 
                     if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.UnusedNoxcCount == 0)
                     {
-                        EmParameters.CurrentMhvMissing = EmParameters.CurrentMhvMissing.ListAdd("Unused NOXC");
+                        emParams.CurrentMhvMissing = emParams.CurrentMhvMissing.ListAdd("Unused NOXC");
                     }
 
                     if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.UnusedDiluentCount == 0)
                     {
-                        EmParameters.CurrentMhvMissing = EmParameters.CurrentMhvMissing.ListAdd("Unused CO2C/O2C");
+                        emParams.CurrentMhvMissing = emParams.CurrentMhvMissing.ListAdd("Unused CO2C/O2C");
                     }
 
 
-                    if (EmParameters.CurrentMhvMissing != "")
+                    if (emParams.CurrentMhvMissing != "")
                     {
-                        EmParameters.CurrentMhvMissing = EmParameters.CurrentMhvMissing.FormatList();
+                        emParams.CurrentMhvMissing = emParams.CurrentMhvMissing.FormatList();
                         category.CheckCatalogResult = "A";
                     }
                 }
@@ -3160,37 +3162,37 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.CurrentMhvDuplicate = "";
+                emParams.CurrentMhvDuplicate = "";
 
-                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
+                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
 
 
                 if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.PrimaryBypassExistInd == 1)
                 {
                     if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.UsedNoxcCount > 1)
                     {
-                        EmParameters.CurrentMhvDuplicate = EmParameters.CurrentMhvDuplicate.ListAdd("Used NOXC");
+                        emParams.CurrentMhvDuplicate = emParams.CurrentMhvDuplicate.ListAdd("Used NOXC");
                     }
 
                     if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.UsedDiluentCount > 1)
                     {
-                        EmParameters.CurrentMhvDuplicate = EmParameters.CurrentMhvDuplicate.ListAdd("Used CO2C/O2C");
+                        emParams.CurrentMhvDuplicate = emParams.CurrentMhvDuplicate.ListAdd("Used CO2C/O2C");
                     }
 
                     if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.UnusedNoxcCount > 1)
                     {
-                        EmParameters.CurrentMhvDuplicate = EmParameters.CurrentMhvDuplicate.ListAdd("Unused NOXC");
+                        emParams.CurrentMhvDuplicate = emParams.CurrentMhvDuplicate.ListAdd("Unused NOXC");
                     }
 
                     if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.UnusedDiluentCount > 1)
                     {
-                        EmParameters.CurrentMhvDuplicate = EmParameters.CurrentMhvDuplicate.ListAdd("Unused CO2C/O2C");
+                        emParams.CurrentMhvDuplicate = emParams.CurrentMhvDuplicate.ListAdd("Unused CO2C/O2C");
                     }
 
 
-                    if (EmParameters.CurrentMhvDuplicate != "")
+                    if (emParams.CurrentMhvDuplicate != "")
                     {
-                        EmParameters.CurrentMhvDuplicate = EmParameters.CurrentMhvDuplicate.FormatList();
+                        emParams.CurrentMhvDuplicate = emParams.CurrentMhvDuplicate.FormatList();
                         category.CheckCatalogResult = "A";
                     }
                 }
@@ -3216,7 +3218,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
+                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
 
                 if (currentNoxrPrimaryOrPrimaryBypassMhvRecord.PrimaryBypassExistInd == 1)
                 {
@@ -3249,15 +3251,15 @@ namespace ECMPS.Checks.EmissionsChecks
         public string HOURMHV38(cCategory category, ref bool log)
         {
             string returnVal = "";
-
+            
             try
             {
-                if (EmParameters.DerivedHourlyChecksNeeded.Default(false) && (EmParameters.CurrentOperatingTime.Value > 0))
+                if (emParams.DerivedHourlyChecksNeeded.Default(false) && (emParams.CurrentOperatingTime.Value > 0))
                 {
-                    DateTime currentOperatingHour = EmParameters.CurrentOperatingDatehour.Value;
-                    int currentReportingPeriod = EmParameters.CurrentReportingPeriod.Value;
+                    DateTime currentOperatingHour = emParams.CurrentOperatingDatehour.Value;
+                    int currentReportingPeriod = emParams.CurrentReportingPeriod.Value;
 
-                    NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
+                    NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
 
                     string modcCd = currentNoxrPrimaryOrPrimaryBypassMhvRecord.ModcCd;
                     string monLocId = currentNoxrPrimaryOrPrimaryBypassMhvRecord.MonLocId;
@@ -3265,27 +3267,29 @@ namespace ECMPS.Checks.EmissionsChecks
 
 
                     /* Not Reported NOXR System */
-                    if (EmParameters.MonitorHourlySystemStatus == true)
+                    if (emParams.MonitorHourlySystemStatus == true)
                     {
                         /* Handle System Op Supp Data counts and system Specific QA Cert Event Supp Data updates */
-                        Dictionary<string, SystemOperatingSupplementalData> systemOpSuppDataDictionary = EmParameters.SystemOperatingSuppDataDictionaryArray[EmParameters.CurrentMonitorPlanLocationPostion.Value];
+                        Dictionary<string, SystemOperatingSupplementalData> systemOpSuppDataDictionary = emParams.SystemOperatingSuppDataDictionaryArray[emParams.CurrentMonitorPlanLocationPostion.Value];
                         {
-                            cHourlyOperatingDataChecks.HOUROP48_SuppUpdate(currentReportingPeriod, monSysId, modcCd, monLocId, currentOperatingHour, systemOpSuppDataDictionary);
+                            ChourlyOperatingDataChecks.emParams = emParams;
+                            ChourlyOperatingDataChecks.HOUROP48_SuppUpdate(currentReportingPeriod, monSysId, modcCd, monLocId, currentOperatingHour, systemOpSuppDataDictionary);
                         }
                     }
 
 
                     /* Current 47 or 48 MHV Component */
-                    if (EmParameters.MonitorHourlyComponentStatus == true)
+                    if (emParams.MonitorHourlyComponentStatus == true)
                     {
                         /* Handle Component Op Supp Data counts and component Specific QA Cert Event Supp Data updates */
-                        Dictionary<string, ComponentOperatingSupplementalData> componentOpSuppDataDictionary = EmParameters.ComponentOperatingSuppDataDictionaryArray[EmParameters.CurrentMonitorPlanLocationPostion.Value];
+                        Dictionary<string, ComponentOperatingSupplementalData> componentOpSuppDataDictionary = emParams.ComponentOperatingSuppDataDictionaryArray[emParams.CurrentMonitorPlanLocationPostion.Value];
                         {
-                            cHourlyOperatingDataChecks.HOUROP49_SuppUpdate(currentReportingPeriod, currentNoxrPrimaryOrPrimaryBypassMhvRecord.ComponentId, modcCd, monLocId, currentOperatingHour, componentOpSuppDataDictionary);
+                            ChourlyOperatingDataChecks.emParams = emParams;
+                            ChourlyOperatingDataChecks.HOUROP49_SuppUpdate(currentReportingPeriod, currentNoxrPrimaryOrPrimaryBypassMhvRecord.ComponentId, modcCd, monLocId, currentOperatingHour, componentOpSuppDataDictionary);
                         }
 
                         /* Handle Last QA Value Supp Data updates */
-                        Dictionary<string, LastQualityAssuredValueSupplementalData> lastQaValueSuppDataDictionary = EmParameters.LastQualityAssuredValueSuppDataDictionaryArray[EmParameters.CurrentMonitorPlanLocationPostion.Value];
+                        Dictionary<string, LastQualityAssuredValueSupplementalData> lastQaValueSuppDataDictionary = emParams.LastQualityAssuredValueSuppDataDictionaryArray[emParams.CurrentMonitorPlanLocationPostion.Value];
                         {
                             bool includeComponent, includeSystem;
 
@@ -3294,7 +3298,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                 includeSystem = (choice == 1);
                                 includeComponent = (choice == 2);
 
-                                cHourlyOperatingDataChecks.HOUROP50_SuppUpdate
+                                ChourlyOperatingDataChecks.HOUROP50_SuppUpdate
                                 (
                                     currentReportingPeriod,
                                     monLocId,
@@ -3336,18 +3340,18 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
+                NoxrPrimaryAndPrimaryBypassMhv currentNoxrPrimaryOrPrimaryBypassMhvRecord = emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord;
 
-                EmParameters.QaStatusComponentId = null;
-                EmParameters.QaStatusComponentIdentifier = null;
-                EmParameters.QaStatusComponentTypeCode = null;
+                emParams.QaStatusComponentId = null;
+                emParams.QaStatusComponentIdentifier = null;
+                emParams.QaStatusComponentTypeCode = null;
 
-                EmParameters.QaStatusHourlyParameterCode = "NOXR";
+                emParams.QaStatusHourlyParameterCode = "NOXR";
 
-                EmParameters.QaStatusSystemDesignationCode = currentNoxrPrimaryOrPrimaryBypassMhvRecord.NotReportedNoxrSysDesignationCd;
-                EmParameters.QaStatusSystemId = currentNoxrPrimaryOrPrimaryBypassMhvRecord.NotReportedNoxrMonSysId;
-                EmParameters.QaStatusSystemIdentifier = currentNoxrPrimaryOrPrimaryBypassMhvRecord.NotReportedNoxrSystemIdentifier;
-                EmParameters.QaStatusSystemTypeCode = currentNoxrPrimaryOrPrimaryBypassMhvRecord.NotReportedNoxrSysTypeCd;
+                emParams.QaStatusSystemDesignationCode = currentNoxrPrimaryOrPrimaryBypassMhvRecord.NotReportedNoxrSysDesignationCd;
+                emParams.QaStatusSystemId = currentNoxrPrimaryOrPrimaryBypassMhvRecord.NotReportedNoxrMonSysId;
+                emParams.QaStatusSystemIdentifier = currentNoxrPrimaryOrPrimaryBypassMhvRecord.NotReportedNoxrSystemIdentifier;
+                emParams.QaStatusSystemTypeCode = currentNoxrPrimaryOrPrimaryBypassMhvRecord.NotReportedNoxrSysTypeCd;
             }
             catch (Exception ex)
             {
@@ -3373,45 +3377,45 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.DailyCalStatusRequired = false;
-                EmParameters.DailyIntStatusRequired = false;
-                EmParameters.LeakStatusRequired = false;
+                emParams.DailyCalStatusRequired = false;
+                emParams.DailyIntStatusRequired = false;
+                emParams.LeakStatusRequired = false;
 
-                EmParameters.ApplicableComponentId = null;
-                EmParameters.CurrentAnalyzerRangeUsed = null;
-                EmParameters.CurrentDailyCalStatus = null;
-                EmParameters.DualRangeStatus = false;
-                EmParameters.HighRangeComponentId = null;
-                EmParameters.LowRangeComponentId = null;
+                emParams.ApplicableComponentId = null;
+                emParams.CurrentAnalyzerRangeUsed = null;
+                emParams.CurrentDailyCalStatus = null;
+                emParams.DualRangeStatus = false;
+                emParams.HighRangeComponentId = null;
+                emParams.LowRangeComponentId = null;
 
-                EmParameters.QaStatusComponentBeginDate = null;
-                EmParameters.QaStatusComponentBeginDatehour = null;
-                EmParameters.QaStatusComponentId = null;
-                EmParameters.QaStatusComponentIdentifier = null;
-                EmParameters.QaStatusComponentTypeCode = null;
-                EmParameters.QaStatusPrimaryOrPrimaryBypassSystemId = null;
+                emParams.QaStatusComponentBeginDate = null;
+                emParams.QaStatusComponentBeginDatehour = null;
+                emParams.QaStatusComponentId = null;
+                emParams.QaStatusComponentIdentifier = null;
+                emParams.QaStatusComponentTypeCode = null;
+                emParams.QaStatusPrimaryOrPrimaryBypassSystemId = null;
 
 
-                if ((EmParameters.CurrentMhvParameter == "FLOW") &&
-                    (EmParameters.FlowAveragingComponentRecord != null) && 
-                    (EmParameters.FlowAveragingComponentRecord.ComponentId != null) &&
-                    (EmParameters.MonitorHourlyComponentStatus == true) &&
-                    (EmParameters.CurrentMhvRecord.ComponentId == null) &&
-                    (EmParameters.MonitorHourlyModcStatus == true) &&
-                    (EmParameters.CurrentMhvRecord.ModcCd.InList("01,02,03,53") ||
-                     ((EmParameters.CurrentMhvRecord.ModcCd == "20") && 
-                      (EmParameters.CurrentMhvRecord.UnadjustedHrlyValue != null) && 
-                      (EmParameters.CurrentMhvMaxMinValue != null))))
+                if ((emParams.CurrentMhvParameter == "FLOW") &&
+                    (emParams.FlowAveragingComponentRecord != null) && 
+                    (emParams.FlowAveragingComponentRecord.ComponentId != null) &&
+                    (emParams.MonitorHourlyComponentStatus == true) &&
+                    (emParams.CurrentMhvRecord.ComponentId == null) &&
+                    (emParams.MonitorHourlyModcStatus == true) &&
+                    (emParams.CurrentMhvRecord.ModcCd.InList("01,02,03,53") ||
+                     ((emParams.CurrentMhvRecord.ModcCd == "20") && 
+                      (emParams.CurrentMhvRecord.UnadjustedHrlyValue != null) && 
+                      (emParams.CurrentMhvMaxMinValue != null))))
                 {
-                    EmParameters.QaStatusComponentId = EmParameters.FlowAveragingComponentRecord.ComponentId;
-                    EmParameters.QaStatusComponentIdentifier = EmParameters.FlowAveragingComponentRecord.ComponentIdentifier;
-                    EmParameters.QaStatusComponentTypeCode = EmParameters.FlowAveragingComponentRecord.ComponentTypeCd;
+                    emParams.QaStatusComponentId = emParams.FlowAveragingComponentRecord.ComponentId;
+                    emParams.QaStatusComponentIdentifier = emParams.FlowAveragingComponentRecord.ComponentIdentifier;
+                    emParams.QaStatusComponentTypeCode = emParams.FlowAveragingComponentRecord.ComponentTypeCd;
 
-                    EmParameters.ApplicableComponentId = EmParameters.FlowAveragingComponentRecord.ComponentId;
+                    emParams.ApplicableComponentId = emParams.FlowAveragingComponentRecord.ComponentId;
 
-                    EmParameters.DailyCalStatusRequired = true;
-                    EmParameters.DailyIntStatusRequired = true;
-                    EmParameters.LeakStatusRequired = (EmParameters.FlowAveragingComponentRecord.AcqCd == "DP");
+                    emParams.DailyCalStatusRequired = true;
+                    emParams.DailyIntStatusRequired = true;
+                    emParams.LeakStatusRequired = (emParams.FlowAveragingComponentRecord.AcqCd == "DP");
                 }
             }
             catch (Exception ex)
@@ -3443,7 +3447,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                if ((EmParameters.MonitorHourlyModcStatus != false) && EmParameters.CurrentMhvRecord.ModcCd.InList("53,54,55"))
+                if ((emParams.MonitorHourlyModcStatus != false) && emParams.CurrentMhvRecord.ModcCd.InList("53,54,55"))
                 {
                     category.CheckCatalogResult = "A";
                 }

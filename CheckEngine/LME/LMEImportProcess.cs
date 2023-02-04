@@ -20,6 +20,8 @@ namespace ECMPS.Checks.LME
     {
         #region Constructors
 
+        LmeImportParameters lmeImportParameters = new LmeImportParameters();
+
         public cLMEImportProcess( cCheckEngine CheckEngine )
             : base( CheckEngine, "LMEIMPT" )
         {
@@ -125,7 +127,7 @@ namespace ECMPS.Checks.LME
         /// </summary>
         protected override void InitStaticParameterClass()
         {
-          LmeImportParameters.Init(this);
+            lmeImportParameters.Init(this);
         }
 
         /// <summary>
@@ -134,7 +136,7 @@ namespace ECMPS.Checks.LME
         /// <param name="category"></param>
         public override void SetStaticParameterCategory(cCategory category)
         {
-          LmeImportParameters.Category = category;
+            lmeImportParameters.Category = category;
         }
 
         #endregion

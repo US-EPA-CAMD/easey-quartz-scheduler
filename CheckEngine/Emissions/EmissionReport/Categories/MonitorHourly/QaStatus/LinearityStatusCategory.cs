@@ -14,42 +14,45 @@ namespace ECMPS.Checks.EmissionsReport
 {
   public class cLinearityStatusCategory : cCategoryHourly
   {
-    #region Constructors
-
-    /// <summary>
-    /// Creates a category with a specific parent category, category code and parameter code.
-    /// </summary>
-    /// <param name="parentCategory">The parent category of the new category.</param>
-    /// <param name="categoryCd">The category code of the new category.</param>
-    /// <param name="parameterCd">The parameter code of the associated monitor or derived hourly data.</param>
-    public cLinearityStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd)
+        #region Constructors
+   public EmParameters emParams;
+        /// <summary>
+        /// Creates a category with a specific parent category, category code and parameter code.
+        /// </summary>
+        /// <param name="parentCategory">The parent category of the new category.</param>
+        /// <param name="categoryCd">The category code of the new category.</param>
+        /// <param name="parameterCd">The parameter code of the associated monitor or derived hourly data.</param>
+  public cLinearityStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd, EmParameters emparams)
       : base(parentCategory,
          categoryCd)
-    {
-      ParameterCd = parameterCd;
-    }
+        {
+           ParameterCd = parameterCd;
+            emParams = emparams;
+        }
 
         /// <summary>
         /// Creates a category with a specific parent category and category code.
         /// </summary>
         /// <param name="parentCategory">The parent category of the new category.</param>
         /// <param name="categoryCd">The category code of the new category.</param>
-        public cLinearityStatusCategory(cCategory parentCategory, string categoryCd)
+        public cLinearityStatusCategory(cCategory parentCategory, string categoryCd, EmParameters emparams)
           : base(parentCategory,
              categoryCd)
         {
             ParameterCd = null;
+            emParams = emparams;
         }
 
         public cLinearityStatusCategory(cCheckEngine ACheckEngine,
                                  cEmissionsReportProcess AHourlyEmissionsData,
                                  cCategory ACategory,
-                                 string ACategoryCode)
+                                 string ACategoryCode, EmParameters emparams)
       : base(ACheckEngine,
          (cEmissionsReportProcess)AHourlyEmissionsData,
          ACategory,
          ACategoryCode)
     {
+            emParams = emparams;
     }
 
     #endregion
@@ -111,17 +114,17 @@ namespace ECMPS.Checks.EmissionsReport
 
     protected override void SetRecordIdentifier()
     {
-      RecordIdentifier = "Component ID " + EmParameters.QaStatusComponentIdentifier + ", Span Scale " + EmParameters.CurrentAnalyzerRangeUsed;
+      RecordIdentifier = "Component ID " + emParams.QaStatusComponentIdentifier + ", Span Scale " + emParams.CurrentAnalyzerRangeUsed;
     }
 
     protected override bool SetErrorSuppressValues()
     {
-      if ((EmParameters.CurrentMonitorPlanLocationRecord != null) && ((ParameterCd != null) || (EmParameters.CurrentMhvRecord != null)))
+      if ((emParams.CurrentMonitorPlanLocationRecord != null) && ((ParameterCd != null) || (emParams.CurrentMhvRecord != null)))
       {
         long facId = CheckEngine.FacilityID;
-        string locationName = EmParameters.CurrentMonitorPlanLocationRecord.LocationName;
-        string matchDataValue = (ParameterCd != null) ? ParameterCd : EmParameters.CurrentMhvRecord.ParameterCd;
-        DateTime? matchTimeValue = EmParameters.CurrentDateHour.AsStartDateTime();
+        string locationName = emParams.CurrentMonitorPlanLocationRecord.LocationName;
+        string matchDataValue = (ParameterCd != null) ? ParameterCd : emParams.CurrentMhvRecord.ParameterCd;
+        DateTime? matchTimeValue = emParams.CurrentDateHour.AsStartDateTime();
 
         ErrorSuppressValues = new cErrorSuppressValues(facId, locationName, "PARAM", matchDataValue, "HOUR", matchTimeValue);
         return true;

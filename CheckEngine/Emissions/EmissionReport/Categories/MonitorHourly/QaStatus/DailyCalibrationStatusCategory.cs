@@ -21,10 +21,11 @@ namespace ECMPS.Checks.EmissionsReport
     /// <param name="parentCategory">The parent category of the new category.</param>
     /// <param name="categoryCd">The category code of the new category.</param>
     /// <param name="parameterCd">The parameter code of the associated monitor or derived hourly data.</param>
-    public cDailyCalibrationStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd)
+    public cDailyCalibrationStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd, EmParameters emparams)
       : base(parentCategory, categoryCd)
     {
       ParameterCd = parameterCd;
+            emParams = emparams;
     }
 
         /// <summary>
@@ -59,12 +60,15 @@ namespace ECMPS.Checks.EmissionsReport
     /// </summary>
     public string ParameterCd { get; protected set; }
 
-    #endregion
+    public EmParameters emParams;
 
 
-    #region Base Class Overrides
+        #endregion
 
-    protected override void FilterData()
+
+        #region Base Class Overrides
+
+        protected override void FilterData()
     {
       DataView[] OperatingHoursByLocation = (DataView[])EmissionParameters.OperatingHoursByLocation.Value;
       DataView[] NonOperatingHoursByLocation = (DataView[])EmissionParameters.NonOperatingHoursByLocation.Value;
@@ -91,19 +95,19 @@ namespace ECMPS.Checks.EmissionsReport
 
     protected override void SetRecordIdentifier()
     {
-      String stringFormat = (EmParameters.CurrentAnalyzerRangeUsed.IsNotEmpty()) ? "Component ID {0}, Span Scale {1}" : "Component ID {0}";
+      String stringFormat = (emParams.CurrentAnalyzerRangeUsed.IsNotEmpty()) ? "Component ID {0}, Span Scale {1}" : "Component ID {0}";
 
-      RecordIdentifier = String.Format(stringFormat, EmParameters.QaStatusComponentIdentifier, EmParameters.CurrentAnalyzerRangeUsed);
+      RecordIdentifier = String.Format(stringFormat, emParams.QaStatusComponentIdentifier, emParams.CurrentAnalyzerRangeUsed);
     }
 
     protected override bool SetErrorSuppressValues()
     {
-      if ((EmParameters.CurrentMonitorPlanLocationRecord != null) && ((ParameterCd != null) || (EmParameters.CurrentMhvRecord != null)))
+      if ((emParams.CurrentMonitorPlanLocationRecord != null) && ((ParameterCd != null) || (emParams.CurrentMhvRecord != null)))
       {
         long facId = CheckEngine.FacilityID;
-        string locationName = EmParameters.CurrentMonitorPlanLocationRecord.LocationName;
-        string matchDataValue = (ParameterCd != null) ? ParameterCd : EmParameters.CurrentMhvRecord.ParameterCd;
-        DateTime? matchTimeValue = EmParameters.CurrentDateHour.AsStartDateTime();
+        string locationName = emParams.CurrentMonitorPlanLocationRecord.LocationName;
+        string matchDataValue = (ParameterCd != null) ? ParameterCd : emParams.CurrentMhvRecord.ParameterCd;
+        DateTime? matchTimeValue = emParams.CurrentDateHour.AsStartDateTime();
 
         ErrorSuppressValues = new cErrorSuppressValues(facId, locationName, "PARAM", matchDataValue, "HOUR", matchTimeValue);
         return true;

@@ -22,8 +22,7 @@ namespace ECMPS.Checks.EmissionsChecks
             : base(emissionReportProcess)
         {
             CheckProcedures = new dCheckProcedure[21];
-
-            CheckProcedures[1] = new dCheckProcedure(MATSMHV1);
+            CheckProcedures[1] = new dCheckProcedure(MATSMHV1);            
             CheckProcedures[2] = new dCheckProcedure(MATSMHV2);
             CheckProcedures[3] = new dCheckProcedure(MATSMHV3);
             CheckProcedures[4] = new dCheckProcedure(MATSMHV4);
@@ -58,40 +57,40 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-        public static string MATSMHV1(cCategory Category, ref bool Log)
+        public string MATSMHV1(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
-
+            
             try
             {
-                EmParameters.CurrentMhvParameter = "HGC";
-                EmParameters.MatsMhvRecord = EmParameters.MatsHgcMhvRecord;
-                EmParameters.MatsMhvSorbentTraps = null;
+                emParams.CurrentMhvParameter = "HGC";
+                emParams.MatsMhvRecord = emParams.MatsHgcMhvRecord;
+                emParams.MatsMhvSorbentTraps = null;
 
 
-                if ((EmParameters.MatsHgMethodRecord.MethodCd == "ST") ||
-                    ((EmParameters.MatsHgMethodRecord.MethodCd == "CEMST") && (EmParameters.MatsHgcMhvRecord.SysTypeCd == "ST")))
+                if ((emParams.MatsHgMethodRecord.MethodCd == "ST") ||
+                    ((emParams.MatsHgMethodRecord.MethodCd == "CEMST") && (emParams.MatsHgcMhvRecord.SysTypeCd == "ST")))
                 {
-                    EmParameters.CurrentMhvComponentType = "STRAIN";
-                    EmParameters.CurrentMhvSystemType = "ST";
-                    EmParameters.MatsMhvMeasuredModcList = ("01,02,32,33,41,42,43,44");
+                    emParams.CurrentMhvComponentType = "STRAIN";
+                    emParams.CurrentMhvSystemType = "ST";
+                    emParams.MatsMhvMeasuredModcList = ("01,02,32,33,41,42,43,44");
 
                     CheckDataView<MatsSorbentTrapRecord> matsSorbentTrapRecords
-                        = EmParameters.MatsSorbentTrapRecords.FindRows(new cFilterCondition("MON_SYS_ID", EmParameters.MatsMhvRecord.MonSysId),
-                                                                       new cFilterCondition("BEGIN_DATEHOUR", EmParameters.CurrentDateHour, eFilterDataType.DateBegan, eFilterConditionRelativeCompare.LessThanOrEqual),
-                                                                       new cFilterCondition("END_DATEHOUR", EmParameters.CurrentDateHour, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.GreaterThanOrEqual));
+                        = emParams.MatsSorbentTrapRecords.FindRows(new cFilterCondition("MON_SYS_ID", emParams.MatsMhvRecord.MonSysId),
+                                                                       new cFilterCondition("BEGIN_DATEHOUR", emParams.CurrentDateHour, eFilterDataType.DateBegan, eFilterConditionRelativeCompare.LessThanOrEqual),
+                                                                       new cFilterCondition("END_DATEHOUR", emParams.CurrentDateHour, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.GreaterThanOrEqual));
 
-                    EmParameters.MatsMhvSorbentTraps = matsSorbentTrapRecords;
+                    emParams.MatsMhvSorbentTraps = matsSorbentTrapRecords;
                 }
                 else
                 {
-                    EmParameters.CurrentMhvComponentType = "HG";
-                    EmParameters.CurrentMhvSystemType = "HG";
-                    EmParameters.MatsMhvMeasuredModcList = ("01,02,17,21");
+                    emParams.CurrentMhvComponentType = "HG";
+                    emParams.CurrentMhvSystemType = "HG";
+                    emParams.MatsMhvMeasuredModcList = ("01,02,17,21");
                 }
 
-                EmParameters.MatsMhvUnavailableModcList = ("34,35");
-                EmParameters.MatsMhvNoLikeKindModcList = ("01,02");
+                emParams.MatsMhvUnavailableModcList = ("34,35");
+                emParams.MatsMhvNoLikeKindModcList = ("01,02");
             }
             catch (Exception ex)
             {
@@ -101,20 +100,20 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string MATSMHV2(cCategory Category, ref bool Log)
+        public  string MATSMHV2(cCategory Category, ref bool Log)
         // MATS HCLC: Initialize
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CurrentMhvParameter = "HCLC";
-                EmParameters.MatsMhvRecord = EmParameters.MatsHclcMhvRecord;
-                EmParameters.CurrentMhvComponentType = "HCL";
-                EmParameters.CurrentMhvSystemType = "HCL";
-                EmParameters.MatsMhvMeasuredModcList = ("01,02,17,21");
-                EmParameters.MatsMhvUnavailableModcList = ("34,35");
-                EmParameters.MatsMhvNoLikeKindModcList = ("01,02");
+                emParams.CurrentMhvParameter = "HCLC";
+                emParams.MatsMhvRecord = emParams.MatsHclcMhvRecord;
+                emParams.CurrentMhvComponentType = "HCL";
+                emParams.CurrentMhvSystemType = "HCL";
+                emParams.MatsMhvMeasuredModcList = ("01,02,17,21");
+                emParams.MatsMhvUnavailableModcList = ("34,35");
+                emParams.MatsMhvNoLikeKindModcList = ("01,02");
             }
             catch (Exception ex)
             {
@@ -124,20 +123,20 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public static string MATSMHV3(cCategory Category, ref bool Log)
+        public  string MATSMHV3(cCategory Category, ref bool Log)
         // MATS HFC: Initialize
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.CurrentMhvParameter = "HFC";
-                EmParameters.MatsMhvRecord = EmParameters.MatsHfcMhvRecord;
-                EmParameters.CurrentMhvComponentType = "HF";
-                EmParameters.CurrentMhvSystemType = "HF";
-                EmParameters.MatsMhvMeasuredModcList = ("01,02,17,21");
-                EmParameters.MatsMhvUnavailableModcList = ("34,35");
-                EmParameters.MatsMhvNoLikeKindModcList = ("01,02");
+                emParams.CurrentMhvParameter = "HFC";
+                emParams.MatsMhvRecord = emParams.MatsHfcMhvRecord;
+                emParams.CurrentMhvComponentType = "HF";
+                emParams.CurrentMhvSystemType = "HF";
+                emParams.MatsMhvMeasuredModcList = ("01,02,17,21");
+                emParams.MatsMhvUnavailableModcList = ("34,35");
+                emParams.MatsMhvNoLikeKindModcList = ("01,02");
 
             }
             catch (Exception ex)
@@ -149,37 +148,37 @@ namespace ECMPS.Checks.EmissionsChecks
         }
 
         #region MATSMHV4
-        public static string MATSMHV4(cCategory Category, ref bool Log)
+        public  string MATSMHV4(cCategory Category, ref bool Log)
         // Ensure that the reported MODC is one of the valid measured or unavailable MODC for the MATS parameter.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MonitorHourlyModcStatus = false;
+                emParams.MonitorHourlyModcStatus = false;
 
-                if (EmParameters.MatsMhvRecord.ModcCd == null)
+                if (emParams.MatsMhvRecord.ModcCd == null)
                 {
                     Category.CheckCatalogResult = "A";
                 }
-                else if (EmParameters.MatsMhvRecord.ModcCd.NotInList(EmParameters.MatsMhvMeasuredModcList.ToString()) && EmParameters.MatsMhvRecord.ModcCd.NotInList(EmParameters.MatsMhvUnavailableModcList.ToString()))
+                else if (emParams.MatsMhvRecord.ModcCd.NotInList(emParams.MatsMhvMeasuredModcList.ToString()) && emParams.MatsMhvRecord.ModcCd.NotInList(emParams.MatsMhvUnavailableModcList.ToString()))
                 {
                     Category.CheckCatalogResult = "B";
                 }
-                else if ((EmParameters.CurrentMhvSystemType == "ST") && EmParameters.MatsMhvRecord.ModcCd.NotInList("41,42"))
+                else if ((emParams.CurrentMhvSystemType == "ST") && emParams.MatsMhvRecord.ModcCd.NotInList("41,42"))
                 {
-                    if ((EmParameters.MatsMhvSorbentTraps != null) && EmParameters.MatsMhvSorbentTraps.Count > 0)
+                    if ((emParams.MatsMhvSorbentTraps != null) && emParams.MatsMhvSorbentTraps.Count > 0)
                     {
                         bool matchFound = false;
 
-                        foreach (MatsSorbentTrapRecord matsSorbentTrapRecord in EmParameters.MatsMhvSorbentTraps)
+                        foreach (MatsSorbentTrapRecord matsSorbentTrapRecord in emParams.MatsMhvSorbentTraps)
                         {
-                            if ((matsSorbentTrapRecord.ModcCd == EmParameters.MatsMhvRecord.ModcCd) && (matsSorbentTrapRecord.HgConcentration == EmParameters.MatsMhvRecord.UnadjustedHrlyValue))
+                            if ((matsSorbentTrapRecord.ModcCd == emParams.MatsMhvRecord.ModcCd) && (matsSorbentTrapRecord.HgConcentration == emParams.MatsMhvRecord.UnadjustedHrlyValue))
                             {
                                 matchFound = true;
                                 break;
                             }
-                            else if ((EmParameters.MatsMhvRecord.ModcCd == "35") && matsSorbentTrapRecord.ModcCd.InList("01,02"))
+                            else if ((emParams.MatsMhvRecord.ModcCd == "35") && matsSorbentTrapRecord.ModcCd.InList("01,02"))
                             {
                                 matchFound = true;
                                 break;
@@ -188,7 +187,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                         if (matchFound)
                         {
-                            EmParameters.MonitorHourlyModcStatus = true;
+                            emParams.MonitorHourlyModcStatus = true;
                         }
                         else
                         {
@@ -197,12 +196,12 @@ namespace ECMPS.Checks.EmissionsChecks
                     }
                     else
                     {
-                        EmParameters.MonitorHourlyModcStatus = true;
+                        emParams.MonitorHourlyModcStatus = true;
                     }
                 }
                 else
                 {
-                    EmParameters.MonitorHourlyModcStatus = true;
+                    emParams.MonitorHourlyModcStatus = true;
                 }
             }
             catch (Exception ex)
@@ -215,30 +214,30 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSMHV5
-        public static string MATSMHV5(cCategory Category, ref bool Log)
+        public  string MATSMHV5(cCategory Category, ref bool Log)
         // Ensures that the Percent Monitor Availability (PMA) was reported and is inclusively between 0 and 100.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MonitorHourlyPmaStatus = false;
+                emParams.MonitorHourlyPmaStatus = false;
 
-                if (EmParameters.MonitorHourlyModcStatus == true)
+                if (emParams.MonitorHourlyModcStatus == true)
                 {
-                    if (EmParameters.MatsMhvRecord.PctAvailable == null)
+                    if (emParams.MatsMhvRecord.PctAvailable == null)
                     {
                         Category.CheckCatalogResult = "A";
                     }
 
-                    else if (EmParameters.MatsMhvRecord.PctAvailable > (decimal)100.0 || EmParameters.MatsMhvRecord.PctAvailable < (decimal)0.0)
+                    else if (emParams.MatsMhvRecord.PctAvailable > (decimal)100.0 || emParams.MatsMhvRecord.PctAvailable < (decimal)0.0)
                     {
                         Category.CheckCatalogResult = "B";
                     }
 
                     else
                     {
-                        EmParameters.MonitorHourlyPmaStatus = true;
+                        emParams.MonitorHourlyPmaStatus = true;
                     }
                 }
             }
@@ -252,7 +251,7 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSMHV6
-        public static string MATSMHV6(cCategory Category, ref bool Log)
+        public  string MATSMHV6(cCategory Category, ref bool Log)
         // Ensures that a Monitor System is reported when a measured MODC is reported, and that is not reported when an unavailable MODC is reported.  
         //	When Monitor System is and should have been reported, the check ensures that the system type is valid for the MATS parameter being reported.
         {
@@ -260,41 +259,41 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.MonitorHourlySystemStatus = false;
+                emParams.MonitorHourlySystemStatus = false;
 
-                if (EmParameters.MonitorHourlyModcStatus == true)
+                if (emParams.MonitorHourlyModcStatus == true)
                 {
-                    if (EmParameters.MatsMhvRecord.MonSysId == null)
+                    if (emParams.MatsMhvRecord.MonSysId == null)
                     {
-                        if (EmParameters.MatsMhvRecord.ModcCd.InList(EmParameters.MatsMhvMeasuredModcList.ToString()))
+                        if (emParams.MatsMhvRecord.ModcCd.InList(emParams.MatsMhvMeasuredModcList.ToString()))
                             Category.CheckCatalogResult = "A";
                         else
                             Category.CheckCatalogResult = "F";
                     }
 
-                    else if (EmParameters.MatsMhvRecord.SystemIdentifier == null)
+                    else if (emParams.MatsMhvRecord.SystemIdentifier == null)
                     {
                         Category.CheckCatalogResult = "B";
                     }
-                    else if (EmParameters.MatsMhvRecord.SysTypeCd != EmParameters.CurrentMhvSystemType)
+                    else if (emParams.MatsMhvRecord.SysTypeCd != emParams.CurrentMhvSystemType)
                     {
                         Category.CheckCatalogResult = "C";
                     }
-                    else if (EmParameters.MatsMhvRecord.SysTypeCd == "ST")
+                    else if (emParams.MatsMhvRecord.SysTypeCd == "ST")
                     {
-                        if ((EmParameters.MatsMhvSorbentTraps != null) && (EmParameters.MatsMhvSorbentTraps.Count > 0))
+                        if ((emParams.MatsMhvSorbentTraps != null) && (emParams.MatsMhvSorbentTraps.Count > 0))
                         {
-                            EmParameters.MonitorHourlySystemStatus = true;
+                            emParams.MonitorHourlySystemStatus = true;
                         }
                         else
                         {
-                            if (EmParameters.MatsMhvRecord.ModcCd.InList(EmParameters.MatsMhvMeasuredModcList.ToString()))
+                            if (emParams.MatsMhvRecord.ModcCd.InList(emParams.MatsMhvMeasuredModcList.ToString()))
                                 Category.CheckCatalogResult = "E";
                         }
                     }
                     else
                     {
-                        EmParameters.MonitorHourlySystemStatus = true;
+                        emParams.MonitorHourlySystemStatus = true;
                     }
                 }
             }
@@ -308,7 +307,7 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSMHV7
-        public static string MATSMHV7(cCategory Category, ref bool Log)
+        public  string MATSMHV7(cCategory Category, ref bool Log)
         // Ensure that the System Designation Code is valid for the reported MODC.
         //Currently, the system designation should be 'P' for MODC 01 and 17, 'B' or 'PB' for MODC 02.
         {
@@ -316,14 +315,14 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                if (EmParameters.MonitorHourlyModcStatus == true && EmParameters.MonitorHourlySystemStatus == true && EmParameters.MatsMhvRecord.SystemIdentifier != null)
+                if (emParams.MonitorHourlyModcStatus == true && emParams.MonitorHourlySystemStatus == true && emParams.MatsMhvRecord.SystemIdentifier != null)
                 {
-                    switch (EmParameters.MatsMhvRecord.ModcCd)
+                    switch (emParams.MatsMhvRecord.ModcCd)
                     {
                         case "01":
                         case "17":
                             {
-                                if (EmParameters.MatsMhvRecord.SysDesignationCd != "P")
+                                if (emParams.MatsMhvRecord.SysDesignationCd != "P")
                                 {
                                     Category.CheckCatalogResult = "A";
                                 }
@@ -331,7 +330,7 @@ namespace ECMPS.Checks.EmissionsChecks
                             }
                         case "02":
                             {
-                                if (EmParameters.MatsMhvRecord.SysDesignationCd.NotInList("B,RB"))
+                                if (emParams.MatsMhvRecord.SysDesignationCd.NotInList("B,RB"))
                                 {
                                     Category.CheckCatalogResult = "B";
                                 }
@@ -350,28 +349,28 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSMHV8
-        public static string MATSMHV8(cCategory Category, ref bool Log)
+        public  string MATSMHV8(cCategory Category, ref bool Log)
         // Ensures that the conditions exist that allow the use of particular MODC. Currently only checks MODC 17.
         {
             string ReturnVal = "";
 
             try
             {
-                if (EmParameters.MonitorHourlyModcStatus == true && EmParameters.MonitorHourlySystemStatus == true)
+                if (emParams.MonitorHourlyModcStatus == true && emParams.MonitorHourlySystemStatus == true)
                 {
-                    if (EmParameters.MatsMhvRecord.ModcCd == "17")
+                    if (emParams.MatsMhvRecord.ModcCd == "17")
                     {
                         if (Category.ModcHourCounts.LikeKindHourCount(Category.CurrentMonLocPos) >= 720)
                         {
                             //Locate a RATATestRecordsByLocationForQAStatus for the location
                             // if not found
-                            if (cRowFilter.FindRows(EmParameters.RataTestRecordsByLocationForQaStatus.SourceView,
+                            if (cRowFilter.FindRows(emParams.RataTestRecordsByLocationForQaStatus.SourceView,
                                         new cFilterCondition[]
                                                 {
-                                                new cFilterCondition("MON_SYS_ID", EmParameters.MatsMhvRecord.MonSysId),
+                                                new cFilterCondition("MON_SYS_ID", emParams.MatsMhvRecord.MonSysId),
                                              new cFilterCondition("TEST_RESULT_CD", "PASS", eFilterConditionStringCompare.BeginsWith),
                                              new cFilterCondition("END_DATEHOUR",Category.ModcHourCounts.FirstLikeKindDateHour(Category.CurrentMonLocPos).Value, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.GreaterThan),
-                                                                     new cFilterCondition("END_DATEHOUR", EmParameters.CurrentOperatingDatehour, eFilterDataType.DateBegan, eFilterConditionRelativeCompare.LessThan)
+                                                                     new cFilterCondition("END_DATEHOUR", emParams.CurrentOperatingDatehour, eFilterDataType.DateBegan, eFilterConditionRelativeCompare.LessThan)
                                                 }
                                 ).Count == 0)
                             {
@@ -390,7 +389,7 @@ namespace ECMPS.Checks.EmissionsChecks
         }
         #endregion
 
-        public static string MATSMHV9(cCategory Category, ref bool Log)
+        public  string MATSMHV9(cCategory Category, ref bool Log)
         // Ensures that a Component is reported when a measured MODC is reported, and that is not reported when an unavailable MODC is reported.
         //	When Component is and should have been reported, the check ensures that the system type is valid for the MATS parameter being reported.
         {
@@ -398,55 +397,55 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.MonitorHourlyComponentStatus = false;
+                emParams.MonitorHourlyComponentStatus = false;
 
-                if (EmParameters.CurrentMhvSystemType != "ST")
+                if (emParams.CurrentMhvSystemType != "ST")
                 {
-                    if (EmParameters.MonitorHourlyModcStatus == true)
+                    if (emParams.MonitorHourlyModcStatus == true)
                     {
-                        if (EmParameters.MatsMhvRecord.ComponentId == null)
+                        if (emParams.MatsMhvRecord.ComponentId == null)
                         {
-                            if (EmParameters.MatsMhvRecord.ModcCd.InList(EmParameters.MatsMhvMeasuredModcList.ToString()))
+                            if (emParams.MatsMhvRecord.ModcCd.InList(emParams.MatsMhvMeasuredModcList.ToString()))
                                 Category.CheckCatalogResult = "A";
                             else
                                 Category.CheckCatalogResult = "G";
                         }
                         else
-                            if (EmParameters.MatsMhvRecord.ComponentIdentifier == null)
+                            if (emParams.MatsMhvRecord.ComponentIdentifier == null)
                         {
                             Category.CheckCatalogResult = "B";
                         }
 
-                        else if (EmParameters.MatsMhvRecord.ComponentTypeCd != EmParameters.CurrentMhvComponentType)
+                        else if (emParams.MatsMhvRecord.ComponentTypeCd != emParams.CurrentMhvComponentType)
                         {
                             Category.CheckCatalogResult = "C";
                         }
 
-                        else if (EmParameters.MatsMhvRecord.ModcCd == "17" && !EmParameters.MatsMhvRecord.ComponentIdentifier.StartsWith("LK"))
+                        else if (emParams.MatsMhvRecord.ModcCd == "17" && !emParams.MatsMhvRecord.ComponentIdentifier.StartsWith("LK"))
                         {
                             Category.CheckCatalogResult = "D";
                         }
 
-                        else if (EmParameters.MatsMhvRecord.ComponentIdentifier.StartsWith("LK") && EmParameters.MatsMhvRecord.ModcCd.InList(EmParameters.MatsMhvNoLikeKindModcList))
+                        else if (emParams.MatsMhvRecord.ComponentIdentifier.StartsWith("LK") && emParams.MatsMhvRecord.ModcCd.InList(emParams.MatsMhvNoLikeKindModcList))
                         {
                             Category.CheckCatalogResult = "H";
                         }
 
                         else
                         {
-                            EmParameters.MonitorHourlyComponentStatus = true;
+                            emParams.MonitorHourlyComponentStatus = true;
                         }
                     }
                 }
                 else // STRAIN Component Type
                 {
-                    if (EmParameters.MatsMhvRecord.ComponentId != null)
+                    if (emParams.MatsMhvRecord.ComponentId != null)
                     {
                         Category.CheckCatalogResult = "F";
                     }
                     else
                     {
-                        EmParameters.MonitorHourlyComponentStatus = true;
+                        emParams.MonitorHourlyComponentStatus = true;
                     }
                 }
             }
@@ -459,7 +458,7 @@ namespace ECMPS.Checks.EmissionsChecks
         }
 
         #region MATSMHV10
-        public static string MATSMHV10(cCategory Category, ref bool Log)
+        public  string MATSMHV10(cCategory Category, ref bool Log)
         // Ensure that at least one active Monitoring System Component record exists for the Monitoring System Id and Component Id 
         //	in the current MATS MHV record.
         {
@@ -467,16 +466,16 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                if ((EmParameters.MonitorHourlySystemStatus == true)
-                    && (EmParameters.MatsMhvRecord.MonSysId != null)
-                    && (EmParameters.MonitorHourlyComponentStatus == true)
-                    && (EmParameters.MatsMhvRecord.ComponentId != null))
+                if ((emParams.MonitorHourlySystemStatus == true)
+                    && (emParams.MatsMhvRecord.MonSysId != null)
+                    && (emParams.MonitorHourlyComponentStatus == true)
+                    && (emParams.MatsMhvRecord.ComponentId != null))
                 {
-                    int CountMonSysCompRecord = cRowFilter.FindRows(EmParameters.MonitorSystemComponentRecordsByHourLocation.SourceView,
+                    int CountMonSysCompRecord = cRowFilter.FindRows(emParams.MonitorSystemComponentRecordsByHourLocation.SourceView,
                                                 new cFilterCondition[]
                                                 {
-                                                new cFilterCondition("MON_SYS_ID", EmParameters.MatsMhvRecord.MonSysId),
-                                                new cFilterCondition("COMPONENT_ID", EmParameters.MatsMhvRecord.ComponentId)
+                                                new cFilterCondition("MON_SYS_ID", emParams.MatsMhvRecord.MonSysId),
+                                                new cFilterCondition("COMPONENT_ID", emParams.MatsMhvRecord.ComponentId)
                                                 }
                         ).Count;
 
@@ -500,7 +499,7 @@ namespace ECMPS.Checks.EmissionsChecks
         #region Checks 11-20
 
         #region MATSMHV11
-        public static string MATSMHV11(cCategory Category, ref bool Log)
+        public  string MATSMHV11(cCategory Category, ref bool Log)
         // Determines the MPC for the active Monitor Span record for the hour, location and component type, 
         // returning a check result if a single row is not found or the MPC is not greater than 0.
         {
@@ -508,17 +507,17 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.CurrentMhvMaxMinValue = null;
+                emParams.CurrentMhvMaxMinValue = null;
 
-                if (EmParameters.MonitorHourlyModcStatus == true && EmParameters.MatsMhvRecord.ModcCd.InList(EmParameters.MatsMhvMeasuredModcList.ToString()))
+                if (emParams.MonitorHourlyModcStatus == true && emParams.MatsMhvRecord.ModcCd.InList(emParams.MatsMhvMeasuredModcList.ToString()))
                 {
-                    if (EmParameters.CurrentMhvComponentType == "HG")
+                    if (emParams.CurrentMhvComponentType == "HG")
                     {
                         DataView FilteredMonitorSpanRecords
-                          = cRowFilter.FindRows(EmParameters.MonitorSpanRecordsByHourLocation.SourceView,
+                          = cRowFilter.FindRows(emParams.MonitorSpanRecordsByHourLocation.SourceView,
                                                 new cFilterCondition[]
                                               {
-                                      new cFilterCondition("COMPONENT_TYPE_CD", EmParameters.CurrentMhvComponentType),
+                                      new cFilterCondition("COMPONENT_TYPE_CD", emParams.CurrentMhvComponentType),
                                                 new cFilterCondition("SPAN_SCALE_CD", "H")
                                               });
 
@@ -537,7 +536,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                 DataRowView CurrentMonitorSpanRecord = FilteredMonitorSpanRecords[0];
                                 if (CurrentMonitorSpanRecord["MPC_VALUE"] != null && CurrentMonitorSpanRecord["MPC_VALUE"].AsDecimal() > 0)
                                 {
-                                    EmParameters.CurrentMhvMaxMinValue = CurrentMonitorSpanRecord["MPC_VALUE"].AsDecimal();
+                                    emParams.CurrentMhvMaxMinValue = CurrentMonitorSpanRecord["MPC_VALUE"].AsDecimal();
                                 }
                                 else
                                 {
@@ -565,26 +564,26 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category">The object for the category in which the check is running.</param>
         /// <param name="Log">Obsolete.</param>
         /// <returns>Null if the check runs successfully, otherwise the exception message.</returns>
-        public static string MATSMHV12(cCategory Category, ref bool Log)
+        public  string MATSMHV12(cCategory Category, ref bool Log)
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MonitorHourlyUnadjustedValueStatus = false;
-                EmParameters.MatsMhvCalculatedValue = null;
+                emParams.MonitorHourlyUnadjustedValueStatus = false;
+                emParams.MatsMhvCalculatedValue = null;
 
-                if (EmParameters.MonitorHourlyModcStatus == true)
+                if (emParams.MonitorHourlyModcStatus == true)
                 {
-                    switch (EmParameters.MatsMhvRecord.ModcCd)
+                    switch (emParams.MatsMhvRecord.ModcCd)
                     {
                         case "21":
                             {
-                                EmParameters.MatsMhvCalculatedValue = ECMPS.Definitions.Extensions.cExtensions.MatsSignificantDigitsFormat(0m, EmParameters.CurrentOperatingDate.Value, EmParameters.MatsMhvRecord.UnadjustedHrlyValue);
+                                emParams.MatsMhvCalculatedValue = ECMPS.Definitions.Extensions.cExtensions.MatsSignificantDigitsFormat(0m, emParams.CurrentOperatingDate.Value, emParams.MatsMhvRecord.UnadjustedHrlyValue);
 
-                                if (ECMPS.Definitions.Extensions.cExtensions.MatsSignificantDigitsDecimalValues(EmParameters.MatsMhvRecord.UnadjustedHrlyValue) == 0)
+                                if (ECMPS.Definitions.Extensions.cExtensions.MatsSignificantDigitsDecimalValues(emParams.MatsMhvRecord.UnadjustedHrlyValue) == 0)
                                 {
-                                    EmParameters.MonitorHourlyUnadjustedValueStatus = true;
+                                    emParams.MonitorHourlyUnadjustedValueStatus = true;
                                 }
                                 else
                                 {
@@ -594,26 +593,26 @@ namespace ECMPS.Checks.EmissionsChecks
                             }
                         default:
                             {
-                                if (EmParameters.MatsMhvRecord.ModcCd.InList(EmParameters.MatsMhvMeasuredModcList.ToString()))
+                                if (emParams.MatsMhvRecord.ModcCd.InList(emParams.MatsMhvMeasuredModcList.ToString()))
                                 {
-                                    if (string.IsNullOrEmpty(EmParameters.MatsMhvRecord.UnadjustedHrlyValue))
+                                    if (string.IsNullOrEmpty(emParams.MatsMhvRecord.UnadjustedHrlyValue))
                                     {
                                         Category.CheckCatalogResult = "B";
                                     }
-                                    else if (!ECMPS.Definitions.Extensions.cExtensions.MatsSignificantDigitsValid(EmParameters.MatsMhvRecord.UnadjustedHrlyValue, EmParameters.CurrentOperatingDate.Value))
+                                    else if (!ECMPS.Definitions.Extensions.cExtensions.MatsSignificantDigitsValid(emParams.MatsMhvRecord.UnadjustedHrlyValue, emParams.CurrentOperatingDate.Value))
                                     {
                                         Category.CheckCatalogResult = "C";
                                     }
-                                    else if (ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.MatsMhvRecord.UnadjustedHrlyValue) < 0)
+                                    else if (ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.MatsMhvRecord.UnadjustedHrlyValue) < 0)
                                     {
                                         Category.CheckCatalogResult = "D";
                                     }
                                     else
                                     {
-                                        EmParameters.MonitorHourlyUnadjustedValueStatus = true;
-                                        EmParameters.MatsMhvCalculatedValue = EmParameters.MatsMhvRecord.UnadjustedHrlyValue;
+                                        emParams.MonitorHourlyUnadjustedValueStatus = true;
+                                        emParams.MatsMhvCalculatedValue = emParams.MatsMhvRecord.UnadjustedHrlyValue;
 
-                                        if (EmParameters.CurrentMhvMaxMinValue != null && ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(EmParameters.MatsMhvRecord.UnadjustedHrlyValue) > EmParameters.CurrentMhvMaxMinValue)
+                                        if (emParams.CurrentMhvMaxMinValue != null && ECMPS.Definitions.Extensions.cExtensions.ScientificNotationtoDecimal(emParams.MatsMhvRecord.UnadjustedHrlyValue) > emParams.CurrentMhvMaxMinValue)
                                         {
                                             Category.CheckCatalogResult = "E";
                                         }
@@ -621,7 +620,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                 }
                                 else
                                 {
-                                    if (!string.IsNullOrEmpty(EmParameters.MatsMhvRecord.UnadjustedHrlyValue))
+                                    if (!string.IsNullOrEmpty(emParams.MatsMhvRecord.UnadjustedHrlyValue))
                                     {
                                         Category.CheckCatalogResult = "F";
                                     }
@@ -699,28 +698,28 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="Category"></param>
         /// <param name="Log"></param>
         /// <returns></returns>
-        public static string MATSMHV13(cCategory Category, ref bool Log)
+        public  string MATSMHV13(cCategory Category, ref bool Log)
         // MATS: QA Status Required
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.QaStatusComponentBeginDate = EmParameters.MatsMhvRecord.ComponentBeginDate;
-                EmParameters.QaStatusComponentBeginDatehour = EmParameters.MatsMhvRecord.ComponentBeginDatehour;
-                EmParameters.QaStatusComponentId = EmParameters.MatsMhvRecord.ComponentId;
-                EmParameters.QaStatusComponentIdentifier = EmParameters.MatsMhvRecord.ComponentIdentifier;
-                EmParameters.QaStatusComponentTypeCode = EmParameters.MatsMhvRecord.ComponentTypeCd;
-                EmParameters.QaStatusSystemDesignationCode = EmParameters.MatsMhvRecord.SysDesignationCd;
-                EmParameters.QaStatusSystemId = EmParameters.MatsMhvRecord.MonSysId;
-                EmParameters.QaStatusSystemIdentifier = EmParameters.MatsMhvRecord.SystemIdentifier;
-                EmParameters.QaStatusSystemTypeCode = EmParameters.MatsMhvRecord.SysTypeCd;
+                emParams.QaStatusComponentBeginDate = emParams.MatsMhvRecord.ComponentBeginDate;
+                emParams.QaStatusComponentBeginDatehour = emParams.MatsMhvRecord.ComponentBeginDatehour;
+                emParams.QaStatusComponentId = emParams.MatsMhvRecord.ComponentId;
+                emParams.QaStatusComponentIdentifier = emParams.MatsMhvRecord.ComponentIdentifier;
+                emParams.QaStatusComponentTypeCode = emParams.MatsMhvRecord.ComponentTypeCd;
+                emParams.QaStatusSystemDesignationCode = emParams.MatsMhvRecord.SysDesignationCd;
+                emParams.QaStatusSystemId = emParams.MatsMhvRecord.MonSysId;
+                emParams.QaStatusSystemIdentifier = emParams.MatsMhvRecord.SystemIdentifier;
+                emParams.QaStatusSystemTypeCode = emParams.MatsMhvRecord.SysTypeCd;
 
                 /* Set QA Status MATS ERB Date */
-                if (EmParameters.MatsMhvRecord.ParameterCd.InList("HGC,HCLC,HFC"))
+                if (emParams.MatsMhvRecord.ParameterCd.InList("HGC,HCLC,HFC"))
                 {
                     VwMpLocationProgramRow programRow
-                        = EmParameters.EmLocationProgramRecords.FindEarliestRowByDate
+                        = emParams.EmLocationProgramRecords.FindEarliestRowByDate
                         (
                             "EMISSIONS_RECORDING_BEGIN_DATE",
                             "END_DATE",
@@ -729,58 +728,58 @@ namespace ECMPS.Checks.EmissionsChecks
                                     new cFilterCondition[]
                                     {
                                         new cFilterCondition("PRG_CD", "MATS"),
-                                        new cFilterCondition("EMISSIONS_RECORDING_BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, EmParameters.CurrentDateHour.Value.Date),
+                                        new cFilterCondition("EMISSIONS_RECORDING_BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, emParams.CurrentDateHour.Value.Date),
                                         new cFilterCondition("END_DATE", null)
                                     },
                                     new cFilterCondition[]
                                     {
                                         new cFilterCondition("PRG_CD", "MATS"),
-                                        new cFilterCondition("EMISSIONS_RECORDING_BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, EmParameters.CurrentDateHour.Value.Date),
-                                        new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, EmParameters.CurrentDateHour.Value.Date)
+                                        new cFilterCondition("EMISSIONS_RECORDING_BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, emParams.CurrentDateHour.Value.Date),
+                                        new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, emParams.CurrentDateHour.Value.Date)
                                     }
                             }
                         );
 
-                    EmParameters.QaStatusMatsErbDate = (programRow != null) ? programRow.EmissionsRecordingBeginDate : null;
+                    emParams.QaStatusMatsErbDate = (programRow != null) ? programRow.EmissionsRecordingBeginDate : null;
                 }
                 else
                 {
-                    EmParameters.QaStatusMatsErbDate = null;
+                    emParams.QaStatusMatsErbDate = null;
                 }
 
-                EmParameters.DailyCalStatusRequired = false;
-                EmParameters.LinearityStatusRequired = false;
-                EmParameters.QuarterlyGasAuditStatus = false;
-                EmParameters.RataStatusRequired = false;
-                EmParameters.WsiStatusRequired = false;
+                emParams.DailyCalStatusRequired = false;
+                emParams.LinearityStatusRequired = false;
+                emParams.QuarterlyGasAuditStatus = false;
+                emParams.RataStatusRequired = false;
+                emParams.WsiStatusRequired = false;
 
 
-                if (EmParameters.MonitorHourlyModcStatus == true
-                    && EmParameters.MatsMhvRecord.ModcCd.InList(EmParameters.MatsMhvMeasuredModcList.ToString())
-                    && !string.IsNullOrEmpty(EmParameters.MatsMhvRecord.UnadjustedHrlyValue))
+                if (emParams.MonitorHourlyModcStatus == true
+                    && emParams.MatsMhvRecord.ModcCd.InList(emParams.MatsMhvMeasuredModcList.ToString())
+                    && !string.IsNullOrEmpty(emParams.MatsMhvRecord.UnadjustedHrlyValue))
                 {
 
-                    if (EmParameters.MonitorHourlyComponentStatus == true && EmParameters.MatsMhvRecord.ComponentId != null)
+                    if (emParams.MonitorHourlyComponentStatus == true && emParams.MatsMhvRecord.ComponentId != null)
                     {
 
-                        if (EmParameters.MatsMhvRecord.ParameterCd == "HGC")
+                        if (emParams.MatsMhvRecord.ParameterCd == "HGC")
                         {
-                            if (EmParameters.MatsMhvRecord.ComponentTypeCd == "HG")
+                            if (emParams.MatsMhvRecord.ComponentTypeCd == "HG")
                             {
-                                EmParameters.DailyCalStatusRequired = true;
-                                EmParameters.LinearityStatusRequired = true;
-                                EmParameters.WsiStatusRequired = true;
+                                emParams.DailyCalStatusRequired = true;
+                                emParams.LinearityStatusRequired = true;
+                                emParams.WsiStatusRequired = true;
                             }
                         }
 
-                        else if (EmParameters.MatsMhvRecord.ParameterCd.InList("HCLC,HFC"))
+                        else if (emParams.MatsMhvRecord.ParameterCd.InList("HCLC,HFC"))
                         {
-                            EmParameters.QuarterlyGasAuditStatus = true;
+                            emParams.QuarterlyGasAuditStatus = true;
                         }
                     }
-                    if (EmParameters.MonitorHourlySystemStatus == true && EmParameters.MatsMhvRecord.MonSysId != null)
+                    if (emParams.MonitorHourlySystemStatus == true && emParams.MatsMhvRecord.MonSysId != null)
                     {
-                        EmParameters.RataStatusRequired = true;
+                        emParams.RataStatusRequired = true;
                     }
                 }
             }
@@ -793,14 +792,14 @@ namespace ECMPS.Checks.EmissionsChecks
         }
 
         #region MATSMHV14
-        public static string MATSMHV14(cCategory Category, ref bool Log)
+        public  string MATSMHV14(cCategory Category, ref bool Log)
         // Assigns the calculated values for MATS Hg Concentration Monitor Hourly.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsMhvCalculatedHgcValue = EmParameters.MatsMhvCalculatedValue;
+                emParams.MatsMhvCalculatedHgcValue = emParams.MatsMhvCalculatedValue;
             }
             catch (Exception ex)
             {
@@ -812,14 +811,14 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSMHV15
-        public static string MATSMHV15(cCategory Category, ref bool Log)
+        public  string MATSMHV15(cCategory Category, ref bool Log)
         // Assigns the calculated values for MATS HCl Concentration Monitor Hourly.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsMhvCalculatedHclcValue = EmParameters.MatsMhvCalculatedValue;
+                emParams.MatsMhvCalculatedHclcValue = emParams.MatsMhvCalculatedValue;
             }
             catch (Exception ex)
             {
@@ -831,14 +830,14 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSMHV16
-        public static string MATSMHV16(cCategory Category, ref bool Log)
+        public  string MATSMHV16(cCategory Category, ref bool Log)
         // Assigns the calculated values for MATS HF Concentration Monitor Hourly.
         {
             string ReturnVal = "";
 
             try
             {
-                EmParameters.MatsMhvCalculatedHfcValue = EmParameters.MatsMhvCalculatedValue;
+                emParams.MatsMhvCalculatedHfcValue = emParams.MatsMhvCalculatedValue;
             }
             catch (Exception ex)
             {
@@ -850,69 +849,69 @@ namespace ECMPS.Checks.EmissionsChecks
         #endregion
 
         #region MATSMHV17
-        public static string MATSMHV17(cCategory Category, ref bool Log)
+        public  string MATSMHV17(cCategory Category, ref bool Log)
         //
         {
             string ReturnVal = "";
 
             try
             {
-                if (EmParameters.LinearityStatusRequired == true || EmParameters.DailyCalStatusRequired == true)
+                if (emParams.LinearityStatusRequired == true || emParams.DailyCalStatusRequired == true)
                 {
                     // Initialize
-                    EmParameters.DualRangeStatus = false;
-                    EmParameters.ApplicableComponentId = null;
-                    EmParameters.ApplicableSystemIds = null;
-                    EmParameters.CurrentAnalyzerRangeUsed = null;
-                    EmParameters.HighRangeComponentId = null;
-                    EmParameters.LowRangeComponentId = null;
+                    emParams.DualRangeStatus = false;
+                    emParams.ApplicableComponentId = null;
+                    emParams.ApplicableSystemIds = null;
+                    emParams.CurrentAnalyzerRangeUsed = null;
+                    emParams.HighRangeComponentId = null;
+                    emParams.LowRangeComponentId = null;
 
                     //Find Analyzer Range Records
-                    cFilterCondition[] AnalyzerFilter = new cFilterCondition[] { new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId) };
-                    DataView AnalyzerRangeRecs = cRowFilter.FindRows(EmParameters.AnalyzerRangeRecordsByHourLocation.SourceView,
+                    cFilterCondition[] AnalyzerFilter = new cFilterCondition[] { new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId) };
+                    DataView AnalyzerRangeRecs = cRowFilter.FindRows(emParams.AnalyzerRangeRecordsByHourLocation.SourceView,
                                 AnalyzerFilter);
 
                     if (AnalyzerRangeRecs == null || AnalyzerRangeRecs.Count == 0 || AnalyzerRangeRecs.Count > 1)
                     {
-                        EmParameters.LinearityStatusRequired = false;
-                        EmParameters.DailyCalStatusRequired = false;
+                        emParams.LinearityStatusRequired = false;
+                        emParams.DailyCalStatusRequired = false;
                         Category.CheckCatalogResult = "A";
                     }
                     else if (AnalyzerRangeRecs[0]["DUAL_RANGE_IND"].AsInteger() == 1)
                     {
-                        EmParameters.LinearityStatusRequired = false;
-                        EmParameters.DailyCalStatusRequired = false;
+                        emParams.LinearityStatusRequired = false;
+                        emParams.DailyCalStatusRequired = false;
                         Category.CheckCatalogResult = "B";
                     }
 
                     else if (AnalyzerRangeRecs[0]["ANALYZER_RANGE_CD"].AsString() != "H")
                     {
-                        EmParameters.LinearityStatusRequired = false;
-                        EmParameters.DailyCalStatusRequired = false;
+                        emParams.LinearityStatusRequired = false;
+                        emParams.DailyCalStatusRequired = false;
                         Category.CheckCatalogResult = "C";
                     }
                     else
                     {
-                        EmParameters.CurrentAnalyzerRangeUsed = AnalyzerRangeRecs[0]["ANALYZER_RANGE_CD"].AsString();
-                        EmParameters.ApplicableComponentId = EmParameters.QaStatusComponentId;
-                        EmParameters.HighRangeComponentId = EmParameters.QaStatusComponentId;
+                        emParams.CurrentAnalyzerRangeUsed = AnalyzerRangeRecs[0]["ANALYZER_RANGE_CD"].AsString();
+                        emParams.ApplicableComponentId = emParams.QaStatusComponentId;
+                        emParams.HighRangeComponentId = emParams.QaStatusComponentId;
 
                         //Find System Records
-                        cFilterCondition[] MonSysFilter = new cFilterCondition[] { new cFilterCondition("COMPONENT_ID", EmParameters.ApplicableComponentId) };
-                        DataView MonSysRecs = cRowFilter.FindRows(EmParameters.MonitorSystemComponentRecordsByHourLocation.SourceView,
+                        cFilterCondition[] MonSysFilter = new cFilterCondition[] { new cFilterCondition("COMPONENT_ID", emParams.ApplicableComponentId) };
+                        DataView MonSysRecs = cRowFilter.FindRows(emParams.MonitorSystemComponentRecordsByHourLocation.SourceView,
                                     MonSysFilter);
 
                         if (MonSysRecs != null && MonSysRecs.Count > 0)
                         {
                             foreach (DataRowView MonSysRec in MonSysRecs)
                             {
-                                EmParameters.ApplicableSystemIds.AsString().ListAdd(MonSysRec["MON_SYS_ID"].AsString());
+                                emParams.ApplicableSystemIds.AsString().ListAdd(MonSysRec["MON_SYS_ID"].AsString());
                             }
                         }
                         else
                         {
-                            EmParameters.LinearityStatusRequired = false;
-                            EmParameters.DailyCalStatusRequired = false;
+                            emParams.LinearityStatusRequired = false;
+                            emParams.DailyCalStatusRequired = false;
                             Category.CheckCatalogResult = "D";
                         }
                     }
@@ -936,23 +935,23 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MATSMHV18(cCategory category, ref bool log)
+        public  string MATSMHV18(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.WsiStatusRequired.Default(false))
+                if (emParams.WsiStatusRequired.Default(false))
                 {
                     /* Locate the certification event and set the test required datehour. */
                     VwQaCertEventRow mostRecentEventRecord
-                      = EmParameters.QaCertificationEventRecords.FindMostRecentRow
+                      = emParams.QaCertificationEventRecords.FindMostRecentRow
                         (
-                          EmParameters.CurrentDateHour.Value,
+                          emParams.CurrentDateHour.Value,
                           "QA_CERT_EVENT_DATEHOUR",
                           new cFilterCondition[]
                           {
-                  new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId),
+                  new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId),
                   new cFilterCondition("QA_CERT_EVENT_CD", "120,125", eFilterConditionStringCompare.InList)
                           }
                         );
@@ -967,14 +966,14 @@ namespace ECMPS.Checks.EmissionsChecks
                     {
                         /* Use the most recent system component row to set the test required datehour if an event was not found */
                         VwMpMonitorSystemComponentRow mostRecentMonitorSystemComponentRecord
-                          = EmParameters.MonitorSystemComponentRecordsByHourLocation.FindMostRecentRow
+                          = emParams.MonitorSystemComponentRecordsByHourLocation.FindMostRecentRow
                             (
-                              EmParameters.CurrentDateHour.Value.AddHours(1), // AddHours(1) will include CurrentDateHour in the "most recent search"
+                              emParams.CurrentDateHour.Value.AddHours(1), // AddHours(1) will include CurrentDateHour in the "most recent search"
                               "BEGIN_DATEHOUR",
                               new cFilterCondition[]
                               {
-                    new cFilterCondition("MON_SYS_ID", EmParameters.QaStatusSystemId),
-                    new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId)
+                    new cFilterCondition("MON_SYS_ID", emParams.QaStatusSystemId),
+                    new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId)
                               }
                             );
 
@@ -993,12 +992,12 @@ namespace ECMPS.Checks.EmissionsChecks
                     {
                         /* Determine whether a test exists on or after the test required datehour and before the current date. */
                         int mats3LevelSystemIntegrityRecordCount
-                          = EmParameters.Mats3LevelSystemIntegrityRecordsForQaStatus.CountRows
+                          = emParams.Mats3LevelSystemIntegrityRecordsForQaStatus.CountRows
                             (
                               new cFilterCondition[]
                               {
-                    new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId),
-                    new cFilterCondition("END_DATEHOUR", EmParameters.CurrentDateHour, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.LessThan),
+                    new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId),
+                    new cFilterCondition("END_DATEHOUR", emParams.CurrentDateHour, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.LessThan),
                     new cFilterCondition("END_DATEHOUR", testRequiredDateHour, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.GreaterThanOrEqual)
                               }
                             );
@@ -1028,7 +1027,7 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MATSMHV19(cCategory category, ref bool log)
+        public  string MATSMHV19(cCategory category, ref bool log)
         {
             string returnVal = "";
 
@@ -1037,14 +1036,14 @@ namespace ECMPS.Checks.EmissionsChecks
                 VwQaSuppDataHourlyStatusRow hgTestRecord;
                 VwQaCertEventRow certEventRecord;
 
-                MatsHgLinearityLikeCertificationCheck(category, EmParameters.Mats3LevelSystemIntegrityRecordsForQaStatus, out hgTestRecord, out certEventRecord);
+                MatsHgLinearityLikeCertificationCheck(category, emParams.Mats3LevelSystemIntegrityRecordsForQaStatus, out hgTestRecord, out certEventRecord);
 
-                EmParameters.MatsHg3LevelSiTestRecord = hgTestRecord;
-                EmParameters.MatsHg3LevelSiEventRecord = certEventRecord;
+                emParams.MatsHg3LevelSiTestRecord = hgTestRecord;
+                emParams.MatsHg3LevelSiEventRecord = certEventRecord;
             }
             catch (Exception ex)
             {
-                EmParameters.MatsHg3LevelSiEventRecord = null;
+                emParams.MatsHg3LevelSiEventRecord = null;
 
                 returnVal = category.CheckEngine.FormatError(ex);
             }
@@ -1062,7 +1061,7 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string MATSMHV20(cCategory category, ref bool log)
+        public  string MATSMHV20(cCategory category, ref bool log)
         {
             string returnVal = "";
 
@@ -1071,14 +1070,14 @@ namespace ECMPS.Checks.EmissionsChecks
                 VwQaSuppDataHourlyStatusRow hgTestRecord;
                 VwQaCertEventRow certEventRecord;
 
-                MatsHgLinearityLikeCertificationCheck(category, EmParameters.MatsHgLinearityRecordsForQaStatus, out hgTestRecord, out certEventRecord);
+                MatsHgLinearityLikeCertificationCheck(category, emParams.MatsHgLinearityRecordsForQaStatus, out hgTestRecord, out certEventRecord);
 
-                EmParameters.MatsHgLinearityTestRecord = hgTestRecord;
-                EmParameters.MatsHgLinearityEventRecord = certEventRecord;
+                emParams.MatsHgLinearityTestRecord = hgTestRecord;
+                emParams.MatsHgLinearityEventRecord = certEventRecord;
             }
             catch (Exception ex)
             {
-                EmParameters.MatsHgLinearityEventRecord = null;
+                emParams.MatsHgLinearityEventRecord = null;
 
                 returnVal = category.CheckEngine.FormatError(ex);
             }
@@ -1101,24 +1100,24 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="hgTestRecord">The located Hg Linearity or 3-Level SI test record.</param>
         /// <param name="certEventRecord">The located event record.</param>
         /// <returns></returns>
-        public static void MatsHgLinearityLikeCertificationCheck(cCategory category, CheckDataView<VwQaSuppDataHourlyStatusRow> matsTestRecordsForQaStatus, 
+        public  void MatsHgLinearityLikeCertificationCheck(cCategory category, CheckDataView<VwQaSuppDataHourlyStatusRow> matsTestRecordsForQaStatus, 
                                                                  out VwQaSuppDataHourlyStatusRow hgTestRecord, out VwQaCertEventRow certEventRecord)
         {
             hgTestRecord = null;
             certEventRecord = null;
 
-            if (EmParameters.WsiStatusRequired.Default(false) && !EmParameters.QaStatusComponentIdentifier.StartsWith("LK"))
+            if (emParams.WsiStatusRequired.Default(false) && !emParams.QaStatusComponentIdentifier.StartsWith("LK"))
             {
                 /* Locate most recent passed or passed APS MATS Hg test for the current component id in the current hour but before the 45  minute  */
                 hgTestRecord
                   = matsTestRecordsForQaStatus.FindMostRecentRow
                     (
-                      EmParameters.CurrentDateHour.Value.AddHours(1),
+                      emParams.CurrentDateHour.Value.AddHours(1),
                       "END_DATETIME",
                       new cFilterCondition[] 
                       {
-                          new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId),
-                          new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.Equals, EmParameters.CurrentDateHour.Value),
+                          new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId),
+                          new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.Equals, emParams.CurrentDateHour.Value),
                           new cFilterCondition("END_MIN", eFilterConditionRelativeCompare.LessThan, 45),
                           new cFilterCondition("TEST_RESULT_CD", "PASSED,PASSAPS", eFilterConditionStringCompare.InList)
                       }
@@ -1130,11 +1129,11 @@ namespace ECMPS.Checks.EmissionsChecks
                     hgTestRecord
                       = matsTestRecordsForQaStatus.FindMostRecentRow
                         (
-                          EmParameters.CurrentDateHour.Value,
+                          emParams.CurrentDateHour.Value,
                           "END_DATEHOUR",
                           new cFilterCondition[] 
                           {
-                              new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId),
+                              new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId),
                               new cFilterCondition("TEST_RESULT_CD", "PASSED,PASSAPS", eFilterConditionStringCompare.InList)
                           }
                       );
@@ -1146,22 +1145,22 @@ namespace ECMPS.Checks.EmissionsChecks
                         = (hgTestRecord != null)
                         ? new cFilterCondition[]
                             {
-                                new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId),
+                                new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId),
                                 new cFilterCondition("QA_CERT_EVENT_CD", "100,101,120,125", eFilterConditionStringCompare.InList),
                                 new cFilterCondition("QA_CERT_EVENT_DATEHOUR", hgTestRecord.EndDatehour, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.GreaterThan),
-                                new cFilterCondition("QA_CERT_EVENT_DATEHOUR", eFilterConditionRelativeCompare.Equals, EmParameters.CurrentDateHour.Value, eNullDateDefault.Max),
-                                new cFilterCondition("CONDITIONAL_DATA_BEGIN_DATEHOUR", eFilterConditionRelativeCompare.Equals, EmParameters.CurrentDateHour.Value, eNullDateDefault.Max)
+                                new cFilterCondition("QA_CERT_EVENT_DATEHOUR", eFilterConditionRelativeCompare.Equals, emParams.CurrentDateHour.Value, eNullDateDefault.Max),
+                                new cFilterCondition("CONDITIONAL_DATA_BEGIN_DATEHOUR", eFilterConditionRelativeCompare.Equals, emParams.CurrentDateHour.Value, eNullDateDefault.Max)
                             }
                         : new cFilterCondition[]
                             {
-                                new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId),
+                                new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId),
                                 new cFilterCondition("QA_CERT_EVENT_CD", "100,101,120,125", eFilterConditionStringCompare.InList),
-                                new cFilterCondition("QA_CERT_EVENT_DATEHOUR", eFilterConditionRelativeCompare.Equals, EmParameters.CurrentDateHour.Value, eNullDateDefault.Max),
-                                new cFilterCondition("CONDITIONAL_DATA_BEGIN_DATEHOUR", eFilterConditionRelativeCompare.Equals, EmParameters.CurrentDateHour.Value, eNullDateDefault.Max)
+                                new cFilterCondition("QA_CERT_EVENT_DATEHOUR", eFilterConditionRelativeCompare.Equals, emParams.CurrentDateHour.Value, eNullDateDefault.Max),
+                                new cFilterCondition("CONDITIONAL_DATA_BEGIN_DATEHOUR", eFilterConditionRelativeCompare.Equals, emParams.CurrentDateHour.Value, eNullDateDefault.Max)
                             };
 
                     /*  Locate the most recent hour on or before the current hour */
-                    certEventRecord = EmParameters.QaCertificationEventRecords.FindMostRecentRow(EmParameters.CurrentDateHour.Value.AddHours(1), 
+                    certEventRecord = emParams.QaCertificationEventRecords.FindMostRecentRow(emParams.CurrentDateHour.Value.AddHours(1), 
                                                                                                  "QA_CERT_EVENT_DATEHOUR", 
                                                                                                  eventConditon);
 
@@ -1171,18 +1170,18 @@ namespace ECMPS.Checks.EmissionsChecks
                             = (hgTestRecord != null)
                             ? new cFilterCondition[]
                                 {
-                                new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId),
+                                new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId),
                                 new cFilterCondition("QA_CERT_EVENT_CD", "100,101,120,125", eFilterConditionStringCompare.InList),
                                 new cFilterCondition("QA_CERT_EVENT_DATEHOUR", hgTestRecord.EndDatehour, eFilterDataType.DateEnded, eFilterConditionRelativeCompare.GreaterThan)
                                 }
                             : new cFilterCondition[]
                                 {
-                                new cFilterCondition("COMPONENT_ID", EmParameters.QaStatusComponentId),
+                                new cFilterCondition("COMPONENT_ID", emParams.QaStatusComponentId),
                                 new cFilterCondition("QA_CERT_EVENT_CD", "100,101,120,125", eFilterConditionStringCompare.InList)
                                 };
 
                         /* Locate the most recent hour before the current hour */
-                        certEventRecord = EmParameters.QaCertificationEventRecords.FindMostRecentRow(EmParameters.CurrentDateHour.Value, 
+                        certEventRecord = emParams.QaCertificationEventRecords.FindMostRecentRow(emParams.CurrentDateHour.Value, 
                                                                                                      "QA_CERT_EVENT_DATEHOUR", 
                                                                                                      eventConditon);
                     }
@@ -1191,13 +1190,14 @@ namespace ECMPS.Checks.EmissionsChecks
                 /*  Determine Results */
                 if (certEventRecord != null)
                 {
-                    if ((certEventRecord.ConditionalDataBeginDatehour != null) && (certEventRecord.ConditionalDataBeginDatehour.Value <= EmParameters.CurrentDateHour.Value))
+                    StatusDetermination statusDetermination = new StatusDetermination();
+                    if ((certEventRecord.ConditionalDataBeginDatehour != null) && (certEventRecord.ConditionalDataBeginDatehour.Value <= emParams.CurrentDateHour.Value))
                     {
                         StatusDetermination.eConditionalDataStatus status = certEventRecord.QaCertEventCd == "125"
-                                                                          ? StatusDetermination.ConditionalDataEvent125ForMats()
-                                                                          : StatusDetermination.ConditionalDataEvent120ForMats(certEventRecord.ConditionalDataBeginDatehour,
+                                                                          ? statusDetermination.ConditionalDataEvent125ForMats(emParams)
+                                                                          : statusDetermination.ConditionalDataEvent120ForMats(certEventRecord.ConditionalDataBeginDatehour,
                                                                                                                                certEventRecord.ConditionalBeginHourSuppDataExistsInd,
-                                                                                                                               certEventRecord.ConditionalBeginOpHourCount);
+                                                                                                                               certEventRecord.ConditionalBeginOpHourCount, emParams);
 
                         switch (status)
                         {

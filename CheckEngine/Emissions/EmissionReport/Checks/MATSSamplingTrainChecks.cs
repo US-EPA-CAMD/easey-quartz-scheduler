@@ -53,42 +53,42 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn1(cCategory category, ref bool log)
+        public  string MatsTrn1(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSamplingTrainComponentIdValid = false;
+               emParams.MatsSamplingTrainComponentIdValid = false;
 
-                if (EmParameters.MatsSamplingTrainRecord.ComponentId == null)
+                if (emParams.MatsSamplingTrainRecord.ComponentId == null)
                 {
-                    EmParameters.MatsSamplingTrainProblemComponentExists = true;
+                   emParams.MatsSamplingTrainProblemComponentExists = true;
                     category.CheckCatalogResult = "A";
                 }
-                else if (EmParameters.MatsSamplingTrainRecord.ComponentTypeCd != "STRAIN")
+                else if (emParams.MatsSamplingTrainRecord.ComponentTypeCd != "STRAIN")
                 {
-                    EmParameters.MatsSamplingTrainProblemComponentExists = true;
+                   emParams.MatsSamplingTrainProblemComponentExists = true;
                     category.CheckCatalogResult = "B";
                 }
                 else
                 {
-                    EmParameters.MatsSamplingTrainComponentIdValid = true;
+                   emParams.MatsSamplingTrainComponentIdValid = true;
 
-                    SamplingTrainEvalInformation samplingTrainEvalInformation = new SamplingTrainEvalInformation(EmParameters.MatsSamplingTrainRecord.TrapTrainId, 
-                                                                                                                 (EmParameters.MatsSamplingTrainRecord.BorderTrapInd == 1), 
-                                                                                                                 (EmParameters.MatsSamplingTrainRecord.SuppDataInd == 1));
+                    SamplingTrainEvalInformation samplingTrainEvalInformation = new SamplingTrainEvalInformation(emParams.MatsSamplingTrainRecord.TrapTrainId, 
+                                                                                                                 (emParams.MatsSamplingTrainRecord.BorderTrapInd == 1), 
+                                                                                                                 (emParams.MatsSamplingTrainRecord.SuppDataInd == 1));
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.SuppDataInd == 1)
+                        if (emParams.MatsSamplingTrainRecord.SuppDataInd == 1)
                         {
                             /* Initialize all values for supplemental data, since they were previously checked and will not be set by checks in this evaluation. */
-                            samplingTrainEvalInformation.HgConcentration = EmParameters.MatsSamplingTrainRecord.HgConcentration.ScientificNotationtoDecimal();
-                            samplingTrainEvalInformation.TrainQAStatusCode = EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd;
-                            samplingTrainEvalInformation.ReferenceSFSRRatio = EmParameters.MatsSamplingTrainRecord.RefFlowToSamplingRatio;
-                            samplingTrainEvalInformation.TotalSFSRRatioCount = EmParameters.MatsSamplingTrainRecord.SfsrTotalCount.Default(0);
-                            samplingTrainEvalInformation.DeviatedSFSRRatioCount = EmParameters.MatsSamplingTrainRecord.SfsrDeviatedCount.Default(0);
-                            samplingTrainEvalInformation.TotalGfmCount = EmParameters.MatsSamplingTrainRecord.GfmTotalCount.Default(0);
-                            samplingTrainEvalInformation.NotAvailablelGfmCount = EmParameters.MatsSamplingTrainRecord.GfmNotAvailableCount.Default(0);
+                            samplingTrainEvalInformation.HgConcentration =emParams.MatsSamplingTrainRecord.HgConcentration.ScientificNotationtoDecimal();
+                            samplingTrainEvalInformation.TrainQAStatusCode =emParams.MatsSamplingTrainRecord.TrainQaStatusCd;
+                            samplingTrainEvalInformation.ReferenceSFSRRatio =emParams.MatsSamplingTrainRecord.RefFlowToSamplingRatio;
+                            samplingTrainEvalInformation.TotalSFSRRatioCount =emParams.MatsSamplingTrainRecord.SfsrTotalCount.Default(0);
+                            samplingTrainEvalInformation.DeviatedSFSRRatioCount =emParams.MatsSamplingTrainRecord.SfsrDeviatedCount.Default(0);
+                            samplingTrainEvalInformation.TotalGfmCount =emParams.MatsSamplingTrainRecord.GfmTotalCount.Default(0);
+                            samplingTrainEvalInformation.NotAvailablelGfmCount =emParams.MatsSamplingTrainRecord.GfmNotAvailableCount.Default(0);
                         }
                         else
                         {
@@ -104,8 +104,8 @@ namespace ECMPS.Checks.EmissionsChecks
                         samplingTrainEvalInformation.SamplingTrainValid = true;
                     }
 
-                    EmParameters.MatsSamplingTrainDictionary[samplingTrainEvalInformation.TrapTrainId] = samplingTrainEvalInformation;
-                    EmParameters.MatsSorbentTrapSamplingTrainList.Add(samplingTrainEvalInformation);
+                   emParams.MatsSamplingTrainDictionary[samplingTrainEvalInformation.TrapTrainId] = samplingTrainEvalInformation;
+                   emParams.MatsSorbentTrapSamplingTrainList.Add(samplingTrainEvalInformation);
                 }
             }
             catch (Exception ex)
@@ -124,13 +124,13 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn2(cCategory category, ref bool log)
+        public  string MatsTrn2(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.MatsSamplingTrainRecord.SorbentTrapSerialNumber == null)
+                if (emParams.MatsSamplingTrainRecord.SorbentTrapSerialNumber == null)
                 {
                     category.CheckCatalogResult = "A";
                 }
@@ -151,34 +151,34 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn3(cCategory category, ref bool log)
+        public  string MatsTrn3(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSamplingTrainQaStatusCodeValid = false;
+               emParams.MatsSamplingTrainQaStatusCodeValid = false;
 
-                if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd == null)
+                if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd == null)
                 {
-                    if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                        EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                    if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                       emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
 
                     category.CheckCatalogResult = "A";
                 }
-                else if (EmParameters.MatsSamplingTrainQaStatusLookupTable.CountRows(new cFilterCondition[] { new cFilterCondition("TRAIN_QA_STATUS_CD", EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd) }) == 0)
+                else if (emParams.MatsSamplingTrainQaStatusLookupTable.CountRows(new cFilterCondition[] { new cFilterCondition("TRAIN_QA_STATUS_CD",emParams.MatsSamplingTrainRecord.TrainQaStatusCd) }) == 0)
                 {
-                    if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                        EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                    if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                       emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
 
                     category.CheckCatalogResult = "B";
                 }
                 else
                 {
-                    EmParameters.MatsSamplingTrainQaStatusCodeValid = true;
+                   emParams.MatsSamplingTrainQaStatusCodeValid = true;
 
-                    if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                        EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].TrainQAStatusCode = EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd;
+                    if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                       emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].TrainQAStatusCode =emParams.MatsSamplingTrainRecord.TrainQaStatusCd;
                 }
             }
             catch (Exception ex)
@@ -197,40 +197,40 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn4(cCategory category, ref bool log)
+        public  string MatsTrn4(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsMainTrapHgValid = false;
+               emParams.MatsMainTrapHgValid = false;
 
-                if (EmParameters.MatsSamplingTrainQaStatusCodeValid.Default(false))
+                if (emParams.MatsSamplingTrainQaStatusCodeValid.Default(false))
                 {
-                    if (EmParameters.MatsSamplingTrainRecord.MainTrapHg == null)
+                    if (emParams.MatsSamplingTrainRecord.MainTrapHg == null)
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
                         {
                             category.CheckCatalogResult = "A";
                         }
                         else
                         {
-                            EmParameters.MatsMainTrapHgValid = true;
+                           emParams.MatsMainTrapHgValid = true;
                         }
                     }
                     else
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
                         {
                             category.CheckCatalogResult = "B";
                         }
-                        else if (!EmParameters.MatsSamplingTrainRecord.MainTrapHg.MatsSignificantDigitsValid(EmParameters.MatsSamplingTrainRecord.EndDatehour.Value))
+                        else if (!emParams.MatsSamplingTrainRecord.MainTrapHg.MatsSignificantDigitsValid(emParams.MatsSamplingTrainRecord.EndDatehour.Value))
                         {
                             category.CheckCatalogResult = "C";
                         }
                         else
                         {
-                            EmParameters.MatsMainTrapHgValid = true;
+                           emParams.MatsMainTrapHgValid = true;
                         }
                     }
                 }
@@ -251,40 +251,40 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn5(cCategory category, ref bool log)
+        public  string MatsTrn5(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsBtTrapHgValid = false;
+               emParams.MatsBtTrapHgValid = false;
 
-                if (EmParameters.MatsSamplingTrainQaStatusCodeValid.Default(false))
+                if (emParams.MatsSamplingTrainQaStatusCodeValid.Default(false))
                 {
-                    if (EmParameters.MatsSamplingTrainRecord.BreakthroughTrapHg == null)
+                    if (emParams.MatsSamplingTrainRecord.BreakthroughTrapHg == null)
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
                         {
                             category.CheckCatalogResult = "A";
                         }
                         else
                         {
-                            EmParameters.MatsBtTrapHgValid = true;
+                           emParams.MatsBtTrapHgValid = true;
                         }
                     }
                     else
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
                         {
                             category.CheckCatalogResult = "B";
                         }
-                        else if (!EmParameters.MatsSamplingTrainRecord.BreakthroughTrapHg.MatsSignificantDigitsValid(EmParameters.MatsSamplingTrainRecord.EndDatehour.Value))
+                        else if (!emParams.MatsSamplingTrainRecord.BreakthroughTrapHg.MatsSignificantDigitsValid(emParams.MatsSamplingTrainRecord.EndDatehour.Value))
                         {
                             category.CheckCatalogResult = "C";
                         }
                         else
                         {
-                            EmParameters.MatsBtTrapHgValid = true;
+                           emParams.MatsBtTrapHgValid = true;
                         }
                     }
                 }
@@ -305,40 +305,40 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn6(cCategory category, ref bool log)
+        public  string MatsTrn6(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSpikeTrapHgValid = false;
+               emParams.MatsSpikeTrapHgValid = false;
 
-                if (EmParameters.MatsSamplingTrainQaStatusCodeValid.Default(false))
+                if (emParams.MatsSamplingTrainQaStatusCodeValid.Default(false))
                 {
-                    if (EmParameters.MatsSamplingTrainRecord.SpikeTrapHg == null)
+                    if (emParams.MatsSamplingTrainRecord.SpikeTrapHg == null)
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
                         {
                             category.CheckCatalogResult = "A";
                         }
                         else
                         {
-                            EmParameters.MatsSpikeTrapHgValid = true;
+                           emParams.MatsSpikeTrapHgValid = true;
                         }
                     }
                     else
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
                         {
                             category.CheckCatalogResult = "B";
                         }
-                        else if (!EmParameters.MatsSamplingTrainRecord.SpikeTrapHg.MatsSignificantDigitsValid(EmParameters.MatsSamplingTrainRecord.EndDatehour.Value))
+                        else if (!emParams.MatsSamplingTrainRecord.SpikeTrapHg.MatsSignificantDigitsValid(emParams.MatsSamplingTrainRecord.EndDatehour.Value))
                         {
                             category.CheckCatalogResult = "C";
                         }
                         else
                         {
-                            EmParameters.MatsSpikeTrapHgValid = true;
+                           emParams.MatsSpikeTrapHgValid = true;
                         }
                     }
                 }
@@ -359,40 +359,40 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn7(cCategory category, ref bool log)
+        public  string MatsTrn7(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsSpikeReferenceValueValid = false;
+               emParams.MatsSpikeReferenceValueValid = false;
 
-                if (EmParameters.MatsSamplingTrainQaStatusCodeValid.Default(false))
+                if (emParams.MatsSamplingTrainQaStatusCodeValid.Default(false))
                 {
-                    if (EmParameters.MatsSamplingTrainRecord.SpikeRefValue == null)
+                    if (emParams.MatsSamplingTrainRecord.SpikeRefValue == null)
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
                         {
                             category.CheckCatalogResult = "A";
                         }
                         else
                         {
-                            EmParameters.MatsSpikeReferenceValueValid = true;
+                           emParams.MatsSpikeReferenceValueValid = true;
                         }
                     }
                     else
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
                         {
                             category.CheckCatalogResult = "B";
                         }
-                        else if (!EmParameters.MatsSamplingTrainRecord.SpikeRefValue.MatsSignificantDigitsValid(EmParameters.MatsSamplingTrainRecord.EndDatehour.Value))
+                        else if (!emParams.MatsSamplingTrainRecord.SpikeRefValue.MatsSignificantDigitsValid(emParams.MatsSamplingTrainRecord.EndDatehour.Value))
                         {
                             category.CheckCatalogResult = "C";
                         }
                         else
                         {
-                            EmParameters.MatsSpikeReferenceValueValid = true;
+                           emParams.MatsSpikeReferenceValueValid = true;
                         }
                     }
                 }
@@ -413,44 +413,44 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn8(cCategory category, ref bool log)
+        public  string MatsTrn8(cCategory category, ref bool log)
         {
             string returnVal = "";
             decimal dValue = 0.0M;
             try
             {
-                EmParameters.MatsTotalSampleVolumeDscmValid = false;
+               emParams.MatsTotalSampleVolumeDscmValid = false;
 
-                if (EmParameters.MatsSamplingTrainQaStatusCodeValid.Default(false))
+                if (emParams.MatsSamplingTrainQaStatusCodeValid.Default(false))
                 {
-                    if (EmParameters.MatsSamplingTrainRecord.TotalSampleVolume == null)
+                    if (emParams.MatsSamplingTrainRecord.TotalSampleVolume == null)
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
                         {
                             category.CheckCatalogResult = "A";
                         }
                         else
                         {
-                            EmParameters.MatsTotalSampleVolumeDscmValid = true;
+                           emParams.MatsTotalSampleVolumeDscmValid = true;
                         }
                     }
                     else
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
                         {
                             category.CheckCatalogResult = "B";
                         }
                         //  EC-2451 M. Jones 2015-11-05 
                         //  float type and regular expression pattern enforces at least two (2) digits and 
                         //  no more than four (4) following decimal.
-                        else if (!decimal.TryParse(EmParameters.MatsSamplingTrainRecord.TotalSampleVolume.Value.ToString(),
+                        else if (!decimal.TryParse(emParams.MatsSamplingTrainRecord.TotalSampleVolume.Value.ToString(),
                                                    out dValue))
                         {
                             category.CheckCatalogResult = "C";
                         }
                         else
                         {
-                            EmParameters.MatsTotalSampleVolumeDscmValid = true;
+                           emParams.MatsTotalSampleVolumeDscmValid = true;
                         }
                     }
                 }
@@ -469,49 +469,49 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn9(cCategory category, ref bool log)
+        public  string MatsTrn9(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.MatsSamplingTrainQaStatusCodeValid.Default(false))
+                if (emParams.MatsSamplingTrainQaStatusCodeValid.Default(false))
                 {
-                    if (EmParameters.MatsSamplingTrainRecord.RefFlowToSamplingRatio == null)
+                    if (emParams.MatsSamplingTrainRecord.RefFlowToSamplingRatio == null)
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST")  &&
-                            (EmParameters.MatsSamplingTrainRecord.RataInd != 1))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST")  &&
+                            (emParams.MatsSamplingTrainRecord.RataInd != 1))
                         {
-                            if (EmParameters.MatsSamplingTrainDictionary.ContainsKey(EmParameters.MatsSamplingTrainRecord.TrapTrainId))
-                                EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                            if (emParams.MatsSamplingTrainDictionary.ContainsKey(emParams.MatsSamplingTrainRecord.TrapTrainId))
+                               emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
 
                             category.CheckCatalogResult = "A";
                         }
                         else
                         {
-                            EmParameters.MatsTotalSampleVolumeDscmValid = true;
+                           emParams.MatsTotalSampleVolumeDscmValid = true;
                         }
                     }
                     else
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
                         {
-                            if (EmParameters.MatsSamplingTrainDictionary.ContainsKey(EmParameters.MatsSamplingTrainRecord.TrapTrainId))
-                                EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                            if (emParams.MatsSamplingTrainDictionary.ContainsKey(emParams.MatsSamplingTrainRecord.TrapTrainId))
+                               emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
 
                             category.CheckCatalogResult = "B";
                         }
-                        else if (EmParameters.MatsSamplingTrainRecord.RefFlowToSamplingRatio.Value != Math.Round(EmParameters.MatsSamplingTrainRecord.RefFlowToSamplingRatio.Value, 2, MidpointRounding.AwayFromZero))
+                        else if (emParams.MatsSamplingTrainRecord.RefFlowToSamplingRatio.Value != Math.Round(emParams.MatsSamplingTrainRecord.RefFlowToSamplingRatio.Value, 2, MidpointRounding.AwayFromZero))
                         {
-                            if (EmParameters.MatsSamplingTrainDictionary.ContainsKey(EmParameters.MatsSamplingTrainRecord.TrapTrainId))
-                                EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                            if (emParams.MatsSamplingTrainDictionary.ContainsKey(emParams.MatsSamplingTrainRecord.TrapTrainId))
+                               emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
 
                             category.CheckCatalogResult = "C";
                         }
                         else
                         {
-                            if (EmParameters.MatsSamplingTrainDictionary.ContainsKey(EmParameters.MatsSamplingTrainRecord.TrapTrainId))
-                                EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].ReferenceSFSRRatio = EmParameters.MatsSamplingTrainRecord.RefFlowToSamplingRatio;
+                            if (emParams.MatsSamplingTrainDictionary.ContainsKey(emParams.MatsSamplingTrainRecord.TrapTrainId))
+                               emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].ReferenceSFSRRatio =emParams.MatsSamplingTrainRecord.RefFlowToSamplingRatio;
                         }
                     }
                 }
@@ -532,50 +532,50 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn10(cCategory category, ref bool log)
+        public  string MatsTrn10(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.MatsSamplingTrainQaStatusCodeValid.Default(false))
+                if (emParams.MatsSamplingTrainQaStatusCodeValid.Default(false))
                 {
-                    if (EmParameters.MatsSamplingTrainRecord.SamplingRatioTestResultCd == null)
+                    if (emParams.MatsSamplingTrainRecord.SamplingRatioTestResultCd == null)
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
                         {
-                            if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                                EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                            if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                               emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
 
                             category.CheckCatalogResult = "A";
                         }
                     }
                     else
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.SamplingRatioTestResultCd == "PASSED")
+                        if (emParams.MatsSamplingTrainRecord.SamplingRatioTestResultCd == "PASSED")
                         {
-                            if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
+                            if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
                             {
-                                if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                                    EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                                if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                                   emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
 
                                 category.CheckCatalogResult = "B";
                             }
                         }
-                        else if (EmParameters.MatsSamplingTrainRecord.SamplingRatioTestResultCd == "FAILED")
+                        else if (emParams.MatsSamplingTrainRecord.SamplingRatioTestResultCd == "FAILED")
                         {
-                            if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd != "FAILED")
+                            if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd != "FAILED")
                             {
-                                if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                                    EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                                if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                                   emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
 
                                 category.CheckCatalogResult = "C";
                             }
                         }
                         else
                         {
-                            if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                                EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                            if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                               emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
 
                             category.CheckCatalogResult = "D";
                         }
@@ -601,33 +601,33 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn11(cCategory category, ref bool log)
+        public  string MatsTrn11(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.MatsSamplingTrainQaStatusCodeValid.Default(false))
+                if (emParams.MatsSamplingTrainQaStatusCodeValid.Default(false))
                 {
-                    if (EmParameters.MatsSamplingTrainRecord.PostLeakTestResultCd == null)
+                    if (emParams.MatsSamplingTrainRecord.PostLeakTestResultCd == null)
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
                         {
                             category.CheckCatalogResult = "A";
                         }
                     }
                     else
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.PostLeakTestResultCd == "PASSED")
+                        if (emParams.MatsSamplingTrainRecord.PostLeakTestResultCd == "PASSED")
                         {
-                            if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
+                            if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
                             {
                                 category.CheckCatalogResult = "B";
                             }
                         }
-                        else if (EmParameters.MatsSamplingTrainRecord.PostLeakTestResultCd == "FAILED")
+                        else if (emParams.MatsSamplingTrainRecord.PostLeakTestResultCd == "FAILED")
                         {
-                            if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd != "FAILED")
+                            if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd != "FAILED")
                             {
                                 category.CheckCatalogResult = "C";
                             }
@@ -655,17 +655,17 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn12(cCategory category, ref bool log)
+        public  string MatsTrn12(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.MatsSamplingTrainQaStatusCodeValid.Default(false))
+                if (emParams.MatsSamplingTrainQaStatusCodeValid.Default(false))
                 {
-                    if (EmParameters.MatsSamplingTrainRecord.SampleDamageExplanation == null)
+                    if (emParams.MatsSamplingTrainRecord.SampleDamageExplanation == null)
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd == "LOST")
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd == "LOST")
                         {
                             category.CheckCatalogResult = "A";
                         }
@@ -686,73 +686,73 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn13(cCategory category, ref bool log)
+        public  string MatsTrn13(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsCalcTrainHgConcentration = null;
+               emParams.MatsCalcTrainHgConcentration = null;
 
-                if (EmParameters.MatsSamplingTrainQaStatusCodeValid.Default(false))
+                if (emParams.MatsSamplingTrainQaStatusCodeValid.Default(false))
                 {
-                    if (EmParameters.MatsSamplingTrainRecord.HgConcentration == null)
+                    if (emParams.MatsSamplingTrainRecord.HgConcentration == null)
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
                         {
-                            if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                                EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                            if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                               emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
 
                             category.CheckCatalogResult = "A";
                         }
                     }
                     else
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
                         {
-                            if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                                EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                            if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                               emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
 
                             category.CheckCatalogResult = "B";
                         }
-                        else if (!EmParameters.MatsSamplingTrainRecord.HgConcentration.MatsSignificantDigitsValid(EmParameters.MatsSamplingTrainRecord.EndDatehour.Value))
+                        else if (!emParams.MatsSamplingTrainRecord.HgConcentration.MatsSignificantDigitsValid(emParams.MatsSamplingTrainRecord.EndDatehour.Value))
                         {
-                            if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                                EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                            if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                               emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
 
                             category.CheckCatalogResult = "C";
                         }
-                        else if (EmParameters.MatsSamplingTrainRecord.TrapModcCd.InList("43,44"))
+                        else if (emParams.MatsSamplingTrainRecord.TrapModcCd.InList("43,44"))
                         {
-                            EmParameters.MatsCalcTrainHgConcentration = EmParameters.MatsSamplingTrainRecord.HgConcentration;
+                           emParams.MatsCalcTrainHgConcentration =emParams.MatsSamplingTrainRecord.HgConcentration;
 
-                            if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                                EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].HgConcentration = EmParameters.MatsSamplingTrainRecord.HgConcentration.ScientificNotationtoDecimal();
+                            if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                               emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].HgConcentration =emParams.MatsSamplingTrainRecord.HgConcentration.ScientificNotationtoDecimal();
                         }
-                        else if (EmParameters.MatsMainTrapHgValid.Default(false) && EmParameters.MatsBtTrapHgValid.Default(false) && EmParameters.MatsTotalSampleVolumeDscmValid.Default(false) && EmParameters.MatsSamplingTrainRecord.TotalSampleVolume != null && EmParameters.MatsSamplingTrainRecord.TotalSampleVolume != 0)
+                        else if (emParams.MatsMainTrapHgValid.Default(false) &&emParams.MatsBtTrapHgValid.Default(false) &&emParams.MatsTotalSampleVolumeDscmValid.Default(false) &&emParams.MatsSamplingTrainRecord.TotalSampleVolume != null &&emParams.MatsSamplingTrainRecord.TotalSampleVolume != 0)
                         {
                             decimal hgConcentration
-                              = ((EmParameters.MatsSamplingTrainRecord.MainTrapHg.ScientificNotationtoDecimal() + EmParameters.MatsSamplingTrainRecord.BreakthroughTrapHg.ScientificNotationtoDecimal())
-                                 / EmParameters.MatsSamplingTrainRecord.TotalSampleVolume.Value);
+                              = ((emParams.MatsSamplingTrainRecord.MainTrapHg.ScientificNotationtoDecimal() +emParams.MatsSamplingTrainRecord.BreakthroughTrapHg.ScientificNotationtoDecimal())
+                                 /emParams.MatsSamplingTrainRecord.TotalSampleVolume.Value);
 
-                            EmParameters.MatsCalcTrainHgConcentration = hgConcentration.MatsSignificantDigitsFormat(EmParameters.MatsSamplingTrainRecord.EndDatehour.Value,
-                                                                                                                    EmParameters.MatsSamplingTrainRecord.HgConcentration);
+                           emParams.MatsCalcTrainHgConcentration = hgConcentration.MatsSignificantDigitsFormat(emParams.MatsSamplingTrainRecord.EndDatehour.Value,
+                                                                                                                   emParams.MatsSamplingTrainRecord.HgConcentration);
 
-                            if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                                EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].HgConcentration = EmParameters.MatsCalcTrainHgConcentration.ScientificNotationtoDecimal();
+                            if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                               emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].HgConcentration =emParams.MatsCalcTrainHgConcentration.ScientificNotationtoDecimal();
 
-                            if (EmParameters.MatsSamplingTrainRecord.HgConcentration != EmParameters.MatsCalcTrainHgConcentration)
+                            if (emParams.MatsSamplingTrainRecord.HgConcentration !=emParams.MatsCalcTrainHgConcentration)
                             {
-                                if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                                    EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                                if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                                   emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
 
                                 category.CheckCatalogResult = "D";
                             }
                         }
                         else // Calculation input is not valid
                         {
-                            if (EmParameters.MatsSamplingTrainComponentIdValid.Default(false))
-                                EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
+                            if (emParams.MatsSamplingTrainComponentIdValid.Default(false))
+                               emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId].SamplingTrainValid = false;
                         }
                     }
                 }
@@ -771,55 +771,55 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn14(cCategory category, ref bool log)
+        public  string MatsTrn14(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.MatsCalcTrainPercentBreakthrough = null;
+               emParams.MatsCalcTrainPercentBreakthrough = null;
 
-                if (EmParameters.MatsSamplingTrainQaStatusCodeValid.Default(false))
+                if (emParams.MatsSamplingTrainQaStatusCodeValid.Default(false))
                 {
-                    if (EmParameters.MatsSamplingTrainRecord.PercentBreakthrough == null)
+                    if (emParams.MatsSamplingTrainRecord.PercentBreakthrough == null)
                     {
-                        if ((EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.InList("PASSED,FAILED,UNCERTAIN")) &&
-                            (EmParameters.MatsSamplingTrainRecord.HgConcentration.ScientificNotationtoDecimal() >= 0.2m))
+                        if ((emParams.MatsSamplingTrainRecord.TrainQaStatusCd.InList("PASSED,FAILED,UNCERTAIN")) &&
+                            (emParams.MatsSamplingTrainRecord.HgConcentration.ScientificNotationtoDecimal() >= 0.2m))
                         {
                             category.CheckCatalogResult = "A";
                         }
                     }
                     else
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.InList("INC,EXPIRED,LOST"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.InList("INC,EXPIRED,LOST"))
                         {
                             category.CheckCatalogResult = "B";
                         }
-                        else if (EmParameters.MatsSamplingTrainRecord.PercentBreakthrough != Math.Round(EmParameters.MatsSamplingTrainRecord.PercentBreakthrough.Value, 1, MidpointRounding.AwayFromZero))
+                        else if (emParams.MatsSamplingTrainRecord.PercentBreakthrough != Math.Round(emParams.MatsSamplingTrainRecord.PercentBreakthrough.Value, 1, MidpointRounding.AwayFromZero))
                         {
                             category.CheckCatalogResult = "C";
                         }
-                        else if (EmParameters.MatsMainTrapHgValid.Default(false) && EmParameters.MatsBtTrapHgValid.Default(false) && EmParameters.MatsSamplingTrainRecord.MainTrapHg != null && EmParameters.MatsSamplingTrainRecord.MainTrapHg.ScientificNotationtoDecimal() != 0)
+                        else if (emParams.MatsMainTrapHgValid.Default(false) &&emParams.MatsBtTrapHgValid.Default(false) &&emParams.MatsSamplingTrainRecord.MainTrapHg != null &&emParams.MatsSamplingTrainRecord.MainTrapHg.ScientificNotationtoDecimal() != 0)
                         {
-                            EmParameters.MatsCalcTrainPercentBreakthrough = Math.Round((EmParameters.MatsSamplingTrainRecord.BreakthroughTrapHg.ScientificNotationtoDecimal() / EmParameters.MatsSamplingTrainRecord.MainTrapHg.ScientificNotationtoDecimal()) * 100, 1, MidpointRounding.AwayFromZero);
+                           emParams.MatsCalcTrainPercentBreakthrough = Math.Round((emParams.MatsSamplingTrainRecord.BreakthroughTrapHg.ScientificNotationtoDecimal() /emParams.MatsSamplingTrainRecord.MainTrapHg.ScientificNotationtoDecimal()) * 100, 1, MidpointRounding.AwayFromZero);
 
-                            if (EmParameters.MatsSamplingTrainRecord.PercentBreakthrough != EmParameters.MatsCalcTrainPercentBreakthrough)
+                            if (emParams.MatsSamplingTrainRecord.PercentBreakthrough !=emParams.MatsCalcTrainPercentBreakthrough)
                             {
                                 category.CheckCatalogResult = "D";
                             }
                             else
                             {
-                                decimal hgConcentration = EmParameters.MatsSamplingTrainRecord.HgConcentration.ScientificNotationtoDecimal();
-                                decimal roundedPecentBreakthrough = Math.Round(EmParameters.MatsSamplingTrainRecord.PercentBreakthrough.Value, 0, MidpointRounding.AwayFromZero);
+                                decimal hgConcentration =emParams.MatsSamplingTrainRecord.HgConcentration.ScientificNotationtoDecimal();
+                                decimal roundedPecentBreakthrough = Math.Round(emParams.MatsSamplingTrainRecord.PercentBreakthrough.Value, 0, MidpointRounding.AwayFromZero);
 
                                 /* RATA APS*/
-                                if (EmParameters.MatsSamplingTrainRecord.SorbentTrapApsCd == "RATA")
+                                if (emParams.MatsSamplingTrainRecord.SorbentTrapApsCd == "RATA")
                                 {
                                     if (((hgConcentration > 1m) && (roundedPecentBreakthrough > 10)) ||
                                         ((hgConcentration > 0.5m) && (roundedPecentBreakthrough > 20)) ||
                                         ((hgConcentration > 0.1m) && (roundedPecentBreakthrough > 50)))
                                     {
-                                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd != "FAILED")
+                                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd != "FAILED")
                                         {
                                             category.CheckCatalogResult = "F";
                                         }
@@ -833,7 +833,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                     {
                                         if ((roundedPecentBreakthrough > 10) || ((roundedPecentBreakthrough > 5) && (hgConcentration > 0.5m)))
                                         {
-                                            if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd != "FAILED")
+                                            if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd != "FAILED")
                                             {
                                                 category.CheckCatalogResult = "E";
                                             }
@@ -859,42 +859,42 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn15(cCategory category, ref bool log)
+        public  string MatsTrn15(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.MatsSamplingTrainQaStatusCodeValid.Default(false))
+                if (emParams.MatsSamplingTrainQaStatusCodeValid.Default(false))
                 {
-                    if (EmParameters.MatsSamplingTrainRecord.PercentSpikeRecovery == null)
+                    if (emParams.MatsSamplingTrainRecord.PercentSpikeRecovery == null)
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("INC,EXPIRED,LOST"))
                         {
                             category.CheckCatalogResult = "A";
                         }
                     }
                     else
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
+                        if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.NotInList("PASSED,FAILED,UNCERTAIN"))
                         {
                             category.CheckCatalogResult = "B";
                         }
-                        else if (EmParameters.MatsSamplingTrainRecord.PercentSpikeRecovery != Math.Round(EmParameters.MatsSamplingTrainRecord.PercentSpikeRecovery.Value, 1, MidpointRounding.AwayFromZero))
+                        else if (emParams.MatsSamplingTrainRecord.PercentSpikeRecovery != Math.Round(emParams.MatsSamplingTrainRecord.PercentSpikeRecovery.Value, 1, MidpointRounding.AwayFromZero))
                         {
                             category.CheckCatalogResult = "C";
                         }
-                        else if (EmParameters.MatsSpikeTrapHgValid.Default(false) && EmParameters.MatsSpikeReferenceValueValid.Default(false) && EmParameters.MatsSamplingTrainRecord.SpikeRefValue != null && EmParameters.MatsSamplingTrainRecord.SpikeRefValue.ScientificNotationtoDecimal() != 0)
+                        else if (emParams.MatsSpikeTrapHgValid.Default(false) &&emParams.MatsSpikeReferenceValueValid.Default(false) &&emParams.MatsSamplingTrainRecord.SpikeRefValue != null &&emParams.MatsSamplingTrainRecord.SpikeRefValue.ScientificNotationtoDecimal() != 0)
                         {
-                            EmParameters.MatsCalcTrainPercentSpikeRecovery = Math.Round((EmParameters.MatsSamplingTrainRecord.SpikeTrapHg.ScientificNotationtoDecimal() / EmParameters.MatsSamplingTrainRecord.SpikeRefValue.ScientificNotationtoDecimal()) * 100, 1, MidpointRounding.AwayFromZero);
+                           emParams.MatsCalcTrainPercentSpikeRecovery = Math.Round((emParams.MatsSamplingTrainRecord.SpikeTrapHg.ScientificNotationtoDecimal() /emParams.MatsSamplingTrainRecord.SpikeRefValue.ScientificNotationtoDecimal()) * 100, 1, MidpointRounding.AwayFromZero);
 
-                            if (EmParameters.MatsSamplingTrainRecord.PercentSpikeRecovery != EmParameters.MatsCalcTrainPercentSpikeRecovery)
+                            if (emParams.MatsSamplingTrainRecord.PercentSpikeRecovery !=emParams.MatsCalcTrainPercentSpikeRecovery)
                             {
                                 category.CheckCatalogResult = "D";
                             }
-                            else if ((EmParameters.MatsSamplingTrainRecord.PercentSpikeRecovery < 75) || (EmParameters.MatsSamplingTrainRecord.PercentSpikeRecovery > 125))
+                            else if ((emParams.MatsSamplingTrainRecord.PercentSpikeRecovery < 75) || (emParams.MatsSamplingTrainRecord.PercentSpikeRecovery > 125))
                             {
-                                if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd != "FAILED")
+                                if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd != "FAILED")
                                 {
                                     category.CheckCatalogResult = "E";
                                 }
@@ -919,7 +919,7 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn16(cCategory category, ref bool log)
+        public  string MatsTrn16(cCategory category, ref bool log)
         {
             string returnVal = "";
 
@@ -927,9 +927,9 @@ namespace ECMPS.Checks.EmissionsChecks
             {
                 SamplingTrainEvalInformation samplingTrainEvalInformation = null;
                 bool? sorbentTrapValid = false;
-                if (EmParameters.MatsSamplingTrainDictionary.ContainsKey(EmParameters.MatsSamplingTrainRecord.TrapTrainId))
+                if (emParams.MatsSamplingTrainDictionary.ContainsKey(emParams.MatsSamplingTrainRecord.TrapTrainId))
                 {
-                    samplingTrainEvalInformation = EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId];
+                    samplingTrainEvalInformation =emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId];
                     {
                         sorbentTrapValid = samplingTrainEvalInformation.SamplingTrainValid;
                     }
@@ -945,7 +945,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     {
                         decimal matsCalcPercentSfsrRatioDev = Math.Round(((decimal)deviatedSfsrRatioCount / (decimal)totalSfsrRatioCount) * 100, 0, MidpointRounding.AwayFromZero);
 
-                        if (EmParameters.MatsSamplingTrainRecord.SamplingRatioTestResultCd == "PASSED")
+                        if (emParams.MatsSamplingTrainRecord.SamplingRatioTestResultCd == "PASSED")
                         {
                             if (matsCalcPercentSfsrRatioDev > 5)
                                 category.CheckCatalogResult = "A";
@@ -953,7 +953,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     }
                     else
                     {
-                        if (EmParameters.MatsSamplingTrainRecord.SamplingRatioTestResultCd == "PASSED")
+                        if (emParams.MatsSamplingTrainRecord.SamplingRatioTestResultCd == "PASSED")
                         {
                             if (deviatedSfsrRatioCount > 5)
                                 category.CheckCatalogResult = "C";
@@ -975,17 +975,17 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public static string MatsTrn17(cCategory category, ref bool log)
+        public  string MatsTrn17(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.MatsSamplingTrainRecord.TrainQaStatusCd.InList("PASSED,FAILED,UNCERTAIN") && (EmParameters.MatsSamplingTrainRecord.RataInd.Default(0) == 0))
+                if (emParams.MatsSamplingTrainRecord.TrainQaStatusCd.InList("PASSED,FAILED,UNCERTAIN") && (emParams.MatsSamplingTrainRecord.RataInd.Default(0) == 0))
                 {
-                    if (EmParameters.MatsSamplingTrainDictionary.ContainsKey(EmParameters.MatsSamplingTrainRecord.TrapTrainId))
+                    if (emParams.MatsSamplingTrainDictionary.ContainsKey(emParams.MatsSamplingTrainRecord.TrapTrainId))
                     {
-                        SamplingTrainEvalInformation dictionaryEntry = EmParameters.MatsSamplingTrainDictionary[EmParameters.MatsSamplingTrainRecord.TrapTrainId];
+                        SamplingTrainEvalInformation dictionaryEntry =emParams.MatsSamplingTrainDictionary[emParams.MatsSamplingTrainRecord.TrapTrainId];
                         {
                             if (dictionaryEntry.SamplingTrainValid == true)
                             {

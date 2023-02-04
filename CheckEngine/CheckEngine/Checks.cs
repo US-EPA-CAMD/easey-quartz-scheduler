@@ -9,6 +9,9 @@ using ECMPS.Definitions.Extensions;
 
 using ECMPS.Checks.Mp.Parameters;
 using ECMPS.Checks.Qa.Parameters;
+using ECMPS.Checks.Em.Parameters;
+using ECMPS.Checks.EmGeneration.Parameters;
+using ECMPS.Checks.EmImport.Parameters;
 
 namespace ECMPS.Checks.CheckEngine
 {
@@ -90,6 +93,14 @@ namespace ECMPS.Checks.CheckEngine
 		/// <param name="Category"></param>
 		/// <param name="Log"></param>
 		/// <returns></returns>
+		public delegate string dCheckProcedures(cCategory Category,  EmParameters emParams);
+
+		/// <summary>
+		/// Check procedure delegate
+		/// </summary>
+		/// <param name="Category"></param>
+		/// <param name="Log"></param>
+		/// <returns></returns>
 		public delegate string dCheckProcedure(cCategory Category, ref bool Log);
 
 		#endregion
@@ -134,7 +145,28 @@ namespace ECMPS.Checks.CheckEngine
 		/// <summary>
 		/// reference to mpParams for all current checks
 		/// </summary>
+		public EmParameters emParams;
+
+
+		/// <summary>
+		/// reference to mpParams for all current checks
+		/// </summary>
 		public QaParameters qaParams;
+
+		/// <summary>
+		/// reference to mpParams for all current checks
+		/// </summary
+
+		public EmGenerationParameters emGenerationParameters;
+
+
+
+		/// <summary>
+		/// reference to mpParams for all current checks
+		/// </summary
+
+
+		public EmImportParameters emImportParameters;
 
 		/// <summary>
 		/// setMpParamsForCheck

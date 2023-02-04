@@ -10,7 +10,7 @@
       "request": "launch",
       "preLaunchTask": "build",
       // If you have changed target frameworks, make sure to update the program path.
-      "program": "${workspaceFolder}/CheckEngine/CheckEngineRunner/bin/Debug/netcoreapp3.1/CheckEngineRunner.dll",
+      "program": "${workspaceFolder}/CheckEngine/CheckEngineRunner/bin/Debug/netcoreapp6.0/CheckEngineRunner.dll",
       "args": [],
       "cwd": "${workspaceFolder}/CheckEngine/CheckEngineRunner",
       "stopAtEntry": false,

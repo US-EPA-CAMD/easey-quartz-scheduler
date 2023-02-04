@@ -20,6 +20,7 @@ namespace ECMPS.Checks.HourlyEmissionsImport
     class cEmissionsImportProcess : cProcess
     {
         private static decimal _nSessionID = 0;
+        public EmImportParameters emImportParameters = new EmImportParameters();
 
         #region Constructors
 
@@ -58,6 +59,7 @@ namespace ECMPS.Checks.HourlyEmissionsImport
           {
             Checks[28] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.Import.dll",
                                                                "ECMPS.Checks.ImportChecks.cImportChecks").Unwrap();
+                Checks[28].emImportParameters = emImportParameters;
 
             result = true;
           }
@@ -175,7 +177,7 @@ namespace ECMPS.Checks.HourlyEmissionsImport
         /// </summary>
         protected override void InitStaticParameterClass()
         {
-          EmImportParameters.Init(this);
+            emImportParameters.Init(this);
         }
 
         /// <summary>
@@ -184,7 +186,7 @@ namespace ECMPS.Checks.HourlyEmissionsImport
         /// <param name="category"></param>
         public override void SetStaticParameterCategory(cCategory category)
         {
-          EmImportParameters.Category = category;
+            emImportParameters.Category = category;
         }
 
         #endregion
