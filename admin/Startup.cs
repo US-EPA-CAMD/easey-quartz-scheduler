@@ -53,8 +53,8 @@ namespace Epa.Camd.Quartz.Scheduler
       List<string> allowedMethods = new List<string>();
       List<string> allowedHeaders = new List<string>();
 
-      if(Configuration["EASEY_QUARTZ_SCHEDULER_ENV"] != "production") {
-        allowedOrigins.Add("http://localhost:3000");
+      if (Configuration["EASEY_QUARTZ_SCHEDULER_ENV"] != "production") {
+          allowedOrigins.Add("http://localhost:3000");
       }
 
       foreach(CorsOptions opts in options){
@@ -131,10 +131,11 @@ namespace Epa.Camd.Quartz.Scheduler
           new OpenApiSecurityRequirement {{
             apiKeyScheme,
             new List<string>()
-          }});
+          }}
+        );
         c.AddSecurityRequirement( new OpenApiSecurityRequirement {{
-            bearerKeyScheme,
-            new List<string>()
+          bearerKeyScheme,
+          new List<string>()
         }});
       });
 
