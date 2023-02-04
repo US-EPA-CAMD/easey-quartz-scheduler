@@ -20,6 +20,8 @@ namespace ECMPS.Checks.QAImport
     public class cQAImportProcess : cProcess
     {
         private static decimal _nSessionID = 0;
+        public QaImportParameters qaImportParameters = new QaImportParameters();
+
 
         #region Constructors
 
@@ -193,7 +195,7 @@ namespace ECMPS.Checks.QAImport
         /// </summary>
         protected override void InitStaticParameterClass()
         {
-          QaImportParameters.Init(this);
+            qaImportParameters.Init(this);
         }
 
         /// <summary>
@@ -202,7 +204,7 @@ namespace ECMPS.Checks.QAImport
         /// <param name="category"></param>
         public override void SetStaticParameterCategory(cCategory category)
         {
-          QaImportParameters.Category = category;
+            qaImportParameters.Category = category;
         }
 
         #endregion

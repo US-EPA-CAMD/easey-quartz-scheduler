@@ -47,33 +47,33 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Check Category Object</param>
         /// <param name="log">Indicates whether to log results. (obsolete)</param>
         /// <returns>Returns an error message if the check fails to run correctly.</returns>
-        public static string NSPS4T1(cCategory category, ref bool log)
+        public  string NSPS4T1(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.Nsps4tCurrentSummaryRecord = null;
+                emParams.Nsps4tCurrentSummaryRecord = null;
 
 
                 // Get all NSPS4T Summary records for the current location.
                 CheckDataView<Nsps4tSummary> currentSummaryRecords
-                    = EmParameters.Nsps4tSummaryRecords.FindRows(new cFilterCondition("MON_LOC_ID", EmParameters.CurrentMonitorPlanLocationRecord.MonLocId));
+                    = emParams.Nsps4tSummaryRecords.FindRows(new cFilterCondition("MON_LOC_ID", emParams.CurrentMonitorPlanLocationRecord.MonLocId));
 
 
                 // If the location is a unit
-                if ((EmParameters.CurrentMonitorPlanLocationRecord.LocationName.Length < 2) ||
-                    EmParameters.CurrentMonitorPlanLocationRecord.LocationName.Substring(0, 2).NotInList("CS,CP,MS,MP"))
+                if ((emParams.CurrentMonitorPlanLocationRecord.LocationName.Length < 2) ||
+                    emParams.CurrentMonitorPlanLocationRecord.LocationName.Substring(0, 2).NotInList("CS,CP,MS,MP"))
                 {
 
                     // Get first active NSPS4T program record.  There should only be one.
                     VwMpLocationProgramRow currentLocationProgramRecord
-                        = EmParameters.EmLocationProgramRecords.FindRow(new cFilterCondition("PRG_CD", "NSPS4T"),
+                        = emParams.EmLocationProgramRecords.FindRow(new cFilterCondition("PRG_CD", "NSPS4T"),
                                                                         new cFilterCondition("CLASS", "A"),
                                                                         new cFilterCondition("UNIT_MONITOR_CERT_BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual,
-                                                                                             EmParameters.CurrentReportingPeriodEndDate.Value, eNullDateDefault.Min),
+                                                                                             emParams.CurrentReportingPeriodEndDate.Value, eNullDateDefault.Min),
                                                                         new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual,
-                                                                                             EmParameters.CurrentReportingPeriodBeginDate.Value, eNullDateDefault.Max));
+                                                                                             emParams.CurrentReportingPeriodBeginDate.Value, eNullDateDefault.Max));
 
                     // NSPS4T is not active during the quarter
                     if (currentLocationProgramRecord == null)
@@ -91,7 +91,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
                         else if (currentSummaryRecords.Count == 1)
                         {
-                            EmParameters.Nsps4tCurrentSummaryRecord = currentSummaryRecords[0];
+                            emParams.Nsps4tCurrentSummaryRecord = currentSummaryRecords[0];
                         }
                     }
                 }
@@ -119,26 +119,26 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Check Category Object</param>
         /// <param name="log">Indicates whether to log results. (obsolete)</param>
         /// <returns>Returns an error message if the check fails to run correctly.</returns>
-        public static string NSPS4T2(cCategory category, ref bool log)
+        public  string NSPS4T2(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.Nsps4tCurrentCompliancePeriod1Record = null;
-                EmParameters.Nsps4tCurrentCompliancePeriod2Record = null;
-                EmParameters.Nsps4tCurrentCompliancePeriod3Record = null;
+                emParams.Nsps4tCurrentCompliancePeriod1Record = null;
+                emParams.Nsps4tCurrentCompliancePeriod2Record = null;
+                emParams.Nsps4tCurrentCompliancePeriod3Record = null;
 
 
                 // Only continue checking if an NSPS4T Summary row was previously located.
-                if ( EmParameters.Nsps4tCurrentSummaryRecord != null)
+                if ( emParams.Nsps4tCurrentSummaryRecord != null)
                 {
                     // Get all NSPS4T Compliance Period records for the current NSPS4T Summary record.
                     CheckDataView<Nsps4tCompliancePeriod> currentCompliancePeriodRecords
-                        = EmParameters.Nsps4tCompliancePeriodRecords.FindRows(new cFilterCondition("NSPS4T_SUM_ID", EmParameters.Nsps4tCurrentSummaryRecord.Nsps4tSumId));
+                        = emParams.Nsps4tCompliancePeriodRecords.FindRows(new cFilterCondition("NSPS4T_SUM_ID", emParams.Nsps4tCurrentSummaryRecord.Nsps4tSumId));
 
                     // No Compliance Period Ended
-                    if (EmParameters.Nsps4tCurrentSummaryRecord.NoPeriodEndedInd == 1)
+                    if (emParams.Nsps4tCurrentSummaryRecord.NoPeriodEndedInd == 1)
                     {
                         if (currentCompliancePeriodRecords.Count > 0)
                             category.CheckCatalogResult = "A"; // Cannot have compliance period rows if summary indicates no compliance periods exist.
@@ -157,11 +157,11 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
                         else
                         {
-                            EmParameters.Nsps4tCurrentCompliancePeriod1Record = currentCompliancePeriodRecords[0];
+                            emParams.Nsps4tCurrentCompliancePeriod1Record = currentCompliancePeriodRecords[0];
                             if (currentCompliancePeriodRecords.Count >= 2)
-                                EmParameters.Nsps4tCurrentCompliancePeriod2Record = currentCompliancePeriodRecords[1];
+                                emParams.Nsps4tCurrentCompliancePeriod2Record = currentCompliancePeriodRecords[1];
                             if (currentCompliancePeriodRecords.Count >= 3)
-                                EmParameters.Nsps4tCurrentCompliancePeriod3Record = currentCompliancePeriodRecords[2];
+                                emParams.Nsps4tCurrentCompliancePeriod3Record = currentCompliancePeriodRecords[2];
                         }
                     }
                 }
@@ -182,24 +182,24 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Check Category Object</param>
         /// <param name="log">Indicates whether to log results. (obsolete)</param>
         /// <returns>Returns an error message if the check fails to run correctly.</returns>
-        public static string NSPS4T3(cCategory category, ref bool log)
+        public  string NSPS4T3(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.Nsps4tCurrentAnnualRecord = null;
+                emParams.Nsps4tCurrentAnnualRecord = null;
 
 
                 // Only continue checking if an NSPS4T Summary row was previously located.
-                if (EmParameters.Nsps4tCurrentSummaryRecord != null)
+                if (emParams.Nsps4tCurrentSummaryRecord != null)
                 {
                     // Get all NSPS4T Annual records for the current NSPS4T Summary record.
                     CheckDataView<Nsps4tAnnual> currentAnnualRecords
-                        = EmParameters.Nsps4tAnnualRecords.FindRows(new cFilterCondition("NSPS4T_SUM_ID", EmParameters.Nsps4tCurrentSummaryRecord.Nsps4tSumId));
+                        = emParams.Nsps4tAnnualRecords.FindRows(new cFilterCondition("NSPS4T_SUM_ID", emParams.Nsps4tCurrentSummaryRecord.Nsps4tSumId));
 
                     // This is not a 4th quarter emissions report.
-                    if (EmParameters.CurrentReportingPeriodQuarter != 4)
+                    if (emParams.CurrentReportingPeriodQuarter != 4)
                     {
                         if (currentAnnualRecords.Count > 0)
                             category.CheckCatalogResult = "A"; // Cannot report NSPS4T Annual rows outside of Q4.
@@ -218,7 +218,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
                         else
                         {
-                            EmParameters.Nsps4tCurrentAnnualRecord = currentAnnualRecords[0];
+                            emParams.Nsps4tCurrentAnnualRecord = currentAnnualRecords[0];
                         }
                     }
                 }
@@ -238,18 +238,18 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Check Category Object</param>
         /// <param name="log">Indicates whether to log results. (obsolete)</param>
         /// <returns>Returns an error message if the check fails to run correctly.</returns>
-        public static string NSPS4T4(cCategory category, ref bool log)
+        public  string NSPS4T4(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
                 // Only continue checking if an NSPS4T Summary row was previously located.
-                if (EmParameters.Nsps4tCurrentSummaryRecord != null)
+                if (emParams.Nsps4tCurrentSummaryRecord != null)
                 {
                     // If the emission standard electrical load is not null, it and the reported electrical load must have the same value.
-                    if ((EmParameters.Nsps4tCurrentSummaryRecord.EmissionStandardLoadCd != null) &&
-                        (EmParameters.Nsps4tCurrentSummaryRecord.EmissionStandardLoadCd != EmParameters.Nsps4tCurrentSummaryRecord.ElectricalLoadCd))
+                    if ((emParams.Nsps4tCurrentSummaryRecord.EmissionStandardLoadCd != null) &&
+                        (emParams.Nsps4tCurrentSummaryRecord.EmissionStandardLoadCd != emParams.Nsps4tCurrentSummaryRecord.ElectricalLoadCd))
                     {
                         category.CheckCatalogResult = "A";
                     }
@@ -270,76 +270,76 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Check Category Object</param>
         /// <param name="log">Indicates whether to log results. (obsolete)</param>
         /// <returns>Returns an error message if the check fails to run correctly.</returns>
-        public static string NSPS4T5(cCategory category, ref bool log)
+        public  string NSPS4T5(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.Nsps4tInvalidCo2EmissionRateUomList = "";
+                emParams.Nsps4tInvalidCo2EmissionRateUomList = "";
 
 
                 // Only continue checking if an NSPS4T Summary row was previously located.
-                if (EmParameters.Nsps4tCurrentSummaryRecord != null)
+                if (emParams.Nsps4tCurrentSummaryRecord != null)
                 {
                     // Only continue checking if the emission standard's rate UOM is not null.
-                    if (EmParameters.Nsps4tCurrentSummaryRecord.EmissionStandardUomCd != null)
+                    if (emParams.Nsps4tCurrentSummaryRecord.EmissionStandardUomCd != null)
                     {
                         /* Check each compliance period row, ensuring that the rate UOM is either null or matches the standard's rate UOM.  */
 
                         // Compliancre Record 1
-                        if (EmParameters.Nsps4tCurrentCompliancePeriod1Record != null)
+                        if (emParams.Nsps4tCurrentCompliancePeriod1Record != null)
                         {
-                            if ((EmParameters.Nsps4tCurrentCompliancePeriod1Record.Co2EmissionRateUomCd != null) &
-                                (EmParameters.Nsps4tCurrentCompliancePeriod1Record.Co2EmissionRateUomCd != EmParameters.Nsps4tCurrentSummaryRecord.EmissionStandardUomCd))
+                            if ((emParams.Nsps4tCurrentCompliancePeriod1Record.Co2EmissionRateUomCd != null) &
+                                (emParams.Nsps4tCurrentCompliancePeriod1Record.Co2EmissionRateUomCd != emParams.Nsps4tCurrentSummaryRecord.EmissionStandardUomCd))
                             {
-                                EmParameters.Nsps4tInvalidCo2EmissionRateUomList 
-                                    = EmParameters.Nsps4tInvalidCo2EmissionRateUomList.ListAdd(EmParameters.Nsps4tCurrentCompliancePeriod1Record.Co2EmissionRateUomLabel);
+                                emParams.Nsps4tInvalidCo2EmissionRateUomList 
+                                    = emParams.Nsps4tInvalidCo2EmissionRateUomList.ListAdd(emParams.Nsps4tCurrentCompliancePeriod1Record.Co2EmissionRateUomLabel);
                             }
                         }
 
                         // Compliancre Record 2
-                        if (EmParameters.Nsps4tCurrentCompliancePeriod2Record != null)
+                        if (emParams.Nsps4tCurrentCompliancePeriod2Record != null)
                         {
-                            if ((EmParameters.Nsps4tCurrentCompliancePeriod2Record.Co2EmissionRateUomCd != null) &
-                            (EmParameters.Nsps4tCurrentCompliancePeriod2Record.Co2EmissionRateUomCd != EmParameters.Nsps4tCurrentSummaryRecord.EmissionStandardUomCd))
+                            if ((emParams.Nsps4tCurrentCompliancePeriod2Record.Co2EmissionRateUomCd != null) &
+                            (emParams.Nsps4tCurrentCompliancePeriod2Record.Co2EmissionRateUomCd != emParams.Nsps4tCurrentSummaryRecord.EmissionStandardUomCd))
                             {
-                                EmParameters.Nsps4tInvalidCo2EmissionRateUomList 
-                                    = EmParameters.Nsps4tInvalidCo2EmissionRateUomList.ListAdd(EmParameters.Nsps4tCurrentCompliancePeriod2Record.Co2EmissionRateUomLabel);
+                                emParams.Nsps4tInvalidCo2EmissionRateUomList 
+                                    = emParams.Nsps4tInvalidCo2EmissionRateUomList.ListAdd(emParams.Nsps4tCurrentCompliancePeriod2Record.Co2EmissionRateUomLabel);
                             }
                         }
 
                         // Compliancre Record 3
-                        if (EmParameters.Nsps4tCurrentCompliancePeriod3Record != null)
+                        if (emParams.Nsps4tCurrentCompliancePeriod3Record != null)
                         {
-                            if ((EmParameters.Nsps4tCurrentCompliancePeriod3Record.Co2EmissionRateUomCd != null) &
-                            (EmParameters.Nsps4tCurrentCompliancePeriod3Record.Co2EmissionRateUomCd != EmParameters.Nsps4tCurrentSummaryRecord.EmissionStandardUomCd))
+                            if ((emParams.Nsps4tCurrentCompliancePeriod3Record.Co2EmissionRateUomCd != null) &
+                            (emParams.Nsps4tCurrentCompliancePeriod3Record.Co2EmissionRateUomCd != emParams.Nsps4tCurrentSummaryRecord.EmissionStandardUomCd))
                             {
-                                EmParameters.Nsps4tInvalidCo2EmissionRateUomList
-                                    = EmParameters.Nsps4tInvalidCo2EmissionRateUomList.ListAdd(EmParameters.Nsps4tCurrentCompliancePeriod3Record.Co2EmissionRateUomLabel);
+                                emParams.Nsps4tInvalidCo2EmissionRateUomList
+                                    = emParams.Nsps4tInvalidCo2EmissionRateUomList.ListAdd(emParams.Nsps4tCurrentCompliancePeriod3Record.Co2EmissionRateUomLabel);
                             }
                         }
 
 
                         // If items where added to tne Invalid UOM List, the return an error.
-                        if (EmParameters.Nsps4tInvalidCo2EmissionRateUomList != "")
+                        if (emParams.Nsps4tInvalidCo2EmissionRateUomList != "")
                         {
-                            EmParameters.Nsps4tInvalidCo2EmissionRateUomList = EmParameters.Nsps4tInvalidCo2EmissionRateUomList.FormatList();// Format list to include an 'and' instead of the last comma.
+                            emParams.Nsps4tInvalidCo2EmissionRateUomList = emParams.Nsps4tInvalidCo2EmissionRateUomList.FormatList();// Format list to include an 'and' instead of the last comma.
                             category.CheckCatalogResult = "A";
                         }
                     }
                     // Ensure that the compliance period UOM all match for the MODUS standard.
-                    else if (EmParameters.Nsps4tCurrentSummaryRecord.EmissionStandardCd == "MODUS")
+                    else if (emParams.Nsps4tCurrentSummaryRecord.EmissionStandardCd == "MODUS")
                     {
                         // If compliance period 1 does not exist then no compliance period exist, so no further checking is need.
-                        if (EmParameters.Nsps4tCurrentCompliancePeriod1Record != null)
+                        if (emParams.Nsps4tCurrentCompliancePeriod1Record != null)
                         {
                             // Compare the UOM for compliance period 2 and 3 to compliance period 1 if they exist.
-                            if ( (EmParameters.Nsps4tCurrentCompliancePeriod2Record != null) &&
-                                 (EmParameters.Nsps4tCurrentCompliancePeriod2Record.Co2EmissionRateUomCd != EmParameters.Nsps4tCurrentCompliancePeriod1Record.Co2EmissionRateUomCd)
+                            if ( (emParams.Nsps4tCurrentCompliancePeriod2Record != null) &&
+                                 (emParams.Nsps4tCurrentCompliancePeriod2Record.Co2EmissionRateUomCd != emParams.Nsps4tCurrentCompliancePeriod1Record.Co2EmissionRateUomCd)
                                  ||
-                                 (EmParameters.Nsps4tCurrentCompliancePeriod3Record != null) &&
-                                 (EmParameters.Nsps4tCurrentCompliancePeriod3Record.Co2EmissionRateUomCd != EmParameters.Nsps4tCurrentCompliancePeriod1Record.Co2EmissionRateUomCd) )
+                                 (emParams.Nsps4tCurrentCompliancePeriod3Record != null) &&
+                                 (emParams.Nsps4tCurrentCompliancePeriod3Record.Co2EmissionRateUomCd != emParams.Nsps4tCurrentCompliancePeriod1Record.Co2EmissionRateUomCd) )
                             {
                                 category.CheckCatalogResult = "B";
                             }

@@ -15,11 +15,11 @@ namespace ECMPS.Checks.EmissionsReport
   public class cDailyCalibrationCategory : cCategoryHourly
   {
 
-    #region Constructors
-
+        #region Constructors
+        public EmParameters emParams;
     public cDailyCalibrationCategory(cCheckEngine checkEngine,
                                      cEmissionsReportProcess emissionsReportProcess,
-                                     cOperatingHourCategory operatingHourCategory)
+                                     cOperatingHourCategory operatingHourCategory,EmParameters emparams)
       : base("DAYCAL",
              (cEmissionsReportProcess)emissionsReportProcess,
              (cCategory)operatingHourCategory,
@@ -29,7 +29,8 @@ namespace ECMPS.Checks.EmissionsReport
       ComponentID = "";
       CompId = "";
       SpanScale = "";
-    }
+            emParams = emparams;
+        }
 
     #endregion
 
@@ -82,12 +83,12 @@ namespace ECMPS.Checks.EmissionsReport
 
     protected override void SetRecordIdentifier()
     {
-      if (EmParameters.CurrentDailyCalibrationTest != null)
+      if (emParams.CurrentDailyCalibrationTest != null)
         RecordIdentifier = string.Format("Location {0}, Component {1} and Type {2} at {3}",
-                                         EmParameters.CurrentDailyCalibrationTest.LocationName,
-                                         EmParameters.CurrentDailyCalibrationTest.ComponentIdentifier,
-                                         EmParameters.CurrentDailyCalibrationTest.ComponentTypeCd,
-                                         EmParameters.CurrentDailyCalibrationTest.DailyTestDatetime.AsStartDateTime());
+                                         emParams.CurrentDailyCalibrationTest.LocationName,
+                                         emParams.CurrentDailyCalibrationTest.ComponentIdentifier,
+                                         emParams.CurrentDailyCalibrationTest.ComponentTypeCd,
+                                         emParams.CurrentDailyCalibrationTest.DailyTestDatetime.AsStartDateTime());
       else
         RecordIdentifier = "this test";
     }

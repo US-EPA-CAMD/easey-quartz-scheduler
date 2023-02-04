@@ -36,11 +36,12 @@ namespace ECMPS.Checks.EmissionsReport
     /// <param name="parentCategory">The parent category of the new category.</param>
     /// <param name="categoryCd">The category code of the new category.</param>
     /// <param name="parameterCd">The parameter code of the associated monitor or derived hourly data.</param>
-    public GenericSystemBasedStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd)
+    public GenericSystemBasedStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd, EmParameters emparams)
       : base(parentCategory, categoryCd)
     {
       ParameterCd = parameterCd;
-    }
+       emParams = emparams;
+     }
 
     #endregion
 
@@ -52,19 +53,19 @@ namespace ECMPS.Checks.EmissionsReport
     /// </summary>
     public string ParameterCd { get; protected set; }
 
-    #endregion
+        #endregion
+     public EmParameters emParams;
 
+      #region Base Class Overrides
 
-    #region Base Class Overrides
-
-    protected override void FilterData()
+        protected override void FilterData()
     {
       DataView[] OperatingHoursByLocation = (DataView[])EmissionParameters.OperatingHoursByLocation.Value;
 
-      //TODO: Eventual all updates of the following (including other categories) should move to the operating hour category.
-      EmParameters.HourlyOperatingDataRecordsForLocation = new CheckDataView<VwMpHrlyOpDataRow>(OperatingHoursByLocation[CurrentMonLocPos]);
-      EmParameters.LocationAttributeRecordsByHourLocation = new CheckDataView<VwMpLocationAttributeRow>(FilterRanged("LocationAttribute", LocationAttribute, CurrentOpDate, CurrentOpHour, CurrentMonLocId, "Begin_Date", "End_Date"));
-      EmParameters.TestExtensionExemptionRecords = new CheckDataView<VwQaTestExtensionExemptionRow>(FilterLocation("TEERecords", TEERecords, CurrentMonLocId));
+            //TODO: Eventual all updates of the following (including other categories) should move to the operating hour category.
+            emParams.HourlyOperatingDataRecordsForLocation = new CheckDataView<VwMpHrlyOpDataRow>(OperatingHoursByLocation[CurrentMonLocPos]);
+            emParams.LocationAttributeRecordsByHourLocation = new CheckDataView<VwMpLocationAttributeRow>(FilterRanged("LocationAttribute", LocationAttribute, CurrentOpDate, CurrentOpHour, CurrentMonLocId, "Begin_Date", "End_Date"));
+            emParams.TestExtensionExemptionRecords = new CheckDataView<VwQaTestExtensionExemptionRow>(FilterLocation("TEERecords", TEERecords, CurrentMonLocId));
     }
 
     protected override int[] GetDataBorderModcList()
@@ -79,23 +80,23 @@ namespace ECMPS.Checks.EmissionsReport
 
     protected override void SetRecordIdentifier()
     {
-      if (EmParameters.QaStatusSystemIdentifier != null)
-        RecordIdentifier = "Monitor System ID " + EmParameters.QaStatusSystemIdentifier;
+      if (emParams.QaStatusSystemIdentifier != null)
+        RecordIdentifier = "Monitor System ID " + emParams.QaStatusSystemIdentifier;
       else
         RecordIdentifier = "Monitor System ID null";
     }
 
     protected override bool SetErrorSuppressValues()
     {
-      if (EmParameters.CurrentMonitorPlanLocationRecord != null)
+      if (emParams.CurrentMonitorPlanLocationRecord != null)
       {
         ErrorSuppressValues 
           = new cErrorSuppressValues
             (
-              CheckEngine.FacilityID, 
-              EmParameters.CurrentMonitorPlanLocationRecord.LocationName,
+              CheckEngine.FacilityID,
+              emParams.CurrentMonitorPlanLocationRecord.LocationName,
               "PARAM", ParameterCd,
-              "HOUR", EmParameters.CurrentDateHour.AsStartDateTime()
+              "HOUR", emParams.CurrentDateHour.AsStartDateTime()
             );
 
         return true;

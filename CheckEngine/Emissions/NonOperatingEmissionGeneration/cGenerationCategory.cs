@@ -22,12 +22,14 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// <param name="parentGenerationCategory">The parent generation category for the new category.</param>
     /// <param name="categoryCd">The category code of the new category.</param>
     public cGenerationCategory(cGenerationProcess generationProcess,
-                               string categoryCd)
+                               string categoryCd, EmGenerationParameters EmGenerationParameters)
       : base(generationProcess.CheckEngine,
              generationProcess,
              categoryCd)
     {
       GenerationProcess = generationProcess;
+      emGenerationParameters = EmGenerationParameters;
+
     }
 
     /// <summary>
@@ -36,14 +38,15 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// <param name="parentGenerationCategory">The parent generation category for the new category.</param>
     /// <param name="categoryCd">The category code of the new category.</param>
     public cGenerationCategory(cGenerationCategory parentGenerationCategory,
-                               string categoryCd)
+                               string categoryCd, EmGenerationParameters EmGenerationParameters)
       : base(parentGenerationCategory.CheckEngine,
              parentGenerationCategory.GenerationProcess,
              (cCategory)parentGenerationCategory,
              categoryCd)
     {
       GenerationProcess = parentGenerationCategory.GenerationProcess;
-    }
+            emGenerationParameters = EmGenerationParameters;
+        }
 
     #endregion
 
@@ -60,19 +63,22 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// </summary>
     public cGenerationProcess GenerationProcess { get; private set; }
 
-    #endregion
+    public EmGenerationParameters emGenerationParameters;
 
 
-    #region Public Methods: Process Checks
+        #endregion
 
-    /// <summary>
-    /// Processes checks for a monitor location specific category.
-    /// </summary>
-    /// <param name="monLocId">MON_LOC_ID of the monitor location record being processed.</param>
-    /// <param name="monLocPos">View position of the monitor location record being processed.</param>
-    /// <param name="monLocName">Location name of the monitor location record begin processed.</param>
-    /// <returns>Returns false if the check run fails.</returns>
-    public virtual bool ProcessChecks(string monLocId, int monLocPos, string monLocName)
+
+        #region Public Methods: Process Checks
+
+        /// <summary>
+        /// Processes checks for a monitor location specific category.
+        /// </summary>
+        /// <param name="monLocId">MON_LOC_ID of the monitor location record being processed.</param>
+        /// <param name="monLocPos">View position of the monitor location record being processed.</param>
+        /// <param name="monLocName">Location name of the monitor location record begin processed.</param>
+        /// <returns>Returns false if the check run fails.</returns>
+        public virtual bool ProcessChecks(string monLocId, int monLocPos, string monLocName)
     {
       try
       {
@@ -139,7 +145,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// </summary>
     protected override void FilterData()
     {
-            EmGenerationParameters.ProgramCodeTable = new CheckDataView<ProgramCodeRow>(new System.Data.DataView(SourceTable("ProgramCode"), "", "Prg_Cd", System.Data.DataViewRowState.CurrentRows));
+            emGenerationParameters.ProgramCodeTable = new CheckDataView<ProgramCodeRow>(new System.Data.DataView(SourceTable("ProgramCode"), "", "Prg_Cd", System.Data.DataViewRowState.CurrentRows));
     }
 
     /// <summary>

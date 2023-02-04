@@ -16,8 +16,8 @@ namespace ECMPS.Checks.EmissionsChecks
     {
         #region Constructors
 
-        public cAppendixDEStatusChecks(cEmissionsReportProcess emissionReportProcess)
-          : base(emissionReportProcess)
+        public cAppendixDEStatusChecks(cEmissionsReportProcess emissionReportProcess, EmParameters emparams)
+          : base(emissionReportProcess, emparams)
         {
             CheckProcedures = new dCheckProcedure[14];
 
@@ -48,7 +48,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #endregion
 
-        #region Public Static Methods: Checks
+        #region Public Methods: Checks
 
         public string ADESTAT1(cCategory Category, ref bool Log)
         //Determine Appendix E Status       
@@ -1138,7 +1138,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                                         if (opHourCount == null)
                                         {
-                                            EmParameters.AccuracyMissingOpDataInfo = $"{i} Q{j}";
+                                            emParams.AccuracyMissingOpDataInfo = $"{i} Q{j}";
                                         }
                                         else if (sourceSupplementalData == eSourceSupplementalData.LocationLevelOpSuppData)
                                         {
@@ -2096,7 +2096,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region Helper Methods
 
-        public static void CheckExistenceOfValidFuelFlowTest(cCategory Category, out bool ValidFuelFlowTestExistsForEachComponent, out DateTime CertificationCheckDate)
+        public void CheckExistenceOfValidFuelFlowTest(cCategory Category, out bool ValidFuelFlowTestExistsForEachComponent, out DateTime CertificationCheckDate)
         // Search for the existence of a valid fuel flow test
         {
             DataRowView PriorAccRec = Category.GetCheckParameter("PRIOR_ACCURACY_RECORD").ValueAsDataRowView();
@@ -2244,13 +2244,13 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="year">The year of the op supp data to retrieve.</param>
         /// <param name="quarter">The quarter of the op supp data to retrieve.</param>
         /// <returns>The quarter specific operating count for the QA Status System, null if it does not exist.</returns>
-        public static int? GetOpHourCountTrySystemThenFuel(int year, int quarter)
+        public int? GetOpHourCountTrySystemThenFuel(int year, int quarter)
         {
             int? opHourCount;
 
-            SystemOpSuppData systemOpSuppDataRecord = EmParameters.SystemOperatingSuppDataRecordsByLocation.FindRow
+            SystemOpSuppData systemOpSuppDataRecord = emParams.SystemOperatingSuppDataRecordsByLocation.FindRow
                                                       (
-                                                          new cFilterCondition("MON_SYS_ID", EmParameters.FuelFlowComponentRecordToCheck.MonSysId),
+                                                          new cFilterCondition("MON_SYS_ID", emParams.FuelFlowComponentRecordToCheck.MonSysId),
                                                           new cFilterCondition("CALENDAR_YEAR", year, eFilterDataType.Integer),
                                                           new cFilterCondition("QUARTER", quarter, eFilterDataType.Integer),
                                                           new cFilterCondition("OP_SUPP_DATA_TYPE_CD", "OP")
@@ -2262,11 +2262,11 @@ namespace ECMPS.Checks.EmissionsChecks
             }
             else
             {
-                VwMpOpSuppDataRow fuelOpSuppDataRecord = EmParameters.OperatingSuppDataRecordsByLocation.FindRow
+                VwMpOpSuppDataRow fuelOpSuppDataRecord = emParams.OperatingSuppDataRecordsByLocation.FindRow
                                                             (
                                                                 new cFilterCondition("CALENDAR_YEAR", year, eFilterDataType.Integer),
                                                                 new cFilterCondition("QUARTER", quarter, eFilterDataType.Integer),
-                                                                new cFilterCondition("FUEL_CD", EmParameters.CurrentFuelFlowRecord.FuelCd, eFilterDataType.String),
+                                                                new cFilterCondition("FUEL_CD", emParams.CurrentFuelFlowRecord.FuelCd, eFilterDataType.String),
                                                                 new cFilterCondition("OP_TYPE_CD", "OPHOURS")
                                                             );
 
@@ -2292,13 +2292,13 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="quarter"></param>
         /// <param name="sourceSupplementalData"></param>
         /// <returns></returns>
-        public static int? GetOpHourCountTrySystemThenFuelThenLocation(int year, int quarter, out eSourceSupplementalData? sourceSupplementalData)
+        public int? GetOpHourCountTrySystemThenFuelThenLocation(int year, int quarter, out eSourceSupplementalData? sourceSupplementalData)
         {
             int? opHourCount;
 
-            SystemOpSuppData systemOpSuppDataRecord = EmParameters.SystemOperatingSuppDataRecordsByLocation.FindRow
+            SystemOpSuppData systemOpSuppDataRecord = emParams.SystemOperatingSuppDataRecordsByLocation.FindRow
                                                       (
-                                                          new cFilterCondition("MON_SYS_ID", EmParameters.FuelFlowComponentRecordToCheck.MonSysId),
+                                                          new cFilterCondition("MON_SYS_ID", emParams.FuelFlowComponentRecordToCheck.MonSysId),
                                                           new cFilterCondition("CALENDAR_YEAR", year, eFilterDataType.Integer),
                                                           new cFilterCondition("QUARTER", quarter, eFilterDataType.Integer),
                                                           new cFilterCondition("OP_SUPP_DATA_TYPE_CD", "OP")
@@ -2311,11 +2311,11 @@ namespace ECMPS.Checks.EmissionsChecks
             }
             else
             {
-                VwMpOpSuppDataRow fuelOpSuppDataRecord = EmParameters.OperatingSuppDataRecordsByLocation.FindRow
+                VwMpOpSuppDataRow fuelOpSuppDataRecord = emParams.OperatingSuppDataRecordsByLocation.FindRow
                                                          (
                                                             new cFilterCondition("CALENDAR_YEAR", year, eFilterDataType.Integer),
-                                                            new cFilterCondition("QUARTER", quarter, eFilterDataType.Integer),
-                                                            new cFilterCondition("FUEL_CD", EmParameters.CurrentFuelFlowRecord.FuelCd, eFilterDataType.String),
+                                                            new cFilterCondition("QUARTER", emParams, eFilterDataType.Integer),
+                                                            new cFilterCondition("FUEL_CD", emParams.CurrentFuelFlowRecord.FuelCd, eFilterDataType.String),
                                                             new cFilterCondition("OP_TYPE_CD", "OPHOURS")
                                                          );
 
@@ -2326,7 +2326,7 @@ namespace ECMPS.Checks.EmissionsChecks
                 }
                 else
                 {
-                    VwMpOpSuppDataRow locationOpSuppDataRecord = EmParameters.OperatingSuppDataRecordsByLocation.FindRow
+                    VwMpOpSuppDataRow locationOpSuppDataRecord = emParams.OperatingSuppDataRecordsByLocation.FindRow
                                                                  (
                                                                     new cFilterCondition("CALENDAR_YEAR", year, eFilterDataType.Integer),
                                                                     new cFilterCondition("QUARTER", quarter, eFilterDataType.Integer),

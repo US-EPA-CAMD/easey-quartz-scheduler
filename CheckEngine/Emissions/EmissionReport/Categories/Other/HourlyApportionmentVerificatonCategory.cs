@@ -12,6 +12,7 @@ namespace ECMPS.Checks.EmissionsReport
     {
 
         #region Constructors
+        public EmParameters emParams;
 
         /// <summary>
         /// Creates a category with a specific parent category and category code.
@@ -21,9 +22,10 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="componentIdentifier">The component identifier associated with the test.</param>
         /// <param name="componentTypeCd">The type of the component associated with the test.</param>
         /// <param name="testDateHour">The date and hour of the test.</param>
-        public HourlyApportionmentVerificatonCategory(cCategory parentCategory) 
+        public HourlyApportionmentVerificatonCategory(cCategory parentCategory, EmParameters emparams)
             : base(parentCategory, "APPVERI")
         {
+            emParams = emparams;
         }
 
         #endregion
@@ -47,12 +49,12 @@ namespace ECMPS.Checks.EmissionsReport
 
         protected override void SetRecordIdentifier()
         {
-            RecordIdentifier = EmParameters.CurrentOperatingDatehour.ToString();
+            RecordIdentifier = emParams.CurrentOperatingDatehour.ToString();
         }
 
         protected override bool SetErrorSuppressValues()
         {
-            ErrorSuppressValues = new cErrorSuppressValues(CheckEngine.FacilityID, null, "MONPLAN", CheckEngine.MonPlanId, "HOUR", EmParameters.CurrentOperatingDatehour);
+            ErrorSuppressValues = new cErrorSuppressValues(CheckEngine.FacilityID, null, "MONPLAN", CheckEngine.MonPlanId, "HOUR", emParams.CurrentOperatingDatehour);
             return true;
         }
 

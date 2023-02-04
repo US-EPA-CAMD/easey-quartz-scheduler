@@ -31,6 +31,7 @@ namespace ECMPS.Checks.EmissionsReport
 
         #region Constructors
 
+        public EmParameters emParams = new EmParameters();
         /// <summary>
         /// Creates an Emissions Report Process object.
         /// </summary>
@@ -1078,11 +1079,11 @@ namespace ECMPS.Checks.EmissionsReport
                 SetCheckParameter("Monitoring_Plan_Location_Records", MonitorLocationView, eParameterDataType.DataView);
                 SetCheckParameter("Current_Location_Count", MonitorLocationView.Count, eParameterDataType.Integer);
 
-                EmParameters.LocationPositionLookup = new Dictionary<string, int>();
+                emParams.LocationPositionLookup = new Dictionary<string, int>();
                 {
                     for (int locationDex = 0; locationDex < MonitorLocationView.Count; locationDex++)
                     {
-                        EmParameters.LocationPositionLookup.Add(MonitorLocationView[locationDex]["MON_LOC_ID"].AsString(), locationDex);
+                        emParams.LocationPositionLookup.Add(MonitorLocationView[locationDex]["MON_LOC_ID"].AsString(), locationDex);
                     }
                 }
 
@@ -1298,18 +1299,18 @@ namespace ECMPS.Checks.EmissionsReport
                     ExecuteCheckWork_SorbentTrap_Review();
 
                     /* NSPS4T Summary, Compliance Period and Annual (Q4) Evaluation */
-                    Nsps4tSummaryDataCategory.ExecuteChecks(FSummaryValueInitializationCategory, MonitorLocationView);
+                    Nsps4tSummaryDataCategory.ExecuteChecks(FSummaryValueInitializationCategory, MonitorLocationView,emParams);
 
                 } // Abort Checks check
 
                 // Populate Supplemental Data Tables for Database Updating
                 SaveOperatingSuppFuelData(RptPeriodId, MonitorLocationView);
                 SamplingTrainSuppDataUpdate();
-                QaCertificationSupplementalData.LoadSupplementalDataUpdateDataTable(EmParameters.QaCertEventSuppDataDictionaryArray, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
-                SystemOperatingSupplementalData.LoadSupplementalDataUpdateDataTable(EmParameters.SystemOperatingSuppDataDictionaryArray, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
-                ComponentOperatingSupplementalData.LoadSupplementalDataUpdateDataTable(EmParameters.ComponentOperatingSuppDataDictionaryArray, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
-                LastQualityAssuredValueSupplementalData.LoadSupplementalDataUpdateDataTable(EmParameters.LastQualityAssuredValueSuppDataDictionaryArray, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
-                EmParameters.MostRecentDailyCalibrationTestObject.LoadIntoSupplementalDataTables(CheckEngine.RptPeriodId.Value, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
+                QaCertificationSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.QaCertEventSuppDataDictionaryArray, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
+                SystemOperatingSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.SystemOperatingSuppDataDictionaryArray, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
+                ComponentOperatingSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.ComponentOperatingSuppDataDictionaryArray, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
+                LastQualityAssuredValueSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.LastQualityAssuredValueSuppDataDictionaryArray, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
+                emParams.MostRecentDailyCalibrationTestObject.LoadIntoSupplementalDataTables(CheckEngine.RptPeriodId.Value, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
 
                 FSummaryValueInitializationCategory.EraseParameters();
 
@@ -1363,24 +1364,24 @@ namespace ECMPS.Checks.EmissionsReport
 
             try
             {
-                FSummaryValueInitializationCategory = new cSummaryValueInitializationCategory(mCheckEngine, this);
+                FSummaryValueInitializationCategory = new cSummaryValueInitializationCategory(mCheckEngine, this, emParams);
                 {
                     /* MATS Sorbent Trap categories to check begin and end hours and their ranges and to check for overlap between sorbent traps */
                     {
-                        MatsSorbentTrapHourAndRangeEvalCategory = new MatsSorbentTrapCurrentRowCategory(FSummaryValueInitializationCategory, "STHOURS");
-                        MatsSorbentTrapOverlapEvalCategory = new MatsSorbentTrapCurrentRowCategory(FSummaryValueInitializationCategory, "STOVERL");
-                        MatsSorbentTrapInitCategory = new MatsSorbentTrapAllRowsCategory(FSummaryValueInitializationCategory, "STINIT");
+                        MatsSorbentTrapHourAndRangeEvalCategory = new MatsSorbentTrapCurrentRowCategory(FSummaryValueInitializationCategory, "STHOURS",emParams);
+                        MatsSorbentTrapOverlapEvalCategory = new MatsSorbentTrapCurrentRowCategory(FSummaryValueInitializationCategory, "STOVERL", emParams);
+                        MatsSorbentTrapInitCategory = new MatsSorbentTrapAllRowsCategory(FSummaryValueInitializationCategory, "STINIT", emParams);
                         {
-                            MatsSamplingTrainInitCategory = new MatsSamplingTrainCurrentRowCategory(MatsSorbentTrapInitCategory, "STTRNIN");
-                            MatsSamplingTrainEvalCategory = new MatsSamplingTrainCurrentRowCategory(MatsSorbentTrapInitCategory, "STTRN");
-                            MatsSorbentTrapEvalCategory = new MatsSorbentTrapCurrentRowCategory(MatsSorbentTrapInitCategory, "STTRAP");
+                            MatsSamplingTrainInitCategory = new MatsSamplingTrainCurrentRowCategory(MatsSorbentTrapInitCategory, "STTRNIN", emParams);
+                            MatsSamplingTrainEvalCategory = new MatsSamplingTrainCurrentRowCategory(MatsSorbentTrapInitCategory, "STTRN", emParams);
+                            MatsSorbentTrapEvalCategory = new MatsSorbentTrapCurrentRowCategory(MatsSorbentTrapInitCategory, "STTRAP", emParams);
                         }
-                        MatsSamplingTrainSamplingRatioReviewCategory = new MatsSamplingTrainCurrentRowCategory(FSummaryValueInitializationCategory, "STTRNLH");
-                        MatsSorbentTrapOperatingDaysReviewCategory = new MatsSorbentTrapCurrentRowCategory(FSummaryValueInitializationCategory, "STLH");
+                        MatsSamplingTrainSamplingRatioReviewCategory = new MatsSamplingTrainCurrentRowCategory(FSummaryValueInitializationCategory, "STTRNLH", emParams);
+                        MatsSorbentTrapOperatingDaysReviewCategory = new MatsSorbentTrapCurrentRowCategory(FSummaryValueInitializationCategory, "STLH", emParams);
                     }
                 }
 
-                ComponentAuditCategory = new ComponentAuditCategory(FSummaryValueInitializationCategory);
+                ComponentAuditCategory = new ComponentAuditCategory(FSummaryValueInitializationCategory, emParams);
                 FSummaryValueEvaluationCategory = new cSummaryValueEvaluationCategory(mCheckEngine, this, FSummaryValueInitializationCategory);
 
                 FDailyEmissionsInitializationCategory = new cDailyEmissionsInitializationCategory(mCheckEngine, this, FSummaryValueInitializationCategory);
@@ -1395,21 +1396,21 @@ namespace ECMPS.Checks.EmissionsReport
                 {
                     FHourlyConfigurationEvaluationCategory = new cHourlyConfigurationEvaluationCategory(mCheckEngine, this, FHourlyConfigurationInitializationCategory);
                     {
-                        FOperatingHourCategory = new cOperatingHourCategory(mCheckEngine, this, FHourlyConfigurationInitializationCategory);
+                        FOperatingHourCategory = new cOperatingHourCategory(mCheckEngine, this, FHourlyConfigurationInitializationCategory,emParams);
                         {
                             /* MATS Sorbent Trap GFM category */
                             {
-                                MatsHourlyGasFlowMeterEvalCategory = new MatsHourlyGasFlowMeterCurrentRowCategory(FOperatingHourCategory, "STGFM");
+                                MatsHourlyGasFlowMeterEvalCategory = new MatsHourlyGasFlowMeterCurrentRowCategory(FOperatingHourCategory, "STGFM", emParams);
                             }
                         }
                     }
 
-                    HourlyApportionmentVerificatonCategory = new HourlyApportionmentVerificatonCategory(FHourlyConfigurationEvaluationCategory);
+                    HourlyApportionmentVerificatonCategory = new HourlyApportionmentVerificatonCategory(FHourlyConfigurationEvaluationCategory,emParams);
                 }
 
-                DailyCalibrationCategory = new cDailyCalibrationCategory(mCheckEngine, this, FOperatingHourCategory);
-                WeeklySystemIntegrityTestCategory = new WeeklySystemIntegrityTestCategory(FOperatingHourCategory);
-                WeeklySystemIntegrityTestOperatingDatesCategory = new WeeklySystemIntegrityTestOperatingDatesCategory(FOperatingHourCategory);
+                DailyCalibrationCategory = new cDailyCalibrationCategory(mCheckEngine, this, FOperatingHourCategory, emParams);
+                WeeklySystemIntegrityTestCategory = new WeeklySystemIntegrityTestCategory(FOperatingHourCategory, emParams);
+                WeeklySystemIntegrityTestOperatingDatesCategory = new WeeklySystemIntegrityTestOperatingDatesCategory(FOperatingHourCategory, emParams);
                 FDailyEmissionTestCategory = new cDailyEmissionTestCategory(mCheckEngine, this, FOperatingHourCategory);
 
                 FCo2cCalculationCategory = new cCo2cCalculationCategory(mCheckEngine, this, FOperatingHourCategory);
@@ -1422,15 +1423,15 @@ namespace ECMPS.Checks.EmissionsReport
 
                 FFlowMonitorHourlyCategory = new cFlowMonitorHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 {
-                    DailyInterferenceStatusCategory = new cDailyInterferenceStatusCategory(FFlowMonitorHourlyCategory);
+                    DailyInterferenceStatusCategory = new cDailyInterferenceStatusCategory(FFlowMonitorHourlyCategory, emParams);
                     FlowToLoadStatusCategory = new cFlowToLoadStatusCategory(FFlowMonitorHourlyCategory);
-                    LeakStatusCategory = new cLeakStatusCategory(FFlowMonitorHourlyCategory);
-                    
-                    FlowAveragingStatusTestInitCategory = new cFlowAveragingStatusTestInitCategory(FFlowMonitorHourlyCategory);
+                    LeakStatusCategory = new cLeakStatusCategory(FFlowMonitorHourlyCategory, emParams);
+
+                    FlowAveragingStatusTestInitCategory = new cFlowAveragingStatusTestInitCategory(FFlowMonitorHourlyCategory, emParams);
                     {
                         FlowAveragingDailyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(FlowAveragingStatusTestInitCategory, "FLWAVDC");
-                        FlowAveragingDailyInterferenceStatusCategory = new cDailyInterferenceStatusCategory(FlowAveragingStatusTestInitCategory, "FLWAVDI");
-                        FlowAveragingLeakStatusCategory = new cLeakStatusCategory(FlowAveragingStatusTestInitCategory, "FLWAVLK");
+                        FlowAveragingDailyInterferenceStatusCategory = new cDailyInterferenceStatusCategory(FlowAveragingStatusTestInitCategory, emParams, "FLWAVDI");
+                        FlowAveragingLeakStatusCategory = new cLeakStatusCategory(FlowAveragingStatusTestInitCategory, emParams, "FLWAVLK");
                     }
                 }
 
@@ -1456,12 +1457,11 @@ namespace ECMPS.Checks.EmissionsReport
                 FSo2MonitorHourlyCategory = new cSo2MonitorHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 FSo2rDerivedHourlyCategory = new cSo2rDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
 
-                FLinearityStatusCategorySO2 = new cLinearityStatusCategory(mCheckEngine, this, FSo2MonitorHourlyCategory, "SO2LINE");
-                FLinearityStatusCategoryCO2 = new cLinearityStatusCategory(mCheckEngine, this, FCo2cMonitorHourlyCategory, "CO2LINE");
-                FLinearityStatusCategoryNOX = new cLinearityStatusCategory(mCheckEngine, this, FNoxcMonitorHourlyCategory, "NOXLINE");
-                FLinearityStatusCategoryO2D = new cLinearityStatusCategory(mCheckEngine, this, FO2DryMonitorHourlyCategory, "O2DLINE");
-                FLinearityStatusCategoryO2W = new cLinearityStatusCategory(mCheckEngine, this, FO2WetMonitorHourlyCategory, "O2WLINE");
-
+                FLinearityStatusCategorySO2 = new cLinearityStatusCategory(mCheckEngine, this, FSo2MonitorHourlyCategory, "SO2LINE", emParams);
+                FLinearityStatusCategoryCO2 = new cLinearityStatusCategory(mCheckEngine, this, FCo2cMonitorHourlyCategory, "CO2LINE", emParams);
+                FLinearityStatusCategoryNOX = new cLinearityStatusCategory(mCheckEngine, this, FNoxcMonitorHourlyCategory, "NOXLINE", emParams);
+                FLinearityStatusCategoryO2D = new cLinearityStatusCategory(mCheckEngine, this, FO2DryMonitorHourlyCategory, "O2DLINE", emParams);
+                FLinearityStatusCategoryO2W = new cLinearityStatusCategory(mCheckEngine, this, FO2WetMonitorHourlyCategory, "O2WLINE", emParams);
                 FRATAStatusCategoryCO2O2 = new cCO2O2RATAStatusCategory(mCheckEngine, this, FHiCalculationCategory, "CO2RATA");
                 FRATAStatusCategoryFlow = new cFlowRATAStatusCategory(mCheckEngine, this, FFlowMonitorHourlyCategory, "FLWRATA");
                 FRATAStatusCategorySO2 = new cSO2RATAStatusCategory(mCheckEngine, this, FSo2MonitorHourlyCategory, "SO2RATA");
@@ -1477,53 +1477,54 @@ namespace ECMPS.Checks.EmissionsReport
                 FDailyCalibrationStatusCategoryO2Wet = new cDailyCalibrationStatusCategory(mCheckEngine, this, FO2WetMonitorHourlyCategory, "O2WDCAL");
                 FDailyCalibrationStatusCategorySO2 = new cDailyCalibrationStatusCategory(mCheckEngine, this, FSo2MonitorHourlyCategory, "SO2DCAL");
 
-                NoxrUnusedPpbMonitorHourlyCategory = new cNoxrUnusedPpbMonitorHourlyCategory(FOperatingHourCategory);
+                NoxrUnusedPpbMonitorHourlyCategory = new cNoxrUnusedPpbMonitorHourlyCategory(FOperatingHourCategory, emParams);
                 {
                     NoxrUnusedPpbDaileyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBDC");
-                    NoxrUnusedPpbLinearityStatusCategory = new cLinearityStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBLS");
-                    NoxrUnusedPpbRataStatusInitCategory = new cNoxrUnusedPpbRataStatusInitCategory(NoxrUnusedPpbMonitorHourlyCategory);
-                    NoxrUnusedPpbRataStatusCategory = new cRataStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBRS");
+                    NoxrUnusedPpbLinearityStatusCategory = new cLinearityStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBLS", emParams);
+                    NoxrUnusedPpbRataStatusInitCategory = new cNoxrUnusedPpbRataStatusInitCategory(NoxrUnusedPpbMonitorHourlyCategory, emParams);
+                    NoxrUnusedPpbRataStatusCategory = new cRataStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBRS", emParams);
+
+
+                    FFuelFlowInitCategory = new cFuelFlowInit(mCheckEngine, this, FOperatingHourCategory);
+                    //FFuelFlowCalculationCategory = new cFuelFlowCalculationCategory(mCheckEngine, this, FFuelFlowInitCategory);
+                    FFuelFlowCategory = new cFuelFlowCategory(mCheckEngine, this, FFuelFlowInitCategory);
+                    FFFQAStatusEvaluationCategory = new cFFQAStatusEvaluationCategory(mCheckEngine, this, FFuelFlowCategory, "ADSTAT");
+                    //FFuelFlowOilCategory = new cFuelFlowOilCategory(mCheckEngine, this, FFuelFlowInitCategory);
+
+                    // 9/25/2014 RAB
+                    //Derived
+                    MATSMDHGRECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHGRE", "HGRE", emParams);
+                    MATSMDHFRECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHFRE", "HFRE", emParams);
+                    MATSMDHCLRECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHCLRE", "HCLRE", emParams);
+                    MATSMDSO2RECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDSO2RE", "SO2RE", emParams);
+                    MATSMDHGRHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHGRH", "HGRH", emParams);
+                    MATSMDHFRHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHFRH", "HFRH", emParams);
+                    MATSMDHCLRHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHCLRH", "HCLRH", emParams);
+                    MATSMDSO2RHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDSO2RH", "SO2RH", emParams);
+
+                    //Monitor
+                    MATSMMHGCCategory = new cMATSMonitorHourlyCategory(FOperatingHourCategory, "MMHGC", "MatsMhvHgcRecordsByHourLocation", "Mats_Mhv_Hgc_Records_By_Hour_Location", "HGC", emParams);
+                    {
+                        HgRataStatusCategory = new GenericSystemBasedStatusCategory(MATSMMHGCCategory, "HGRATA", "HGC", emParams);
+                        HgLinearityStatusCategory = new cLinearityStatusCategory(MATSMMHGCCategory, "HGLINE", "HGC",emParams);
+                        HgDailyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(MATSMMHGCCategory, "HGDCAL", "HGC", emParams);
+                        HgWsiStatusCategory = new GenericComponentBasedStatusCategory(MATSMMHGCCategory, "HGSI", "HGC", emParams);
+                    }
+                    MATSMMHFCCategory = new cMATSMonitorHourlyCategory(FOperatingHourCategory, "MMHFC", "MatsMhvHfcRecordsByHourLocation", "Mats_Mhv_Hfc_Records_By_Hour_Location", "HFC", emParams);
+                    MATSMMHCLCCategory = new cMATSMonitorHourlyCategory(FOperatingHourCategory, "MMHCLC", "MatsMhvHclcRecordsByHourLocation", "Mats_Mhv_Hclc_Records_By_Hour_Location", "HCLC", emParams);
+
+                    //Calculated
+                    MATSMCHGRECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHGRE", "HGRE", emParams);
+                    MATSMCHFRECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHFRE", "HFRE", emParams);
+                    MATSMCHCLRECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHCLRE", "HCLRE", emParams);
+                    MATSMCSO2RECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCSO2RE", "SO2RE", emParams);
+                    MATSMCHGRHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHGRH", "HGRH", emParams);
+                    MATSMCHFRHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHFRH", "HFRH", emParams);
+                    MATSMCHCLRHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHCLRH", "HCLRH", emParams);
+                    MATSMCSO2RHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCSO2RH", "SO2RH", emParams);
+
+                    Result = true;
                 }
-
-                FFuelFlowInitCategory = new cFuelFlowInit(mCheckEngine, this, FOperatingHourCategory);
-                //FFuelFlowCalculationCategory = new cFuelFlowCalculationCategory(mCheckEngine, this, FFuelFlowInitCategory);
-                FFuelFlowCategory = new cFuelFlowCategory(mCheckEngine, this, FFuelFlowInitCategory);
-                FFFQAStatusEvaluationCategory = new cFFQAStatusEvaluationCategory(mCheckEngine, this, FFuelFlowCategory, "ADSTAT");
-                //FFuelFlowOilCategory = new cFuelFlowOilCategory(mCheckEngine, this, FFuelFlowInitCategory);
-
-                // 9/25/2014 RAB
-                //Derived
-                MATSMDHGRECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHGRE", "HGRE");
-                MATSMDHFRECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHFRE", "HFRE");
-                MATSMDHCLRECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHCLRE", "HCLRE");
-                MATSMDSO2RECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDSO2RE", "SO2RE");
-                MATSMDHGRHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHGRH", "HGRH");
-                MATSMDHFRHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHFRH", "HFRH");
-                MATSMDHCLRHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHCLRH", "HCLRH");
-                MATSMDSO2RHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDSO2RH", "SO2RH");
-
-                //Monitor
-                MATSMMHGCCategory = new cMATSMonitorHourlyCategory(FOperatingHourCategory, "MMHGC", "MatsMhvHgcRecordsByHourLocation", "Mats_Mhv_Hgc_Records_By_Hour_Location", "HGC");
-                {
-                    HgRataStatusCategory = new GenericSystemBasedStatusCategory(MATSMMHGCCategory, "HGRATA", "HGC");
-                    HgLinearityStatusCategory = new cLinearityStatusCategory(MATSMMHGCCategory, "HGLINE", "HGC");
-                    HgDailyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(MATSMMHGCCategory, "HGDCAL", "HGC");
-                    HgWsiStatusCategory = new GenericComponentBasedStatusCategory(MATSMMHGCCategory, "HGSI", "HGC");
-                }
-                MATSMMHFCCategory = new cMATSMonitorHourlyCategory(FOperatingHourCategory, "MMHFC", "MatsMhvHfcRecordsByHourLocation", "Mats_Mhv_Hfc_Records_By_Hour_Location", "HFC");
-                MATSMMHCLCCategory = new cMATSMonitorHourlyCategory(FOperatingHourCategory, "MMHCLC", "MatsMhvHclcRecordsByHourLocation", "Mats_Mhv_Hclc_Records_By_Hour_Location", "HCLC");
-
-                //Calculated
-                MATSMCHGRECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHGRE", "HGRE");
-                MATSMCHFRECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHFRE", "HFRE");
-                MATSMCHCLRECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHCLRE", "HCLRE");
-                MATSMCSO2RECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCSO2RE", "SO2RE");
-                MATSMCHGRHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHGRH", "HGRH");
-                MATSMCHFRHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHFRH", "HFRH");
-                MATSMCHCLRHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHCLRH", "HCLRH");
-                MATSMCSO2RHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCSO2RH", "SO2RH");
-
-                Result = true;
             }
             catch (Exception ex)
             {
@@ -1780,9 +1781,9 @@ namespace ECMPS.Checks.EmissionsReport
 
             try
             {
-                DailyCalibrationData = new cDailyCalibrationData(DailyCalibrationCategory.SeverityCd);
+                DailyCalibrationData = new cDailyCalibrationData(DailyCalibrationCategory.SeverityCd, emParams);
 
-                EmParameters.DailyCalibrationSuppDataExists = DailyCalibrationData.InitializeFromPreviousQuarter(CheckEngine.MonPlanId, CheckEngine.RptPeriodId.Value, CheckEngine.DbAuxConnection.SQLConnection, ref errorMessage);
+                emParams.DailyCalibrationSuppDataExists = DailyCalibrationData.InitializeFromPreviousQuarter(CheckEngine.MonPlanId, CheckEngine.RptPeriodId.Value, CheckEngine.DbAuxConnection.SQLConnection, ref errorMessage);
 
                 LastFailedOrAbortedDailyCalibration
                   = new cLastDailyCalibration(LastFailedOrAbortedDailyCalCondition, LastFailedOrAbortedDailyCalLogDateHour);
@@ -2157,52 +2158,52 @@ namespace ECMPS.Checks.EmissionsReport
             bool RunResult = true;
 
             //Run the correct set of checks based on Needed parameter
-            if ((bool)EmParameters.MatsHgreDhvChecksNeeded)
+            if ((bool)emParams.MatsHgreDhvChecksNeeded)
             {
                 RunResult = MATSMCHGRECategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
-                SaveCalculatedDerivedDataMATS(EmParameters.MatsHgDhvRecord, EmParameters.MatsCalculatedHgRateValue, EmParameters.CalculationDiluent, EmParameters.CalculationMoisture);
+                SaveCalculatedDerivedDataMATS(emParams.MatsHgDhvRecord, emParams.MatsCalculatedHgRateValue, emParams.CalculationDiluent, emParams.CalculationMoisture);
             }
 
-            if ((bool)EmParameters.MatsHclreDhvChecksNeeded)
+            if ((bool)emParams.MatsHclreDhvChecksNeeded)
             {
                 RunResult = MATSMCHCLRECategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
-                SaveCalculatedDerivedDataMATS(EmParameters.MatsHclDhvRecord, EmParameters.MatsCalculatedHclRateValue, EmParameters.CalculationDiluent, EmParameters.CalculationMoisture);
+                SaveCalculatedDerivedDataMATS(emParams.MatsHclDhvRecord, emParams.MatsCalculatedHclRateValue, emParams.CalculationDiluent, emParams.CalculationMoisture);
             }
 
-            if ((bool)EmParameters.MatsHfreDhvChecksNeeded)
+            if ((bool)emParams.MatsHfreDhvChecksNeeded)
             {
                 RunResult = MATSMCHFRECategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
-                SaveCalculatedDerivedDataMATS(EmParameters.MatsHfDhvRecord, EmParameters.MatsCalculatedHfRateValue, EmParameters.CalculationDiluent, EmParameters.CalculationMoisture);
+                SaveCalculatedDerivedDataMATS(emParams.MatsHfDhvRecord, emParams.MatsCalculatedHfRateValue, emParams.CalculationDiluent, emParams.CalculationMoisture);
             }
 
-            if ((bool)EmParameters.MatsSo2reDhvChecksNeeded)
+            if ((bool)emParams.MatsSo2reDhvChecksNeeded)
             {
                 RunResult = MATSMCSO2RECategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
-                SaveCalculatedDerivedDataMATS(EmParameters.MatsSo2DhvRecord, EmParameters.MatsCalculatedSo2RateValue, EmParameters.CalculationDiluent, EmParameters.CalculationMoisture);
+                SaveCalculatedDerivedDataMATS(emParams.MatsSo2DhvRecord, emParams.MatsCalculatedSo2RateValue, emParams.CalculationDiluent, emParams.CalculationMoisture);
             }
 
-            if ((bool)EmParameters.MatsHgrhDhvChecksNeeded)
+            if ((bool)emParams.MatsHgrhDhvChecksNeeded)
             {
                 RunResult = MATSMCHGRHCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
-                SaveCalculatedDerivedDataMATS(EmParameters.MatsHgDhvRecord, EmParameters.MatsCalculatedHgRateValue, EmParameters.CalculationDiluent, EmParameters.CalculationMoisture);
+                SaveCalculatedDerivedDataMATS(emParams.MatsHgDhvRecord, emParams.MatsCalculatedHgRateValue, emParams.CalculationDiluent, emParams.CalculationMoisture);
             }
 
-            if ((bool)EmParameters.MatsHclrhDhvChecksNeeded)
+            if ((bool)emParams.MatsHclrhDhvChecksNeeded)
             {
                 RunResult = MATSMCHCLRHCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
-                SaveCalculatedDerivedDataMATS(EmParameters.MatsHclDhvRecord, EmParameters.MatsCalculatedHclRateValue, EmParameters.CalculationDiluent, EmParameters.CalculationMoisture);
+                SaveCalculatedDerivedDataMATS(emParams.MatsHclDhvRecord, emParams.MatsCalculatedHclRateValue, emParams.CalculationDiluent, emParams.CalculationMoisture);
             }
 
-            if ((bool)EmParameters.MatsHfrhDhvChecksNeeded)
+            if ((bool)emParams.MatsHfrhDhvChecksNeeded)
             {
                 RunResult = MATSMCHFRHCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
-                SaveCalculatedDerivedDataMATS(EmParameters.MatsHfDhvRecord, EmParameters.MatsCalculatedHfRateValue, EmParameters.CalculationDiluent, EmParameters.CalculationMoisture);
+                SaveCalculatedDerivedDataMATS(emParams.MatsHfDhvRecord, emParams.MatsCalculatedHfRateValue, emParams.CalculationDiluent, emParams.CalculationMoisture);
             }
 
-            if ((bool)EmParameters.MatsSo2rhDhvChecksNeeded)
+            if ((bool)emParams.MatsSo2rhDhvChecksNeeded)
             {
                 RunResult = MATSMCSO2RHCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
-                SaveCalculatedDerivedDataMATS(EmParameters.MatsSo2DhvRecord, EmParameters.MatsCalculatedSo2RateValue, EmParameters.CalculationDiluent, EmParameters.CalculationMoisture);
+                SaveCalculatedDerivedDataMATS(emParams.MatsSo2DhvRecord, emParams.MatsCalculatedSo2RateValue, emParams.CalculationDiluent, emParams.CalculationMoisture);
             }
 
             return RunResult;
@@ -2327,28 +2328,28 @@ namespace ECMPS.Checks.EmissionsReport
             bool RunResult = true;
 
             //Run the correct set of checks based on Needed parameter
-            if ((bool)EmParameters.MatsHgreDhvChecksNeeded)
+            if ((bool)emParams.MatsHgreDhvChecksNeeded)
                 RunResult = MATSMDHGRECategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
 
-            if ((bool)EmParameters.MatsHclreDhvChecksNeeded)
+            if ((bool)emParams.MatsHclreDhvChecksNeeded)
                 RunResult = MATSMDHCLRECategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
 
-            if ((bool)EmParameters.MatsHfreDhvChecksNeeded)
+            if ((bool)emParams.MatsHfreDhvChecksNeeded)
                 RunResult = MATSMDHFRECategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
 
-            if ((bool)EmParameters.MatsSo2reDhvChecksNeeded)
+            if ((bool)emParams.MatsSo2reDhvChecksNeeded)
                 RunResult = MATSMDSO2RECategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
 
-            if ((bool)EmParameters.MatsHgrhDhvChecksNeeded)
+            if ((bool)emParams.MatsHgrhDhvChecksNeeded)
                 RunResult = MATSMDHGRHCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
 
-            if ((bool)EmParameters.MatsHclrhDhvChecksNeeded)
+            if ((bool)emParams.MatsHclrhDhvChecksNeeded)
                 RunResult = MATSMDHCLRHCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
 
-            if ((bool)EmParameters.MatsHfrhDhvChecksNeeded)
+            if ((bool)emParams.MatsHfrhDhvChecksNeeded)
                 RunResult = MATSMDHFRHCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
 
-            if ((bool)EmParameters.MatsSo2rhDhvChecksNeeded)
+            if ((bool)emParams.MatsSo2rhDhvChecksNeeded)
                 RunResult = MATSMDSO2RHCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
 
 
@@ -2509,27 +2510,27 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool runResult = true;
 
-            if ((EmParameters.FlowAveragingComponentList != null) && (EmParameters.FlowAveragingComponentList.Count > 0))
+            if ((emParams.FlowAveragingComponentList != null) && (emParams.FlowAveragingComponentList.Count > 0))
             {
-                foreach (VwMpMonitorSystemComponentRow flowAveragingComponentRecord in EmParameters.FlowAveragingComponentList)
+                foreach (VwMpMonitorSystemComponentRow flowAveragingComponentRecord in emParams.FlowAveragingComponentList)
                 {
-                    EmParameters.FlowAveragingComponentRecord = flowAveragingComponentRecord;
+                    emParams.FlowAveragingComponentRecord = flowAveragingComponentRecord;
 
                     runResult = FlowAveragingStatusTestInitCategory.ProcessChecks(monLocId, opDate, opHour, monLocDex) && runResult;
 
-                    if (EmParameters.DailyCalStatusRequired == true)
+                    if (emParams.DailyCalStatusRequired == true)
                     {
                         /* Daily Calibration Status */
                         runResult = FlowAveragingDailyCalibrationStatusCategory.ProcessChecks(monLocId, opDate, opHour, monLocDex) && runResult;
                     }
 
-                    if (EmParameters.DailyIntStatusRequired == true)
+                    if (emParams.DailyIntStatusRequired == true)
                     {
                         /* Daily Interference Status */
                         runResult = FlowAveragingDailyInterferenceStatusCategory.ProcessChecks(monLocId, opDate, opHour, monLocDex) && runResult;
                     }
 
-                    if (EmParameters.LeakStatusRequired == true)
+                    if (emParams.LeakStatusRequired == true)
                     {
                         /* Leak Status */
                         runResult = FlowAveragingLeakStatusCategory.ProcessChecks(monLocId, opDate, opHour, monLocDex) && runResult;
@@ -2541,7 +2542,7 @@ namespace ECMPS.Checks.EmissionsReport
 
                     FlowAveragingStatusTestInitCategory.EraseParameters();
 
-                    EmParameters.FlowAveragingComponentRecord = null;
+                    emParams.FlowAveragingComponentRecord = null;
                 }
             }
 
@@ -2663,7 +2664,7 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool RunResult = true;
 
-            if ((GetCheckParameter("SO2_Monitor_Hourly_Checks_Needed").ValueAsBool() || (EmParameters.MatsSo2cNeeded == true)) &&
+            if ((GetCheckParameter("SO2_Monitor_Hourly_Checks_Needed").ValueAsBool() || (emParams.MatsSo2cNeeded == true)) &&
                 (GetCheckParameter("Current_SO2_Monitor_Hourly_Record").ValueAsDataRowView() != null))
             {
                 RunResult = FSo2MonitorHourlyCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
@@ -2690,32 +2691,32 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool RunResult = true;
 
-            if ((bool)EmParameters.MatsHgcMhvChecksNeeded)
+            if ((bool)emParams.MatsHgcMhvChecksNeeded)
             {
                 RunResult = MATSMMHGCCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
                 {
-                    if (EmParameters.RataStatusRequired.Default(false))
+                    if (emParams.RataStatusRequired.Default(false))
                         RunResult = HgRataStatusCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
-                    if (EmParameters.LinearityStatusRequired.Default(false))
+                    if (emParams.LinearityStatusRequired.Default(false))
                         RunResult = HgLinearityStatusCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
-                    if (EmParameters.DailyCalStatusRequired.Default(false))
+                    if (emParams.DailyCalStatusRequired.Default(false))
                         RunResult = HgDailyCalibrationStatusCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
-                    if (EmParameters.WsiStatusRequired.Default(false))
+                    if (emParams.WsiStatusRequired.Default(false))
                         RunResult = HgWsiStatusCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
                 }
-                SaveCalculatedMonitorDataMATS(EmParameters.MatsHgcMhvRecord, EmParameters.MatsMhvCalculatedHgcValue);
+                SaveCalculatedMonitorDataMATS(emParams.MatsHgcMhvRecord, emParams.MatsMhvCalculatedHgcValue);
             }
 
-            if ((bool)EmParameters.MatsHclcMhvChecksNeeded)
+            if ((bool)emParams.MatsHclcMhvChecksNeeded)
             {
                 RunResult = MATSMMHCLCCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
-                SaveCalculatedMonitorDataMATS(EmParameters.MatsHclcMhvRecord, EmParameters.MatsMhvCalculatedHclcValue);
+                SaveCalculatedMonitorDataMATS(emParams.MatsHclcMhvRecord, emParams.MatsMhvCalculatedHclcValue);
             }
 
-            if ((bool)EmParameters.MatsHfcMhvChecksNeeded)
+            if ((bool)emParams.MatsHfcMhvChecksNeeded)
             {
                 RunResult = MATSMMHFCCategory.ProcessChecks(AMonitorLocationId, AOpDate, AOpHour, AMonitorLocationDex);
-                SaveCalculatedMonitorDataMATS(EmParameters.MatsHfcMhvRecord, EmParameters.MatsMhvCalculatedHfcValue);
+                SaveCalculatedMonitorDataMATS(emParams.MatsHfcMhvRecord, emParams.MatsMhvCalculatedHfcValue);
             }
             //SaveCalculatedMonitorDataMATS();
 
@@ -2734,30 +2735,30 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool runResult = true;
 
-            DataView recordsForHour = EmParameters.NoxrPrimaryOrPrimaryBypassMhvRecords.SourceView;
+            DataView recordsForHour = emParams.NoxrPrimaryOrPrimaryBypassMhvRecords.SourceView;
 
             foreach (DataRowView recordForHour in recordsForHour)
             {
-                EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord = new NoxrPrimaryAndPrimaryBypassMhv(recordForHour);
+                emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord = new NoxrPrimaryAndPrimaryBypassMhv(recordForHour);
 
                 /* Monitor Hourly Record*/
                 runResult = NoxrUnusedPpbMonitorHourlyCategory.ProcessChecks(monLocId, opDate, opHour, monLocDex) && runResult;
 
-                if (EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.ModcCd == "47")
+                if (emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord.ModcCd == "47")
                 {
-                    if (EmParameters.LinearityStatusRequired == true)
+                    if (emParams.LinearityStatusRequired == true)
                     {
                         /* Linearity Status */
                         runResult = NoxrUnusedPpbLinearityStatusCategory.ProcessChecks(monLocId, opDate, opHour, monLocDex) && runResult;
                     }
 
-                    if (EmParameters.DailyCalStatusRequired == true)
+                    if (emParams.DailyCalStatusRequired == true)
                     {
                         /* Daily Calibration Status */
                         runResult = NoxrUnusedPpbDaileyCalibrationStatusCategory.ProcessChecks(monLocId, opDate, opHour, monLocDex) && runResult;
                     }
 
-                    if (EmParameters.MonitorHourlySystemStatus == true)
+                    if (emParams.MonitorHourlySystemStatus == true)
                     {
                         /* RATA Status */
                         runResult = NoxrUnusedPpbRataStatusInitCategory.ProcessChecks(monLocId, opDate, opHour, monLocDex) && runResult;
@@ -2765,7 +2766,7 @@ namespace ECMPS.Checks.EmissionsReport
                     }
                 }
 
-                EmParameters.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord = null;
+                emParams.CurrentNoxrPrimaryOrPrimaryBypassMhvRecord = null;
 
                 ///*
                 NoxrUnusedPpbLinearityStatusCategory.EraseParameters();
@@ -3072,10 +3073,10 @@ namespace ECMPS.Checks.EmissionsReport
                     ((weeklySystemIntegrity.TestDatehour == opDateHour) &&
                      (weeklySystemIntegrity.MonLocId.CompareTo(monLocId) <= 0)))
                 {
-                    EmParameters.CurrentWeeklySystemIntegrityTest = weeklySystemIntegrity;
-                    EmParameters.CurrentWeeklyTestSummary = new WeeklyTestSummary(weeklySystemIntegrityRow); // weeklySystemIntegrityRow contains a super set of WeeklyTestSummary data
+                    emParams.CurrentWeeklySystemIntegrityTest = weeklySystemIntegrity;
+                    emParams.CurrentWeeklyTestSummary = new WeeklyTestSummary(weeklySystemIntegrityRow); // weeklySystemIntegrityRow contains a super set of WeeklyTestSummary data
 
-                    if (WeeklySystemIntegrityTestCategory.ProcessChecks(EmParameters.CurrentWeeklyTestSummary.MonLocId, EmParameters.CurrentWeeklyTestSummary.WeeklyTestSumId, opDateHour.Date, opDateHour.Hour))
+                    if (WeeklySystemIntegrityTestCategory.ProcessChecks(emParams.CurrentWeeklyTestSummary.MonLocId, emParams.CurrentWeeklyTestSummary.WeeklyTestSumId, opDateHour.Date, opDateHour.Hour))
                     {
                         //TODO: Implement update of calculated data.
                         //SaveCalculatedDailyCal();
@@ -3116,13 +3117,13 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool result = true;
 
-            if (EmParameters.MatsSorbentTrapEvaluationNeeded.Default(false))
+            if (emParams.MatsSorbentTrapEvaluationNeeded.Default(false))
             {
                 /* Check each sorbent trap to ensure that the begin and end hours were reported correctly */
                 result = ExecuteChecksWork_SorbentTrap_HourAndRangeEval();
 
                 /* If the hours were reported correctly for every sorbent trap, insure that no overlaps exists between sorbent traps for the same location */
-                if (result && EmParameters.MatsSorbentTrapEvaluationNeeded.Default(false))
+                if (result && emParams.MatsSorbentTrapEvaluationNeeded.Default(false))
                 {
                     result = ExecuteChecksWork_SorbentTrap_OverlapEval();
                 }
@@ -3132,7 +3133,7 @@ namespace ECMPS.Checks.EmissionsReport
                 MatsSorbentTrapHourAndRangeEvalCategory.EraseParameters();
             }
 
-            if (result && EmParameters.MatsSorbentTrapEvaluationNeeded.Default(false))
+            if (result && emParams.MatsSorbentTrapEvaluationNeeded.Default(false))
             {
                 result = ExecuteCheckWork_SorbentTrap_Eval();
             }
@@ -3144,12 +3145,12 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool result = true;
 
-            if (result && EmParameters.MatsSorbentTrapEvaluationNeeded.Default(false))
+            if (result && emParams.MatsSorbentTrapEvaluationNeeded.Default(false))
             {
                 ExecuteCheckWork_SorbentTrap_ReviewSamplingRatio();
             }
 
-            if (result && EmParameters.MatsSorbentTrapEvaluationNeeded.Default(false))
+            if (result && emParams.MatsSorbentTrapEvaluationNeeded.Default(false))
             {
                 ExecuteCheckWork_SorbentTrap_ReviewOperatingDays();
             }
@@ -3172,12 +3173,12 @@ namespace ECMPS.Checks.EmissionsReport
             bool result = true;
 
             /* Process sorbent trap (core) checks for each sorbent trap */
-            for (int trapDex = 0; trapDex < EmParameters.MatsSorbentTrapRecords.Count; trapDex++)
+            for (int trapDex = 0; trapDex < emParams.MatsSorbentTrapRecords.Count; trapDex++)
             {
-                EmParameters.MatsSorbentTrapRecord = EmParameters.MatsSorbentTrapRecords[trapDex];
-                EmParameters.MethodRecords = new CheckDataView<VwMonitorMethodRow>(
+                emParams.MatsSorbentTrapRecord = emParams.MatsSorbentTrapRecords[trapDex];
+                emParams.MethodRecords = new CheckDataView<VwMonitorMethodRow>(
                     new DataView(SourceData.Tables["MonitorMethod"],
-                                 string.Format("MON_LOC_ID = '{0}'", EmParameters.MatsSorbentTrapRecord.MonLocId),
+                                 string.Format("MON_LOC_ID = '{0}'", emParams.MatsSorbentTrapRecord.MonLocId),
                                  null,
                                  DataViewRowState.CurrentRows
                     )
@@ -3193,28 +3194,28 @@ namespace ECMPS.Checks.EmissionsReport
                      * 3) Initializing values used during the evaluation of sorbent traps.
                      * 
                      */
-                    if (MatsSorbentTrapInitCategory.ProcessChecks(EmParameters.MatsSorbentTrapRecord.MonLocId.ToString(), EmParameters.MatsSorbentTrapRecord.BeginDate, EmParameters.MatsSorbentTrapRecord.BeginHour))
+                    if (MatsSorbentTrapInitCategory.ProcessChecks(emParams.MatsSorbentTrapRecord.MonLocId.ToString(), emParams.MatsSorbentTrapRecord.BeginDate, emParams.MatsSorbentTrapRecord.BeginHour))
                     {
                         try
                         {
                             /* Get sampling train rows for the current sorbent trap */
                             CheckDataView<MatsSamplingTrainRecord> samplingTrainsRecords
                               = new CheckDataView<MatsSamplingTrainRecord>(new DataView(SourceData.Tables["MatsSamplingTrain"],
-                                                    string.Format("TRAP_ID = '{0}'", EmParameters.MatsSorbentTrapRecord.TrapId),
+                                                    string.Format("TRAP_ID = '{0}'", emParams.MatsSorbentTrapRecord.TrapId),
                                                     null,
                                                     DataViewRowState.CurrentRows));
 
                             /* Process sampling train checks for each sampling train */
                             for (int trainDex = 0; trainDex < samplingTrainsRecords.Count; trainDex++)
                             {
-                                EmParameters.MatsSamplingTrainRecord = samplingTrainsRecords[trainDex];
+                                emParams.MatsSamplingTrainRecord = samplingTrainsRecords[trainDex];
 
-                                if (MatsSamplingTrainInitCategory.ProcessChecks(EmParameters.MatsSamplingTrainRecord.MonLocId.ToString(), EmParameters.MatsSorbentTrapRecord.BeginDate, EmParameters.MatsSorbentTrapRecord.BeginHour))
+                                if (MatsSamplingTrainInitCategory.ProcessChecks(emParams.MatsSamplingTrainRecord.MonLocId.ToString(), emParams.MatsSorbentTrapRecord.BeginDate, emParams.MatsSorbentTrapRecord.BeginHour))
                                 {
                                     /* Do not process the MatsSamplingTrainEval category for supplemental traps. */
-                                    if (EmParameters.MatsSorbentTrapRecord.SuppDataInd != 1)
+                                    if (emParams.MatsSorbentTrapRecord.SuppDataInd != 1)
                                     {
-                                        if (MatsSamplingTrainEvalCategory.ProcessChecks(EmParameters.MatsSamplingTrainRecord.MonLocId.ToString(), EmParameters.MatsSorbentTrapRecord.BeginDate, EmParameters.MatsSorbentTrapRecord.BeginHour))
+                                        if (MatsSamplingTrainEvalCategory.ProcessChecks(emParams.MatsSamplingTrainRecord.MonLocId.ToString(), emParams.MatsSorbentTrapRecord.BeginDate, emParams.MatsSorbentTrapRecord.BeginHour))
                                         {
                                             SaveCalculatedSamplingTrain();
                                         }
@@ -3231,10 +3232,10 @@ namespace ECMPS.Checks.EmissionsReport
                             }
 
                             /* Do not process the MatsSorbentTrapEval category for supplemental traps. */
-                            if (EmParameters.MatsSorbentTrapRecord.SuppDataInd != 1)
+                            if (emParams.MatsSorbentTrapRecord.SuppDataInd != 1)
                             {
                                 /* Process the sorbent trap checks that use results from the sampling train checks */
-                                if (MatsSorbentTrapEvalCategory.ProcessChecks(EmParameters.MatsSorbentTrapRecord.MonLocId.ToString(), EmParameters.MatsSorbentTrapRecord.BeginDate, EmParameters.MatsSorbentTrapRecord.BeginHour))
+                                if (MatsSorbentTrapEvalCategory.ProcessChecks(emParams.MatsSorbentTrapRecord.MonLocId.ToString(), emParams.MatsSorbentTrapRecord.BeginDate, emParams.MatsSorbentTrapRecord.BeginHour))
                                 {
                                     SaveCalculatedSorbentTrap();
                                 }
@@ -3273,14 +3274,14 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool result = true;
 
-            for (int dex = 0; dex < EmParameters.MatsSorbentTrapRecords.Count; dex++)
+            for (int dex = 0; dex < emParams.MatsSorbentTrapRecords.Count; dex++)
             {
-                EmParameters.MatsSorbentTrapRecord = EmParameters.MatsSorbentTrapRecords[dex];
+                emParams.MatsSorbentTrapRecord = emParams.MatsSorbentTrapRecords[dex];
 
                 /* Do not process the category for supplemental traps. */
-                if (EmParameters.MatsSorbentTrapRecord.SuppDataInd != 1)
+                if (emParams.MatsSorbentTrapRecord.SuppDataInd != 1)
                 {
-                    if (!MatsSorbentTrapHourAndRangeEvalCategory.ProcessChecks(EmParameters.MatsSorbentTrapRecord.MonLocId.ToString(), EmParameters.MatsSorbentTrapRecord.BeginDate, (int?)EmParameters.MatsSorbentTrapRecord.BeginHour))
+                    if (!MatsSorbentTrapHourAndRangeEvalCategory.ProcessChecks(emParams.MatsSorbentTrapRecord.MonLocId.ToString(), emParams.MatsSorbentTrapRecord.BeginDate, (int?)emParams.MatsSorbentTrapRecord.BeginHour))
                     {
                         result = false;
                     }
@@ -3299,11 +3300,11 @@ namespace ECMPS.Checks.EmissionsReport
             bool result = true;
 
             /* Check each sorbent trap to ensure that the begin and end hours were reported correctly */
-            for (int dex = 0; dex < EmParameters.MatsSorbentTrapRecords.Count; dex++)
+            for (int dex = 0; dex < emParams.MatsSorbentTrapRecords.Count; dex++)
             {
-                EmParameters.MatsSorbentTrapRecord = EmParameters.MatsSorbentTrapRecords[dex];
+                emParams.MatsSorbentTrapRecord = emParams.MatsSorbentTrapRecords[dex];
 
-                if (!MatsSorbentTrapOverlapEvalCategory.ProcessChecks(EmParameters.MatsSorbentTrapRecord.MonLocId.ToString()))
+                if (!MatsSorbentTrapOverlapEvalCategory.ProcessChecks(emParams.MatsSorbentTrapRecord.MonLocId.ToString()))
                 {
                     result = false;
                 }
@@ -3321,14 +3322,14 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool result = true;
 
-            for (int dex = 0; dex < EmParameters.MatsSorbentTrapRecords.Count; dex++)
+            for (int dex = 0; dex < emParams.MatsSorbentTrapRecords.Count; dex++)
             {
-                EmParameters.MatsSorbentTrapRecord = EmParameters.MatsSorbentTrapRecords[dex];
+                emParams.MatsSorbentTrapRecord = emParams.MatsSorbentTrapRecords[dex];
 
                 /* Do not process the category for supplemental traps. */
-                if (EmParameters.MatsSorbentTrapRecord.SuppDataInd != 1)
+                if (emParams.MatsSorbentTrapRecord.SuppDataInd != 1)
                 {
-                    if (!MatsSorbentTrapOperatingDaysReviewCategory.ProcessChecks(EmParameters.MatsSorbentTrapRecord.MonLocId.ToString(), EmParameters.MatsSorbentTrapRecord.BeginDate, (int?)EmParameters.MatsSorbentTrapRecord.BeginHour))
+                    if (!MatsSorbentTrapOperatingDaysReviewCategory.ProcessChecks(emParams.MatsSorbentTrapRecord.MonLocId.ToString(), emParams.MatsSorbentTrapRecord.BeginDate, (int?)emParams.MatsSorbentTrapRecord.BeginHour))
                     {
                         result = false;
                     }
@@ -3348,15 +3349,15 @@ namespace ECMPS.Checks.EmissionsReport
             bool result = true;
 
             /* Process sampling train checks for each sampling train */
-            foreach (MatsSamplingTrainRecord samplingTrainRecord in EmParameters.MatsSamplingTrainRecords)
+            foreach (MatsSamplingTrainRecord samplingTrainRecord in emParams.MatsSamplingTrainRecords)
             {
                 if ((samplingTrainRecord.BorderTrapInd == 0) || (samplingTrainRecord.SuppDataInd == 1))
                 {
-                    EmParameters.MatsSamplingTrainRecord = samplingTrainRecord;
+                    emParams.MatsSamplingTrainRecord = samplingTrainRecord;
 
-                    if (!MatsSamplingTrainSamplingRatioReviewCategory.ProcessChecks(EmParameters.MatsSamplingTrainRecord.MonLocId.ToString(),
-                                                                                    EmParameters.MatsSamplingTrainRecord.BeginDatehour.Value.Date,
-                                                                                    EmParameters.MatsSamplingTrainRecord.BeginDatehour.Value.Hour))
+                    if (!MatsSamplingTrainSamplingRatioReviewCategory.ProcessChecks(emParams.MatsSamplingTrainRecord.MonLocId.ToString(),
+                                                                                    emParams.MatsSamplingTrainRecord.BeginDatehour.Value.Date,
+                                                                                    emParams.MatsSamplingTrainRecord.BeginDatehour.Value.Hour))
                     {
                         result = false;
                     }
@@ -3383,14 +3384,14 @@ namespace ECMPS.Checks.EmissionsReport
 
             /* Process each hourly gas flow meter row for the current hour and location. */
             {
-                CheckDataView<MatsHourlyGfmRecord> hourlyGfmRecords = EmParameters.MatsHourlyGfmRecordsForHourAndLocation;
+                CheckDataView<MatsHourlyGfmRecord> hourlyGfmRecords = emParams.MatsHourlyGfmRecordsForHourAndLocation;
 
                 /* Process sampling train checks for each sampling train */
                 for (int dex = 0; dex < hourlyGfmRecords.Count; dex++)
                 {
-                    EmParameters.MatsHourlyGfmRecord = hourlyGfmRecords[dex];
+                    emParams.MatsHourlyGfmRecord = hourlyGfmRecords[dex];
 
-                    if (MatsHourlyGasFlowMeterEvalCategory.ProcessChecks(MonLocId, EmParameters.CurrentHourlyOpRecord.BeginDate, EmParameters.CurrentHourlyOpRecord.BeginHour))
+                    if (MatsHourlyGasFlowMeterEvalCategory.ProcessChecks(MonLocId, emParams.CurrentHourlyOpRecord.BeginDate, emParams.CurrentHourlyOpRecord.BeginHour))
                     {
                         SaveCalculatedHourlyGasFlowMeter();
                     }
@@ -4517,38 +4518,65 @@ namespace ECMPS.Checks.EmissionsReport
             try
             {
                 Checks[0] = InstantiateChecks("cHourlyOperatingDataChecks", checksDllPath);
+                Checks[0].emParams = emParams;
                 Checks[1] = InstantiateChecks("cHourlyAppendixDChecks", checksDllPath);
+                Checks[1].emParams = emParams;
                 Checks[2] = InstantiateChecks("cHourlyDerivedValueChecks", checksDllPath);
+                Checks[2].emParams = emParams;
                 Checks[3] = InstantiateChecks("cHourlyMonitorValueChecks", checksDllPath);
+                Checks[3].emParams = emParams;
                 Checks[4] = null; // Removed checks which are not longer used. InstantiateChecks("cHourlyInclusiveDataChecks", checksDllPath);
                 Checks[5] = InstantiateChecks("cHourlyCalculatedDataChecks", checksDllPath);
+                Checks[5].emParams = emParams;
                 Checks[37] = InstantiateChecks("cHourlyAggregationChecks", checksDllPath);
+                Checks[37].emParams = emParams;
                 Checks[38] = InstantiateChecks("cHourlyApportionmentChecks", checksDllPath);
+                Checks[38].emParams = emParams;
                 Checks[39] = InstantiateChecks("cHourlyAppendixEChecks", checksDllPath);
+                Checks[39].emParams = emParams; 
                 Checks[40] = InstantiateChecks("cHourlyGeneralChecks", checksDllPath);
+                Checks[40].emParams = emParams;
                 Checks[42] = InstantiateChecks("cDailyEmissionChecks", checksDllPath);
                 Checks[43] = InstantiateChecks("cDailyCalibrationChecks", checksDllPath);
+                Checks[43].emParams = emParams;
                 Checks[44] = InstantiateChecks("cDailyEmissionTestChecks", checksDllPath);
                 Checks[46] = InstantiateChecks("cLinearityStatusChecks", checksDllPath);
+                Checks[46].emParams = emParams;
                 Checks[47] = InstantiateChecks("cAppendixDEStatusChecks", checksDllPath);
                 Checks[49] = InstantiateChecks("cRATAStatusChecks", checksDllPath);
+                Checks[49].emParams = emParams;
                 Checks[51] = InstantiateChecks("cDailyCalibrationStatusChecks", checksDllPath);
+                Checks[51].emParams = emParams;
                 Checks[55] = InstantiateChecks("cFlowToLoadStatusChecks", checksDllPath);
+                Checks[55].emParams = emParams;
                 Checks[56] = InstantiateChecks("cDailyInterferenceStatusChecks", checksDllPath);
+                Checks[56].emParams = emParams;
                 Checks[57] = InstantiateChecks("cLeakStatusChecks", checksDllPath);
+                Checks[57].emParams = emParams;
                 Checks[60] = InstantiateChecks("cMATSOperatingHourChecks", checksDllPath);
+                Checks[60].emParams = emParams;
                 Checks[61] = InstantiateChecks("cMATSMonitorHourlyValueChecks", checksDllPath);
+                Checks[61].emParams = emParams;
                 Checks[62] = InstantiateChecks("cMATSCalculatedHourlyValueChecks", checksDllPath);
+                Checks[62].emParams = emParams;
                 Checks[63] = InstantiateChecks("cMATSDerivedHourlyValueChecks", checksDllPath);
+                Checks[63].emParams = emParams;
                 Checks[64] = InstantiateChecks("cMATSSorbentTrapChecks", checksDllPath);
+                Checks[64].emParams = emParams;
                 Checks[65] = InstantiateChecks("cMATSSamplingTrainChecks", checksDllPath);
+                Checks[65].emParams = emParams;
                 Checks[66] = InstantiateChecks("cMATSHourlyGFMChecks", checksDllPath);
+                Checks[66].emParams = emParams;
                 Checks[67] = InstantiateChecks("WeeklyTestSummaryChecks", checksDllPath);
+                Checks[67].emParams = emParams;
                 Checks[68] = InstantiateChecks("WeeklySystemIntegrityChecks", checksDllPath);
+                Checks[68].emParams = emParams;
                 Checks[69] = InstantiateChecks("WeeklySystemIntegrityStatusChecks", checksDllPath);
+                Checks[69].emParams = emParams;
                 Checks[70] = InstantiateChecks("Nsps4tChecks", checksDllPath);
+                Checks[70].emParams = emParams;
                 Checks[71] = InstantiateChecks("EmissionAuditChecks", checksDllPath);
-
+                Checks[71].emParams = emParams;
                 Checks[45] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.LME.dll", "ECMPS.Checks.LMEChecks.cLMEChecks").Unwrap();
 
                 result = true;
@@ -4618,7 +4646,7 @@ namespace ECMPS.Checks.EmissionsReport
         /// </summary>
         protected override void InitStaticParameterClass()
         {
-            EmParameters.Init(this);
+            emParams.Init(this);
         }
 
         /// <summary>
@@ -4627,7 +4655,7 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="category"></param>
         public override void SetStaticParameterCategory(cCategory category)
         {
-            EmParameters.Category = category;
+            emParams.Category = category;
         }
 
 
@@ -4860,10 +4888,10 @@ namespace ECMPS.Checks.EmissionsReport
             }
             // MATS MS-1 Added 6/12/2018 for EC-2902
             {
-                SaveCalculatedDerivedDataMATS(EmParameters.MatsMs1HgDhvId, EmParameters.CalculatedFlowWeightedHg);
-                SaveCalculatedDerivedDataMATS(EmParameters.MatsMs1HclDhvId, EmParameters.CalculatedFlowWeightedHcl);
-                SaveCalculatedDerivedDataMATS(EmParameters.MatsMs1HfDhvId, EmParameters.CalculatedFlowWeightedHf);
-                SaveCalculatedDerivedDataMATS(EmParameters.MatsMs1So2DhvId, EmParameters.CalculatedFlowWeightedSo2);
+                SaveCalculatedDerivedDataMATS(emParams.MatsMs1HgDhvId, emParams.CalculatedFlowWeightedHg);
+                SaveCalculatedDerivedDataMATS(emParams.MatsMs1HclDhvId, emParams.CalculatedFlowWeightedHcl);
+                SaveCalculatedDerivedDataMATS(emParams.MatsMs1HfDhvId, emParams.CalculatedFlowWeightedHf);
+                SaveCalculatedDerivedDataMATS(emParams.MatsMs1So2DhvId, emParams.CalculatedFlowWeightedSo2);
             }
 
         }
@@ -5073,12 +5101,12 @@ namespace ECMPS.Checks.EmissionsReport
 
         private void SaveCalculatedHourlyGasFlowMeter()
         {
-            if (EmParameters.MatsHourlyGfmRecord != null)
+            if (emParams.MatsHourlyGfmRecord != null)
             {
                 DataRow CalcRow = CalcHrlyGasFlowMeter.NewRow();
 
-                CalcRow["HRLY_GFM_ID"] = EmParameters.MatsHourlyGfmRecord.HrlyGfmId;
-                CalcRow["CALC_FLOW_TO_SAMPLING_RATIO"] = GetUpdateDecimalValue(EmParameters.MatsCalcHourlySfsrRatio, eDecimalPrecision.MATS_PERCENT);
+                CalcRow["HRLY_GFM_ID"] = emParams.MatsHourlyGfmRecord.HrlyGfmId;
+                CalcRow["CALC_FLOW_TO_SAMPLING_RATIO"] = GetUpdateDecimalValue(emParams.MatsCalcHourlySfsrRatio, eDecimalPrecision.MATS_PERCENT);
 
                 CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
 
@@ -5088,14 +5116,14 @@ namespace ECMPS.Checks.EmissionsReport
 
         private void SaveCalculatedSamplingTrain()
         {
-            if (EmParameters.MatsSamplingTrainRecord != null)
+            if (emParams.MatsSamplingTrainRecord != null)
             {
                 DataRow CalcRow = CalcSamplingTrain.NewRow();
 
-                CalcRow["TRAP_TRAIN_ID"] = EmParameters.MatsSamplingTrainRecord.TrapTrainId;
-                CalcRow["CALC_HG_CONCENTRATION"] = EmParameters.MatsCalcTrainHgConcentration;
-                CalcRow["CALC_PERCENT_BREAKTHROUGH"] = GetUpdateDecimalValue(EmParameters.MatsCalcTrainPercentBreakthrough, eDecimalPrecision.MATS_PERCENT_BREAKTHROUGH);
-                CalcRow["CALC_PERCENT_SPIKE_RECOVERY"] = GetUpdateDecimalValue(EmParameters.MatsCalcTrainPercentSpikeRecovery, eDecimalPrecision.MATS_PERCENT);
+                CalcRow["TRAP_TRAIN_ID"] = emParams.MatsSamplingTrainRecord.TrapTrainId;
+                CalcRow["CALC_HG_CONCENTRATION"] = emParams.MatsCalcTrainHgConcentration;
+                CalcRow["CALC_PERCENT_BREAKTHROUGH"] = GetUpdateDecimalValue(emParams.MatsCalcTrainPercentBreakthrough, eDecimalPrecision.MATS_PERCENT_BREAKTHROUGH);
+                CalcRow["CALC_PERCENT_SPIKE_RECOVERY"] = GetUpdateDecimalValue(emParams.MatsCalcTrainPercentSpikeRecovery, eDecimalPrecision.MATS_PERCENT);
 
                 CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
 
@@ -5105,14 +5133,14 @@ namespace ECMPS.Checks.EmissionsReport
 
         private void SaveCalculatedSorbentTrap()
         {
-            if (EmParameters.MatsSorbentTrapRecord != null)
+            if (emParams.MatsSorbentTrapRecord != null)
             {
                 DataRow CalcRow = CalcSorbentTrap.NewRow();
 
-                CalcRow["TRAP_ID"] = EmParameters.MatsSorbentTrapRecord.TrapId;
+                CalcRow["TRAP_ID"] = emParams.MatsSorbentTrapRecord.TrapId;
                 CalcRow["CALC_PAIRED_TRAP_AGREEMENT"] = DBNull.Value; //TODO: Replace null with check parameter (MatsCalcPairedTrapAgreement), once it is created and populated.
                 CalcRow["CALC_MODC_CD"] = DBNull.Value; //TODO: Replace null with check parameter (MatsCalcTrapModc), once it is created and populated.
-                CalcRow["CALC_HG_CONCENTRATION"] = EmParameters.MatsCalcHgSystemConcentration;
+                CalcRow["CALC_HG_CONCENTRATION"] = emParams.MatsCalcHgSystemConcentration;
 
                 CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
 
@@ -5393,13 +5421,13 @@ namespace ECMPS.Checks.EmissionsReport
 
         private void SaveCalculatedWeeklySystemIntegrity()
         {
-            if (EmParameters.CurrentWeeklySystemIntegrityTest != null)
+            if (emParams.CurrentWeeklySystemIntegrityTest != null)
             {
                 DataRow calcRow = CalcWeeklySystemIntegrity.NewRow();
                 {
-                    calcRow["WEEKLY_SYS_INTEGRITY_ID"] = EmParameters.CurrentWeeklySystemIntegrityTest.WeeklySysIntegrityId;
-                    calcRow["CALC_APS_IND"] = EmParameters.CalculatedSystemIntegrityApsIndicator.DbValue();
-                    calcRow["CALC_SYSTEM_INTEGRITY_ERROR"] = EmParameters.CalculatedSystemIntegrityError.DbValue();
+                    calcRow["WEEKLY_SYS_INTEGRITY_ID"] = emParams.CurrentWeeklySystemIntegrityTest.WeeklySysIntegrityId;
+                    calcRow["CALC_APS_IND"] = emParams.CalculatedSystemIntegrityApsIndicator.DbValue();
+                    calcRow["CALC_SYSTEM_INTEGRITY_ERROR"] = emParams.CalculatedSystemIntegrityError.DbValue();
                     calcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
                 }
                 CalcWeeklySystemIntegrity.Rows.Add(calcRow);
@@ -5410,14 +5438,14 @@ namespace ECMPS.Checks.EmissionsReport
 
         private void SaveCalculatedWeeklyTestSummary()
         {
-            if (EmParameters.CurrentWeeklyTestSummary != null)
+            if (emParams.CurrentWeeklyTestSummary != null)
             {
-                EmParameters.CalculatedWeeklyTestSummaryResult = NormalizedTestResult(EmParameters.CalculatedWeeklyTestSummaryResult);
+                emParams.CalculatedWeeklyTestSummaryResult = NormalizedTestResult(emParams.CalculatedWeeklyTestSummaryResult);
 
                 DataRow row = CalcWeeklyTestSummary.NewRow();
                 {
-                    row["WEEKLY_TEST_SUM_ID"] = EmParameters.CurrentWeeklyTestSummary.WeeklyTestSumId;
-                    row["CALC_TEST_RESULT_CD"] = EmParameters.CalculatedWeeklyTestSummaryResult.DbValue();
+                    row["WEEKLY_TEST_SUM_ID"] = emParams.CurrentWeeklyTestSummary.WeeklyTestSumId;
+                    row["CALC_TEST_RESULT_CD"] = emParams.CalculatedWeeklyTestSummaryResult.DbValue();
                     row["SESSION_ID"] = CheckEngine.WorkspaceSessionId;
                 }
                 CalcWeeklyTestSummary.Rows.Add(row);
@@ -5737,11 +5765,11 @@ namespace ECMPS.Checks.EmissionsReport
                 DataRow CalcRow = CalcMATSMHVData.NewRow();
 
                 CalcRow["MATS_MHV_ID"] = MHVRecord.MatsMhvId;
-                CalcRow["CALC_UNADJUSTED_HRLY_VALUE"] = EmParameters.CalculatedUnadjustedValue;
-                CalcRow["CALC_DAILY_CAL_STATUS"] = EmParameters.CurrentDailyCalStatus;
-                CalcRow["CALC_HG_LINE_STATUS"] = EmParameters.CurrentLinearityStatus;
-                CalcRow["CALC_HGI1_STATUS"] = EmParameters.WsiStatus;
-                CalcRow["CALC_RATA_STATUS"] = EmParameters.CurrentRataStatus;
+                CalcRow["CALC_UNADJUSTED_HRLY_VALUE"] = emParams.CalculatedUnadjustedValue;
+                CalcRow["CALC_DAILY_CAL_STATUS"] = emParams.CurrentDailyCalStatus;
+                CalcRow["CALC_HG_LINE_STATUS"] = emParams.CurrentLinearityStatus;
+                CalcRow["CALC_HGI1_STATUS"] = emParams.WsiStatus;
+                CalcRow["CALC_RATA_STATUS"] = emParams.CurrentRataStatus;
                 CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
 
                 CalcMATSMHVData.Rows.Add(CalcRow);
@@ -6033,7 +6061,7 @@ namespace ECMPS.Checks.EmissionsReport
                              CheckEngine.DbDataConnection.SQLConnection,
                              ref errorMessage);
 
-            foreach (SamplingTrainEvalInformation samplingTrainEvalInformation in EmParameters.MatsSamplingTrainDictionary.Values)
+            foreach (SamplingTrainEvalInformation samplingTrainEvalInformation in emParams.MatsSamplingTrainDictionary.Values)
             {
                 samplingTrainEvalInformation.LoadSupplementalDataUpdateRow(CheckEngine.WorkspaceSessionId);
             }
@@ -6187,6 +6215,8 @@ namespace ECMPS.Checks.EmissionsReport
 
 
         #region Private Methods: General
+
+
         private bool AddTable(string ATableName, string ASql,
                               DataSet ASourceDataSet, NpgsqlConnection AConnection, string ASort,
                               ref string AResultMessage)
@@ -6753,6 +6783,14 @@ namespace ECMPS.Checks.EmissionsReport
         {
             FH2oMonitorHourlyCategory = AH2oMonitorHourlyCategory;
         }
+
+
+
+
+
+
+
+
 
         #endregion
 

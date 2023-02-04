@@ -18,13 +18,13 @@ namespace ECMPS.Checks.EmissionsReport
   public class cMATSMonitorHourlyCategory : cCategoryHourly
   {
 
-    #region Constructors
-
-    public cMATSMonitorHourlyCategory(cOperatingHourCategory parentCategory,
+        #region Constructors
+        public EmParameters emParams;
+        public cMATSMonitorHourlyCategory(cOperatingHourCategory parentCategory,
                                       string categoryCd,
                                       string primaryTableName,
                                       string primaryCheckParameterName,
-                                      string parameterCd)
+                                      string parameterCd,EmParameters emparams)
       : base(categoryCd,
              parentCategory,
              primaryTableName,
@@ -32,6 +32,7 @@ namespace ECMPS.Checks.EmissionsReport
              primaryCheckParameterName)
     {
       ParameterCd = parameterCd;
+      emParams =   emparams;
     }
 
     #endregion
@@ -78,19 +79,19 @@ namespace ECMPS.Checks.EmissionsReport
 
     protected override void SetRecordIdentifier()
     {
-      string locationName = (EmParameters.CurrentMonitorPlanLocationRecord != null) ? EmParameters.CurrentMonitorPlanLocationRecord.LocationName : null;
+      string locationName = (emParams.CurrentMonitorPlanLocationRecord != null) ? emParams.CurrentMonitorPlanLocationRecord.LocationName : null;
 
       RecordIdentifier = string.Format("Location {0}, Parameter {1}", locationName, ParameterCd);
     }
 
 	protected override bool SetErrorSuppressValues()
 	{
-    if (EmParameters.CurrentMonitorPlanLocationRecord != null && EmParameters.CurrentHourlyOpRecord != null)
+    if (emParams.CurrentMonitorPlanLocationRecord != null && emParams.CurrentHourlyOpRecord != null)
     {
       long facId = CheckEngine.FacilityID;
-      string locationName = EmParameters.CurrentMonitorPlanLocationRecord.LocationName;
+      string locationName = emParams.CurrentMonitorPlanLocationRecord.LocationName;
       string matchDataValue = ParameterCd;
-      DateTime? matchTimeValue = EmParameters.CurrentHourlyOpRecord.BeginDatehour.Default();
+      DateTime? matchTimeValue = emParams.CurrentHourlyOpRecord.BeginDatehour.Default();
 
       ErrorSuppressValues = new cErrorSuppressValues(facId, locationName, "PARAM", matchDataValue, "HOUR", matchTimeValue);
       return true;

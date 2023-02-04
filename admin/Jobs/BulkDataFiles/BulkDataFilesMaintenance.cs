@@ -36,14 +36,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
-      if (!await scheduler.CheckExists(WithJobKey()))
-      {
+
+      if(await scheduler.CheckExists(WithJobKey())){
+        await scheduler.DeleteJob(WithJobKey());
+      }
+
+      
         if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_MAINTENANCE_SCHEDULE"] != null){
           app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_MAINTENANCE_SCHEDULE"]));
         }
         else
-          app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule("0 0 8 ? * * *"));
-      }
+          app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule("0 0 6 ? * * *"));
+      
     }
 
     public BulkDataFileMaintenance(NpgSqlContext dbContext, IConfiguration configuration)
@@ -132,7 +136,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       return TriggerBuilder.Create()
           .WithIdentity(WithTriggerKey())
           .WithDescription(Identity.TriggerDescription)
-          .WithCronSchedule(cronExpression);
+          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }

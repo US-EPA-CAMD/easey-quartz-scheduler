@@ -16,9 +16,11 @@ jobs:
       url: https://easey-dev.app.cloud.gov/quartz
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Checkout devops repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: US-EPA-CAMD/devops
           path: devops
@@ -58,9 +60,9 @@ jobs:
         run: scripts/environment-variables-secrets.sh
         env:
           QUARTZ_API_KEY: ${{ secrets.API_KEY }}
-          BULK_DATA_S3_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
-          BULK_DATA_S3_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
-          API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
+          BULK_FILES_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
+          BULK_FILES_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
+          QUARTZ_API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
           QUARTZ_CLIENT_ID: ${{ secrets.CLIENT_ID }}
       - name: Deploy
         run: devops/scripts/deploy.sh

@@ -51,12 +51,12 @@ namespace ECMPS.Checks.EmissionsChecks
 
             try
             {
-                EmParameters.OnlineDailyIntCheck = null;
+                emParams.OnlineDailyIntCheck = null;
                 OnlineDailyIntRecord.SetValue(null, category);
                 OfflineDailyIntRecord.SetValue(null, category);
                 DailyIntStatusResult.SetValue(null, category);
 
-                string componentId = EmParameters.QaStatusComponentId;
+                string componentId = emParams.QaStatusComponentId;
                 DateTime currentOpHour = CurrentMhvRecord.Value["BEGIN_DATE"].AsBeginDateTime().AddHours(CurrentMhvRecord.Value["BEGIN_HOUR"].AsInteger(0));
 
                 // Most Recent Daily Interference Check Object contains the latest/most recent  
@@ -71,8 +71,8 @@ namespace ECMPS.Checks.EmissionsChecks
                 {
                     if (lastestDailyInterferenceCheckObject != null)
                     {
-                        EmParameters.OnlineDailyIntCheck = lastestDailyInterferenceCheckObject.Get(componentId, true);
-                        latestDailyIntCheckRecord = (EmParameters.OnlineDailyIntCheck != null) ? EmParameters.OnlineDailyIntCheck.DailyInterferenceCheckRow : null;
+                        emParams.OnlineDailyIntCheck = lastestDailyInterferenceCheckObject.Get(componentId, true);
+                        latestDailyIntCheckRecord = (emParams.OnlineDailyIntCheck != null) ? emParams.OnlineDailyIntCheck.DailyInterferenceCheckRow : null;
                     }
                     else
                         latestDailyIntCheckRecord = null;
@@ -202,7 +202,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         // Daily Interference Checks for specific components.
                         cLastDailyInterferenceCheck lastestDailyInterferenceCheckObject = (cLastDailyInterferenceCheck)LatestDailyInterferenceCheckObject.Value;
 
-                        string componentId = EmParameters.QaStatusComponentId;
+                        string componentId = emParams.QaStatusComponentId;
 
                         DataRowView latestDailyIntCheckRecord;
 
@@ -245,37 +245,37 @@ namespace ECMPS.Checks.EmissionsChecks
             {
                 if (DailyIntStatusResult.Value == null)
                 {
-                    if (EmParameters.OnlineDailyIntCheck.LastCoveredNonOpHour != null)
+                    if (emParams.OnlineDailyIntCheck.LastCoveredNonOpHour != null)
                     {
-                        DateTime MHVDate = EmParameters.CurrentDateHour.AsStartDate();
-                        int MHVHour = EmParameters.CurrentDateHour.AsStartHour();
+                        DateTime MHVDate = emParams.CurrentDateHour.AsStartDate();
+                        int MHVHour = emParams.CurrentDateHour.AsStartHour();
 
-                        if ((EmParameters.OnlineDailyIntCheck.FirstOpHourAfterLastCoveredNonOpHour != null) &&
-                            ((cDateFunctions.HourDifference(EmParameters.OnlineDailyIntCheck.FirstOpHourAfterLastCoveredNonOpHour.Value, EmParameters.CurrentDateHour.Default(DateTypes.START)) + 1) > 8))
+                        if ((emParams.OnlineDailyIntCheck.FirstOpHourAfterLastCoveredNonOpHour != null) &&
+                            ((cDateFunctions.HourDifference(emParams.OnlineDailyIntCheck.FirstOpHourAfterLastCoveredNonOpHour.Value, emParams.CurrentDateHour.Default(DateTypes.START)) + 1) > 8))
                         {
-                            EmParameters.DailyIntStatusResult = "OOC-Expired";
+                            emParams.DailyIntStatusResult = "OOC-Expired";
                         }
                         else
                         {
-                            EmParameters.DailyIntStatusResult = "IC-Grace";
+                            emParams.DailyIntStatusResult = "IC-Grace";
                         }
                     }
                     else
                     {
-                        EmParameters.DailyIntStatusResult = "OOC-Expired";
+                        emParams.DailyIntStatusResult = "OOC-Expired";
                     }
 
-                    if (EmParameters.DailyIntStatusResult.StartsWith("OOC") && (EmParameters.OfflineDailyIntRecord != null))
+                    if (emParams.DailyIntStatusResult.StartsWith("OOC") && (emParams.OfflineDailyIntRecord != null))
                     {
-                        EmParameters.DailyIntStatusResult += "*";
+                        emParams.DailyIntStatusResult += "*";
                     }
                 }
 
                 //EC-2490:  MJ: 2015-12-10
                 //EC-3141:  MH:  Moved to the correct location matching the spec
-                if (!EmParameters.DailyIntStatusResult.StartsWith("IC"))
+                if (!emParams.DailyIntStatusResult.StartsWith("IC"))
                 {
-                    category.CheckCatalogResult = EmParameters.DailyIntStatusResult;
+                    category.CheckCatalogResult = emParams.DailyIntStatusResult;
                 }
             }
             catch (Exception ex)

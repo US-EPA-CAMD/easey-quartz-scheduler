@@ -51,15 +51,15 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string EMWSI1(cCategory category, ref bool log)
+        public  string EMWSI1(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.CurrentWeeklySystemIntegrityTest.HgConverterInd != 1)
+                if (emParams.CurrentWeeklySystemIntegrityTest.HgConverterInd != 1)
                 {
-                    EmParameters.WeeklyTestSummaryValid = false;
+                    emParams.WeeklyTestSummaryValid = false;
                     category.CheckCatalogResult = "A";
                 }
             }
@@ -77,25 +77,25 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string EMWSI2(cCategory category, ref bool log)
+        public  string EMWSI2(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.CurrentWeeklySystemIntegrityTest.GasLevelCd == null)
+                if (emParams.CurrentWeeklySystemIntegrityTest.GasLevelCd == null)
                 {
-                    EmParameters.WeeklyTestSummaryValid = false;
+                    emParams.WeeklyTestSummaryValid = false;
                     category.CheckCatalogResult = "A";
                 }
-                else if (EmParameters.CurrentWeeklySystemIntegrityTest.GasLevelCd.NotInList("HIGH,MID,LOW,ZERO"))
+                else if (emParams.CurrentWeeklySystemIntegrityTest.GasLevelCd.NotInList("HIGH,MID,LOW,ZERO"))
                 {
-                    EmParameters.WeeklyTestSummaryValid = false;
+                    emParams.WeeklyTestSummaryValid = false;
                     category.CheckCatalogResult = "B";
                 }
-                else if (EmParameters.CurrentWeeklySystemIntegrityTest.GasLevelCd.NotInList("HIGH,MID"))
+                else if (emParams.CurrentWeeklySystemIntegrityTest.GasLevelCd.NotInList("HIGH,MID"))
                 {
-                    EmParameters.WeeklyTestSummaryValid = false;
+                    emParams.WeeklyTestSummaryValid = false;
                     category.CheckCatalogResult = "C";
                 }
             }
@@ -114,35 +114,35 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string EMWSI3(cCategory category, ref bool log)
+        public  string EMWSI3(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.InjectionReferenceValueValid = false;
+                emParams.InjectionReferenceValueValid = false;
 
-                if (EmParameters.CurrentWeeklySystemIntegrityTest.RefValue == null)
+                if (emParams.CurrentWeeklySystemIntegrityTest.RefValue == null)
                 {
-                    EmParameters.WeeklyTestSummaryValid = false;
+                    emParams.WeeklyTestSummaryValid = false;
                     category.CheckCatalogResult = "A";
                 }
-                else if (!EmParameters.CurrentWeeklySystemIntegrityTest.RefValue.Value.IsRounded(1))
+                else if (!emParams.CurrentWeeklySystemIntegrityTest.RefValue.Value.IsRounded(1))
                 {
-                    EmParameters.WeeklyTestSummaryValid = false;
+                    emParams.WeeklyTestSummaryValid = false;
                     category.CheckCatalogResult = "B";
                 }
-                else if (EmParameters.CurrentWeeklySystemIntegrityTest.RefValue.Value <= 0)
+                else if (emParams.CurrentWeeklySystemIntegrityTest.RefValue.Value <= 0)
                 {
-                    if (EmParameters.CurrentWeeklySystemIntegrityTest.TestResultCd != "FAILED")
+                    if (emParams.CurrentWeeklySystemIntegrityTest.TestResultCd != "FAILED")
                     {
-                        EmParameters.WeeklyTestSummaryValid = false;
+                        emParams.WeeklyTestSummaryValid = false;
                         category.CheckCatalogResult = "C";
                     }
                 }
                 else
                 {
-                    EmParameters.InjectionReferenceValueValid = true;
+                    emParams.InjectionReferenceValueValid = true;
                 }
             }
             catch (Exception ex)
@@ -160,35 +160,35 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string EMWSI4(cCategory category, ref bool log)
+        public  string EMWSI4(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.InjectionMeasuredValueValid = false;
+                emParams.InjectionMeasuredValueValid = false;
 
-                if (EmParameters.CurrentWeeklySystemIntegrityTest.MeasuredValue == null)
+                if (emParams.CurrentWeeklySystemIntegrityTest.MeasuredValue == null)
                 {
-                    EmParameters.WeeklyTestSummaryValid = false;
+                    emParams.WeeklyTestSummaryValid = false;
                     category.CheckCatalogResult = "A";
                 }
-                else if (!EmParameters.CurrentWeeklySystemIntegrityTest.MeasuredValue.Value.IsRounded(1))
+                else if (!emParams.CurrentWeeklySystemIntegrityTest.MeasuredValue.Value.IsRounded(1))
                 {
-                    EmParameters.WeeklyTestSummaryValid = false;
+                    emParams.WeeklyTestSummaryValid = false;
                     category.CheckCatalogResult = "B";
                 }
-                else if (EmParameters.CurrentWeeklySystemIntegrityTest.MeasuredValue.Value <= 0)
+                else if (emParams.CurrentWeeklySystemIntegrityTest.MeasuredValue.Value <= 0)
                 {
-                    if (EmParameters.CurrentWeeklySystemIntegrityTest.TestResultCd != "FAILED")
+                    if (emParams.CurrentWeeklySystemIntegrityTest.TestResultCd != "FAILED")
                     {
-                        EmParameters.WeeklyTestSummaryValid = false;
+                        emParams.WeeklyTestSummaryValid = false;
                         category.CheckCatalogResult = "C";
                     }
                 }
                 else
                 {
-                    EmParameters.InjectionMeasuredValueValid = true;
+                    emParams.InjectionMeasuredValueValid = true;
                 }
             }
             catch (Exception ex)
@@ -206,48 +206,48 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string EMWSI5(cCategory category, ref bool log)
+        public  string EMWSI5(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.CalculatedSystemIntegrityApsIndicator = null;
-                EmParameters.CalculatedSystemIntegrityError = null;
+                emParams.CalculatedSystemIntegrityApsIndicator = null;
+                emParams.CalculatedSystemIntegrityError = null;
 
-                if (EmParameters.InjectionReferenceValueValid.Default(false) && EmParameters.InjectionMeasuredValueValid.Default(false))
+                if (emParams.InjectionReferenceValueValid.Default(false) && emParams.InjectionMeasuredValueValid.Default(false))
                 {
                     decimal percentError = 100
-                                         * Math.Abs(EmParameters.CurrentWeeklySystemIntegrityTest.RefValue.Value - EmParameters.CurrentWeeklySystemIntegrityTest.MeasuredValue.Value)
-                                         / EmParameters.CurrentWeeklySystemIntegrityTest.RefValue.Value;
+                                         * Math.Abs(emParams.CurrentWeeklySystemIntegrityTest.RefValue.Value - emParams.CurrentWeeklySystemIntegrityTest.MeasuredValue.Value)
+                                         / emParams.CurrentWeeklySystemIntegrityTest.RefValue.Value;
                     {
                         percentError = Math.Round(percentError, 1, MidpointRounding.AwayFromZero);
                     }
 
                     if (percentError <= 10)
                     {
-                        EmParameters.CalculatedSystemIntegrityApsIndicator = 0;
-                        EmParameters.CalculatedSystemIntegrityError = percentError;
-                        EmParameters.CalculatedWeeklyTestSummaryResult = "PASSED";
+                        emParams.CalculatedSystemIntegrityApsIndicator = 0;
+                        emParams.CalculatedSystemIntegrityError = percentError;
+                        emParams.CalculatedWeeklyTestSummaryResult = "PASSED";
                     }
                     else
                     {
-                        decimal absoluteError = Math.Abs(EmParameters.CurrentWeeklySystemIntegrityTest.RefValue.Value - EmParameters.CurrentWeeklySystemIntegrityTest.MeasuredValue.Value);
+                        decimal absoluteError = Math.Abs(emParams.CurrentWeeklySystemIntegrityTest.RefValue.Value - emParams.CurrentWeeklySystemIntegrityTest.MeasuredValue.Value);
                         {
                             absoluteError = Math.Round(absoluteError, 1, MidpointRounding.AwayFromZero);
                         }
 
                         if (absoluteError <= 0.8m)
                         {
-                            EmParameters.CalculatedSystemIntegrityApsIndicator = 1;
-                            EmParameters.CalculatedSystemIntegrityError = absoluteError;
-                            EmParameters.CalculatedWeeklyTestSummaryResult = "PASSAPS";
+                            emParams.CalculatedSystemIntegrityApsIndicator = 1;
+                            emParams.CalculatedSystemIntegrityError = absoluteError;
+                            emParams.CalculatedWeeklyTestSummaryResult = "PASSAPS";
                         }
                         else
                         {
-                            EmParameters.CalculatedSystemIntegrityApsIndicator = 0;
-                            EmParameters.CalculatedSystemIntegrityError = percentError;
-                            EmParameters.CalculatedWeeklyTestSummaryResult = "FAILED";
+                            emParams.CalculatedSystemIntegrityApsIndicator = 0;
+                            emParams.CalculatedSystemIntegrityError = percentError;
+                            emParams.CalculatedWeeklyTestSummaryResult = "FAILED";
                         }
                     }
                 }
@@ -267,34 +267,34 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string EMWSI6(cCategory category, ref bool log)
+        public  string EMWSI6(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.WeeklySystemIntegrityApsIsValid = false;
+                emParams.WeeklySystemIntegrityApsIsValid = false;
 
-                if (EmParameters.InjectionReferenceValueValid.Default(false) && EmParameters.InjectionMeasuredValueValid.Default(false))
+                if (emParams.InjectionReferenceValueValid.Default(false) && emParams.InjectionMeasuredValueValid.Default(false))
                 {
-                    if (EmParameters.CurrentWeeklySystemIntegrityTest.ApsInd == null)
+                    if (emParams.CurrentWeeklySystemIntegrityTest.ApsInd == null)
                     {
-                        EmParameters.WeeklyTestSummaryValid = false;
+                        emParams.WeeklyTestSummaryValid = false;
                         category.CheckCatalogResult = "A";
                     }
-                    else if ((EmParameters.CurrentWeeklySystemIntegrityTest.ApsInd != 0) && (EmParameters.CurrentWeeklySystemIntegrityTest.ApsInd != 1))
+                    else if ((emParams.CurrentWeeklySystemIntegrityTest.ApsInd != 0) && (emParams.CurrentWeeklySystemIntegrityTest.ApsInd != 1))
                     {
-                        EmParameters.WeeklyTestSummaryValid = false;
+                        emParams.WeeklyTestSummaryValid = false;
                         category.CheckCatalogResult = "B";
                     }
-                    else if (EmParameters.CurrentWeeklySystemIntegrityTest.ApsInd != EmParameters.CalculatedSystemIntegrityApsIndicator)
+                    else if (emParams.CurrentWeeklySystemIntegrityTest.ApsInd != emParams.CalculatedSystemIntegrityApsIndicator)
                     {
-                        EmParameters.WeeklyTestSummaryValid = false;
+                        emParams.WeeklyTestSummaryValid = false;
                         category.CheckCatalogResult = "C";
                     }
                     else
                     {
-                        EmParameters.WeeklySystemIntegrityApsIsValid = true;
+                        emParams.WeeklySystemIntegrityApsIsValid = true;
                     }
                 }
             }
@@ -313,36 +313,36 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string EMWSI7(cCategory category, ref bool log)
+        public  string EMWSI7(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                EmParameters.WeeklySystemIntegrityErrorIsValid = false;
+                emParams.WeeklySystemIntegrityErrorIsValid = false;
 
-                if (EmParameters.InjectionReferenceValueValid.Default(false) && EmParameters.InjectionMeasuredValueValid.Default(false))
+                if (emParams.InjectionReferenceValueValid.Default(false) && emParams.InjectionMeasuredValueValid.Default(false))
                 {
-                    if (EmParameters.CurrentWeeklySystemIntegrityTest.SystemIntegrityError == null)
+                    if (emParams.CurrentWeeklySystemIntegrityTest.SystemIntegrityError == null)
                     {
-                        EmParameters.WeeklyTestSummaryValid = false;
+                        emParams.WeeklyTestSummaryValid = false;
                         category.CheckCatalogResult = "A";
                     }
-                    else if (EmParameters.WeeklySystemIntegrityApsIsValid.Default(false))
+                    else if (emParams.WeeklySystemIntegrityApsIsValid.Default(false))
                     {
-                        if (!EmParameters.CurrentWeeklySystemIntegrityTest.SystemIntegrityError.Value.IsRounded(1))
+                        if (!emParams.CurrentWeeklySystemIntegrityTest.SystemIntegrityError.Value.IsRounded(1))
                         {
-                            EmParameters.WeeklyTestSummaryValid = false;
+                            emParams.WeeklyTestSummaryValid = false;
                             category.CheckCatalogResult = "B";
                         }
-                        else if (EmParameters.CurrentWeeklySystemIntegrityTest.SystemIntegrityError != EmParameters.CalculatedSystemIntegrityError)
+                        else if (emParams.CurrentWeeklySystemIntegrityTest.SystemIntegrityError != emParams.CalculatedSystemIntegrityError)
                         {
-                            EmParameters.WeeklyTestSummaryValid = false;
+                            emParams.WeeklyTestSummaryValid = false;
                             category.CheckCatalogResult = "C";
                         }
                         else
                         {
-                            EmParameters.WeeklySystemIntegrityErrorIsValid = true;
+                            emParams.WeeklySystemIntegrityErrorIsValid = true;
                         }
                     }
                 }
@@ -362,17 +362,17 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string EMWSI8(cCategory category, ref bool log)
+        public  string EMWSI8(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if ((EmParameters.CalculatedWeeklyTestSummaryResult != null) &&
-                    (EmParameters.CurrentWeeklySystemIntegrityTest.TestResultCd != EmParameters.CalculatedWeeklyTestSummaryResult))
+                if ((emParams.CalculatedWeeklyTestSummaryResult != null) &&
+                    (emParams.CurrentWeeklySystemIntegrityTest.TestResultCd != emParams.CalculatedWeeklyTestSummaryResult))
                 {
-                    EmParameters.CalculatedWeeklyTestSummaryResult = null;
-                    EmParameters.WeeklyTestSummaryValid = false;
+                    emParams.CalculatedWeeklyTestSummaryResult = null;
+                    emParams.WeeklyTestSummaryValid = false;
                     category.CheckCatalogResult = "A";
                 }
             }
@@ -391,21 +391,21 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string EMWSI9(cCategory category, ref bool log)
+        public  string EMWSI9(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.CurrentWeeklySystemIntegrityTest.ComponentId != null)
+                if (emParams.CurrentWeeklySystemIntegrityTest.ComponentId != null)
                 {
-                    if (EmParameters.WsiTestDictionary.Count == 0 ||
-                    (EmParameters.WsiTestDictionary.Count > 0 && !EmParameters.WsiTestDictionary.ContainsKey(EmParameters.CurrentWeeklySystemIntegrityTest.ComponentId)))
+                    if (emParams.WsiTestDictionary.Count == 0 ||
+                    (emParams.WsiTestDictionary.Count > 0 && !emParams.WsiTestDictionary.ContainsKey(emParams.CurrentWeeklySystemIntegrityTest.ComponentId)))
                     {
-                        EmParameters.WsiTestDictionary[EmParameters.CurrentWeeklySystemIntegrityTest.ComponentId] = new WsiTestStatusInformation();
+                        emParams.WsiTestDictionary[emParams.CurrentWeeklySystemIntegrityTest.ComponentId] = new WsiTestStatusInformation();
                     }
 
-                    EmParameters.WsiTestDictionary[EmParameters.CurrentWeeklySystemIntegrityTest.ComponentId].MostRecentTestRecord = EmParameters.CurrentWeeklySystemIntegrityTest;
+                    emParams.WsiTestDictionary[emParams.CurrentWeeklySystemIntegrityTest.ComponentId].MostRecentTestRecord = emParams.CurrentWeeklySystemIntegrityTest;
                 }
             }
 
@@ -428,29 +428,29 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string EMWSI10(cCategory category, ref bool log)
+        public  string EMWSI10(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.CurrentOperatingTime.Default(0) > 0)
+                if (emParams.CurrentOperatingTime.Default(0) > 0)
                 {
-                    foreach (WsiTestStatusInformation wsiTestEntry in EmParameters.WsiTestDictionary.Values)
+                    foreach (WsiTestStatusInformation wsiTestEntry in emParams.WsiTestDictionary.Values)
                     {
-                        if ((wsiTestEntry.MostRecentTestRecord != null) && (wsiTestEntry.MostRecentTestRecord.MonLocId == EmParameters.CurrentMonitorLocationId))
+                        if ((wsiTestEntry.MostRecentTestRecord != null) && (wsiTestEntry.MostRecentTestRecord.MonLocId == emParams.CurrentMonitorLocationId))
                         {
                             //reset the opDates on the first hour
-                            if (wsiTestEntry.MostRecentTestRecord.TestDatehour == EmParameters.CurrentDateHour)
+                            if (wsiTestEntry.MostRecentTestRecord.TestDatehour == emParams.CurrentDateHour)
                             {
                                 wsiTestEntry.OperatingDateList.Clear();
                             }
 
                             //add the current OpDate if it's not already there
-                            if ((wsiTestEntry.MostRecentTestRecord.TestDate < EmParameters.CurrentOperatingDate.Value) &&
-                                (!wsiTestEntry.OperatingDateList.Contains(EmParameters.CurrentOperatingDate.Value)))
+                            if ((wsiTestEntry.MostRecentTestRecord.TestDate < emParams.CurrentOperatingDate.Value) &&
+                                (!wsiTestEntry.OperatingDateList.Contains(emParams.CurrentOperatingDate.Value)))
                             {
-                                wsiTestEntry.OperatingDateList.Add(EmParameters.CurrentOperatingDate.Value);
+                                wsiTestEntry.OperatingDateList.Add(emParams.CurrentOperatingDate.Value);
                             }
                         }
                     }
@@ -475,13 +475,13 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="category">Category Object</param>
         /// <param name="log">Indicates whether to log results.</param>
         /// <returns>Returns error message if check fails to run correctly.</returns>
-        public static string EMWSI11(cCategory category, ref bool log)
+        public  string EMWSI11(cCategory category, ref bool log)
         {
             string returnVal = "";
 
             try
             {
-                if (EmParameters.CurrentOperatingTime == 0)
+                if (emParams.CurrentOperatingTime == 0)
                 {
                     category.CheckCatalogResult = "A";
                 }
