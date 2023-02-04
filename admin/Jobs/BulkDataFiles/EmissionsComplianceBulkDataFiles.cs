@@ -45,7 +45,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EMISSIONS_COMPLIANCE_SCHEDULE"]));
         }
         else
-          app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(WithCronSchedule("0 0/10 1-5 15 * ? *"));
+          app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(WithCronSchedule("0 0/10 2-4 15 * ? *"));
       
     }
 
