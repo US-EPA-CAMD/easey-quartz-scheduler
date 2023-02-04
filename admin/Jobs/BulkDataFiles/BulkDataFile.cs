@@ -52,7 +52,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     }
 
     private async Task<string> getDescription(string dataType, string subType, decimal? year, decimal? quarter, string state, string programCode){
-      string description = "";
+            string description = "";
 
       List<ProgramCode> programs = await _dbContext.getProgramCodes();
 

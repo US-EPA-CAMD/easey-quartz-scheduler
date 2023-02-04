@@ -1,0 +1,120 @@
+﻿
+using ECMPS.Checks.CheckEngine;
+using ECMPS.Checks.CheckEngine.Definitions;
+using Quartz;
+using Quartz.Impl;
+using System;
+using System.Threading.Tasks;
+
+namespace CheckEngineRunner
+{
+    static class CheckEngineRunnerDBCredentials
+    {
+        private static string dbName = Environment.GetEnvironmentVariable("EASEY_DB_NAME");
+        private static string dbPort = Environment.GetEnvironmentVariable("EASEY_DB_PORT");
+        private static string dbUser = Environment.GetEnvironmentVariable("EASEY_DB_USER");
+        private static string dbPwd = Environment.GetEnvironmentVariable("EASEY_DB_PWD");
+
+        private static string dbConnString = "server = localhost; port = " + dbPort + "; user id = " + dbUser + "; password = " + dbPwd + "; database = " + dbName + "; pooling = true";
+
+        public static string CheckEngineRunnerDBConnectionStr { get { return dbConnString; } }
+    }
+    class Program
+    {
+        
+
+        static async Task Main(string[] args)
+        {
+
+            /*
+            string fileTypeCd = ((args != null) && (args.Length >= 1)) ? args[0] : null;
+            string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
+            string otherId = ((args != null) && (args.Length >= 3)) ? args[2] : null;
+
+
+            // 1. Create a scheduler Factory
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+
+            // 2. Get and start a scheduler
+            IScheduler scheduler = await schedulerFactory.GetScheduler();
+            await scheduler.Start();
+
+            // 3. Create a job
+            IJobDetail job = JobBuilder.Create<CheckEnginerJob>()
+
+                .WithIdentity("Monitor Plan Evaluation", "DEFAULT")
+                .UsingJobData("connectionString", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr)
+                .UsingJobData("ProcessCode", "MP")
+                .UsingJobData("fileTypeCd", fileTypeCd)
+                .UsingJobData("monPlanId", monPlanId)
+                .UsingJobData("otherId", otherId)
+                .Build();
+
+            // 4. Create a trigger
+            ITrigger trigger = TriggerBuilder.Create()
+                .WithIdentity("Monitor Plan Evaluation", "DEFAULT")
+                .UsingJobData("MonitorPlanId", "request.MonitorPlanId")
+                .UsingJobData("ConfigurationName", "request.ConfigurationName")
+                .StartNow()
+                .Build();
+
+            // 5. Schedule the job using the job and trigger 
+            await scheduler.ScheduleJob(job, trigger);
+
+            Console.ReadLine();
+
+            */
+            string localDir = System.IO.Directory.GetCurrentDirectory();
+            string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\MonitorPlan\\obj\\Debug\\netcoreapp6.0\\";
+            cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
+
+            bool result = checkEngine.RunChecks_MpReport("TWCORNEL5-488E42008B434177BC7D7BFF138D18EF", new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+
+            Console.ReadLine();
+        }
+    }
+
+    public class CheckEnginerJob : IJob
+    {
+        private static string connStr = CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr;
+        
+        public async Task Execute(IJobExecutionContext context)
+        {
+            JobDataMap dataMap = context.JobDetail.JobDataMap;
+
+
+            string fileTypeCd = dataMap.GetString("fileTypeCd");
+            string monPlanId = dataMap.GetString("monPlanId");
+
+
+            switch (fileTypeCd)
+            {
+                case "MP":
+                    {
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\MonitorPlan\\obj\\Debug\\netcoreapp6.0\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
+
+                        bool result = checkEngine.RunChecks_MpReport(monPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+                        await Task.CompletedTask;
+                    }
+                    break;
+
+                case "QAT":
+                    {
+                        string testSumId = dataMap.GetString("otherId");
+
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp6.0\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
+
+                        bool result = checkEngine.RunChecks_QaReport_Test(testSumId, monPlanId, eCheckEngineRunMode.Normal, testSumId);
+                        await Task.CompletedTask;
+                    }
+                    break;
+            }
+
+        }
+
+    }
+}

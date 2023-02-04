@@ -17,6 +17,7 @@ using DatabaseAccess;
 
 using Epa.Camd.Quartz.Scheduler.Jobs;
 using Epa.Camd.Quartz.Scheduler.Models;
+using Epa.Camd.Quartz.Scheduler.Jobs.Listeners;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
@@ -42,7 +43,7 @@ namespace Epa.Camd.Quartz.Scheduler
       services.AddAppConfiguration(Configuration);
 
       services.AddDbContext<NpgSqlContext>(options =>
-          options.UseNpgsql(connectionString)
+        options.UseNpgsql(connectionString)
       );
 
       NpgSqlContext dbContext = services.BuildServiceProvider().GetService<NpgSqlContext>();
@@ -52,24 +53,24 @@ namespace Epa.Camd.Quartz.Scheduler
       List<string> allowedMethods = new List<string>();
       List<string> allowedHeaders = new List<string>();
 
-      if(Configuration["EASEY_QUARTZ_SCHEDULER_ENV"] != "production"){
+      if (Configuration["EASEY_QUARTZ_SCHEDULER_ENV"] != "production") {
           allowedOrigins.Add("http://localhost:3000");
       }
 
       foreach(CorsOptions opts in options){
         switch(opts.Key){
           case "origin":
-              allowedOrigins.Add(opts.Value);
+            allowedOrigins.Add(opts.Value);
             break;
           case "header":
-              allowedHeaders.Add(opts.Value);
+            allowedHeaders.Add(opts.Value);
             break;
           case "method":
-              allowedMethods.Add(opts.Value);
+            allowedMethods.Add(opts.Value);
             break;
         }
       }
-      
+
       services.AddCors(options => {
         options.AddPolicy(corsPolicy, builder => {
           builder.WithOrigins(allowedOrigins.ToArray())
@@ -100,12 +101,11 @@ namespace Epa.Camd.Quartz.Scheduler
           });
         }
 
-        var bearerKeyScheme = new OpenApiSecurityScheme
-        {
+        var bearerKeyScheme = new OpenApiSecurityScheme {
           Name = "Bearer",
           In = ParameterLocation.Header,
           Type = SecuritySchemeType.ApiKey,
-          Description = "Authorization by bearer request token!",
+          Description = "Authorization by bearer client request token!",
           Scheme = "Bearer",
           Reference = new OpenApiReference {
             Id = "BearerToken",
@@ -141,7 +141,7 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddRazorPages();
       services.AddControllers();
-      
+    
       services.AddSilkierQuartz(options => {
         options.VirtualPathRoot = "/quartz";
         options.UseLocalTime = true;
@@ -167,6 +167,8 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddOptions();
 
+      EvaluationJobQueue.RegisterWithQuartz(services);
+      CheckEngineEvaluation.RegisterWithQuartz(services);
       BulkFileJobQueue.RegisterWithQuartz(services);
       AllowanceHoldingsBulkDataFiles.RegisterWithQuartz(services);
       AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
@@ -176,6 +178,9 @@ namespace Epa.Camd.Quartz.Scheduler
       BulkDataFile.RegisterWithQuartz(services);
       BulkDataFileMaintenance.RegisterWithQuartz(services);
       ApportionedEmissionsBulkData.RegisterWithQuartz(services);
+      SendMail.RegisterWithQuartz(services);
+      RemoveExpiredUserSession.RegisterWithQuartz(services);
+      RemoveExpiredCheckoutRecord.RegisterWithQuartz(services);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -212,7 +217,7 @@ namespace Epa.Camd.Quartz.Scheduler
         endpoints.MapControllers();
       });
 
-      if(Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SWAGGER"])){
+      if (Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SWAGGER"])) {
         string apiPath = Configuration["EASEY_QUARTZ_SCHEDULER_API_PATH"];
         app.UseSwagger(c => {
           c.RouteTemplate = apiPath + "/swagger/{documentname}/swagger.json";
@@ -227,6 +232,13 @@ namespace Epa.Camd.Quartz.Scheduler
       IScheduler scheduler = app.GetScheduler();
 
       BulkDataFile.setScheduler(scheduler);
+
+      scheduler.ListenerManager.AddJobListener(
+        new CheckEngineEvaluationListener(Configuration),
+        GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS)
+      );
+
+      EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
       AllowanceHoldingsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
@@ -235,6 +247,8 @@ namespace Epa.Camd.Quartz.Scheduler
       FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
       BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
+      RemoveExpiredUserSession.ScheduleWithQuartz(scheduler, app);
+      RemoveExpiredCheckoutRecord.ScheduleWithQuartz(scheduler, app);      
     }
   }
 }
