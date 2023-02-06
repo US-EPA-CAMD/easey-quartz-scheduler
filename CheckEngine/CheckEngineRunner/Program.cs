@@ -112,6 +112,32 @@ namespace CheckEngineRunner
                         await Task.CompletedTask;
                     }
                     break;
+
+                case "QCE":
+                    {
+                        string qaCertEventId = dataMap.GetString("otherId");
+
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp3.1\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
+
+                        bool result = checkEngine.RunChecks_QaReport_Qce(qaCertEventId, monPlanId, eCheckEngineRunMode.Normal, qaCertEventId);
+                        await Task.CompletedTask;
+                    }
+                    break;
+
+                case "TEE":
+                    {
+                        string testExtenstionExemptionId = dataMap.GetString("otherId");
+
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp3.1\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
+
+                        bool result = checkEngine.RunChecks_QaReport_Tee(testExtenstionExemptionId, monPlanId, eCheckEngineRunMode.Normal, testExtenstionExemptionId);
+                        await Task.CompletedTask;
+                    }
+                    break;
             }
 
         }
