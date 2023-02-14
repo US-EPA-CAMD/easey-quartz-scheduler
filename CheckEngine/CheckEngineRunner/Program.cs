@@ -65,10 +65,13 @@ namespace CheckEngineRunner
 
             */
             string localDir = System.IO.Directory.GetCurrentDirectory();
-            string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\MonitorPlan\\obj\\Debug\\netcoreapp6.0\\";
+            string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp6.0\\";
             cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
 
-            bool result = checkEngine.RunChecks_MpReport("TWCORNEL5-488E42008B434177BC7D7BFF138D18EF", new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+
+            bool result = checkEngine.RunChecks_QaReport_Test("e39c510f-6cde-4555-a7b9-162cd5183ca5", "TWCORNEL5-C0E3879920A14159BAA98E03F1980A7A", eCheckEngineRunMode.Normal, "e39c510f-6cde-4555-a7b9-162cd5183ca5");
+
+            //bool result = checkEngine.RunChecks_EmReport("TWCORNEL5-488E42008B434177BC7D7BFF138D18EF", 119, eCheckEngineRunMode.Normal);
 
             Console.ReadLine();
         }
