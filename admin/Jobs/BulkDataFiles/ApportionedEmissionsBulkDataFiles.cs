@@ -115,8 +115,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         for(int row = 0; row < rowsPerQuarter.Count; row++){
           decimal year = (decimal) rowsPerQuarter[row][0];
           decimal quarter = (decimal) rowsPerQuarter[row][1];
-          NpgsqlTypes.NpgsqlDate startDate = (NpgsqlTypes.NpgsqlDate) rowsPerQuarter[row][2];
-          NpgsqlTypes.NpgsqlDate endDate = (NpgsqlTypes.NpgsqlDate) rowsPerQuarter[row][3];
+          DateOnly startDate = (DateOnly) rowsPerQuarter[row][2];
+          DateOnly endDate = (DateOnly) rowsPerQuarter[row][3];
           string urlParams = "beginDate=" + startDate.ToString() + "&endDate=" + endDate.ToString();
 
           await _dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", "Hourly", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/hourly?" + urlParams, "emissions/hourly/quarter/emissions-hourly-" + year + "-q" + quarter + ".csv", job_id, null);

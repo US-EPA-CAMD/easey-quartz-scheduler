@@ -1369,7 +1369,7 @@ namespace ECMPS.Checks.DatabaseAccess
             //     dtRealValue = dtValue;
 
             System.Data.SqlTypes.SqlDateTime minDate = System.Data.SqlTypes.SqlDateTime.MinValue;
-            NpgsqlDateTime dtRealValue = NpgsqlDateTime.Parse(minDate.ToString());
+            DateTime dtRealValue = DateTime.Parse(minDate.ToString());
             if (dtValue.CompareTo((DateTime)minDate) > 0)
                 dtRealValue = dtValue;
 
