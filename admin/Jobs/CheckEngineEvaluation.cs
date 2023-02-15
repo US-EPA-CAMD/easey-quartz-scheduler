@@ -220,8 +220,20 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
             break;
           case "EM":
-            LogHelper.info("Running RunChecks_EmReport...");
-            // result = this.RunChecks_EmReport();
+            int rptPeriodId = Int32.Parse(dataMap.GetString("rptPeriodId"));
+            EmissionEvaluation emissionEvalRecord = _dbContext.EmissionEvaluations.Find(monitorPlanId, rptPeriodId); //TODO LOOK UP COMPOSITE PRIMARY KEY
+            emissionEvalRecord.EvalStatus = "WIP";
+
+            _dbContext.EmissionEvaluations.Update(emissionEvalRecord);
+            _dbContext.SaveChanges();
+
+            bool evalResult = checkEngine.RunChecks_EmReport(monitorPlanId, rptPeriodId, eCheckEngineRunMode.Normal);
+
+            _dbContext.Entry<EmissionEvaluation>(emissionEvalRecord).Reload();
+            EvalStatusCode emissionEvalStatus = getStatusCodeByCheckId(emissionEvalRecord.CheckSessionId, evalResult);
+            evaluationStatus = emissionEvalStatus.Code;
+            emissionEvalRecord.EvalStatus = evaluationStatus;
+            _dbContext.EmissionEvaluations.Update(emissionEvalRecord);
             break;
           default:
             throw new Exception("A Process Code of [MP, QA-QCE, QA-TEE, EM] is required and was not provided");
@@ -326,7 +338,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         .UsingJobData("SubmittedOn", submittedOn.ToString())
         .UsingJobData("qaCertId", qaCertEventId)
         .UsingJobData("testExtensionExemption", teeId)
-        .UsingJobData("testSumId", testSumId)        
+        .UsingJobData("testSumId", testSumId)
+        .UsingJobData("rptPeriodId", rptPeriod.ToString())        
         .StartNow()
         .Build();
 

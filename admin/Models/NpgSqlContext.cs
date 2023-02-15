@@ -26,6 +26,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public DbSet<EvaluationSet> EvaluationSet { get; set; } 
     public DbSet<Evaluation> Evaluations { get; set; }    
     public DbSet<SeverityCode> SeverityCodes { get; set; }
+    public DbSet<EmissionEvaluation> EmissionEvaluations { get; set; }
     public DbSet<EvalStatusCode> EvalStatusCodes { get; set; }
     public DbSet<CheckSession> CheckSessions { get; set; }
     public DbSet<CorsOptions> CorsOptions { get; set; }
