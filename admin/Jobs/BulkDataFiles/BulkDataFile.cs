@@ -293,6 +293,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async Task CreateAndScheduleJobDetail(BulkFileQueue record)
     {
+      // Remove job if one already exists that has failed out
+      if(await BulkDataScheduler.CheckExists(new JobKey(record.JobId.ToString()))){
+        await BulkDataScheduler.DeleteJob(new JobKey(record.JobId.ToString()));
+      }
+
       IJobDetail job = JobBuilder.Create<BulkDataFile>()
         .WithIdentity(new JobKey(record.JobId.ToString()))
         .Build(); //
