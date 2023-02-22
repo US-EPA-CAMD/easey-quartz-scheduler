@@ -98,15 +98,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           int year = Convert.ToInt32(rowsPerState[row][0]);
           DateTime currentDate = DateTime.Now.ToUniversalTime();
 
-          if( currentDate.Year - year > 1 || ( currentDate.Year - year == 1 && currentDate.Month > 1)){ // Past year, or last year after january            
-            string stateCd = (string)rowsPerState[row][1];
-            string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + stateCd;
+          string stateCd = (string)rowsPerState[row][1];
+          string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + stateCd;
 
-            await _dbContext.CreateBulkFileRecord("Hourly-Apportioned-Emissions-"+stateCd+"-"+year,  job_id,year, null, stateCd, "Emissions", "Hourly", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/hourly?" + urlParams, "emissions/hourly/state/emissions-hourly-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
-            await _dbContext.CreateBulkFileRecord("Daily-Apportioned-Emissions-"+stateCd+"-"+year, job_id,year, null, stateCd, "Emissions", "Daily", Utils.Configuration["EASEY_STREAMING_SERVICES"] +  "/emissions/apportioned/daily?" + urlParams, "emissions/daily/state/emissions-daily-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
-            if(year >= 2015){ // MATS data started in 2015
-              await _dbContext.CreateBulkFileRecord("Hourly-MATS-"+stateCd+"-"+year, job_id,year, null, stateCd, "Mercury and Air Toxics Emissions (MATS)", "Daily", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/mats/hourly?" + urlParams, "mats/hourly/state/mats-hourly-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
-            }
+          await _dbContext.CreateBulkFileRecord("Hourly-Apportioned-Emissions-"+stateCd+"-"+year,  job_id,year, null, stateCd, "Emissions", "Hourly", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/hourly?" + urlParams, "emissions/hourly/state/emissions-hourly-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
+          await _dbContext.CreateBulkFileRecord("Daily-Apportioned-Emissions-"+stateCd+"-"+year, job_id,year, null, stateCd, "Emissions", "Daily", Utils.Configuration["EASEY_STREAMING_SERVICES"] +  "/emissions/apportioned/daily?" + urlParams, "emissions/daily/state/emissions-daily-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
+          if(year >= 2015){ // MATS data started in 2015
+            await _dbContext.CreateBulkFileRecord("Hourly-MATS-"+stateCd+"-"+year, job_id,year, null, stateCd, "Mercury and Air Toxics Emissions (MATS)", "Daily", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/mats/hourly?" + urlParams, "mats/hourly/state/mats-hourly-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
           }
         }
         
@@ -124,7 +122,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           if(year >= 2015){ // MATS data started in 2015
             await _dbContext.CreateBulkFileRecord("Hourly-MATS-Q"+quarter+"-"+year,job_id,year, quarter, null, "Mercury and Air Toxics Emissions (MATS)", "Hourly", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/mats/hourly?" + urlParams, "mats/hourly/quarter/mats-hourly-" + year + "-q" + quarter + ".csv", job_id, null);
           }
-          
         }
 
         
