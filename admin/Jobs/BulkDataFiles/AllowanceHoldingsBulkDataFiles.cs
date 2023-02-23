@@ -101,7 +101,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           decimal year = DateTime.Now.ToUniversalTime().Year - 1;
           string urlParams = "programCodeInfo=" + code;
 
-          await _dbContext.CreateBulkFileJob(null, null, null, "Allowance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-holdings?" + urlParams, "allowance/holdings-" + code.ToLower() + ".csv", job_id, code);
+          await _dbContext.CreateBulkFileRecord("Allowance-Holdings-" + code, job_id,null, null, null, "Allowance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-holdings?" + urlParams, "allowance/holdings-" + code.ToLower() + ".csv", job_id, code);
         }
         
         jl.StatusCd = "COMPLETE";
