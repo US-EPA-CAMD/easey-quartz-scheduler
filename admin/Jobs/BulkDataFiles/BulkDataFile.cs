@@ -96,22 +96,19 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
-
-      string url =  (string) context.JobDetail.JobDataMap.Get("url");
-      string fileName = (string) context.JobDetail.JobDataMap.Get("fileName");
-      Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
-
-      string stateCode = (string) context.JobDetail.JobDataMap.Get("StateCode");
-      string dataType = (string) context.JobDetail.JobDataMap.Get("DataType");
-      string dataSubType = (string) context.JobDetail.JobDataMap.Get("DataSubType");
-      decimal? year = (decimal?) context.JobDetail.JobDataMap.Get("Year");
-      decimal? quarter = (decimal?) context.JobDetail.JobDataMap.Get("Quarter");
-      string programCode = (string) context.JobDetail.JobDataMap.Get("ProgramCode");
-      JobLog bulkFile = await _dbContext.JobLogs.FindAsync(job_id);
-
+        string url =  (string) context.JobDetail.JobDataMap.Get("url");
+        string fileName = (string) context.JobDetail.JobDataMap.Get("fileName");
+        Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
+        string stateCode = (string) context.JobDetail.JobDataMap.Get("StateCode");
+        string dataType = (string) context.JobDetail.JobDataMap.Get("DataType");
+        string dataSubType = (string) context.JobDetail.JobDataMap.Get("DataSubType");
+        int? year = (int?) context.JobDetail.JobDataMap.Get("Year");
+        int? quarter = (int?) context.JobDetail.JobDataMap.Get("Quarter");
+        string programCode = (string) context.JobDetail.JobDataMap.Get("ProgramCode");
+        BulkFileQueue bulkFile = await _dbContext.BulkFileQueue.FindAsync(job_id);
       try
       {       
-
+        
 
       string description = await getDescription(dataType, dataSubType, year, quarter, stateCode, programCode);
 
@@ -126,7 +123,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         bulkFile.StartDate = Utils.getCurrentEasternTime();
 
-        _dbContext.JobLogs.Update(bulkFile);
+        _dbContext.BulkFileQueue.Update(bulkFile);
         await _dbContext.SaveChangesAsync();
 
         Console.Write(url);
@@ -265,7 +262,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         bulkFile.StatusCd = "COMPLETE";
         bulkFile.EndDate = Utils.getCurrentEasternTime();
-        _dbContext.JobLogs.Update(bulkFile);
+        _dbContext.BulkFileQueue.Update(bulkFile);
         await _dbContext.SaveChangesAsync();
 
         await context.Scheduler.DeleteJob(new JobKey(job_id.ToString()));
@@ -284,7 +281,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         bulkFile.EndDate = Utils.getCurrentEasternTime();
 
         bulkFile.AdditionalDetails = e.ToString();
-        _dbContext.JobLogs.Update(bulkFile);
+        _dbContext.BulkFileQueue.Update(bulkFile);
         await _dbContext.SaveChangesAsync();
         }
         catch(Exception er){
@@ -294,12 +291,35 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public static IJobDetail CreateJobDetail(string key)
+    public static async Task CreateAndScheduleJobDetail(BulkFileQueue record)
     {
-      IJobDetail jobDetail = JobBuilder.Create<BulkDataFile>().WithIdentity(new JobKey(key)).StoreDurably().Build();
-      BulkDataScheduler.AddJob(jobDetail, false);
+      // Remove job if one already exists that has failed out
+      if(await BulkDataScheduler.CheckExists(new JobKey(record.JobId.ToString()))){
+        await BulkDataScheduler.DeleteJob(new JobKey(record.JobId.ToString()));
+      }
 
-      return jobDetail;
+      IJobDetail job = JobBuilder.Create<BulkDataFile>()
+        .WithIdentity(new JobKey(record.JobId.ToString()))
+        .Build(); //
+
+        job.JobDataMap.Add("job_id", record.JobId);
+        job.JobDataMap.Add("format", "text/csv");
+        job.JobDataMap.Add("url", record.Url);
+        job.JobDataMap.Add("fileName", record.FileName);
+        job.JobDataMap.Add("StateCode", record.StateCode);
+        job.JobDataMap.Add("DataType", record.DataType);
+        job.JobDataMap.Add("DataSubType", record.SubType);
+        job.JobDataMap.Add("Year", record.Year);
+        job.JobDataMap.Add("Quarter", record.Quarter);
+        job.JobDataMap.Add("ProgramCode", record.ProgramCode);
+
+      ITrigger trigger = TriggerBuilder.Create()
+        .StartNow()
+        .Build();
+
+      Console.WriteLine("SCHEDULED NEW JOB");
+
+      await BulkDataScheduler.ScheduleJob(job, trigger);
     }
 
     public static void setScheduler(IScheduler scheduler){
