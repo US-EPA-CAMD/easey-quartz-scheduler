@@ -10,6 +10,9 @@ using Epa.Camd.Quartz.Scheduler.Models;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using System.Threading;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -55,18 +58,28 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       try
       {
         Console.Write("Checking Queue Now");
-        List<List<Object>>  bulkFileQueued = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log where job_class = 'Bulk Data File' AND status_cd = 'QUEUED'", 9);
-        List<List<Object>>  bulkFileWorkinProgress = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log where job_class = 'Bulk Data File' AND status_cd = 'WIP'", 9);
 
-        if(bulkFileWorkinProgress.Count < Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_BULK_FILE_JOBS"])){
-          if(bulkFileQueued.Count > 0){
-            int jobs_to_schedule = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_BULK_FILE_JOBS"]) - bulkFileWorkinProgress.Count;
+        List<BulkFileQueue> inQueue = _dbContext.BulkFileQueue.FromSqlRaw(@"
+            SELECT *
+            FROM camdaux.bulk_file_queue
+            WHERE status_cd = 'QUEUED'"
+          ).ToList();
+
+        List<BulkFileQueue> inWIP = _dbContext.BulkFileQueue.FromSqlRaw(@"
+            SELECT *
+            FROM camdaux.bulk_file_queue
+            WHERE status_cd = 'WIP'"
+          ).ToList();
+
+
+        if(inWIP.Count < Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_BULK_FILE_JOBS"])){
+          if(inQueue.Count > 0){
+            int jobs_to_schedule = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_BULK_FILE_JOBS"]) - inWIP.Count;
             Console.WriteLine("Scheduling Jobs: " + jobs_to_schedule);
             int index = 0;
             for(int i = 0; i < jobs_to_schedule; i++){
-              if(index < bulkFileQueued.Count){
-                Guid idToSchedule = (Guid) bulkFileQueued[index][0];
-                await context.Scheduler.TriggerJob(new JobKey(idToSchedule.ToString()));
+              if(index < inQueue.Count){
+                await BulkDataFile.CreateAndScheduleJobDetail(inQueue[i]);
                 Thread.Sleep(5000);
                 index++;
               }

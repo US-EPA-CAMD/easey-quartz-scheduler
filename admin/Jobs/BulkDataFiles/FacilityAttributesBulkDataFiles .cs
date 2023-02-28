@@ -57,7 +57,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
-
+      
       // Does this job already exist? Otherwise create and schedule a new copy
       List<List<Object>> jobAlreadyExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Facility Attributes' AND add_date::date = now()::date;", 9);
       if(jobAlreadyExists.Count != 0){
@@ -94,10 +94,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         List<List<Object>> rowsPerState = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_facility_bulk_files_to_generate", 1);
         
         for(int row = 0; row < rowsPerState.Count; row++){
-          decimal year = Convert.ToDecimal(rowsPerState[row][0]);
+          int year = Convert.ToInt32(rowsPerState[row][0]);
           DateTime currentDate = Utils.getCurrentEasternTime();
 
-          await _dbContext.CreateBulkFileJob(year, null, null, "Facility", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/facilities/attributes?year=" + year, "facility/facility" + "-" + year + ".csv", job_id, null);
+          await _dbContext.CreateBulkFileRecord("Facility-" + year, job_id, year, null, null, "Facility", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/facilities/attributes?year=" + year, "facility/facility" + "-" + year + ".csv", job_id, null);
         }
 
         jl.StatusCd = "COMPLETE";
