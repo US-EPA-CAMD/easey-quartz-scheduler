@@ -12,7 +12,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
  		public Guid JobId { get; set; }
 
 		[Column("parent_job_id")]
- 		public Guid ParentJobId { get; set; }
+ 		public Guid? ParentJobId { get; set; }
 
         [Column("job_name")]
  		public string JobName { get; set; }

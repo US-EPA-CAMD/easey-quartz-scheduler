@@ -67,7 +67,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public Task Execute(IJobExecutionContext context)
     {
-
       JobDataMap dataMap = context.MergedJobDataMap;
       JobKey key = context.JobDetail.Key;
 

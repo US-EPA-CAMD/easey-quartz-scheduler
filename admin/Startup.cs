@@ -104,9 +104,11 @@ namespace Epa.Camd.Quartz.Scheduler
         }
         nameValueCollection.Set("quartz.dataSource.default.connectionString", connectionString);
       });
+      
 
       services.AddOptions();
 
+      services.AddJobListener<CheckEngineEvaluationListener>(GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS));
       EvaluationJobQueue.RegisterWithQuartz(services);
       CheckEngineEvaluation.RegisterWithQuartz(services);
       BulkFileJobQueue.RegisterWithQuartz(services);
@@ -118,7 +120,6 @@ namespace Epa.Camd.Quartz.Scheduler
       BulkDataFile.RegisterWithQuartz(services);
       BulkDataFileMaintenance.RegisterWithQuartz(services);
       ApportionedEmissionsBulkData.RegisterWithQuartz(services);
-      SendMail.RegisterWithQuartz(services);
       RemoveExpiredUserSession.RegisterWithQuartz(services);
       RemoveExpiredCheckoutRecord.RegisterWithQuartz(services);
     }
@@ -156,11 +157,6 @@ namespace Epa.Camd.Quartz.Scheduler
       IScheduler scheduler = app.GetScheduler();
 
       BulkDataFile.setScheduler(scheduler);
-
-      scheduler.ListenerManager.AddJobListener(
-        new CheckEngineEvaluationListener(Configuration),
-        GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS)
-      );
 
       EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);

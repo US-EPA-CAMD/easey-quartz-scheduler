@@ -92,6 +92,7 @@ jobs:
           BULK_FILES_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
           QUARTZ_API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
           QUARTZ_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          QUARTZ_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
       - name: Deploy
         run: devops/scripts/deploy.sh
 
@@ -137,6 +138,7 @@ jobs:
           BULK_FILES_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
           QUARTZ_API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
           QUARTZ_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          QUARTZ_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
       - name: Deploy
         run: devops/scripts/deploy.sh
 
@@ -182,6 +184,7 @@ jobs:
           BULK_FILES_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
           QUARTZ_API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
           QUARTZ_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          QUARTZ_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
       - name: Deploy
         run: devops/scripts/deploy.sh
 
@@ -227,5 +230,6 @@ jobs:
           BULK_FILES_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
           QUARTZ_API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
           QUARTZ_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          QUARTZ_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
       - name: Deploy
         run: devops/scripts/deploy.sh
