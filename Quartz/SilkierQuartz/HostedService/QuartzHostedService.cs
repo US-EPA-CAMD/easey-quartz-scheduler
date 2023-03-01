@@ -53,6 +53,14 @@ namespace SilkierQuartz.HostedService
                     isNewJob = false;
                 }
             }
+
+            var jobListeners = Services.GetServices<IJobListener>();
+            var jobListenerConfigurations = Services.GetServices<JobListenerConfiguration>().ToArray();
+            foreach (var listener in jobListeners)
+            {
+                var configuration = jobListenerConfigurations.SingleOrDefault(x => x.ListenerType == listener.GetType());
+                _scheduler.ListenerManager.AddJobListener(listener, configuration?.Matchers ?? Array.Empty<IMatcher<JobKey>>());
+            }
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

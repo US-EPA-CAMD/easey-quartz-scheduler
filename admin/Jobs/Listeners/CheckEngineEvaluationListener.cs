@@ -1,10 +1,16 @@
 using System.Threading;
 using System.Threading.Tasks;
-using System;
 using Microsoft.Extensions.Configuration;
-
+using Epa.Camd.Quartz.Scheduler.Models;
 using Quartz;
 using Quartz.Listener;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
 {
@@ -13,84 +19,50 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
     public override string Name => "Check Engine Evaluation Listener";
 
     private IConfiguration Configuration { get; }
+    private NpgSqlContext _dbContext = null;
 
-    public CheckEngineEvaluationListener(IConfiguration configuration)
+
+    public CheckEngineEvaluationListener(NpgSqlContext dbContext, IConfiguration configuration)
     {
+      _dbContext = dbContext;
       Configuration = configuration;
     }
 
     public override async Task JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException, CancellationToken cancellationToken = default)
     {
-      JobKey key = context.JobDetail.Key;
       JobDataMap dataMap = context.MergedJobDataMap;
+      string setId = dataMap.GetString("SetId"); // Set id of the completed evaluation
+      string userEmail = dataMap.GetString("UserEmail"); // Set id of the completed evaluation
+      
+      List<Evaluation> inSet = _dbContext.Evaluations.FromSqlRaw(@"
+            SELECT *
+            FROM camdecmpsaux.evaluation_queue
+            WHERE evaluation_set_id = {0} AND status_cd not in ('COMPLETE', 'ERROR');", setId
+          ).ToList();
 
-      string id = dataMap.GetString("Id");
-      string processCode = dataMap.GetString("ProcessCode");
-      int facilityId = dataMap.GetIntValue("FacilityId");
-      string facilityName = dataMap.GetString("FacilityName");
-      string monitorPlanId = dataMap.GetString("MonitorPlanId");
-      string monPlanConfig = dataMap.GetString("Configuration");
-      string userId = dataMap.GetString("UserId");
-      string userEmail = dataMap.GetString("UserEmail");
-      string submittedOn = dataMap.GetString("SubmittedOn");
-      string evaluationStatus = dataMap.GetString("EvaluationStatus");
-      string evaluationResult = dataMap.GetString("EvaluationResult");
-      string fromEmail = Configuration["EASEY_QUARTZ_SCHEDULER_EMAIL"];
-
-
-      string subject = string.Format(
-        "{0} Evaluation {1} {2} - {3}",
-        CheckEngineEvaluation.GetProcess(processCode),
-        facilityName,
-        monPlanConfig,
-        evaluationResult
-      );
-
-      //workspace/reports?reportCode=MP_EVAL&monitorPlanId=TWCORNEL5-C0E3879920A14159BAA98E03F1980A7A
-
-      string reportCode = "";
-      if(processCode.Equals("MP")){
-        reportCode = "MP_EVAL";
-      }else if(processCode.Equals("QA")){ //Will need to expand this
-        reportCode = "TEST_EVAL";
+      if(inSet.Count > 0){ // The jobs are not all done running yet, more eval records with this set id are coming up
+        return;
       }
+      
+      /*
+        Generate new client token for email request and send the email request -----------------
+      */
+      HttpClient client = new HttpClient();
 
-      string message = string.Format(@"
-        The {0} Evaluation process submitted by {1} on {2} for...
+      MassEvalEmail payload = new MassEvalEmail();
+      payload.fromEmail = Configuration["EASEY_QUARTZ_SCHEDULER_MASS_EVALUATION_EMAIL"];
+      payload.toEmail = userEmail;
+      payload.evaluationSetId = setId;
 
-        Facility Id: {3}
-        Facility Name: {4}
-        Configuration: {5}
+      StringContent httpContent = new StringContent(JsonConvert.SerializeObject(payload), System.Text.Encoding.UTF8, "application/json");
+      client.DefaultRequestHeaders.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
+      client.DefaultRequestHeaders.Add("x-client-id", Configuration["EASEY_QUARTZ_SCHEDULER_CLIENT_ID"]);
 
-        {6} with a status of {7}!
-        
-        You can view details of the report here...
-        https://{8}/workspace/reports?reportCode={10}&monitorPlanId={9}
+      string clientToken = await Utils.generateClientToken();     
+      client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", clientToken);
 
-        Thanks,
-        ECMPS Support",
-        CheckEngineEvaluation.GetProcess(processCode),
-        userId,
-        submittedOn,
-        facilityId,
-        facilityName,
-        monPlanConfig,
-        evaluationResult.ToUpper(),
-        evaluationStatus.ToUpper(),
-        Configuration["EASEY_QUARTZ_SCHEDULER_HOST"],
-        monitorPlanId,
-        reportCode
-      );
-
-      await SendMail.StartNow(
-        userEmail,
-        fromEmail,
-        subject,
-        message,
-        subject,
-        context.Scheduler,
-        Configuration
-      );
+      HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_CAMD_SERVICES"] + "/support/email/mass-eval", httpContent);
+      response.EnsureSuccessStatusCode();
 
       await base.JobWasExecuted(context, jobException, cancellationToken);
     }
