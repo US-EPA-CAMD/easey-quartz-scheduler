@@ -30,6 +30,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
 
     public override async Task JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException, CancellationToken cancellationToken = default)
     {
+
+
+      try{
       JobDataMap dataMap = context.MergedJobDataMap;
       string setId = dataMap.GetString("SetId"); // Set id of the completed evaluation
       string userEmail = dataMap.GetString("UserEmail"); // Set id of the completed evaluation
@@ -37,8 +40,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
       List<Evaluation> inSet = _dbContext.Evaluations.FromSqlRaw(@"
             SELECT *
             FROM camdecmpsaux.evaluation_queue
-            WHERE evaluation_set_id = {0} AND status_cd not in ('COMPLETE', 'ERROR');", setId
+            WHERE evaluation_set_id = '{0}' AND status_cd not in ('COMPLETE', 'ERROR');", setId
           ).ToList();
+
+      Console.WriteLine("\n\n\n\n\n\n\n\n");
+      Console.WriteLine("More files to queue: ");
+      Console.WriteLine(inSet.Count);
 
       if(inSet.Count > 0){ // The jobs are not all done running yet, more eval records with this set id are coming up
         return;
@@ -65,6 +72,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
       response.EnsureSuccessStatusCode();
 
       await base.JobWasExecuted(context, jobException, cancellationToken);
+      }catch(Exception e){
+        Console.WriteLine("\n\n\n\n");
+        Console.WriteLine(e.Message);
+        Console.WriteLine("\n\n\n\n");
+      }
     }
   }
 }
