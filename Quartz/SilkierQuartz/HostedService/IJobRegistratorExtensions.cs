@@ -89,8 +89,8 @@ namespace SilkierQuartz
 
         public static void AddJobListener<T>(this IServiceCollection services, params IMatcher<JobKey>[] matchers) where T : class, IJobListener
         {
+            services.AddTransient<IJobListener, T>();
             services.AddSingleton(new JobListenerConfiguration(typeof(T), matchers));
-            services.AddSingleton<IJobListener, T>();
         }
 
         public static IApplicationBuilder UseQuartzJob<TJob>(
