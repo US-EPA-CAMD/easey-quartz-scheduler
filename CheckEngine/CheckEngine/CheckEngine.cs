@@ -227,7 +227,7 @@ namespace ECMPS.Checks.CheckEngine
             RptPeriodId = rptPeriodId;
 
             result = RunChecks_Process("HOURLY", null,
-                                       "ECMPS.Checks.Emissions.dll",
+                                       "Emissions.dll",
                                        "ECMPS.Checks.EmissionsReport",
                                        "cEmissionsReportProcess",
                                        new object[] { this },
@@ -1298,7 +1298,7 @@ namespace ECMPS.Checks.CheckEngine
                 DateTime? beginDate = null;
                 DateTime? endDate = null;
 
-                DbDataContext.GetReportPeriodInfo(RptPeriodId,
+                DbDataContext.GetReportPeriodInfo(RptPeriodId.Value,
                                                   ref year, ref quarter,
                                                   ref periodDescription, ref periodAbbreviation,
                                                   ref beginDate, ref endDate,
