@@ -6,7 +6,7 @@ apiPath: quartz-mgmt
 email: noreply@epa.gov
 smtpHost: smtp.epa.gov
 smtpPort: 25
-checkEngineDllPath: ./
+checkEngineDllPath: ./bin/Debug/netcoreapp6.0/
 instances: 1
 memory: 2048M
 environment: development
