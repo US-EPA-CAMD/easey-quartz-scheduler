@@ -107,8 +107,8 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddOptions();
 
-      EvaluationJobQueue.RegisterWithQuartz(services);
-      CheckEngineEvaluation.RegisterWithQuartz(services);
+      //EvaluationJobQueue.RegisterWithQuartz(services);
+      //CheckEngineEvaluation.RegisterWithQuartz(services);
       BulkFileJobQueue.RegisterWithQuartz(services);
       AllowanceHoldingsBulkDataFiles.RegisterWithQuartz(services);
       AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
@@ -118,9 +118,9 @@ namespace Epa.Camd.Quartz.Scheduler
       BulkDataFile.RegisterWithQuartz(services);
       BulkDataFileMaintenance.RegisterWithQuartz(services);
       ApportionedEmissionsBulkData.RegisterWithQuartz(services);
-      SendMail.RegisterWithQuartz(services);
-      RemoveExpiredUserSession.RegisterWithQuartz(services);
-      RemoveExpiredCheckoutRecord.RegisterWithQuartz(services);
+      //SendMail.RegisterWithQuartz(services);
+      //RemoveExpiredUserSession.RegisterWithQuartz(services);
+      //RemoveExpiredCheckoutRecord.RegisterWithQuartz(services);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

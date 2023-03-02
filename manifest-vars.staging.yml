@@ -3,3 +3,4 @@ environment: staging
 host: easey-stg.app.cloud.gov
 apiGatewayHost: api.epa.gov/easey/staging
 bulkDataS3Bucket: cg-e8f4cca5-5be8-434f-8987-bbdfa072f142
+displayUI: false
