@@ -3,7 +3,7 @@ applications:
     memory: ((memory))
     instances: ((instances))
     buildpacks:
-      - https://github.com/cloudfoundry/dotnet-core-buildpack.git#v2.4.3
+      - dotnet_core_buildpack
     env:
       OPTIMIZE_MEMORY: true
       CACHE_NUGET_PACKAGES: false
@@ -35,12 +35,10 @@ applications:
       EASEY_QUARTZ_SCHEDULER_ENABLE_SECRET_TOKEN: true
       EASEY_QUARTZ_SCHEDULER_ENABLE_CLIENT_TOKEN: true
       EASEY_QUARTZ_SCHEDULER_ENABLE_USER_TOKEN: true
-      EASEY_QUARTZ_SCHEDULER_ENABLE_SWAGGER: false
       EASEY_QUARTZ_SCHEDULER_MAX_MP_EVALUATIONS: 10
       EASEY_QUARTZ_SCHEDULER_MAX_QA_EVALUATIONS: 10
       EASEY_QUARTZ_SCHEDULER_MAX_EM_EVALUATIONS: 3
     routes:
       - route: ((host))/((path))
-      - route: ((apiHost))/((apiPath))
     services:
       - camd-pg-db
