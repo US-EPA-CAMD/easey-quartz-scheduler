@@ -48,6 +48,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
       Console.WriteLine("Attempting to schedule quartz with Cron");
       app.UseQuartzJob<BulkFileJobQueue>(WithCronSchedule("0 0/1 * 1/1 * ? *"));
+      Console.WriteLine("Scheduled Quartz Job");
       }catch(Exception e){
         Console.WriteLine("ERROR");
         Console.WriteLine(e.Message);
