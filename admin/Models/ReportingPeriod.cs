@@ -11,6 +11,12 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 		[Column("rpt_period_id")]
  		public Int32 ReportingPeriodId { get; set; }
 
+		[Column("calendar_year")]
+ 		public decimal year { get; set; }
+
+		[Column("quarter")]
+ 		public decimal quarter { get; set; }
+
 		[Column("period_abbreviation")]
  		public string PeriodAbbreviation { get; set; }
 	}
