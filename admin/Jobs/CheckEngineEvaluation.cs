@@ -220,6 +220,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             break;
           case "EM":
             int rptPeriodId = Int32.Parse(dataMap.GetString("rptPeriodId"));
+            ReportingPeriod rp = _dbContext.ReportingPeriods.Find(rptPeriodId);
+
             EmissionEvaluation emissionEvalRecord = _dbContext.EmissionEvaluations.Find(monitorPlanId, rptPeriodId); //TODO LOOK UP COMPOSITE PRIMARY KEY
             emissionEvalRecord.EvalStatus = "WIP";
 
@@ -233,6 +235,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             evaluationStatus = emissionEvalStatus.Code;
             emissionEvalRecord.EvalStatus = evaluationStatus;
             _dbContext.EmissionEvaluations.Update(emissionEvalRecord);
+
+            _dbContext.ExecuteEmissionRefreshProcedure(monitorPlanId, rp.year, rp.quarter);
             break;
           default:
             throw new Exception("A Process Code of [MP, QA-QCE, QA-TEE, EM] is required and was not provided");
