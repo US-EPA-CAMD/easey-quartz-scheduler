@@ -126,6 +126,9 @@ namespace Epa.Camd.Quartz.Scheduler
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+
+      Console.WriteLine("Configuring Quartz");
+
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
@@ -134,6 +137,8 @@ namespace Epa.Camd.Quartz.Scheduler
       {
         app.UseExceptionHandler("/Error");
       }
+
+
 
       app.UseSession();
       app.UseStaticFiles();
@@ -152,6 +157,8 @@ namespace Epa.Camd.Quartz.Scheduler
         context.Response.Headers.Add("Expires", "0");
         await next();
       });
+
+      Console.WriteLine("Attempting to schedule quartz jobs");
 
       IScheduler scheduler = app.GetScheduler();
 

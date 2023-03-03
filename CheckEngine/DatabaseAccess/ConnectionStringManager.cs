@@ -1,8 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DatabaseAccess
 {
@@ -28,10 +25,13 @@ namespace DatabaseAccess
             int port = 5432;
             int.TryParse(Configuration["EASEY_DB_PORT"], out port);
 
-            host = Configuration["EASEY_DB_HOST"] ?? "database";
-            user = Configuration["EASEY_DB_USER"] ?? "postgres";
-            password = Configuration["EASEY_DB_PWD"] ?? "password";
-            db = Configuration["EASEY_DB_NAME"] ?? "postgres";
+
+            port = 15240;
+
+            host =  "localhost";   //Configuration["EASEY_DB_HOST"] ?? "database";
+            user =  "usMu5U0tyGW3dWyN";   //Configuration["EASEY_DB_USER"] ?? "postgres";
+            password = "cSvB92pgyR8rqH1l7ZMqe3Vii"; //Configuration["EASEY_DB_PWD"] ?? "password";
+            db =  "cgawsbrokerprod4dsl7fy3";     //Configuration["EASEY_DB_NAME"] ?? "postgres";
             vcapServices = Configuration["VCAP_SERVICES"];
 
             if (!string.IsNullOrWhiteSpace(vcapServices))

@@ -38,13 +38,20 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
+      try{
+      Console.WriteLine("Attempting to schedule quartz job");
 
       if(await scheduler.CheckExists(WithJobKey())){
+        Console.WriteLine("Deleting Quartz Job");
         await scheduler.DeleteJob(WithJobKey());
       }
 
+      Console.WriteLine("Attempting to schedule quartz with Cron");
       app.UseQuartzJob<BulkFileJobQueue>(WithCronSchedule("0 0/1 * 1/1 * ? *"));
-      
+      }catch(Exception e){
+        Console.WriteLine("ERROR");
+        Console.WriteLine(e.Message);
+      }
     }
 
     public BulkFileJobQueue(NpgSqlContext dbContext, IConfiguration configuration)
