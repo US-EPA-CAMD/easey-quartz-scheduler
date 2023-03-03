@@ -2,6 +2,7 @@
 name: quartz-scheduler
 title: Clean Air Markets EASEY Quartz Scheduler
 path: quartz
+displayUI: true
 healthCheckType: port
 email: noreply@epa.gov
 smtpHost: smtp.epa.gov
@@ -14,4 +15,3 @@ host: easey-dev.app.cloud.gov
 apiGatewayHost: api.epa.gov/easey/dev
 bulkDataS3Bucket: cg-e7433599-fb63-4afa-9e14-652c10fa370a
 bulkBufferSize: 5242880
-displayUI: true
