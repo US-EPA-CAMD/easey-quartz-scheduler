@@ -7,7 +7,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 	public class TestExtensionExemption
 	{
  		[Key]
-		[Column("text_extension_exemption_id")]
+		[Column("test_extension_exemption_id")]
  		public string Id { get; set; }
 
 		[Column("eval_status_cd")]
