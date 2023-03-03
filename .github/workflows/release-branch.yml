@@ -26,17 +26,7 @@ jobs:
         env:
           ENV_VAR_PREFIX: EASEY
       - name: Build
-        run: |
-          echo "--------------------------------------"
-          echo "---------- dotnet/build.sh -----------"
-          echo "--------------------------------------"
-
-          echo "Installing dependencies..."
-          cd admin
-          dotnet restore
-
-          echo "Building..."
-          CI=false dotnet build
+        run: devops/scripts/dotnet/build.sh admin
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: SonarCloud Scan
