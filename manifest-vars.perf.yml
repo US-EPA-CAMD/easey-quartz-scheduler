@@ -1,4 +1,5 @@
 instances: 2
+healthCheckType: port
 environment: performance
 host: easey-perf.app.cloud.gov
 apiGatewayHost: api.epa.gov/easey/perf

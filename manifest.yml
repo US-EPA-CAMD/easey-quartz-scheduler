@@ -4,6 +4,7 @@ applications:
     instances: ((instances))
     buildpacks:
       - dotnet_core_buildpack
+    health-check-type: ((healthCheckType))
     env:
       OPTIMIZE_MEMORY: true
       CACHE_NUGET_PACKAGES: false
