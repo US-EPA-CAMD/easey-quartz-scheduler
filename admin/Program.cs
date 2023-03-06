@@ -3,19 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Quartz.Logging;
 using Serilog;
-using Serilog.Events;
-using Serilog.Formatting.Compact;
-using System;
-using System.Threading.Tasks;
-
-using Quartz;
-using Quartz.Impl;
-using Quartz.Logging;
-
-
-
 using SilkierQuartz;
-
 
 namespace Epa.Camd.Quartz.Scheduler
 {

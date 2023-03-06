@@ -13,7 +13,6 @@ using System.Threading;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   public class BulkFileJobQueue : IJob

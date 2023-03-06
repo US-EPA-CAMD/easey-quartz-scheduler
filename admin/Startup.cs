@@ -1,4 +1,3 @@
-using System.Security.AccessControl;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
@@ -7,17 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 using Quartz;
-using Quartz.Impl.Matchers;
 
 using SilkierQuartz;
 using DatabaseAccess;
 
 using Epa.Camd.Quartz.Scheduler.Jobs;
 using Epa.Camd.Quartz.Scheduler.Models;
-using Epa.Camd.Quartz.Scheduler.Jobs.Listeners;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
@@ -119,14 +115,11 @@ namespace Epa.Camd.Quartz.Scheduler
       BulkDataFileMaintenance.RegisterWithQuartz(services);
       ApportionedEmissionsBulkData.RegisterWithQuartz(services);
       //SendMail.RegisterWithQuartz(services);
-      //RemoveExpiredUserSession.RegisterWithQuartz(services);
-      //RemoveExpiredCheckoutRecord.RegisterWithQuartz(services);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-
       Console.WriteLine("Configuring Quartz");
 
       if (env.IsDevelopment())
@@ -137,8 +130,6 @@ namespace Epa.Camd.Quartz.Scheduler
       {
         app.UseExceptionHandler("/Error");
       }
-
-
 
       app.UseSession();
       app.UseStaticFiles();
@@ -178,8 +169,6 @@ namespace Epa.Camd.Quartz.Scheduler
       FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
       BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
-      //RemoveExpiredUserSession.ScheduleWithQuartz(scheduler, app);
-      //RemoveExpiredCheckoutRecord.ScheduleWithQuartz(scheduler, app);
     }
   }
 }

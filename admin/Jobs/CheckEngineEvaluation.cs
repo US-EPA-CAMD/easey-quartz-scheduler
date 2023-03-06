@@ -1,14 +1,11 @@
-using System.Diagnostics.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-
 
 using Quartz;
 using SilkierQuartz;

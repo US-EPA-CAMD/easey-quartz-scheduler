@@ -13,7 +13,6 @@ using Epa.Camd.Logger;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   public class BulkDataFileMaintenance : IJob
