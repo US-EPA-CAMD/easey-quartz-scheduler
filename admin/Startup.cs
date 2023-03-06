@@ -120,8 +120,6 @@ namespace Epa.Camd.Quartz.Scheduler
       BulkDataFile.RegisterWithQuartz(services);
       BulkDataFileMaintenance.RegisterWithQuartz(services);
       ApportionedEmissionsBulkData.RegisterWithQuartz(services);
-      RemoveExpiredUserSession.RegisterWithQuartz(services);
-      RemoveExpiredCheckoutRecord.RegisterWithQuartz(services);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -167,8 +165,6 @@ namespace Epa.Camd.Quartz.Scheduler
       FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
       BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
-      RemoveExpiredUserSession.ScheduleWithQuartz(scheduler, app);
-      RemoveExpiredCheckoutRecord.ScheduleWithQuartz(scheduler, app);      
     }
   }
 }
