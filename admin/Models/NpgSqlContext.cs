@@ -28,6 +28,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public DbSet<EvaluationSet> EvaluationSet { get; set; } 
     public DbSet<Evaluation> Evaluations { get; set; }    
     public DbSet<SeverityCode> SeverityCodes { get; set; }
+    public DbSet<EmissionEvaluation> EmissionEvaluations { get; set; }
     public DbSet<EvalStatusCode> EvalStatusCodes { get; set; }
     public DbSet<CheckSession> CheckSessions { get; set; }
     public DbSet<CorsOptions> CorsOptions { get; set; }
@@ -113,6 +114,23 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       }
 
       return rows;
+    }
+
+    public async void ExecuteEmissionRefreshProcedure(string monPlanId, decimal year, decimal quarter){
+      var connectionString = this.Database.GetConnectionString();
+      var connection = new NpgsqlConnection(connectionString);
+
+      await using var cmd = new NpgsqlCommand("CALL camdecmpswks.refresh_emissions_views($1, $2, $3)", connection)
+      {
+          Parameters =
+          {
+              new() { Value = monPlanId },
+              new() { Value = year },
+              new() { Value = quarter }
+          }
+      };
+
+      await cmd.ExecuteNonQueryAsync();
     }
 
     public void ExecuteSql(string commandText)

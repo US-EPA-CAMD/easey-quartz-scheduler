@@ -78,6 +78,8 @@ jobs:
         run: scripts/environment-variables-secrets.sh
         env:
           QUARTZ_API_KEY: ${{ secrets.API_KEY }}
+          QUARTZ_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          QUARTZ_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           BULK_FILES_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
           BULK_FILES_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
       - name: Deploy
@@ -121,6 +123,8 @@ jobs:
         run: scripts/environment-variables-secrets.sh
         env:
           QUARTZ_API_KEY: ${{ secrets.API_KEY }}
+          QUARTZ_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          QUARTZ_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           BULK_FILES_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
           BULK_FILES_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
       - name: Deploy
@@ -164,6 +168,8 @@ jobs:
         run: scripts/environment-variables-secrets.sh
         env:
           QUARTZ_API_KEY: ${{ secrets.API_KEY }}
+          QUARTZ_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          QUARTZ_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           BULK_FILES_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
           BULK_FILES_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
       - name: Deploy
@@ -207,6 +213,8 @@ jobs:
         run: scripts/environment-variables-secrets.sh
         env:
           QUARTZ_API_KEY: ${{ secrets.API_KEY }}
+          QUARTZ_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          QUARTZ_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           BULK_FILES_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
           BULK_FILES_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
       - name: Deploy

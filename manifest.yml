@@ -9,13 +9,11 @@ applications:
       OPTIMIZE_MEMORY: true
       CACHE_NUGET_PACKAGES: false
       EASEY_AUTH_API: https://((apiGatewayHost))/auth-mgmt
+      EASEY_CAMD_SERVICES: https://((apiGatewayHost))/camd-services
       EASEY_STREAMING_SERVICES: https://((apiGatewayHost))/streaming-services
       EASEY_QUARTZ_SCHEDULER_TITLE: ((title))
       EASEY_QUARTZ_SCHEDULER_HOST: ((host))
       EASEY_QUARTZ_SCHEDULER_ENV: ((environment))
-      EASEY_QUARTZ_SCHEDULER_EMAIL: ((email))
-      EASEY_QUARTZ_SCHEDULER_SMTP_HOST: ((smtpHost))
-      EASEY_QUARTZ_SCHEDULER_SMTP_PORT: ((smtpPort))
       EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_BUCKET: ((bulkDataS3Bucket))
       EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH: ((checkEngineDllPath))
       EASEY_DATAMART_BYPASS: false
@@ -34,6 +32,7 @@ applications:
       EASEY_QUARTZ_SCHEDULER_MAX_MP_EVALUATIONS: 10
       EASEY_QUARTZ_SCHEDULER_MAX_QA_EVALUATIONS: 10
       EASEY_QUARTZ_SCHEDULER_MAX_EM_EVALUATIONS: 3
+      EASEY_QUARTZ_SCHEDULER_MASS_EVALUATION_EMAIL: "noreply@epa.gov"
     routes:
       - route: ((host))/((path))
     services:

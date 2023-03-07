@@ -102,19 +102,21 @@ namespace Epa.Camd.Quartz.Scheduler
       });
 
       services.AddOptions();
-
+      services.AddJobListener<CheckEngineEvaluationListener>(GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS));
+      
       BulkDataFile.RegisterWithQuartz(services);
       BulkFileJobQueue.RegisterWithQuartz(services);
       BulkDataFileMaintenance.RegisterWithQuartz(services);
+
       ApportionedEmissionsBulkData.RegisterWithQuartz(services);
       AllowanceHoldingsBulkDataFiles.RegisterWithQuartz(services);
       AllowanceTransactionsBulkDataFiles.RegisterWithQuartz(services);
       AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
       EmissionsComplianceBulkDataFiles.RegisterWithQuartz(services);
       FacilityAttributesBulkDataFiles.RegisterWithQuartz(services);
-      //EvaluationJobQueue.RegisterWithQuartz(services);
-      //CheckEngineEvaluation.RegisterWithQuartz(services);
-      //SendMail.RegisterWithQuartz(services);
+      
+      CheckEngineEvaluation.RegisterWithQuartz(services);
+      EvaluationJobQueue.RegisterWithQuartz(services);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -154,12 +156,6 @@ namespace Epa.Camd.Quartz.Scheduler
       IScheduler scheduler = app.GetScheduler();
 
       BulkDataFile.setScheduler(scheduler);
-
-      // scheduler.ListenerManager.AddJobListener(
-      //   new CheckEngineEvaluationListener(Configuration),
-      //   GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS)
-      // );
-
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
       BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
       ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
@@ -168,7 +164,7 @@ namespace Epa.Camd.Quartz.Scheduler
       AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      //EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);      
+      EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
     }
   }
 }

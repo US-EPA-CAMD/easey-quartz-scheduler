@@ -64,11 +64,40 @@ namespace CheckEngineRunner
             Console.ReadLine();
 
             */
-            string localDir = System.IO.Directory.GetCurrentDirectory();
-            string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\MonitorPlan\\obj\\Debug\\netcoreapp6.0\\";
-            cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
 
-            bool result = checkEngine.RunChecks_MpReport("TWCORNEL5-488E42008B434177BC7D7BFF138D18EF", new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+            string fileTypeCd = ((args != null) && (args.Length >= 1)) ? args[0] : null;
+
+            switch (fileTypeCd)
+            {
+                case "EM":
+                    {
+                        string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
+                        string rpPeriodIdText = ((args != null) && (args.Length >= 3)) ? args[2] : null;
+
+                        int rptPeriodId;
+                        {
+                            if (!int.TryParse(rpPeriodIdText, out rptPeriodId)) { rptPeriodId = 0; }
+                        }
+
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\Emissions\\obj\\Debug\\netcoreapp6.0\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
+
+                        bool result = checkEngine.RunChecks_EmReport(monPlanId, rptPeriodId, eCheckEngineRunMode.Normal);
+                    }
+                    break;
+
+                default:
+                    {
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp6.0\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
+
+
+                        bool result = checkEngine.RunChecks_QaReport_Test("e39c510f-6cde-4555-a7b9-162cd5183ca5", "TWCORNEL5-C0E3879920A14159BAA98E03F1980A7A", eCheckEngineRunMode.Normal, "e39c510f-6cde-4555-a7b9-162cd5183ca5");
+                    }
+                    break;
+            }
 
             Console.ReadLine();
         }
@@ -109,6 +138,32 @@ namespace CheckEngineRunner
                         cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
 
                         bool result = checkEngine.RunChecks_QaReport_Test(testSumId, monPlanId, eCheckEngineRunMode.Normal, testSumId);
+                        await Task.CompletedTask;
+                    }
+                    break;
+
+                case "QCE":
+                    {
+                        string qaCertEventId = dataMap.GetString("otherId");
+
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp3.1\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
+
+                        bool result = checkEngine.RunChecks_QaReport_Qce(qaCertEventId, monPlanId, eCheckEngineRunMode.Normal, qaCertEventId);
+                        await Task.CompletedTask;
+                    }
+                    break;
+
+                case "TEE":
+                    {
+                        string testExtenstionExemptionId = dataMap.GetString("otherId");
+
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp3.1\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
+
+                        bool result = checkEngine.RunChecks_QaReport_Tee(testExtenstionExemptionId, monPlanId, eCheckEngineRunMode.Normal, testExtenstionExemptionId);
                         await Task.CompletedTask;
                     }
                     break;
