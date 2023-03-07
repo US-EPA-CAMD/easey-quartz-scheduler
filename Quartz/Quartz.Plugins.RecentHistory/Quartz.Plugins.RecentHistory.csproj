@@ -24,6 +24,11 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugType>None</DebugType>
+    <DebugSymbols>False</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\..\.editorconfig" Link=".editorconfig" />
     <None Include="..\..\LICENSE" Pack="true" PackagePath="" />

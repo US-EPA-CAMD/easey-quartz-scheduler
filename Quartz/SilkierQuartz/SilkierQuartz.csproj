@@ -30,6 +30,11 @@
 		<IsPackable>true</IsPackable>
 	</PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugType>None</DebugType>
+    <DebugSymbols>False</DebugSymbols>
+  </PropertyGroup>
+
 	<PropertyGroup>
 		<DefineConstants></DefineConstants>
 		<OutputType>Library</OutputType>
