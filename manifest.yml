@@ -4,7 +4,6 @@ applications:
     instances: ((instances))
     buildpacks:
       - dotnet_core_buildpack
-      # - https://github.com/cloudfoundry/dotnet-core-buildpack.git#v2.4.3
     health-check-type: ((healthCheckType))
     env:
       OPTIMIZE_MEMORY: true
@@ -26,7 +25,7 @@ applications:
       EASEY_QUARTZ_SCHEDULER_MAX_BULK_FILE_JOBS: 8
       EASEY_QUARTZ_SCHEDULER_FACILITY_ATTRIBUTES_SCHEDULE: "0 0/10 2-4 ? * * *"
       EASEY_QUARTZ_SCHEDULER_EMISSIONS_COMPLIANCE_SCHEDULE: "0 0/10 2-4 15 * ? *"
-      EASEY_QUARTZ_SCHEDULER_MAINTENANCE_SCHEDULE: "0 0 6 ? * * *"
+      EASEY_QUARTZ_SCHEDULER_BULK_FILE_MAINTENANCE_SCHEDULE: "0 0 6 ? * * *"
       EASEY_QUARTZ_SCHEDULER_APPORTIONED_EMISSIONS_SCHEDULE: "0 0/10 4-6 ? * * *"
       EASEY_QUARTZ_SCHEDULER_ALLOWANCE_TRANSACTIONS_SCHEDULE: "0 0/10 2-4 15 1 ? *"
       EASEY_QUARTZ_SCHEDULER_ALLOWANCE_HOLDINGS_SCHEDULE: "0 0/10 2-4 ? * * *"

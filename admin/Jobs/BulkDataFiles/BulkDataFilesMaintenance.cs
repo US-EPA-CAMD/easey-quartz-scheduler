@@ -40,16 +40,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       try {
         JobKey jobKey = WithJobKey();
-        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_MAINTENANCE_SCHEDULE"] ?? "0 0 6 ? * * *";
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_BULK_FILE_MAINTENANCE_SCHEDULE"] ?? "0 0 6 ? * * *";
+        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
 
         if(await scheduler.CheckExists(jobKey)){
-          Console.WriteLine($"Deleting {jobKey.Name} Job");
-          await scheduler.DeleteJob(jobKey);
+          await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+          Console.WriteLine($"Rescheduled {jobKey.Name}");
+        } else {
+          app.UseQuartzJob<BulkDataFileMaintenance>(triggerBuilder);
+          Console.WriteLine($"Scheduled {jobKey.Name}");
         }
-
-        Console.WriteLine($"Attempting to schedule {jobKey.Name} job");
-        app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule(cronExpression));
-        Console.WriteLine($"Scheduled {jobKey.Name} Job");
       } catch(Exception e) {
         Console.WriteLine("ERROR");
         Console.WriteLine(e.Message);

@@ -38,15 +38,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       try {
         JobKey jobKey = WithJobKey();
         string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_APPORTIONED_EMISSIONS_SCHEDULE"] ?? "0 0/10 4-6 ? * * *";
+        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
 
         if(await scheduler.CheckExists(jobKey)){
-          Console.WriteLine($"Deleting {jobKey.Name} Job");
-          await scheduler.DeleteJob(jobKey);
+          await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+          Console.WriteLine($"Rescheduled {jobKey.Name}");
+        } else {
+          app.UseQuartzJob<ApportionedEmissionsBulkData>(triggerBuilder);
+          Console.WriteLine($"Scheduled {jobKey.Name}");
         }
-
-        Console.WriteLine($"Attempting to schedule {jobKey.Name} job");
-        app.UseQuartzJob<ApportionedEmissionsBulkData>(WithCronSchedule(cronExpression));
-        Console.WriteLine($"Scheduled {jobKey.Name} Job");
       } catch(Exception e) {
         Console.WriteLine("ERROR");
         Console.WriteLine(e.Message);

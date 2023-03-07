@@ -39,15 +39,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       try {
         JobKey jobKey = WithJobKey();
         string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_FACILITY_ATTRIBUTES_SCHEDULE"] ?? "0 0/10 2-4 ? * * *";
+        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
 
         if(await scheduler.CheckExists(jobKey)){
-          Console.WriteLine($"Deleting {jobKey.Name} Job");
-          await scheduler.DeleteJob(jobKey);
+          await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+          Console.WriteLine($"Rescheduled {jobKey.Name}");
+        } else {
+          app.UseQuartzJob<FacilityAttributesBulkDataFiles>(triggerBuilder);
+          Console.WriteLine($"Scheduled {jobKey.Name}");
         }
-
-        Console.WriteLine($"Attempting to schedule {jobKey.Name} job");
-        app.UseQuartzJob<FacilityAttributesBulkDataFiles>(WithCronSchedule(cronExpression));
-        Console.WriteLine($"Scheduled {jobKey.Name} Job");
       } catch(Exception e) {
         Console.WriteLine("ERROR");
         Console.WriteLine(e.Message);
