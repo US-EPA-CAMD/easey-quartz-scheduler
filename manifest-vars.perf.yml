@@ -1,7 +1,7 @@
 instances: 2
-memory: 2048M
+displayUI: true
+healthCheckType: port
 environment: performance
-host: ecmps-perf.app.cloud.gov
-apiHost: api-easey-perf.app.cloud.gov
+host: easey-perf.app.cloud.gov
 apiGatewayHost: api.epa.gov/easey/perf
 bulkDataS3Bucket: cg-be803552-f63b-4bbb-870b-a746c1685a3e

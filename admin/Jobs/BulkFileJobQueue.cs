@@ -13,7 +13,6 @@ using System.Threading;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   public class BulkFileJobQueue : IJob
@@ -38,13 +37,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
+      try {
+        JobKey jobKey = WithJobKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_BULK_FILE_QUEUE_SCHEDULE"] ?? "0 0/1 * 1/1 * ? *";
+        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
 
-      if(await scheduler.CheckExists(WithJobKey())){
-        await scheduler.DeleteJob(WithJobKey());
+        if (await scheduler.CheckExists(jobKey)) {
+          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
+
+          if (
+            trigger is ICronTrigger cronTrigger &&
+            cronTrigger.CronExpressionString != cronExpression
+          ) {
+            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
+          }
+        } else {
+          app.UseQuartzJob<BulkFileJobQueue>(triggerBuilder);
+          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
+        }
+      } catch(Exception e) {
+        Console.WriteLine("ERROR");
+        Console.WriteLine(e.Message);
       }
-
-      app.UseQuartzJob<BulkFileJobQueue>(WithCronSchedule("0 0/1 * 1/1 * ? *"));
-      
     }
 
     public BulkFileJobQueue(NpgSqlContext dbContext, IConfiguration configuration)

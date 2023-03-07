@@ -1,4 +1,3 @@
-using System.Security.AccessControl;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
@@ -7,17 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 using Quartz;
-using Quartz.Impl.Matchers;
 
 using SilkierQuartz;
 using DatabaseAccess;
 
 using Epa.Camd.Quartz.Scheduler.Jobs;
 using Epa.Camd.Quartz.Scheduler.Models;
-using Epa.Camd.Quartz.Scheduler.Jobs.Listeners;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
@@ -104,27 +100,30 @@ namespace Epa.Camd.Quartz.Scheduler
         }
         nameValueCollection.Set("quartz.dataSource.default.connectionString", connectionString);
       });
-      
 
       services.AddOptions();
-
       services.AddJobListener<CheckEngineEvaluationListener>(GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS));
-      EvaluationJobQueue.RegisterWithQuartz(services);
-      CheckEngineEvaluation.RegisterWithQuartz(services);
+      
+      BulkDataFile.RegisterWithQuartz(services);
       BulkFileJobQueue.RegisterWithQuartz(services);
+      BulkDataFileMaintenance.RegisterWithQuartz(services);
+
+      ApportionedEmissionsBulkData.RegisterWithQuartz(services);
       AllowanceHoldingsBulkDataFiles.RegisterWithQuartz(services);
+      AllowanceTransactionsBulkDataFiles.RegisterWithQuartz(services);
       AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
       EmissionsComplianceBulkDataFiles.RegisterWithQuartz(services);
-      AllowanceTransactionsBulkDataFiles.RegisterWithQuartz(services);
       FacilityAttributesBulkDataFiles.RegisterWithQuartz(services);
-      BulkDataFile.RegisterWithQuartz(services);
-      BulkDataFileMaintenance.RegisterWithQuartz(services);
-      ApportionedEmissionsBulkData.RegisterWithQuartz(services);
+      
+      CheckEngineEvaluation.RegisterWithQuartz(services);
+      EvaluationJobQueue.RegisterWithQuartz(services);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+      Console.WriteLine("Configuring Quartz");
+
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
@@ -152,19 +151,20 @@ namespace Epa.Camd.Quartz.Scheduler
         await next();
       });
 
+      Console.WriteLine("Attempting to schedule quartz jobs");
+
       IScheduler scheduler = app.GetScheduler();
 
       BulkDataFile.setScheduler(scheduler);
-
-      EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
+      BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
+      ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
       AllowanceHoldingsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
-      BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
+      EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
     }
   }
 }

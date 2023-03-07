@@ -36,18 +36,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
+      try {
+        JobKey jobKey = WithJobKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_TRANSACTIONS_SCHEDULE"] ?? "0 0/10 2-4 15 1 ? *";
+        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
 
-      if(await scheduler.CheckExists(WithJobKey())){
-        await scheduler.DeleteJob(WithJobKey());
-      }
+        if (await scheduler.CheckExists(jobKey)) {
+          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
 
-     
-        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_TRANSACTIONS_SCHEDULE"] != null){
-          app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_TRANSACTIONS_SCHEDULE"]));
+          if (
+            trigger is ICronTrigger cronTrigger &&
+            cronTrigger.CronExpressionString != cronExpression
+          ) {
+            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
+          }
+        } else {
+          app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(triggerBuilder);
+          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
         }
-        else
-          app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(WithCronSchedule("0 0/10 2-4 15 1 ? *"));
-      
+      } catch(Exception e) {
+        Console.WriteLine("ERROR");
+        Console.WriteLine(e.Message);
+      }
     }
 
     public AllowanceTransactionsBulkDataFiles(NpgSqlContext dbContext, IConfiguration configuration)

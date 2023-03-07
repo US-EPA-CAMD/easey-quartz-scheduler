@@ -9,4 +9,9 @@
     <RootNamespace>Epa.Camd.Logger</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugType>None</DebugType>
+    <DebugSymbols>False</DebugSymbols>
+  </PropertyGroup>  
+
 </Project>

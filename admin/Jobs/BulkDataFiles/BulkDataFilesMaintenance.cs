@@ -13,7 +13,6 @@ using Epa.Camd.Logger;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   public class BulkDataFileMaintenance : IJob
@@ -39,18 +38,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
+      try {
+        JobKey jobKey = WithJobKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_BULK_FILE_MAINTENANCE_SCHEDULE"] ?? "0 0 6 ? * * *";
+        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
 
-      if(await scheduler.CheckExists(WithJobKey())){
-        await scheduler.DeleteJob(WithJobKey());
-      }
+        if (await scheduler.CheckExists(jobKey)) {
+          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
 
-      
-        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_MAINTENANCE_SCHEDULE"] != null){
-          app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_MAINTENANCE_SCHEDULE"]));
+          if (
+            trigger is ICronTrigger cronTrigger &&
+            cronTrigger.CronExpressionString != cronExpression
+          ) {
+            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
+          }
+        } else {
+          app.UseQuartzJob<BulkDataFileMaintenance>(triggerBuilder);
+          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
         }
-        else
-          app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule("0 0 6 ? * * *"));
-      
+      } catch(Exception e) {
+        Console.WriteLine("ERROR");
+        Console.WriteLine(e.Message);
+      }
     }
 
     public BulkDataFileMaintenance(NpgSqlContext dbContext, IConfiguration configuration)
