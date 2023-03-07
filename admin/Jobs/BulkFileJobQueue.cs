@@ -37,18 +37,19 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
-      try{
-      Console.WriteLine("Attempting to schedule quartz job");
+      try {
+        JobKey jobKey = WithJobKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_BULK_FILE_QUEUE_SCHEDULE"] ?? "0 0/1 * 1/1 * ? *";
 
-      if(await scheduler.CheckExists(WithJobKey())){
-        Console.WriteLine("Deleting Quartz Job");
-        await scheduler.DeleteJob(WithJobKey());
-      }
+        if(await scheduler.CheckExists(jobKey)){
+          Console.WriteLine($"Deleting {jobKey.Name} Job");
+          await scheduler.DeleteJob(jobKey);
+        }
 
-      Console.WriteLine("Attempting to schedule quartz with Cron");
-      app.UseQuartzJob<BulkFileJobQueue>(WithCronSchedule("0 0/1 * 1/1 * ? *"));
-      Console.WriteLine("Scheduled Quartz Job");
-      }catch(Exception e){
+        Console.WriteLine($"Attempting to schedule {jobKey.Name} job");
+        app.UseQuartzJob<BulkFileJobQueue>(WithCronSchedule(cronExpression));
+        Console.WriteLine($"Scheduled {jobKey.Name} Job");
+      } catch(Exception e) {
         Console.WriteLine("ERROR");
         Console.WriteLine(e.Message);
       }

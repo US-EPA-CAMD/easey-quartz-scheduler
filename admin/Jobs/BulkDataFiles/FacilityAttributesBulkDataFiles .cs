@@ -36,18 +36,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
+      try {
+        JobKey jobKey = WithJobKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_FACILITY_ATTRIBUTES_SCHEDULE"] ?? "0 0/10 2-4 ? * * *";
 
-      if(await scheduler.CheckExists(WithJobKey())){
-        await scheduler.DeleteJob(WithJobKey());
-      }
-
-     
-        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_FACILITY_ATTRIBUTES_SCHEDULE"] != null){
-          app.UseQuartzJob<FacilityAttributesBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_FACILITY_ATTRIBUTES_SCHEDULE"]));
+        if(await scheduler.CheckExists(jobKey)){
+          Console.WriteLine($"Deleting {jobKey.Name} Job");
+          await scheduler.DeleteJob(jobKey);
         }
-        else
-          app.UseQuartzJob<FacilityAttributesBulkDataFiles>(WithCronSchedule("0 0/10 2-4 ? * * *"));
-      
+
+        Console.WriteLine($"Attempting to schedule {jobKey.Name} job");
+        app.UseQuartzJob<FacilityAttributesBulkDataFiles>(WithCronSchedule(cronExpression));
+        Console.WriteLine($"Scheduled {jobKey.Name} Job");
+      } catch(Exception e) {
+        Console.WriteLine("ERROR");
+        Console.WriteLine(e.Message);
+      }
     }
 
     public FacilityAttributesBulkDataFiles(NpgSqlContext dbContext, IConfiguration configuration)

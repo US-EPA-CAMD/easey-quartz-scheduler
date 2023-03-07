@@ -36,17 +36,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
-      if(await scheduler.CheckExists(WithJobKey())){
-        await scheduler.DeleteJob(WithJobKey());
-      }
+      try {
+        JobKey jobKey = WithJobKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EMISSIONS_COMPLIANCE_SCHEDULE"] ?? "0 0/10 2-4 15 * ? *";
 
-      
-        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EMISSIONS_COMPLIANCE_SCHEDULE"] != null){
-          app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EMISSIONS_COMPLIANCE_SCHEDULE"]));
+        if(await scheduler.CheckExists(jobKey)){
+          Console.WriteLine($"Deleting {jobKey.Name} Job");
+          await scheduler.DeleteJob(jobKey);
         }
-        else
-          app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(WithCronSchedule("0 0/10 2-4 15 * ? *"));
-      
+
+        Console.WriteLine($"Attempting to schedule {jobKey.Name} job");
+        app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(WithCronSchedule(cronExpression));
+        Console.WriteLine($"Scheduled {jobKey.Name} Job");
+      } catch(Exception e) {
+        Console.WriteLine("ERROR");
+        Console.WriteLine(e.Message);
+      }
     }
 
     public EmissionsComplianceBulkDataFiles (NpgSqlContext dbContext, IConfiguration configuration)

@@ -103,17 +103,17 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddOptions();
 
-      //EvaluationJobQueue.RegisterWithQuartz(services);
-      //CheckEngineEvaluation.RegisterWithQuartz(services);
-      BulkFileJobQueue.RegisterWithQuartz(services);
-      AllowanceHoldingsBulkDataFiles.RegisterWithQuartz(services);
-      AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
-      EmissionsComplianceBulkDataFiles.RegisterWithQuartz(services);
-      AllowanceTransactionsBulkDataFiles.RegisterWithQuartz(services);
-      FacilityAttributesBulkDataFiles.RegisterWithQuartz(services);
       BulkDataFile.RegisterWithQuartz(services);
+      BulkFileJobQueue.RegisterWithQuartz(services);
       BulkDataFileMaintenance.RegisterWithQuartz(services);
       ApportionedEmissionsBulkData.RegisterWithQuartz(services);
+      AllowanceHoldingsBulkDataFiles.RegisterWithQuartz(services);
+      AllowanceTransactionsBulkDataFiles.RegisterWithQuartz(services);
+      AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
+      EmissionsComplianceBulkDataFiles.RegisterWithQuartz(services);
+      FacilityAttributesBulkDataFiles.RegisterWithQuartz(services);
+      //EvaluationJobQueue.RegisterWithQuartz(services);
+      //CheckEngineEvaluation.RegisterWithQuartz(services);
       //SendMail.RegisterWithQuartz(services);
     }
 
@@ -160,15 +160,15 @@ namespace Epa.Camd.Quartz.Scheduler
       //   GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS)
       // );
 
-      //EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
+      BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
+      ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
       AllowanceHoldingsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
-      BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
+      //EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);      
     }
   }
 }

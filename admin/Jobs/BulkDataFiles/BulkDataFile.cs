@@ -96,29 +96,27 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
-        string url =  (string) context.JobDetail.JobDataMap.Get("url");
-        string fileName = (string) context.JobDetail.JobDataMap.Get("fileName");
-        Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
-        string stateCode = (string) context.JobDetail.JobDataMap.Get("StateCode");
-        string dataType = (string) context.JobDetail.JobDataMap.Get("DataType");
-        string dataSubType = (string) context.JobDetail.JobDataMap.Get("DataSubType");
-        int? year = (int?) context.JobDetail.JobDataMap.Get("Year");
-        int? quarter = (int?) context.JobDetail.JobDataMap.Get("Quarter");
-        string programCode = (string) context.JobDetail.JobDataMap.Get("ProgramCode");
-        BulkFileQueue bulkFile = await _dbContext.BulkFileQueue.FindAsync(job_id);
-      try
-      {       
-        
+      string url =  (string) context.JobDetail.JobDataMap.Get("url");
+      string fileName = (string) context.JobDetail.JobDataMap.Get("fileName");
+      Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
+      string stateCode = (string) context.JobDetail.JobDataMap.Get("StateCode");
+      string dataType = (string) context.JobDetail.JobDataMap.Get("DataType");
+      string dataSubType = (string) context.JobDetail.JobDataMap.Get("DataSubType");
+      int? year = (int?) context.JobDetail.JobDataMap.Get("Year");
+      int? quarter = (int?) context.JobDetail.JobDataMap.Get("Quarter");
+      string programCode = (string) context.JobDetail.JobDataMap.Get("ProgramCode");
+      BulkFileQueue bulkFile = await _dbContext.BulkFileQueue.FindAsync(job_id);
 
-      string description = await getDescription(dataType, dataSubType, year, quarter, stateCode, programCode);
+      try {
+        string description = await getDescription(dataType, dataSubType, year, quarter, stateCode, programCode);
 
-      LogHelper.info("Executing new stream", new LogVariable("url", url));
+        LogHelper.info("Executing new stream", new LogVariable("url", url));
 
-      IAmazonS3 s3Client = new AmazonS3Client(
-        Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_ACCESS_KEY_ID"],
-        Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_SECRET_ACCESS_KEY"],
-        RegionEndpoint.USGovCloudWest1
-      );
+        IAmazonS3 s3Client = new AmazonS3Client(
+          Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_ACCESS_KEY_ID"],
+          Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_SECRET_ACCESS_KEY"],
+          RegionEndpoint.USGovCloudWest1
+        );
         bulkFile.StatusCd = "WIP";
 
         bulkFile.StartDate = Utils.getCurrentEasternTime();
