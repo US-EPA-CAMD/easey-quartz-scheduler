@@ -1,9 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-
 using ECMPS.Checks.CheckEngine;
 using ECMPS.Checks.CheckEngine.Definitions;
 using ECMPS.Checks.CheckEngine.SpecialParameterClasses;
@@ -14,12 +8,13 @@ using ECMPS.Checks.Em.Parameters;
 using ECMPS.Checks.EmissionsChecks;
 using ECMPS.Checks.Parameters;
 using ECMPS.Checks.TypeUtilities;
-
-using ECMPS.Common;
 using ECMPS.Definitions.Extensions;
 using ECMPS.Definitions.SeverityCode;
 using ECMPS.DM;
 using Npgsql;
+using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace ECMPS.Checks.EmissionsReport
 {
@@ -1322,26 +1317,26 @@ namespace ECMPS.Checks.EmissionsReport
 
                 DbUpdate(ref Result);
 
-                if (Result.IsEmpty())
-                {
-                    if (!SourceData.Tables.Contains("SynchronizationManagement") ||
-                        !SourceData.Tables["SynchronizationManagement"].Columns.Contains("GENERATE_DM_IND") ||
-                        (SourceData.Tables["SynchronizationManagement"].Rows.Count != 1) ||
-                        (SourceData.Tables["SynchronizationManagement"].Rows[0]["GENERATE_DM_IND"].AsInteger(1) == 1))
-                    {
-                        ExecuteChecksWork_HandleDmEmissions(CheckEngine.MonPlanId,
-                                                            CheckEngine.RptPeriodId.Value,
-                                                            CheckEngine.ChkSessionId,
-                                                            ref Result);
-                    }
-                    else
-                    {
-                        UpdateEmissionsDb.UpdateInit_Setup(CheckEngine.MonPlanId,
-                                                           CheckEngine.RptPeriodId.Value,
-                                                           CheckEngine.UserId,
-                                                           ref Result);
-                    }
-                }
+                //if (Result.IsEmpty())
+                //{
+                //    if (!SourceData.Tables.Contains("SynchronizationManagement") ||
+                //        !SourceData.Tables["SynchronizationManagement"].Columns.Contains("GENERATE_DM_IND") ||
+                //        (SourceData.Tables["SynchronizationManagement"].Rows.Count != 1) ||
+                //        (SourceData.Tables["SynchronizationManagement"].Rows[0]["GENERATE_DM_IND"].AsInteger(1) == 1))
+                //    {
+                //        ExecuteChecksWork_HandleDmEmissions(CheckEngine.MonPlanId,
+                //                                            CheckEngine.RptPeriodId.Value,
+                //                                            CheckEngine.ChkSessionId,
+                //                                            ref Result);
+                //    }
+                //    else
+                //    {
+                //        UpdateEmissionsDb.UpdateInit_Setup(CheckEngine.MonPlanId,
+                //                                           CheckEngine.RptPeriodId.Value,
+                //                                           CheckEngine.UserId,
+                //                                           ref Result);
+                //    }
+                //}
 
                 DateTime ExecuteEnded = DateTime.Now;
 
@@ -3575,9 +3570,9 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool result = true;
 
-            result = InitSourceData_GenericTableFunctionDo("NoxrPrimaryAndPrimaryBypassMhv", "BEGIN_DATE, BEGIN_HOUR, MON_LOC_ID, HOUR_ID", monPlanId, rptPeriodId, ref errorMessage) && result;
-            result = InitSourceData_GenericTableFunctionDo("NoxrSummaryRequiredForLmeAnnual", "LOCATION_NAME, QUARTER", monPlanId, rptPeriodId, ref errorMessage) && result;
-            result = InitSourceData_GenericTableFunctionDo("WeeklySystemIntegrity", "TEST_DATEHOUR, MON_LOC_ID, COMPONENT_ID, TEST_MIN", monPlanId, rptPeriodId, ref errorMessage) && result;
+            result = InitSourceData_GenericTableFunctionDo("noxr_primary_and_primary_bypass_mhv", "BEGIN_DATE, BEGIN_HOUR, MON_LOC_ID, HOUR_ID", monPlanId, rptPeriodId, ref errorMessage) && result;
+            result = InitSourceData_GenericTableFunctionDo("noxr_summary_required_for_lme_annual", "LOCATION_NAME, QUARTER", monPlanId, rptPeriodId, ref errorMessage) && result;
+            result = InitSourceData_GenericTableFunctionDo("weekly_system_integrity_data", "TEST_DATEHOUR, MON_LOC_ID, COMPONENT_ID, TEST_MIN", monPlanId, rptPeriodId, ref errorMessage) && result;
 
             return result;
         }
@@ -3595,7 +3590,7 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool result;
 
-            string sql = string.Format("select * from CheckEm.{0}('{1}', {2}) order by {3}", genericName, monPlanId, rptPeriodId, orderBy);
+            string sql = string.Format("select * from  camdecmpswks.{0}('{1}', {2}) order by {3}", genericName, monPlanId, rptPeriodId, orderBy);
 
             result = AddTable(genericName, sql, ref errorMessage);
 
@@ -3606,7 +3601,7 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool result = true;
 
-            string sqlTemplate = "Select * From CheckEm.CombinedHourlyValueData('{0}', {1}, '{2}')";
+            string sqlTemplate = "Select * From  camdecmpswks.combined_hourly_value_data('{0}', {1}, '{2}')";
             string sql;
 
             sql = string.Format(sqlTemplate, monPlanId, rptPeriodId, "CO2C");
@@ -3637,13 +3632,13 @@ namespace ECMPS.Checks.EmissionsReport
             bool Result = true;
 
             Result = AddTable("DailyEmissionCo2m",
-                              "Select * From vw_MP_Daily_Emission Where " + AMonPlanFilter + " and " + ADateRangeFilter,
+                              "Select * From camdecmpswks.vw_MP_Daily_Emission Where " + AMonPlanFilter + " and " + ADateRangeFilter,
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "Begin_Date, Mon_Loc_Id",
                               ref AErrorMessage) && Result;
 
             Result = AddTable("DailyFuel",
-                            "Select * From vw_MP_Daily_Fuel Where " + AMonPlanFilter + " and " + ADateRangeFilter,
+                            "Select * From camdecmpswks.vw_MP_Daily_Fuel Where " + AMonPlanFilter + " and " + ADateRangeFilter,
                             mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                             "Begin_Date, Mon_Loc_Id",
                             ref AErrorMessage) && Result;
@@ -3659,12 +3654,12 @@ namespace ECMPS.Checks.EmissionsReport
 
             const string sqlTemplateDailyCalibration
               = "Select * " +
-                "  From CheckEm.DailyCalibrationTestPeriodData('{0}', '{1}', '{2}')" +
+                "  From  camdecmpswks.daily_calibration_test_period_data('{0}', '{1}', '{2}')" +
                 "  Order By FIRST_TEST_DATE, FIRST_TEST_HOUR, MON_LOC_ID, COMPONENT_ID, FIRST_TEST_MIN";
 
             const string sqlTemplateDailyMiscellaneous
               = "Select * " +
-                "  From CheckEm.DailyMiscellaneousTestPeriodData('{0}', '{1}', '{2}')" +
+                "  From  camdecmpswks.daily_miscellaneous_test_period_data('{0}', '{1}', '{2}')" +
                 "  Order By DAILY_TEST_DATEHOUR, MON_LOC_ID, COMPONENT_ID, DAILY_TEST_MIN";
 
             Result = AddTable("DailyCalibration",
@@ -3806,67 +3801,67 @@ namespace ECMPS.Checks.EmissionsReport
             bool Result = true;
 
             Result = AddTable("MatsDhvRecordsByHourLocation",
-        string.Format("select * from CheckEm.MATSDerivedHourlyValueData('{0}', '{1}', null ) order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId),
+        string.Format("select * from camdecmpswks.mats_derived_hourly_value_data('{0}', '{1}', null ) order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId),
               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
               "",
               ref AErrorMessage) && Result;
 
             Result = AddTable("MatsMhvHclcRecordsByHourLocation",
-                string.Format("select * from CheckEm.MATSMonitorHourlyValueData('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HCL"),
+                string.Format("select * from  camdecmpswks.mats_derived_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HCL"),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "",
                               ref AErrorMessage) && Result;
 
             Result = AddTable("MatsMhvHfcRecordsByHourLocation",
-                string.Format("select * from CheckEm.MATSMonitorHourlyValueData('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HF"),
+                string.Format("select * from  camdecmpswks.mats_derived_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HF"),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "",
                               ref AErrorMessage) && Result;
 
             Result = AddTable("MatsMhvHgcRecordsByHourLocation",
-                string.Format("select * from CheckEm.MATSMonitorHourlyValueData('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HG"),
+                string.Format("select * from  camdecmpswks.mats_derived_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HG"),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "",
                               ref AErrorMessage) && Result;
 
             Result = AddTable("MATSHgDerivedHourlyValue",
-        string.Format("select * from CheckEm.MATSDerivedHourlyValueData('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HG"),
+        string.Format("select * from  camdecmpswks.mats_derived_hourly_value_data('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HG"),
               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
               "",
               ref AErrorMessage) && Result;
 
             Result = AddTable("MATSHclDerivedHourlyValue",
-        string.Format("select * from CheckEm.MATSDerivedHourlyValueData('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HCL"),
+        string.Format("select * from  camdecmpswks.mats_derived_hourly_value_data('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HCL"),
               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
               "",
               ref AErrorMessage) && Result;
 
             Result = AddTable("MATSHfDerivedHourlyValue",
-        string.Format("select * from CheckEm.MATSDerivedHourlyValueData('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HF"),
+        string.Format("select * from  camdecmpswks.mats_derived_hourly_value_data('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HF"),
               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
               "",
               ref AErrorMessage) && Result;
 
             Result = AddTable("MATSSo2DerivedHourlyValue",
-        string.Format("select * from CheckEm.MATSDerivedHourlyValueData('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "SO2"),
+        string.Format("select * from  camdecmpswks.mats_derived_hourly_value_data('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "SO2"),
               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
               "",
               ref AErrorMessage) && Result;
 
             Result = AddTable("MATSHgcMonitorHourlyValue",
-        string.Format("select * from CheckEm.MATSMonitorHourlyValueData('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HG"),
+        string.Format("select * from  camdecmpswks.mats_monitor_hourly_value_data('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HG"),
               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
               "",
               ref AErrorMessage) && Result;
 
             Result = AddTable("MATSHclcMonitorHourlyValue",
-        string.Format("select * from CheckEm.MATSMonitorHourlyValueData('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HCL"),
+        string.Format("select * from  camdecmpswks.mats_monitor_hourly_value_data('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HCL"),
               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
               "",
               ref AErrorMessage) && Result;
 
             Result = AddTable("MATSHfcMonitorHourlyValue",
-        string.Format("select * from CheckEm.MATSMonitorHourlyValueData('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HF"),
+        string.Format("select * from  camdecmpswks.mats_monitor_hourly_value_data('{0}', '{1}', '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HF"),
               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
               "",
               ref AErrorMessage) && Result;
@@ -3875,25 +3870,25 @@ namespace ECMPS.Checks.EmissionsReport
             {
                 Result = AddTable(
                                    "MatsHourlyGfm",
-                                   string.Format("select * from CheckEm.MatsHourlyGfmRecord('{0}', '{1}') order by begin_datehour, mon_loc_id, hour_id", MonPlanId, RptPeriodId),
+                                   string.Format("select * from  camdecmpswks.mats_hourly_gas_flow_meter_record('{0}', '{1}') order by begin_datehour, mon_loc_id, hour_id", MonPlanId, RptPeriodId),
                                    mSourceData, mCheckEngine.DbDataConnection.SQLConnection, "", ref AErrorMessage
                                  ) && Result;
 
                 Result = AddTable(
                                    "MatsSamplingTrain",
-                                   string.Format("select * from CheckEm.MatsSamplingTrainRecord('{0}', '{1}')", MonPlanId, RptPeriodId),
+                                   string.Format("select * from  camdecmpswks.mats_sampling_train_record('{0}', '{1}')", MonPlanId, RptPeriodId),
                                    mSourceData, mCheckEngine.DbDataConnection.SQLConnection, "", ref AErrorMessage
                                  ) && Result;
 
                 Result = AddTable(
                                    "MatsSamplingTrainQaStatusLookupTable",
-                                   "select * from Lookup.TRAIN_QA_STATUS_CODE",
+                                   "select * from camdecmpsmd.train_qa_status_code",
                                    mSourceData, mCheckEngine.DbDataConnection.SQLConnection, "", ref AErrorMessage
                                  ) && Result;
 
                 Result = AddTable(
                                    "MatsSorbentTrap",
-                                   string.Format("select * from CheckEm.MatsSorbentTrapRecord('{0}', '{1}')", MonPlanId, RptPeriodId),
+                                   string.Format("select * from  camdecmpswks.mats_sorbent_trap_record('{0}', '{1}')", MonPlanId, RptPeriodId),
                                    mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                                    "LOCATION_NAME, SYSTEM_IDENTIFIER, BEGIN_DATEHOUR, END_DATEHOUR",
                                    ref AErrorMessage
@@ -3901,7 +3896,7 @@ namespace ECMPS.Checks.EmissionsReport
 
                 Result = AddTable(
                                    "MatsSorbentTrapSupplementalData",
-                                   string.Format("select * from CheckEm.MatsSorbentTrapSupplementalDataRecord('{0}', '{1}')", MonPlanId, RptPeriodId),
+                                   string.Format("select * from  camdecmpswks.mats_sorbent_trap_supplemental_data_record('{0}', '{1}')", MonPlanId, RptPeriodId),
                                    mSourceData, mCheckEngine.DbDataConnection.SQLConnection, "", ref AErrorMessage
                                  ) && Result;
             }
@@ -3962,11 +3957,11 @@ namespace ECMPS.Checks.EmissionsReport
                             "Select * From camdecmpswks.vw_MP_Monitor_Default_Mxff Where " + AMonPlanFilter,
                             mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                             ref AErrorMessage) && Result;
-            /*
+            
             Result = AddTable("MonitorDefaultSo2x",
-                            "Select * From camdecmpswks.vw_MP_Monitor_Default_SO2x Where " + AMonPlanFilter,
+                            "Select * From camdecmpswks.vw_mp_monitor_default_so2x Where " + AMonPlanFilter,
                             mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
-                            ref AErrorMessage) && Result;*/
+                            ref AErrorMessage) && Result;
 
             return Result;
         }
@@ -4047,13 +4042,13 @@ namespace ECMPS.Checks.EmissionsReport
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "Begin_Date, Begin_Hour, Mon_Loc_Id, Hour_Id",
                               ref AErrorMessage) && Result;
-   /*
+   
             Result = AddTable("MonitorHourlyValueSo2c",
-                              "Select * From camdecmpswks.vw_MP_Monitor_Hrly_Value_So2c" +
+                              "Select * From camdecmpswks.vw_mp_monitor_default_so2c" +
                               "  Where " + AMonPlanFilter + " and " + ADateRangeFilter,
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
-                              "Begin_Date, Begin_Hour, Mon_Loc_Id, Hour_Id",
-                              ref AErrorMessage) && Result; */
+                              "Begin_Date, Begin_Hour, Mon_Loc_Id",
+                              ref AErrorMessage) && Result; 
 
             return Result;
         }
@@ -4104,11 +4099,11 @@ namespace ECMPS.Checks.EmissionsReport
                               "Begin_Date, Begin_Hour, End_Date, End_Hour, Mon_Loc_Id",
                               ref AErrorMessage) && Result;
 
-            /*Result = AddTable("MonitorMethodSo2",
-                              "Select * From vw_MP_Monitor_Method_So2 Where " + AMonPlanFilter,
+            Result = AddTable("MonitorMethodSo2",
+                              "Select * From camdecmpswks.vw_mp_monitor_method_so2 Where " + AMonPlanFilter,
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "Begin_Date, Begin_Hour, End_Date, End_Hour, Mon_Loc_Id",
-                              ref AErrorMessage) && Result; */
+                              ref AErrorMessage) && Result; 
 
             return Result;
         }
@@ -4118,7 +4113,7 @@ namespace ECMPS.Checks.EmissionsReport
             bool Result = true;
 
             Result = AddTable("ComponentOpSuppData",
-                              string.Format("Select * From CheckEm.ComponentOpSuppData('{0}')", monPlanId),
+                              string.Format("Select * From  camdecmpswks.component_op_supp_data('{0}')", monPlanId),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               ref errorMessage) && Result;
 
@@ -4164,13 +4159,13 @@ namespace ECMPS.Checks.EmissionsReport
                               ref errorMessage) && Result;
 
             Result = AddTable("MonitorQualificationPercent",
-                              string.Format("Select * From CheckEm.MonitorQualificationPercentData('{0}')", monPlanId),
+                              string.Format("Select * From  camdecmpswks.monitor_qualification_percent_data('{0}')", monPlanId),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "Begin_Date, End_Date, Mon_Loc_Id",
                               ref errorMessage) && Result;
 
             Result = AddTable("MonitorReportingFrequencyByLocationQuarter",
-                              string.Format("Select * From CheckEm.ReportingFrequencyByLocationQuarter('{0}')", monPlanId),
+                              string.Format("Select * From  camdecmpswks.reporting_frequency_by_location_quarter('{0}')", monPlanId),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               null,
                               ref errorMessage) && Result;
@@ -4195,10 +4190,10 @@ namespace ECMPS.Checks.EmissionsReport
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               ref errorMessage) && Result;
 
-            Result = AddTable("SynchronizationManagement",
-                              string.Format("Select * From CheckEm.SynchronizationManagement('{0}')", monPlanId),
-                              mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
-                              ref errorMessage) && Result;
+            //Result = AddTable("SynchronizationManagement",
+            //                  string.Format("Select * From  camdecmpswks.SynchronizationManagement('{0}')", monPlanId),
+            //                  mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
+            //                  ref errorMessage) && Result;
 
             Result = AddTable("SystemFuelFlow",
                               "Select * From camdecmpswks.VW_MP_SYSTEM_FUEL_FLOW Where " + monPlanFilter,
@@ -4206,7 +4201,7 @@ namespace ECMPS.Checks.EmissionsReport
                               ref errorMessage) && Result;
 
             Result = AddTable("SystemOpSuppData",
-                              string.Format("Select * From CheckEm.SystemOpSuppData('{0}')", monPlanId),
+                              string.Format("Select * From  camdecmpswks.system_op_supp_data('{0}')", monPlanId),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               ref errorMessage) && Result;
 
@@ -4221,14 +4216,14 @@ namespace ECMPS.Checks.EmissionsReport
                               ref errorMessage) && Result;
 
             Result = AddTable("EmissionsEvaluation",
-                              "Select * From camdecmpswks.vw_EVEM_Emissions Where MON_PLAN_ID = '" + mCheckEngine.MonPlanId + "'",
+                              "Select * From camdecmpswks.vw_evem_emissions Where MON_PLAN_ID = '" + mCheckEngine.MonPlanId + "'",
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               ref errorMessage) && Result;
 
             Result = AddTable("ConfigurationEmissionsEvaluation",
-                             "Select * From vw_EVEM_Emissions Where MON_PLAN_ID in " +
-                             "(select MON_PLAN_ID FROM MONITOR_PLAN_LOCATION WHERE MON_LOC_ID in " +
-                             "(Select MON_LOC_ID FROM MONITOR_PLAN_LOCATION WHERE MON_PLAN_ID = '" + mCheckEngine.MonPlanId + "'))",
+                             "Select * From camdecmpswks.vw_evem_emissions Where MON_PLAN_ID in " +
+                             "(select MON_PLAN_ID FROM  camdecmpswks.MONITOR_PLAN_LOCATION WHERE MON_LOC_ID in " +
+                             "(Select MON_LOC_ID FROM  camdecmpswks.MONITOR_PLAN_LOCATION WHERE MON_PLAN_ID = '" + mCheckEngine.MonPlanId + "'))",
                              mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                              ref errorMessage) && Result;
 
@@ -4236,21 +4231,21 @@ namespace ECMPS.Checks.EmissionsReport
             // These should be in there own method
 
             Result = AddTable("ParameterUOM",
-                              "Select * From Parameter_UOM",
+                              "Select * From camdecmpsmd.parameter_uom",
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               ref errorMessage) && Result;
 
             Result = AddTable("FuelCode",
-                              "Select * From FUEL_CODE",
+                              "Select * From camdecmpsmd.fuel_code",
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               ref errorMessage) && Result;
 
             // PGVP Lookup Data Tables
             {
-                AddSourceData("GasComponentCode", "SELECT * FROM Lookup.GAS_COMPONENT_CODE");
-                AddSourceData("GasTypeCode", "SELECT * FROM GAS_TYPE_CODE");
-                AddSourceData("ProtocolGasVendor", "SELECT * FROM PROTOCOL_GAS_VENDOR");
-                AddSourceData("SystemParameter", "SELECT * FROM SYSTEM_PARAMETER");
+                AddSourceData("GasComponentCode", "SELECT * FROM camdecmpsmd.GAS_COMPONENT_CODE");
+                AddSourceData("GasTypeCode", "SELECT * FROM camdecmpsmd. GAS_TYPE_CODE");
+                AddSourceData("ProtocolGasVendor", "SELECT * FROM camdecmps.protocol_gas_vendor");
+                AddSourceData("SystemParameter", "SELECT * FROM camdecmpsmd.SYSTEM_PARAMETER");
             }
 
             return Result;
@@ -4344,7 +4339,7 @@ namespace ECMPS.Checks.EmissionsReport
             bool Result = true;
 
             Result = AddTable("MpLocationNonLoadBasedIndication",
-                              string.Format("select * from CheckEm.MpLocationNonLoadBasedIndication('{0}')", monPlanId),
+                              string.Format("select * from  camdecmpswks.mp_location_nonload_based_indication('{0}')", monPlanId),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "",
                               ref AErrorMessage) && Result;
@@ -4401,7 +4396,7 @@ namespace ECMPS.Checks.EmissionsReport
             }
 
 
-            string oocSql = string.Format("Select * From CheckEm.OnOffCalibrationTestAllData('{0}')" +
+            string oocSql = string.Format("Select * From camdecmpswks.on_off_calibration_test_all_data('{0}')" +
                                           "  Order By Mon_Loc_Id, End_Date desc, End_Hour desc, End_Min desc",
                                           monPlanId);
             {
@@ -4430,7 +4425,7 @@ namespace ECMPS.Checks.EmissionsReport
                               ref AErrorMessage) && Result;
 
             Result = AddTable("ReportingPeriod",
-                              "Select * From camdecmpswks.vw_EVEM_Reporting_Period" +
+                              "Select * From camdecmpsmd.reporting_period" +
                               "  Where " + ARptPeriodFilter,
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "Calendar_Year, Quarter",
