@@ -33,7 +33,9 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         }
 
         #endregion
-
+        public cDailyCalibrationData()
+        {
+        }
 
         #region Public Properties
 
@@ -227,25 +229,26 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 
             // SqlCommand command = connection.CreateCommand();
             NpgsqlCommand command = connection.CreateCommand();
+           
 
             try
             {
-                command.CommandText = "ECMPS.CheckEm.DailyCalibrationSuppDataPreviousQuarter";
+                command.CommandText = "camdecmpswks.daily_interference_supp_data_previous_quarter";
                 command.CommandType = CommandType.StoredProcedure;
 
                 //command.Parameters.Add("@V_MON_PLAN_ID", SqlDbType.VarChar);
                 //command.Parameters.Add("@V_RPT_PERIOD_ID", SqlDbType.Int); ;
                 //command.Parameters.Add("@V_RESULT", SqlDbType.VarChar, 1);
                 //command.Parameters.Add("@V_ERROR_MSG", SqlDbType.VarChar, 200);
-                command.Parameters.Add("@V_MON_PLAN_ID", NpgsqlDbType.Varchar);
-                command.Parameters.Add("@V_RPT_PERIOD_ID", NpgsqlDbType.Integer); ;
-                command.Parameters.Add("@V_RESULT", NpgsqlDbType.Varchar, 1);
-                command.Parameters.Add("@V_ERROR_MSG", NpgsqlDbType.Varchar, 200);
+                command.Parameters.Add("@monplanid", NpgsqlDbType.Varchar);
+                command.Parameters.Add("@rptperiodid", NpgsqlDbType.Integer); ;
+              command.Parameters.Add("@result", NpgsqlDbType.Varchar, 1);
+                command.Parameters.Add("@errorMessage", NpgsqlDbType.Varchar, 200);
 
-                command.Parameters["@V_MON_PLAN_ID"].Value = monPlanId;
-                command.Parameters["@V_RPT_PERIOD_ID"].Value = rptPeriodId;
-                command.Parameters["@V_RESULT"].Direction = ParameterDirection.Output;
-                command.Parameters["@V_ERROR_MSG"].Direction = ParameterDirection.Output;
+                command.Parameters["@monplanid"].Value = monPlanId;
+                command.Parameters["@rptperiodid"].Value = rptPeriodId;
+               command.Parameters["@result"].Direction = ParameterDirection.Output;
+               command.Parameters["@errorMessage"].Direction = ParameterDirection.Output;
 
                 //SqlDataAdapter adapter = new SqlDataAdapter(command);
                 NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command);
@@ -253,7 +256,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                 DataSet dataSet = new DataSet();
                 adapter.Fill(dataSet);
 
-                bool result = (command.Parameters["@V_RESULT"].Value != DBNull.Value) ? (command.Parameters["@V_RESULT"].Value.ToString() == "T") : false;
+                bool result = (command.Parameters["@result"].Value != DBNull.Value) ? (command.Parameters["@result"].Value.ToString() == "T") : false;
 
                 if (result)
                 {

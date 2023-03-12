@@ -15,6 +15,25 @@ namespace ECMPS.Checks.EmissionsChecks
     public class cAppendixDEStatusChecks : cEmissionsChecks
     {
         #region Constructors
+        public cAppendixDEStatusChecks(cEmissionsReportProcess emissionReportProcess)
+        : base(emissionReportProcess)
+        {
+            CheckProcedures = new dCheckProcedure[14];
+
+            CheckProcedures[1] = new dCheckProcedure(ADESTAT1);
+            CheckProcedures[2] = new dCheckProcedure(ADESTAT2);
+            CheckProcedures[3] = new dCheckProcedure(ADESTAT3);
+            CheckProcedures[4] = new dCheckProcedure(ADESTAT4);
+            CheckProcedures[5] = new dCheckProcedure(ADESTAT5);
+            CheckProcedures[6] = new dCheckProcedure(ADESTAT6);
+            CheckProcedures[7] = new dCheckProcedure(ADESTAT7);
+            CheckProcedures[8] = new dCheckProcedure(ADESTAT8);
+            CheckProcedures[9] = new dCheckProcedure(ADESTAT9);
+            CheckProcedures[10] = new dCheckProcedure(ADESTAT10);
+            CheckProcedures[11] = new dCheckProcedure(ADESTAT11);
+            CheckProcedures[12] = new dCheckProcedure(ADESTAT12);
+            CheckProcedures[13] = new dCheckProcedure(ADESTAT13);
+        }
 
         public cAppendixDEStatusChecks(cEmissionsReportProcess emissionReportProcess, EmParameters emparams)
           : base(emissionReportProcess, emparams)

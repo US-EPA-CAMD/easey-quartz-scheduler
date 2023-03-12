@@ -12,7 +12,7 @@ namespace ECMPS.Checks.EmissionsReport
     {
 
         #region Constructors
-        public EmParameters emParams;
+       
 
         /// <summary>
         /// Creates a category with a specific parent category and category code.
@@ -23,9 +23,9 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="componentTypeCd">The type of the component associated with the test.</param>
         /// <param name="testDateHour">The date and hour of the test.</param>
         public HourlyApportionmentVerificatonCategory(cCategory parentCategory, EmParameters emparams)
-            : base(parentCategory, "APPVERI")
+            : base(parentCategory, "APPVERI", emparams)
         {
-            emParams = emparams;
+          
         }
 
         #endregion

@@ -19,8 +19,7 @@ namespace ECMPS.Checks.EmissionsReport
   public class GenericComponentBasedStatusCategory : cCategoryHourly
   {
 
-        #region Constructors
-        public EmParameters emParams;
+
         /// <summary>
         /// Creates a category with a specific parent category and category code.
         /// </summary>
@@ -28,13 +27,12 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="categoryCd">The category code of the new category.</param>
         /// <param name="parameterCd">The parameter code of the associated monitor or derived hourly data.</param>
         public GenericComponentBasedStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd, EmParameters emparams)
-      : base(parentCategory, categoryCd)
-    {
-      ParameterCd = parameterCd;
-            emParams = emparams;
-    }
+      : base(parentCategory, categoryCd, emparams)
+        {
+            ParameterCd = parameterCd;
+        }
 
-    #endregion
+ 
 
 
     #region Public Properties

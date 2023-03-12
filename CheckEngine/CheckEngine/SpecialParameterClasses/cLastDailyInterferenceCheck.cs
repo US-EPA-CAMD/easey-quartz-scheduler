@@ -161,7 +161,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 
             try
             {
-                command.CommandText = $"select * from ECMPS.CheckEm.DailyInterferenceSuppDataPreviousQuarter( '{monPlanId}', {rptPeriodId})";
+                command.CommandText = $"select * from camdecmpswks.daily_interference_supp_data_previous_quarter( '{monPlanId}', {rptPeriodId})";
                 command.CommandType = CommandType.Text;
 
                 // SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -221,7 +221,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                 }
                 else
                 {
-                    resultMessage = (command.Parameters["@V_ERROR_MSG"].Value != DBNull.Value) ? command.Parameters["@V_ERROR_MSG"].Value.ToString() : "Table Function did not return an error message.";
+                    resultMessage = (command.Parameters["@errormessage"].Value != DBNull.Value) ? command.Parameters["@errormessage"].Value.ToString() : "Table Function did not return an error message.";
                 }
 
                 return result;

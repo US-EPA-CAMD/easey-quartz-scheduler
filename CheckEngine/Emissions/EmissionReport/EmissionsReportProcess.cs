@@ -1408,12 +1408,12 @@ namespace ECMPS.Checks.EmissionsReport
                 WeeklySystemIntegrityTestOperatingDatesCategory = new WeeklySystemIntegrityTestOperatingDatesCategory(FOperatingHourCategory, emParams);
                 FDailyEmissionTestCategory = new cDailyEmissionTestCategory(mCheckEngine, this, FOperatingHourCategory);
 
-                FCo2cCalculationCategory = new cCo2cCalculationCategory(mCheckEngine, this, FOperatingHourCategory);
+                FCo2cCalculationCategory = new cCo2cCalculationCategory(mCheckEngine, this, FOperatingHourCategory, emParams);
                 FCo2cDerivedHourlyCategory = new cCo2cDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 FCo2cMonitorHourlyCategory = new cCo2cMonitorHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 FCo2cOverallHourlyCategory = new cCo2cOverallHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 FCo2cSubDataMonitorHourlyCategory = new cCo2cSubDataMonitorHourlyCategory(mCheckEngine, this, FOperatingHourCategory, FCo2cMonitorHourlyCategory);
-                FCo2mCalculationCategory = new cCo2mCalculationCategory(mCheckEngine, this, FOperatingHourCategory);
+                FCo2mCalculationCategory = new cCo2mCalculationCategory(mCheckEngine, this, FOperatingHourCategory, emParams);
                 FCo2mDerivedHourlyCategory = new cCo2mDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
 
                 FFlowMonitorHourlyCategory = new cFlowMonitorHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
@@ -1424,13 +1424,13 @@ namespace ECMPS.Checks.EmissionsReport
 
                     FlowAveragingStatusTestInitCategory = new cFlowAveragingStatusTestInitCategory(FFlowMonitorHourlyCategory, emParams);
                     {
-                        FlowAveragingDailyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(FlowAveragingStatusTestInitCategory, "FLWAVDC");
+                        FlowAveragingDailyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(FlowAveragingStatusTestInitCategory, "FLWAVDC", emParams);
                         FlowAveragingDailyInterferenceStatusCategory = new cDailyInterferenceStatusCategory(FlowAveragingStatusTestInitCategory, emParams, "FLWAVDI");
                         FlowAveragingLeakStatusCategory = new cLeakStatusCategory(FlowAveragingStatusTestInitCategory, emParams, "FLWAVLK");
                     }
                 }
 
-                FH2oCalculationCategory = new cH2oCalculationCategory(mCheckEngine, this, FOperatingHourCategory);
+                FH2oCalculationCategory = new cH2oCalculationCategory(mCheckEngine, this, FOperatingHourCategory, emParams);
                 FH2oDerivedHourlyCategory = new cH2oDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 FH2oMonitorHourlyCategory = new cH2oMonitorHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 FHiCalculationCategory = new cHiCalculationCategory(mCheckEngine, this, FOperatingHourCategory);
@@ -1465,16 +1465,16 @@ namespace ECMPS.Checks.EmissionsReport
                 FRATAStatusCategoryH2O = new cH2ORATAStatusCategory(mCheckEngine, this, FH2oDerivedHourlyCategory, "H2ORATA");
                 FRATAStatusCategoryH2OM = new cH2OMRATAStatusCategory(mCheckEngine, this, FH2oMonitorHourlyCategory, "H2OMRAT");
 
-                FDailyCalibrationStatusCategoryCO2 = new cDailyCalibrationStatusCategory(mCheckEngine, this, FCo2cMonitorHourlyCategory, "CO2DCAL");
-                FDailyCalibrationStatusCategoryFlow = new cDailyCalibrationStatusCategory(mCheckEngine, this, FFlowMonitorHourlyCategory, "FLWDCAL");
-                FDailyCalibrationStatusCategoryNOx = new cDailyCalibrationStatusCategory(mCheckEngine, this, FNoxcMonitorHourlyCategory, "NOXDCAL");
-                FDailyCalibrationStatusCategoryO2Dry = new cDailyCalibrationStatusCategory(mCheckEngine, this, FO2DryMonitorHourlyCategory, "O2DDCAL");
-                FDailyCalibrationStatusCategoryO2Wet = new cDailyCalibrationStatusCategory(mCheckEngine, this, FO2WetMonitorHourlyCategory, "O2WDCAL");
-                FDailyCalibrationStatusCategorySO2 = new cDailyCalibrationStatusCategory(mCheckEngine, this, FSo2MonitorHourlyCategory, "SO2DCAL");
+                FDailyCalibrationStatusCategoryCO2 = new cDailyCalibrationStatusCategory(mCheckEngine, this, FCo2cMonitorHourlyCategory, "CO2DCAL" , emParams);
+                FDailyCalibrationStatusCategoryFlow = new cDailyCalibrationStatusCategory(mCheckEngine, this, FFlowMonitorHourlyCategory, "FLWDCAL", emParams);
+                FDailyCalibrationStatusCategoryNOx = new cDailyCalibrationStatusCategory(mCheckEngine, this, FNoxcMonitorHourlyCategory, "NOXDCAL", emParams);
+                FDailyCalibrationStatusCategoryO2Dry = new cDailyCalibrationStatusCategory(mCheckEngine, this, FO2DryMonitorHourlyCategory, "O2DDCAL", emParams);
+                FDailyCalibrationStatusCategoryO2Wet = new cDailyCalibrationStatusCategory(mCheckEngine, this, FO2WetMonitorHourlyCategory, "O2WDCAL", emParams);
+                FDailyCalibrationStatusCategorySO2 = new cDailyCalibrationStatusCategory(mCheckEngine, this, FSo2MonitorHourlyCategory, "SO2DCAL", emParams);
 
                 NoxrUnusedPpbMonitorHourlyCategory = new cNoxrUnusedPpbMonitorHourlyCategory(FOperatingHourCategory, emParams);
                 {
-                    NoxrUnusedPpbDaileyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBDC");
+                    NoxrUnusedPpbDaileyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBDC", emParams);
                     NoxrUnusedPpbLinearityStatusCategory = new cLinearityStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBLS", emParams);
                     NoxrUnusedPpbRataStatusInitCategory = new cNoxrUnusedPpbRataStatusInitCategory(NoxrUnusedPpbMonitorHourlyCategory, emParams);
                     NoxrUnusedPpbRataStatusCategory = new cRataStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBRS", emParams);
@@ -4489,8 +4489,8 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool result = true;
 
-            result = AddTable("ProgramCode", "select * from Lookup.PROGRAM_CODE order by PRG_CD", ref errorMessage);
-            result = AddTable("TestResultCode", "select * from TEST_RESULT_CODE order by TEST_RESULT_CD", ref errorMessage);
+            result = AddTable("ProgramCode", "select * from camdmd.PROGRAM_CODE order by PRG_CD", ref errorMessage);
+            result = AddTable("TestResultCode", "select * from camdecmpsmd.TEST_RESULT_CODE order by TEST_RESULT_CD", ref errorMessage);
 
             return result;
         }
@@ -4572,8 +4572,8 @@ namespace ECMPS.Checks.EmissionsReport
                 Checks[70].emParams = emParams;
                 Checks[71] = InstantiateChecks("EmissionAuditChecks", checksDllPath);
                 Checks[71].emParams = emParams;
-                Checks[45] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.LME.dll", "ECMPS.Checks.LMEChecks.cLMEChecks").Unwrap();
-
+                Checks[45] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "LME.dll", "ECMPS.Checks.LMEChecks.cLMEChecks").Unwrap();
+                Checks[45].emParams = emParams;
                 result = true;
             }
             catch (Exception ex)
@@ -6387,7 +6387,7 @@ namespace ECMPS.Checks.EmissionsReport
             FMonitorSystem = FilterTableInitDo("MonitorSystem");
             FMonitorSystemSo2 = FilterTableInitDo("MonitorSystemSo2");
             FMonitorSystemComponent = FilterTableInitDo("MonitorSystemComponent");
-            NoxrPrimaryAndPrimaryBypassMhv = FilterTableInitDo("NoxrPrimaryAndPrimaryBypassMhv");
+            NoxrPrimaryAndPrimaryBypassMhv = FilterTableInitDo("noxr_primary_and_primary_bypass_mhv");
             FMPOpStatus = FilterTableInitDo("MPOpStatus");
             FMPProgExempt = FilterTableInitDo("MPProgExempt");
             FOpSuppData = FilterTableInitDo("OpSuppData");
@@ -6502,8 +6502,8 @@ namespace ECMPS.Checks.EmissionsReport
 
         private void LoadCrossChecks()
         {
-            DataTable Catalog = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM camdecmpsmd. vw_Cross_Check_Catalog");
-            DataTable Value = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM vw_Cross_Check_Catalog_Value");
+            DataTable Catalog = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM camdecmpsmd.cross_Check_Catalog");
+            DataTable Value = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM camdecmpsmd.vw_cross_check_catalog_value");
             DataTable CrossCheck;
             DataRow CrossCheckRow;
             string CrossCheckName;
@@ -6605,7 +6605,8 @@ namespace ECMPS.Checks.EmissionsReport
         /// <returns>The resulting checks object.</returns>
         private cEmissionsChecks InstantiateChecks(string checksClassName, string checksDllPath)
         {
-            const string dllName = "ECMPS.Checks.Emissions.dll";
+            const string dllName = "Emissions.dll";
+            
             const string checksNamespace = "ECMPS.Checks.EmissionsChecks";
 
             object[] constructorArgements = new object[] { this };

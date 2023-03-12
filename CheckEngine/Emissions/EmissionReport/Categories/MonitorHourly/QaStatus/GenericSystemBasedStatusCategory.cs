@@ -37,10 +37,10 @@ namespace ECMPS.Checks.EmissionsReport
     /// <param name="categoryCd">The category code of the new category.</param>
     /// <param name="parameterCd">The parameter code of the associated monitor or derived hourly data.</param>
     public GenericSystemBasedStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd, EmParameters emparams)
-      : base(parentCategory, categoryCd)
+      : base(parentCategory, categoryCd, emparams)
     {
       ParameterCd = parameterCd;
-       emParams = emparams;
+      
      }
 
     #endregion
@@ -54,7 +54,7 @@ namespace ECMPS.Checks.EmissionsReport
     public string ParameterCd { get; protected set; }
 
         #endregion
-     public EmParameters emParams;
+    
 
       #region Base Class Overrides
 

@@ -15,7 +15,7 @@ namespace ECMPS.Checks.EmissionsReport
   public class cLinearityStatusCategory : cCategoryHourly
   {
         #region Constructors
-   public EmParameters emParams;
+   
         /// <summary>
         /// Creates a category with a specific parent category, category code and parameter code.
         /// </summary>
@@ -24,7 +24,7 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="parameterCd">The parameter code of the associated monitor or derived hourly data.</param>
   public cLinearityStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd, EmParameters emparams)
       : base(parentCategory,
-         categoryCd)
+         categoryCd,emparams)
         {
            ParameterCd = parameterCd;
             emParams = emparams;
@@ -37,10 +37,10 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="categoryCd">The category code of the new category.</param>
         public cLinearityStatusCategory(cCategory parentCategory, string categoryCd, EmParameters emparams)
           : base(parentCategory,
-             categoryCd)
+             categoryCd,emparams)
         {
             ParameterCd = null;
-            emParams = emparams;
+           
         }
 
         public cLinearityStatusCategory(cCheckEngine ACheckEngine,
@@ -50,9 +50,9 @@ namespace ECMPS.Checks.EmissionsReport
       : base(ACheckEngine,
          (cEmissionsReportProcess)AHourlyEmissionsData,
          ACategory,
-         ACategoryCode)
+         ACategoryCode,emparams)
     {
-            emParams = emparams;
+           
     }
 
     #endregion

@@ -4,6 +4,7 @@ using System.Data;
 
 using ECMPS.Checks.CheckEngine;
 using ECMPS.Checks.CheckEngine.SpecialParameterClasses;
+using ECMPS.Checks.Em.Parameters;
 using ECMPS.Checks.Parameters;
 using ECMPS.Checks.TypeUtilities;
 using ECMPS.Definitions.Extensions;
@@ -15,6 +16,7 @@ namespace ECMPS.Checks.EmissionsReport
 	{
 
         #region Constructors
+        public EmParameters emParams;
 
         /// <summary>
         /// This constructor creates an hourly category object that initializes Primary Table handling, and MODC Data Border and 
@@ -49,6 +51,30 @@ namespace ECMPS.Checks.EmissionsReport
             InitializeForPrimaryTable(primaryTableName, primaryFilterTable, primaryTableParameterName, valueColumnName,
                                       hourlyTypeCd, parameterCd, moistureBasis,
                                       locationMonSysIdList);
+			
+            SetRecordIdentifier();
+        }
+
+
+
+        public cCategoryHourly(cCategory parentCategory,
+                          string categoryCd,
+                          string primaryTableName,
+                          DataTable primaryFilterTable,
+                          string primaryTableParameterName,
+                          string valueColumnName,
+                          string hourlyTypeCd,
+                          string parameterCd,
+                          string moistureBasis, EmParameters emparams,
+                          List<string>[] locationMonSysIdList = null)
+       : base(parentCategory, categoryCd)
+        {
+            EmissionsReportProcess = (cEmissionsReportProcess)parentCategory.Process;
+            emParams =emparams;
+
+            InitializeForPrimaryTable(primaryTableName, primaryFilterTable, primaryTableParameterName, valueColumnName,
+                                      hourlyTypeCd, parameterCd, moistureBasis,
+                                      locationMonSysIdList);
 
             SetRecordIdentifier();
         }
@@ -69,13 +95,24 @@ namespace ECMPS.Checks.EmissionsReport
 			SetRecordIdentifier();
 		}
 
-		/// <summary>
-		/// Create an emissions category with the passed parent category and category code.
-		/// </summary>
-		/// <param name="parentCategory">Parent category object.</param>
-		/// <param name="categoryCd">Category's code.</param>
-		/// <param name="primaryTableName">The name of the primary table for this category.</param>
-		public cCategoryHourly(cCategory parentCategory, string categoryCd, string primaryTableName)
+        public cCategoryHourly(cCategory parentCategory, string categoryCd, EmParameters emparams)
+           : base(parentCategory.Process.CheckEngine, parentCategory.Process, parentCategory, categoryCd)
+        {
+            EmissionsReportProcess = (cEmissionsReportProcess)parentCategory.Process;
+
+            TableName = "";
+			emParams = emparams;
+
+            SetRecordIdentifier();
+        }
+
+        /// <summary>
+        /// Create an emissions category with the passed parent category and category code.
+        /// </summary>
+        /// <param name="parentCategory">Parent category object.</param>
+        /// <param name="categoryCd">Category's code.</param>
+        /// <param name="primaryTableName">The name of the primary table for this category.</param>
+        public cCategoryHourly(cCategory parentCategory, string categoryCd, string primaryTableName)
 			: base(parentCategory.Process.CheckEngine, parentCategory.Process, parentCategory, categoryCd)
 		{
 			EmissionsReportProcess = (cEmissionsReportProcess)parentCategory.Process;
@@ -85,14 +122,26 @@ namespace ECMPS.Checks.EmissionsReport
 			SetRecordIdentifier();
 		}
 
-		/// <summary>
-		/// Construncts category with parent category and primary table.
-		/// </summary>
-		/// <param name="categoryCd">The category code of this category.</param>
-		/// <param name="emissionsReportProcess">The emissions report process object.</param>
-		/// <param name="parentCategory">The parent category for this category.</param>
-		/// <param name="primaryTableName">The name of the primary table for this category.</param>
-		public cCategoryHourly(string categoryCd,
+        public cCategoryHourly(cCategory parentCategory, string categoryCd, string primaryTableName, EmParameters emparams)
+           : base(parentCategory.Process.CheckEngine, parentCategory.Process, parentCategory, categoryCd)
+        {
+            EmissionsReportProcess = (cEmissionsReportProcess)parentCategory.Process;
+            emParams = emparams;
+
+            InitializeForPrimaryTable(primaryTableName, null, null);
+
+            SetRecordIdentifier();
+        }
+
+
+        /// <summary>
+        /// Construncts category with parent category and primary table.
+        /// </summary>
+        /// <param name="categoryCd">The category code of this category.</param>
+        /// <param name="emissionsReportProcess">The emissions report process object.</param>
+        /// <param name="parentCategory">The parent category for this category.</param>
+        /// <param name="primaryTableName">The name of the primary table for this category.</param>
+        public cCategoryHourly(string categoryCd,
 							   cEmissionsReportProcess emissionsReportProcess,
 							   cCategory parentCategory,
 							   string primaryTableName)
@@ -108,15 +157,34 @@ namespace ECMPS.Checks.EmissionsReport
 			SetRecordIdentifier();
 		}
 
-		/// <summary>
-		/// Construncts category with parent category and primary table.
-		/// </summary>
-		/// <param name="categoryCd">The category code of this category.</param>
-		/// <param name="emissionsReportProcess">The emissions report process object.</param>
-		/// <param name="parentCategory">The parent category for this category.</param>
-		/// <param name="primaryTableName">The name of the primary table for this category.</param>
-		/// <param name="valueColumnName">The name of the key emission value column.</param>
-		public cCategoryHourly(string categoryCd,
+
+        public cCategoryHourly(string categoryCd,
+                           cEmissionsReportProcess emissionsReportProcess,
+                           cCategory parentCategory,
+                           string primaryTableName, EmParameters emparams)
+        : base(emissionsReportProcess.CheckEngine,
+               (cProcess)emissionsReportProcess,
+               parentCategory,
+               categoryCd)
+        {
+            EmissionsReportProcess = emissionsReportProcess;
+			emParams = emparams;
+
+            InitializeForPrimaryTable(primaryTableName, null, null);
+
+            SetRecordIdentifier();
+        }
+
+
+        /// <summary>
+        /// Construncts category with parent category and primary table.
+        /// </summary>
+        /// <param name="categoryCd">The category code of this category.</param>
+        /// <param name="emissionsReportProcess">The emissions report process object.</param>
+        /// <param name="parentCategory">The parent category for this category.</param>
+        /// <param name="primaryTableName">The name of the primary table for this category.</param>
+        /// <param name="valueColumnName">The name of the key emission value column.</param>
+        public cCategoryHourly(string categoryCd,
 							   cEmissionsReportProcess emissionsReportProcess,
 							   cCategory parentCategory,
 							   string primaryTableName,
@@ -158,16 +226,33 @@ namespace ECMPS.Checks.EmissionsReport
 			SetRecordIdentifier();
 		}
 
-		/// <summary>
-		/// Construncts category with parent category and primary table.
-		/// </summary>
-		/// <param name="categoryCd">The category code of this category.</param>
-		/// <param name="emissionsReportProcess">The emissions report process object.</param>
-		/// <param name="parentCategory">The parent category for this category.</param>
-		/// <param name="primaryTableName">The name of the primary table for this category.</param>
-		/// <param name="valueColumnName">The name of the key emission value column.</param>
-		/// <param name="primaryTableParameterName">The name of the primary table parameter for this category.</param>
-		public cCategoryHourly(string categoryCd,
+        public cCategoryHourly(string categoryCd,
+                               cCategory parentCategory,
+                               string primaryTableName,
+                               string valueColumnName,
+                               string primaryTableParameterName, EmParameters emparams)
+            : base(parentCategory.Process.CheckEngine,
+                   parentCategory.Process,
+                   parentCategory,
+                   categoryCd)
+        {
+            EmissionsReportProcess = (cEmissionsReportProcess)parentCategory.Process;
+            emParams = emparams;
+            InitializeForPrimaryTable(primaryTableName, valueColumnName, primaryTableParameterName);
+
+            SetRecordIdentifier();
+        }
+
+        /// <summary>
+        /// Construncts category with parent category and primary table.
+        /// </summary>
+        /// <param name="categoryCd">The category code of this category.</param>
+        /// <param name="emissionsReportProcess">The emissions report process object.</param>
+        /// <param name="parentCategory">The parent category for this category.</param>
+        /// <param name="primaryTableName">The name of the primary table for this category.</param>
+        /// <param name="valueColumnName">The name of the key emission value column.</param>
+        /// <param name="primaryTableParameterName">The name of the primary table parameter for this category.</param>
+        public cCategoryHourly(string categoryCd,
 							   cEmissionsReportProcess emissionsReportProcess,
 							   cCategory parentCategory,
 							   string primaryTableName,
@@ -215,17 +300,35 @@ namespace ECMPS.Checks.EmissionsReport
 		}
 
 		public cCategoryHourly(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData,
-							   cCategory AParentCategory, string ACategoryCd)
+							   cCategory AParentCategory, string ACategoryCd,EmParameters emparams)
 			: base(ACheckEngine, (cProcess)AHourlyEmissionsData, AParentCategory, ACategoryCd)
 		{
 			EmissionsReportProcess = AHourlyEmissionsData;
+			emParams = emparams;
 
-			TableName = "";
+
+            TableName = "";
 
 			SetRecordIdentifier();
 		}
 
-		public cCategoryHourly(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData,
+        public cCategoryHourly(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData,
+                           cCategory AParentCategory, string ACategoryCd)
+        : base(ACheckEngine, (cProcess)AHourlyEmissionsData, AParentCategory, ACategoryCd)
+        {
+            EmissionsReportProcess = AHourlyEmissionsData;
+            
+
+
+            TableName = "";
+
+            SetRecordIdentifier();
+        }
+
+
+       
+
+        public cCategoryHourly(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData,
 							   cCategory AParentCategory, cCategoryHourly APrimaryDataCategory, string ACategoryCd)
 			: base(ACheckEngine, (cProcess)AHourlyEmissionsData, AParentCategory, ACategoryCd)
 		{
