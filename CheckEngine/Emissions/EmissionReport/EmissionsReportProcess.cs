@@ -6618,7 +6618,7 @@ namespace ECMPS.Checks.EmissionsReport
                                                                     true, 0, null,
                                                                     constructorArgements,
                                                                     null, null).Unwrap();
-
+            result.emParams = emParams;
             return result;
         }
 
