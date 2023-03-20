@@ -252,8 +252,8 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 
                 if (previous_quarter_for_system.Tables.Count >0 && previous_quarter_non_system.Tables.Count > 0)
                 {
-                    DataTable dailyTestLocationSuppData = previous_quarter_for_system.Tables[0];
-                    DataTable dailyTestSystemSuppData = previous_quarter_non_system.Tables[0];
+                    DataTable dailyTestLocationSuppData = previous_quarter_non_system.Tables[0]; 
+                    DataTable dailyTestSystemSuppData = previous_quarter_for_system.Tables[0];
 
                     if (isDailyTestSupplementalDataTable(dailyTestLocationSuppData, out errorMessage) && 
                         isDailyTestSystemSupplementalDataTable(dailyTestSystemSuppData, out errorMessage))

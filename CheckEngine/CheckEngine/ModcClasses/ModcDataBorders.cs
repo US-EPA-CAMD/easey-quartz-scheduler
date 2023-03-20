@@ -232,8 +232,8 @@ namespace ECMPS.Checks.CheckEngine
                 }
                 else
                 {
-                    DataTable hourBeforeLocationSuppData = previous_quarter_for_system.Tables[0];
-                    DataTable hourBeforeSystemSuppData = previous_quarter_non_system.Tables[0];
+                    DataTable hourBeforeLocationSuppData = previous_quarter_non_system.Tables[0]; 
+                    DataTable hourBeforeSystemSuppData = previous_quarter_for_system.Tables[0];
 
                     if (!IsSuppDataLocationTable(hourBeforeLocationSuppData, out missingColumns))
                     {
