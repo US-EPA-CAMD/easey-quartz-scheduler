@@ -354,6 +354,19 @@ namespace ECMPS.Checks.EmissionsReport
 			SetRecordIdentifier();
 		}
 
+        public cCategoryHourly(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData,
+                           string ACategoryCd, EmParameters emparams)
+        : base(ACheckEngine, (cProcess)AHourlyEmissionsData, ACategoryCd)
+        {
+            EmissionsReportProcess = AHourlyEmissionsData;
+
+            TableName = "";
+            emParams = emparams;
+            SetRecordIdentifier();
+			
+        }
+
+
 
         #region Initializers for Primary Table
 

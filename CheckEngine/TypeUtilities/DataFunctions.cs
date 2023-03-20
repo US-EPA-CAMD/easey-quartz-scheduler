@@ -113,7 +113,8 @@ namespace ECMPS.Checks.TypeUtilities
         {
             try
             {
-                string sql = "select * from " + databaseName + "." + schemaName + "." + tableName + " where null is not null";
+                
+                string sql = "select * from " + databaseName + "." + tableName + " where null is not null";
 
                 // SqlDataAdapter DataAdapter = new SqlDataAdapter(sql, connection);
                 NpgsqlDataAdapter DataAdapter = new NpgsqlDataAdapter(sql, connection);

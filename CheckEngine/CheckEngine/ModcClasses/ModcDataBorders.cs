@@ -180,6 +180,7 @@ namespace ECMPS.Checks.CheckEngine
                                                         int currentYear, int currentQuarter, ref string errorMessage)
         //public static bool InitializeFromPreviousQuarter(string monPlanId, int rptPeriodId, SqlConnection connection, DataView monitorLocationView, int currentYear, int currentQuarter, ref string errorMessage)
         {
+            
             string missingColumns;
 
             if (connection == null)
@@ -208,30 +209,22 @@ namespace ECMPS.Checks.CheckEngine
 
             try
             {
-                command.CommandText = "ECMPS.CheckEm.HourBeforeSuppDataPreviousQuarter";
+                command.CommandText = "camdecmpswks.hour_before_supp_data_previous_quarter_for_system";
                 command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@monplanid", NpgsqlDbType.Varchar);
+                command.Parameters.Add("@rptperiodid", NpgsqlDbType.Integer);
+                command.Parameters["@monplanid"].Value = monPlanId;
+                command.Parameters["@rptperiodid"].Value = rptPeriodId;
 
-                //command.Parameters.Add("@V_MON_PLAN_ID", SqlDbType.VarChar);
-                //command.Parameters.Add("@V_RPT_PERIOD_ID", SqlDbType.Int); ;
-                //command.Parameters.Add("@V_RESULT", SqlDbType.VarChar, 1);
-                //command.Parameters.Add("@V_ERROR_MSG", SqlDbType.VarChar, 200);
-                command.Parameters.Add("@V_MON_PLAN_ID", NpgsqlDbType.Varchar);
-                command.Parameters.Add("@V_RPT_PERIOD_ID", NpgsqlDbType.Integer); ;
-                command.Parameters.Add("@V_RESULT", NpgsqlDbType.Varchar, 1);
-                command.Parameters.Add("@V_ERROR_MSG", NpgsqlDbType.Varchar, 200);
-
-                command.Parameters["@V_MON_PLAN_ID"].Value = monPlanId;
-                command.Parameters["@V_RPT_PERIOD_ID"].Value = rptPeriodId;
-                command.Parameters["@V_RESULT"].Direction = ParameterDirection.Output;
-                command.Parameters["@V_ERROR_MSG"].Direction = ParameterDirection.Output;
-
-                // SqlDataAdapter adapter = new SqlDataAdapter(command);
                 NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command);
 
-                DataSet dataSet = new DataSet();
-                adapter.Fill(dataSet);
+                DataSet previous_quarter_for_system = new DataSet();
+                DataSet previous_quarter_non_system = new DataSet();
+                adapter.Fill(previous_quarter_for_system);
+                command.CommandText = "camdecmpswks.hour_before_supp_data_previous_quarter_non_system";
+                adapter.Fill(previous_quarter_non_system);
 
-                bool result = (command.Parameters["@V_RESULT"].Value != DBNull.Value) ? (command.Parameters["@V_RESULT"].Value.ToString() == "T") : false;
+                bool result = previous_quarter_for_system.Tables.Count > 0 && previous_quarter_non_system.Tables.Count > 0;
 
                 if (!result)
                 {
@@ -239,8 +232,8 @@ namespace ECMPS.Checks.CheckEngine
                 }
                 else
                 {
-                    DataTable hourBeforeLocationSuppData = dataSet.Tables[0];
-                    DataTable hourBeforeSystemSuppData = dataSet.Tables[1];
+                    DataTable hourBeforeLocationSuppData = previous_quarter_for_system.Tables[0];
+                    DataTable hourBeforeSystemSuppData = previous_quarter_non_system.Tables[0];
 
                     if (!IsSuppDataLocationTable(hourBeforeLocationSuppData, out missingColumns))
                     {
@@ -334,6 +327,7 @@ namespace ECMPS.Checks.CheckEngine
                 command.Dispose();
                 command = null;
             }
+            return true;
 
         }
 

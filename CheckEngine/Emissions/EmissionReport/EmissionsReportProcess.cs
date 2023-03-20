@@ -4793,28 +4793,28 @@ namespace ECMPS.Checks.EmissionsReport
         {
             string ErrorMsg = "";
 
-            FCalcDailyCal = CloneTable("ECMPS_WS", "CE_DailyCalibration", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcDailyEmission = CloneTable("ECMPS_WS", "CE_DailyEmission", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcDailyFuel = CloneTable("ECMPS_WS", "CE_DailyFuel", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcDailyTestSummary = CloneTable("ECMPS_WS", "CE_DailyTestSummary", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcDerivedHrlyValue = CloneTable("ECMPS_WS", "CE_DerivedHourlyValue", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcHrlyFuelFlow = CloneTable("ECMPS_WS", "CE_HourlyFuelFlow", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcHrlyParamFuelFlow = CloneTable("ECMPS_WS", "CE_HourlyParameterFuelFlow", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcLongTermFuelFlow = CloneTable("ECMPS_WS", "CE_LongTermFuelFlow", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcMonitorHrlyValue = CloneTable("ECMPS_WS", "CE_MonitorHourlyValue", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcSummaryValue = CloneTable("ECMPS_WS", "CE_SummaryValue", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            CalcWeeklySystemIntegrity = CloneTable("ECMPS_WS", "CE_WeeklySystemIntegrity", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            CalcWeeklyTestSummary = CloneTable("ECMPS_WS", "CE_WeeklyTestSummary", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FOperatingSuppData = CloneTable("ECMPS_WS", "CE_OperatingSuppData", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcDailyCal = CloneTable("camdecmpswks", "daily_calibration", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcDailyEmission = CloneTable("camdecmpswks", "daily_emission", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcDailyFuel = CloneTable("camdecmpswks", "daily_fuel", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcDailyTestSummary = CloneTable("camdecmpswks", "daily_test_summary", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcDerivedHrlyValue = CloneTable("camdecmpswks", "derived_hrly_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcHrlyFuelFlow = CloneTable("camdecmpswks", "hrly_fuel_flow", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcHrlyParamFuelFlow = CloneTable("camdecmpswks", "hrly_param_fuel_flow", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcLongTermFuelFlow = CloneTable("camdecmpswks", "long_term_fuel_flow", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcMonitorHrlyValue = CloneTable("camdecmpswks", "monitor_hrly_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcSummaryValue = CloneTable("camdecmpswks", "summary_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcWeeklySystemIntegrity = CloneTable("camdecmpswks", "weekly_system_integrity", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcWeeklyTestSummary = CloneTable("camdecmpswks", "weekly_test_summary", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FOperatingSuppData = CloneTable("camdecmpswks", "operating_supp_data", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
 
             // Added MATS 9/29/14
-            CalcMATSDHVData = CloneTable("ECMPS_WS", "CE_MATSDerivedHourlyValue", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            CalcMATSMHVData = CloneTable("ECMPS_WS", "CE_MATSMonitorHourlyValue", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcMATSDHVData = CloneTable("camdecmpswks", "mats_derived_hrly_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcMATSMHVData = CloneTable("camdecmpswks", "mats_monitor_hrly_Value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
 
             /* Sorbent Trap Related */
-            CalcHrlyGasFlowMeter = CloneTable("ECMPS_WS", "CE_HourlyGasFlowMeter", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            CalcSamplingTrain = CloneTable("ECMPS_WS", "CE_SamplingTrain", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            CalcSorbentTrap = CloneTable("ECMPS_WS", "CE_SorbentTrap", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcHrlyGasFlowMeter = CloneTable("camdecmpswks", "hrly_gas_flowMeter", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcSamplingTrain = CloneTable("camdecmpswks", "sampling_train", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcSorbentTrap = CloneTable("camdecmpswks", "sorbent_trap", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
         }
 
         #endregion
@@ -5182,7 +5182,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (APPDStatus != "")
                     CalcRow["CALC_APPD_STATUS"] = APPDStatus;
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+            //    CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
 
                 FCalcHrlyFuelFlow.Rows.Add(CalcRow);
             }
@@ -5225,7 +5225,7 @@ namespace ECMPS.Checks.EmissionsReport
                         CalcRow["CALC_APPE_STATUS"] = APPEStatus;
                 }
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+               // CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
 
                 FCalcHrlyParamFuelFlow.Rows.Add(CalcRow);
             }
@@ -5348,7 +5348,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["CALC_UPSCALE_APS_IND"] = GetUpdateIntegerValue("Daily_Cal_Upscale_Injection_Calc_APS_Indicator");
                 CalcRow["CALC_UPSCALE_CAL_ERROR"] = GetUpdateDecimalValue("Daily_Cal_Upscale_Injection_Calc_Result", eDecimalPrecision.UPSCALE_CAL_ERROR);
                 CalcRow["CALC_ZERO_CAL_ERROR"] = GetUpdateDecimalValue("Daily_Cal_Zero_Injection_Calc_Result", eDecimalPrecision.ZERO_CAL_ERROR);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+          //      CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
                 FCalcDailyCal.Rows.Add(CalcRow);
 
                 DataRow CalcRow2 = FCalcDailyTestSummary.NewRow();
@@ -5373,7 +5373,7 @@ namespace ECMPS.Checks.EmissionsReport
                 else
                     CalcRow2["CALC_TEST_RESULT_CD"] = CalcTestResCdParameter;
 
-                CalcRow2["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+            //    CalcRow2["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
                 FCalcDailyTestSummary.Rows.Add(CalcRow2);
 
                 DailyCalibrationCategory.SetCheckParameter("Daily_Cal_Calc_Result", CalcRow2["CALC_TEST_RESULT_CD"].AsString(), eParameterDataType.String);
@@ -5648,7 +5648,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (DayCalStatus != "")
                     CalcRow["CALC_DAYCAL_STATUS"] = DayCalStatus;
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+              //  CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
 
                 FCalcMonitorHrlyValue.Rows.Add(CalcRow);
             }
@@ -5803,7 +5803,7 @@ namespace ECMPS.Checks.EmissionsReport
             CalcRow["OP_TYPE_CD"] = AOperatingTypeCd;
             CalcRow["FUEL_CD"] = AFuelCd;
             CalcRow["OP_VALUE"] = AOpHours;
-            CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+          //  CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
 
             FOperatingSuppData.Rows.Add(CalcRow);
         }

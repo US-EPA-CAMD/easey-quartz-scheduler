@@ -227,41 +227,33 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                 return false;
             }
 
-            // SqlCommand command = connection.CreateCommand();
-            NpgsqlCommand command = connection.CreateCommand();
            
+            NpgsqlCommand command = connection.CreateCommand();
 
+            bool result = false; ;
             try
             {
-                command.CommandText = "camdecmpswks.daily_interference_supp_data_previous_quarter";
-                command.CommandType = CommandType.StoredProcedure;
-
-                //command.Parameters.Add("@V_MON_PLAN_ID", SqlDbType.VarChar);
-                //command.Parameters.Add("@V_RPT_PERIOD_ID", SqlDbType.Int); ;
-                //command.Parameters.Add("@V_RESULT", SqlDbType.VarChar, 1);
-                //command.Parameters.Add("@V_ERROR_MSG", SqlDbType.VarChar, 200);
+                
+                command.CommandText = "camdecmpswks.daily_calibration_supp_data_previous_quarter_for_system";
+                command.CommandType = CommandType.StoredProcedure;                             
                 command.Parameters.Add("@monplanid", NpgsqlDbType.Varchar);
-                command.Parameters.Add("@rptperiodid", NpgsqlDbType.Integer); ;
-              command.Parameters.Add("@result", NpgsqlDbType.Varchar, 1);
-                command.Parameters.Add("@errorMessage", NpgsqlDbType.Varchar, 200);
-
+                command.Parameters.Add("@rptperiodid", NpgsqlDbType.Integer);            
                 command.Parameters["@monplanid"].Value = monPlanId;
                 command.Parameters["@rptperiodid"].Value = rptPeriodId;
-               command.Parameters["@result"].Direction = ParameterDirection.Output;
-               command.Parameters["@errorMessage"].Direction = ParameterDirection.Output;
-
-                //SqlDataAdapter adapter = new SqlDataAdapter(command);
+     
                 NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command);
 
-                DataSet dataSet = new DataSet();
-                adapter.Fill(dataSet);
+                DataSet previous_quarter_for_system = new DataSet();
+                DataSet previous_quarter_non_system = new DataSet();
+                adapter.Fill(previous_quarter_for_system);
+                command.CommandText = "camdecmpswks.daily_calibration_supp_data_previous_quarter_non_system";
+                adapter.Fill(previous_quarter_non_system);
+              
 
-                bool result = (command.Parameters["@result"].Value != DBNull.Value) ? (command.Parameters["@result"].Value.ToString() == "T") : false;
-
-                if (result)
+                if (previous_quarter_for_system.Tables.Count >0 && previous_quarter_non_system.Tables.Count > 0)
                 {
-                    DataTable dailyTestLocationSuppData = dataSet.Tables[0];
-                    DataTable dailyTestSystemSuppData = dataSet.Tables[1];
+                    DataTable dailyTestLocationSuppData = previous_quarter_for_system.Tables[0];
+                    DataTable dailyTestSystemSuppData = previous_quarter_non_system.Tables[0];
 
                     if (isDailyTestSupplementalDataTable(dailyTestLocationSuppData, out errorMessage) && 
                         isDailyTestSystemSupplementalDataTable(dailyTestSystemSuppData, out errorMessage))

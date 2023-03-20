@@ -47,7 +47,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <summary>
         /// Contains the name of the update database for the supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateDatabaseName { get { return "ECMPS_WS"; } }
+        public static string SupplementalDataUpdateDatabaseName { get { return "camdecmpswks"; } }
 
         /// <summary>
         /// Contains the name of the update schema for the supplemental data.
@@ -57,12 +57,12 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <summary>
         /// Contains the name of the update table for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateTableName { get { return "CE_SystemOpSuppData"; } }
+        public static string SupplementalDataUpdateTableName { get { return "system_op_supp_data"; } }
 
         /// <summary>
         /// Contains the name of the update table for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateTablePath { get { return SupplementalDataUpdateDatabaseName + "." + SupplementalDataUpdateSchemaName + "." + SupplementalDataUpdateTableName; } }
+        public static string SupplementalDataUpdateTablePath { get { return SupplementalDataUpdateDatabaseName + "."  + SupplementalDataUpdateTableName; } }
 
 
         /// <summary>

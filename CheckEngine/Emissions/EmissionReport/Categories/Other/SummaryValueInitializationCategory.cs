@@ -17,18 +17,18 @@ namespace ECMPS.Checks.EmissionsReport
     {
 
         #region Constructors
-        public EmParameters emParams;
+        
 
         public cSummaryValueInitializationCategory(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData, EmParameters emparams)
-          : base(ACheckEngine, (cEmissionsReportProcess)AHourlyEmissionsData, "SUMINIT")
+          : base(ACheckEngine, (cEmissionsReportProcess)AHourlyEmissionsData, "SUMINIT", emparams)
         {
-            emParams = emparams;
+            
         }
 
         #endregion
 
 
-        #region Base Class Overrides
+        #region Base Class Overrides emParams.NoxrSummaryRequiredForLmeAnnualRecor
 
         protected override void FilterData()
         {
@@ -41,7 +41,7 @@ namespace ECMPS.Checks.EmissionsReport
                 emParams.MatsSamplingTrainRecords = new CheckDataView<MatsSamplingTrainRecord>(SourceTables()["MatsSamplingTrain"], "", "LOCATION_NAME, COMPONENT_IDENTIFIER, BEGIN_DATEHOUR, END_DATEHOUR"); ;
                 emParams.MatsSorbentTrapRecords = new CheckDataView<MatsSorbentTrapRecord>(SourceTables()["MatsSorbentTrap"], "", "");
                 emParams.MatsSorbentTrapSupplementalDataRecords = new CheckDataView<MatsSorbentTrapSupplementalDataRecord>(SourceTables()["MatsSorbentTrapSupplementalData"], "", "");
-                emParams.NoxrSummaryRequiredForLmeAnnualRecords = new CheckDataView<NoxrSummaryRequiredForLmeAnnual>(SourceTables()["NoxrSummaryRequiredForLmeAnnual"], "", "");
+                emParams.NoxrSummaryRequiredForLmeAnnualRecords = new CheckDataView<NoxrSummaryRequiredForLmeAnnual>(SourceTables()["noxr_summary_required_for_lme_annual"], "", "");
             }
 
             // Unordered Parameter Sets
