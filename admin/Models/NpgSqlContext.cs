@@ -120,6 +120,9 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       var connectionString = this.Database.GetConnectionString();
       var connection = new NpgsqlConnection(connectionString);
 
+      if (connection.State != ConnectionState.Open)
+            connection.Open();
+
       await using var cmd = new NpgsqlCommand("CALL camdecmpswks.refresh_emissions_views($1, $2, $3)", connection)
       {
           Parameters =
@@ -131,6 +134,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       };
 
       await cmd.ExecuteNonQueryAsync();
+      connection.Close();
     }
 
     public void ExecuteSql(string commandText)

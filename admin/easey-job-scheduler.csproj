@@ -35,6 +35,7 @@
 	  <ProjectReference Include="..\CheckEngine\QA\QA.csproj" />
     <ProjectReference Include="..\CheckEngine\Emissions\Emissions.csproj" />
     <ProjectReference Include="..\CheckEngine\DM\DM.csproj" />
+    <ProjectReference Include="..\CheckEngine\LME\LME.csproj" />
     <ProjectReference Include="..\Quartz\SilkierQuartz\SilkierQuartz.csproj" />
     <ProjectReference Include="..\Logger\Logger.csproj" />
   </ItemGroup>
