@@ -3570,9 +3570,9 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool result = true;
 
-            result = InitSourceData_GenericTableFunctionDo("noxr_primary_and_primary_bypass_mhv", "BEGIN_DATE, BEGIN_HOUR, MON_LOC_ID, HOUR_ID", monPlanId, rptPeriodId, ref errorMessage) && result;
-            result = InitSourceData_GenericTableFunctionDo("noxr_summary_required_for_lme_annual", "LOCATION_NAME, QUARTER", monPlanId, rptPeriodId, ref errorMessage) && result;
-            result = InitSourceData_GenericTableFunctionDo("weekly_system_integrity_data", "TEST_DATEHOUR, MON_LOC_ID, COMPONENT_ID, TEST_MIN", monPlanId, rptPeriodId, ref errorMessage) && result;
+            result = InitSourceData_GenericTableFunctionDo("NoxrPrimaryAndPrimaryBypassMhv", "BEGIN_DATE, BEGIN_HOUR, MON_LOC_ID, HOUR_ID", monPlanId, rptPeriodId, ref errorMessage, "noxr_primary_and_primary_bypass_mhv") && result;
+            result = InitSourceData_GenericTableFunctionDo("NoxrSummaryRequiredForLmeAnnual", "LOCATION_NAME, QUARTER", monPlanId, rptPeriodId, ref errorMessage, "noxr_summary_required_for_lme_annual") && result;
+            result = InitSourceData_GenericTableFunctionDo("WeeklySystemIntegrity", "TEST_DATEHOUR, MON_LOC_ID, COMPONENT_ID, TEST_MIN", monPlanId, rptPeriodId, ref errorMessage, "weekly_system_integrity_data") && result;
 
             return result;
         }
@@ -3586,13 +3586,13 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="rptPeriodId">The reporting period id to pass to the table functions.</param>
         /// <param name="errorMessage">Error message populated if load fails.</param>
         /// <returns>Returns true if successful, otherwise returns false.</returns>
-        private bool InitSourceData_GenericTableFunctionDo(string genericName, string orderBy, string monPlanId, int rptPeriodId, ref string errorMessage)
+        private bool InitSourceData_GenericTableFunctionDo(string genericName, string orderBy, string monPlanId, int rptPeriodId, ref string errorMessage, string tableName)
         {
             bool result;
 
-            string sql = string.Format("select * from  camdecmpswks.{0}('{1}', {2}) order by {3}", genericName, monPlanId, rptPeriodId, orderBy);
+            string sql = string.Format("select * from  camdecmpswks.{0}('{1}', {2}) order by {3}", tableName, monPlanId, rptPeriodId, orderBy);
 
-            result = AddTable(genericName, sql, ref errorMessage);
+            result = AddTable(tableName, sql, ref errorMessage);
 
             return result;
         }
