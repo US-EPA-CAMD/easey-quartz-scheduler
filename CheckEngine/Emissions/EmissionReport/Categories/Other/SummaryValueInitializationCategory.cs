@@ -41,7 +41,7 @@ namespace ECMPS.Checks.EmissionsReport
                 emParams.MatsSamplingTrainRecords = new CheckDataView<MatsSamplingTrainRecord>(SourceTables()["MatsSamplingTrain"], "", "LOCATION_NAME, COMPONENT_IDENTIFIER, BEGIN_DATEHOUR, END_DATEHOUR"); ;
                 emParams.MatsSorbentTrapRecords = new CheckDataView<MatsSorbentTrapRecord>(SourceTables()["MatsSorbentTrap"], "", "");
                 emParams.MatsSorbentTrapSupplementalDataRecords = new CheckDataView<MatsSorbentTrapSupplementalDataRecord>(SourceTables()["MatsSorbentTrapSupplementalData"], "", "");
-                emParams.NoxrSummaryRequiredForLmeAnnualRecords = new CheckDataView<NoxrSummaryRequiredForLmeAnnual>(SourceTables()["noxr_summary_required_for_lme_annual"], "", "");
+                emParams.NoxrSummaryRequiredForLmeAnnualRecords = new CheckDataView<NoxrSummaryRequiredForLmeAnnual>(SourceTables()["NoxrSummaryRequiredForLmeAnnual"], "", "");
             }
 
             // Unordered Parameter Sets

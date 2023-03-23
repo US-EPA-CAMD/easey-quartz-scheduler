@@ -23,8 +23,9 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <summary>
         /// The constructor for an object of cDailyCalibrationTestDataQueue.
         /// </summary>
-        public cDailyCalibrationTestDataQueue()
+        public cDailyCalibrationTestDataQueue(EmParameters param)
         {
+            emParameters = param;
             TestDataQueue = new cDailyCalibrationTestData[] { null, null };
         }
 
@@ -109,7 +110,6 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         }
 
         #endregion
-
 
         #region Public Properties
 

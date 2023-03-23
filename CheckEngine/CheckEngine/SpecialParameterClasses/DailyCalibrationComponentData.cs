@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-
+using ECMPS.Checks.Em.Parameters;
 using ECMPS.Checks.TypeUtilities;
 
 
@@ -21,25 +21,25 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// </summary>
         /// <param name="componentId">The Component Id represented by the object.</param>
         /// <param name="componentIdentifier">The Component Identifier of the Component Id.</param>
-        public cDailyCalibrationComponentData(string componentId, string componentIdentifier)
+        public cDailyCalibrationComponentData(string componentId, string componentIdentifier, EmParameters param)
         {
             ComponentId = componentId;
             ComponentIdentifier = componentIdentifier;
 
             TestDataQueue = new cDailyCalibrationTestDataQueue[3, 2, 2];
 
-            TestDataQueue[0, 0, 0] = new cDailyCalibrationTestDataQueue();
-            TestDataQueue[1, 0, 0] = new cDailyCalibrationTestDataQueue();
-            TestDataQueue[2, 0, 0] = new cDailyCalibrationTestDataQueue();
-            TestDataQueue[0, 1, 0] = new cDailyCalibrationTestDataQueue();
-            TestDataQueue[1, 1, 0] = new cDailyCalibrationTestDataQueue();
-            TestDataQueue[2, 1, 0] = new cDailyCalibrationTestDataQueue();
-            TestDataQueue[0, 0, 1] = new cDailyCalibrationTestDataQueue();
-            TestDataQueue[1, 0, 1] = new cDailyCalibrationTestDataQueue();
-            TestDataQueue[2, 0, 1] = new cDailyCalibrationTestDataQueue();
-            TestDataQueue[0, 1, 1] = new cDailyCalibrationTestDataQueue();
-            TestDataQueue[1, 1, 1] = new cDailyCalibrationTestDataQueue();
-            TestDataQueue[2, 1, 1] = new cDailyCalibrationTestDataQueue();
+            TestDataQueue[0, 0, 0] = new cDailyCalibrationTestDataQueue(param);
+            TestDataQueue[1, 0, 0] = new cDailyCalibrationTestDataQueue(param);
+            TestDataQueue[2, 0, 0] = new cDailyCalibrationTestDataQueue(param);
+            TestDataQueue[0, 1, 0] = new cDailyCalibrationTestDataQueue(param);
+            TestDataQueue[1, 1, 0] = new cDailyCalibrationTestDataQueue(param);
+            TestDataQueue[2, 1, 0] = new cDailyCalibrationTestDataQueue(param);
+            TestDataQueue[0, 0, 1] = new cDailyCalibrationTestDataQueue(param);
+            TestDataQueue[1, 0, 1] = new cDailyCalibrationTestDataQueue(param);
+            TestDataQueue[2, 0, 1] = new cDailyCalibrationTestDataQueue(param);
+            TestDataQueue[0, 1, 1] = new cDailyCalibrationTestDataQueue(param);
+            TestDataQueue[1, 1, 1] = new cDailyCalibrationTestDataQueue(param);
+            TestDataQueue[2, 1, 1] = new cDailyCalibrationTestDataQueue(param);
         }
 
         #endregion

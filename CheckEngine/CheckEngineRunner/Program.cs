@@ -66,7 +66,6 @@ namespace CheckEngineRunner
             */
 
             string fileTypeCd = ((args != null) && (args.Length >= 1)) ? args[0] : null;
-
             switch (fileTypeCd)
             {
                 case "EM":

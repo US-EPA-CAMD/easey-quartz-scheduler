@@ -213,35 +213,20 @@ namespace ECMPS.Checks.EmissionsReport
 							   cCategory parentCategory,
 							   string primaryTableName,
 							   string valueColumnName,
-							   string primaryTableParameterName)
+							   string primaryTableParameterName,
+							   EmParameters param)
 			: base(parentCategory.Process.CheckEngine,
 				   parentCategory.Process,
 				   parentCategory,
 				   categoryCd)
 		{
+			this.emParams = param;
 			EmissionsReportProcess = (cEmissionsReportProcess)parentCategory.Process;
 
 			InitializeForPrimaryTable(primaryTableName, valueColumnName, primaryTableParameterName);
 
 			SetRecordIdentifier();
 		}
-
-        public cCategoryHourly(string categoryCd,
-                               cCategory parentCategory,
-                               string primaryTableName,
-                               string valueColumnName,
-                               string primaryTableParameterName, EmParameters emparams)
-            : base(parentCategory.Process.CheckEngine,
-                   parentCategory.Process,
-                   parentCategory,
-                   categoryCd)
-        {
-            EmissionsReportProcess = (cEmissionsReportProcess)parentCategory.Process;
-            emParams = emparams;
-            InitializeForPrimaryTable(primaryTableName, valueColumnName, primaryTableParameterName);
-
-            SetRecordIdentifier();
-        }
 
         /// <summary>
         /// Construncts category with parent category and primary table.

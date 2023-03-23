@@ -274,7 +274,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                                             componentData = ComponentData[testData.ComponentId];
                                         else
                                         {
-                                            componentData = new cDailyCalibrationComponentData(testData.ComponentId, testData.ComponentIdentifier);
+                                            componentData = new cDailyCalibrationComponentData(testData.ComponentId, testData.ComponentIdentifier, emParams);
                                             ComponentData.Add(testData.ComponentId, componentData);
 
                                             // Add component to the list of components for the component's location
@@ -378,7 +378,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                         componentData = ComponentData[testData.ComponentId];
                     else
                     {
-                        componentData = new cDailyCalibrationComponentData(testData.ComponentId, testData.ComponentIdentifier);
+                        componentData = new cDailyCalibrationComponentData(testData.ComponentId, testData.ComponentIdentifier, emParams);
                         ComponentData.Add(testData.ComponentId, componentData);
 
                         // Add component to the list of components for the component's location

@@ -3570,9 +3570,9 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool result = true;
 
-            result = InitSourceData_GenericTableFunctionDo("NoxrPrimaryAndPrimaryBypassMhv", "BEGIN_DATE, BEGIN_HOUR, MON_LOC_ID, HOUR_ID", monPlanId, rptPeriodId, ref errorMessage, "noxr_primary_and_primary_bypass_mhv") && result;
-            result = InitSourceData_GenericTableFunctionDo("NoxrSummaryRequiredForLmeAnnual", "LOCATION_NAME, QUARTER", monPlanId, rptPeriodId, ref errorMessage, "noxr_summary_required_for_lme_annual") && result;
-            result = InitSourceData_GenericTableFunctionDo("WeeklySystemIntegrity", "TEST_DATEHOUR, MON_LOC_ID, COMPONENT_ID, TEST_MIN", monPlanId, rptPeriodId, ref errorMessage, "weekly_system_integrity_data") && result;
+            result = InitSourceData_GenericTableFunctionDo("noxr_primary_and_primary_bypass_mhv", "BEGIN_DATE, BEGIN_HOUR, MON_LOC_ID, HOUR_ID", monPlanId, rptPeriodId, ref errorMessage, "NoxrPrimaryAndPrimaryBypassMhv") && result;
+            result = InitSourceData_GenericTableFunctionDo("noxr_summary_required_for_lme_annual", "LOCATION_NAME, QUARTER", monPlanId, rptPeriodId, ref errorMessage, "NoxrSummaryRequiredForLmeAnnual") && result;
+            result = InitSourceData_GenericTableFunctionDo("weekly_system_integrity_data", "TEST_DATEHOUR, MON_LOC_ID, COMPONENT_ID, TEST_MIN", monPlanId, rptPeriodId, ref errorMessage, "WeeklySystemIntegrity") && result;
 
             return result;
         }
@@ -3590,7 +3590,7 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool result;
 
-            string sql = string.Format("select * from  camdecmpswks.{0}('{1}', {2}) order by {3}", tableName, monPlanId, rptPeriodId, orderBy);
+            string sql = string.Format("select * from  camdecmpswks.{0}('{1}', {2}) order by {3}", genericName, monPlanId, rptPeriodId, orderBy);
 
             result = AddTable(tableName, sql, ref errorMessage);
 
@@ -4793,28 +4793,28 @@ namespace ECMPS.Checks.EmissionsReport
         {
             string ErrorMsg = "";
 
-            FCalcDailyCal = CloneTable("camdecmpswks", "daily_calibration", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcDailyEmission = CloneTable("camdecmpswks", "daily_emission", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcDailyFuel = CloneTable("camdecmpswks", "daily_fuel", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcDailyTestSummary = CloneTable("camdecmpswks", "daily_test_summary", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcDerivedHrlyValue = CloneTable("camdecmpswks", "derived_hrly_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcHrlyFuelFlow = CloneTable("camdecmpswks", "hrly_fuel_flow", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcHrlyParamFuelFlow = CloneTable("camdecmpswks", "hrly_param_fuel_flow", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcLongTermFuelFlow = CloneTable("camdecmpswks", "long_term_fuel_flow", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcMonitorHrlyValue = CloneTable("camdecmpswks", "monitor_hrly_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FCalcSummaryValue = CloneTable("camdecmpswks", "summary_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            CalcWeeklySystemIntegrity = CloneTable("camdecmpswks", "weekly_system_integrity", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            CalcWeeklyTestSummary = CloneTable("camdecmpswks", "weekly_test_summary", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            FOperatingSuppData = CloneTable("camdecmpswks", "operating_supp_data", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcDailyCal = CloneTable("camdecmpscalc", "daily_calibration", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcDailyEmission = CloneTable("camdecmpscalc", "daily_emission", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcDailyFuel = CloneTable("camdecmpscalc", "daily_fuel", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcDailyTestSummary = CloneTable("camdecmpscalc", "daily_test_summary", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcDerivedHrlyValue = CloneTable("camdecmpscalc", "derived_hrly_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcHrlyFuelFlow = CloneTable("camdecmpscalc", "hrly_fuel_flow", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcHrlyParamFuelFlow = CloneTable("camdecmpscalc", "hrly_param_fuel_flow", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcLongTermFuelFlow = CloneTable("camdecmpscalc", "long_term_fuel_flow", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcMonitorHrlyValue = CloneTable("camdecmpscalc", "monitor_hrly_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FCalcSummaryValue = CloneTable("camdecmpscalc", "summary_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcWeeklySystemIntegrity = CloneTable("camdecmpscalc", "weekly_system_integrity", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcWeeklyTestSummary = CloneTable("camdecmpscalc", "weekly_test_summary", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            FOperatingSuppData = CloneTable("camdecmpscalc", "operating_supp_data", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
 
             // Added MATS 9/29/14
-            CalcMATSDHVData = CloneTable("camdecmpswks", "mats_derived_hrly_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            CalcMATSMHVData = CloneTable("camdecmpswks", "mats_monitor_hrly_Value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcMATSDHVData = CloneTable("camdecmpscalc", "mats_derived_hrly_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcMATSMHVData = CloneTable("camdecmpscalc", "mats_monitor_hrly_Value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
 
             /* Sorbent Trap Related */
-            CalcHrlyGasFlowMeter = CloneTable("camdecmpswks", "hrly_gas_flowMeter", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            CalcSamplingTrain = CloneTable("camdecmpswks", "sampling_train", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            CalcSorbentTrap = CloneTable("camdecmpswks", "sorbent_trap", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcHrlyGasFlowMeter = CloneTable("camdecmpscalc", "hrly_gas_flowMeter", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcSamplingTrain = CloneTable("camdecmpscalc", "sampling_train", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcSorbentTrap = CloneTable("camdecmpscalc", "sorbent_trap", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
         }
 
         #endregion
@@ -4907,7 +4907,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["CALC_ADJUSTED_HRLY_VALUE"] = GetUpdateDecimalValue("CO2C_DHV_Calculated_Adjusted_Value", eDecimalPrecision.ADJUSTED_HRLY_VALUE);
                 CalcRow["CALC_PCT_DILUENT"] = GetUpdateDecimalValue("Calculated_Diluent_for_CO2C", eDecimalPrecision.PCT_DILUENT);
                 CalcRow["CALC_PCT_MOISTURE"] = GetUpdateDecimalValue("Calculated_Moisture_for_CO2C", eDecimalPrecision.PCT_MOISTURE);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcDerivedHrlyValue.Rows.Add(CalcRow);
             }
@@ -4925,7 +4925,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["CALC_ADJUSTED_HRLY_VALUE"] = GetUpdateDecimalValue("CO2_Calculated_Adjusted_Value", eDecimalPrecision.ADJUSTED_HRLY_VALUE);
                 CalcRow["CALC_PCT_DILUENT"] = GetUpdateDecimalValue("Calculated_Diluent_for_CO2", eDecimalPrecision.PCT_DILUENT);
                 CalcRow["CALC_PCT_MOISTURE"] = GetUpdateDecimalValue("Calculated_Moisture_for_CO2", eDecimalPrecision.PCT_MOISTURE);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 CalcRow["CALC_HOUR_MEASURE_CD"] = GetUpdateStringValue("Current_Measure_Code");
 
@@ -4948,7 +4948,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (GetCheckParameter("RATA_Status_Required").ValueAsBool() && RATAStatus != "")
                     CalcRow["CALC_RATA_STATUS"] = RATAStatus;
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcDerivedHrlyValue.Rows.Add(CalcRow);
             }
@@ -4974,7 +4974,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (GetCheckParameter("RATA_Status_Required").ValueAsBool() && RATAStatus != "")
                     CalcRow["CALC_RATA_STATUS"] = RATAStatus;
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcDerivedHrlyValue.Rows.Add(CalcRow);
 
@@ -4993,7 +4993,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["DERV_ID"] = cDBConvert.ToString(CurrentDhvRecord["DERV_ID"]);
                 CalcRow["CALC_ADJUSTED_HRLY_VALUE"] = GetUpdateDecimalValue("NOX_Calculated_Adjusted_Value", eDecimalPrecision.ADJUSTED_HRLY_VALUE);
                 CalcRow["CALC_PCT_MOISTURE"] = GetUpdateDecimalValue("Calculated_Moisture_for_NOX", eDecimalPrecision.PCT_MOISTURE);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 CalcRow["CALC_HOUR_MEASURE_CD"] = GetUpdateStringValue("Current_Measure_Code");
 
@@ -5029,7 +5029,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (APPEStatus != "")
                     CalcRow["CALC_APPE_STATUS"] = APPEStatus;
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcDerivedHrlyValue.Rows.Add(CalcRow);
 
@@ -5048,7 +5048,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["DERV_ID"] = cDBConvert.ToString(CurrentDhvRecord["DERV_ID"]);
                 CalcRow["CALC_ADJUSTED_HRLY_VALUE"] = GetUpdateDecimalValue("SO2_Calculated_Adjusted_Value", eDecimalPrecision.ADJUSTED_HRLY_VALUE);
                 CalcRow["CALC_PCT_MOISTURE"] = GetUpdateDecimalValue("Calculated_Moisture_for_SO2", eDecimalPrecision.PCT_MOISTURE);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 CalcRow["CALC_HOUR_MEASURE_CD"] = GetUpdateStringValue("Current_Measure_Code");
 
@@ -5069,7 +5069,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["CALC_UNADJUSTED_HRLY_VALUE"] = UnadjustedValue;
                 CalcRow["CALC_PCT_DILUENT"] = GetUpdateDecimalValue(DiluentValue, eDecimalPrecision.PCT_DILUENT);
                 CalcRow["CALC_PCT_MOISTURE"] = GetUpdateDecimalValue(MoistureValue, eDecimalPrecision.PCT_MOISTURE);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 CalcMATSDHVData.Rows.Add(CalcRow);
             }
@@ -5086,7 +5086,7 @@ namespace ECMPS.Checks.EmissionsReport
 
                 CalcRow["MATS_DHV_ID"] = MatsDhvId;
                 CalcRow["CALC_UNADJUSTED_HRLY_VALUE"] = UnadjustedValue;
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 CalcMATSDHVData.Rows.Add(CalcRow);
             }
@@ -5103,7 +5103,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["HRLY_GFM_ID"] = emParams.MatsHourlyGfmRecord.HrlyGfmId;
                 CalcRow["CALC_FLOW_TO_SAMPLING_RATIO"] = GetUpdateDecimalValue(emParams.MatsCalcHourlySfsrRatio, eDecimalPrecision.MATS_PERCENT);
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 CalcHrlyGasFlowMeter.Rows.Add(CalcRow);
             }
@@ -5120,7 +5120,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["CALC_PERCENT_BREAKTHROUGH"] = GetUpdateDecimalValue(emParams.MatsCalcTrainPercentBreakthrough, eDecimalPrecision.MATS_PERCENT_BREAKTHROUGH);
                 CalcRow["CALC_PERCENT_SPIKE_RECOVERY"] = GetUpdateDecimalValue(emParams.MatsCalcTrainPercentSpikeRecovery, eDecimalPrecision.MATS_PERCENT);
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 CalcSamplingTrain.Rows.Add(CalcRow);
             }
@@ -5137,7 +5137,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["CALC_MODC_CD"] = DBNull.Value; //TODO: Replace null with check parameter (MatsCalcTrapModc), once it is created and populated.
                 CalcRow["CALC_HG_CONCENTRATION"] = emParams.MatsCalcHgSystemConcentration;
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 CalcSorbentTrap.Rows.Add(CalcRow);
             }
@@ -5182,7 +5182,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (APPDStatus != "")
                     CalcRow["CALC_APPD_STATUS"] = APPDStatus;
 
-            //    CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+            //    CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcHrlyFuelFlow.Rows.Add(CalcRow);
             }
@@ -5200,7 +5200,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["HRLY_FUEL_FLOW_ID"] = cDBConvert.ToString(CurrentOilFuelFlowRecord["HRLY_FUEL_FLOW_ID"]);
                 CalcRow["CALC_VOLUMETRIC_FLOW_RATE"] = GetUpdateDecimalValue("HFF_Calc_Volumetric_Rate", eDecimalPrecision.VOLUMETRIC_FLOW_RATE);
                 CalcRow["CALC_MASS_FLOW_RATE"] = GetUpdateDecimalValue("HFF_Calc_Mass_Oil_Rate", eDecimalPrecision.MASS_FLOW_RATE);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcHrlyFuelFlow.Rows.Add(CalcRow);
             }
@@ -5225,7 +5225,7 @@ namespace ECMPS.Checks.EmissionsReport
                         CalcRow["CALC_APPE_STATUS"] = APPEStatus;
                 }
 
-               // CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+               // CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcHrlyParamFuelFlow.Rows.Add(CalcRow);
             }
@@ -5245,7 +5245,7 @@ namespace ECMPS.Checks.EmissionsReport
 
                 CalcRow["DERV_ID"] = cDBConvert.ToString(CurrentDhvRecord["DERV_ID"]);
                 CalcRow["CALC_ADJUSTED_HRLY_VALUE"] = GetUpdateDecimalValue("CO2M_Calculated_Adjusted_Value", eDecimalPrecision.ADJUSTED_HRLY_VALUE);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                 CalcRow["CALC_HOUR_MEASURE_CD"] = GetUpdateStringValue("Current_Measure_Code");
 
                 FCalcDerivedHrlyValue.Rows.Add(CalcRow);
@@ -5262,7 +5262,7 @@ namespace ECMPS.Checks.EmissionsReport
 
                 CalcRow["DERV_ID"] = cDBConvert.ToString(CurrentDhvRecord["DERV_ID"]);
                 CalcRow["CALC_ADJUSTED_HRLY_VALUE"] = GetUpdateDecimalValue("HIT_Calculated_Adjusted_Value", eDecimalPrecision.ADJUSTED_HRLY_VALUE);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                 CalcRow["CALC_HOUR_MEASURE_CD"] = GetUpdateStringValue("Current_Measure_Code");
 
                 FCalcDerivedHrlyValue.Rows.Add(CalcRow);
@@ -5279,7 +5279,7 @@ namespace ECMPS.Checks.EmissionsReport
 
                 CalcRow["DERV_ID"] = cDBConvert.ToString(CurrentDhvRecord["DERV_ID"]);
                 CalcRow["CALC_ADJUSTED_HRLY_VALUE"] = GetUpdateDecimalValue("NOXM_Calculated_Adjusted_Value", eDecimalPrecision.ADJUSTED_HRLY_VALUE);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                 CalcRow["CALC_HOUR_MEASURE_CD"] = GetUpdateStringValue("Current_Measure_Code");
 
                 FCalcDerivedHrlyValue.Rows.Add(CalcRow);
@@ -5296,7 +5296,7 @@ namespace ECMPS.Checks.EmissionsReport
 
                 CalcRow["DERV_ID"] = cDBConvert.ToString(CurrentDhvRecord["DERV_ID"]);
                 CalcRow["CALC_ADJUSTED_HRLY_VALUE"] = GetUpdateDecimalValue("SO2M_Calculated_Adjusted_Value", eDecimalPrecision.ADJUSTED_HRLY_VALUE);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                 CalcRow["CALC_HOUR_MEASURE_CD"] = GetUpdateStringValue("Current_Measure_Code");
 
                 FCalcDerivedHrlyValue.Rows.Add(CalcRow);
@@ -5317,7 +5317,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["DAILY_EMISSION_ID"] = cDBConvert.ToString(currentCo2MassDailyRecord["DAILY_EMISSION_ID"]);
                 CalcRow["CALC_TOTAL_DAILY_EMISSION"] = GetUpdateDecimalValue("Calc_TDE", eDecimalPrecision.TOTAL_DAILY_EMISSION);
                 CalcRow["CALC_TOTAL_OP_TIME"] = GetUpdateDecimalValue("Daily_Op_Time", eDecimalPrecision.TOTAL_DAILY_OP_TIME);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                 FCalcDailyEmission.Rows.Add(CalcRow);
             }
         }
@@ -5331,7 +5331,7 @@ namespace ECMPS.Checks.EmissionsReport
                 DataRow CalcRow = FCalcDailyFuel.NewRow();
                 CalcRow["DAILY_FUEL_ID"] = cDBConvert.ToString(currentDailyFuelRecord["DAILY_FUEL_ID"]);
                 CalcRow["CALC_FUEL_CARBON_BURNED"] = GetUpdateDecimalValue("Calc_Fuel_Carbon_Burned", eDecimalPrecision.FUEL_CARBON_BURNED);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                 FCalcDailyFuel.Rows.Add(CalcRow);
             }
         }
@@ -5348,7 +5348,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["CALC_UPSCALE_APS_IND"] = GetUpdateIntegerValue("Daily_Cal_Upscale_Injection_Calc_APS_Indicator");
                 CalcRow["CALC_UPSCALE_CAL_ERROR"] = GetUpdateDecimalValue("Daily_Cal_Upscale_Injection_Calc_Result", eDecimalPrecision.UPSCALE_CAL_ERROR);
                 CalcRow["CALC_ZERO_CAL_ERROR"] = GetUpdateDecimalValue("Daily_Cal_Zero_Injection_Calc_Result", eDecimalPrecision.ZERO_CAL_ERROR);
-          //      CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+          //      CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                 FCalcDailyCal.Rows.Add(CalcRow);
 
                 DataRow CalcRow2 = FCalcDailyTestSummary.NewRow();
@@ -5408,7 +5408,7 @@ namespace ECMPS.Checks.EmissionsReport
 
                 CalcRow["LTFF_ID"] = cDBConvert.ToString(LongTermFuelFlowRecord["LTFF_ID"]);
                 CalcRow["CALC_TOTAL_HEAT_INPUT"] = GetUpdateDecimalValue("LME_Gen_LTFF_Heat_Input", eDecimalPrecision.TOTAL_HEAT_INPUT);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcLongTermFuelFlow.Rows.Add(CalcRow);
             }
@@ -5423,7 +5423,7 @@ namespace ECMPS.Checks.EmissionsReport
                     calcRow["WEEKLY_SYS_INTEGRITY_ID"] = emParams.CurrentWeeklySystemIntegrityTest.WeeklySysIntegrityId;
                     calcRow["CALC_APS_IND"] = emParams.CalculatedSystemIntegrityApsIndicator.DbValue();
                     calcRow["CALC_SYSTEM_INTEGRITY_ERROR"] = emParams.CalculatedSystemIntegrityError.DbValue();
-                    calcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                    calcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                 }
                 CalcWeeklySystemIntegrity.Rows.Add(calcRow);
 
@@ -5544,7 +5544,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (DayCalStatus != "")
                     CalcRow["CALC_DAYCAL_STATUS"] = DayCalStatus;
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcMonitorHrlyValue.Rows.Add(CalcRow);
             }
@@ -5560,7 +5560,7 @@ namespace ECMPS.Checks.EmissionsReport
 
                 CalcRow["MONITOR_HRLY_VAL_ID"] = cDBConvert.ToString(CurrentMhvRecord["MONITOR_HRLY_VAL_ID"]);
                 CalcRow["CALC_ADJUSTED_HRLY_VALUE"] = GetUpdateDecimalValue("CO2C_SD_Calculated_Adjusted_Value", eDecimalPrecision.ADJUSTED_HRLY_VALUE);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcMonitorHrlyValue.Rows.Add(CalcRow);
             }
@@ -5597,7 +5597,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (EmManualParameters.LeakStatusResult.Value != null)
                     CalcRow["CALC_LEAK_STATUS"] = EmManualParameters.LeakStatusResult.Value;
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcMonitorHrlyValue.Rows.Add(CalcRow);
             }
@@ -5618,7 +5618,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (RATAStatus != "")
                     CalcRow["CALC_RATA_STATUS"] = RATAStatus;
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcMonitorHrlyValue.Rows.Add(CalcRow);
             }
@@ -5648,7 +5648,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (DayCalStatus != "")
                     CalcRow["CALC_DAYCAL_STATUS"] = DayCalStatus;
 
-              //  CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+              //  CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcMonitorHrlyValue.Rows.Add(CalcRow);
             }
@@ -5664,7 +5664,7 @@ namespace ECMPS.Checks.EmissionsReport
 
                 CalcRow["MONITOR_HRLY_VAL_ID"] = cDBConvert.ToString(CurrentMhvRecord["MONITOR_HRLY_VAL_ID"]);
                 CalcRow["CALC_ADJUSTED_HRLY_VALUE"] = GetUpdateDecimalValue("O2C_SD_Calculated_Adjusted_Value", eDecimalPrecision.ADJUSTED_HRLY_VALUE);
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcMonitorHrlyValue.Rows.Add(CalcRow);
             }
@@ -5689,7 +5689,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (DayCalStatus != "")
                     CalcRow["CALC_DAYCAL_STATUS"] = DayCalStatus;
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcMonitorHrlyValue.Rows.Add(CalcRow);
             }
@@ -5714,7 +5714,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (DayCalStatus != "")
                     CalcRow["CALC_DAYCAL_STATUS"] = DayCalStatus;
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcMonitorHrlyValue.Rows.Add(CalcRow);
             }
@@ -5744,7 +5744,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (DayCalStatus != "")
                     CalcRow["CALC_DAYCAL_STATUS"] = DayCalStatus;
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcMonitorHrlyValue.Rows.Add(CalcRow);
             }
@@ -5765,7 +5765,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["CALC_HG_LINE_STATUS"] = emParams.CurrentLinearityStatus;
                 CalcRow["CALC_HGI1_STATUS"] = emParams.WsiStatus;
                 CalcRow["CALC_RATA_STATUS"] = emParams.CurrentRataStatus;
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 CalcMATSMHVData.Rows.Add(CalcRow);
             }
@@ -5803,7 +5803,7 @@ namespace ECMPS.Checks.EmissionsReport
             CalcRow["OP_TYPE_CD"] = AOperatingTypeCd;
             CalcRow["FUEL_CD"] = AFuelCd;
             CalcRow["OP_VALUE"] = AOpHours;
-          //  CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+          //  CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
             FOperatingSuppData.Rows.Add(CalcRow);
         }
@@ -5860,7 +5860,7 @@ namespace ECMPS.Checks.EmissionsReport
                         CalcRow["OP_VALUE"] = DBNull.Value;
                     }
 
-                    CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                    CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                     FOperatingSuppData.Rows.Add(CalcRow);
                 }
@@ -5899,7 +5899,7 @@ namespace ECMPS.Checks.EmissionsReport
                     CalcRow["OP_VALUE"] = DBNull.Value;
                 }
 
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FOperatingSuppData.Rows.Add(CalcRow);
             }
@@ -5934,7 +5934,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["MON_LOC_ID"] = AMonitorLocationId;
                 CalcRow["OP_TYPE_CD"] = AOperatingTypeCd;
                 CalcRow["OP_VALUE"] = OperatingValue.Value;
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FOperatingSuppData.Rows.Add(CalcRow);
             }
@@ -5962,7 +5962,7 @@ namespace ECMPS.Checks.EmissionsReport
                 CalcRow["MON_LOC_ID"] = AMonitorLocationId;
                 CalcRow["OP_TYPE_CD"] = AOperatingTypeCd;
                 CalcRow["OP_VALUE"] = OperatingValue.Value;
-                CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FOperatingSuppData.Rows.Add(CalcRow);
             }
@@ -6037,7 +6037,7 @@ namespace ECMPS.Checks.EmissionsReport
             CalcRow["CALC_CURRENT_RPT_PERIOD_TOTAL"] = GetUpdateDecimalValue(AReportingPeriodValue, eDecimalPrecision.CURRENT_RPT_PERIOD_TOTAL);
             CalcRow["CALC_YEAR_TOTAL"] = GetUpdateDecimalValue(AAnnualValue, eDecimalPrecision.YEAR_TOTAL);
             CalcRow["CALC_OS_TOTAL"] = GetUpdateDecimalValue(AOSValue, eDecimalPrecision.OS_TOTAL);
-            CalcRow["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+            CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
             FCalcSummaryValue.Rows.Add(CalcRow);
         }
@@ -6387,7 +6387,7 @@ namespace ECMPS.Checks.EmissionsReport
             FMonitorSystem = FilterTableInitDo("MonitorSystem");
             FMonitorSystemSo2 = FilterTableInitDo("MonitorSystemSo2");
             FMonitorSystemComponent = FilterTableInitDo("MonitorSystemComponent");
-            NoxrPrimaryAndPrimaryBypassMhv = FilterTableInitDo("noxr_primary_and_primary_bypass_mhv");
+            NoxrPrimaryAndPrimaryBypassMhv = FilterTableInitDo("NoxrPrimaryAndPrimaryBypassMhv");
             FMPOpStatus = FilterTableInitDo("MPOpStatus");
             FMPProgExempt = FilterTableInitDo("MPProgExempt");
             FOpSuppData = FilterTableInitDo("OpSuppData");
