@@ -30,7 +30,7 @@ namespace ECMPS.Checks.EmissionsReport
         /// </summary>
         /// <param name="parentCategory">The parent category.</param>
         /// <param name="categoryCd">The category code of the category the object will represent.</param>
-        public MatsSorbentTrapAllRowsCategory(cCategory parentCategory, string categoryCd, EmParameters emparams)
+        public MatsSorbentTrapAllRowsCategory(cCategory parentCategory, string categoryCd, ref EmParameters emparams)
       : base(parentCategory, categoryCd)
     {
             emParams = emparams;

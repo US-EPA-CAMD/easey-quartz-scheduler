@@ -65,7 +65,7 @@ namespace ECMPS.Checks.EmissionsReport
                           string valueColumnName,
                           string hourlyTypeCd,
                           string parameterCd,
-                          string moistureBasis, EmParameters emparams,
+                          string moistureBasis, ref EmParameters emparams,
                           List<string>[] locationMonSysIdList = null)
        : base(parentCategory, categoryCd)
         {
@@ -95,7 +95,7 @@ namespace ECMPS.Checks.EmissionsReport
 			SetRecordIdentifier();
 		}
 
-        public cCategoryHourly(cCategory parentCategory, string categoryCd, EmParameters emparams)
+        public cCategoryHourly(cCategory parentCategory, string categoryCd, ref EmParameters emparams)
            : base(parentCategory.Process.CheckEngine, parentCategory.Process, parentCategory, categoryCd)
         {
             EmissionsReportProcess = (cEmissionsReportProcess)parentCategory.Process;
@@ -122,7 +122,7 @@ namespace ECMPS.Checks.EmissionsReport
 			SetRecordIdentifier();
 		}
 
-        public cCategoryHourly(cCategory parentCategory, string categoryCd, string primaryTableName, EmParameters emparams)
+        public cCategoryHourly(cCategory parentCategory, string categoryCd, string primaryTableName, ref EmParameters emparams)
            : base(parentCategory.Process.CheckEngine, parentCategory.Process, parentCategory, categoryCd)
         {
             EmissionsReportProcess = (cEmissionsReportProcess)parentCategory.Process;
@@ -161,7 +161,7 @@ namespace ECMPS.Checks.EmissionsReport
         public cCategoryHourly(string categoryCd,
                            cEmissionsReportProcess emissionsReportProcess,
                            cCategory parentCategory,
-                           string primaryTableName, EmParameters emparams)
+                           string primaryTableName, ref EmParameters emparams)
         : base(emissionsReportProcess.CheckEngine,
                (cProcess)emissionsReportProcess,
                parentCategory,
@@ -214,7 +214,7 @@ namespace ECMPS.Checks.EmissionsReport
 							   string primaryTableName,
 							   string valueColumnName,
 							   string primaryTableParameterName,
-							   EmParameters param)
+							   ref EmParameters param)
 			: base(parentCategory.Process.CheckEngine,
 				   parentCategory.Process,
 				   parentCategory,
@@ -285,7 +285,7 @@ namespace ECMPS.Checks.EmissionsReport
 		}
 
 		public cCategoryHourly(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData,
-							   cCategory AParentCategory, string ACategoryCd,EmParameters emparams)
+							   cCategory AParentCategory, string ACategoryCd, ref EmParameters emparams)
 			: base(ACheckEngine, (cProcess)AHourlyEmissionsData, AParentCategory, ACategoryCd)
 		{
 			EmissionsReportProcess = AHourlyEmissionsData;
@@ -340,7 +340,7 @@ namespace ECMPS.Checks.EmissionsReport
 		}
 
         public cCategoryHourly(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData,
-                           string ACategoryCd, EmParameters emparams)
+                           string ACategoryCd, ref EmParameters emparams)
         : base(ACheckEngine, (cProcess)AHourlyEmissionsData, ACategoryCd)
         {
             EmissionsReportProcess = AHourlyEmissionsData;

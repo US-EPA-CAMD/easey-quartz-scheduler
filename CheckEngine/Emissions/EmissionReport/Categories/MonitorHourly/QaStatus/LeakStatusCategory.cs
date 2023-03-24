@@ -17,11 +17,11 @@ namespace ECMPS.Checks.EmissionsReport
 
         #region Constructors
        
-        public cLeakStatusCategory(cCategoryHourly categoryEmission, EmParameters emparams,string categoryCd = "LKSTAT")
+        public cLeakStatusCategory(cCategoryHourly categoryEmission, ref EmParameters emparams,string categoryCd = "LKSTAT")
           : base(categoryEmission.CheckEngine,
                  categoryEmission.EmissionsReportProcess,
                  categoryEmission,
-                 categoryCd, emparams)
+                 categoryCd, ref emparams)
         {
             
         }

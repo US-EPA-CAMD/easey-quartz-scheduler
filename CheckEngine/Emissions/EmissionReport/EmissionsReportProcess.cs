@@ -1294,18 +1294,18 @@ namespace ECMPS.Checks.EmissionsReport
                     ExecuteCheckWork_SorbentTrap_Review();
 
                     /* NSPS4T Summary, Compliance Period and Annual (Q4) Evaluation */
-                    Nsps4tSummaryDataCategory.ExecuteChecks(FSummaryValueInitializationCategory, MonitorLocationView,emParams);
+                    Nsps4tSummaryDataCategory.ExecuteChecks(FSummaryValueInitializationCategory, MonitorLocationView, ref emParams);
 
                 } // Abort Checks check
 
                 // Populate Supplemental Data Tables for Database Updating
                 SaveOperatingSuppFuelData(RptPeriodId, MonitorLocationView);
                 SamplingTrainSuppDataUpdate();
-                QaCertificationSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.QaCertEventSuppDataDictionaryArray, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
-                SystemOperatingSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.SystemOperatingSuppDataDictionaryArray, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
-                ComponentOperatingSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.ComponentOperatingSuppDataDictionaryArray, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
-                LastQualityAssuredValueSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.LastQualityAssuredValueSuppDataDictionaryArray, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
-                emParams.MostRecentDailyCalibrationTestObject.LoadIntoSupplementalDataTables(CheckEngine.RptPeriodId.Value, CheckEngine.WorkspaceSessionId, CheckEngine.DbDataConnection.SQLConnection);
+                QaCertificationSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.QaCertEventSuppDataDictionaryArray, CheckEngine.ChkSessionId, CheckEngine.DbDataConnection.SQLConnection);
+                SystemOperatingSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.SystemOperatingSuppDataDictionaryArray, CheckEngine.ChkSessionId, CheckEngine.DbDataConnection.SQLConnection);
+                ComponentOperatingSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.ComponentOperatingSuppDataDictionaryArray, CheckEngine.ChkSessionId, CheckEngine.DbDataConnection.SQLConnection);
+                LastQualityAssuredValueSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.LastQualityAssuredValueSuppDataDictionaryArray, CheckEngine.ChkSessionId, CheckEngine.DbDataConnection.SQLConnection);
+                emParams.MostRecentDailyCalibrationTestObject.LoadIntoSupplementalDataTables(CheckEngine.RptPeriodId.Value, CheckEngine.ChkSessionId, CheckEngine.DbDataConnection.SQLConnection);
 
                 FSummaryValueInitializationCategory.EraseParameters();
 
@@ -1359,24 +1359,24 @@ namespace ECMPS.Checks.EmissionsReport
 
             try
             {
-                FSummaryValueInitializationCategory = new cSummaryValueInitializationCategory(mCheckEngine, this, emParams);
+                FSummaryValueInitializationCategory = new cSummaryValueInitializationCategory(mCheckEngine, this, ref emParams);
                 {
                     /* MATS Sorbent Trap categories to check begin and end hours and their ranges and to check for overlap between sorbent traps */
                     {
-                        MatsSorbentTrapHourAndRangeEvalCategory = new MatsSorbentTrapCurrentRowCategory(FSummaryValueInitializationCategory, "STHOURS",emParams);
-                        MatsSorbentTrapOverlapEvalCategory = new MatsSorbentTrapCurrentRowCategory(FSummaryValueInitializationCategory, "STOVERL", emParams);
-                        MatsSorbentTrapInitCategory = new MatsSorbentTrapAllRowsCategory(FSummaryValueInitializationCategory, "STINIT", emParams);
+                        MatsSorbentTrapHourAndRangeEvalCategory = new MatsSorbentTrapCurrentRowCategory(FSummaryValueInitializationCategory, "STHOURS", ref emParams);
+                        MatsSorbentTrapOverlapEvalCategory = new MatsSorbentTrapCurrentRowCategory(FSummaryValueInitializationCategory, "STOVERL", ref emParams);
+                        MatsSorbentTrapInitCategory = new MatsSorbentTrapAllRowsCategory(FSummaryValueInitializationCategory, "STINIT", ref emParams);
                         {
-                            MatsSamplingTrainInitCategory = new MatsSamplingTrainCurrentRowCategory(MatsSorbentTrapInitCategory, "STTRNIN", emParams);
-                            MatsSamplingTrainEvalCategory = new MatsSamplingTrainCurrentRowCategory(MatsSorbentTrapInitCategory, "STTRN", emParams);
-                            MatsSorbentTrapEvalCategory = new MatsSorbentTrapCurrentRowCategory(MatsSorbentTrapInitCategory, "STTRAP", emParams);
+                            MatsSamplingTrainInitCategory = new MatsSamplingTrainCurrentRowCategory(MatsSorbentTrapInitCategory, "STTRNIN", ref emParams);
+                            MatsSamplingTrainEvalCategory = new MatsSamplingTrainCurrentRowCategory(MatsSorbentTrapInitCategory, "STTRN", ref emParams);
+                            MatsSorbentTrapEvalCategory = new MatsSorbentTrapCurrentRowCategory(MatsSorbentTrapInitCategory, "STTRAP", ref emParams);
                         }
-                        MatsSamplingTrainSamplingRatioReviewCategory = new MatsSamplingTrainCurrentRowCategory(FSummaryValueInitializationCategory, "STTRNLH", emParams);
-                        MatsSorbentTrapOperatingDaysReviewCategory = new MatsSorbentTrapCurrentRowCategory(FSummaryValueInitializationCategory, "STLH", emParams);
+                        MatsSamplingTrainSamplingRatioReviewCategory = new MatsSamplingTrainCurrentRowCategory(FSummaryValueInitializationCategory, "STTRNLH", ref emParams);
+                        MatsSorbentTrapOperatingDaysReviewCategory = new MatsSorbentTrapCurrentRowCategory(FSummaryValueInitializationCategory, "STLH", ref emParams);
                     }
                 }
 
-                ComponentAuditCategory = new ComponentAuditCategory(FSummaryValueInitializationCategory, emParams);
+                ComponentAuditCategory = new ComponentAuditCategory(FSummaryValueInitializationCategory, ref emParams);
                 FSummaryValueEvaluationCategory = new cSummaryValueEvaluationCategory(mCheckEngine, this, FSummaryValueInitializationCategory);
 
                 FDailyEmissionsInitializationCategory = new cDailyEmissionsInitializationCategory(mCheckEngine, this, FSummaryValueInitializationCategory);
@@ -1391,46 +1391,46 @@ namespace ECMPS.Checks.EmissionsReport
                 {
                     FHourlyConfigurationEvaluationCategory = new cHourlyConfigurationEvaluationCategory(mCheckEngine, this, FHourlyConfigurationInitializationCategory);
                     {
-                        FOperatingHourCategory = new cOperatingHourCategory(mCheckEngine, this, FHourlyConfigurationInitializationCategory,emParams);
+                        FOperatingHourCategory = new cOperatingHourCategory(mCheckEngine, this, FHourlyConfigurationInitializationCategory, ref emParams);
                         {
                             /* MATS Sorbent Trap GFM category */
                             {
-                                MatsHourlyGasFlowMeterEvalCategory = new MatsHourlyGasFlowMeterCurrentRowCategory(FOperatingHourCategory, "STGFM", emParams);
+                                MatsHourlyGasFlowMeterEvalCategory = new MatsHourlyGasFlowMeterCurrentRowCategory(FOperatingHourCategory, "STGFM", ref emParams);
                             }
                         }
                     }
 
-                    HourlyApportionmentVerificatonCategory = new HourlyApportionmentVerificatonCategory(FHourlyConfigurationEvaluationCategory,emParams);
+                    HourlyApportionmentVerificatonCategory = new HourlyApportionmentVerificatonCategory(FHourlyConfigurationEvaluationCategory, ref emParams);
                 }
 
-                DailyCalibrationCategory = new cDailyCalibrationCategory(mCheckEngine, this, FOperatingHourCategory, emParams);
-                WeeklySystemIntegrityTestCategory = new WeeklySystemIntegrityTestCategory(FOperatingHourCategory, emParams);
-                WeeklySystemIntegrityTestOperatingDatesCategory = new WeeklySystemIntegrityTestOperatingDatesCategory(FOperatingHourCategory, emParams);
+                DailyCalibrationCategory = new cDailyCalibrationCategory(mCheckEngine, this, FOperatingHourCategory, ref emParams);
+                WeeklySystemIntegrityTestCategory = new WeeklySystemIntegrityTestCategory(FOperatingHourCategory, ref emParams);
+                WeeklySystemIntegrityTestOperatingDatesCategory = new WeeklySystemIntegrityTestOperatingDatesCategory(FOperatingHourCategory, ref emParams);
                 FDailyEmissionTestCategory = new cDailyEmissionTestCategory(mCheckEngine, this, FOperatingHourCategory);
 
-                FCo2cCalculationCategory = new cCo2cCalculationCategory(mCheckEngine, this, FOperatingHourCategory, emParams);
+                FCo2cCalculationCategory = new cCo2cCalculationCategory(mCheckEngine, this, FOperatingHourCategory, ref emParams);
                 FCo2cDerivedHourlyCategory = new cCo2cDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 FCo2cMonitorHourlyCategory = new cCo2cMonitorHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 FCo2cOverallHourlyCategory = new cCo2cOverallHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 FCo2cSubDataMonitorHourlyCategory = new cCo2cSubDataMonitorHourlyCategory(mCheckEngine, this, FOperatingHourCategory, FCo2cMonitorHourlyCategory);
-                FCo2mCalculationCategory = new cCo2mCalculationCategory(mCheckEngine, this, FOperatingHourCategory, emParams);
+                FCo2mCalculationCategory = new cCo2mCalculationCategory(mCheckEngine, this, FOperatingHourCategory, ref emParams);
                 FCo2mDerivedHourlyCategory = new cCo2mDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
 
                 FFlowMonitorHourlyCategory = new cFlowMonitorHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 {
-                    DailyInterferenceStatusCategory = new cDailyInterferenceStatusCategory(FFlowMonitorHourlyCategory, emParams);
+                    DailyInterferenceStatusCategory = new cDailyInterferenceStatusCategory(FFlowMonitorHourlyCategory, ref emParams);
                     FlowToLoadStatusCategory = new cFlowToLoadStatusCategory(FFlowMonitorHourlyCategory);
-                    LeakStatusCategory = new cLeakStatusCategory(FFlowMonitorHourlyCategory, emParams);
+                    LeakStatusCategory = new cLeakStatusCategory(FFlowMonitorHourlyCategory, ref emParams);
 
-                    FlowAveragingStatusTestInitCategory = new cFlowAveragingStatusTestInitCategory(FFlowMonitorHourlyCategory, emParams);
+                    FlowAveragingStatusTestInitCategory = new cFlowAveragingStatusTestInitCategory(FFlowMonitorHourlyCategory, ref emParams);
                     {
-                        FlowAveragingDailyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(FlowAveragingStatusTestInitCategory, "FLWAVDC", emParams);
-                        FlowAveragingDailyInterferenceStatusCategory = new cDailyInterferenceStatusCategory(FlowAveragingStatusTestInitCategory, emParams, "FLWAVDI");
-                        FlowAveragingLeakStatusCategory = new cLeakStatusCategory(FlowAveragingStatusTestInitCategory, emParams, "FLWAVLK");
+                        FlowAveragingDailyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(FlowAveragingStatusTestInitCategory, "FLWAVDC", ref emParams);
+                        FlowAveragingDailyInterferenceStatusCategory = new cDailyInterferenceStatusCategory(FlowAveragingStatusTestInitCategory,ref emParams, "FLWAVDI");
+                        FlowAveragingLeakStatusCategory = new cLeakStatusCategory(FlowAveragingStatusTestInitCategory, ref emParams, "FLWAVLK");
                     }
                 }
 
-                FH2oCalculationCategory = new cH2oCalculationCategory(mCheckEngine, this, FOperatingHourCategory, emParams);
+                FH2oCalculationCategory = new cH2oCalculationCategory(mCheckEngine, this, FOperatingHourCategory, ref emParams);
                 FH2oDerivedHourlyCategory = new cH2oDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 FH2oMonitorHourlyCategory = new cH2oMonitorHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 FHiCalculationCategory = new cHiCalculationCategory(mCheckEngine, this, FOperatingHourCategory);
@@ -1452,11 +1452,11 @@ namespace ECMPS.Checks.EmissionsReport
                 FSo2MonitorHourlyCategory = new cSo2MonitorHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
                 FSo2rDerivedHourlyCategory = new cSo2rDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory);
 
-                FLinearityStatusCategorySO2 = new cLinearityStatusCategory(mCheckEngine, this, FSo2MonitorHourlyCategory, "SO2LINE", emParams);
-                FLinearityStatusCategoryCO2 = new cLinearityStatusCategory(mCheckEngine, this, FCo2cMonitorHourlyCategory, "CO2LINE", emParams);
-                FLinearityStatusCategoryNOX = new cLinearityStatusCategory(mCheckEngine, this, FNoxcMonitorHourlyCategory, "NOXLINE", emParams);
-                FLinearityStatusCategoryO2D = new cLinearityStatusCategory(mCheckEngine, this, FO2DryMonitorHourlyCategory, "O2DLINE", emParams);
-                FLinearityStatusCategoryO2W = new cLinearityStatusCategory(mCheckEngine, this, FO2WetMonitorHourlyCategory, "O2WLINE", emParams);
+                FLinearityStatusCategorySO2 = new cLinearityStatusCategory(mCheckEngine, this, FSo2MonitorHourlyCategory, "SO2LINE", ref emParams);
+                FLinearityStatusCategoryCO2 = new cLinearityStatusCategory(mCheckEngine, this, FCo2cMonitorHourlyCategory, "CO2LINE", ref emParams);
+                FLinearityStatusCategoryNOX = new cLinearityStatusCategory(mCheckEngine, this, FNoxcMonitorHourlyCategory, "NOXLINE", ref emParams);
+                FLinearityStatusCategoryO2D = new cLinearityStatusCategory(mCheckEngine, this, FO2DryMonitorHourlyCategory, "O2DLINE", ref emParams);
+                FLinearityStatusCategoryO2W = new cLinearityStatusCategory(mCheckEngine, this, FO2WetMonitorHourlyCategory, "O2WLINE", ref emParams);
                 FRATAStatusCategoryCO2O2 = new cCO2O2RATAStatusCategory(mCheckEngine, this, FHiCalculationCategory, "CO2RATA");
                 FRATAStatusCategoryFlow = new cFlowRATAStatusCategory(mCheckEngine, this, FFlowMonitorHourlyCategory, "FLWRATA");
                 FRATAStatusCategorySO2 = new cSO2RATAStatusCategory(mCheckEngine, this, FSo2MonitorHourlyCategory, "SO2RATA");
@@ -1465,19 +1465,19 @@ namespace ECMPS.Checks.EmissionsReport
                 FRATAStatusCategoryH2O = new cH2ORATAStatusCategory(mCheckEngine, this, FH2oDerivedHourlyCategory, "H2ORATA");
                 FRATAStatusCategoryH2OM = new cH2OMRATAStatusCategory(mCheckEngine, this, FH2oMonitorHourlyCategory, "H2OMRAT");
 
-                FDailyCalibrationStatusCategoryCO2 = new cDailyCalibrationStatusCategory(mCheckEngine, this, FCo2cMonitorHourlyCategory, "CO2DCAL" , emParams);
-                FDailyCalibrationStatusCategoryFlow = new cDailyCalibrationStatusCategory(mCheckEngine, this, FFlowMonitorHourlyCategory, "FLWDCAL", emParams);
-                FDailyCalibrationStatusCategoryNOx = new cDailyCalibrationStatusCategory(mCheckEngine, this, FNoxcMonitorHourlyCategory, "NOXDCAL", emParams);
-                FDailyCalibrationStatusCategoryO2Dry = new cDailyCalibrationStatusCategory(mCheckEngine, this, FO2DryMonitorHourlyCategory, "O2DDCAL", emParams);
-                FDailyCalibrationStatusCategoryO2Wet = new cDailyCalibrationStatusCategory(mCheckEngine, this, FO2WetMonitorHourlyCategory, "O2WDCAL", emParams);
-                FDailyCalibrationStatusCategorySO2 = new cDailyCalibrationStatusCategory(mCheckEngine, this, FSo2MonitorHourlyCategory, "SO2DCAL", emParams);
+                FDailyCalibrationStatusCategoryCO2 = new cDailyCalibrationStatusCategory(mCheckEngine, this, FCo2cMonitorHourlyCategory, "CO2DCAL" , ref emParams);
+                FDailyCalibrationStatusCategoryFlow = new cDailyCalibrationStatusCategory(mCheckEngine, this, FFlowMonitorHourlyCategory, "FLWDCAL", ref emParams);
+                FDailyCalibrationStatusCategoryNOx = new cDailyCalibrationStatusCategory(mCheckEngine, this, FNoxcMonitorHourlyCategory, "NOXDCAL", ref emParams);
+                FDailyCalibrationStatusCategoryO2Dry = new cDailyCalibrationStatusCategory(mCheckEngine, this, FO2DryMonitorHourlyCategory, "O2DDCAL", ref emParams);
+                FDailyCalibrationStatusCategoryO2Wet = new cDailyCalibrationStatusCategory(mCheckEngine, this, FO2WetMonitorHourlyCategory, "O2WDCAL", ref emParams);
+                FDailyCalibrationStatusCategorySO2 = new cDailyCalibrationStatusCategory(mCheckEngine, this, FSo2MonitorHourlyCategory, "SO2DCAL", ref emParams);
 
-                NoxrUnusedPpbMonitorHourlyCategory = new cNoxrUnusedPpbMonitorHourlyCategory(FOperatingHourCategory, emParams);
+                NoxrUnusedPpbMonitorHourlyCategory = new cNoxrUnusedPpbMonitorHourlyCategory(FOperatingHourCategory, ref emParams);
                 {
-                    NoxrUnusedPpbDaileyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBDC", emParams);
-                    NoxrUnusedPpbLinearityStatusCategory = new cLinearityStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBLS", emParams);
-                    NoxrUnusedPpbRataStatusInitCategory = new cNoxrUnusedPpbRataStatusInitCategory(NoxrUnusedPpbMonitorHourlyCategory, emParams);
-                    NoxrUnusedPpbRataStatusCategory = new cRataStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBRS", emParams);
+                    NoxrUnusedPpbDaileyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBDC", ref emParams);
+                    NoxrUnusedPpbLinearityStatusCategory = new cLinearityStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBLS", ref emParams);
+                    NoxrUnusedPpbRataStatusInitCategory = new cNoxrUnusedPpbRataStatusInitCategory(NoxrUnusedPpbMonitorHourlyCategory, ref emParams);
+                    NoxrUnusedPpbRataStatusCategory = new cRataStatusCategory(NoxrUnusedPpbMonitorHourlyCategory, "NXPPBRS", ref emParams);
 
 
                     FFuelFlowInitCategory = new cFuelFlowInit(mCheckEngine, this, FOperatingHourCategory);
@@ -1488,35 +1488,35 @@ namespace ECMPS.Checks.EmissionsReport
 
                     // 9/25/2014 RAB
                     //Derived
-                    MATSMDHGRECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHGRE", "HGRE", emParams);
-                    MATSMDHFRECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHFRE", "HFRE", emParams);
-                    MATSMDHCLRECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHCLRE", "HCLRE", emParams);
-                    MATSMDSO2RECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDSO2RE", "SO2RE", emParams);
-                    MATSMDHGRHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHGRH", "HGRH", emParams);
-                    MATSMDHFRHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHFRH", "HFRH", emParams);
-                    MATSMDHCLRHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHCLRH", "HCLRH", emParams);
-                    MATSMDSO2RHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDSO2RH", "SO2RH", emParams);
+                    MATSMDHGRECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHGRE", "HGRE", ref emParams);
+                    MATSMDHFRECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHFRE", "HFRE", ref emParams);
+                    MATSMDHCLRECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHCLRE", "HCLRE",ref  emParams);
+                    MATSMDSO2RECategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDSO2RE", "SO2RE", ref emParams);
+                    MATSMDHGRHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHGRH", "HGRH", ref emParams);
+                    MATSMDHFRHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHFRH", "HFRH", ref emParams);
+                    MATSMDHCLRHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDHCLRH", "HCLRH", ref emParams);
+                    MATSMDSO2RHCategory = new cMATSDerivedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MDSO2RH", "SO2RH", ref emParams);
 
                     //Monitor
-                    MATSMMHGCCategory = new cMATSMonitorHourlyCategory(FOperatingHourCategory, "MMHGC", "MatsMhvHgcRecordsByHourLocation", "Mats_Mhv_Hgc_Records_By_Hour_Location", "HGC", emParams);
+                    MATSMMHGCCategory = new cMATSMonitorHourlyCategory(FOperatingHourCategory, "MMHGC", "MatsMhvHgcRecordsByHourLocation", "Mats_Mhv_Hgc_Records_By_Hour_Location", "HGC", ref emParams);
                     {
-                        HgRataStatusCategory = new GenericSystemBasedStatusCategory(MATSMMHGCCategory, "HGRATA", "HGC", emParams);
-                        HgLinearityStatusCategory = new cLinearityStatusCategory(MATSMMHGCCategory, "HGLINE", "HGC",emParams);
-                        HgDailyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(MATSMMHGCCategory, "HGDCAL", "HGC", emParams);
-                        HgWsiStatusCategory = new GenericComponentBasedStatusCategory(MATSMMHGCCategory, "HGSI", "HGC", emParams);
+                        HgRataStatusCategory = new GenericSystemBasedStatusCategory(MATSMMHGCCategory, "HGRATA", "HGC", ref emParams);
+                        HgLinearityStatusCategory = new cLinearityStatusCategory(MATSMMHGCCategory, "HGLINE", "HGC",ref emParams);
+                        HgDailyCalibrationStatusCategory = new cDailyCalibrationStatusCategory(MATSMMHGCCategory, "HGDCAL", "HGC", ref emParams);
+                        HgWsiStatusCategory = new GenericComponentBasedStatusCategory(MATSMMHGCCategory, "HGSI", "HGC", ref emParams);
                     }
-                    MATSMMHFCCategory = new cMATSMonitorHourlyCategory(FOperatingHourCategory, "MMHFC", "MatsMhvHfcRecordsByHourLocation", "Mats_Mhv_Hfc_Records_By_Hour_Location", "HFC", emParams);
-                    MATSMMHCLCCategory = new cMATSMonitorHourlyCategory(FOperatingHourCategory, "MMHCLC", "MatsMhvHclcRecordsByHourLocation", "Mats_Mhv_Hclc_Records_By_Hour_Location", "HCLC", emParams);
+                    MATSMMHFCCategory = new cMATSMonitorHourlyCategory(FOperatingHourCategory, "MMHFC", "MatsMhvHfcRecordsByHourLocation", "Mats_Mhv_Hfc_Records_By_Hour_Location", "HFC", ref emParams);
+                    MATSMMHCLCCategory = new cMATSMonitorHourlyCategory(FOperatingHourCategory, "MMHCLC", "MatsMhvHclcRecordsByHourLocation", "Mats_Mhv_Hclc_Records_By_Hour_Location", "HCLC", ref emParams);
 
                     //Calculated
-                    MATSMCHGRECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHGRE", "HGRE", emParams);
-                    MATSMCHFRECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHFRE", "HFRE", emParams);
-                    MATSMCHCLRECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHCLRE", "HCLRE", emParams);
-                    MATSMCSO2RECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCSO2RE", "SO2RE", emParams);
-                    MATSMCHGRHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHGRH", "HGRH", emParams);
-                    MATSMCHFRHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHFRH", "HFRH", emParams);
-                    MATSMCHCLRHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHCLRH", "HCLRH", emParams);
-                    MATSMCSO2RHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCSO2RH", "SO2RH", emParams);
+                    MATSMCHGRECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHGRE", "HGRE", ref emParams);
+                    MATSMCHFRECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHFRE", "HFRE", ref emParams);
+                    MATSMCHCLRECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHCLRE", "HCLRE", ref emParams);
+                    MATSMCSO2RECategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCSO2RE", "SO2RE", ref emParams);
+                    MATSMCHGRHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHGRH", "HGRH", ref emParams);
+                    MATSMCHFRHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHFRH", "HFRH", ref emParams);
+                    MATSMCHCLRHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCHCLRH", "HCLRH", ref emParams);
+                    MATSMCSO2RHCategory = new cMATSCalculatedHourlyCategory(mCheckEngine, this, FOperatingHourCategory, "MCSO2RH", "SO2RH", ref emParams);
 
                     Result = true;
                 }
@@ -1776,7 +1776,7 @@ namespace ECMPS.Checks.EmissionsReport
 
             try
             {
-                DailyCalibrationData = new cDailyCalibrationData(DailyCalibrationCategory.SeverityCd, emParams);
+                DailyCalibrationData = new cDailyCalibrationData(DailyCalibrationCategory.SeverityCd, ref emParams);
 
                 emParams.DailyCalibrationSuppDataExists = DailyCalibrationData.InitializeFromPreviousQuarter(CheckEngine.MonPlanId, CheckEngine.RptPeriodId.Value, CheckEngine.DbAuxConnection.SQLConnection, ref errorMessage);
 
@@ -4513,67 +4513,39 @@ namespace ECMPS.Checks.EmissionsReport
             try
             {
                 Checks[0] = InstantiateChecks("cHourlyOperatingDataChecks", checksDllPath);
-                Checks[0].emParams = emParams;
                 Checks[1] = InstantiateChecks("cHourlyAppendixDChecks", checksDllPath);
-                Checks[1].emParams = emParams;
                 Checks[2] = InstantiateChecks("cHourlyDerivedValueChecks", checksDllPath);
-                Checks[2].emParams = emParams;
                 Checks[3] = InstantiateChecks("cHourlyMonitorValueChecks", checksDllPath);
-                Checks[3].emParams = emParams;
                 Checks[4] = null; // Removed checks which are not longer used. InstantiateChecks("cHourlyInclusiveDataChecks", checksDllPath);
                 Checks[5] = InstantiateChecks("cHourlyCalculatedDataChecks", checksDllPath);
-                Checks[5].emParams = emParams;
                 Checks[37] = InstantiateChecks("cHourlyAggregationChecks", checksDllPath);
-                Checks[37].emParams = emParams;
                 Checks[38] = InstantiateChecks("cHourlyApportionmentChecks", checksDllPath);
-                Checks[38].emParams = emParams;
                 Checks[39] = InstantiateChecks("cHourlyAppendixEChecks", checksDllPath);
-                Checks[39].emParams = emParams; 
                 Checks[40] = InstantiateChecks("cHourlyGeneralChecks", checksDllPath);
-                Checks[40].emParams = emParams;
                 Checks[42] = InstantiateChecks("cDailyEmissionChecks", checksDllPath);
                 Checks[43] = InstantiateChecks("cDailyCalibrationChecks", checksDllPath);
-                Checks[43].emParams = emParams;
                 Checks[44] = InstantiateChecks("cDailyEmissionTestChecks", checksDllPath);
                 Checks[46] = InstantiateChecks("cLinearityStatusChecks", checksDllPath);
-                Checks[46].emParams = emParams;
                 Checks[47] = InstantiateChecks("cAppendixDEStatusChecks", checksDllPath);
                 Checks[49] = InstantiateChecks("cRATAStatusChecks", checksDllPath);
-                Checks[49].emParams = emParams;
                 Checks[51] = InstantiateChecks("cDailyCalibrationStatusChecks", checksDllPath);
-                Checks[51].emParams = emParams;
                 Checks[55] = InstantiateChecks("cFlowToLoadStatusChecks", checksDllPath);
-                Checks[55].emParams = emParams;
                 Checks[56] = InstantiateChecks("cDailyInterferenceStatusChecks", checksDllPath);
-                Checks[56].emParams = emParams;
                 Checks[57] = InstantiateChecks("cLeakStatusChecks", checksDllPath);
-                Checks[57].emParams = emParams;
                 Checks[60] = InstantiateChecks("cMATSOperatingHourChecks", checksDllPath);
-                Checks[60].emParams = emParams;
                 Checks[61] = InstantiateChecks("cMATSMonitorHourlyValueChecks", checksDllPath);
-                Checks[61].emParams = emParams;
                 Checks[62] = InstantiateChecks("cMATSCalculatedHourlyValueChecks", checksDllPath);
-                Checks[62].emParams = emParams;
                 Checks[63] = InstantiateChecks("cMATSDerivedHourlyValueChecks", checksDllPath);
-                Checks[63].emParams = emParams;
                 Checks[64] = InstantiateChecks("cMATSSorbentTrapChecks", checksDllPath);
-                Checks[64].emParams = emParams;
                 Checks[65] = InstantiateChecks("cMATSSamplingTrainChecks", checksDllPath);
-                Checks[65].emParams = emParams;
                 Checks[66] = InstantiateChecks("cMATSHourlyGFMChecks", checksDllPath);
-                Checks[66].emParams = emParams;
                 Checks[67] = InstantiateChecks("WeeklyTestSummaryChecks", checksDllPath);
-                Checks[67].emParams = emParams;
                 Checks[68] = InstantiateChecks("WeeklySystemIntegrityChecks", checksDllPath);
-                Checks[68].emParams = emParams;
                 Checks[69] = InstantiateChecks("WeeklySystemIntegrityStatusChecks", checksDllPath);
-                Checks[69].emParams = emParams;
                 Checks[70] = InstantiateChecks("Nsps4tChecks", checksDllPath);
-                Checks[70].emParams = emParams;
                 Checks[71] = InstantiateChecks("EmissionAuditChecks", checksDllPath);
-                Checks[71].emParams = emParams;
                 Checks[45] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "LME.dll", "ECMPS.Checks.LMEChecks.cLMEChecks").Unwrap();
-                Checks[45].emParams = emParams;
+                Checks[45].setEmParamsForCheck(ref emParams);
                 result = true;
             }
             catch (Exception ex)
@@ -4707,7 +4679,7 @@ namespace ECMPS.Checks.EmissionsReport
                         DbWsConnection.BulkLoad(LastQualityAssuredValueSupplementalData.SupplementalDataUpdateDataTable, LastQualityAssuredValueSupplementalData.SupplementalDataUpdateTablePath, ref errorMessage) &&
                         DbWsConnection.BulkLoad(cDailyCalibrationData.SupplementalDataUpdateLocationDataTable, cDailyCalibrationData.SupplementalDataUpdateLocationTablePath, ref errorMessage) &&
                         DbWsConnection.BulkLoad(cDailyCalibrationData.SupplementalDataUpdateSystemDataTable, cDailyCalibrationData.SupplementalDataUpdateSystemTablePath, ref errorMessage) &&
-                        cLastDailyInterferenceCheck.SaveSupplementalData(LatesDailyInterferenceCheckObject, CheckEngine.RptPeriodId.Value, CheckEngine.WorkspaceSessionId, DbWsConnection, ref errorMessage)
+                        cLastDailyInterferenceCheck.SaveSupplementalData(LatesDailyInterferenceCheckObject, CheckEngine.RptPeriodId.Value, CheckEngine.ChkSessionId, DbWsConnection, ref errorMessage)
                    )
                     result = true;
                 else
@@ -4809,10 +4781,10 @@ namespace ECMPS.Checks.EmissionsReport
 
             // Added MATS 9/29/14
             CalcMATSDHVData = CloneTable("camdecmpscalc", "mats_derived_hrly_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
-            CalcMATSMHVData = CloneTable("camdecmpscalc", "mats_monitor_hrly_Value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcMATSMHVData = CloneTable("camdecmpscalc", "mats_monitor_hrly_value", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
 
             /* Sorbent Trap Related */
-            CalcHrlyGasFlowMeter = CloneTable("camdecmpscalc", "hrly_gas_flowMeter", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
+            CalcHrlyGasFlowMeter = CloneTable("camdecmpscalc", "hrly_gas_flow_meter", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
             CalcSamplingTrain = CloneTable("camdecmpscalc", "sampling_train", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
             CalcSorbentTrap = CloneTable("camdecmpscalc", "sorbent_trap", mCheckEngine.DbDataConnection.SQLConnection, ref ErrorMsg);
         }
@@ -6618,7 +6590,7 @@ namespace ECMPS.Checks.EmissionsReport
                                                                     true, 0, null,
                                                                     constructorArgements,
                                                                     null, null).Unwrap();
-            result.emParams = emParams;
+            result.setEmParamsForCheck(ref emParams);
             return result;
         }
 

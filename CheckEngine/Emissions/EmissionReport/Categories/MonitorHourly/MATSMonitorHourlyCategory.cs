@@ -24,12 +24,12 @@ namespace ECMPS.Checks.EmissionsReport
                                       string categoryCd,
                                       string primaryTableName,
                                       string primaryCheckParameterName,
-                                      string parameterCd,EmParameters emparams)
+                                      string parameterCd, ref EmParameters emparams)
       : base(categoryCd,
              parentCategory,
              primaryTableName,
              "", // valueColumnName is only need for MODC Data Borders object which is not used for MATS.
-             primaryCheckParameterName,emparams)
+             primaryCheckParameterName, ref emparams)
     {
       ParameterCd = parameterCd;
       emParams =   emparams;

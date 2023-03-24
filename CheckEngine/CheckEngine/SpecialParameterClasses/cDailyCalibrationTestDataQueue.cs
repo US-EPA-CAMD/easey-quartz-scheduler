@@ -23,7 +23,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <summary>
         /// The constructor for an object of cDailyCalibrationTestDataQueue.
         /// </summary>
-        public cDailyCalibrationTestDataQueue(EmParameters param)
+        public cDailyCalibrationTestDataQueue(ref EmParameters param)
         {
             emParameters = param;
             TestDataQueue = new cDailyCalibrationTestData[] { null, null };
@@ -103,10 +103,10 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="SupplementalDataUpdateSystemDataTable"></param>
         /// <param name="rptPeriodId"></param>
         /// <param name="workspaceSessionId"></param>
-        public void LoadIntoSupplementalDataTables(DataTable SupplementalDataUpdateLocationDataTable, DataTable SupplementalDataUpdateSystemDataTable, int rptPeriodId, decimal workspaceSessionId)
+        public void LoadIntoSupplementalDataTables(DataTable SupplementalDataUpdateLocationDataTable, DataTable SupplementalDataUpdateSystemDataTable, int rptPeriodId, string checkSessionId)
         {
             if (TestDataQueue[0] != null)
-                TestDataQueue[0].LoadIntoSupplementalDataTables(SupplementalDataUpdateLocationDataTable, SupplementalDataUpdateSystemDataTable, rptPeriodId, workspaceSessionId);
+                TestDataQueue[0].LoadIntoSupplementalDataTables(SupplementalDataUpdateLocationDataTable, SupplementalDataUpdateSystemDataTable, rptPeriodId, checkSessionId);
         }
 
         #endregion

@@ -36,8 +36,8 @@ namespace ECMPS.Checks.EmissionsReport
     /// <param name="parentCategory">The parent category of the new category.</param>
     /// <param name="categoryCd">The category code of the new category.</param>
     /// <param name="parameterCd">The parameter code of the associated monitor or derived hourly data.</param>
-    public GenericSystemBasedStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd, EmParameters emparams)
-      : base(parentCategory, categoryCd, emparams)
+    public GenericSystemBasedStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd, ref EmParameters emparams)
+      : base(parentCategory, categoryCd, ref emparams)
     {
       ParameterCd = parameterCd;
       

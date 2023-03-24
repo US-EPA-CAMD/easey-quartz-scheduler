@@ -19,8 +19,8 @@ namespace ECMPS.Checks.EmissionsReport
         #region Constructors
         
 
-        public cSummaryValueInitializationCategory(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData, EmParameters emparams)
-          : base(ACheckEngine, (cEmissionsReportProcess)AHourlyEmissionsData, "SUMINIT", emparams)
+        public cSummaryValueInitializationCategory(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData, ref EmParameters emparams)
+          : base(ACheckEngine, (cEmissionsReportProcess)AHourlyEmissionsData, "SUMINIT", ref emparams)
         {
             
         }

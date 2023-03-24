@@ -317,24 +317,19 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         #region Static Properties
 
         /// <summary>
-        /// Contains the name of the update database for the supplemental data.
-        /// </summary>
-        public static string SupplementalDataUpdateDatabaseName { get { return "ECMPS_WS"; } }
-
-        /// <summary>
         /// Contains the name of the update schema for the supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateSchemaName { get { return "Supp"; } }
+        public static string SupplementalDataUpdateSchemaName { get { return "camdecmpscalc"; } }
 
         /// <summary>
         /// Contains the name of the update table for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateTableName { get { return "CE_DailyTestSuppData"; } }
+        public static string SupplementalDataUpdateTableName { get { return "daily_test_supp_data"; } }
 
         /// <summary>
         /// Contains the name of the update table for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateTablePath { get { return SupplementalDataUpdateDatabaseName + "." + SupplementalDataUpdateSchemaName + "." + SupplementalDataUpdateTableName; } }
+        public static string SupplementalDataUpdateTablePath { get { return SupplementalDataUpdateSchemaName + "." + SupplementalDataUpdateTableName; } }
 
 
         /// <summary>
@@ -346,10 +341,10 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="ecmpsWsDatabase">The object for the ECMPS_WS database.</param>
         /// <param name="errorMessage">The error message returned if the bulk load fails.</param>
         /// <returns>Returns true if the bulk load is successful.</returns>
-        public static bool SaveSupplementalData(cLastDailyInterferenceCheck lastDailyInterferenceCheckList, int rptPeriodId, decimal workspaceSessionId, cDatabase ecmpsWsDatabase,
+        public static bool SaveSupplementalData(cLastDailyInterferenceCheck lastDailyInterferenceCheckList, int rptPeriodId, string workspaceSessionId, cDatabase ecmpsWsDatabase,
                                                 ref string errorMessage)
         {
-            DataTable supplementalDataUpdateTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateDatabaseName, SupplementalDataUpdateSchemaName, SupplementalDataUpdateTableName, ecmpsWsDatabase.SQLConnection);
+            DataTable supplementalDataUpdateTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateTableName, ecmpsWsDatabase.SQLConnection);
 
             if (supplementalDataUpdateTable != null)
             {
