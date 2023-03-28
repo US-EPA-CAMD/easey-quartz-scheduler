@@ -2099,7 +2099,7 @@ namespace ECMPS.Checks.DatabaseAccess
             bool Result;
 
             this.CreateTextCommand(
-                "CALL camdecmpswks.upd_session_calculated_em(@V_SESSION_ID, @V_CURRENT_USERID, @V_RESULT, @V_ERROR_MSG)",
+                "CALL camdecmpswks.upd_session_calculated_em(@V_SESSION_ID, @V_MON_PLAN_ID, @V_RPT_PERIOD_ID, @V_CURRENT_USERID, @V_RESULT, @V_ERROR_MSG)",
                 sqlTransaction
             );
 
@@ -2107,8 +2107,8 @@ namespace ECMPS.Checks.DatabaseAccess
             this.AddInputParameter("@V_MON_PLAN_ID", sMonPlanId);
             this.AddInputParameter("@V_RPT_PERIOD_ID", iRptPeriodId);
             this.AddInputParameter("@V_CURRENT_USERID", sUserId);
-            this.AddOutputParameterString("@V_RESULT", 1);
-            this.AddOutputParameterString("@V_ERROR_MSG", 200);
+            this.AddInputOutputParameterString("@V_RESULT", 1, "T");
+            this.AddInputOutputParameterString("@V_ERROR_MSG", 200, string.Empty);
 
             try
             {
