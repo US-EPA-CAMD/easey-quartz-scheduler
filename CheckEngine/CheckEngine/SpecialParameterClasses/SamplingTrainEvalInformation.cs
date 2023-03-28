@@ -41,12 +41,12 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <summary>
         /// Contains the name of the update catalog (database) for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateCatalogName { get { return "ECMPS_WS"; } }
+        public static string SupplementalDataUpdateCatalogName { get { return "camdecmpscalc"; } }
 
         /// <summary>
         /// Contains the name of the update table for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateTableName { get { return "CE_SamplingTrainSuppData"; } }
+        public static string SupplementalDataUpdateTableName { get { return "sampling_train_supp_data"; } }
 
 
         /// <summary>
@@ -129,14 +129,14 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// Exception will occur if the data table object is null or the columns do not exist
         /// in the table.
         /// </summary>
-        /// <param name="workspaceSessionId">The id of the workspace session for the evaluations.</param>
-        public void LoadSupplementalDataUpdateRow(decimal workspaceSessionId)
+        /// <param name="checkSessionId">The id of the workspace session for the evaluations.</param>
+        public void LoadSupplementalDataUpdateRow(string checkSessionId)
         {
             if ((SupplementalDataUpdateDataTable != null) && !IsSupplementalData)
             {
                 DataRow dataRow = SupplementalDataUpdateDataTable.NewRow();
 
-                dataRow["SESSION_ID"] = workspaceSessionId;
+                dataRow["CHK_SESSION_ID"] = checkSessionId;
                 dataRow["TRAP_TRAIN_ID"] = TrapTrainId;
                 dataRow["SFSR_TOTAL_COUNT"] = TotalSFSRRatioCount;
                 dataRow["SFSR_DEVIATED_COUNT"] = DeviatedSFSRRatioCount;

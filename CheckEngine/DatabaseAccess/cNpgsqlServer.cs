@@ -1865,10 +1865,12 @@ namespace ECMPS.Checks.DatabaseAccess
         {
             bool result;
 
+            List<string> excludeColumns = new List<string>();
+            excludeColumns.Add("pk");
+
             result = BulkLoad(sourceTable,
                               targetTableName,
-                              (List<string>)null,
-                              null,
+                              excludeColumns,
                               ref errorMessage);
 
             return result;
@@ -1940,19 +1942,19 @@ namespace ECMPS.Checks.DatabaseAccess
         {
             bool bSuccessful = false;
 
-            if (sqlTransaction == null)
-                this.CreateStoredProcedureCommand("CLEAR_UPDATE_SESSION");
-            else
-                this.CreateStoredProcedureCommand("CLEAR_UPDATE_SESSION", sqlTransaction);
+            this.CreateTextCommand(
+                "CALL camdecmpscalc.CLEAR_UPDATE_SESSION(par_V_TYPE, par_V_SESSION_ID, par_V_RESULT, par_V_ERROR_MSG)",
+                sqlTransaction
+            );
 
-            this.AddInputParameter("@V_TYPE", eType.ToCode());
-            this.AddInputParameter("@V_SESSION_ID", chkSessionId);
-            this.AddOutputParameterString("@V_RESULT", 1);
-            this.AddOutputParameterString("@V_ERROR_MSG", 200);
+            this.AddInputParameter("par_V_TYPE", eType.ToCode());
+            this.AddInputParameter("par_V_SESSION_ID", chkSessionId);
+            this.AddOutputParameterString("par_V_RESULT", 1);
+            this.AddOutputParameterString("par_V_ERROR_MSG", 200);
 
             this.ExecuteNonQuery();
-            if (this.GetParameterString("@V_RESULT") != "T")
-                m_sLastError = this.GetParameterString("@V_ERROR_MSG");
+            if (this.GetParameterString("par_V_RESULT") != "T")
+                m_sLastError = this.GetParameterString("par_V_ERROR_MSG");
             else
                 bSuccessful = true;
 
@@ -2096,7 +2098,11 @@ namespace ECMPS.Checks.DatabaseAccess
         {
             bool Result;
 
-            this.CreateStoredProcedureCommand("UPD_SESSION_CALCULATED_EM", sqlTransaction);
+            this.CreateTextCommand(
+                "CALL camdecmpswks.upd_session_calculated_em(@V_SESSION_ID, @V_CURRENT_USERID, @V_RESULT, @V_ERROR_MSG)",
+                sqlTransaction
+            );
+
             this.AddInputParameter("@V_SESSION_ID", chkSessionId);
             this.AddInputParameter("@V_MON_PLAN_ID", sMonPlanId);
             this.AddInputParameter("@V_RPT_PERIOD_ID", iRptPeriodId);

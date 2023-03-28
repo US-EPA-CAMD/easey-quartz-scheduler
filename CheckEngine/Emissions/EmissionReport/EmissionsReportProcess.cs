@@ -4642,36 +4642,36 @@ namespace ECMPS.Checks.EmissionsReport
         {
             bool result;
 
-            if (mCheckEngine.DbWsConnection.ClearUpdateSession(eWorkspaceDataType.EM, mCheckEngine.ChkSessionId))
-            {
+            //if (mCheckEngine.DbWsConnection.ClearUpdateSession(eWorkspaceDataType.EM, mCheckEngine.ChkSessionId))
+            //{
                 if (
-                        DbWsConnection.BulkLoad(FCalcDailyCal, "daily_calibration", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcDailyTestSummary, "daily_test_summary", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcDerivedHrlyValue, "derived_hrly_value", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcMonitorHrlyValue, "monitor_hrly_value", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcHrlyFuelFlow, "hrly_fuel_flow", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcHrlyParamFuelFlow, "hrly_param_fuel_flow", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcLongTermFuelFlow, "long_term_fuel_flow", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcDailyEmission, "daily_emission", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(FCalcDailyFuel, "daily_fuel", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcDailyCal, "camdecmpscalc.daily_calibration", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcDailyTestSummary, "camdecmpscalc.daily_test_summary", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcDerivedHrlyValue, "camdecmpscalc.derived_hrly_value", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcMonitorHrlyValue, "camdecmpscalc.monitor_hrly_value", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcHrlyFuelFlow, "camdecmpscalc.hrly_fuel_flow", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcHrlyParamFuelFlow, "camdecmpscalc.hrly_param_fuel_flow", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcLongTermFuelFlow, "camdecmpscalc.long_term_fuel_flow", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcDailyEmission, "camdecmpscalc.daily_emission", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcDailyFuel, "camdecmpscalc.daily_fuel", ref errorMessage) &&
                         
                         // TODO: [JW] WE DO NOT HAVE THIS TABLE
                         //DbWsConnection.BulkLoad(FOperatingSuppData, "op_supp_data", ref errorMessage) &&
                         
-                        DbWsConnection.BulkLoad(FCalcSummaryValue, "summary_value", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(CalcMATSDHVData, "mats_derived_hrly_value", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(CalcMATSMHVData, "mats_monitor_hrly_value", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FCalcSummaryValue, "camdecmpscalc.summary_value", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcMATSDHVData, "camdecmpscalc.mats_derived_hrly_value", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcMATSMHVData, "camdecmpscalc.mats_monitor_hrly_value", ref errorMessage) &&
                         /* Sorbent Trap Related */
-                        DbWsConnection.BulkLoad(CalcHrlyGasFlowMeter, "hrly_gas_flow_meter", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(CalcSamplingTrain, "sampling_train", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(CalcSorbentTrap, "sorbent_trap", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcHrlyGasFlowMeter, "camdecmpscalc.hrly_gas_flow_meter", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcSamplingTrain, "camdecmpscalc.sampling_train", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcSorbentTrap, "camdecmpscalc.sorbent_trap", ref errorMessage) &&
                         /* Sampling Train Supplemental Data*/
                         DbWsConnection.BulkLoad(SamplingTrainEvalInformation.SupplementalDataUpdateDataTable,
                                                 SamplingTrainEvalInformation.SupplementalDataUpdateTableName,
                                                 ref errorMessage) &&
                         /* Weekly Emission Tests */
-                        DbWsConnection.BulkLoad(CalcWeeklyTestSummary, "weekly_test_summary", ref errorMessage) &&
-                        DbWsConnection.BulkLoad(CalcWeeklySystemIntegrity, "weekly_system_integrity", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcWeeklyTestSummary, "camdecmpscalc.weekly_test_summary", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(CalcWeeklySystemIntegrity, "camdecmpscalc.weekly_system_integrity", ref errorMessage) &&
                         /* Supplemental Data*/
                         DbWsConnection.BulkLoad(QaCertificationSupplementalData.SupplementalDataUpdateDataTable, QaCertificationSupplementalData.SupplementalDataUpdateTablePath, ref errorMessage) &&
                         DbWsConnection.BulkLoad(SystemOperatingSupplementalData.SupplementalDataUpdateDataTable, SystemOperatingSupplementalData.SupplementalDataUpdateTablePath, ref errorMessage) &&
@@ -4684,12 +4684,12 @@ namespace ECMPS.Checks.EmissionsReport
                     result = true;
                 else
                     result = false;
-            }
-            else
-            {
-                errorMessage = mCheckEngine.DbWsConnection.LastError;
-                result = false;
-            }
+            //}
+            //else
+            //{
+                //errorMessage = mCheckEngine.DbWsConnection.LastError;
+                //result = false;
+            //}
 
             return result;
         }
@@ -5154,7 +5154,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (APPDStatus != "")
                     CalcRow["CALC_APPD_STATUS"] = APPDStatus;
 
-            //    CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcHrlyFuelFlow.Rows.Add(CalcRow);
             }
@@ -5197,7 +5197,7 @@ namespace ECMPS.Checks.EmissionsReport
                         CalcRow["CALC_APPE_STATUS"] = APPEStatus;
                 }
 
-               // CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
+               CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcHrlyParamFuelFlow.Rows.Add(CalcRow);
             }
@@ -5231,6 +5231,7 @@ namespace ECMPS.Checks.EmissionsReport
             if (CurrentDhvRecord != null)
             {
                 DataRow CalcRow = FCalcDerivedHrlyValue.NewRow();
+
 
                 CalcRow["DERV_ID"] = cDBConvert.ToString(CurrentDhvRecord["DERV_ID"]);
                 CalcRow["CALC_ADJUSTED_HRLY_VALUE"] = GetUpdateDecimalValue("HIT_Calculated_Adjusted_Value", eDecimalPrecision.ADJUSTED_HRLY_VALUE);
@@ -5314,6 +5315,7 @@ namespace ECMPS.Checks.EmissionsReport
             if (CurrentDayCalTest != null)
             {
                 DataRow CalcRow = FCalcDailyCal.NewRow();
+                CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                 CalcRow["CAL_INJ_ID"] = cDBConvert.ToString(CurrentDayCalTest["CAL_INJ_ID"]);
                 CalcRow["CALC_ONLINE_OFFLINE_IND"] = GetUpdateIntegerValue("Daily_Cal_Calc_Online_Ind");
                 CalcRow["CALC_ZERO_APS_IND"] = GetUpdateIntegerValue("Daily_Cal_Zero_Injection_Calc_APS_Indicator");
@@ -5345,7 +5347,7 @@ namespace ECMPS.Checks.EmissionsReport
                 else
                     CalcRow2["CALC_TEST_RESULT_CD"] = CalcTestResCdParameter;
 
-            //    CalcRow2["SESSION_ID"] = mCheckEngine.WorkspaceSessionId;
+                CalcRow2["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                 FCalcDailyTestSummary.Rows.Add(CalcRow2);
 
                 DailyCalibrationCategory.SetCheckParameter("Daily_Cal_Calc_Result", CalcRow2["CALC_TEST_RESULT_CD"].AsString(), eParameterDataType.String);
@@ -5363,7 +5365,7 @@ namespace ECMPS.Checks.EmissionsReport
                     calcDailyTestSummaryRow = FCalcDailyTestSummary.NewRow();
                     calcDailyTestSummaryRow["DAILY_TEST_SUM_ID"] = currentDailyEmissionTest["DAILY_TEST_SUM_ID"];
                     calcDailyTestSummaryRow["CALC_TEST_RESULT_CD"] = NormalizedDailyTestResult("EM_Test_Calc_Result").DbValue();
-                    calcDailyTestSummaryRow["SESSION_ID"] = CheckEngine.WorkspaceSessionId;
+                    calcDailyTestSummaryRow["CHK_SESSION_ID"] = CheckEngine.ChkSessionId;
                 }
 
                 FCalcDailyTestSummary.Rows.Add(calcDailyTestSummaryRow);
@@ -5413,7 +5415,7 @@ namespace ECMPS.Checks.EmissionsReport
                 {
                     row["WEEKLY_TEST_SUM_ID"] = emParams.CurrentWeeklyTestSummary.WeeklyTestSumId;
                     row["CALC_TEST_RESULT_CD"] = emParams.CalculatedWeeklyTestSummaryResult.DbValue();
-                    row["SESSION_ID"] = CheckEngine.WorkspaceSessionId;
+                    row["CHK_SESSION_ID"] = CheckEngine.ChkSessionId;
                 }
                 CalcWeeklyTestSummary.Rows.Add(row);
             }
@@ -5620,7 +5622,7 @@ namespace ECMPS.Checks.EmissionsReport
                 if (DayCalStatus != "")
                     CalcRow["CALC_DAYCAL_STATUS"] = DayCalStatus;
 
-              //  CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
+                 CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
                 FCalcMonitorHrlyValue.Rows.Add(CalcRow);
             }
@@ -5775,7 +5777,7 @@ namespace ECMPS.Checks.EmissionsReport
             CalcRow["OP_TYPE_CD"] = AOperatingTypeCd;
             CalcRow["FUEL_CD"] = AFuelCd;
             CalcRow["OP_VALUE"] = AOpHours;
-          //  CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
+            CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
 
             FOperatingSuppData.Rows.Add(CalcRow);
         }
@@ -6030,7 +6032,7 @@ namespace ECMPS.Checks.EmissionsReport
 
             foreach (SamplingTrainEvalInformation samplingTrainEvalInformation in emParams.MatsSamplingTrainDictionary.Values)
             {
-                samplingTrainEvalInformation.LoadSupplementalDataUpdateRow(CheckEngine.WorkspaceSessionId);
+                samplingTrainEvalInformation.LoadSupplementalDataUpdateRow(CheckEngine.ChkSessionId);
             }
         }
 
