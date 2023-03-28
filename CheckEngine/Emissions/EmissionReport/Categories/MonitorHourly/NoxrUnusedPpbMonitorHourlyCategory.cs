@@ -25,12 +25,12 @@ namespace ECMPS.Checks.EmissionsReport
 
         #region Constructors
 
-        public cNoxrUnusedPpbMonitorHourlyCategory(cOperatingHourCategory parentCategory, EmParameters param)
+        public cNoxrUnusedPpbMonitorHourlyCategory(cOperatingHourCategory parentCategory, ref EmParameters param)
         : base("NXPPBMH",
                parentCategory,
                "NoxrPrimaryAndPrimaryBypassMhv",
                "", // valueColumnName is only need for MODC Data Borders object which is not used for this category.
-               "NOXR_Primary_Or_Primary_Bypass_MHV_Records", param)
+               "NOXR_Primary_Or_Primary_Bypass_MHV_Records", ref param)
         {
         }
 

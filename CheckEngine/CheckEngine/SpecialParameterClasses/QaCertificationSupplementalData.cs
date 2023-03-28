@@ -295,34 +295,30 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// </summary>
         public static DataTable SupplementalDataUpdateDataTable { get; set; }
 
-        /// <summary>
-        /// Contains the name of the update database for the supplemental data.
-        /// </summary>
-        public static string SupplementalDataUpdateDatabaseName { get { return "ECMPS_WS"; } }
-
+        
         /// <summary>
         /// Contains the name of the update schema for the supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateSchemaName { get { return "Supp"; } }
+        public static string SupplementalDataUpdateSchemaName { get { return "camdecmpscalc"; } }
 
         /// <summary>
         /// Contains the name of the update table for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateTableName { get { return "CE_QaCertEventSuppData"; } }
+        public static string SupplementalDataUpdateTableName { get { return "qa_cert_event_supp_data"; } }
 
         /// <summary>
         /// Contains the name of the update table for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateTablePath { get { return SupplementalDataUpdateDatabaseName + "." + SupplementalDataUpdateSchemaName + "." + SupplementalDataUpdateTableName; } }
+        public static string SupplementalDataUpdateTablePath { get { return SupplementalDataUpdateSchemaName + "." + SupplementalDataUpdateTableName; } }
 
 
         /// <summary>
         /// Creates a new instance of SupplementalDataUpdateDataTable and populates it with data from the passed dictionary array.  
         /// </summary>
-        public static void LoadSupplementalDataUpdateDataTable(Dictionary<string, QaCertificationSupplementalData>[] supplementalDataDictionaryArray, decimal workspaceSessionId, NpgsqlConnection connection)
+        public static void LoadSupplementalDataUpdateDataTable(Dictionary<string, QaCertificationSupplementalData>[] supplementalDataDictionaryArray, string checkSessionId, NpgsqlConnection connection)
         // public static void LoadSupplementalDataUpdateDataTable(Dictionary<string, QaCertificationSupplementalData>[] supplementalDataDictionaryArray, decimal workspaceSessionId, SqlConnection connection)
         {
-            SupplementalDataUpdateDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateDatabaseName, SupplementalDataUpdateSchemaName, SupplementalDataUpdateTableName, connection);
+            SupplementalDataUpdateDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateTableName, connection);
 
             if (SupplementalDataUpdateDataTable != null)
             {
@@ -342,34 +338,34 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                         if (suppDateCd != null)
                         {
                             if (supplementalData.QuarterlyOperatingCounts != null)
-                                LoadSupplementalDataUpdateDataRow("OP", suppDateCd, supplementalData.QuarterlyOperatingCounts, workspaceSessionId);
+                                LoadSupplementalDataUpdateDataRow("OP", suppDateCd, supplementalData.QuarterlyOperatingCounts, checkSessionId);
 
                             if (supplementalData.QuarterlySystemOperatingCounts != null)
-                                LoadSupplementalDataUpdateDataRow("SYSOP", suppDateCd, supplementalData.QuarterlySystemOperatingCounts, workspaceSessionId);
+                                LoadSupplementalDataUpdateDataRow("SYSOP", suppDateCd, supplementalData.QuarterlySystemOperatingCounts, checkSessionId);
 
                             if (supplementalData.QuarterlyComponentOperatingCounts != null)
-                                LoadSupplementalDataUpdateDataRow("CMPOP", suppDateCd, supplementalData.QuarterlyComponentOperatingCounts, workspaceSessionId);
+                                LoadSupplementalDataUpdateDataRow("CMPOP", suppDateCd, supplementalData.QuarterlyComponentOperatingCounts, checkSessionId);
 
                             if (supplementalData.QuarterlySystemQualityAssuredCounts != null)
-                                LoadSupplementalDataUpdateDataRow("SYSQA", suppDateCd, supplementalData.QuarterlySystemQualityAssuredCounts, workspaceSessionId);
+                                LoadSupplementalDataUpdateDataRow("SYSQA", suppDateCd, supplementalData.QuarterlySystemQualityAssuredCounts, checkSessionId);
 
                             if (supplementalData.QuarterlyComponentQualityAssuredCounts != null)
-                                LoadSupplementalDataUpdateDataRow("CMPQA", suppDateCd, supplementalData.QuarterlyComponentQualityAssuredCounts, workspaceSessionId);
+                                LoadSupplementalDataUpdateDataRow("CMPQA", suppDateCd, supplementalData.QuarterlyComponentQualityAssuredCounts, checkSessionId);
 
                             if (supplementalData.MayAndJuneOperatingCounts != null)
-                                LoadSupplementalDataUpdateDataRow("OPMJ", suppDateCd, supplementalData.MayAndJuneOperatingCounts, workspaceSessionId);
+                                LoadSupplementalDataUpdateDataRow("OPMJ", suppDateCd, supplementalData.MayAndJuneOperatingCounts, checkSessionId);
 
                             if (supplementalData.MayAndJuneSystemOperatingCounts != null)
-                                LoadSupplementalDataUpdateDataRow("SYSOPMJ", suppDateCd, supplementalData.MayAndJuneSystemOperatingCounts, workspaceSessionId);
+                                LoadSupplementalDataUpdateDataRow("SYSOPMJ", suppDateCd, supplementalData.MayAndJuneSystemOperatingCounts, checkSessionId);
 
                             if (supplementalData.MayAndJuneComponentOperatingCounts != null)
-                                LoadSupplementalDataUpdateDataRow("CMPOPMJ", suppDateCd, supplementalData.MayAndJuneComponentOperatingCounts, workspaceSessionId);
+                                LoadSupplementalDataUpdateDataRow("CMPOPMJ", suppDateCd, supplementalData.MayAndJuneComponentOperatingCounts, checkSessionId);
 
                             if (supplementalData.MayAndJuneSystemQualityAssuredCounts != null)
-                                LoadSupplementalDataUpdateDataRow("SYSQAMJ", suppDateCd, supplementalData.MayAndJuneSystemQualityAssuredCounts, workspaceSessionId);
+                                LoadSupplementalDataUpdateDataRow("SYSQAMJ", suppDateCd, supplementalData.MayAndJuneSystemQualityAssuredCounts, checkSessionId);
 
                             if (supplementalData.MayAndJuneComponentQualityAssuredCounts != null)
-                                LoadSupplementalDataUpdateDataRow("CMPQAMJ", suppDateCd, supplementalData.MayAndJuneComponentQualityAssuredCounts, workspaceSessionId);
+                                LoadSupplementalDataUpdateDataRow("CMPQAMJ", suppDateCd, supplementalData.MayAndJuneComponentQualityAssuredCounts, checkSessionId);
                         }
                     }
                 }
@@ -382,12 +378,12 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="suppDataCd">The QA Certification Event supplemental data code for the supplementalDataGroup data.</param>
         /// <param name="suppDateCd">Indicates whether the counts for for QA Cert Event days or Conditional Data Begin hours.</param>
         /// <param name="supplementalDataGroup">The count, date and hour data from which to populate the row.</param>
-        /// <param name="workspaceSessionId">The workspace session id for check session.</param>
-        private static void LoadSupplementalDataUpdateDataRow(string suppDataCd, string suppDateCd, QaCertificationSupplementalDataGroup supplementalDataGroup, decimal workspaceSessionId)
+        /// <param name="checkSessionId">The workspace session id for check session.</param>
+        private static void LoadSupplementalDataUpdateDataRow(string suppDataCd, string suppDateCd, QaCertificationSupplementalDataGroup supplementalDataGroup, string checkSessionId)
         {
             DataRow dataRow = SupplementalDataUpdateDataTable.NewRow();
 
-            dataRow["SESSION_ID"] = workspaceSessionId;
+            dataRow["CHK_SESSION_ID"] = checkSessionId;
             dataRow["QA_CERT_EVENT_ID"] = supplementalDataGroup.QaCertEventId;
             dataRow["QA_CERT_EVENT_SUPP_DATA_CD"] = suppDataCd;
             dataRow["QA_CERT_EVENT_SUPP_DATE_CD"] = suppDateCd;

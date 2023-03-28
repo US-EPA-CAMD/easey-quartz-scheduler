@@ -19,11 +19,11 @@ namespace ECMPS.Checks.EmissionsReport
 
     public cCo2cCalculationCategory(cCheckEngine ACheckEngine,
                                     cEmissionsReportProcess AHourlyEmissionsData,
-                                    cOperatingHourCategory AOperatingHourCategory, EmParameters emparms)
+                                    cOperatingHourCategory AOperatingHourCategory, ref EmParameters emparms)
       : base(ACheckEngine,
              (cEmissionsReportProcess)AHourlyEmissionsData,
              (cCategory)AOperatingHourCategory,
-             "CO2CVC", emparms)
+             "CO2CVC", ref emparms)
     {
     }
 

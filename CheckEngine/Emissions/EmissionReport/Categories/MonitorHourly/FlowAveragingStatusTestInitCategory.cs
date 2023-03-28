@@ -26,8 +26,8 @@ namespace ECMPS.Checks.EmissionsReport
         #region Constructors
         
 
-        public cFlowAveragingStatusTestInitCategory(cFlowMonitorHourlyCategory parentCategory, EmParameters emparams)
-            : base(parentCategory, "FLWAV",emparams)
+        public cFlowAveragingStatusTestInitCategory(cFlowMonitorHourlyCategory parentCategory,ref  EmParameters emparams)
+            : base(parentCategory, "FLWAV",ref emparams)
         {
           
         }

@@ -19,11 +19,11 @@ namespace ECMPS.Checks.EmissionsReport
 
     public cH2oCalculationCategory(cCheckEngine ACheckEngine,
                                    cEmissionsReportProcess AHourlyEmissionsData,
-                                   cOperatingHourCategory AOperatingHourCategory, EmParameters emParameters)
+                                   cOperatingHourCategory AOperatingHourCategory,ref EmParameters emParameters)
       : base(ACheckEngine,
              (cEmissionsReportProcess)AHourlyEmissionsData,
              (cCategory)AOperatingHourCategory,
-             "H2OVC", emParameters)
+             "H2OVC", ref emParameters)
     {
     }
 

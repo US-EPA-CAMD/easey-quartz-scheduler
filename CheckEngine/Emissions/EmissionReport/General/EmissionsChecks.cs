@@ -81,7 +81,6 @@ namespace ECMPS.Checks.EmissionsChecks
     /// </summary>
     public cReportingPeriod ReportingPeriod { get; private set; }
 
-   public EmParameters emParams;
         #endregion
 
 

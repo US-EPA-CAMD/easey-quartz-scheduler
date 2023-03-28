@@ -21,25 +21,25 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// </summary>
         /// <param name="componentId">The Component Id represented by the object.</param>
         /// <param name="componentIdentifier">The Component Identifier of the Component Id.</param>
-        public cDailyCalibrationComponentData(string componentId, string componentIdentifier, EmParameters param)
+        public cDailyCalibrationComponentData(string componentId, string componentIdentifier, ref EmParameters param)
         {
             ComponentId = componentId;
             ComponentIdentifier = componentIdentifier;
 
             TestDataQueue = new cDailyCalibrationTestDataQueue[3, 2, 2];
 
-            TestDataQueue[0, 0, 0] = new cDailyCalibrationTestDataQueue(param);
-            TestDataQueue[1, 0, 0] = new cDailyCalibrationTestDataQueue(param);
-            TestDataQueue[2, 0, 0] = new cDailyCalibrationTestDataQueue(param);
-            TestDataQueue[0, 1, 0] = new cDailyCalibrationTestDataQueue(param);
-            TestDataQueue[1, 1, 0] = new cDailyCalibrationTestDataQueue(param);
-            TestDataQueue[2, 1, 0] = new cDailyCalibrationTestDataQueue(param);
-            TestDataQueue[0, 0, 1] = new cDailyCalibrationTestDataQueue(param);
-            TestDataQueue[1, 0, 1] = new cDailyCalibrationTestDataQueue(param);
-            TestDataQueue[2, 0, 1] = new cDailyCalibrationTestDataQueue(param);
-            TestDataQueue[0, 1, 1] = new cDailyCalibrationTestDataQueue(param);
-            TestDataQueue[1, 1, 1] = new cDailyCalibrationTestDataQueue(param);
-            TestDataQueue[2, 1, 1] = new cDailyCalibrationTestDataQueue(param);
+            TestDataQueue[0, 0, 0] = new cDailyCalibrationTestDataQueue(ref param);
+            TestDataQueue[1, 0, 0] = new cDailyCalibrationTestDataQueue(ref param);
+            TestDataQueue[2, 0, 0] = new cDailyCalibrationTestDataQueue(ref param);
+            TestDataQueue[0, 1, 0] = new cDailyCalibrationTestDataQueue(ref param);
+            TestDataQueue[1, 1, 0] = new cDailyCalibrationTestDataQueue(ref param);
+            TestDataQueue[2, 1, 0] = new cDailyCalibrationTestDataQueue(ref param);
+            TestDataQueue[0, 0, 1] = new cDailyCalibrationTestDataQueue(ref param);
+            TestDataQueue[1, 0, 1] = new cDailyCalibrationTestDataQueue(ref param);
+            TestDataQueue[2, 0, 1] = new cDailyCalibrationTestDataQueue(ref param);
+            TestDataQueue[0, 1, 1] = new cDailyCalibrationTestDataQueue(ref param);
+            TestDataQueue[1, 1, 1] = new cDailyCalibrationTestDataQueue(ref param);
+            TestDataQueue[2, 1, 1] = new cDailyCalibrationTestDataQueue(ref param);
         }
 
         #endregion
@@ -230,8 +230,8 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="SupplementalDataUpdateLocationDataTable"></param>
         /// <param name="SupplementalDataUpdateSystemDataTable"></param>
         /// <param name="rptPeriodId"></param>
-        /// <param name="workspaceSessionId"></param>
-        public void LoadIntoSupplementalDataTables(DataTable SupplementalDataUpdateLocationDataTable, DataTable SupplementalDataUpdateSystemDataTable, int rptPeriodId, decimal workspaceSessionId)
+        /// <param name="checkSessionId"></param>
+        public void LoadIntoSupplementalDataTables(DataTable SupplementalDataUpdateLocationDataTable, DataTable SupplementalDataUpdateSystemDataTable, int rptPeriodId, string checkSessionId)
         {
             int[] indicatorList = { 0, 1 };
 
@@ -244,7 +244,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                         testDataQueue = TestDataQueue[spanScalePos, onlinePos, validPos];
 
                         if (testDataQueue != null)
-                            testDataQueue.LoadIntoSupplementalDataTables(SupplementalDataUpdateLocationDataTable, SupplementalDataUpdateSystemDataTable, rptPeriodId, workspaceSessionId);
+                            testDataQueue.LoadIntoSupplementalDataTables(SupplementalDataUpdateLocationDataTable, SupplementalDataUpdateSystemDataTable, rptPeriodId, checkSessionId);
                     }
         }
 

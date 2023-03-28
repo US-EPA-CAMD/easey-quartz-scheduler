@@ -267,27 +267,27 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="idColumnName">The name of the id column used as the supplemental data key.</param>
         /// <param name="SupplementalDataUpdateDataTable">Table to update with data.</param>
         /// <param name="workspaceSessionId">The workspace session id for check session.</param>
-        protected static void LoadSupplementalDataUpdateDataDoRow(OperatingSupplementalData supplementalData, string idColumnName, DataTable SupplementalDataUpdateDataTable, decimal workspaceSessionId)
+        protected static void LoadSupplementalDataUpdateDataDoRow(OperatingSupplementalData supplementalData, string idColumnName, DataTable SupplementalDataUpdateDataTable, string checkSessionId)
         {
             if (SupplementalDataUpdateDataTable != null)
             {
                 if (supplementalData.QuarterlyOperatingCounts != null)
-                    LoadSupplementalDataUpdateDataDoRow("OP", idColumnName, SupplementalDataUpdateDataTable, supplementalData.QuarterlyOperatingCounts, workspaceSessionId);
+                    LoadSupplementalDataUpdateDataDoRow("OP", idColumnName, SupplementalDataUpdateDataTable, supplementalData.QuarterlyOperatingCounts, checkSessionId);
 
                 if ((supplementalData.QuarterlyQualityAssuredCounts != null) && !supplementalData.SkipSavingModcCounts)
-                    LoadSupplementalDataUpdateDataDoRow("QA", idColumnName, SupplementalDataUpdateDataTable, supplementalData.QuarterlyQualityAssuredCounts, workspaceSessionId);
+                    LoadSupplementalDataUpdateDataDoRow("QA", idColumnName, SupplementalDataUpdateDataTable, supplementalData.QuarterlyQualityAssuredCounts, checkSessionId);
 
                 if ((supplementalData.QuarterlyMonitorAvailableCounts != null) && !supplementalData.SkipSavingModcCounts)
-                    LoadSupplementalDataUpdateDataDoRow("MA", idColumnName, SupplementalDataUpdateDataTable, supplementalData.QuarterlyMonitorAvailableCounts, workspaceSessionId);
+                    LoadSupplementalDataUpdateDataDoRow("MA", idColumnName, SupplementalDataUpdateDataTable, supplementalData.QuarterlyMonitorAvailableCounts, checkSessionId);
 
                 if (supplementalData.MayAndJuneOperatingCounts != null)
-                    LoadSupplementalDataUpdateDataDoRow("OPMJ", idColumnName, SupplementalDataUpdateDataTable, supplementalData.MayAndJuneOperatingCounts, workspaceSessionId);
+                    LoadSupplementalDataUpdateDataDoRow("OPMJ", idColumnName, SupplementalDataUpdateDataTable, supplementalData.MayAndJuneOperatingCounts, checkSessionId);
 
                 if ((supplementalData.MayAndJuneQualityAssuredCounts != null) && !supplementalData.SkipSavingModcCounts)
-                    LoadSupplementalDataUpdateDataDoRow("QAMJ", idColumnName, SupplementalDataUpdateDataTable, supplementalData.MayAndJuneQualityAssuredCounts, workspaceSessionId);
+                    LoadSupplementalDataUpdateDataDoRow("QAMJ", idColumnName, SupplementalDataUpdateDataTable, supplementalData.MayAndJuneQualityAssuredCounts, checkSessionId);
 
                 if ((supplementalData.MayAndJuneMonitorAvailableCounts != null) && !supplementalData.SkipSavingModcCounts)
-                    LoadSupplementalDataUpdateDataDoRow("MAMJ", idColumnName, SupplementalDataUpdateDataTable, supplementalData.MayAndJuneMonitorAvailableCounts, workspaceSessionId);
+                    LoadSupplementalDataUpdateDataDoRow("MAMJ", idColumnName, SupplementalDataUpdateDataTable, supplementalData.MayAndJuneMonitorAvailableCounts, checkSessionId);
             }
         }
 
@@ -301,11 +301,11 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="workspaceSessionId">The workspace session id for check session.</param>
         private static void LoadSupplementalDataUpdateDataDoRow(string suppDataCd, string idColumnName, 
                                                                 DataTable SupplementalDataUpdateDataTable, OperatingSupplementalDataGroup supplementalDataGroup, 
-                                                                decimal workspaceSessionId)
+                                                                string checkSessionId)
         {
             DataRow dataRow = SupplementalDataUpdateDataTable.NewRow();
 
-            dataRow["SESSION_ID"] = workspaceSessionId;
+            dataRow["CHK_SESSION_ID"] = checkSessionId;
             dataRow[idColumnName] = supplementalDataGroup.Id;
             dataRow["MON_LOC_ID"] = supplementalDataGroup.MonLocId;
             dataRow["RPT_PERIOD_ID"] = supplementalDataGroup.RptPeriodId;

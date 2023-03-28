@@ -180,24 +180,19 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         public static DataTable SupplementalDataUpdateDataTable { get; set; }
 
         /// <summary>
-        /// Contains the name of the update database for the supplemental data.
-        /// </summary>
-        public static string SupplementalDataUpdateDatabaseName { get { return "ECMPS_WS"; } }
-
-        /// <summary>
         /// Contains the name of the update schema for the supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateSchemaName { get { return "Supp"; } }
+        public static string SupplementalDataUpdateSchemaName { get { return "camdecmpscalc"; } }
 
         /// <summary>
         /// Contains the name of the update table for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateTableName { get { return "CE_LastQaValueSuppData"; } }
+        public static string SupplementalDataUpdateTableName { get { return "last_qa_value_supp_data"; } }
 
         /// <summary>
         /// Contains the name of the update table for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateTablePath { get { return SupplementalDataUpdateDatabaseName + "." + SupplementalDataUpdateSchemaName + "." + SupplementalDataUpdateTableName; } }
+        public static string SupplementalDataUpdateTablePath { get { return SupplementalDataUpdateSchemaName + "." + SupplementalDataUpdateTableName; } }
 
 
         /// <summary>
@@ -206,11 +201,11 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="supplementalDataDictionaryArray">Dictionary containing data used to update the table.</param>
         /// <param name="workspaceSessionId">The workspace session id for check session.</param>
         /// <param name="connection">Database connection to use when creating the internal supplemental data table.</param>
-        public static void LoadSupplementalDataUpdateDataTable(Dictionary<string, LastQualityAssuredValueSupplementalData>[] supplementalDataDictionaryArray, decimal workspaceSessionId, NpgsqlConnection connection)
+        public static void LoadSupplementalDataUpdateDataTable(Dictionary<string, LastQualityAssuredValueSupplementalData>[] supplementalDataDictionaryArray, string checkSessionId, NpgsqlConnection connection)
 
         // public static void LoadSupplementalDataUpdateDataTable(Dictionary<string, LastQualityAssuredValueSupplementalData>[] supplementalDataDictionaryArray, decimal workspaceSessionId, SqlConnection connection)
         {
-            SupplementalDataUpdateDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateDatabaseName, SupplementalDataUpdateSchemaName, SupplementalDataUpdateTableName, connection);
+            SupplementalDataUpdateDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateTableName, connection);
 
             if (SupplementalDataUpdateDataTable != null)
             {
@@ -220,7 +215,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                     {
                         DataRow dataRow = SupplementalDataUpdateDataTable.NewRow();
 
-                        dataRow["SESSION_ID"] = workspaceSessionId;
+                        dataRow["CHK_SESSION_ID"] = checkSessionId;
                         dataRow["MON_LOC_ID"] = supplementalData.MonLocId;
                         dataRow["RPT_PERIOD_ID"] = supplementalData.RptPeriodId;
                         dataRow["PARAMETER_CD"] = supplementalData.ParameterCd;

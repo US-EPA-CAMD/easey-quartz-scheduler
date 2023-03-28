@@ -188,6 +188,15 @@ namespace ECMPS.Checks.CheckEngine
 			qaParams = paramObj;
 		}
 
+		/// <summary>
+		/// setEmParamsForCheck
+		/// </summary>
+		/// <param name="paramObj"></param>
+		/// <returns></returns>
+		public void setEmParamsForCheck(ref EmParameters paramObj){
+			emParams = paramObj;
+		}
+
 
 		/// <summary>
 		/// Returns the list of Check Procedures for the current checks object.

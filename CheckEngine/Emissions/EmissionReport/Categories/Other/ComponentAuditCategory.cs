@@ -23,8 +23,8 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="componentIdentifier">The component identifier associated with the test.</param>
         /// <param name="componentTypeCd">The type of the component associated with the test.</param>
         /// <param name="testDateHour">The date and hour of the test.</param>
-        public ComponentAuditCategory(cCategory parentCategory, EmParameters emparams)
-            : base(parentCategory, "CMPAUDT",emparams)
+        public ComponentAuditCategory(cCategory parentCategory, ref EmParameters emparams)
+            : base(parentCategory, "CMPAUDT", ref emparams)
         {
           
         }

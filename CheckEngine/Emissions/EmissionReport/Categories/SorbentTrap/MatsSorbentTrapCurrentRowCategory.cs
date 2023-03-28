@@ -32,7 +32,7 @@ namespace ECMPS.Checks.EmissionsReport
         /// 
         
 
-        public MatsSorbentTrapCurrentRowCategory(cCategory parentCategory, string categoryCd ,EmParameters emparams) : base(parentCategory, categoryCd, emparams)
+        public MatsSorbentTrapCurrentRowCategory(cCategory parentCategory, string categoryCd , ref EmParameters emparams) : base(parentCategory, categoryCd, ref emparams)
         {
            
         }

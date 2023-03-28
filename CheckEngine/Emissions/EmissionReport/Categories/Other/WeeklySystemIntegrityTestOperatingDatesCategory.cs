@@ -26,8 +26,8 @@ namespace ECMPS.Checks.EmissionsReport
         /// </summary>
         /// <param name="parentCategory">The parent category of the new category.</param>
         /// <param name="categoryCd">The category code of the new category.</param>
-        public WeeklySystemIntegrityTestOperatingDatesCategory(cCategory parentCategory, EmParameters emparams)
-      : base(parentCategory, "WSIOP", "WeeklySystemIntegrity", emparams)
+        public WeeklySystemIntegrityTestOperatingDatesCategory(cCategory parentCategory, ref EmParameters emparams)
+      : base(parentCategory, "WSIOP", "WeeklySystemIntegrity", ref emparams)
     {
           
     }

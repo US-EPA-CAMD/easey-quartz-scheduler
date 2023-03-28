@@ -27,7 +27,7 @@ namespace ECMPS.Checks.EmissionsReport
         /// The category contains its own run check loop.
         /// </summary>
         /// <param name="parentCategory"></param>
-        public Nsps4tSummaryDataCategory(cSummaryValueInitializationCategory parentCategory, EmParameters emparams) : base(parentCategory, "NSPS4T",emparams)
+        public Nsps4tSummaryDataCategory(cSummaryValueInitializationCategory parentCategory, ref EmParameters emparams) : base(parentCategory, "NSPS4T", ref emparams)
         {
             
         }
@@ -42,13 +42,13 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="summaryValueInitializationCategory">The parent Summary Value Initialization Category object.</param>
         /// <param name="MonitorLocationView">The view containing the monitor location rows for the MP.</param>
         /// <returns>Returns true if the checks were successfully executed.</returns>
-        public static bool ExecuteChecks(cSummaryValueInitializationCategory summaryValueInitializationCategory, DataView MonitorLocationView, EmParameters emparams)
+        public static bool ExecuteChecks(cSummaryValueInitializationCategory summaryValueInitializationCategory, DataView MonitorLocationView, ref EmParameters emparams)
         {
             bool result = true;
 
 
             /* Create the NSPS4T Summary Data check category object */
-            Nsps4tSummaryDataCategory nsps4tSummaryDataCategory = new Nsps4tSummaryDataCategory(summaryValueInitializationCategory, emparams);
+            Nsps4tSummaryDataCategory nsps4tSummaryDataCategory = new Nsps4tSummaryDataCategory(summaryValueInitializationCategory, ref emparams);
 
             try
             {

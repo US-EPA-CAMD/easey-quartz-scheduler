@@ -18,8 +18,8 @@ namespace ECMPS.Checks.EmissionsReport
 
         #region Constructors
 
-        public cNoxrUnusedPpbRataStatusInitCategory(cNoxrUnusedPpbMonitorHourlyCategory parentCategory, EmParameters emparams)
-            : base(parentCategory, "NXPPBRI", emparams)
+        public cNoxrUnusedPpbRataStatusInitCategory(cNoxrUnusedPpbMonitorHourlyCategory parentCategory, ref EmParameters emparams)
+            : base(parentCategory, "NXPPBRI", ref emparams)
         {
            
         }

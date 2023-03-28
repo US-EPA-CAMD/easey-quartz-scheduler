@@ -23,7 +23,7 @@ namespace ECMPS.Checks.EmissionsReport
         public EmParameters emParams;
         public cOperatingHourCategory(cCheckEngine ACheckEngine,
                                       cEmissionsReportProcess AHourlyEmissionsData,
-                                      cHourlyConfigurationInitializationCategory AHourlyConfigurationInitializationCategory, EmParameters emparams)
+                                      cHourlyConfigurationInitializationCategory AHourlyConfigurationInitializationCategory, ref EmParameters emparams)
           : base("OPHOUR",
                  (cEmissionsReportProcess)AHourlyEmissionsData,
                  (cCategory)AHourlyConfigurationInitializationCategory,
