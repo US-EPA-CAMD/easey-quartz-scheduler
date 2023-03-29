@@ -25,7 +25,8 @@ namespace ECMPS.Checks.EmissionsChecks
             : base(emissionReportProcess)
         {
             ChourlyOperatingDataChecks = new cHourlyOperatingDataChecks(emissionReportProcess);
-            CheckProcedures = new dCheckProcedure[42];
+            
+             CheckProcedures = new dCheckProcedure[42];
 
             CheckProcedures[1] = new dCheckProcedure(HOURMHV1);
             CheckProcedures[2] = new dCheckProcedure(HOURMHV2);
@@ -3251,7 +3252,7 @@ namespace ECMPS.Checks.EmissionsChecks
         public string HOURMHV38(cCategory category, ref bool log)
         {
             string returnVal = "";
-            
+            ChourlyOperatingDataChecks.setEmParamsForCheck(ref emParams);
             try
             {
                 if (emParams.DerivedHourlyChecksNeeded.Default(false) && (emParams.CurrentOperatingTime.Value > 0))

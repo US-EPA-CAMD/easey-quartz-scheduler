@@ -15,8 +15,9 @@ namespace ECMPS.Checks.EmissionsChecks
     public class cAppendixDEStatusChecks : cEmissionsChecks
     {
         #region Constructors
-        public cAppendixDEStatusChecks(cEmissionsReportProcess emissionReportProcess)
-        : base(emissionReportProcess)
+
+        public cAppendixDEStatusChecks(cEmissionsReportProcess emissionReportProcess, EmParameters emparams)
+          : base(emissionReportProcess, emparams)
         {
             CheckProcedures = new dCheckProcedure[14];
 
@@ -35,8 +36,8 @@ namespace ECMPS.Checks.EmissionsChecks
             CheckProcedures[13] = new dCheckProcedure(ADESTAT13);
         }
 
-        public cAppendixDEStatusChecks(cEmissionsReportProcess emissionReportProcess, EmParameters emparams)
-          : base(emissionReportProcess, emparams)
+        public cAppendixDEStatusChecks(cEmissionsReportProcess emissionReportProcess)
+          : base(emissionReportProcess)
         {
             CheckProcedures = new dCheckProcedure[14];
 
@@ -67,7 +68,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #endregion
 
-        #region Public Methods: Checks
+        #region Public Static Methods: Checks
 
         public string ADESTAT1(cCategory Category, ref bool Log)
         //Determine Appendix E Status       
@@ -761,8 +762,9 @@ namespace ECMPS.Checks.EmissionsChecks
             {
                 Category.SetCheckParameter("FF2L_Accuracy_Begin_Year_Quarter", null, eParameterDataType.String);
                 Category.SetCheckParameter("FF2L_Accuracy_End_Year_Quarter", null, eParameterDataType.String);
-                Category.SetCheckParameter("Invalid_FF2L_Test_Number", null, eParameterDataType.String);
-                Category.SetCheckParameter("Missing_FF2L_Year_Quarter", null, eParameterDataType.String);
+                Category.SetCheckParameter("FF2L_Problem_TestNum_List", null, eParameterDataType.String);
+                Category.SetCheckParameter("FF2L_Problem_Quarter_List", null, eParameterDataType.String);
+
                 DateTime CheckDate = Category.GetCheckParameter("FF2L_Accuracy_Check_Date").ValueAsDateTime(DateTypes.END);
 
                 if (Category.GetCheckParameter("FF2L_Accuracy_Eligible").ValueAsBool())
@@ -809,7 +811,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                     if (FoundFF2LRec)
                     {
-                        Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
+                        Category.SetCheckParameter("FF2L_Problem_TestNum_List", FoundTestNum, eParameterDataType.String);
                         Category.SetCheckParameter("Current_Accuracy_Status", "OOC-Fuel Flow to Load Test Failed", eParameterDataType.String);
                         return ReturnVal;
                     }
@@ -818,7 +820,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
                     FoundFF2LRec = false;
                     FoundTestNum = "";
-                    
+
                     foreach (DataRowView drv in FF2LTestRecsFound)
                     {
                         thisYear = cDBConvert.ToInteger(drv["CALENDAR_YEAR"]);
@@ -834,7 +836,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                     if (FoundFF2LRec)
                     {
-                        Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
+                        Category.SetCheckParameter("FF2L_Problem_TestNum_List", FoundTestNum, eParameterDataType.String);
                         Category.SetCheckParameter("Current_Accuracy_Status", "OOC-Fuel Flow to Load Test Has Critical Errors", eParameterDataType.String);
                         return ReturnVal;
                     }
@@ -843,6 +845,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
                     FoundFF2LRec = false;
                     FoundTestNum = "";
+
                     foreach (DataRowView drv in FF2LTestRecsFound)
                     {
                         thisYear = cDBConvert.ToInteger(drv["CALENDAR_YEAR"]);
@@ -855,181 +858,41 @@ namespace ECMPS.Checks.EmissionsChecks
                                 break;
                             }
                     }
+
                     if (FoundFF2LRec)
                     {
-                        Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
+                        Category.SetCheckParameter("FF2L_Problem_TestNum_List", FoundTestNum, eParameterDataType.String);
                         Category.SetCheckParameter("Current_Accuracy_Status", "Fuel Flow to Load Test Has Not Yet Been Evaluated", eParameterDataType.String);
                         return ReturnVal;
                     }
-                    FilterFF2LRecs[1].Set("TEST_RESULT_CD", "PASSED,FEW168H,EXC168H", eFilterPairStringCompare.InList);
-                    FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
-                    DataRowView thisFF2LRecFound = null;
-                    FoundFF2LRec = false;
-                    foreach (DataRowView drv in FF2LTestRecsFound)
-                    {
-                        thisYear = cDBConvert.ToInteger(drv["CALENDAR_YEAR"]);
-                        thisQuarter = cDBConvert.ToInteger(drv["QUARTER"]);
-                        if (thisYear < SecondYear || (thisYear == SecondYear && thisQuarter < SecondQuarter))
-                            if (thisYear > FirstYear || (thisYear == FirstYear && thisQuarter > FirstQuarter))
-                            {
-                                if (!FoundFF2LRec)//if this is the first one found
-                                {
-                                    thisFF2LRecFound = drv;
-                                    FoundFF2LRec = true;
-                                }
-                                else
-                                  if (thisYear < cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]) || (thisYear == cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]) && thisQuarter < cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"])))
-                                    thisFF2LRecFound = drv;//take the earlier of the two                                
-                            }
-                    }
-                    int BegYear = 0, BegQtr = 0;
-                    if (FoundFF2LRec)
-                    {
-                        BegYear = cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]);
-                        BegQtr = cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"]);
-                        Category.SetCheckParameter("FF2L_Accuracy_Begin_Year_Quarter", BegYear.ToString() + BegQtr.ToString(), eParameterDataType.String);
-                    }
-                    FilterFF2LRecs[1].Set("TEST_RESULT_CD", "INPROG");
-                    FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
-                    thisFF2LRecFound = null;
-                    FoundFF2LRec = false;
-                    foreach (DataRowView drv in FF2LTestRecsFound)
-                    {
-                        thisYear = cDBConvert.ToInteger(drv["CALENDAR_YEAR"]);
-                        thisQuarter = cDBConvert.ToInteger(drv["QUARTER"]);
-                        if (thisYear < SecondYear || (thisYear == SecondYear && thisQuarter < SecondQuarter))
-                            if (thisYear > FirstYear || (thisYear == FirstYear && thisQuarter > FirstQuarter))
-                            {
-                                if (!FoundFF2LRec)//if this is the first one found
-                                {
-                                    thisFF2LRecFound = drv;
-                                    FoundFF2LRec = true;
-                                }
-                                else
-                                  if (thisYear > cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]) || (thisYear == cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]) && thisQuarter > cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"])))
-                                    thisFF2LRecFound = drv;//take the later of the two                                
-                            }
-                    }
-                    if (FoundFF2LRec)
-                    {
-                        thisYear = cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]);
-                        thisQuarter = cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"]);
-                        if (BegYear > 0 && (thisYear > BegYear || (thisYear == BegYear && thisQuarter > BegQtr)))
-                        {
-                            FoundTestNum = cDBConvert.ToString(thisFF2LRecFound["TEST_NUM"]);
-                            Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
-                            Category.SetCheckParameter("Current_Accuracy_Status", "OOC-Invalid Fuel Flow to Load Test", eParameterDataType.String);
-                            return ReturnVal;
-                        }
-                        else
-                        {
-                            if (thisYear > CheckDate.Year + 1 || (thisYear == CheckDate.Year + 1 && thisQuarter > cDateFunctions.ThisQuarter(CheckDate)))
-                            {
-                                FoundTestNum = cDBConvert.ToString(thisFF2LRecFound["TEST_NUM"]);
-                                Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
-                                Category.SetCheckParameter("Current_Accuracy_Status", "Undetermined-Baseline Period Expired", eParameterDataType.String);
-                                return ReturnVal;
-                            }
-                        }
-                    }
-                    BegYear = CheckDate.Year;
-                    BegQtr = cDateFunctions.ThisQuarter(CheckDate) + 1;
-                    if (BegQtr == 5)
-                    {
-                        BegYear = FirstYear + 1;
-                        BegQtr = 1;
-                    }
-                    Category.SetCheckParameter("FF2L_Accuracy_Begin_Year_Quarter", BegYear.ToString() + BegQtr.ToString(), eParameterDataType.String);
-                    FilterFF2LRecs[1].Set("TEST_RESULT_CD", "PASSED,FEW168H,EXC168H,INPROG", eFilterPairStringCompare.InList);
-                    FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
-                    thisFF2LRecFound = null;
-                    FoundFF2LRec = false;
-                    foreach (DataRowView drv in FF2LTestRecsFound)
-                    {
-                        thisYear = cDBConvert.ToInteger(drv["CALENDAR_YEAR"]);
-                        thisQuarter = cDBConvert.ToInteger(drv["QUARTER"]);
-                        if (thisYear < SecondYear || (thisYear == SecondYear && thisQuarter < SecondQuarter))
-                            if (thisYear > FirstYear || (thisYear == FirstYear && thisQuarter > FirstQuarter))
-                            {
-                                if (!FoundFF2LRec)//if this is the first one found
-                                    thisFF2LRecFound = drv;
-                                FoundFF2LRec = true;
-                                if (thisYear > cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]) || (thisYear == cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]) && thisQuarter > cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"])))
-                                    thisFF2LRecFound = drv;//take the later of the two                                
-                            }
-                    }
-                    int EndYear = cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]);
-                    int EndQtr = cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"]);
-                    Category.SetCheckParameter("FF2L_Accuracy_End_Year_Quarter", EndYear.ToString() + EndQtr.ToString(), eParameterDataType.String);
-                    DataView OpSuppRecs = Category.GetCheckParameter("Operating_Supp_Data_Records_by_Location").ValueAsDataView();
-                    //DataView OpSuppRecsFound;
-                    FilterFF2LRecs = new sFilterPair[3];
-                    FilterFF2LRecs[0].Set("MON_SYS_ID", MonSysID);
-                    sFilterPair[] FilterOpSupp = new sFilterPair[5];
-                    FilterOpSupp[0].Set("OP_TYPE_CD", "OPHOURS,OSHOURS", eFilterPairStringCompare.InList);
-                    FilterOpSupp[1].Set("FUEL_CD", cDBConvert.ToString(Category.GetCheckParameter("Current_Fuel_Flow_Record").ValueAsDataRowView()["FUEL_CD"]));
-                    FilterOpSupp[2].Set("OP_VALUE", 168, eFilterDataType.Integer, eFilterPairRelativeCompare.GreaterThanOrEqual);
-                    for (int i = BegYear; i <= EndYear; i++)
-                    {
-                        int thisYearsFirstQ = 1;
-                        if (i == BegYear)
-                            thisYearsFirstQ = BegQtr;
-                        for (int j = thisYearsFirstQ; j <= 4 && !(j > EndQtr && i == EndYear); j++)
-                        {
-                            FoundFF2LRec = false;
-                            FilterFF2LRecs[1].Set("CALENDAR_YEAR", i, eFilterDataType.Integer);
-                            FilterFF2LRecs[2].Set("QUARTER", j, eFilterDataType.Integer);
-                            FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
-                            if (FF2LTestRecsFound.Count > 0)
-                            {
-                                FoundFF2LRec = true;
-                                thisFF2LRecFound = FF2LTestRecsFound[0];
-                            }
 
-                            if (!FoundFF2LRec || (thisFF2LRecFound["TEST_RESULT_CD"].AsString() == "FEW168H"))
-                            {
-                                int? opHourCount = GetOpHourCountTrySystemThenFuel(i, j);
 
-                                if (opHourCount.HasValue && (opHourCount.Value >= 168)) // Is QA Operating Quarter
-                                {
-                                    if (FoundFF2LRec)
-                                    {
-                                        DataView FF2LBaselineRecs = Category.GetCheckParameter("FF2L_Baseline_Records_By_Location_For_QA_Status").ValueAsDataView();
-                                        sFilterPair[] FilterFF2LBASRecs = new sFilterPair[1];
-                                        FilterFF2LBASRecs[0].Set("MON_SYS_ID", MonSysID);
-                                        DataView FF2LBaselineRecsFound = FindRows(FF2LBaselineRecs, FilterFF2LBASRecs);
-                                        bool FoundFF2LBASRec = false;
-                                        int BaselineEndYear, BaselineEndQtr;
+                    Quarter ff2lAccuracyBeginQuarter = Quarter.FetchQuarter(emParams.Ff2lAccuracyCheckDate.Value.AddMonths(3));
+                    Quarter ff2lAccuracyEndQuarter = Quarter.FetchQuarter(emParams.CurrentOperatingDate.Value.AddMonths(-3));
 
-                                        foreach (DataRowView drv in FF2LBaselineRecsFound)
-                                        {
-                                            BaselineEndYear = cDBConvert.ToDate(drv["END_DATE"], DateTypes.END).Year;
-                                            BaselineEndQtr = cDBConvert.ToDate(drv["END_DATE"], DateTypes.END).Quarter();
-                                            if (BaselineEndYear == i && BaselineEndQtr == j)
-                                            {
-                                                FoundFF2LBASRec = true;
-                                                break;
-                                            }
-                                        }
+                    emParams.Ff2lAccuracyBeginYearQuarter = $"{ff2lAccuracyBeginQuarter.YearValue}{ff2lAccuracyBeginQuarter.QuarterValue}";
+                    emParams.Ff2lAccuracyEndYearQuarter = $"{ff2lAccuracyEndQuarter.YearValue}{ff2lAccuracyEndQuarter.QuarterValue}";
 
-                                        if (!FoundFF2LBASRec)
-                                        {
-                                            FoundTestNum = cDBConvert.ToString(thisFF2LRecFound["TEST_NUM"]);
-                                            Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
-                                            Category.SetCheckParameter("Current_Accuracy_Status", "OOC-Invalid Fuel Flow to Load Test", eParameterDataType.String);
-                                            return ReturnVal;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Category.SetCheckParameter("Missing_FF2L_Year_Quarter", i.ToString() + " Q" + j.ToString(), eParameterDataType.String);
-                                        Category.SetCheckParameter("Current_Accuracy_Status", "Undetermined-Missing Fuel Flow to Load Test", eParameterDataType.String);
-                                        return ReturnVal;
-                                    }
-                                }
-                            }
-                        }
+
+                    DateTime priorAccuracyDateHour = emParams.Ff2lAccuracyCheckDate.Value;
+
+                    eFf2lResultStatus resultStatus;
+                    string problemQuarterList, problemTestnumList;
+
+
+                    FuelFlowToLoadTestsCheck(priorAccuracyDateHour, out resultStatus, out problemQuarterList, out problemTestnumList);
+
+
+                    switch (resultStatus)
+                    {
+                        case eFf2lResultStatus.BaselinePeriodExpired: { emParams.CurrentAccuracyStatus = "OOC-Baseline Period Expired"; } break;
+                        case eFf2lResultStatus.Ff2lInprogressRequried: { emParams.CurrentAccuracyStatus = "OOC-Inprogress Fuel Flow to Load Test Required"; } break;
+                        case eFf2lResultStatus.Ff2lInvalidResult: { emParams.CurrentAccuracyStatus = "OOC-Invalid Fuel Flow to Load Test Result"; } break;
+                        case eFf2lResultStatus.Ff2lMissing: { emParams.CurrentAccuracyStatus = "OOC-Missing Fuel Flow to Load Test"; } break;
                     }
+
+                    emParams.Ff2lProblemQuarterList = problemQuarterList;
+                    emParams.Ff2lProblemTestnumList = problemTestnumList;
                 }
             }
             catch (Exception ex)
@@ -1082,7 +945,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     DataRowView CurrentFFRecord = Category.GetCheckParameter("Current_Fuel_Flow_Record").ValueAsDataRowView();
                     string FuelCd = cDBConvert.ToString(CurrentFFRecord["FUEL_CD"]);
                     DataView OpSuppRecs = Category.GetCheckParameter("Operating_Supp_Data_Records_by_Location").ValueAsDataView();
-                    //DataView OpSuppRecsFound;
+                    DataView OpSuppRecsFound;
                     sFilterPair[] FilterOpSupp = new sFilterPair[4];
                     FilterOpSupp[0].Set("OP_TYPE_CD", "OPHOURS");
                     FilterOpSupp[1].Set("FUEL_CD", FuelCd);
@@ -1652,7 +1515,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                         if (qaCertificationEventView.Count == 0)
                         {
-                            Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
+                            Category.SetCheckParameter("FF2L_Problem_TestNum_List", FoundTestNum, eParameterDataType.String);
                             Status = "OOC-Fuel Flow to Load Test Failed";
                             Category.SetCheckParameter("Current_PEI_Status", Status, eParameterDataType.String);
                             Category.CheckCatalogResult = Status;
@@ -1681,7 +1544,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                     if (FoundFF2LRec)
                     {
-                        Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
+                        Category.SetCheckParameter("FF2L_Problem_TestNum_List", FoundTestNum, eParameterDataType.String);
                         Status = "OOC-Fuel Flow to Load Test Has Critical Errors";
                         Category.SetCheckParameter("Current_PEI_Status", Status, eParameterDataType.String);
                         Category.CheckCatalogResult = Status;
@@ -1706,195 +1569,48 @@ namespace ECMPS.Checks.EmissionsChecks
                                 break;
                             }
                     }
-                    
+
                     if (FoundFF2LRec)
                     {
-                        Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
+                        Category.SetCheckParameter("FF2L_Problem_TestNum_List", FoundTestNum, eParameterDataType.String);
                         Status = "Fuel Flow to Load Test Has Not Yet Been Evaluated";
                         Category.SetCheckParameter("Current_PEI_Status", Status, eParameterDataType.String);
                         Category.CheckCatalogResult = Status;
                         return ReturnVal;
                     }
-                    FilterFF2LRecs[1].Set("TEST_RESULT_CD", "PASSED,FEW168H,EXC168H", eFilterPairStringCompare.InList);
-                    FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
-                    DataRowView thisFF2LRecFound = null;
-                    FoundFF2LRec = false;
-                    foreach (DataRowView drv in FF2LTestRecsFound)
-                    {
-                        thisYear = cDBConvert.ToInteger(drv["CALENDAR_YEAR"]);
-                        thisQuarter = cDBConvert.ToInteger(drv["QUARTER"]);
-                        if (thisYear < SecondYear || (thisYear == SecondYear && thisQuarter < SecondQuarter))
-                            if (thisYear > FirstYear || (thisYear == FirstYear && thisQuarter > FirstQuarter))
-                            {
-                                if (!FoundFF2LRec)//if this is the first one found
-                                {
-                                    thisFF2LRecFound = drv;
-                                    FoundFF2LRec = true;
-                                }
-                                else
-                                  if (thisYear < cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]) || (thisYear == cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]) && thisQuarter < cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"])))
-                                    thisFF2LRecFound = drv;//take the earlier of the two                                
-                            }
-                    }
-                    int BegYear = 0, BegQtr = 0;
-                    if (FoundFF2LRec)
-                    {
-                        BegYear = cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]);
-                        BegQtr = cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"]);
-                        Category.SetCheckParameter("FF2L_PEI_Begin_Year_Quarter", BegYear.ToString() + BegQtr.ToString(), eParameterDataType.String);
-                    }
-                    FilterFF2LRecs[1].Set("TEST_RESULT_CD", "INPROG");
-                    FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
-                    thisFF2LRecFound = null;
-                    FoundFF2LRec = false;
-                    foreach (DataRowView drv in FF2LTestRecsFound)
-                    {
-                        thisYear = cDBConvert.ToInteger(drv["CALENDAR_YEAR"]);
-                        thisQuarter = cDBConvert.ToInteger(drv["QUARTER"]);
-                        if (thisYear < SecondYear || (thisYear == SecondYear && thisQuarter < SecondQuarter))
-                            if (thisYear > FirstYear || (thisYear == FirstYear && thisQuarter > FirstQuarter))
-                            {
-                                if (!FoundFF2LRec)//if this is the first one found
-                                {
-                                    thisFF2LRecFound = drv;
-                                    FoundFF2LRec = true;
-                                }
-                                else
-                                  if (thisYear > cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]) || (thisYear == cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]) && thisQuarter > cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"])))
-                                    thisFF2LRecFound = drv;//take the later of the two                                
-                            }
-                    }
-                    if (FoundFF2LRec)
-                    {
-                        thisYear = cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]);
-                        thisQuarter = cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"]);
-                        if (BegYear > 0 && (thisYear > BegYear || (thisYear == BegYear && thisQuarter > BegQtr)))
-                        {
-                            FoundTestNum = cDBConvert.ToString(thisFF2LRecFound["TEST_NUM"]);
-                            Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
-                            Status = "OOC-Invalid Fuel Flow to Load Test";
-                            Category.SetCheckParameter("Current_PEI_Status", Status, eParameterDataType.String);
-                            Category.CheckCatalogResult = Status;
-                            return ReturnVal;
-                        }
-                        else
-                        {
-                            if (thisYear > CheckDate.Year + 1 || (thisYear == CheckDate.Year + 1 && thisQuarter > cDateFunctions.ThisQuarter(CheckDate)))
-                            {
-                                FoundTestNum = cDBConvert.ToString(thisFF2LRecFound["TEST_NUM"]);
-                                Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
-                                Status = "Undetermined-Baseline Period Expired";
-                                Category.SetCheckParameter("Current_PEI_Status", Status, eParameterDataType.String);
-                                Category.CheckCatalogResult = Status;
-                                return ReturnVal;
-                            }
-                        }
-                    }
-                    BegYear = CheckDate.Year;
-                    BegQtr = cDateFunctions.ThisQuarter(CheckDate) + 1;
-                    if (BegQtr == 5)
-                    {
-                        BegYear = FirstYear + 1;
-                        BegQtr = 1;
-                    }
-                    Category.SetCheckParameter("FF2L_PEI_Begin_Year_Quarter", BegYear.ToString() + BegQtr.ToString(), eParameterDataType.String);
 
-                    FilterFF2LRecs[1].Set("TEST_RESULT_CD", "PASSED,FEW168H,EXC168H,INPROG", eFilterPairStringCompare.InList);
-                    FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
-                    thisFF2LRecFound = null;
-                    FoundFF2LRec = false;
-                    foreach (DataRowView drv in FF2LTestRecsFound)
+
+                    Quarter ff2lPeiBeginQuarter = Quarter.FetchQuarter(emParams.Ff2lPeiCheckDate.Value.AddMonths(3));
+                    Quarter ff2lPeiEndQuarter = Quarter.FetchQuarter(emParams.CurrentOperatingDate.Value.AddMonths(-3));
+
+                    emParams.Ff2lPeiBeginYearQuarter = $"{ff2lPeiBeginQuarter.YearValue}{ff2lPeiBeginQuarter.QuarterValue}";
+                    emParams.Ff2lPeiEndYearQuarter = $"{ff2lPeiEndQuarter.YearValue}{ff2lPeiEndQuarter.QuarterValue}";
+
+
+                    DateTime priorPeiDateHour = emParams.Ff2lPeiCheckDate.Value;
+
+                    eFf2lResultStatus resultStatus;
+                    string problemQuarterList, problemTestnumList;
+
+
+                    FuelFlowToLoadTestsCheck(priorPeiDateHour, out resultStatus, out problemQuarterList, out problemTestnumList);
+
+
+                    switch (resultStatus)
                     {
-                        thisYear = cDBConvert.ToInteger(drv["CALENDAR_YEAR"]);
-                        thisQuarter = cDBConvert.ToInteger(drv["QUARTER"]);
-                        if (thisYear < SecondYear || (thisYear == SecondYear && thisQuarter < SecondQuarter))
-                            if (thisYear > FirstYear || (thisYear == FirstYear && thisQuarter > FirstQuarter))
-                            {
-                                if (!FoundFF2LRec)//if this is the first one found
-                                    thisFF2LRecFound = drv;
-                                FoundFF2LRec = true;
-                                if (thisYear > cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]) || (thisYear == cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]) && thisQuarter > cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"])))
-                                    thisFF2LRecFound = drv;//take the later of the two                                
-                            }
+                        case eFf2lResultStatus.BaselinePeriodExpired: { emParams.CurrentPeiStatus = "OOC-Baseline Period Expired"; } break;
+                        case eFf2lResultStatus.Ff2lInprogressRequried: { emParams.CurrentPeiStatus = "OOC-Inprogress Fuel Flow to Load Test Required"; } break;
+                        case eFf2lResultStatus.Ff2lInvalidResult: { emParams.CurrentPeiStatus = "OOC-Invalid Fuel Flow to Load Test Result"; } break;
+                        case eFf2lResultStatus.Ff2lMissing: { emParams.CurrentPeiStatus = "OOC-Missing Fuel Flow to Load Test"; } break;
                     }
-                    int EndYear = cDBConvert.ToInteger(thisFF2LRecFound["CALENDAR_YEAR"]);
-                    int EndQtr = cDBConvert.ToInteger(thisFF2LRecFound["QUARTER"]);
-                    Category.SetCheckParameter("FF2L_PEI_End_Year_Quarter", EndYear.ToString() + EndQtr.ToString(), eParameterDataType.String);
-                    DataView OpSuppRecs = Category.GetCheckParameter("Operating_Supp_Data_Records_by_Location").ValueAsDataView();
-                    //DataView OpSuppRecsFound;
-                    FilterFF2LRecs = new sFilterPair[3];
-                    FilterFF2LRecs[0].Set("MON_SYS_ID", MonSysID);
-                    sFilterPair[] FilterOpSupp = new sFilterPair[5];
-                    FilterOpSupp[0].Set("OP_TYPE_CD", "OPHOURS,OSHOURS", eFilterPairStringCompare.InList);
-                    FilterOpSupp[1].Set("FUEL_CD", cDBConvert.ToString(Category.GetCheckParameter("Current_Fuel_Flow_Record").ValueAsDataRowView()["FUEL_CD"]));
-                    FilterOpSupp[2].Set("OP_VALUE", 168, eFilterDataType.Integer, eFilterPairRelativeCompare.GreaterThanOrEqual);
-                    for (int i = BegYear; i <= EndYear; i++)
+
+                    if (emParams.CurrentPeiStatus != null)
                     {
-                        int thisYearsFirstQ = 1;
-                        if (i == BegYear)
-                            thisYearsFirstQ = BegQtr;
-                        for (int j = thisYearsFirstQ; j <= 4 && !(j > EndQtr && i == EndYear); j++)
-                        {
-                            FoundFF2LRec = false;
-                            FilterFF2LRecs[1].Set("CALENDAR_YEAR", i, eFilterDataType.Integer);
-                            FilterFF2LRecs[2].Set("QUARTER", j, eFilterDataType.Integer);
-                            FF2LTestRecsFound = FindRows(FF2LTestRecs, FilterFF2LRecs);
-                            if (FF2LTestRecsFound.Count > 0)
-                            {
-                                FoundFF2LRec = true;
-                                thisFF2LRecFound = FF2LTestRecsFound[0];
-                            }
-
-                            if (!FoundFF2LRec || (thisFF2LRecFound["TEST_RESULT_CD"].AsString() == "FEW168H"))
-                            {
-                                int? opHourCount = GetOpHourCountTrySystemThenFuel(i, j);
-
-                                if (opHourCount.HasValue && (opHourCount.Value >= 168)) // Is QA Operating Quarter
-                                {
-                                    if (FoundFF2LRec)
-                                    {
-                                        DataView FF2LBaselineRecs = Category.GetCheckParameter("FF2L_Baseline_Records_By_Location_For_QA_Status").ValueAsDataView();
-                                        sFilterPair[] FilterFF2LBASRecs = new sFilterPair[1];
-                                        FilterFF2LBASRecs[0].Set("MON_SYS_ID", MonSysID);
-                                        DataView FF2LBaselineRecsFound = FindRows(FF2LBaselineRecs, FilterFF2LBASRecs);
-                                        bool FoundFF2LBASRec = false;
-                                        int BaselineEndYear, BaselineEndQtr;
-
-                                        foreach (DataRowView drv in FF2LBaselineRecsFound)
-                                        {
-                                            BaselineEndYear = cDBConvert.ToDate(drv["END_DATE"], DateTypes.END).Year;
-                                            BaselineEndQtr = cDBConvert.ToDate(drv["END_DATE"], DateTypes.END).Quarter();
-                                            if (BaselineEndYear == i && BaselineEndQtr == j)
-                                            {
-                                                FoundFF2LBASRec = true;
-                                                break;
-                                            }
-                                        }
-
-                                        if (!FoundFF2LBASRec)
-                                        {
-                                            FoundTestNum = cDBConvert.ToString(thisFF2LRecFound["TEST_NUM"]);
-                                            Category.SetCheckParameter("Invalid_FF2L_Test_Number", FoundTestNum, eParameterDataType.String);
-                                            Status = "OOC-Invalid Fuel Flow to Load Test";
-                                            Category.SetCheckParameter("Current_PEI_Status", Status, eParameterDataType.String);
-                                            Category.CheckCatalogResult = Status;
-                                            return ReturnVal;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Category.SetCheckParameter("Missing_FF2L_Year_Quarter", i.ToString() + " Q" + j.ToString(), eParameterDataType.String);
-                                        Status = "Undetermined-Missing Fuel Flow to Load Test";
-                                        Category.SetCheckParameter("Current_PEI_Status", Status, eParameterDataType.String);
-                                        Category.CheckCatalogResult = Status;
-                                        return ReturnVal;
-                                    }
-                                }
-                            }
-                        }
+                        Category.CheckCatalogResult = emParams.CurrentPeiStatus;
                     }
-                    if (Status != "")
-                        Category.SetCheckParameter("Current_PEI_Status", Status, eParameterDataType.String);
+
+                    emParams.Ff2lProblemQuarterList = problemQuarterList;
+                    emParams.Ff2lProblemTestnumList = problemTestnumList;
                 }
             }
             catch (Exception ex)
@@ -2115,7 +1831,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
         #region Helper Methods
 
-        public void CheckExistenceOfValidFuelFlowTest(cCategory Category, out bool ValidFuelFlowTestExistsForEachComponent, out DateTime CertificationCheckDate)
+        public  void CheckExistenceOfValidFuelFlowTest(cCategory Category, out bool ValidFuelFlowTestExistsForEachComponent, out DateTime CertificationCheckDate)
         // Search for the existence of a valid fuel flow test
         {
             DataRowView PriorAccRec = Category.GetCheckParameter("PRIOR_ACCURACY_RECORD").ValueAsDataRowView();
@@ -2257,13 +1973,202 @@ namespace ECMPS.Checks.EmissionsChecks
 
 
         /// <summary>
+        /// Check for FF2LTST valid FF2L tests based on the Current Op Hour, FFACC/FFACCTT End/Reinstall Hour or PEI End Hour, and the Baseline Hour.
+        /// 
+        ///     
+        ///     1. No FF2LTST are excpected or checked if the Current Op Quarter is the quarter of the prior test or the subsequent quarter.
+        ///     2. 
+        /// 
+        /// </summary>
+        /// <param name="testDateHour">The date and hour to use as the FFACC/FFACCTT or PEI test date.</param>
+        /// <param name="resultStatus">The enumeration value for the Current Accuracy Status or Current PEI Status.</param>
+        /// <param name="problemQuarterList">The list of quarters for problem FF2LTST.</param>
+        /// <param name="problemTestnumList">The list of test numbers for problem FF2LTST.</param>
+        /// <returns>Returns true resultStatus is null, otherwise returns false.</returns>
+        public  bool FuelFlowToLoadTestsCheck(DateTime testDateHour, out eFf2lResultStatus resultStatus, out string problemQuarterList, out string problemTestnumList)
+        {
+            resultStatus = eFf2lResultStatus.None;
+            problemQuarterList = null;
+            problemTestnumList = null;
+
+            Quarter currentOperatingQuarter = Quarter.FetchQuarter(emParams.CurrentOperatingDate.Value);
+            Quarter testQuarter = Quarter.FetchQuarter(testDateHour);
+            Quarter testSubsequentQuarter = Quarter.FetchQuarter(testDateHour.AddMonths(3));
+
+
+            if (currentOperatingQuarter > testSubsequentQuarter)
+            {
+                string MonSysId = emParams.FuelFlowComponentRecordToCheck.MonSysId;
+                Quarter fifthQuarterAfterTest = Quarter.FetchQuarter(testDateHour.AddMonths(15));
+
+                DateTime testQuarterEndDateHour = Quarter.FetchQuarter(testDateHour).EndHour;
+                DateTime currentOrFifthQuarterBeginDateHour = Quarter.Min(fifthQuarterAfterTest, currentOperatingQuarter).BeginHour;
+
+
+                VwQaSuppDataHourlyStatusRow ff2lBaselineDataRecord
+                    = emParams.Ff2lBaselineRecordsByLocationForQaStatus.FindEarliestRow
+                        (
+                            new cFilterCondition("MON_SYS_ID", MonSysId),
+                            new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThan, testDateHour),
+                            new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.LessThan, currentOrFifthQuarterBeginDateHour)
+                        );
+
+                if (ff2lBaselineDataRecord != null)
+                {
+                    Quarter baselineQuarter = Quarter.FetchQuarter(ff2lBaselineDataRecord.EndDate.Value);
+
+                    if (baselineQuarter < currentOperatingQuarter)
+                    {
+                        string missingQuarterList = "";
+                        string badResultQuarterList = "";
+                        string badResultTestList = "";
+
+                        for (Quarter targetQuarter = baselineQuarter; targetQuarter < currentOperatingQuarter; targetQuarter++)
+                        {
+                            int? opHourCount = GetOpHourCountTrySystemThenFuelWithLocationNonOp(targetQuarter.YearValue, targetQuarter.QuarterValue);
+
+                            VwQaSuppDataHourlyStatusRow ff2lTestRecord
+                                = emParams.Ff2lTestRecordsByLocationForQaStatus.FindRow
+                                    (
+                                        new cFilterCondition("MON_SYS_ID", MonSysId),
+                                        new cFilterCondition("TEST_RESULT_CD", "PASSED,EXC168H,FEW168H", eFilterConditionStringCompare.InList),
+                                        new cFilterCondition("CALENDAR_YEAR", targetQuarter.YearValue),
+                                        new cFilterCondition("QUARTER", targetQuarter.QuarterValue)
+                                    );
+
+                            if (ff2lTestRecord == null)
+                            {
+                                if (((opHourCount == null) || (opHourCount.Value > 0)) && (targetQuarter != testQuarter))
+                                {
+                                    missingQuarterList = missingQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
+                                }
+                            }
+                            else
+                            {
+                                if (opHourCount != null)
+                                {
+                                    if ((ff2lTestRecord.TestResultCd == "PASSED" || ff2lTestRecord.TestResultCd == "EXC168H") && (opHourCount.Value < 168))
+                                    {
+                                        badResultQuarterList = badResultQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
+                                        badResultTestList = badResultTestList.ListAdd($"'{ff2lTestRecord.TestNum}'");
+                                    }
+                                    else if ((ff2lTestRecord.TestResultCd == "FEW168H") && (opHourCount.Value >= 168))
+                                    {
+                                        badResultQuarterList = badResultQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
+                                        badResultTestList = badResultTestList.ListAdd($"'{ff2lTestRecord.TestNum}'");
+                                    }
+                                }
+                            }
+                        }
+
+                        if (missingQuarterList != "")
+                        {
+                            problemQuarterList = missingQuarterList;
+                            resultStatus = eFf2lResultStatus.Ff2lMissing;
+                        }
+                        else if (badResultQuarterList != "")
+                        {
+                            problemQuarterList = badResultQuarterList;
+                            problemTestnumList = badResultTestList;
+                            resultStatus = eFf2lResultStatus.Ff2lInvalidResult;
+                        }
+                        else
+                        {
+                            if (baselineQuarter > testSubsequentQuarter)
+                            {
+                                missingQuarterList = ""; ;
+
+                                for (Quarter targetQuarter = testSubsequentQuarter; targetQuarter < baselineQuarter; targetQuarter++)
+                                {
+                                    VwQaSuppDataHourlyStatusRow ff2lTestRecord
+                                        = emParams.Ff2lTestRecordsByLocationForQaStatus.FindRow
+                                            (
+                                                new cFilterCondition("MON_SYS_ID", MonSysId),
+                                                new cFilterCondition("TEST_RESULT_CD", "INPROG"),
+                                                new cFilterCondition("CALENDAR_YEAR", targetQuarter.YearValue),
+                                                new cFilterCondition("QUARTER", targetQuarter.QuarterValue)
+                                            );
+
+                                    if (ff2lTestRecord == null)
+                                    {
+                                        int? opHourCount = GetOpHourCountTrySystemThenFuelWithLocationNonOp(targetQuarter.YearValue, targetQuarter.QuarterValue);
+
+                                        if (((opHourCount == null) && (targetQuarter >= Quarter.FetchQuarter(emParams.CurrentFuelFlowRecord.SystemBeginDate.Default(DateTime.MaxValue)))) || ((opHourCount != null) && (opHourCount.Value > 0)))
+                                            missingQuarterList = missingQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
+                                    }
+                                }
+
+                                if (missingQuarterList != "")
+                                {
+                                    problemQuarterList = missingQuarterList;
+                                    resultStatus = eFf2lResultStatus.Ff2lInprogressRequried;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (currentOperatingQuarter < fifthQuarterAfterTest)
+                    {
+                        string missingQuarterList = "";
+
+                        for (Quarter targetQuarter = testSubsequentQuarter; targetQuarter < currentOperatingQuarter; targetQuarter++)
+                        {
+                            VwQaSuppDataHourlyStatusRow ff2lTestRecord
+                                = emParams.Ff2lTestRecordsByLocationForQaStatus.FindRow
+                                    (
+                                        new cFilterCondition("MON_SYS_ID", MonSysId),
+                                        new cFilterCondition("TEST_RESULT_CD", "INPROG"),
+                                        new cFilterCondition("CALENDAR_YEAR", targetQuarter.YearValue),
+                                        new cFilterCondition("QUARTER", targetQuarter.QuarterValue)
+                                    );
+
+                            if (ff2lTestRecord == null)
+                            {
+                                int? opHourCount = GetOpHourCountTrySystemThenFuelWithLocationNonOp(targetQuarter.YearValue, targetQuarter.QuarterValue);
+
+                                if (((opHourCount == null) && (targetQuarter >= Quarter.FetchQuarter(emParams.CurrentFuelFlowRecord.SystemBeginDate.Default(DateTime.MaxValue)))) || ((opHourCount != null) && (opHourCount.Value > 0)))
+                                    missingQuarterList = missingQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
+                            }
+                        }
+
+                        if (missingQuarterList != "")
+                        {
+                            problemQuarterList = missingQuarterList;
+                            resultStatus = eFf2lResultStatus.Ff2lInprogressRequried;
+                        }
+                    }
+                    else
+                    {
+                        resultStatus = eFf2lResultStatus.BaselinePeriodExpired;
+                    }
+                }
+            }
+
+            if (problemQuarterList != null)
+            {
+                problemQuarterList = problemQuarterList.FormatList();
+            }
+
+            if (problemTestnumList != null)
+            {
+                problemTestnumList = problemTestnumList.FormatList();
+            }
+
+            return (resultStatus == eFf2lResultStatus.None);
+        }
+
+
+        /// <summary>
         /// Retrieves the op hour count for the QA Status System and quarter, first from the System Operating Supp Data if it exists,
-        /// otherwise from the fuel-specific Operating Supp Data.
+        /// then from the fuel-specific Operating Supp Data, if neither exists and the locationOperating Supp Data exists and is zero,
+        /// returns the op hour count as zero instead of null.
         /// </summary>
         /// <param name="year">The year of the op supp data to retrieve.</param>
         /// <param name="quarter">The quarter of the op supp data to retrieve.</param>
         /// <returns>The quarter specific operating count for the QA Status System, null if it does not exist.</returns>
-        public int? GetOpHourCountTrySystemThenFuel(int year, int quarter)
+        public int? GetOpHourCountTrySystemThenFuelWithLocationNonOp(int year, int quarter)
         {
             int? opHourCount;
 
@@ -2295,7 +2200,22 @@ namespace ECMPS.Checks.EmissionsChecks
                 }
                 else
                 {
-                    opHourCount = null;
+                    fuelOpSuppDataRecord = emParams.OperatingSuppDataRecordsByLocation.FindRow
+                        (
+                            new cFilterCondition("CALENDAR_YEAR", year, eFilterDataType.Integer),
+                            new cFilterCondition("QUARTER", quarter, eFilterDataType.Integer),
+                            new cFilterCondition("FUEL_CD", null, eFilterDataType.String),
+                            new cFilterCondition("OP_TYPE_CD", "OPHOURS")
+                        );
+
+                    if ((fuelOpSuppDataRecord != null) && fuelOpSuppDataRecord.OpValue.HasValue && (fuelOpSuppDataRecord.OpValue == 0m))
+                    {
+                        opHourCount = Decimal.ToInt32(fuelOpSuppDataRecord.OpValue.Value);
+                    }
+                    else
+                    {
+                        opHourCount = null;
+                    }
                 }
             }
 
@@ -2333,7 +2253,7 @@ namespace ECMPS.Checks.EmissionsChecks
                 VwMpOpSuppDataRow fuelOpSuppDataRecord = emParams.OperatingSuppDataRecordsByLocation.FindRow
                                                          (
                                                             new cFilterCondition("CALENDAR_YEAR", year, eFilterDataType.Integer),
-                                                            new cFilterCondition("QUARTER", emParams, eFilterDataType.Integer),
+                                                            new cFilterCondition("QUARTER", quarter, eFilterDataType.Integer),
                                                             new cFilterCondition("FUEL_CD", emParams.CurrentFuelFlowRecord.FuelCd, eFilterDataType.String),
                                                             new cFilterCondition("OP_TYPE_CD", "OPHOURS")
                                                          );
@@ -2369,6 +2289,38 @@ namespace ECMPS.Checks.EmissionsChecks
             return opHourCount;
         }
 
+
+        #region Helpers
+
+        public enum eFf2lResultStatus
+        {
+            /// <summary>
+            /// No result (i.e. check passed)
+            /// </summary>
+            None,
+
+            /// <summary>
+            /// Missing Fuel Flow to Load Test
+            /// </summary>
+            Ff2lMissing,
+
+            /// <summary>
+            /// Invalid Fuel Flow to Load Test Result
+            /// </summary>
+            Ff2lInvalidResult,
+
+            /// <summary>
+            /// Inprogress Fuel Flow to Load Test Required
+            /// </summary>
+            Ff2lInprogressRequried,
+
+            /// <summary>
+            /// Baseline Period Expired
+            /// </summary>
+            BaselinePeriodExpired
+        }
+
+        #endregion
 
         #endregion
     }

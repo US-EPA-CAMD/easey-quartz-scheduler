@@ -64,7 +64,7 @@ namespace ECMPS.Checks.EmissionsChecks
         /// </summary>
         private void InitCheckProcedures()
         {
-            CheckProcedures = new dCheckProcedure[33];
+            CheckProcedures = new dCheckProcedure[34];
 
             CheckProcedures[1] = new dCheckProcedure(HOURGEN1);
             CheckProcedures[2] = new dCheckProcedure(HOURGEN2);
@@ -102,6 +102,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
             CheckProcedures[31] = new dCheckProcedure(HOURGEN31);
             CheckProcedures[32] = new dCheckProcedure(HOURGEN32);
+            CheckProcedures[33] = new dCheckProcedure(HOURGEN33);
         }
 
         #endregion
@@ -2501,6 +2502,187 @@ namespace ECMPS.Checks.EmissionsChecks
         }
 
         #endregion
+        /// <summary>
+        /// Sets the Unit Fuel quarter information needed to indicate whether the checks can avoid hourly Unit Fuel values, and to set the quarterly values to use instead of hourly values.
+        /// 
+        /// Initializes UnitFuelsSpanQuarter to true and sets to false if any Unit Fuel or, for stacks and pipes, Unit Stack Configuration record is active during the quarter but does not
+        /// span the quarter.  A subsequent check will need to perform an hour by hour check instead of using the data in 
+        /// </summary>
+        /// <param name="category"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        public string HOURGEN33(cCategory category, ref bool log)
+        {
+            string returnVal = ""; 
+           
+            try
+            {
+                emParams.FcValicationSpansQuarter = true;
+
+
+                emParams.FcValidationInfoByLocationArray = new FcValidationInfo[emParams.MonitoringPlanLocationRecords.Count];
+                {
+                    FFactorRangeChecksRow fFactorRangeChecksRow = emParams.FFactorRangeCrossCheckTable.FindRow(new cFilterCondition("Factor", "FC"));
+
+                    decimal minValue = (fFactorRangeChecksRow != null) ? fFactorRangeChecksRow.LowerValue.AsDecimal().Default(Decimal.MinValue) : Decimal.MinValue;
+                    decimal maxValue = (fFactorRangeChecksRow != null) ? fFactorRangeChecksRow.UpperValue.AsDecimal().Default(Decimal.MaxValue) : Decimal.MaxValue;
+
+                    FcValidationInfo.NonFuelSpecificMinValue = minValue;
+                    FcValidationInfo.NonFuelSpecificMaxValue = maxValue;
+
+                    for (int dex = 0; dex < emParams.FcValidationInfoByLocationArray.Length; dex++)
+                        emParams.FcValidationInfoByLocationArray[dex] = new FcValidationInfo(minValue, maxValue);
+                }
+
+
+                for (int locationPosition = 0; locationPosition < emParams.MonitoringPlanLocationRecords.Count; locationPosition++)
+                {
+                    VwMpMonitorLocationRow monitoringPlanLocationRecord = emParams.MonitoringPlanLocationRecords[locationPosition];
+
+                    bool dslFound = false;
+                    bool pngOrNngFound = false;
+                    bool otherFound = false;
+
+                    if (monitoringPlanLocationRecord.UnitId != null)
+                    {
+                        CheckDataView<VwMpLocationFuelRow> unitFuelRecords
+                            = emParams.FacilityUnitFuelRecords.FindActiveRows(emParams.CurrentReportingPeriodBeginDate.Value,
+                                                                                  emParams.CurrentReportingPeriodEndDate.Value,
+                                                                                  new cFilterCondition("UNIT_ID", eFilterConditionRelativeCompare.Equals, (int)monitoringPlanLocationRecord.UnitId.Value),
+                                                                                  new cFilterCondition("INDICATOR_CD", "P,S", eFilterConditionStringCompare.InList));
+
+                        foreach (VwMpLocationFuelRow unitFuelRecord in unitFuelRecords)
+                        {
+                            if ((unitFuelRecord.BeginDate > emParams.CurrentReportingPeriodBeginDate) ||
+                                ((unitFuelRecord.EndDate != null) && (unitFuelRecord.EndDate < emParams.CurrentReportingPeriodEndDate)))
+                            {
+                                emParams.FcValicationSpansQuarter = false;
+                                break;
+                            }
+                            else if (unitFuelRecord.FuelCd == "NNG" || unitFuelRecord.FuelCd == "PNG")
+                            {
+                                pngOrNngFound = true;
+                            }
+                            else if (unitFuelRecord.FuelCd == "DSL")
+                            {
+                                dslFound = true;
+                            }
+                            else
+                            {
+                                otherFound = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        CheckDataView<VwMpUnitStackConfigurationRow> unitStackConfigurationRecords
+                            = emParams.EmUnitStackConfigurationRecords.FindActiveRows(emParams.CurrentReportingPeriodBeginDate.Value,
+                                                                                          emParams.CurrentReportingPeriodEndDate.Value,
+                                                                                          new cFilterCondition("STACK_PIPE_ID", monitoringPlanLocationRecord.StackPipeId));
+
+                        foreach (VwMpUnitStackConfigurationRow unitStackConfigurationRecord in unitStackConfigurationRecords)
+                        {
+                            if ((unitStackConfigurationRecord.BeginDate > emParams.CurrentReportingPeriodBeginDate) ||
+                                ((unitStackConfigurationRecord.EndDate != null) && (unitStackConfigurationRecord.EndDate < emParams.CurrentReportingPeriodEndDate)))
+                            {
+                                emParams.FcValicationSpansQuarter = false;
+                            }
+
+
+                            CheckDataView<VwMpLocationFuelRow> unitFuelRecords
+                                = emParams.FacilityUnitFuelRecords.FindActiveRows(emParams.CurrentReportingPeriodBeginDate.Value,
+                                                                                      emParams.CurrentReportingPeriodEndDate.Value,
+                                                                                      new cFilterCondition("UNIT_ID", eFilterConditionRelativeCompare.Equals, unitStackConfigurationRecord.UnitId.Value),
+                                                                                      new cFilterCondition("INDICATOR_CD", "P,S", eFilterConditionStringCompare.InList));
+
+                            foreach (VwMpLocationFuelRow unitFuelRecord in unitFuelRecords)
+                            {
+                                if ((unitFuelRecord.BeginDate > emParams.CurrentReportingPeriodBeginDate) ||
+                                    ((unitFuelRecord.EndDate != null) && (unitFuelRecord.EndDate < emParams.CurrentReportingPeriodEndDate)))
+                                {
+                                    emParams.FcValicationSpansQuarter = false;
+                                    break;
+                                }
+                                else if (unitFuelRecord.FuelCd == "NNG" || unitFuelRecord.FuelCd == "PNG")
+                                {
+                                    pngOrNngFound = true;
+                                }
+                                else if (unitFuelRecord.FuelCd == "DSL")
+                                {
+                                    dslFound = true;
+                                }
+                                else
+                                {
+                                    otherFound = true;
+                                }
+                            }
+
+                            // Exit USC loop if fuelRangeCd is already OTHER or UnitFuelsSpanQuarter is false
+                            if (otherFound || (emParams.FcValicationSpansQuarter == false))
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+
+                    // Exit location loop if UnitFuelsSpanQuarter is false.
+                    if (emParams.FcValicationSpansQuarter == false)
+                    {
+                        break;
+                    }
+
+
+                    if (!otherFound)
+                    {
+                        FuelTypeRealityChecksForFcFactorRow fuelTypeRealityChecksForFcFactorRow;
+
+                        if (pngOrNngFound)
+                        {
+                            fuelTypeRealityChecksForFcFactorRow
+                                = emParams.FuelTypeRealityChecksForFcFactorCrossCheckTable.FindRow(new cFilterCondition("FuelType", "GAS"));
+
+                            if (fuelTypeRealityChecksForFcFactorRow != null)
+                            {
+                                emParams.FcValidationInfoByLocationArray[locationPosition]
+                                    .UpdateToFuelSpecificRange(fuelTypeRealityChecksForFcFactorRow.LowerValue.AsDecimal().Default(Decimal.MinValue),
+                                                               fuelTypeRealityChecksForFcFactorRow.UpperValue.AsDecimal().Default(Decimal.MaxValue));
+                            }
+                        }
+
+                        if (dslFound)
+                        {
+                            fuelTypeRealityChecksForFcFactorRow
+                                = emParams.FuelTypeRealityChecksForFcFactorCrossCheckTable.FindRow(new cFilterCondition("FuelType", "OIL"));
+
+                            if (fuelTypeRealityChecksForFcFactorRow != null)
+                            {
+                                emParams.FcValidationInfoByLocationArray[locationPosition]
+                                    .UpdateToFuelSpecificRange(fuelTypeRealityChecksForFcFactorRow.LowerValue.AsDecimal().Default(Decimal.MinValue),
+                                                               fuelTypeRealityChecksForFcFactorRow.UpperValue.AsDecimal().Default(Decimal.MaxValue));
+                            }
+                        }
+                    }
+                }
+
+                // Ensure the UnitFuelsRangeByLocationArray are null if UnitFuelsSpanQuarter is false.
+                if (emParams.FcValicationSpansQuarter == false)
+                {
+                    for (int locationPosition = 0; locationPosition < emParams.MonitoringPlanLocationRecords.Count; locationPosition++)
+                    {
+                        emParams.FcValidationInfoByLocationArray[locationPosition] = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                returnVal = category.CheckEngine.FormatError(ex);
+            }
+
+            return returnVal;
+        }
+
+        
 
     }
 

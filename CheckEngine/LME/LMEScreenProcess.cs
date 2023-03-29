@@ -51,6 +51,7 @@ namespace ECMPS.Checks.LME
                 cEmissionsCheckParameters emissionsCheckParameters = new cEmissionsCheckParameters( this, mCheckEngine.DbAuxConnection );
 
                 Checks[40] = new cHourlyGeneralChecks( mCheckEngine, emissionsCheckParameters );
+                Checks[40].setEmParamsForCheck(ref emParams);
 
                 Checks[45] = (cChecks)Activator.CreateInstanceFrom( checksDllPath + "ECMPS.Checks.LME.dll",
                                                                    "ECMPS.Checks.LMEChecks.cLMEChecks" ).Unwrap();
