@@ -34,13 +34,28 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
-      if(await scheduler.CheckExists(WithJobKey())){
-        await scheduler.DeleteJob(WithJobKey());
-      }
-      
-      if (!await scheduler.CheckExists(WithJobKey()))
-      {
-        app.UseQuartzJob<EvaluationJobQueue>(WithCronSchedule("0 0/1 * 1/1 * ? *"));
+      try {
+        JobKey jobKey = WithJobKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATION_QUEUE_SCHEDULE"] ?? "0 0/1 * 1/1 * ? *";
+        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
+
+        if (await scheduler.CheckExists(jobKey)) {
+          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
+
+          if (
+            trigger is ICronTrigger cronTrigger &&
+            cronTrigger.CronExpressionString != cronExpression
+          ) {
+            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
+          }
+        } else {
+          app.UseQuartzJob<EvaluationJobQueue>(triggerBuilder);
+          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
+        }
+      } catch(Exception e) {
+        Console.WriteLine("ERROR");
+        Console.WriteLine(e.Message);
       }
     }
 

@@ -1,14 +1,11 @@
-using System.Diagnostics.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-
 
 using Quartz;
 using SilkierQuartz;
@@ -67,7 +64,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public Task Execute(IJobExecutionContext context)
     {
-
       JobDataMap dataMap = context.MergedJobDataMap;
       JobKey key = context.JobDetail.Key;
 
@@ -221,6 +217,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             break;
           case "EM":
             int rptPeriodId = Int32.Parse(dataMap.GetString("rptPeriodId"));
+            ReportingPeriod rp = _dbContext.ReportingPeriods.Find(rptPeriodId);
+
             EmissionEvaluation emissionEvalRecord = _dbContext.EmissionEvaluations.Find(monitorPlanId, rptPeriodId); //TODO LOOK UP COMPOSITE PRIMARY KEY
             emissionEvalRecord.EvalStatus = "WIP";
 
@@ -234,6 +232,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             evaluationStatus = emissionEvalStatus.Code;
             emissionEvalRecord.EvalStatus = evaluationStatus;
             _dbContext.EmissionEvaluations.Update(emissionEvalRecord);
+
+            _dbContext.ExecuteEmissionRefreshProcedure(monitorPlanId, rp.year, rp.quarter);
             break;
           default:
             throw new Exception("A Process Code of [MP, QA-QCE, QA-TEE, EM] is required and was not provided");

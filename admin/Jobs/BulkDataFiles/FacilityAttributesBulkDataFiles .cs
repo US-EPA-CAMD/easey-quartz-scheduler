@@ -36,18 +36,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
+      try {
+        JobKey jobKey = WithJobKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_FACILITY_ATTRIBUTES_SCHEDULE"] ?? "0 0/10 2-4 ? * * *";
+        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
 
-      if(await scheduler.CheckExists(WithJobKey())){
-        await scheduler.DeleteJob(WithJobKey());
-      }
+        if (await scheduler.CheckExists(jobKey)) {
+          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
 
-     
-        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_FACILITY_ATTRIBUTES_SCHEDULE"] != null){
-          app.UseQuartzJob<FacilityAttributesBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_FACILITY_ATTRIBUTES_SCHEDULE"]));
+          if (
+            trigger is ICronTrigger cronTrigger &&
+            cronTrigger.CronExpressionString != cronExpression
+          ) {
+            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
+          }
+        } else {
+          app.UseQuartzJob<FacilityAttributesBulkDataFiles>(triggerBuilder);
+          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
         }
-        else
-          app.UseQuartzJob<FacilityAttributesBulkDataFiles>(WithCronSchedule("0 0/10 2-4 ? * * *"));
-      
+      } catch(Exception e) {
+        Console.WriteLine("ERROR");
+        Console.WriteLine(e.Message);
+      }
     }
 
     public FacilityAttributesBulkDataFiles(NpgSqlContext dbContext, IConfiguration configuration)
@@ -57,7 +68,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
-
+      
       // Does this job already exist? Otherwise create and schedule a new copy
       List<List<Object>> jobAlreadyExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Facility Attributes' AND add_date::date = now()::date;", 9);
       if(jobAlreadyExists.Count != 0){
@@ -94,10 +105,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         List<List<Object>> rowsPerState = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_facility_bulk_files_to_generate", 1);
         
         for(int row = 0; row < rowsPerState.Count; row++){
-          decimal year = Convert.ToDecimal(rowsPerState[row][0]);
+          int year = Convert.ToInt32(rowsPerState[row][0]);
           DateTime currentDate = Utils.getCurrentEasternTime();
 
-          await _dbContext.CreateBulkFileJob(year, null, null, "Facility", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/facilities/attributes?year=" + year, "facility/facility" + "-" + year + ".csv", job_id, null);
+          await _dbContext.CreateBulkFileRecord("Facility-" + year, job_id, year, null, null, "Facility", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/facilities/attributes?year=" + year, "facility/facility" + "-" + year + ".csv", job_id, null);
         }
 
         jl.StatusCd = "COMPLETE";

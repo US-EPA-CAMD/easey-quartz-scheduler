@@ -2,6 +2,7 @@ using System;
 using System.Data;
 
 using ECMPS.Checks.CheckEngine;
+using ECMPS.Checks.Em.Parameters;
 using ECMPS.Checks.Parameters;
 using ECMPS.Checks.TypeUtilities;
 
@@ -18,11 +19,11 @@ namespace ECMPS.Checks.EmissionsReport
 
     public cH2oCalculationCategory(cCheckEngine ACheckEngine,
                                    cEmissionsReportProcess AHourlyEmissionsData,
-                                   cOperatingHourCategory AOperatingHourCategory)
+                                   cOperatingHourCategory AOperatingHourCategory,ref EmParameters emParameters)
       : base(ACheckEngine,
              (cEmissionsReportProcess)AHourlyEmissionsData,
              (cCategory)AOperatingHourCategory,
-             "H2OVC")
+             "H2OVC", ref emParameters)
     {
     }
 

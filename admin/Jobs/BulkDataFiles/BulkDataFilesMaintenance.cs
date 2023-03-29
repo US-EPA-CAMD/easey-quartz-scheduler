@@ -10,6 +10,8 @@ using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
 using Epa.Camd.Logger;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -36,39 +38,34 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
+      try {
+        JobKey jobKey = WithJobKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_BULK_FILE_MAINTENANCE_SCHEDULE"] ?? "0 0 6 ? * * *";
+        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
 
-      if(await scheduler.CheckExists(WithJobKey())){
-        await scheduler.DeleteJob(WithJobKey());
-      }
+        if (await scheduler.CheckExists(jobKey)) {
+          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
 
-      
-        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_MAINTENANCE_SCHEDULE"] != null){
-          app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_MAINTENANCE_SCHEDULE"]));
+          if (
+            trigger is ICronTrigger cronTrigger &&
+            cronTrigger.CronExpressionString != cronExpression
+          ) {
+            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
+          }
+        } else {
+          app.UseQuartzJob<BulkDataFileMaintenance>(triggerBuilder);
+          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
         }
-        else
-          app.UseQuartzJob<BulkDataFileMaintenance>(WithCronSchedule("0 0 6 ? * * *"));
-      
+      } catch(Exception e) {
+        Console.WriteLine("ERROR");
+        Console.WriteLine(e.Message);
+      }
     }
 
     public BulkDataFileMaintenance(NpgSqlContext dbContext, IConfiguration configuration)
     {
       _dbContext = dbContext;
-    }
-
-    private async void deleteJobs(IJobExecutionContext context, List<List<Object>> rows){
-      for(int row = 0; row < rows.Count; row++){
-          try{
-            JobKey lookupKey = new JobKey(rows[row][0].ToString());
-            IJobDetail jobToProcess = await context.Scheduler.GetJobDetail(lookupKey);
-
-            if(jobToProcess != null){
-              await context.Scheduler.DeleteJob(lookupKey);
-            }
-          }
-          catch(Exception e){
-            Console.Write(e.ToString());
-          }
-        }
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -88,13 +85,23 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.JobLogs.Add(jl);
         await _dbContext.SaveChangesAsync();
 
-        List<List<Object>> toDelete = await _dbContext.ExecuteSqlQuery("SELECT job_id FROM camdaux.vw_bulk_file_jobs_to_delete", 1);
-        deleteJobs(context, toDelete);
-        _dbContext.ExecuteSql("DELETE FROM camdaux.job_log WHERE job_id IN (SELECT job_id FROM camdaux.vw_bulk_file_jobs_to_delete);");
+        List<BulkFileQueue> toDelete = _dbContext.BulkFileQueue.FromSqlRaw(@"
+            SELECT *
+            FROM camdaux.bulk_file_queue
+            WHERE status_cd IN('QUEUED', 'ERROR', 'WIP') AND add_date < now() - interval '30 days'"
+          ).ToList();
+
+        foreach (BulkFileQueue record in toDelete)
+        {
+            if(await context.Scheduler.CheckExists(new JobKey(record.JobId.ToString()))){
+              await context.Scheduler.DeleteJob(new JobKey(record.JobId.ToString()));
+            }
+        }
+
+        _dbContext.ExecuteSql("DELETE from camdaux.bulk_file_queue where add_date < now() - interval '30 days'");
+        _dbContext.ExecuteSql("DELETE from camdaux.job_log where add_date < now() - interval '30 days'");
 
         _dbContext.ExecuteSql("CALL camdaux.procedure_bulk_file_requeue_check();");
-
-        _dbContext.ExecuteSql("DELETE from camdaux.job_log where add_date < now() - interval '30 days'");
 
         jl.StatusCd = "COMPLETE";
         jl.EndDate = Utils.getCurrentEasternTime();

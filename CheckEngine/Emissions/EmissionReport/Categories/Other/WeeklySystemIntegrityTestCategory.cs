@@ -20,7 +20,7 @@ namespace ECMPS.Checks.EmissionsReport
   {
 
         #region Constructors
-        public EmParameters emParams;
+      
         /// <summary>
         /// Creates a category with a specific parent category and category code.
         /// </summary>
@@ -29,10 +29,10 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="componentIdentifier">The component identifier associated with the test.</param>
         /// <param name="componentTypeCd">The type of the component associated with the test.</param>
         /// <param name="testDateHour">The date and hour of the test.</param>
-        public WeeklySystemIntegrityTestCategory(cCategory parentCategory, EmParameters emparams)
-      : base(parentCategory, "WSI", "WeeklySystemIntegrity")
+        public WeeklySystemIntegrityTestCategory(cCategory parentCategory, ref EmParameters emparams)
+      : base(parentCategory, "WSI", "WeeklySystemIntegrity", ref emparams)
     {
-            emParams = emparams;
+          
         }
 
     #endregion

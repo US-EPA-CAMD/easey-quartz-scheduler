@@ -564,7 +564,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="SupplementalDataUpdateTable"></param>
         /// <param name="rptPeriodId"></param>
         /// <param name="workspaceSessionId"></param>
-        public void LoadIntoSupplementalDataTables(DataTable SupplementalDataUpdateTable, int rptPeriodId, decimal workspaceSessionId)
+        public void LoadIntoSupplementalDataTables(DataTable SupplementalDataUpdateTable, int rptPeriodId, string workspaceSessionId)
         {
             // Only store values for tests that are not incomplete or ignored (Valid is null), and are online tests
             if (!FromPreviousQuarter)
@@ -573,7 +573,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 
                 dataRow = SupplementalDataUpdateTable.NewRow();
 
-                dataRow["SESSION_ID"] = workspaceSessionId;
+                dataRow["CHK_SESSION_ID"] = workspaceSessionId;
                 dataRow["DAILY_TEST_SUM_ID"] = DailyTestSumId;
                 dataRow["RPT_PERIOD_ID"] = rptPeriodId;
                 dataRow["KEY_ONLINE_IND"] = (IsOnlineTest ? 1 : 0);

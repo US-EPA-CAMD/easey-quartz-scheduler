@@ -17,18 +17,18 @@ namespace ECMPS.Checks.EmissionsReport
     {
 
         #region Constructors
-        public EmParameters emParams;
+        
 
-        public cSummaryValueInitializationCategory(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData, EmParameters emparams)
-          : base(ACheckEngine, (cEmissionsReportProcess)AHourlyEmissionsData, "SUMINIT")
+        public cSummaryValueInitializationCategory(cCheckEngine ACheckEngine, cEmissionsReportProcess AHourlyEmissionsData, ref EmParameters emparams)
+          : base(ACheckEngine, (cEmissionsReportProcess)AHourlyEmissionsData, "SUMINIT", ref emparams)
         {
-            emParams = emparams;
+            
         }
 
         #endregion
 
 
-        #region Base Class Overrides
+        #region Base Class Overrides emParams.NoxrSummaryRequiredForLmeAnnualRecor
 
         protected override void FilterData()
         {

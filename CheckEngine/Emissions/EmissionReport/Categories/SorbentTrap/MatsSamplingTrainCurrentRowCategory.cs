@@ -22,7 +22,7 @@ namespace ECMPS.Checks.EmissionsReport
   {
 
         #region Constructors
-        public EmParameters emParams;
+        
 
         /// <summary>
         /// Creates a category object to represent the category indicated by the passed code, 
@@ -30,10 +30,10 @@ namespace ECMPS.Checks.EmissionsReport
         /// </summary>
         /// <param name="parentCategory">The parent category.</param>
         /// <param name="categoryCd">The category code of the category the object will represent.</param>
-        public MatsSamplingTrainCurrentRowCategory(cCategory parentCategory, string categoryCd, EmParameters emparams)        
-      : base(parentCategory, categoryCd)
+        public MatsSamplingTrainCurrentRowCategory(cCategory parentCategory, string categoryCd, ref EmParameters emparams)        
+      : base(parentCategory, categoryCd, ref emparams)
     {
-            emParams = emparams;
+            
     }
 
     #endregion

@@ -72,13 +72,15 @@ namespace ECMPS.Checks.OtherQAEvaluation
 			{
 				Checks[27] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
 																		   "ECMPS.Checks.TestChecks.cTestChecks").Unwrap();
-				Checks[35] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
+                Checks[27].setQaParamsForCheck(ref qaParams); 
+
+                Checks[35] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
 																   "ECMPS.Checks.CertEventChecks.cCertEventChecks").Unwrap();
 				Checks[35].setQaParamsForCheck(ref qaParams);
 				Checks[36] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "QA.dll",
 																   "ECMPS.Checks.TEEChecks.cTEEChecks").Unwrap();
-
-				result = true;
+                Checks[36].setQaParamsForCheck(ref qaParams);
+                result = true;
 			}
 			catch (Exception ex)
 			{

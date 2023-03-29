@@ -9,7 +9,7 @@ using ECMPS.Checks.TypeUtilities;
 
 using ECMPS.Definitions.Extensions;
 using ECMPS.ErrorSuppression;
-
+using ECMPS.Checks.Em.Parameters;
 
 namespace ECMPS.Checks.EmissionsReport
 {
@@ -19,11 +19,11 @@ namespace ECMPS.Checks.EmissionsReport
 
     public cCo2cCalculationCategory(cCheckEngine ACheckEngine,
                                     cEmissionsReportProcess AHourlyEmissionsData,
-                                    cOperatingHourCategory AOperatingHourCategory)
+                                    cOperatingHourCategory AOperatingHourCategory, ref EmParameters emparms)
       : base(ACheckEngine,
              (cEmissionsReportProcess)AHourlyEmissionsData,
              (cCategory)AOperatingHourCategory,
-             "CO2CVC")
+             "CO2CVC", ref emparms)
     {
     }
 

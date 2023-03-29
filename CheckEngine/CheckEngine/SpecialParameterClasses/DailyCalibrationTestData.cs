@@ -24,7 +24,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// 
         /// </summary>
         /// <param name="dailyCalibrationSeverityCd">The daily alibration category object's severity code.</param>
-        public cDailyCalibrationTestData(eSeverityCd dailyCalibrationSeverityCd, EmParameters emParams)
+        public cDailyCalibrationTestData(eSeverityCd dailyCalibrationSeverityCd, ref EmParameters emParams)
         {
             string errorMessage;
 
@@ -311,7 +311,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="SupplementalDataUpdateSystemDataTable"></param>
         /// <param name="rptPeriodId"></param>
         /// <param name="workspaceSessionId"></param>
-        public void LoadIntoSupplementalDataTables(DataTable SupplementalDataUpdateLocationDataTable, DataTable SupplementalDataUpdateSystemDataTable, int rptPeriodId, decimal workspaceSessionId)
+        public void LoadIntoSupplementalDataTables(DataTable SupplementalDataUpdateLocationDataTable, DataTable SupplementalDataUpdateSystemDataTable, int rptPeriodId, string checkSessionId)
         {
             // Only store values for tests that are not incomplete or ignored (Valid is null), and are online tests
             if (Valid.HasValue && !FromPreviousQuarter)
@@ -320,7 +320,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 
                 dataRow = SupplementalDataUpdateLocationDataTable.NewRow();
 
-                dataRow["SESSION_ID"] = workspaceSessionId;
+                dataRow["CHK_SESSION_ID"] = checkSessionId;
                 dataRow["DAILY_TEST_SUM_ID"] = DailyCalibrationRow["DAILY_TEST_SUM_ID"].AsString();
                 dataRow["RPT_PERIOD_ID"] = rptPeriodId;
                 dataRow["KEY_ONLINE_IND"] = (Online ? 1 : 0);
@@ -339,7 +339,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 
                     dataRow = SupplementalDataUpdateSystemDataTable.NewRow();
 
-                    dataRow["SESSION_ID"] = workspaceSessionId;
+                    dataRow["CHK_SESSION_ID"] = checkSessionId;
                     dataRow["DAILY_TEST_SUM_ID"] = DailyCalibrationRow["DAILY_TEST_SUM_ID"].AsString();
                     dataRow["RPT_PERIOD_ID"] = rptPeriodId;
                     dataRow["KEY_ONLINE_IND"] = (Online ? 1 : 0);

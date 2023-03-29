@@ -17,14 +17,14 @@ namespace ECMPS.Checks.EmissionsReport
     {
 
         #region Constructors
-        public EmParameters emParams;
-        public cDailyInterferenceStatusCategory(cCategoryHourly categoryEmission, EmParameters emparams, string categoryCd = "INTSTAT")
+       
+        public cDailyInterferenceStatusCategory(cCategoryHourly categoryEmission, ref EmParameters emparams, string categoryCd = "INTSTAT")
             : base(categoryEmission.CheckEngine,
                  categoryEmission.EmissionsReportProcess,
                  categoryEmission,
-                 categoryCd)
+                 categoryCd, ref emparams)
         {
-            emParams = emparams;
+          
 
         }
 

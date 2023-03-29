@@ -36,18 +36,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
+      try {
+        JobKey jobKey = WithJobKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_TRANSACTIONS_SCHEDULE"] ?? "0 0/10 2-4 15 1 ? *";
+        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
 
-      if(await scheduler.CheckExists(WithJobKey())){
-        await scheduler.DeleteJob(WithJobKey());
-      }
+        if (await scheduler.CheckExists(jobKey)) {
+          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
 
-     
-        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_TRANSACTIONS_SCHEDULE"] != null){
-          app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_TRANSACTIONS_SCHEDULE"]));
+          if (
+            trigger is ICronTrigger cronTrigger &&
+            cronTrigger.CronExpressionString != cronExpression
+          ) {
+            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
+          }
+        } else {
+          app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(triggerBuilder);
+          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
         }
-        else
-          app.UseQuartzJob<AllowanceTransactionsBulkDataFiles>(WithCronSchedule("0 0/10 2-4 15 1 ? *"));
-      
+      } catch(Exception e) {
+        Console.WriteLine("ERROR");
+        Console.WriteLine(e.Message);
+      }
     }
 
     public AllowanceTransactionsBulkDataFiles(NpgSqlContext dbContext, IConfiguration configuration)
@@ -99,10 +110,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         
         for(int row = 0; row < programCodes.Length; row++){
           string code = programCodes[row];
-          decimal year = DateTime.Now.ToUniversalTime().Year - 1;
+          int year = DateTime.Now.ToUniversalTime().Year - 1;
           string urlParams = "transactionBeginDate=1993-03-23&transactionEndDate=" + year + "-12-31&programCodeInfo=" + code;
 
-          await _dbContext.CreateBulkFileJob(year, null, null, "Allowance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code);
+          await _dbContext.CreateBulkFileRecord("Allowance-Transactions-"+ code , job_id, year, null, null, "Allowance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-transactions?" + urlParams, "allowance/transactions-" + code.ToLower() + ".csv", job_id, code);
         }
         
         jl.StatusCd = "COMPLETE";

@@ -186,7 +186,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="SupplementalDataUpdateTable"></param>
         /// <param name="rptPeriodId"></param>
         /// <param name="workspaceSessionId"></param>
-        public void LoadIntoSupplementalDataTables(DataTable SupplementalDataUpdateTable, int rptPeriodId, decimal workspaceSessionId)
+        public void LoadIntoSupplementalDataTables(DataTable SupplementalDataUpdateTable, int rptPeriodId, string workspaceSessionId)
         {
             if (LatestOnlineTest != null) LatestOnlineTest.LoadIntoSupplementalDataTables(SupplementalDataUpdateTable, rptPeriodId, workspaceSessionId);
             if (LatestOfflineTest != null) LatestOfflineTest.LoadIntoSupplementalDataTables(SupplementalDataUpdateTable, rptPeriodId, workspaceSessionId);

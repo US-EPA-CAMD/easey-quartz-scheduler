@@ -16,14 +16,13 @@ namespace ECMPS.Checks.EmissionsReport
   {
 
         #region Constructors
-        public EmParameters emParams;
     public cDailyCalibrationCategory(cCheckEngine checkEngine,
                                      cEmissionsReportProcess emissionsReportProcess,
-                                     cOperatingHourCategory operatingHourCategory,EmParameters emparams)
+                                     cOperatingHourCategory operatingHourCategory, ref EmParameters emparams)
       : base("DAYCAL",
              (cEmissionsReportProcess)emissionsReportProcess,
              (cCategory)operatingHourCategory,
-             "DailyCalibration")
+             "DailyCalibration", ref emparams)
     {
       //Initializing. Will be reset in FilterData()            
       ComponentID = "";

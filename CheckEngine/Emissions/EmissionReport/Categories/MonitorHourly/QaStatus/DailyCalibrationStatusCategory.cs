@@ -21,11 +21,11 @@ namespace ECMPS.Checks.EmissionsReport
     /// <param name="parentCategory">The parent category of the new category.</param>
     /// <param name="categoryCd">The category code of the new category.</param>
     /// <param name="parameterCd">The parameter code of the associated monitor or derived hourly data.</param>
-    public cDailyCalibrationStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd, EmParameters emparams)
-      : base(parentCategory, categoryCd)
+    public cDailyCalibrationStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd, ref EmParameters emparams)
+      : base(parentCategory, categoryCd, ref emparams)
     {
       ParameterCd = parameterCd;
-            emParams = emparams;
+          
     }
 
         /// <summary>
@@ -33,8 +33,8 @@ namespace ECMPS.Checks.EmissionsReport
         /// </summary>
         /// <param name="parentCategory">The parent category of the new category.</param>
         /// <param name="categoryCd">The category code of the new category.</param>
-        public cDailyCalibrationStatusCategory(cCategory parentCategory, string categoryCd)
-          : base(parentCategory, categoryCd)
+        public cDailyCalibrationStatusCategory(cCategory parentCategory, string categoryCd, ref EmParameters emparams)
+          : base(parentCategory, categoryCd, ref emparams)
         {
             ParameterCd = null;
         }
@@ -42,11 +42,11 @@ namespace ECMPS.Checks.EmissionsReport
         public cDailyCalibrationStatusCategory(cCheckEngine ACheckEngine,
                              cEmissionsReportProcess AHourlyEmissionsData,
                              cCategory ACategory,
-                             string ACategoryCode)
+                             string ACategoryCode, ref EmParameters emparams)
       : base(ACheckEngine,
        (cEmissionsReportProcess)AHourlyEmissionsData,
        ACategory,
-       ACategoryCode)
+       ACategoryCode, ref emparams)
     {
     }
 
@@ -60,8 +60,7 @@ namespace ECMPS.Checks.EmissionsReport
     /// </summary>
     public string ParameterCd { get; protected set; }
 
-    public EmParameters emParams;
-
+   
 
         #endregion
 

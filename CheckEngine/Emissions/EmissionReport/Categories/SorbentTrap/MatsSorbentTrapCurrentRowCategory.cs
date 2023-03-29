@@ -22,17 +22,19 @@ namespace ECMPS.Checks.EmissionsReport
   {
 
         #region Constructors
-        public EmParameters emParams;
+       
         /// <summary>
         /// Creates a category object to represent the category indicated by the passed code, 
         /// and links that object to a parent category object.
         /// </summary>
         /// <param name="parentCategory">The parent category.</param>
         /// <param name="categoryCd">The category code of the category the object will represent.</param>
-        public MatsSorbentTrapCurrentRowCategory(cCategory parentCategory, string categoryCd ,EmParameters emparams)
-      : base(parentCategory, categoryCd)
-    {
-            emParams = emparams;
+        /// 
+        
+
+        public MatsSorbentTrapCurrentRowCategory(cCategory parentCategory, string categoryCd , ref EmParameters emparams) : base(parentCategory, categoryCd, ref emparams)
+        {
+           
         }
 
     #endregion

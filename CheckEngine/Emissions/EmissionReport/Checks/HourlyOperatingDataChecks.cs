@@ -2874,7 +2874,7 @@ namespace ECMPS.Checks.EmissionsChecks
                 if ((emParams.DerivedHourlyChecksNeeded == true) && (emParams.UnitIsLoadBased == true))
                 {
                     decimal? hourLoad = emParams.CurrentHourlyOpRecord.HrLoad;
-                    int? loadRange = emParams.CurrentHourlyOpRecord.LoadRange;
+                    decimal? loadRange = emParams.CurrentHourlyOpRecord.LoadRange;
                     int? commonStackLoadRange = emParams.CurrentHourlyOpRecord.CommonStackLoadRange;
                     string currentHEntityType = emParams.CurrentEntityType;
 
@@ -2980,7 +2980,7 @@ namespace ECMPS.Checks.EmissionsChecks
             {
                 if (emParams.CheckLoadRangeValue == true)
                 {
-                    int loadRange = emParams.CurrentHourlyOpRecord.LoadRange.Value;
+                    decimal loadRange = emParams.CurrentHourlyOpRecord.LoadRange.Value;
                     int currentMaximumLoadValue = emParams.CurrentMaximumLoadValue.HasValue ? emParams.CurrentMaximumLoadValue.Value : 0;
 
                     if (loadRange == 0)

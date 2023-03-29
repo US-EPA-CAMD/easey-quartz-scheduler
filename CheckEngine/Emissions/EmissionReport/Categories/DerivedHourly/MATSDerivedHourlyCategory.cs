@@ -32,14 +32,14 @@ namespace ECMPS.Checks.EmissionsReport
                                       cEmissionsReportProcess AHourlyEmissionsData,
                                       cOperatingHourCategory ACategory,
                                       string ACategoryCode, 
-                                      string parameterCd,EmParameters emparams )
+                                      string parameterCd, ref EmParameters emparams )
       : base(ACheckEngine,
        (cEmissionsReportProcess)AHourlyEmissionsData,
        ACategory,
-       ACategoryCode)
+       ACategoryCode, ref emparams)
     {
       ParameterCd = parameterCd;
-            emParams = emparams;
+            
     }
 
 
@@ -53,7 +53,7 @@ namespace ECMPS.Checks.EmissionsReport
     /// </summary>
     public string ParameterCd { get; protected set; }
 
-        public EmParameters emParams;
+       
 
         #endregion
 

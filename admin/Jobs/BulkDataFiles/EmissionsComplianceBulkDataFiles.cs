@@ -36,17 +36,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
-      if(await scheduler.CheckExists(WithJobKey())){
-        await scheduler.DeleteJob(WithJobKey());
-      }
+      try {
+        JobKey jobKey = WithJobKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EMISSIONS_COMPLIANCE_SCHEDULE"] ?? "0 0/10 2-4 15 * ? *";
+        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
 
-      
-        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EMISSIONS_COMPLIANCE_SCHEDULE"] != null){
-          app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EMISSIONS_COMPLIANCE_SCHEDULE"]));
+        if (await scheduler.CheckExists(jobKey)) {
+          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
+
+          if (
+            trigger is ICronTrigger cronTrigger &&
+            cronTrigger.CronExpressionString != cronExpression
+          ) {
+            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
+          }
+        } else {
+          app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(triggerBuilder);
+          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
         }
-        else
-          app.UseQuartzJob<EmissionsComplianceBulkDataFiles>(WithCronSchedule("0 0/10 2-4 15 * ? *"));
-      
+      } catch(Exception e) {
+        Console.WriteLine("ERROR");
+        Console.WriteLine(e.Message);
+      }
     }
 
     public EmissionsComplianceBulkDataFiles (NpgSqlContext dbContext, IConfiguration configuration)
@@ -92,7 +104,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         List<List<Object>> rowsPerPrg = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_emissions_based_compliance_bulk_files_to_generate", 2);
 
         if(rowsPerPrg.Count > 0){
-          await this._dbContext.CreateBulkFileJob(null, null, null, "Compliance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance", "compliance/compliance-arpnox.csv", job_id, "ARP");
+          await this._dbContext.CreateBulkFileRecord("Emissions-Compliance-ARPNOX",job_id,null, null, null, "Compliance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions-compliance", "compliance/compliance-arpnox.csv", job_id, "ARP");
         }
                 
         jl.StatusCd = "COMPLETE";

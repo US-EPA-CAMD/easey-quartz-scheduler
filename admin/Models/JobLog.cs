@@ -14,7 +14,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 		[Column("job_system")]
  		public string JobSystem { get; set; }
 
-        [Column("job_class")]
+		[Column("job_class")]
  		public string JobClass { get; set; }
 
         [Column("job_name")]

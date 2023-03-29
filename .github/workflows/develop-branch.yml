@@ -29,17 +29,7 @@ jobs:
         env:
           ENV_VAR_PREFIX: EASEY
       - name: Build
-        run: |
-          echo "--------------------------------------"
-          echo "---------- dotnet/build.sh -----------"
-          echo "--------------------------------------"
-
-          echo "Installing dependencies..."
-          cd admin
-          dotnet restore
-
-          echo "Building..."
-          CI=false dotnet build
+        run: devops/scripts/dotnet/build.sh admin
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: SonarCloud Scan
@@ -60,9 +50,9 @@ jobs:
         run: scripts/environment-variables-secrets.sh
         env:
           QUARTZ_API_KEY: ${{ secrets.API_KEY }}
+          QUARTZ_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          QUARTZ_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           BULK_FILES_AWS_ACCESS_KEY_ID: ${{ secrets.BULK_DATA_S3_AWS_ACCESS_KEY_ID }}
           BULK_FILES_AWS_SECRET_ACCESS_KEY: ${{ secrets.BULK_DATA_S3_AWS_SECRET_ACCESS_KEY }}
-          QUARTZ_API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
-          QUARTZ_CLIENT_ID: ${{ secrets.CLIENT_ID }}
       - name: Deploy
         run: devops/scripts/deploy.sh

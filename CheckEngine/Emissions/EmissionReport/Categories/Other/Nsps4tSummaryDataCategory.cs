@@ -19,7 +19,7 @@ namespace ECMPS.Checks.EmissionsReport
 
     public class Nsps4tSummaryDataCategory : cCategoryHourly
     {
-        public EmParameters emParams;
+        
         /// <summary>
         /// The NSPS4T Summary Data Category class always useds "NSPS4T" as the category code for the class.  No setup speicifc
         /// to the category occurs.
@@ -27,9 +27,9 @@ namespace ECMPS.Checks.EmissionsReport
         /// The category contains its own run check loop.
         /// </summary>
         /// <param name="parentCategory"></param>
-        public Nsps4tSummaryDataCategory(cSummaryValueInitializationCategory parentCategory, EmParameters emparams) : base(parentCategory, "NSPS4T")
+        public Nsps4tSummaryDataCategory(cSummaryValueInitializationCategory parentCategory, ref EmParameters emparams) : base(parentCategory, "NSPS4T", ref emparams)
         {
-            emParams = emparams;
+            
         }
 
 
@@ -42,13 +42,13 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="summaryValueInitializationCategory">The parent Summary Value Initialization Category object.</param>
         /// <param name="MonitorLocationView">The view containing the monitor location rows for the MP.</param>
         /// <returns>Returns true if the checks were successfully executed.</returns>
-        public static bool ExecuteChecks(cSummaryValueInitializationCategory summaryValueInitializationCategory, DataView MonitorLocationView, EmParameters emparams)
+        public static bool ExecuteChecks(cSummaryValueInitializationCategory summaryValueInitializationCategory, DataView MonitorLocationView, ref EmParameters emparams)
         {
             bool result = true;
 
 
             /* Create the NSPS4T Summary Data check category object */
-            Nsps4tSummaryDataCategory nsps4tSummaryDataCategory = new Nsps4tSummaryDataCategory(summaryValueInitializationCategory, emparams);
+            Nsps4tSummaryDataCategory nsps4tSummaryDataCategory = new Nsps4tSummaryDataCategory(summaryValueInitializationCategory, ref emparams);
 
             try
             {
@@ -111,9 +111,9 @@ namespace ECMPS.Checks.EmissionsReport
             string monPlanId = emissionsReportProcess.CheckEngine.MonPlanId;
             int rptPeriodId = emissionsReportProcess.CheckEngine.RptPeriodId.Value;
 
-            result = InitSourceDataDo("Nsps4tSummary", "ORIS_CODE, LOCATION_NAME", monPlanId, rptPeriodId, emissionsReportProcess) && result;
-            result = InitSourceDataDo("Nsps4tCompliancePeriod", "ORIS_CODE, LOCATION_NAME, END_YEAR desc, END_MONTH desc", monPlanId, rptPeriodId, emissionsReportProcess) && result;
-            result = InitSourceDataDo("Nsps4tAnnual", "ORIS_CODE, LOCATION_NAME", monPlanId, rptPeriodId, emissionsReportProcess) && result;
+            result = InitSourceDataDo("nsps4t_summary_data", "ORIS_CODE, LOCATION_NAME", monPlanId, rptPeriodId, emissionsReportProcess) && result;
+            result = InitSourceDataDo("nsps4t_compliance_period_data", "ORIS_CODE, LOCATION_NAME, END_YEAR desc, END_MONTH desc", monPlanId, rptPeriodId, emissionsReportProcess) && result;
+            result = InitSourceDataDo("nsps4t_annual_data", "ORIS_CODE, LOCATION_NAME", monPlanId, rptPeriodId, emissionsReportProcess) && result;
 
             return result;
         }
@@ -126,7 +126,7 @@ namespace ECMPS.Checks.EmissionsReport
 
             try
             {
-                string sql = string.Format("select * from CheckEm.{0}('{2}', {3}) order by {1}", sourceName, sourceSort, monPlanId, rptPeriodId);
+                string sql = string.Format("select * from camdecmpswks.{0}('{2}', {3}) order by {1}", sourceName, sourceSort, monPlanId, rptPeriodId);
 
                 // SqlConnection sqlConnection = emissionsReportProcess.CheckEngine.DbDataConnection.SQLConnection;
                 NpgsqlConnection sqlConnection = emissionsReportProcess.CheckEngine.DbDataConnection.SQLConnection;

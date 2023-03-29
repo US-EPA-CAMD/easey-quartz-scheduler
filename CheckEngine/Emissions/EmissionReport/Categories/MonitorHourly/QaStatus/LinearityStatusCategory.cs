@@ -15,16 +15,16 @@ namespace ECMPS.Checks.EmissionsReport
   public class cLinearityStatusCategory : cCategoryHourly
   {
         #region Constructors
-   public EmParameters emParams;
+   
         /// <summary>
         /// Creates a category with a specific parent category, category code and parameter code.
         /// </summary>
         /// <param name="parentCategory">The parent category of the new category.</param>
         /// <param name="categoryCd">The category code of the new category.</param>
         /// <param name="parameterCd">The parameter code of the associated monitor or derived hourly data.</param>
-  public cLinearityStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd, EmParameters emparams)
+  public cLinearityStatusCategory(cCategory parentCategory, string categoryCd, string parameterCd, ref EmParameters emparams)
       : base(parentCategory,
-         categoryCd)
+         categoryCd,ref emparams)
         {
            ParameterCd = parameterCd;
             emParams = emparams;
@@ -35,24 +35,24 @@ namespace ECMPS.Checks.EmissionsReport
         /// </summary>
         /// <param name="parentCategory">The parent category of the new category.</param>
         /// <param name="categoryCd">The category code of the new category.</param>
-        public cLinearityStatusCategory(cCategory parentCategory, string categoryCd, EmParameters emparams)
+        public cLinearityStatusCategory(cCategory parentCategory, string categoryCd, ref EmParameters emparams)
           : base(parentCategory,
-             categoryCd)
+             categoryCd,ref emparams)
         {
             ParameterCd = null;
-            emParams = emparams;
+           
         }
 
         public cLinearityStatusCategory(cCheckEngine ACheckEngine,
                                  cEmissionsReportProcess AHourlyEmissionsData,
                                  cCategory ACategory,
-                                 string ACategoryCode, EmParameters emparams)
+                                 string ACategoryCode, ref EmParameters emparams)
       : base(ACheckEngine,
          (cEmissionsReportProcess)AHourlyEmissionsData,
          ACategory,
-         ACategoryCode)
+         ACategoryCode,ref emparams)
     {
-            emParams = emparams;
+           
     }
 
     #endregion

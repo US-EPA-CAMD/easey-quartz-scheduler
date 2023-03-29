@@ -108,12 +108,13 @@ namespace ECMPS.Checks.TypeUtilities
         /// <param name="connection">The connection to use to access the template table.</param>
         /// <param name="commandTimeout">The override command timeout.</param>
         /// <returns>Returns a database if successful, otherwise returns a null.</returns>
-        public static DataTable CreateDataTable(string databaseName, string schemaName, string tableName, NpgsqlConnection connection, int? commandTimeout = null)
+        public static DataTable CreateDataTable(string schemaName, string tableName, NpgsqlConnection connection, int? commandTimeout = null)
         //public static DataTable CreateDataTable(string databaseName, string schemaName, string tableName, SqlConnection connection, int? commandTimeout = null)
         {
             try
             {
-                string sql = "select * from " + databaseName + "." + schemaName + "." + tableName + " where null is not null";
+                
+                string sql = "select * from " + schemaName + "." + tableName + " where null is not null";
 
                 // SqlDataAdapter DataAdapter = new SqlDataAdapter(sql, connection);
                 NpgsqlDataAdapter DataAdapter = new NpgsqlDataAdapter(sql, connection);

@@ -19,17 +19,17 @@ namespace ECMPS.Checks.EmissionsReport
   {
 
         #region Constructors
-        public EmParameters emParams;
+       
         public cMATSMonitorHourlyCategory(cOperatingHourCategory parentCategory,
                                       string categoryCd,
                                       string primaryTableName,
                                       string primaryCheckParameterName,
-                                      string parameterCd,EmParameters emparams)
+                                      string parameterCd, ref EmParameters emparams)
       : base(categoryCd,
              parentCategory,
              primaryTableName,
              "", // valueColumnName is only need for MODC Data Borders object which is not used for MATS.
-             primaryCheckParameterName)
+             primaryCheckParameterName, ref emparams)
     {
       ParameterCd = parameterCd;
       emParams =   emparams;

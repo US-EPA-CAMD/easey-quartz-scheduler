@@ -1,4 +1,3 @@
-using System.Security.AccessControl;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
@@ -7,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 using Quartz;
 using Quartz.Impl.Matchers;
@@ -80,67 +78,7 @@ namespace Epa.Camd.Quartz.Scheduler
       });
 
       services.AddSession();
-
-      services.AddSwaggerGen(c => {
-        c.SwaggerDoc(
-          "v1",
-          new OpenApiInfo
-          {
-            Title = "Quartz Job Management OpenAPI Specification",
-            Version = "v1",
-          }
-        );
-
-        string host = Configuration["EASEY_QUARTZ_SCHEDULER_HOST"];
-        string apiHost = Configuration["EASEY_API_GATEWAY_HOST"];
-
-        if (!string.IsNullOrWhiteSpace(host) && host != "localhost")
-        {
-          c.AddServer(new OpenApiServer() {
-            Url = $"https://{apiHost}",
-          });
-        }
-
-        var bearerKeyScheme = new OpenApiSecurityScheme {
-          Name = "Bearer",
-          In = ParameterLocation.Header,
-          Type = SecuritySchemeType.ApiKey,
-          Description = "Authorization by bearer client request token!",
-          Scheme = "Bearer",
-          Reference = new OpenApiReference {
-            Id = "BearerToken",
-            Type = ReferenceType.SecurityScheme,
-          }
-        };       
-
-        var apiKeyScheme = new OpenApiSecurityScheme {
-          Name = "x-api-key",
-          In = ParameterLocation.Header,
-          Type = SecuritySchemeType.ApiKey,
-          Description = "Authorization by x-api-key request header!",
-          Scheme = "ApiKeyScheme",
-          Reference = new OpenApiReference {
-            Id = "ApiKey",
-            Type = ReferenceType.SecurityScheme,
-          }
-        };
-
-        c.AddSecurityDefinition("BearerToken", bearerKeyScheme);
-        c.AddSecurityDefinition("ApiKey", apiKeyScheme);
-        c.AddSecurityRequirement(
-          new OpenApiSecurityRequirement {{
-            apiKeyScheme,
-            new List<string>()
-          }}
-        );
-        c.AddSecurityRequirement( new OpenApiSecurityRequirement {{
-          bearerKeyScheme,
-          new List<string>()
-        }});
-      });
-
       services.AddRazorPages();
-      services.AddControllers();
     
       services.AddSilkierQuartz(options => {
         options.VirtualPathRoot = "/quartz";
@@ -166,26 +104,28 @@ namespace Epa.Camd.Quartz.Scheduler
       });
 
       services.AddOptions();
-
-      EvaluationJobQueue.RegisterWithQuartz(services);
-      CheckEngineEvaluation.RegisterWithQuartz(services);
+      services.AddJobListener<CheckEngineEvaluationListener>(GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS));
+      
+      BulkDataFile.RegisterWithQuartz(services);
       BulkFileJobQueue.RegisterWithQuartz(services);
+      BulkDataFileMaintenance.RegisterWithQuartz(services);
+
+      ApportionedEmissionsBulkData.RegisterWithQuartz(services);
       AllowanceHoldingsBulkDataFiles.RegisterWithQuartz(services);
+      AllowanceTransactionsBulkDataFiles.RegisterWithQuartz(services);
       AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
       EmissionsComplianceBulkDataFiles.RegisterWithQuartz(services);
-      AllowanceTransactionsBulkDataFiles.RegisterWithQuartz(services);
       FacilityAttributesBulkDataFiles.RegisterWithQuartz(services);
-      BulkDataFile.RegisterWithQuartz(services);
-      BulkDataFileMaintenance.RegisterWithQuartz(services);
-      ApportionedEmissionsBulkData.RegisterWithQuartz(services);
-      SendMail.RegisterWithQuartz(services);
-      RemoveExpiredUserSession.RegisterWithQuartz(services);
-      RemoveExpiredCheckoutRecord.RegisterWithQuartz(services);
+      
+      CheckEngineEvaluation.RegisterWithQuartz(services);
+      EvaluationJobQueue.RegisterWithQuartz(services);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+      Console.WriteLine("Configuring Quartz");
+
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
@@ -213,42 +153,20 @@ namespace Epa.Camd.Quartz.Scheduler
         await next();
       });
 
-      app.UseEndpoints(endpoints => {
-        endpoints.MapControllers();
-      });
-
-      if (Boolean.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_ENABLE_SWAGGER"])) {
-        string apiPath = Configuration["EASEY_QUARTZ_SCHEDULER_API_PATH"];
-        app.UseSwagger(c => {
-          c.RouteTemplate = apiPath + "/swagger/{documentname}/swagger.json";
-        });
-
-        app.UseSwaggerUI(c => {
-          c.SwaggerEndpoint($"./v1/swagger.json", "Quartz API v1");
-          c.RoutePrefix = $"{apiPath}/swagger";
-        });
-      }
+      Console.WriteLine("Attempting to schedule quartz jobs");
 
       IScheduler scheduler = app.GetScheduler();
 
       BulkDataFile.setScheduler(scheduler);
-
-      scheduler.ListenerManager.AddJobListener(
-        new CheckEngineEvaluationListener(Configuration),
-        GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS)
-      );
-
-      EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
       BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
+      BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
+      ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
       AllowanceHoldingsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
-      BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
-      RemoveExpiredUserSession.ScheduleWithQuartz(scheduler, app);
-      RemoveExpiredCheckoutRecord.ScheduleWithQuartz(scheduler, app);      
+      EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
     }
   }
 }

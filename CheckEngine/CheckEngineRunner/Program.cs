@@ -64,14 +64,39 @@ namespace CheckEngineRunner
             Console.ReadLine();
 
             */
-            string localDir = System.IO.Directory.GetCurrentDirectory();
-            string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp6.0\\";
-            cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
+
+            string fileTypeCd = ((args != null) && (args.Length >= 1)) ? args[0] : null;
+            switch (fileTypeCd)
+            {
+                case "EM":
+                    {
+                        string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
+                        string rpPeriodIdText = ((args != null) && (args.Length >= 3)) ? args[2] : null;
+
+                        int rptPeriodId;
+                        {
+                            if (!int.TryParse(rpPeriodIdText, out rptPeriodId)) { rptPeriodId = 0; }
+                        }
+
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\Emissions\\obj\\Debug\\netcoreapp6.0\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
+
+                        bool result = checkEngine.RunChecks_EmReport(monPlanId, rptPeriodId, eCheckEngineRunMode.Normal);
+                    }
+                    break;
+
+                default:
+                    {
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp6.0\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
 
 
-            bool result = checkEngine.RunChecks_QaReport_Test("e39c510f-6cde-4555-a7b9-162cd5183ca5", "TWCORNEL5-C0E3879920A14159BAA98E03F1980A7A", eCheckEngineRunMode.Normal, "e39c510f-6cde-4555-a7b9-162cd5183ca5");
-
-            //bool result = checkEngine.RunChecks_EmReport("TWCORNEL5-488E42008B434177BC7D7BFF138D18EF", 119, eCheckEngineRunMode.Normal);
+                        bool result = checkEngine.RunChecks_QaReport_Test("e39c510f-6cde-4555-a7b9-162cd5183ca5", "TWCORNEL5-C0E3879920A14159BAA98E03F1980A7A", eCheckEngineRunMode.Normal, "e39c510f-6cde-4555-a7b9-162cd5183ca5");
+                    }
+                    break;
+            }
 
             Console.ReadLine();
         }

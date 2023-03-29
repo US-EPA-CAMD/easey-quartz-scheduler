@@ -23,7 +23,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// Instantiates a cDailyCalibrationRunningData object.
         /// </summary>
         /// <param name="dailyCalibrationSeverityCd">The daily alibration category object's severity code.</param>
-        public cDailyCalibrationData(eSeverityCd dailyCalibrationSeverityCd, EmParameters emparams)
+        public cDailyCalibrationData(eSeverityCd dailyCalibrationSeverityCd, ref EmParameters emparams)
         {
             DailyCalibrationSeverityCd = dailyCalibrationSeverityCd;
 
@@ -33,7 +33,9 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         }
 
         #endregion
-
+        public cDailyCalibrationData()
+        {
+        }
 
         #region Public Properties
 
@@ -225,40 +227,33 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                 return false;
             }
 
-            // SqlCommand command = connection.CreateCommand();
+           
             NpgsqlCommand command = connection.CreateCommand();
 
+            bool result = false; ;
             try
             {
-                command.CommandText = "ECMPS.CheckEm.DailyCalibrationSuppDataPreviousQuarter";
-                command.CommandType = CommandType.StoredProcedure;
-
-                //command.Parameters.Add("@V_MON_PLAN_ID", SqlDbType.VarChar);
-                //command.Parameters.Add("@V_RPT_PERIOD_ID", SqlDbType.Int); ;
-                //command.Parameters.Add("@V_RESULT", SqlDbType.VarChar, 1);
-                //command.Parameters.Add("@V_ERROR_MSG", SqlDbType.VarChar, 200);
-                command.Parameters.Add("@V_MON_PLAN_ID", NpgsqlDbType.Varchar);
-                command.Parameters.Add("@V_RPT_PERIOD_ID", NpgsqlDbType.Integer); ;
-                command.Parameters.Add("@V_RESULT", NpgsqlDbType.Varchar, 1);
-                command.Parameters.Add("@V_ERROR_MSG", NpgsqlDbType.Varchar, 200);
-
-                command.Parameters["@V_MON_PLAN_ID"].Value = monPlanId;
-                command.Parameters["@V_RPT_PERIOD_ID"].Value = rptPeriodId;
-                command.Parameters["@V_RESULT"].Direction = ParameterDirection.Output;
-                command.Parameters["@V_ERROR_MSG"].Direction = ParameterDirection.Output;
-
-                //SqlDataAdapter adapter = new SqlDataAdapter(command);
+                
+                command.CommandText = "camdecmpswks.daily_calibration_supp_data_previous_quarter_for_system";
+                command.CommandType = CommandType.StoredProcedure;                             
+                command.Parameters.Add("@monplanid", NpgsqlDbType.Varchar);
+                command.Parameters.Add("@rptperiodid", NpgsqlDbType.Integer);            
+                command.Parameters["@monplanid"].Value = monPlanId;
+                command.Parameters["@rptperiodid"].Value = rptPeriodId;
+     
                 NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command);
 
-                DataSet dataSet = new DataSet();
-                adapter.Fill(dataSet);
+                DataSet previous_quarter_for_system = new DataSet();
+                DataSet previous_quarter_non_system = new DataSet();
+                adapter.Fill(previous_quarter_for_system);
+                command.CommandText = "camdecmpswks.daily_calibration_supp_data_previous_quarter_non_system";
+                adapter.Fill(previous_quarter_non_system);
+              
 
-                bool result = (command.Parameters["@V_RESULT"].Value != DBNull.Value) ? (command.Parameters["@V_RESULT"].Value.ToString() == "T") : false;
-
-                if (result)
+                if (previous_quarter_for_system.Tables.Count >0 && previous_quarter_non_system.Tables.Count > 0)
                 {
-                    DataTable dailyTestLocationSuppData = dataSet.Tables[0];
-                    DataTable dailyTestSystemSuppData = dataSet.Tables[1];
+                    DataTable dailyTestLocationSuppData = previous_quarter_non_system.Tables[0]; 
+                    DataTable dailyTestSystemSuppData = previous_quarter_for_system.Tables[0];
 
                     if (isDailyTestSupplementalDataTable(dailyTestLocationSuppData, out errorMessage) && 
                         isDailyTestSystemSupplementalDataTable(dailyTestSystemSuppData, out errorMessage))
@@ -279,7 +274,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                                             componentData = ComponentData[testData.ComponentId];
                                         else
                                         {
-                                            componentData = new cDailyCalibrationComponentData(testData.ComponentId, testData.ComponentIdentifier);
+                                            componentData = new cDailyCalibrationComponentData(testData.ComponentId, testData.ComponentIdentifier, ref emParams);
                                             ComponentData.Add(testData.ComponentId, componentData);
 
                                             // Add component to the list of components for the component's location
@@ -349,17 +344,17 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="rptPeriodId"></param>
         /// <param name="workspaceSessionId"></param>
         /// <param name="connection"></param>
-        public void LoadIntoSupplementalDataTables(int rptPeriodId, decimal workspaceSessionId, NpgsqlConnection connection)
+        public void LoadIntoSupplementalDataTables(int rptPeriodId, string checkSessionId, NpgsqlConnection connection)
         //public void LoadIntoSupplementalDataTables(int rptPeriodId, decimal workspaceSessionId, SqlConnection connection)
         {
-            SupplementalDataUpdateLocationDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateDatabaseName, SupplementalDataUpdateSchemaName, SupplementalDataUpdateLocationTableName, connection);
-            SupplementalDataUpdateSystemDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateDatabaseName, SupplementalDataUpdateSchemaName, SupplementalDataUpdateSystemTableName, connection);
+            SupplementalDataUpdateLocationDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateLocationTableName, connection);
+            SupplementalDataUpdateSystemDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateSystemTableName, connection);
 
             if ((SupplementalDataUpdateLocationDataTable != null) && (SupplementalDataUpdateSystemDataTable != null))
             {
                 foreach (string componentId in ComponentData.Keys)
                 {
-                    ComponentData[componentId].LoadIntoSupplementalDataTables(SupplementalDataUpdateLocationDataTable, SupplementalDataUpdateSystemDataTable, rptPeriodId, workspaceSessionId);
+                    ComponentData[componentId].LoadIntoSupplementalDataTables(SupplementalDataUpdateLocationDataTable, SupplementalDataUpdateSystemDataTable, rptPeriodId, checkSessionId);
                 }
             }
         }
@@ -375,7 +370,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 
             try
             {
-                cDailyCalibrationTestData testData = new cDailyCalibrationTestData(DailyCalibrationSeverityCd, emParams);
+                cDailyCalibrationTestData testData = new cDailyCalibrationTestData(DailyCalibrationSeverityCd,  ref emParams);
 
                 cDailyCalibrationComponentData componentData;
                 {
@@ -383,7 +378,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                         componentData = ComponentData[testData.ComponentId];
                     else
                     {
-                        componentData = new cDailyCalibrationComponentData(testData.ComponentId, testData.ComponentIdentifier);
+                        componentData = new cDailyCalibrationComponentData(testData.ComponentId, testData.ComponentIdentifier, ref emParams);
                         ComponentData.Add(testData.ComponentId, componentData);
 
                         // Add component to the list of components for the component's location
@@ -453,34 +448,29 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         public static DataTable SupplementalDataUpdateSystemDataTable { get; set; }
 
         /// <summary>
-        /// Contains the name of the update database for the supplemental data.
-        /// </summary>
-        public static string SupplementalDataUpdateDatabaseName { get { return "ECMPS_WS"; } }
-
-        /// <summary>
         /// Contains the name of the update schema for the supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateSchemaName { get { return "Supp"; } }
+        public static string SupplementalDataUpdateSchemaName { get { return "camdecmpscalc"; } }
 
         /// <summary>
         /// Contains the name of the update table for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateLocationTableName { get { return "CE_DailyTestSuppData"; } }
+        public static string SupplementalDataUpdateLocationTableName { get { return "daily_test_supp_data"; } }
 
         /// <summary>
         /// Contains the name of the update table for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateLocationTablePath { get { return SupplementalDataUpdateDatabaseName + "." + SupplementalDataUpdateSchemaName + "." + SupplementalDataUpdateLocationTableName; } }
+        public static string SupplementalDataUpdateLocationTablePath { get { return SupplementalDataUpdateSchemaName + "." + SupplementalDataUpdateLocationTableName; } }
 
         /// <summary>
         /// Contains the name of the update table for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateSystemTableName { get { return "CE_DailyTestSystemSuppData"; } }
+        public static string SupplementalDataUpdateSystemTableName { get { return "daily_test_system_supp_data"; } }
 
         /// <summary>
         /// Contains the name of the update table for sampling trian supplemental data.
         /// </summary>
-        public static string SupplementalDataUpdateSystemTablePath { get { return SupplementalDataUpdateDatabaseName + "." + SupplementalDataUpdateSchemaName + "." + SupplementalDataUpdateSystemTableName; } }
+        public static string SupplementalDataUpdateSystemTablePath { get { return SupplementalDataUpdateSchemaName + "." + SupplementalDataUpdateSystemTableName; } }
 
         #endregion
 
