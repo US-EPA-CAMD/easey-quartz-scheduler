@@ -4698,7 +4698,7 @@ namespace ECMPS.Checks.EmissionsReport
                         DbWsConnection.BulkLoad(CalcSorbentTrap, "camdecmpscalc.sorbent_trap", ref errorMessage) &&
                         /* Sampling Train Supplemental Data*/
                         DbWsConnection.BulkLoad(SamplingTrainEvalInformation.SupplementalDataUpdateDataTable,
-                                                SamplingTrainEvalInformation.SupplementalDataUpdateTableName,
+                                                SamplingTrainEvalInformation.SupplementalDataUpdateTablePath,
                                                 ref errorMessage) &&
                         /* Weekly Emission Tests */
                         DbWsConnection.BulkLoad(CalcWeeklyTestSummary, "camdecmpscalc.weekly_test_summary", ref errorMessage) &&
@@ -5103,7 +5103,7 @@ namespace ECMPS.Checks.EmissionsReport
             {
                 DataRow CalcRow = CalcHrlyGasFlowMeter.NewRow();
 
-                CalcRow["HRLY_GFM_ID"] = emParams.MatsHourlyGfmRecord.HrlyGfmId;
+                CalcRow["HRLY_GAS_FLOW_METER_ID"] = emParams.MatsHourlyGfmRecord.HrlyGfmId;
                 CalcRow["CALC_FLOW_TO_SAMPLING_RATIO"] = GetUpdateDecimalValue(emParams.MatsCalcHourlySfsrRatio, eDecimalPrecision.MATS_PERCENT);
 
                 CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;

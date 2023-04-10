@@ -48,6 +48,11 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// </summary>
         public static string SupplementalDataUpdateTableName { get { return "sampling_train_supp_data"; } }
 
+        /// <summary>
+        /// Contains the name of the update table for sampling trian supplemental data.
+        /// </summary>
+        public static string SupplementalDataUpdateTablePath { get { return SupplementalDataUpdateCatalogName + "." + SupplementalDataUpdateTableName; } }
+
 
         /// <summary>
         /// The Hg Concentration of the sampling train.
