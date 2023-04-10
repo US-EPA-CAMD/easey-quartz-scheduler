@@ -1,3 +1,4 @@
+using System.Threading.Tasks.Dataflow;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -1682,6 +1683,62 @@ namespace ECMPS.Checks.DatabaseAccess
                              NpgsqlTransaction sqlTransaction, // was SqlTransaction
                              ref string errorMessage)
         {
+
+            if (sourceTable != null && sourceTable.Rows.Count > 0)
+            {
+                
+                try
+                {
+                    List<int> excludeColumnIndex = new List<int>();
+                    string insertColumns = string.Empty;
+                    foreach (DataColumn column in sourceTable.Columns)
+                        if (!excludeColumnNames.Contains(column.ColumnName))
+                            insertColumns += column.ColumnName + ",";
+                        else
+                            excludeColumnIndex.Add(sourceTable.Columns.IndexOf(column));
+                    insertColumns = insertColumns.TrimEnd(',').ToLower();
+
+                    Console.WriteLine("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (FORMAT BINARY)");
+
+                    using (var writer = m_sqlConn.BeginBinaryImport("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (FORMAT BINARY)"))
+                    {
+
+                        foreach (DataRow row in sourceTable.Rows)
+                        {
+                            writer.StartRow();
+                            for (int i = 0; i < row.ItemArray.Length; i++){
+                                if (!excludeColumnIndex.Contains(i)){
+                                    if (row[i] == DBNull.Value){
+                                        writer.WriteNull();
+                                    }
+                                    else if(sourceTable.Columns[i].DataType == typeof(string)){
+                                        writer.Write(row[i], NpgsqlDbType.Varchar);
+                                    }
+                                    else if(sourceTable.Columns[i].DataType == typeof(int)){
+                                        writer.Write(row[i], NpgsqlDbType.Numeric);
+                                    }
+                                    else if(sourceTable.Columns[i].DataType == typeof(DateTime)){
+                                        writer.Write(row[i], NpgsqlDbType.Timestamp);
+                                    }
+                                    else{
+                                        writer.Write(row[i], NpgsqlDbType.Numeric);
+                                    }
+                                }
+                            }
+                        }
+                        writer.Complete();
+                    }
+                    return true;
+                }
+                catch(Exception e)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+
+            /*
             bool result = false;
             string errorTemplate = string.Format("BulkLoad[{0}]: {1}", targetTableName, "{0}");
             List<int> excludeColumnIndex = new List<int>();
@@ -1746,6 +1803,7 @@ namespace ECMPS.Checks.DatabaseAccess
             else
                 result = true;
             return result;
+            */
         }
      
 
