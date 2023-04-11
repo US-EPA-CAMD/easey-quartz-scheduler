@@ -1686,7 +1686,7 @@ namespace ECMPS.Checks.DatabaseAccess
 
             if (sourceTable != null && sourceTable.Rows.Count > 0)
             {
-                
+                string errorTemplate = string.Format("BulkLoad[{0}]: {1}", targetTableName, "{0}");
                 try
                 {
                     List<int> excludeColumnIndex = new List<int>();
@@ -1708,7 +1708,7 @@ namespace ECMPS.Checks.DatabaseAccess
                             writer.StartRow();
                             for (int i = 0; i < row.ItemArray.Length; i++){
                                 if (!excludeColumnIndex.Contains(i)){
-                                    if (row[i] == DBNull.Value){
+                                    if (row[i] == DBNull.Value || (row[i].GetType() == typeof(string) && row[i].Equals(""))){
                                         writer.WriteNull();
                                     }
                                     else if(sourceTable.Columns[i].DataType == typeof(string)){
@@ -1718,7 +1718,12 @@ namespace ECMPS.Checks.DatabaseAccess
                                         writer.Write(row[i], NpgsqlDbType.Numeric);
                                     }
                                     else if(sourceTable.Columns[i].DataType == typeof(DateTime)){
-                                        writer.Write(row[i], NpgsqlDbType.Timestamp);
+                                        if(targetTableName == "camdecmpswks.check_log" && i > 2){
+                                            writer.Write(row[i], NpgsqlDbType.Date);
+                                        }
+                                        else{
+                                            writer.Write(row[i], NpgsqlDbType.Timestamp);
+                                        }
                                     }
                                     else{
                                         writer.Write(row[i], NpgsqlDbType.Numeric);
@@ -1732,78 +1737,14 @@ namespace ECMPS.Checks.DatabaseAccess
                 }
                 catch(Exception e)
                 {
+                    errorMessage = string.Format(errorTemplate, e.Message);
                     return false;
                 }
             }
 
             return true;
 
-            /*
-            bool result = false;
-            string errorTemplate = string.Format("BulkLoad[{0}]: {1}", targetTableName, "{0}");
-            List<int> excludeColumnIndex = new List<int>();
-            if (sourceTable != null && sourceTable.Rows.Count > 0)
-            {
-                string insertColumns = string.Empty;
-                foreach (DataColumn column in sourceTable.Columns)
-                    if (!excludeColumnNames.Contains(column.ColumnName))
-                        insertColumns += column.ColumnName + ",";
-                    else
-                        excludeColumnIndex.Add(sourceTable.Columns.IndexOf(column));
-                insertColumns = insertColumns.TrimEnd(',').ToLower();
-                string insertHeader = "INSERT INTO " + targetTableName + " (" + insertColumns + ") VALUES (";
-                foreach (DataRow row in sourceTable.Rows)
-                {
-                    string columnValues = string.Empty;
-                    string sqlInsert = insertHeader;
-                    for (int i = 0; i < row.ItemArray.Length; i++)
-                        if (!excludeColumnIndex.Contains(i))
-                        {
-                            object colValue = row[i];
-                            if (colValue == DBNull.Value)
-                                columnValues += "null,";
-                            else
-                            {
-                                if ((sourceTable.Columns[i].DataType != typeof(int)))
-                                {
-                                    if (sourceTable.Columns[i].DataType == typeof(string))
-                                        colValue = colValue.ToString().Replace("'", "''").Trim(new[] { ' ' });
-                                    
-                                    columnValues += "'" + colValue + "',";
-                                }
-                                else
-                                    columnValues += colValue + ",";
-                            }
-                        }
-                    sqlInsert += columnValues.TrimEnd(',') + ");";
-                    try
-                    {
-                        int rowsAffected = 0;
-                        using (var cmd = new NpgsqlCommand(sqlInsert, m_sqlConn))
-                        {
-                        
-                            rowsAffected = cmd.ExecuteNonQuery();
-                            result = rowsAffected > 0;
-                            if (!result)
-                                break;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        errorMessage = string.Format(errorTemplate, ex.Message);
-                        result = false;
-                    }
-                    finally
-                    {
-                        if (!string.IsNullOrEmpty(errorMessage))
-                            result = false;
-                    }
-                }
-            }
-            else
-                result = true;
-            return result;
-            */
+            
         }
      
 
