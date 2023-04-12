@@ -4669,10 +4669,29 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="errorMessage">The error message returned on failure.</param>
         /// <returns>Returns true if the update succeeds.</returns>
         protected override bool DbUpdate_CalcWsLoad(NpgsqlTransaction sqlTransaction, ref string errorMessage)
-        //protected override bool DbUpdate_CalcWsLoad(SqlTransaction sqlTransaction, ref string errorMessage)
-        {
-            bool result;
+        {            
+            DataTable[] sourceTables = new DataTable[]
+            {FCalcDailyCal, FCalcDailyTestSummary, FCalcDerivedHrlyValue, FCalcMonitorHrlyValue, FCalcHrlyFuelFlow, FCalcHrlyParamFuelFlow, FCalcLongTermFuelFlow, FCalcDailyEmission, FCalcDailyFuel, FCalcSummaryValue, CalcMATSDHVData, CalcMATSMHVData,
+            CalcHrlyGasFlowMeter, CalcSamplingTrain, CalcSorbentTrap, SamplingTrainEvalInformation.SupplementalDataUpdateDataTable, CalcWeeklyTestSummary, CalcWeeklySystemIntegrity, QaCertificationSupplementalData.SupplementalDataUpdateDataTable,
+            SystemOperatingSupplementalData.SupplementalDataUpdateDataTable, ComponentOperatingSupplementalData.SupplementalDataUpdateDataTable, LastQualityAssuredValueSupplementalData.SupplementalDataUpdateDataTable,
+            cDailyCalibrationData.SupplementalDataUpdateLocationDataTable, cDailyCalibrationData.SupplementalDataUpdateSystemDataTable};
+            
+            string[] tableLocation = new string[]{"camdecmpscalc.daily_calibration", "camdecmpscalc.daily_test_summary", "camdecmpscalc.derived_hrly_value", "camdecmpscalc.monitor_hrly_value", "camdecmpscalc.hrly_param_fuel_flow", "camdecmpscalc.long_term_fuel_flow",
+            "camdecmpscalc.daily_emission", "camdecmpscalc.daily_fuel", "camdecmpscalc.summary_value", "camdecmpscalc.mats_derived_hrly_value", "camdecmpscalc.mats_monitor_hrly_value", "camdecmpscalc.hrly_gas_flow_meter", "camdecmpscalc.sampling_train","camdecmpscalc.sorbent_trap",
+            SamplingTrainEvalInformation.SupplementalDataUpdateTableName, "camdecmpscalc.weekly_test_summary", "camdecmpscalc.weekly_system_integrity", QaCertificationSupplementalData.SupplementalDataUpdateTablePath, SystemOperatingSupplementalData.SupplementalDataUpdateTablePath,
+            ComponentOperatingSupplementalData.SupplementalDataUpdateTablePath, LastQualityAssuredValueSupplementalData.SupplementalDataUpdateTablePath, cDailyCalibrationData.SupplementalDataUpdateLocationTablePath, cDailyCalibrationData.SupplementalDataUpdateSystemTablePath};
 
+            
+            bool result;
+            /*
+            for(int i = 0; i < sourceTables.Length; i++){
+                Task.Run(() => 
+                {
+                    result = DbWsConnection.BulkLoad(sourceTables[i], tableLocation[i], ref errorMessage);    
+                } );
+            }
+            */
+            
             //if (mCheckEngine.DbWsConnection.ClearUpdateSession(eWorkspaceDataType.EM, mCheckEngine.ChkSessionId))
             //{
                 if (

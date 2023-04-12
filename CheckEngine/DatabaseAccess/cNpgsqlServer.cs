@@ -1,3 +1,4 @@
+using System.Threading.Tasks.Dataflow;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -1682,70 +1683,68 @@ namespace ECMPS.Checks.DatabaseAccess
                              NpgsqlTransaction sqlTransaction, // was SqlTransaction
                              ref string errorMessage)
         {
-            bool result = false;
-            string errorTemplate = string.Format("BulkLoad[{0}]: {1}", targetTableName, "{0}");
-            List<int> excludeColumnIndex = new List<int>();
+
             if (sourceTable != null && sourceTable.Rows.Count > 0)
             {
-                string insertColumns = string.Empty;
-                foreach (DataColumn column in sourceTable.Columns)
-                    if (!excludeColumnNames.Contains(column.ColumnName))
-                        insertColumns += column.ColumnName + ",";
-                    else
-                        excludeColumnIndex.Add(sourceTable.Columns.IndexOf(column));
-                insertColumns = insertColumns.TrimEnd(',').ToLower();
-                string insertHeader = "INSERT INTO " + targetTableName + " (" + insertColumns + ") VALUES (";
-                foreach (DataRow row in sourceTable.Rows)
+                string errorTemplate = string.Format("BulkLoad[{0}]: {1}", targetTableName, "{0}");
+                try
                 {
-                    string columnValues = string.Empty;
-                    string sqlInsert = insertHeader;
-                    for (int i = 0; i < row.ItemArray.Length; i++)
-                        if (!excludeColumnIndex.Contains(i))
+                    List<int> excludeColumnIndex = new List<int>();
+                    string insertColumns = string.Empty;
+                    foreach (DataColumn column in sourceTable.Columns)
+                        if (!excludeColumnNames.Contains(column.ColumnName))
+                            insertColumns += column.ColumnName + ",";
+                        else
+                            excludeColumnIndex.Add(sourceTable.Columns.IndexOf(column));
+                    insertColumns = insertColumns.TrimEnd(',').ToLower();
+
+                    Console.WriteLine("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (FORMAT BINARY)");
+
+                    using (var writer = m_sqlConn.BeginBinaryImport("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (FORMAT BINARY)"))
+                    {
+
+                        foreach (DataRow row in sourceTable.Rows)
                         {
-                            object colValue = row[i];
-                            if (colValue == DBNull.Value)
-                                columnValues += "null,";
-                            else
-                            {
-                                if ((sourceTable.Columns[i].DataType != typeof(int)))
-                                {
-                                    if (sourceTable.Columns[i].DataType == typeof(string))
-                                        colValue = colValue.ToString().Replace("'", "''").Trim(new[] { ' ' });
-                                    
-                                    columnValues += "'" + colValue + "',";
+                            writer.StartRow();
+                            for (int i = 0; i < row.ItemArray.Length; i++){
+                                if (!excludeColumnIndex.Contains(i)){
+                                    if (row[i] == DBNull.Value || (row[i].GetType() == typeof(string) && row[i].Equals(""))){
+                                        writer.WriteNull();
+                                    }
+                                    else if(sourceTable.Columns[i].DataType == typeof(string)){
+                                        writer.Write(row[i], NpgsqlDbType.Varchar);
+                                    }
+                                    else if(sourceTable.Columns[i].DataType == typeof(int)){
+                                        writer.Write(row[i], NpgsqlDbType.Numeric);
+                                    }
+                                    else if(sourceTable.Columns[i].DataType == typeof(DateTime)){
+                                        if(targetTableName == "camdecmpswks.check_log" && i > 2){
+                                            writer.Write(row[i], NpgsqlDbType.Date);
+                                        }
+                                        else{
+                                            writer.Write(row[i], NpgsqlDbType.Timestamp);
+                                        }
+                                    }
+                                    else{
+                                        writer.Write(row[i], NpgsqlDbType.Numeric);
+                                    }
                                 }
-                                else
-                                    columnValues += colValue + ",";
                             }
                         }
-                    sqlInsert += columnValues.TrimEnd(',') + ");";
-                    try
-                    {
-                        int rowsAffected = 0;
-                        using (var cmd = new NpgsqlCommand(sqlInsert, m_sqlConn))
-                        {
-                        
-                            rowsAffected = cmd.ExecuteNonQuery();
-                            result = rowsAffected > 0;
-                            if (!result)
-                                break;
-                        }
+                        writer.Complete();
                     }
-                    catch (Exception ex)
-                    {
-                        errorMessage = string.Format(errorTemplate, ex.Message);
-                        result = false;
-                    }
-                    finally
-                    {
-                        if (!string.IsNullOrEmpty(errorMessage))
-                            result = false;
-                    }
+                    return true;
+                }
+                catch(Exception e)
+                {
+                    errorMessage = string.Format(errorTemplate, e.Message);
+                    return false;
                 }
             }
-            else
-                result = true;
-            return result;
+
+            return true;
+
+            
         }
      
 
