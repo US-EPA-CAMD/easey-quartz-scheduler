@@ -68,6 +68,19 @@ namespace CheckEngineRunner
             string fileTypeCd = ((args != null) && (args.Length >= 1)) ? args[0] : null;
             switch (fileTypeCd)
             {
+                case "MP":
+                    {
+                        string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
+
+
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\MonitorPlan\\obj\\Debug\\netcoreapp6.0\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
+
+                        bool result = checkEngine.RunChecks_MpReport(monPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+                    }
+                    break;
+
                 case "EM":
                     {
                         string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
@@ -86,7 +99,7 @@ namespace CheckEngineRunner
                     }
                     break;
 
-                default:
+                case "QAT":
                     {
                         string localDir = System.IO.Directory.GetCurrentDirectory();
                         string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp6.0\\";
