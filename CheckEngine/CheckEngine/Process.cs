@@ -1272,12 +1272,19 @@ namespace ECMPS.Checks.CheckEngine
             {
                 Sql = "select camdecmpswks.update_ecmps_status_for_qa_evaluation('" + CheckEngine.ChkSessionId + "','" + QaId + "')";
             }
-            else if (CheckEngine.ProcessCd == "HOURLY") {
-                Sql = "select camdecmpswks.update_ecmps_status_for_em_evaluation('" + CheckEngine.ChkSessionId +  "','" + CheckEngine.RptPeriodId + "')";
+            else if (CheckEngine.ProcessCd == "HOURLY")
+            {
+                Sql = "select camdecmpswks.update_ecmps_status_for_em_evaluation('" + CheckEngine.ChkSessionId + "','" + CheckEngine.RptPeriodId + "')";
             }
             else if (CheckEngine.ProcessCd == "MP")
             {
                 Sql = "select camdecmpswks.update_ecmps_status_for_mp_evaluation('" + CheckEngine.MonPlanId + "','" + CheckEngine.ChkSessionId + "')";
+            }
+            else { 
+
+              errorMessage = string.Format(resultTemplate, "DB/App", "process code is not found");
+               Sql = "";
+               return false;
             }
 
             if (DbUpdate_EcmpsStatusProcess != null)
