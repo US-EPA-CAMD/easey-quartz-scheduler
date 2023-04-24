@@ -3807,19 +3807,19 @@ namespace ECMPS.Checks.EmissionsReport
               ref AErrorMessage) && Result;
 
             Result = AddTable("MatsMhvHclcRecordsByHourLocation",
-                string.Format("select * from  camdecmpswks.mats_derived_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HCL"),
+                string.Format("select * from  camdecmpswks.mats_monitor_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HCL"),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "",
                               ref AErrorMessage) && Result;
 
             Result = AddTable("MatsMhvHfcRecordsByHourLocation",
-                string.Format("select * from  camdecmpswks.mats_derived_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HF"),
+                string.Format("select * from  camdecmpswks.mats_monitor_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HF"),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "",
                               ref AErrorMessage) && Result;
 
             Result = AddTable("MatsMhvHgcRecordsByHourLocation",
-                string.Format("select * from  camdecmpswks.mats_derived_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HG"),
+                string.Format("select * from  camdecmpswks.mats_monitor_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HG"),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "",
                               ref AErrorMessage) && Result;
@@ -4044,8 +4044,8 @@ namespace ECMPS.Checks.EmissionsReport
                               ref AErrorMessage) && Result;
    
             Result = AddTable("MonitorHourlyValueSo2c",
-                              "Select * From camdecmpswks.vw_mp_monitor_default_so2c" +
-                              "  Where " + AMonPlanFilter + " and " + ADateRangeFilter,
+                              "Select * From camdecmpswks.vw_MP_Monitor_Hrly_Value" +
+                              "  Where " + AMonPlanFilter + " and " + ADateRangeFilter + " and Parameter_Cd = 'SO2C'",
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "Begin_Date, Begin_Hour, Mon_Loc_Id",
                               ref AErrorMessage) && Result; 
