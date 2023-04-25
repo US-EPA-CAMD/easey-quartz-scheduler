@@ -1262,19 +1262,19 @@ namespace ECMPS.Checks.CheckEngine
             string Sql;
             if (CheckEngine.ProcessCd == "OTHERQA" && CheckEngine.CategoryCd == "EVENT")
             { //QA Cert Event
-                Sql = "select camdecmpswks.update_ecmps_status_for_qce_evaluation('" + QaId + "','" + CheckEngine.ChkSessionId + "')";
+                Sql = "select camdecmpswks.update_ecmps_status_for_qce_evaluation('" + CheckEngine.ChkSessionId + "','" + QaId + "')";
             }
             else if (CheckEngine.ProcessCd == "OTHERQA" && CheckEngine.CategoryCd == "TEE")
             {
-                Sql = "select camdecmpswks.update_ecmps_status_for_tee_evaluation('" + QaId + "','" + CheckEngine.ChkSessionId + "')";
+                Sql = "select camdecmpswks.update_ecmps_status_for_tee_evaluation('" + CheckEngine.ChkSessionId + "','" + QaId + "')";
             }
             else if (CheckEngine.ProcessCd == "TEST")
             {
-                Sql = "select camdecmpswks.update_ecmps_status_for_qa_evaluation('" + QaId + "','" + CheckEngine.ChkSessionId + "')";
+                Sql = "select camdecmpswks.update_ecmps_status_for_qa_evaluation('" + CheckEngine.ChkSessionId + "','" + QaId + "')";
             }
             else if (CheckEngine.ProcessCd == "HOURLY")
             {
-                Sql = "select camdecmpswks.update_ecmps_status_for_em_evaluation('" + CheckEngine.MonPlanId + "','" + CheckEngine.RptPeriodId + "','" + CheckEngine.ChkSessionId + "')";
+                Sql = "select camdecmpswks.update_ecmps_status_for_em_evaluation('" + CheckEngine.MonPlanId + "','" + CheckEngine.RptPeriodId + "','" + CheckEngine.ChkSessionId+ "')";
             }
             else if (CheckEngine.ProcessCd == "MP")
             {
