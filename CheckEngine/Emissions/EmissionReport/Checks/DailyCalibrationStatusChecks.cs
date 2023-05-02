@@ -66,7 +66,9 @@ namespace ECMPS.Checks.EmissionsChecks
                 string CalcTestRes = "";
                 cDailyCalibrationTestData mostRecentDailyCalibrationTestObject;
 
-                if (DailyCalStatRecs.GetMostRecent(ApplCompId, true, AnalyzerRangeUsed, out mostRecentDailyCalibrationTestObject))
+                if(DailyCalStatRecs.GetMostRecent(ApplCompId, true, AnalyzerRangeUsed, out mostRecentDailyCalibrationTestObject) &&
+                   ((emParams.AnnualReportingRequirement.Default(true) == true) ||
+                    (mostRecentDailyCalibrationTestObject.DailyTestDate >= new DateTime(emParams.CurrentOperatingDate.Value.Year, 4, 1))))
                 {
                     FoundDailyCalRec = mostRecentDailyCalibrationTestObject.DailyCalibrationRow;
                     CalcTestRes = mostRecentDailyCalibrationTestObject.CalculatedTestResultCd;

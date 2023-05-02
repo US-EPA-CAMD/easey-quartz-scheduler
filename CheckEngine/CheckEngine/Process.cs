@@ -1260,14 +1260,31 @@ namespace ECMPS.Checks.CheckEngine
             DataTable AResultTable;
             
             string Sql;
-            if(CheckEngine.ProcessCd == "OTHERQA" && CheckEngine.CategoryCd == "EVENT"){ //QA Cert Event
-              Sql = "select camdecmpswks.update_ecmps_status_for_qce_evaluation('" + CheckEngine.ChkSessionId + "','" + QaId + "')";
-            }else if(CheckEngine.ProcessCd == "OTHERQA" && CheckEngine.CategoryCd == "TEE"){
-              Sql = "select camdecmpswks.update_ecmps_status_for_tee_evaluation('" + CheckEngine.ChkSessionId + "','" + QaId + "')";
-            }else if(CheckEngine.ProcessCd == "TEST"){
-              Sql = "select camdecmpswks.update_ecmps_status_for_qa_evaluation('" + CheckEngine.ChkSessionId + "','" + QaId + "')";
-            }else{
-              Sql = "select camdecmpswks.update_ecmps_status_for_mp_evaluation('" + CheckEngine.MonPlanId + "','" + CheckEngine.ChkSessionId + "')";
+            if (CheckEngine.ProcessCd == "OTHERQA" && CheckEngine.CategoryCd == "EVENT")
+            { //QA Cert Event
+                Sql = "select camdecmpswks.update_ecmps_status_for_qce_evaluation('" + QaId + "','" + CheckEngine.ChkSessionId + "')";
+            }
+            else if (CheckEngine.ProcessCd == "OTHERQA" && CheckEngine.CategoryCd == "TEE")
+            {
+                Sql = "select camdecmpswks.update_ecmps_status_for_tee_evaluation('" + QaId + "','" + CheckEngine.ChkSessionId + "')";
+            }
+            else if (CheckEngine.ProcessCd == "TEST")
+            {
+                Sql = "select camdecmpswks.update_ecmps_status_for_qa_evaluation('" + QaId + "','" + CheckEngine.ChkSessionId + "')";
+            }
+            else if (CheckEngine.ProcessCd == "HOURLY")
+            {
+                Sql = "select camdecmpswks.update_ecmps_status_for_em_evaluation('" + CheckEngine.MonPlanId + "','" + CheckEngine.RptPeriodId + "','" + CheckEngine.ChkSessionId + "')";
+            }
+            else if (CheckEngine.ProcessCd == "MP")
+            {
+                Sql = "select camdecmpswks.update_ecmps_status_for_mp_evaluation('" + CheckEngine.MonPlanId + "','" + CheckEngine.ChkSessionId + "')";
+            }
+            else { 
+
+              errorMessage = string.Format(resultTemplate, "DB/App", "process code is not found");
+               Sql = "";
+               return false;
             }
 
             if (DbUpdate_EcmpsStatusProcess != null)

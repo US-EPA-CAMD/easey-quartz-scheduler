@@ -3807,19 +3807,19 @@ namespace ECMPS.Checks.EmissionsReport
               ref AErrorMessage) && Result;
 
             Result = AddTable("MatsMhvHclcRecordsByHourLocation",
-                string.Format("select * from  camdecmpswks.mats_derived_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HCL"),
+                string.Format("select * from  camdecmpswks.mats_monitor_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HCL"),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "",
                               ref AErrorMessage) && Result;
 
             Result = AddTable("MatsMhvHfcRecordsByHourLocation",
-                string.Format("select * from  camdecmpswks.mats_derived_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HF"),
+                string.Format("select * from  camdecmpswks.mats_monitor_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HF"),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "",
                               ref AErrorMessage) && Result;
 
             Result = AddTable("MatsMhvHgcRecordsByHourLocation",
-                string.Format("select * from  camdecmpswks.mats_derived_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HG"),
+                string.Format("select * from  camdecmpswks.mats_monitor_hourly_value_data('{0}', {1}, '{2}') order by begin_date, begin_hour, mon_loc_id, hour_id", MonPlanId, RptPeriodId, "HG"),
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "",
                               ref AErrorMessage) && Result;
@@ -4044,8 +4044,8 @@ namespace ECMPS.Checks.EmissionsReport
                               ref AErrorMessage) && Result;
    
             Result = AddTable("MonitorHourlyValueSo2c",
-                              "Select * From camdecmpswks.vw_mp_monitor_default_so2c" +
-                              "  Where " + AMonPlanFilter + " and " + ADateRangeFilter,
+                              "Select * From camdecmpswks.vw_MP_Monitor_Hrly_Value" +
+                              "  Where " + AMonPlanFilter + " and " + ADateRangeFilter + " and Parameter_Cd = 'SO2C'",
                               mSourceData, mCheckEngine.DbDataConnection.SQLConnection,
                               "Begin_Date, Begin_Hour, Mon_Loc_Id",
                               ref AErrorMessage) && Result; 
@@ -4513,37 +4513,68 @@ namespace ECMPS.Checks.EmissionsReport
             try
             {
                 Checks[0] = InstantiateChecks("cHourlyOperatingDataChecks", checksDllPath);
+                Checks[0].setEmParamsForCheck(ref emParams);
                 Checks[1] = InstantiateChecks("cHourlyAppendixDChecks", checksDllPath);
+                Checks[1].setEmParamsForCheck(ref emParams);
                 Checks[2] = InstantiateChecks("cHourlyDerivedValueChecks", checksDllPath);
+                Checks[2].setEmParamsForCheck(ref emParams);
                 Checks[3] = InstantiateChecks("cHourlyMonitorValueChecks", checksDllPath);
+                Checks[3].setEmParamsForCheck(ref emParams);
                 Checks[4] = null; // Removed checks which are not longer used. InstantiateChecks("cHourlyInclusiveDataChecks", checksDllPath);
                 Checks[5] = InstantiateChecks("cHourlyCalculatedDataChecks", checksDllPath);
+                Checks[5].setEmParamsForCheck(ref emParams);
                 Checks[37] = InstantiateChecks("cHourlyAggregationChecks", checksDllPath);
+                Checks[37].setEmParamsForCheck(ref emParams);
                 Checks[38] = InstantiateChecks("cHourlyApportionmentChecks", checksDllPath);
+                Checks[38].setEmParamsForCheck(ref emParams);
                 Checks[39] = InstantiateChecks("cHourlyAppendixEChecks", checksDllPath);
+                Checks[39].setEmParamsForCheck(ref emParams);
                 Checks[40] = InstantiateChecks("cHourlyGeneralChecks", checksDllPath);
+                Checks[40].setEmParamsForCheck(ref emParams);
                 Checks[42] = InstantiateChecks("cDailyEmissionChecks", checksDllPath);
+                Checks[42].setEmParamsForCheck(ref emParams);
                 Checks[43] = InstantiateChecks("cDailyCalibrationChecks", checksDllPath);
+                Checks[43].setEmParamsForCheck(ref emParams);
                 Checks[44] = InstantiateChecks("cDailyEmissionTestChecks", checksDllPath);
+                Checks[44].setEmParamsForCheck(ref emParams);
                 Checks[46] = InstantiateChecks("cLinearityStatusChecks", checksDllPath);
+                Checks[46].setEmParamsForCheck(ref emParams);
                 Checks[47] = InstantiateChecks("cAppendixDEStatusChecks", checksDllPath);
+                Checks[47].setEmParamsForCheck(ref emParams);
                 Checks[49] = InstantiateChecks("cRATAStatusChecks", checksDllPath);
+                Checks[49].setEmParamsForCheck(ref emParams);
                 Checks[51] = InstantiateChecks("cDailyCalibrationStatusChecks", checksDllPath);
+                Checks[51].setEmParamsForCheck(ref emParams);
                 Checks[55] = InstantiateChecks("cFlowToLoadStatusChecks", checksDllPath);
+                Checks[55].setEmParamsForCheck(ref emParams);
                 Checks[56] = InstantiateChecks("cDailyInterferenceStatusChecks", checksDllPath);
+                Checks[56].setEmParamsForCheck(ref emParams);
                 Checks[57] = InstantiateChecks("cLeakStatusChecks", checksDllPath);
+                Checks[57].setEmParamsForCheck(ref emParams);
                 Checks[60] = InstantiateChecks("cMATSOperatingHourChecks", checksDllPath);
+                Checks[60].setEmParamsForCheck(ref emParams);
                 Checks[61] = InstantiateChecks("cMATSMonitorHourlyValueChecks", checksDllPath);
+                Checks[61].setEmParamsForCheck(ref emParams);
                 Checks[62] = InstantiateChecks("cMATSCalculatedHourlyValueChecks", checksDllPath);
+                Checks[62].setEmParamsForCheck(ref emParams);
                 Checks[63] = InstantiateChecks("cMATSDerivedHourlyValueChecks", checksDllPath);
+                Checks[63].setEmParamsForCheck(ref emParams);
                 Checks[64] = InstantiateChecks("cMATSSorbentTrapChecks", checksDllPath);
+                Checks[64].setEmParamsForCheck(ref emParams);
                 Checks[65] = InstantiateChecks("cMATSSamplingTrainChecks", checksDllPath);
+                Checks[65].setEmParamsForCheck(ref emParams);
                 Checks[66] = InstantiateChecks("cMATSHourlyGFMChecks", checksDllPath);
+                Checks[66].setEmParamsForCheck(ref emParams);
                 Checks[67] = InstantiateChecks("WeeklyTestSummaryChecks", checksDllPath);
+                Checks[67].setEmParamsForCheck(ref emParams);
                 Checks[68] = InstantiateChecks("WeeklySystemIntegrityChecks", checksDllPath);
+                Checks[68].setEmParamsForCheck(ref emParams);
                 Checks[69] = InstantiateChecks("WeeklySystemIntegrityStatusChecks", checksDllPath);
+                Checks[69].setEmParamsForCheck(ref emParams);
                 Checks[70] = InstantiateChecks("Nsps4tChecks", checksDllPath);
+                Checks[70].setEmParamsForCheck(ref emParams);
                 Checks[71] = InstantiateChecks("EmissionAuditChecks", checksDllPath);
+                Checks[71].setEmParamsForCheck(ref emParams);
                 Checks[45] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "LME.dll", "ECMPS.Checks.LMEChecks.cLMEChecks").Unwrap();
                 Checks[45].setEmParamsForCheck(ref emParams);
                 result = true;
@@ -4638,10 +4669,29 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="errorMessage">The error message returned on failure.</param>
         /// <returns>Returns true if the update succeeds.</returns>
         protected override bool DbUpdate_CalcWsLoad(NpgsqlTransaction sqlTransaction, ref string errorMessage)
-        //protected override bool DbUpdate_CalcWsLoad(SqlTransaction sqlTransaction, ref string errorMessage)
-        {
-            bool result;
+        {            
+            DataTable[] sourceTables = new DataTable[]
+            {FCalcDailyCal, FCalcDailyTestSummary, FCalcDerivedHrlyValue, FCalcMonitorHrlyValue, FCalcHrlyFuelFlow, FCalcHrlyParamFuelFlow, FCalcLongTermFuelFlow, FCalcDailyEmission, FCalcDailyFuel, FCalcSummaryValue, CalcMATSDHVData, CalcMATSMHVData,
+            CalcHrlyGasFlowMeter, CalcSamplingTrain, CalcSorbentTrap, SamplingTrainEvalInformation.SupplementalDataUpdateDataTable, CalcWeeklyTestSummary, CalcWeeklySystemIntegrity, QaCertificationSupplementalData.SupplementalDataUpdateDataTable,
+            SystemOperatingSupplementalData.SupplementalDataUpdateDataTable, ComponentOperatingSupplementalData.SupplementalDataUpdateDataTable, LastQualityAssuredValueSupplementalData.SupplementalDataUpdateDataTable,
+            cDailyCalibrationData.SupplementalDataUpdateLocationDataTable, cDailyCalibrationData.SupplementalDataUpdateSystemDataTable};
+            
+            string[] tableLocation = new string[]{"camdecmpscalc.daily_calibration", "camdecmpscalc.daily_test_summary", "camdecmpscalc.derived_hrly_value", "camdecmpscalc.monitor_hrly_value", "camdecmpscalc.hrly_param_fuel_flow", "camdecmpscalc.long_term_fuel_flow",
+            "camdecmpscalc.daily_emission", "camdecmpscalc.daily_fuel", "camdecmpscalc.summary_value", "camdecmpscalc.mats_derived_hrly_value", "camdecmpscalc.mats_monitor_hrly_value", "camdecmpscalc.hrly_gas_flow_meter", "camdecmpscalc.sampling_train","camdecmpscalc.sorbent_trap",
+            SamplingTrainEvalInformation.SupplementalDataUpdateTableName, "camdecmpscalc.weekly_test_summary", "camdecmpscalc.weekly_system_integrity", QaCertificationSupplementalData.SupplementalDataUpdateTablePath, SystemOperatingSupplementalData.SupplementalDataUpdateTablePath,
+            ComponentOperatingSupplementalData.SupplementalDataUpdateTablePath, LastQualityAssuredValueSupplementalData.SupplementalDataUpdateTablePath, cDailyCalibrationData.SupplementalDataUpdateLocationTablePath, cDailyCalibrationData.SupplementalDataUpdateSystemTablePath};
 
+            
+            bool result;
+            /*
+            for(int i = 0; i < sourceTables.Length; i++){
+                Task.Run(() => 
+                {
+                    result = DbWsConnection.BulkLoad(sourceTables[i], tableLocation[i], ref errorMessage);    
+                } );
+            }
+            */
+            
             //if (mCheckEngine.DbWsConnection.ClearUpdateSession(eWorkspaceDataType.EM, mCheckEngine.ChkSessionId))
             //{
                 if (
@@ -4667,7 +4717,7 @@ namespace ECMPS.Checks.EmissionsReport
                         DbWsConnection.BulkLoad(CalcSorbentTrap, "camdecmpscalc.sorbent_trap", ref errorMessage) &&
                         /* Sampling Train Supplemental Data*/
                         DbWsConnection.BulkLoad(SamplingTrainEvalInformation.SupplementalDataUpdateDataTable,
-                                                SamplingTrainEvalInformation.SupplementalDataUpdateTableName,
+                                                SamplingTrainEvalInformation.SupplementalDataUpdateTablePath,
                                                 ref errorMessage) &&
                         /* Weekly Emission Tests */
                         DbWsConnection.BulkLoad(CalcWeeklyTestSummary, "camdecmpscalc.weekly_test_summary", ref errorMessage) &&
@@ -5072,7 +5122,7 @@ namespace ECMPS.Checks.EmissionsReport
             {
                 DataRow CalcRow = CalcHrlyGasFlowMeter.NewRow();
 
-                CalcRow["HRLY_GFM_ID"] = emParams.MatsHourlyGfmRecord.HrlyGfmId;
+                CalcRow["HRLY_GAS_FLOW_METER_ID"] = emParams.MatsHourlyGfmRecord.HrlyGfmId;
                 CalcRow["CALC_FLOW_TO_SAMPLING_RATIO"] = GetUpdateDecimalValue(emParams.MatsCalcHourlySfsrRatio, eDecimalPrecision.MATS_PERCENT);
 
                 CalcRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;

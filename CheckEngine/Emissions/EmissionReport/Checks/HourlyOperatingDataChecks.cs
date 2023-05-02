@@ -6,6 +6,7 @@ using ECMPS.Checks.CheckEngine;
 using ECMPS.Checks.CheckEngine.SpecialParameterClasses;
 using ECMPS.Checks.Data.Ecmps.CheckEm.Function;
 using ECMPS.Checks.Data.Ecmps.Dbo.View;
+using ECMPS.Checks.Data.EcmpsAux.CrossCheck.Virtual;
 using ECMPS.Checks.Em.Parameters;
 using ECMPS.Checks.EmissionsReport;
 using ECMPS.Checks.Parameters;
@@ -1993,7 +1994,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                                     Category.CheckCatalogResult = "H";
                                                 }
                                             }
-                                            else 
+                                            else
                                             {
                                                 emParams.CurrentMaximumLoadValue = cDBConvert.ToInteger(MonLoadRecs[0]["MAX_LOAD_VALUE"]);
                                             }
@@ -2097,143 +2098,339 @@ namespace ECMPS.Checks.EmissionsChecks
             return ReturnVal;
         }
 
-        public  string HOUROP34(cCategory Category, ref bool Log)
-        //Validate Reported FC Factor
+
+        /// <summary>
+        /// Validate Reported FC Factor
+        /// 
+        /// Uses cross-check value to ensure that FC Factor reported in Hourly Operating Data is within acceptable range
+        /// </summary>
+        /// <param name="category"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        public  string HOUROP34(cCategory category, ref bool log)
         {
-            string ReturnVal = "";
+            string returnVal = "";
 
             try
             {
-                if (Convert.ToBoolean(Category.GetCheckParameter("FC_Factor_Needed").ParameterValue))
+                emParams.ValidFcFactorExists = false;
+
+                decimal? fcFactor = emParams.CurrentHourlyOpRecord.FcFactor;
+
+                if (fcFactor == null)
                 {
-                    DataRowView CurrentHourlyOpRow = (DataRowView)Category.GetCheckParameter("Current_Hourly_Op_Record").ParameterValue;
-                    decimal FCFactor = cDBConvert.ToDecimal(CurrentHourlyOpRow["FC_FACTOR"]);
-                    Category.SetCheckParameter("Valid_Fc_Factor_Exists", false, eParameterDataType.Boolean);
-                    if (FCFactor <= 0)//tests for null or <= 0
-                        Category.CheckCatalogResult = "A";
+                    if (emParams.FcFactorNeeded == true)
+                    {
+                        category.CheckCatalogResult = "A";
+                    }
+                }
+                else if (fcFactor <= 0.0m)
+                {
+                    if (emParams.FcFactorNeeded == true)
+                    {
+                        category.CheckCatalogResult = "A";
+                    }
                     else
                     {
-                        Category.SetCheckParameter("Valid_Fc_Factor_Exists", true, eParameterDataType.Boolean);
-                        if (!Convert.ToBoolean(Category.GetCheckParameter("Special_Fuel_Burned").ParameterValue))
-                        {
-                            DataView CrossCheckTbl = (DataView)Category.GetCheckParameter("F-factor_Range_Cross_Check_Table").ParameterValue;
-                            sFilterPair[] Filter = new sFilterPair[1];
-                            DataRowView CrossChkRow;
-                            Filter[0].Set("Factor", "FC");
-                            FindRow(CrossCheckTbl, Filter, out CrossChkRow);
-
-                            decimal FCMin = cDBConvert.ToDecimal(CrossChkRow["Lower Value"]);
-                            decimal FCMax = cDBConvert.ToDecimal(CrossChkRow["Upper Value"]);
-
-                            Category.SetCheckParameter("Fc_Factor_Minimum", FCMin, eParameterDataType.Decimal);
-                            Category.SetCheckParameter("Fc_Factor_Maximum", FCMax, eParameterDataType.Decimal);
-
-                            if (FCFactor > FCMax || FCFactor < FCMin)
-                                Category.CheckCatalogResult = "B";
-                        }
+                        category.CheckCatalogResult = "C";
                     }
                 }
                 else
-                    Log = false;
+                {
+                    emParams.ValidFcFactorExists = true;
+
+                    if (emParams.SpecialFuelBurned != true)
+                    {
+                        FcValidationInfo fcValidationInfo;
+
+                        if (emParams.FcValicationSpansQuarter == true)
+                        {
+                            fcValidationInfo = emParams.FcValidationInfoByLocationArray[emParams.CurrentMonitorPlanLocationPostion.Value];
+                        }
+                        else
+                        {
+                            bool dslFound = false;
+                            bool pngOrNngFound = false;
+                            bool otherFound = false;
+
+                            if (emParams.CurrentMonitorPlanLocationRecord.UnitId != null)
+                            {
+                                CheckDataView<VwMpLocationFuelRow> unitFuelRecords
+                                    = emParams.FacilityUnitFuelRecords.FindActiveRows(emParams.CurrentOperatingDate.Value,
+                                                                                          emParams.CurrentOperatingDate.Value,
+                                                                                          new cFilterCondition("UNIT_ID",
+                                                                                                               eFilterConditionRelativeCompare.Equals,
+                                                                                                               emParams.CurrentMonitorPlanLocationRecord.UnitId.Value),
+                                                                                          new cFilterCondition("INDICATOR_CD", "P,S", eFilterConditionStringCompare.InList));
+
+                                foreach (VwMpLocationFuelRow unitFuelRecord in unitFuelRecords)
+                                {
+                                    if (unitFuelRecord.FuelCd == "NNG" || unitFuelRecord.FuelCd == "PNG")
+                                    {
+                                        pngOrNngFound = true;
+                                    }
+                                    else if (unitFuelRecord.FuelCd == "DSL")
+                                    {
+                                        dslFound = true;
+                                    }
+                                    else
+                                    {
+                                        otherFound = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                CheckDataView<VwMpUnitStackConfigurationRow> unitStackConfigurationRecords
+                                    = emParams.EmUnitStackConfigurationRecords.FindActiveRows(emParams.CurrentOperatingDate.Value,
+                                                                                                  emParams.CurrentOperatingDate.Value,
+                                                                                                  new cFilterCondition("STACK_PIPE_ID", emParams.CurrentMonitorPlanLocationRecord.StackPipeId));
+
+                                foreach (VwMpUnitStackConfigurationRow unitStackConfigurationRecord in unitStackConfigurationRecords)
+                                {
+                                    CheckDataView<VwMpLocationFuelRow> unitFuelRecords
+                                        = emParams.FacilityUnitFuelRecords.FindActiveRows(emParams.CurrentOperatingDate.Value,
+                                                                                              emParams.CurrentOperatingDate.Value,
+                                                                                              new cFilterCondition("UNIT_ID",
+                                                                                                                   eFilterConditionRelativeCompare.Equals,
+                                                                                                                   unitStackConfigurationRecord.UnitId.Value),
+                                                                                              new cFilterCondition("INDICATOR_CD", "P,S", eFilterConditionStringCompare.InList));
+
+                                    foreach (VwMpLocationFuelRow unitFuelRecord in unitFuelRecords)
+                                    {
+                                        if (unitFuelRecord.FuelCd == "NNG" || unitFuelRecord.FuelCd == "PNG")
+                                        {
+                                            pngOrNngFound = true;
+                                        }
+                                        else if (unitFuelRecord.FuelCd == "DSL")
+                                        {
+                                            dslFound = true;
+                                        }
+                                        else
+                                        {
+                                            otherFound = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (otherFound)
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+
+
+                            // Initialize fcValidationInfo to the general Fc range.
+                            {
+                                FFactorRangeChecksRow fFactorRangeChecksRow = emParams.FFactorRangeCrossCheckTable.FindRow(new cFilterCondition("Factor", "FC"));
+
+                                decimal minValue = (fFactorRangeChecksRow != null) ? fFactorRangeChecksRow.LowerValue.AsDecimal().Default(Decimal.MinValue) : Decimal.MinValue;
+                                decimal maxValue = (fFactorRangeChecksRow != null) ? fFactorRangeChecksRow.UpperValue.AsDecimal().Default(Decimal.MaxValue) : Decimal.MaxValue;
+
+                                fcValidationInfo = new FcValidationInfo(FcValidationInfo.NonFuelSpecificMinValue.Value, FcValidationInfo.NonFuelSpecificMaxValue.Value);
+                            }
+
+
+                            if (!otherFound)
+                            {
+                                FuelTypeRealityChecksForFcFactorRow fuelTypeRealityChecksForFcFactorRow;
+
+                                if (pngOrNngFound)
+                                {
+                                    fuelTypeRealityChecksForFcFactorRow
+                                        = emParams.FuelTypeRealityChecksForFcFactorCrossCheckTable.FindRow(new cFilterCondition("FuelType", "GAS"));
+
+                                    if (fuelTypeRealityChecksForFcFactorRow != null)
+                                    {
+                                        fcValidationInfo.UpdateToFuelSpecificRange(fuelTypeRealityChecksForFcFactorRow.LowerValue.AsDecimal().Default(Decimal.MinValue),
+                                                                                   fuelTypeRealityChecksForFcFactorRow.UpperValue.AsDecimal().Default(Decimal.MaxValue));
+                                    }
+                                }
+
+                                if (dslFound)
+                                {
+                                    fuelTypeRealityChecksForFcFactorRow
+                                        = emParams.FuelTypeRealityChecksForFcFactorCrossCheckTable.FindRow(new cFilterCondition("FuelType", "OIL"));
+
+                                    if (fuelTypeRealityChecksForFcFactorRow != null)
+                                    {
+                                        fcValidationInfo.UpdateToFuelSpecificRange(fuelTypeRealityChecksForFcFactorRow.LowerValue.AsDecimal().Default(Decimal.MinValue),
+                                                                                   fuelTypeRealityChecksForFcFactorRow.UpperValue.AsDecimal().Default(Decimal.MaxValue));
+                                    }
+                                }
+                            }
+                        }
+
+
+                        emParams.FcFactorMinimum = fcValidationInfo.MinValue;
+                        emParams.FcFactorMaximum = fcValidationInfo.MaxValue;
+
+
+                        if ((fcFactor > emParams.FcFactorMaximum) || (fcFactor < emParams.FcFactorMinimum))
+                        {
+                            if (fcValidationInfo.IsFuelSpecific)
+                            {
+                                category.CheckCatalogResult = "E";
+                            }
+                            else if (emParams.FcFactorNeeded == true)
+                            {
+                                category.CheckCatalogResult = "B";
+                            }
+                            else
+                            {
+                                category.CheckCatalogResult = "D";
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
-                ReturnVal = Category.CheckEngine.FormatError(ex, "HOUROP34");
+                returnVal = category.CheckEngine.FormatError(ex);
             }
-            return ReturnVal;
+            return returnVal;
         }
 
-        public  string HOUROP35(cCategory Category, ref bool Log)
-        //Validate Reported FD Factor
+
+        /// <summary>
+        /// Validate Reported FD Factor
+        /// 
+        /// Uses cross-check value to ensure that FD Factor reported in Hourly Operating Data is within acceptable range
+        /// </summary>
+        /// <param name="category"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        public  string HOUROP35(cCategory category, ref bool log)
         {
-            string ReturnVal = "";
+            string returnVal = "";
 
             try
             {
-                if (Convert.ToBoolean(Category.GetCheckParameter("FD_Factor_Needed").ParameterValue))
+                emParams.ValidFdFactorExists = false;
+
+                decimal? fdFactor = emParams.CurrentHourlyOpRecord.FdFactor;
+
+                if (fdFactor == null)
                 {
-                    DataRowView CurrentHourlyOpRow = (DataRowView)Category.GetCheckParameter("Current_Hourly_Op_Record").ParameterValue;
-                    decimal FDFactor = cDBConvert.ToDecimal(CurrentHourlyOpRow["FD_FACTOR"]);
-                    Category.SetCheckParameter("Valid_FD_Factor_Exists", false, eParameterDataType.Boolean);
-                    if (FDFactor <= 0)//tests for null or <= 0
-                        Category.CheckCatalogResult = "A";
+                    if (emParams.FdFactorNeeded == true)
+                    {
+                        category.CheckCatalogResult = "A";
+                    }
+                }
+                else if (fdFactor <= 0.0m)
+                {
+                    if (emParams.FdFactorNeeded == true)
+                    {
+                        category.CheckCatalogResult = "A";
+                    }
                     else
                     {
-                        Category.SetCheckParameter("Valid_FD_Factor_Exists", true, eParameterDataType.Boolean);
-                        if (!Convert.ToBoolean(Category.GetCheckParameter("Special_Fuel_Burned").ParameterValue))
-                        {
-                            DataView CrossCheckTbl = (DataView)Category.GetCheckParameter("F-factor_Range_Cross_Check_Table").ParameterValue;
-                            sFilterPair[] Filter = new sFilterPair[1];
-                            DataRowView CrossChkRow;
-                            Filter[0].Set("Factor", "FD");
-                            FindRow(CrossCheckTbl, Filter, out CrossChkRow);
-
-                            decimal FDMin = cDBConvert.ToDecimal(CrossChkRow["Lower Value"]);
-                            decimal FDMax = cDBConvert.ToDecimal(CrossChkRow["Upper Value"]);
-
-                            Category.SetCheckParameter("Fd_Factor_Minimum", FDMin, eParameterDataType.Decimal);
-                            Category.SetCheckParameter("Fd_Factor_Maximum", FDMax, eParameterDataType.Decimal);
-
-                            if (FDFactor > FDMax || FDFactor < FDMin)
-                                Category.CheckCatalogResult = "B";
-                        }
+                        category.CheckCatalogResult = "C";
                     }
                 }
                 else
-                    Log = false;
+                {
+                    emParams.ValidFdFactorExists = true;
+
+                    if (emParams.SpecialFuelBurned != true)
+                    {
+                        FFactorRangeChecksRow fFactorRangeChecksRow = emParams.FFactorRangeCrossCheckTable.FindRow(new cFilterCondition("Factor", "FD"));
+
+                        emParams.FdFactorMinimum = fFactorRangeChecksRow.LowerValue.AsDecimal();
+                        emParams.FdFactorMaximum = fFactorRangeChecksRow.UpperValue.AsDecimal();
+
+                        if ((fdFactor > emParams.FdFactorMaximum) || (fdFactor < emParams.FdFactorMinimum))
+                        {
+                            if (emParams.FdFactorNeeded == true)
+                            {
+                                category.CheckCatalogResult = "B";
+                            }
+                            else
+                            {
+                                category.CheckCatalogResult = "D";
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
-                ReturnVal = Category.CheckEngine.FormatError(ex, "HOUROP35");
+                returnVal = category.CheckEngine.FormatError(ex);
             }
-            return ReturnVal;
+            return returnVal;
         }
 
-        public  string HOUROP36(cCategory Category, ref bool Log)
-        //Validate Reported FW Factor
+
+        /// <summary>
+        /// Validate Reported FW Factor
+        /// 
+        /// Uses cross-check value to ensure that FW Factor reported in Hourly Operating Data is within acceptable range
+        /// </summary>
+        /// <param name="category"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        public  string HOUROP36(cCategory category, ref bool log)
         {
-            string ReturnVal = "";
+            string returnVal = "";
 
             try
             {
-                if (Convert.ToBoolean(Category.GetCheckParameter("FW_Factor_Needed").ParameterValue))
+                emParams.ValidFwFactorExists = false;
+
+                decimal? fwFactor = emParams.CurrentHourlyOpRecord.FwFactor;
+
+                if (fwFactor == null)
                 {
-                    DataRowView CurrentHourlyOpRow = (DataRowView)Category.GetCheckParameter("Current_Hourly_Op_Record").ParameterValue;
-                    decimal FWFactor = cDBConvert.ToDecimal(CurrentHourlyOpRow["FW_FACTOR"]);
-                    Category.SetCheckParameter("Valid_FW_Factor_Exists", false, eParameterDataType.Boolean);
-                    if (FWFactor <= 0)//tests for null or <= 0
-                        Category.CheckCatalogResult = "A";
+                    if (emParams.FwFactorNeeded == true)
+                    {
+                        category.CheckCatalogResult = "A";
+                    }
+                }
+                else if (fwFactor <= 0.0m)
+                {
+                    if (emParams.FwFactorNeeded == true)
+                    {
+                        category.CheckCatalogResult = "A";
+                    }
                     else
                     {
-                        Category.SetCheckParameter("Valid_FW_Factor_Exists", true, eParameterDataType.Boolean);
-                        if (!Convert.ToBoolean(Category.GetCheckParameter("Special_Fuel_Burned").ParameterValue))
-                        {
-                            DataView CrossCheckTbl = (DataView)Category.GetCheckParameter("F-factor_Range_Cross_Check_Table").ParameterValue;
-                            sFilterPair[] Filter = new sFilterPair[1];
-                            DataRowView CrossChkRow;
-                            Filter[0].Set("Factor", "FW");
-                            FindRow(CrossCheckTbl, Filter, out CrossChkRow);
-
-                            decimal FWMin = cDBConvert.ToDecimal(CrossChkRow["Lower Value"]);
-                            decimal FWMax = cDBConvert.ToDecimal(CrossChkRow["Upper Value"]);
-
-                            Category.SetCheckParameter("Fw_Factor_Minimum", FWMin, eParameterDataType.Decimal);
-                            Category.SetCheckParameter("Fw_Factor_Maximum", FWMax, eParameterDataType.Decimal);
-
-                            if (FWFactor > FWMax || FWFactor < FWMin)
-                                Category.CheckCatalogResult = "B";
-                        }
+                        category.CheckCatalogResult = "C";
                     }
                 }
                 else
-                    Log = false;
+                {
+                    emParams.ValidFwFactorExists = true;
+
+                    if (emParams.SpecialFuelBurned != true)
+                    {
+                        FFactorRangeChecksRow fFactorRangeChecksRow = emParams.FFactorRangeCrossCheckTable.FindRow(new cFilterCondition("Factor", "FW"));
+
+                        emParams.FwFactorMinimum = fFactorRangeChecksRow.LowerValue.AsDecimal();
+                        emParams.FwFactorMaximum = fFactorRangeChecksRow.UpperValue.AsDecimal();
+
+                        if ((fwFactor > emParams.FwFactorMaximum) || (fwFactor < emParams.FwFactorMinimum))
+                        {
+                            if (emParams.FwFactorNeeded == true)
+                            {
+                                category.CheckCatalogResult = "B";
+                            }
+                            else
+                            {
+                                category.CheckCatalogResult = "D";
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
-                ReturnVal = Category.CheckEngine.FormatError(ex, "HOUROP36");
+                returnVal = category.CheckEngine.FormatError(ex);
             }
-            return ReturnVal;
+            return returnVal;
         }
+
 
         public  string HOUROP37(cCategory Category, ref bool Log)
         //Verify Single Heat Input Derived Hourly Record
@@ -2827,7 +3024,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     {
                         emParams.CurrentFlowMonitorHourlyRecord = emParams.FlowMonitorHourlyValueRecordsByHourLocation.GetRow(0);
 
-                        category.SetDecimalArrayParameter("Apportionment_Stack_Flow_Array", emParams.CurrentMonitorPlanLocationPostion.Value, 
+                        category.SetDecimalArrayParameter("Apportionment_Stack_Flow_Array", emParams.CurrentMonitorPlanLocationPostion.Value,
                                                                                             emParams.CurrentFlowMonitorHourlyRecord.UnadjustedHrlyValue);
                     }
                 }
@@ -2880,7 +3077,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
                     if ((emParams.CurrentHourlyOpRecord.OpTime > 0) && (hourLoad >= 0) && (emParams.LmeAnnual == false) && (emParams.LmeOs == false))
                     {
-                        if ((emParams.FlowMonitorHourlyChecksNeeded == true) || (emParams.NoxConcNeededForNoxMassCalc == true) || (emParams.NoxrDerivedHourlyChecksNeeded == true) || 
+                        if ((emParams.FlowMonitorHourlyChecksNeeded == true) || (emParams.NoxConcNeededForNoxMassCalc == true) || (emParams.NoxrDerivedHourlyChecksNeeded == true) ||
                             (emParams.So2HpffExists == true) || (emParams.Co2HpffExists == true) || (emParams.HiHpffExists == true))
                         {
                             if ((loadRange == null) && (commonStackLoadRange == null))
@@ -2948,7 +3145,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         {
                             category.CheckCatalogResult = "B";
                         }
-                }
+                    }
                 }
             }
             catch (Exception ex)
@@ -3182,7 +3379,7 @@ namespace ECMPS.Checks.EmissionsChecks
                     }
 
                     /* CurrentCo2ConcMonitorHourlyRecord */
-                    if (emParams.CurrentCo2ConcMonitorHourlyRecord != null )
+                    if (emParams.CurrentCo2ConcMonitorHourlyRecord != null)
                     {
                         HOUROP48_SuppUpdate(currentReportingPeriod, emParams.CurrentCo2ConcMonitorHourlyRecord.MonSysId, emParams.CurrentCo2ConcMonitorHourlyRecord.ModcCd, emParams.CurrentCo2ConcMonitorHourlyRecord.MonLocId, currentOperatingHour, supplementalDataDictionary);
                     }
@@ -3469,7 +3666,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                                 emParams.CurrentCo2ConcDerivedHourlyRecord.MonLocId,
                                                 emParams.CurrentCo2ConcDerivedHourlyRecord.ParameterCd,
                                                 null,
-                                                eHourlyType.Derived, 
+                                                eHourlyType.Derived,
                                                 emParams.CurrentCo2ConcDerivedHourlyRecord.MonSysId,
                                                 null,
                                                 emParams.CurrentCo2ConcDerivedHourlyRecord.ModcCd,
@@ -3669,8 +3866,8 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="includeSystem">The current operating hour being processed.</param>
         /// <param name="currentOperatingHour">Indicates whether to update the value for the specific system, if reported.</param>
         /// <param name="includeComponent">Indicates whether to update the value for the specific component, if reported.</param>
-        public  void HOUROP50_SuppUpdate(int rptPeriodId, string monLocId, string parameterCd, string moistureBasis, eHourlyType hourlyType, string monSysId, string componentId, 
-                                                string modcCd, DateTime currentOperatingHour, 
+        public  void HOUROP50_SuppUpdate(int rptPeriodId, string monLocId, string parameterCd, string moistureBasis, eHourlyType hourlyType, string monSysId, string componentId,
+                                                string modcCd, DateTime currentOperatingHour,
                                                 decimal? unadjustedHourlyValue, decimal? adjustedHourlyValue,
                                                 bool includeSystem, bool includeComponent,
                                                 Dictionary<string, LastQualityAssuredValueSupplementalData> supplementalDataDictionary)
@@ -3779,7 +3976,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         // Add used and maybe the unused NOx system if a NOx DHV exists with a P or PB system.
                         if ((emParams.CurrentNoxrDerivedHourlyRecord != null) && (emParams.CurrentNoxrDerivedHourlyRecord.MonSysId != null)
                                                                                   && (emParams.CurrentNoxrDerivedHourlyRecord.SysTypeCd == "NOX")
-                                                                                  && (emParams.CurrentNoxrDerivedHourlyRecord.SysDesignationCd == "P" || 
+                                                                                  && (emParams.CurrentNoxrDerivedHourlyRecord.SysDesignationCd == "P" ||
                                                                                       emParams.CurrentNoxrDerivedHourlyRecord.SysDesignationCd == "PB"))
                         {
                             systemOpTimeDictionary.Add(emParams.CurrentNoxrDerivedHourlyRecord.MonSysId, currentOpTime);
@@ -3808,9 +4005,9 @@ namespace ECMPS.Checks.EmissionsChecks
                     }
 
                     // Update operating information for the location and if a primary bypass is active, for the primary and primary bypass systems.
-                    emParams.MostRecentDailyCalibrationTestObject.UpdateOperatingInformation(emParams.CurrentHourlyOpRecord.MonLocId, 
-                                                                                                 emParams.CurrentHourlyOpRecord.BeginDatehour.Value, 
-                                                                                                 currentOpTime, 
+                    emParams.MostRecentDailyCalibrationTestObject.UpdateOperatingInformation(emParams.CurrentHourlyOpRecord.MonLocId,
+                                                                                                 emParams.CurrentHourlyOpRecord.BeginDatehour.Value,
+                                                                                                 currentOpTime,
                                                                                                  systemOpTimeDictionary);
                 }
             }
@@ -3879,7 +4076,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         foreach (VwQaSuppDataHourlyStatusRow linearitySuppDataRecord in emParams.LinearityTestRecordsByLocationForQaStatus)
                         {
                             if ((linearitySuppDataRecord.MonLocId == emParams.CurrentMonitorLocationId) &&
-                                ((linearitySuppDataRecord.BeginDatehour == emParams.CurrentOperatingDatehour) || 
+                                ((linearitySuppDataRecord.BeginDatehour == emParams.CurrentOperatingDatehour) ||
                                  (linearitySuppDataRecord.EndDatehour == emParams.CurrentOperatingDatehour)))
                             {
                                 // Add linearities to the list of linearities during non operating hours.
@@ -4088,7 +4285,7 @@ namespace ECMPS.Checks.EmissionsChecks
                             (emParams.O2WetNeededForMats != true) &&
                             (emParams.O2WetNeededToSupportCo2Calculation != true))
                         {
-                            bool dilentRecordIsNull;  string diluentModcCode, diluentParameter;
+                            bool dilentRecordIsNull; string diluentModcCode, diluentParameter;
                             {
                                 if ((emParams.Co2DiluentChecksNeededForNoxRateCalc == true) && (emParams.CurrentCo2ConcMonitorHourlyRecord != null))
                                 {

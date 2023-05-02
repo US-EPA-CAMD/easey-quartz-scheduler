@@ -66,8 +66,23 @@ namespace CheckEngineRunner
             */
 
             string fileTypeCd = ((args != null) && (args.Length >= 1)) ? args[0] : null;
+            fileTypeCd = "EM";
+
             switch (fileTypeCd)
             {
+                case "MP":
+                    {
+                        string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
+
+
+                        string localDir = System.IO.Directory.GetCurrentDirectory();
+                        string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\MonitorPlan\\obj\\Debug\\netcoreapp6.0\\";
+                        cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
+
+                        bool result = checkEngine.RunChecks_MpReport(monPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+                    }
+                    break;
+
                 case "EM":
                     {
                         string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
@@ -82,11 +97,11 @@ namespace CheckEngineRunner
                         string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\Emissions\\obj\\Debug\\netcoreapp6.0\\";
                         cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
 
-                        bool result = checkEngine.RunChecks_EmReport(monPlanId, rptPeriodId, eCheckEngineRunMode.Normal);
+                        bool result = checkEngine.RunChecks_EmReport("MDC-7743327CA4FB4B8CA6C0C656ECC4E1B8", 113, eCheckEngineRunMode.Normal);
                     }
                     break;
 
-                default:
+                case "QAT":
                     {
                         string localDir = System.IO.Directory.GetCurrentDirectory();
                         string dllPath = localDir.Substring(0, localDir.IndexOf("CheckEngine") + 11) + "\\QA\\obj\\Debug\\netcoreapp6.0\\";

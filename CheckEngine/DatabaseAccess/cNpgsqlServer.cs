@@ -1,3 +1,4 @@
+using System.Threading.Tasks.Dataflow;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -1682,70 +1683,57 @@ namespace ECMPS.Checks.DatabaseAccess
                              NpgsqlTransaction sqlTransaction, // was SqlTransaction
                              ref string errorMessage)
         {
-            bool result = false;
-            string errorTemplate = string.Format("BulkLoad[{0}]: {1}", targetTableName, "{0}");
-            List<int> excludeColumnIndex = new List<int>();
+
             if (sourceTable != null && sourceTable.Rows.Count > 0)
             {
-                string insertColumns = string.Empty;
-                foreach (DataColumn column in sourceTable.Columns)
-                    if (!excludeColumnNames.Contains(column.ColumnName))
-                        insertColumns += column.ColumnName + ",";
-                    else
-                        excludeColumnIndex.Add(sourceTable.Columns.IndexOf(column));
-                insertColumns = insertColumns.TrimEnd(',').ToLower();
-                string insertHeader = "INSERT INTO " + targetTableName + " (" + insertColumns + ") VALUES (";
-                foreach (DataRow row in sourceTable.Rows)
+                string errorTemplate = string.Format("BulkLoad[{0}]: {1}", targetTableName, "{0}");
+                try
                 {
-                    string columnValues = string.Empty;
-                    string sqlInsert = insertHeader;
-                    for (int i = 0; i < row.ItemArray.Length; i++)
-                        if (!excludeColumnIndex.Contains(i))
+                    List<int> excludeColumnIndex = new List<int>();
+                    string insertColumns = string.Empty;
+                    foreach (DataColumn column in sourceTable.Columns)
+                        if (!excludeColumnNames.Contains(column.ColumnName))
+                            insertColumns += column.ColumnName + ",";
+                        else
+                            excludeColumnIndex.Add(sourceTable.Columns.IndexOf(column));
+                    insertColumns = insertColumns.TrimEnd(',').ToLower();
+
+                    Console.WriteLine("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (NULL './0')");
+
+                    using (var writer = m_sqlConn.BeginTextImport("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (NULL './0')")) {
+                        foreach (DataRow row in sourceTable.Rows)
                         {
-                            object colValue = row[i];
-                            if (colValue == DBNull.Value)
-                                columnValues += "null,";
-                            else
-                            {
-                                if ((sourceTable.Columns[i].DataType != typeof(int)))
-                                {
-                                    if (sourceTable.Columns[i].DataType == typeof(string))
-                                        colValue = colValue.ToString().Replace("'", "''").Trim(new[] { ' ' });
-                                    
-                                    columnValues += "'" + colValue + "',";
+                            for (int i = 0; i < row.ItemArray.Length; i++){
+                                if (!excludeColumnIndex.Contains(i)){
+                                    if (row[i] == DBNull.Value || (row[i].GetType() == typeof(string) && row[i].Equals(""))){
+                                        writer.Write("./0");
+                                    }
+
+                                    writer.Write(row[i]);
+
+                                    if(i < row.ItemArray.Length - 1){
+                                        writer.Write("\t");
+                                    }
                                 }
-                                else
-                                    columnValues += colValue + ",";
                             }
-                        }
-                    sqlInsert += columnValues.TrimEnd(',') + ");";
-                    try
-                    {
-                        int rowsAffected = 0;
-                        using (var cmd = new NpgsqlCommand(sqlInsert, m_sqlConn))
-                        {
-                        
-                            rowsAffected = cmd.ExecuteNonQuery();
-                            result = rowsAffected > 0;
-                            if (!result)
-                                break;
+                            writer.WriteLine();
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        errorMessage = string.Format(errorTemplate, ex.Message);
-                        result = false;
-                    }
-                    finally
-                    {
-                        if (!string.IsNullOrEmpty(errorMessage))
-                            result = false;
-                    }
+                    
+                    return true;
                 }
+                
+                catch(Exception e)
+                {
+                    errorMessage = string.Format(errorTemplate, e.Message);
+                    return false;
+                }
+                
             }
-            else
-                result = true;
-            return result;
+
+            return true;
+
+            
         }
      
 

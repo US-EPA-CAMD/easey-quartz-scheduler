@@ -6562,11 +6562,11 @@ namespace ECMPS.Checks.Em.Parameters
                 SetCheckParameter("Fc_Valication_Spans_Quarter", value);
             }
         }
-        
+
         /// <summary>
         /// Contains an array with an element for each location in which the elements contain a unique comma delimited list of primary fuels for the lcoation.
-        /// </summary>
-        public  FcValidationInfo[] FcValidationInfoByLocationArray
+        /// </summary>FC_VALIDATION_INFO_BY_LOCATION_ARRAY
+        public FcValidationInfo[] FcValidationInfoByLocationArray
         {
             get
             {
