@@ -1698,48 +1698,37 @@ namespace ECMPS.Checks.DatabaseAccess
                             excludeColumnIndex.Add(sourceTable.Columns.IndexOf(column));
                     insertColumns = insertColumns.TrimEnd(',').ToLower();
 
-                    Console.WriteLine("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (FORMAT BINARY)");
+                    Console.WriteLine("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (NULL './0')");
 
-                    using (var writer = m_sqlConn.BeginBinaryImport("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (FORMAT BINARY)"))
-                    {
-
+                    using (var writer = m_sqlConn.BeginTextImport("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (NULL './0')")) {
                         foreach (DataRow row in sourceTable.Rows)
                         {
-                            writer.StartRow();
                             for (int i = 0; i < row.ItemArray.Length; i++){
                                 if (!excludeColumnIndex.Contains(i)){
                                     if (row[i] == DBNull.Value || (row[i].GetType() == typeof(string) && row[i].Equals(""))){
-                                        writer.WriteNull();
+                                        writer.Write("./0");
                                     }
-                                    else if(sourceTable.Columns[i].DataType == typeof(string)){
-                                        writer.Write(row[i], NpgsqlDbType.Varchar);
-                                    }
-                                    else if(sourceTable.Columns[i].DataType == typeof(int)){
-                                        writer.Write(row[i], NpgsqlDbType.Numeric);
-                                    }
-                                    else if(sourceTable.Columns[i].DataType == typeof(DateTime)){
-                                        if(targetTableName == "camdecmpswks.check_log" && i > 2){
-                                            writer.Write(row[i], NpgsqlDbType.Date);
-                                        }
-                                        else{
-                                            writer.Write(row[i], NpgsqlDbType.Timestamp);
-                                        }
-                                    }
-                                    else{
-                                        writer.Write(row[i], NpgsqlDbType.Numeric);
+
+                                    writer.Write(row[i]);
+
+                                    if(i < row.ItemArray.Length - 1){
+                                        writer.Write("\t");
                                     }
                                 }
                             }
+                            writer.WriteLine();
                         }
-                        writer.Complete();
                     }
+                    
                     return true;
                 }
+                
                 catch(Exception e)
                 {
                     errorMessage = string.Format(errorTemplate, e.Message);
                     return false;
                 }
+                
             }
 
             return true;
