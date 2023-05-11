@@ -226,7 +226,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             _dbContext.SaveChanges();
 
             bool evalResult = checkEngine.RunChecks_EmReport(monitorPlanId, rptPeriodId, eCheckEngineRunMode.Normal);
-
             _dbContext.Entry<EmissionEvaluation>(emissionEvalRecord).Reload();
             EvalStatusCode emissionEvalStatus = getStatusCodeByCheckId(emissionEvalRecord.CheckSessionId, evalResult);
             evaluationStatus = emissionEvalStatus.Code;

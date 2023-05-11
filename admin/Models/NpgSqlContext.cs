@@ -116,7 +116,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       return rows;
     }
 
-    public async void ExecuteEmissionRefreshProcedure(string monPlanId, decimal year, decimal quarter){
+    public async Task ExecuteEmissionRefreshProcedure(string monPlanId, decimal year, decimal quarter){
       var connectionString = this.Database.GetConnectionString();
       var connection = new NpgsqlConnection(connectionString);
 
