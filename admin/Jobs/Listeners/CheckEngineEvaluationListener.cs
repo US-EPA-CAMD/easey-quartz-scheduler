@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using Quartz.Impl.Matchers;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
 {
@@ -21,11 +23,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
     private IConfiguration Configuration { get; }
     private NpgSqlContext _dbContext = null;
 
+    public static IServiceCollection ServiceCollection {get; set;}
 
     public CheckEngineEvaluationListener(NpgSqlContext dbContext, IConfiguration configuration)
     {
       _dbContext = dbContext;
       Configuration = configuration;
+    }
+
+    public static async Task ScheduleWithQuartz(IScheduler scheduler){
+      CheckEngineEvaluationListener listener = ServiceCollection.BuildServiceProvider().GetService<CheckEngineEvaluationListener>();
+      scheduler.ListenerManager.AddJobListener(listener, GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS));
     }
 
     public override async Task JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException, CancellationToken cancellationToken = default)
