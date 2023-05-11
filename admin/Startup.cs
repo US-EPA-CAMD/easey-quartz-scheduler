@@ -104,7 +104,6 @@ namespace Epa.Camd.Quartz.Scheduler
       });
 
       services.AddOptions();
-      services.AddJobListener<CheckEngineEvaluationListener>(GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS));
       
       BulkDataFile.RegisterWithQuartz(services);
       BulkFileJobQueue.RegisterWithQuartz(services);
@@ -119,6 +118,9 @@ namespace Epa.Camd.Quartz.Scheduler
       
       CheckEngineEvaluation.RegisterWithQuartz(services);
       EvaluationJobQueue.RegisterWithQuartz(services);
+
+      services.AddTransient<CheckEngineEvaluationListener>(); //DI for CheckEngineListener
+      CheckEngineEvaluationListener.ServiceCollection = services; // Set service collection of the listener
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -167,6 +169,9 @@ namespace Epa.Camd.Quartz.Scheduler
       EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
+
+      //Schedule Listeners
+      CheckEngineEvaluationListener.ScheduleWithQuartz(scheduler);
     }
   }
 }

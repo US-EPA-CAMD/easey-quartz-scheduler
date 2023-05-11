@@ -87,10 +87,11 @@ namespace SilkierQuartz
             return services;
         }
 
-        public static void AddJobListener<T>(this IServiceCollection services, params IMatcher<JobKey>[] matchers) where T : class, IJobListener
+        public static IServiceCollection AddJobListener<T>(this IServiceCollection services, params IMatcher<JobKey>[] matchers) where T : class, IJobListener
         {
             services.AddTransient<IJobListener, T>();
             services.AddSingleton(new JobListenerConfiguration(typeof(T), matchers));
+            return services;
         }
 
         public static IApplicationBuilder UseQuartzJob<TJob>(

@@ -17,7 +17,8 @@ namespace SilkierQuartz.HostedService
         {
             Container = container;
         }
-
+        
+        
         public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {
             var scoped = Container.CreateScope();
@@ -28,6 +29,7 @@ namespace SilkierQuartz.HostedService
             }
             return result;
         }
+    
 
         public void ReturnJob(IJob job)
         {

@@ -228,12 +228,35 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
             }
 
            
-            NpgsqlCommand command = connection.CreateCommand();
-
+            //NpgsqlCommand command = connection.CreateCommand();
+            
             bool result = false; ;
             try
             {
-                
+
+                NpgsqlDataAdapter adapter = new NpgsqlDataAdapter();
+
+                DataSet previous_quarter_for_system = new DataSet();
+                DataSet previous_quarter_non_system = new DataSet();
+
+                NpgsqlCommand command1 = new NpgsqlCommand("SELECT * FROM camdecmpswks.daily_calibration_supp_data_previous_quarter_for_system(@monplanid, @rptperiodid)", connection);
+                command1.Parameters.AddWithValue("monplanid", monPlanId);
+                command1.Parameters.AddWithValue("rptperiodid", rptPeriodId);
+                adapter.SelectCommand = command1;
+                adapter.Fill(previous_quarter_for_system);
+
+                command1.Dispose();
+
+                NpgsqlCommand command2 = new NpgsqlCommand("SELECT * FROM camdecmpswks.daily_calibration_supp_data_previous_quarter_non_system(@monplanid, @rptperiodid)", connection);
+                command2.Parameters.AddWithValue("monplanid", monPlanId);
+                command2.Parameters.AddWithValue("rptperiodid", rptPeriodId);
+                adapter.SelectCommand = command2;
+                adapter.Fill(previous_quarter_non_system);
+
+                command2.Dispose();
+
+
+                /*                
                 command.CommandText = "camdecmpswks.daily_calibration_supp_data_previous_quarter_for_system";
                 command.CommandType = CommandType.StoredProcedure;                             
                 command.Parameters.Add("@monplanid", NpgsqlDbType.Varchar);
@@ -243,11 +266,13 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
      
                 NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command);
 
-                DataSet previous_quarter_for_system = new DataSet();
+                //DataSet previous_quarter_for_system = new DataSet();
                 DataSet previous_quarter_non_system = new DataSet();
                 adapter.Fill(previous_quarter_for_system);
                 command.CommandText = "camdecmpswks.daily_calibration_supp_data_previous_quarter_non_system";
                 adapter.Fill(previous_quarter_non_system);
+
+                */
               
 
                 if (previous_quarter_for_system.Tables.Count >0 && previous_quarter_non_system.Tables.Count > 0)
@@ -313,7 +338,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                 }
                 else
                 {
-                    errorMessage = (command.Parameters["@V_ERROR_MSG"].Value != DBNull.Value) ? command.Parameters["@V_ERROR_MSG"].Value.ToString() : "Stored Procedure did not return an error message.";
+                    //errorMessage = (command.Parameters["@V_ERROR_MSG"].Value != DBNull.Value) ? command.Parameters["@V_ERROR_MSG"].Value.ToString() : "Stored Procedure did not return an error message.";
                 }
 
                 return result;
@@ -332,8 +357,8 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
             }
             finally
             {
-                command.Dispose();
-                command = null;
+                //command.Dispose();
+                //command = null;
             }
 
         }

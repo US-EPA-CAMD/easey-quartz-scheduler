@@ -9,6 +9,7 @@ using Quartz.Impl;
 using Quartz;
 using Quartz.Spi;
 using System.Linq;
+using Quartz.Listener;
 
 namespace SilkierQuartz.HostedService
 {

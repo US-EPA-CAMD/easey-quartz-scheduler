@@ -35,7 +35,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       services.AddQuartzJob<BulkFileJobQueue>(WithJobKey(), Identity.JobDescription);
     }
 
-    public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
+    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
       try {
         JobKey jobKey = WithJobKey();
