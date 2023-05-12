@@ -1765,6 +1765,11 @@ namespace ECMPS.Checks.EmissionsReport
         }
 
         /// <summary>
+        /// The cModcDataBordersDictionary class which contains key value pairs of categories to their ModcDataBorder.
+        /// </summary>
+        public cModcDataBordersDictionary modcDataBordersDictionary = new cModcDataBordersDictionary();
+
+        /// <summary>
         /// Initialized special objects used during emission report evaluations.
         /// </summary>
         /// <param name="monitorLocationView">The view containing locations in the emission report monitoring plan sorted into the position used throught the emission report evaluation.</param>
@@ -1788,7 +1793,7 @@ namespace ECMPS.Checks.EmissionsReport
                     LatesDailyInterferenceCheckObject.InitializeFromPreviousQuarter(CheckEngine.MonPlanId, CheckEngine.RptPeriodId.Value, CheckEngine.DbAuxConnection.SQLConnection, ref errorMessage);
                 }
 
-                cModcDataBorders.InitializeFromPreviousQuarter(CheckEngine.MonPlanId, CheckEngine.RptPeriodId.Value, CheckEngine.DbAuxConnection.SQLConnection, monitorLocationView, 
+                modcDataBordersDictionary.InitializeFromPreviousQuarter(CheckEngine.MonPlanId, CheckEngine.RptPeriodId.Value, CheckEngine.DbAuxConnection.SQLConnection, monitorLocationView, 
                                                                CheckEngine.ReportingPeriod.Year, CheckEngine.ReportingPeriod.Quarter.AsInteger(),  
                                                                ref errorMessage);
 
@@ -1815,17 +1820,19 @@ namespace ECMPS.Checks.EmissionsReport
             cEmissionsHourFilter emissionsHourFilterCo2c = null;
             cEmissionsHourFilter emissionsHourFilterH2o = null;
 
-            result = cModcDataBorders.InitializeModcDataBordersDictionary() && // Needed for below and addional use directly by categories
+            result = modcDataBordersDictionary.InitializeModcDataBordersDictionary() && // Needed for below and addional use directly by categories
                      cEmissionsHourFilter.InitEmissionsHourFilter(SourceData.Tables["CombinedHourlyValueCo2c"],
                                                                   "HRLY_VALUE",
                                                                   GetCheckParameter("Monitoring_Plan_Location_Records").AsDataView(),
                                                                   "CO2C",
+                                                                  modcDataBordersDictionary,
                                                                   out emissionsHourFilterCo2c,
                                                                   ref errorMessage) &&
                      cEmissionsHourFilter.InitEmissionsHourFilter(SourceData.Tables["CombinedHourlyValueH2o"],
                                                                   "HRLY_VALUE",
                                                                   GetCheckParameter("Monitoring_Plan_Location_Records").AsDataView(),
                                                                   "H2O",
+                                                                  modcDataBordersDictionary,
                                                                   out emissionsHourFilterH2o,
                                                                   ref errorMessage);
 
