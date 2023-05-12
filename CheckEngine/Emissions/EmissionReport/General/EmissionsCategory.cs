@@ -50,6 +50,7 @@ namespace ECMPS.Checks.EmissionsReport
 
             InitializeForPrimaryTable(primaryTableName, primaryFilterTable, primaryTableParameterName, valueColumnName,
                                       hourlyTypeCd, parameterCd, moistureBasis,
+									  EmissionsReportProcess.modcDataBordersDictionary,
                                       locationMonSysIdList);
 			
             SetRecordIdentifier();
@@ -65,7 +66,7 @@ namespace ECMPS.Checks.EmissionsReport
                           string valueColumnName,
                           string hourlyTypeCd,
                           string parameterCd,
-                          string moistureBasis, ref EmParameters emparams,
+                          string moistureBasis, ref EmParameters emparams,						  
                           List<string>[] locationMonSysIdList = null)
        : base(parentCategory, categoryCd)
         {
@@ -73,7 +74,7 @@ namespace ECMPS.Checks.EmissionsReport
             emParams =emparams;
 
             InitializeForPrimaryTable(primaryTableName, primaryFilterTable, primaryTableParameterName, valueColumnName,
-                                      hourlyTypeCd, parameterCd, moistureBasis,
+                                      hourlyTypeCd, parameterCd, moistureBasis, EmissionsReportProcess.modcDataBordersDictionary,
                                       locationMonSysIdList);
 
             SetRecordIdentifier();
@@ -375,6 +376,7 @@ namespace ECMPS.Checks.EmissionsReport
                                                string hourlyTypeCd,
                                                string parameterCd,
                                                string moistureBasis,
+											   cModcDataBordersDictionary modcDataBorderDictionary,
                                                List<string>[] locationMonSysIdList = null)
         {
             PrimaryTable = SourceTable(primaryTableName);
@@ -396,6 +398,7 @@ namespace ECMPS.Checks.EmissionsReport
                                                            modcList, true,
                                                            Process.GetCheckParameter("Monitoring_Plan_Location_Records").AsDataView(),
                                                            hourlyTypeCd, parameterCd, moistureBasis,
+														   modcDataBorderDictionary,
                                                            locationMonSysIdList);
                 ProcessMissingDataBorders = true;
             }

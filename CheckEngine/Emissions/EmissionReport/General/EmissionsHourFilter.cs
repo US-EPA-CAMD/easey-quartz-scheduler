@@ -19,7 +19,7 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="targetTable">The Hour and Monitor Location based table to filter.</param>
         /// <param name="locationView">The location view controlling the position of locations in list.</param>
         /// <param name="parameterCd">The parameter code associated of the filter data.</param>
-        public cEmissionsHourFilter(DataTable targetTable, string targetValueColumnName, DataView locationView, string parameterCd)
+        public cEmissionsHourFilter(DataTable targetTable, string targetValueColumnName, DataView locationView, string parameterCd, cModcDataBordersDictionary modcDataBordersDictionary)
         {
             if (targetTable == null)
             {
@@ -87,7 +87,7 @@ namespace ECMPS.Checks.EmissionsReport
                 QualityAssuredModcList = new int[] { 1, 2, 4, 16, 17, 19, 20, 21, 22, 53 };
 
                 //Modc Objects
-                MissingDataBorders = new cModcDataBorders(TargetTableView.Table, targetValueColumnName, MeasuredModcList, true, LocationView, "COMBINE", parameterCd, null);
+                MissingDataBorders = new cModcDataBorders(TargetTableView.Table, targetValueColumnName, MeasuredModcList, true, LocationView, "COMBINE", parameterCd, null, modcDataBordersDictionary);
                 QualityAssuredHourCounts = new cModcHourCounts(TargetTableView.Table, QualityAssuredModcList, LocationView);
             }
         }
@@ -105,6 +105,7 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="targetValueColumnName">The emission value column in the target table.</param>
         /// <param name="locationView">The location view controlling the position of locations in list.</param>
         /// <param name="parameterCd">The parameter code associated of the filter data.</param>
+        /// <param name="modcDataBordersDictionary">The ModcDataDictionary responsbile for storing relationships of categories to ModcDataBorder objects.</param>
         /// <param name="emissionsHourFilter">The initialized Emissions Hour Filter.</param>
         /// <param name="errorMessage">Error message indicating why the initialization failed.</param>
         /// <returns>Null if the initialization fails.</returns>
@@ -112,6 +113,7 @@ namespace ECMPS.Checks.EmissionsReport
                                                    string targetValueColumnName,
                                                    DataView locationView,
                                                    string parameterCd,
+                                                   cModcDataBordersDictionary modcDataBordersDictionary,
                                                    out cEmissionsHourFilter emissionsHourFilter,
                                                    ref string errorMessage)
         {
@@ -119,7 +121,7 @@ namespace ECMPS.Checks.EmissionsReport
 
             try
             {
-                emissionsHourFilter = new cEmissionsHourFilter(targetTable, targetValueColumnName, locationView, parameterCd);
+                emissionsHourFilter = new cEmissionsHourFilter(targetTable, targetValueColumnName, locationView, parameterCd, modcDataBordersDictionary);
                 result = true;
             }
             catch (Exception ex)
