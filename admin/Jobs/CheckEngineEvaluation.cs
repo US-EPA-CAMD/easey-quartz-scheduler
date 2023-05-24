@@ -118,7 +118,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             _dbContext.MonitorPlans.Update(mp);
             _dbContext.SaveChanges();
 
-            bool mpResult = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal);
+            bool mpResult = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal, es.SetId);
 
             _dbContext.Entry<MonitorPlan>(mp).Reload();
             EvalStatusCode evalStatus = getStatusCodeByCheckId(mp.CheckSessionId, mpResult);
@@ -161,7 +161,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               testSummaryRecord.EvalStatus = "WIP";
               _dbContext.TestSummaries.Update(testSummaryRecord);
 
-              bool listResult = checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, testId);
+              bool listResult = checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, es.SetId);
 
               _dbContext.Entry<TestSummary>(testSummaryRecord).Reload();
               EvalStatusCode testSumEvalStatus = getStatusCodeByCheckId(testSummaryRecord.CheckSessionId, listResult);
@@ -176,7 +176,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               _dbContext.CertEvents.Update(certIdRecord);
               _dbContext.SaveChanges();
 
-              bool listResult = checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, certId);
+              bool listResult = checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, es.SetId);
 
               _dbContext.Entry<CertEvent>(certIdRecord).Reload();
               EvalStatusCode certEvalStatus = getStatusCodeByCheckId(certIdRecord.CheckSessionId, listResult);
@@ -191,7 +191,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
               _dbContext.SaveChanges();
 
-              bool listResult = checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, extensionExemptionId);
+              bool listResult = checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, es.SetId);
 
               _dbContext.Entry<TestExtensionExemption>(extensionExemptionRecord).Reload();
               EvalStatusCode teeEvalStatus = getStatusCodeByCheckId(extensionExemptionRecord.CheckSessionId, listResult);
@@ -225,7 +225,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             _dbContext.EmissionEvaluations.Update(emissionEvalRecord);
             _dbContext.SaveChanges();
 
-            bool evalResult = checkEngine.RunChecks_EmReport(monitorPlanId, rptPeriodId, eCheckEngineRunMode.Normal);
+            bool evalResult = checkEngine.RunChecks_EmReport(monitorPlanId, rptPeriodId, eCheckEngineRunMode.Normal, es.SetId);
             _dbContext.Entry<EmissionEvaluation>(emissionEvalRecord).Reload();
             EvalStatusCode emissionEvalStatus = getStatusCodeByCheckId(emissionEvalRecord.CheckSessionId, evalResult);
             evaluationStatus = emissionEvalStatus.Code;
