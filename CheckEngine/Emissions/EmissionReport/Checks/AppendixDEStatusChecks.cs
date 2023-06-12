@@ -1971,8 +1971,28 @@ namespace ECMPS.Checks.EmissionsChecks
             }
         }
 
-
         /// <summary>
+        /// Determine whether the passed quarter is an ozone season quarter for the current location.
+        /// </summary>
+        /// <param name="quarter">The quarter to check.</param>
+        /// <returns>True if the quarter is an OS quarter for the location.</returns>
+        public bool IsOzoneSeasonOnlyReporter(Quarter quarter)
+        {
+            cFilterCondition[] filterConditionList 
+                = new cFilterCondition[] 
+                  { 
+                      new cFilterCondition("REPORT_FREQ_CD", "OS"), 
+                      new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, quarter.BeginDate, eNullDateDefault.Min) ,
+                      new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, quarter.EndDate, eNullDateDefault.Max)
+                  };
+
+            bool result = (emParams.LocationReportingFrequencyRecords.CountRows(filterConditionList) > 0);
+
+            return result;
+        }
+
+
+                /// <summary>
         /// Check for FF2LTST valid FF2L tests based on the Current Op Hour, FFACC/FFACCTT End/Reinstall Hour or PEI End Hour, and the Baseline Hour.
         /// 
         ///     
@@ -1985,21 +2005,25 @@ namespace ECMPS.Checks.EmissionsChecks
         /// <param name="problemQuarterList">The list of quarters for problem FF2LTST.</param>
         /// <param name="problemTestnumList">The list of test numbers for problem FF2LTST.</param>
         /// <returns>Returns true resultStatus is null, otherwise returns false.</returns>
-        public  bool FuelFlowToLoadTestsCheck(DateTime testDateHour, out eFf2lResultStatus resultStatus, out string problemQuarterList, out string problemTestnumList)
+        public bool FuelFlowToLoadTestsCheck(DateTime testDateHour, out eFf2lResultStatus resultStatus, out string problemQuarterList, out string problemTestnumList)
         {
             resultStatus = eFf2lResultStatus.None;
             problemQuarterList = null;
             problemTestnumList = null;
 
+            DateTime systemBeginDate = emParams.CurrentFuelFlowRecord.SystemBeginDate.Default(DateTime.MaxValue);
+
             Quarter currentOperatingQuarter = Quarter.FetchQuarter(emParams.CurrentOperatingDate.Value);
-            Quarter testQuarter = Quarter.FetchQuarter(testDateHour);
-            Quarter testSubsequentQuarter = Quarter.FetchQuarter(testDateHour.AddMonths(3));
+            Quarter testOrSystemQuarter = (emParams.CurrentFuelFlowRecord.SystemBeginDate.HasValue && (emParams.CurrentFuelFlowRecord.SystemBeginDate.Value > testDateHour)) 
+                                        ? Quarter.FetchQuarter(emParams.CurrentFuelFlowRecord.SystemBeginDate.Value) 
+                                        : Quarter.FetchQuarter(testDateHour);
+            Quarter testOrSystemSubsequentQuarter = testOrSystemQuarter + 1;
 
 
-            if (currentOperatingQuarter > testSubsequentQuarter)
+            if (currentOperatingQuarter > testOrSystemSubsequentQuarter)
             {
                 string MonSysId = emParams.FuelFlowComponentRecordToCheck.MonSysId;
-                Quarter fifthQuarterAfterTest = Quarter.FetchQuarter(testDateHour.AddMonths(15));
+                Quarter fifthQuarterAfterTest = testOrSystemQuarter + 5;
 
                 DateTime testQuarterEndDateHour = Quarter.FetchQuarter(testDateHour).EndHour;
                 DateTime currentOrFifthQuarterBeginDateHour = Quarter.Min(fifthQuarterAfterTest, currentOperatingQuarter).BeginHour;
@@ -2023,39 +2047,42 @@ namespace ECMPS.Checks.EmissionsChecks
                         string badResultQuarterList = "";
                         string badResultTestList = "";
 
-                        for (Quarter targetQuarter = baselineQuarter; targetQuarter < currentOperatingQuarter; targetQuarter++)
+                        for (Quarter targetQuarter = baselineQuarter + 1; targetQuarter < currentOperatingQuarter; targetQuarter++)
                         {
-                            int? opHourCount = GetOpHourCountTrySystemThenFuelWithLocationNonOp(targetQuarter.YearValue, targetQuarter.QuarterValue);
-
-                            VwQaSuppDataHourlyStatusRow ff2lTestRecord
-                                = emParams.Ff2lTestRecordsByLocationForQaStatus.FindRow
-                                    (
-                                        new cFilterCondition("MON_SYS_ID", MonSysId),
-                                        new cFilterCondition("TEST_RESULT_CD", "PASSED,EXC168H,FEW168H", eFilterConditionStringCompare.InList),
-                                        new cFilterCondition("CALENDAR_YEAR", targetQuarter.YearValue),
-                                        new cFilterCondition("QUARTER", targetQuarter.QuarterValue)
-                                    );
-
-                            if (ff2lTestRecord == null)
+                            if (!IsOzoneSeasonOnlyReporter(targetQuarter) || (targetQuarter.QuarterValue == 2) || (targetQuarter.QuarterValue == 3))
                             {
-                                if (((opHourCount == null) || (opHourCount.Value > 0)) && (targetQuarter != testQuarter))
+                                int? opHourCount = GetOpHourCountTrySystemThenFuelWithLocationNonOp(targetQuarter.YearValue, targetQuarter.QuarterValue);
+
+                                VwQaSuppDataHourlyStatusRow ff2lTestRecord
+                                    = emParams.Ff2lTestRecordsByLocationForQaStatus.FindRow
+                                        (
+                                            new cFilterCondition("MON_SYS_ID", MonSysId),
+                                            new cFilterCondition("TEST_RESULT_CD", "PASSED,EXC168H,FEW168H", eFilterConditionStringCompare.InList),
+                                            new cFilterCondition("CALENDAR_YEAR", targetQuarter.YearValue),
+                                            new cFilterCondition("QUARTER", targetQuarter.QuarterValue)
+                                        );
+
+                                if (ff2lTestRecord == null)
                                 {
-                                    missingQuarterList = missingQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
-                                }
-                            }
-                            else
-                            {
-                                if (opHourCount != null)
-                                {
-                                    if ((ff2lTestRecord.TestResultCd == "PASSED" || ff2lTestRecord.TestResultCd == "EXC168H") && (opHourCount.Value < 168))
+                                    if (((opHourCount == null) || (opHourCount.Value > 0)) && (targetQuarter != testOrSystemQuarter))
                                     {
-                                        badResultQuarterList = badResultQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
-                                        badResultTestList = badResultTestList.ListAdd($"'{ff2lTestRecord.TestNum}'");
+                                        missingQuarterList = missingQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
                                     }
-                                    else if ((ff2lTestRecord.TestResultCd == "FEW168H") && (opHourCount.Value >= 168))
+                                }
+                                else
+                                {
+                                    if (opHourCount != null)
                                     {
-                                        badResultQuarterList = badResultQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
-                                        badResultTestList = badResultTestList.ListAdd($"'{ff2lTestRecord.TestNum}'");
+                                        if ((ff2lTestRecord.TestResultCd == "PASSED" || ff2lTestRecord.TestResultCd == "EXC168H") && (opHourCount.Value < 168))
+                                        {
+                                            badResultQuarterList = badResultQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
+                                            badResultTestList = badResultTestList.ListAdd($"'{ff2lTestRecord.TestNum}'");
+                                        }
+                                        else if ((ff2lTestRecord.TestResultCd == "FEW168H") && (opHourCount.Value >= 168))
+                                        {
+                                            badResultQuarterList = badResultQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
+                                            badResultTestList = badResultTestList.ListAdd($"'{ff2lTestRecord.TestNum}'");
+                                        }
                                     }
                                 }
                             }
@@ -2074,13 +2101,15 @@ namespace ECMPS.Checks.EmissionsChecks
                         }
                         else
                         {
-                            if (baselineQuarter > testSubsequentQuarter)
+                            if (baselineQuarter > testOrSystemQuarter)
                             {
                                 missingQuarterList = ""; ;
 
-                                for (Quarter targetQuarter = testSubsequentQuarter; targetQuarter < baselineQuarter; targetQuarter++)
+                                for (Quarter targetQuarter = testOrSystemSubsequentQuarter; targetQuarter <= baselineQuarter; targetQuarter++)
                                 {
-                                    VwQaSuppDataHourlyStatusRow ff2lTestRecord
+                                    if (!IsOzoneSeasonOnlyReporter(targetQuarter) || (targetQuarter.QuarterValue == 2) || (targetQuarter.QuarterValue == 3))
+                                    {
+                                        VwQaSuppDataHourlyStatusRow ff2lTestRecord
                                         = emParams.Ff2lTestRecordsByLocationForQaStatus.FindRow
                                             (
                                                 new cFilterCondition("MON_SYS_ID", MonSysId),
@@ -2089,12 +2118,13 @@ namespace ECMPS.Checks.EmissionsChecks
                                                 new cFilterCondition("QUARTER", targetQuarter.QuarterValue)
                                             );
 
-                                    if (ff2lTestRecord == null)
-                                    {
-                                        int? opHourCount = GetOpHourCountTrySystemThenFuelWithLocationNonOp(targetQuarter.YearValue, targetQuarter.QuarterValue);
+                                        if (ff2lTestRecord == null)
+                                        {
+                                            int? opHourCount = GetOpHourCountTrySystemThenFuelWithLocationNonOp(targetQuarter.YearValue, targetQuarter.QuarterValue);
 
-                                        if (((opHourCount == null) && (targetQuarter >= Quarter.FetchQuarter(emParams.CurrentFuelFlowRecord.SystemBeginDate.Default(DateTime.MaxValue)))) || ((opHourCount != null) && (opHourCount.Value > 0)))
-                                            missingQuarterList = missingQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
+                                            if (((opHourCount == null) && (targetQuarter >= Quarter.FetchQuarter(emParams.CurrentFuelFlowRecord.SystemBeginDate.Default(DateTime.MaxValue)))) || ((opHourCount != null) && (opHourCount.Value > 0)))
+                                                missingQuarterList = missingQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
+                                        }
                                     }
                                 }
 
@@ -2113,9 +2143,11 @@ namespace ECMPS.Checks.EmissionsChecks
                     {
                         string missingQuarterList = "";
 
-                        for (Quarter targetQuarter = testSubsequentQuarter; targetQuarter < currentOperatingQuarter; targetQuarter++)
+                        for (Quarter targetQuarter = testOrSystemSubsequentQuarter; targetQuarter < currentOperatingQuarter; targetQuarter++)
                         {
-                            VwQaSuppDataHourlyStatusRow ff2lTestRecord
+                            if (!IsOzoneSeasonOnlyReporter(targetQuarter) || (targetQuarter.QuarterValue == 2) || (targetQuarter.QuarterValue == 3))
+                            {
+                                VwQaSuppDataHourlyStatusRow ff2lTestRecord
                                 = emParams.Ff2lTestRecordsByLocationForQaStatus.FindRow
                                     (
                                         new cFilterCondition("MON_SYS_ID", MonSysId),
@@ -2124,12 +2156,13 @@ namespace ECMPS.Checks.EmissionsChecks
                                         new cFilterCondition("QUARTER", targetQuarter.QuarterValue)
                                     );
 
-                            if (ff2lTestRecord == null)
-                            {
-                                int? opHourCount = GetOpHourCountTrySystemThenFuelWithLocationNonOp(targetQuarter.YearValue, targetQuarter.QuarterValue);
+                                if (ff2lTestRecord == null)
+                                {
+                                    int? opHourCount = GetOpHourCountTrySystemThenFuelWithLocationNonOp(targetQuarter.YearValue, targetQuarter.QuarterValue);
 
-                                if (((opHourCount == null) && (targetQuarter >= Quarter.FetchQuarter(emParams.CurrentFuelFlowRecord.SystemBeginDate.Default(DateTime.MaxValue)))) || ((opHourCount != null) && (opHourCount.Value > 0)))
-                                    missingQuarterList = missingQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
+                                    if (((opHourCount == null) && (targetQuarter >= Quarter.FetchQuarter(emParams.CurrentFuelFlowRecord.SystemBeginDate.Default(DateTime.MaxValue)))) || ((opHourCount != null) && (opHourCount.Value > 0)))
+                                        missingQuarterList = missingQuarterList.ListAdd($"{targetQuarter.YearValue} Q{targetQuarter.QuarterValue}");
+                                }
                             }
                         }
 

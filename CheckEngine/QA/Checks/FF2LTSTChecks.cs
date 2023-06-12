@@ -235,7 +235,7 @@ namespace ECMPS.Checks.FF2LTSTChecks
                                 BaselineEndDate = cDBConvert.ToDate( QASuppRecs[0]["END_DATE"], DateTypes.END );
                             else
                                 BaselineEndDate = cDBConvert.ToDate( FF2LTestRecs[0]["END_DATE"], DateTypes.END );
-                            if( BaselineEndDate < QuarterLastDay )
+                            if( BaselineEndDate < cDateFunctions.StartDateThisQuarter(TestYear, TestQuarter) )
                             {
                                 DataView SystemComponentRecs = (DataView)Category.GetCheckParameter( "System_System_Component_Records" ).ParameterValue;
                                 string OldFilter3 = SystemComponentRecs.RowFilter;

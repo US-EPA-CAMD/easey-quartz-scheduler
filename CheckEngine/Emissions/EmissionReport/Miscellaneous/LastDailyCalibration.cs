@@ -139,13 +139,14 @@ namespace ECMPS.Checks.EmissionsReport
       if (opDateHour.IsNull())
         result = null;
       else if ((SpanScaleTest[(int)spanScale, 0].HasValue()) &&
-               (SpanScaleTest[(int)spanScale, 0].OpDateHour < opDateHour.Value))
+               (SpanScaleTest[(int)spanScale, 0].OpDateHour <= opDateHour.Value))
         result = SpanScaleTest[(int)spanScale, 0];
       else if ((SpanScaleTest[(int)spanScale, 1].HasValue()) &&
-               (SpanScaleTest[(int)spanScale, 1].OpDateHour < opDateHour.Value))
+               (SpanScaleTest[(int)spanScale, 1].OpDateHour <= opDateHour.Value))
         result = SpanScaleTest[(int)spanScale, 1];
       else
         result = null;
+
 
       return result;
     }
