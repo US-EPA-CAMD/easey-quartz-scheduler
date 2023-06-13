@@ -1971,27 +1971,6 @@ namespace ECMPS.Checks.EmissionsChecks
             }
         }
 
-        /// <summary>
-        /// Determine whether the passed quarter is an ozone season quarter for the current location.
-        /// </summary>
-        /// <param name="quarter">The quarter to check.</param>
-        /// <returns>True if the quarter is an OS quarter for the location.</returns>
-        public bool IsOzoneSeasonOnlyReporter(Quarter quarter)
-        {
-            cFilterCondition[] filterConditionList 
-                = new cFilterCondition[] 
-                  { 
-                      new cFilterCondition("REPORT_FREQ_CD", "OS"), 
-                      new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, quarter.BeginDate, eNullDateDefault.Min) ,
-                      new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, quarter.EndDate, eNullDateDefault.Max)
-                  };
-
-            bool result = (emParams.LocationReportingFrequencyRecords.CountRows(filterConditionList) > 0);
-
-            return result;
-        }
-
-
                 /// <summary>
         /// Check for FF2LTST valid FF2L tests based on the Current Op Hour, FFACC/FFACCTT End/Reinstall Hour or PEI End Hour, and the Baseline Hour.
         /// 
@@ -2320,6 +2299,26 @@ namespace ECMPS.Checks.EmissionsChecks
             }
 
             return opHourCount;
+        }
+
+        /// <summary>
+        /// Determine whether the passed quarter is an ozone season quarter for the current location.
+        /// </summary>
+        /// <param name="quarter">The quarter to check.</param>
+        /// <returns>True if the quarter is an OS quarter for the location.</returns>
+        public bool IsOzoneSeasonOnlyReporter(Quarter quarter)
+        {
+            cFilterCondition[] filterConditionList 
+                = new cFilterCondition[] 
+                  { 
+                      new cFilterCondition("REPORT_FREQ_CD", "OS"), 
+                      new cFilterCondition("BEGIN_DATE", eFilterConditionRelativeCompare.LessThanOrEqual, quarter.BeginDate, eNullDateDefault.Min) ,
+                      new cFilterCondition("END_DATE", eFilterConditionRelativeCompare.GreaterThanOrEqual, quarter.EndDate, eNullDateDefault.Max)
+                  };
+
+            bool result = (emParams.LocationReportingFrequencyRecords.CountRows(filterConditionList) > 0);
+
+            return result;
         }
 
 
