@@ -217,8 +217,9 @@ namespace ECMPS.Checks.CheckEngine
         /// <param name="monPlanId">The MON_PLAN_ID of the emissions report.</param>
         /// <param name="rptPeriodId">The RPT_PERIOD_ID of the emissions report.</param>
         /// <param name="runMode">The type of run to perform.</param>
+        /// <param name="batchId">The batchId of the current batch.</param>
         /// <returns>True if the evaluation completed without processing errors.</returns>
-        public bool RunChecks_EmReport(string monPlanId, int rptPeriodId, eCheckEngineRunMode runMode)
+        public bool RunChecks_EmReport(string monPlanId, int rptPeriodId, eCheckEngineRunMode runMode, string batchId)
         {
             bool result;
 
@@ -231,7 +232,7 @@ namespace ECMPS.Checks.CheckEngine
                                        "ECMPS.Checks.EmissionsReport",
                                        "cEmissionsReportProcess",
                                        new object[] { this },
-                                       runMode);
+                                       runMode,batchId, null,null);
 
             return result;
         }
@@ -353,8 +354,9 @@ namespace ECMPS.Checks.CheckEngine
         /// <param name="evaluationBeganDate">The began date of the evaluation period.</param>
         /// <param name="evaluationEndedDate">The ended date of the evaluation period.</param>
         /// <param name="runMode">The type of run to perform.</param>
+        /// <param name="batchId">The type of run to perform.</param>
         /// <returns>True if the evaluation completed without processing errors.</returns>
-        public bool RunChecks_MpReport(string monPlanId, DateTime evaluationBeganDate, DateTime evaluationEndedDate, eCheckEngineRunMode runMode)
+        public bool RunChecks_MpReport(string monPlanId, DateTime evaluationBeganDate, DateTime evaluationEndedDate, eCheckEngineRunMode runMode, string batchId)
         {
             bool result;
 
@@ -370,6 +372,7 @@ namespace ECMPS.Checks.CheckEngine
                                        "cMonitorPlan",
                                        new object[] { this },
                                        runMode,
+                                       batchId,
                                        null,
                                        RunChecks_MpReport_AdditionalInitialization);
 
@@ -472,10 +475,10 @@ namespace ECMPS.Checks.CheckEngine
         /// <param name="qaCertEventId">The QA_CERT_EVENT_ID to evaluate.</param>
         /// <param name="monPlanId">The MON_PLAN_ID to evaluate.</param>
         /// <param name="runMode">The type of run to perform.</param>
-        /// <param name="certId">The certId of the run.</param>
+        /// <param name="batchId">The batchId of the run.</param>
         /// <returns>True if the evaluation completed without processing errors.</returns>
 
-        public bool RunChecks_QaReport_Qce(string qaCertEventId, string monPlanId, eCheckEngineRunMode runMode, string certId)
+        public bool RunChecks_QaReport_Qce(string qaCertEventId, string monPlanId, eCheckEngineRunMode runMode, string batchId)
         {
             bool result;
 
@@ -491,7 +494,8 @@ namespace ECMPS.Checks.CheckEngine
                                        "cOtherQAMain",
                                        new object[] { this },
                                        runMode,
-                                       certId);
+                                       batchId,
+                                       qaCertEventId, null);
 
 
             return result;
@@ -503,10 +507,10 @@ namespace ECMPS.Checks.CheckEngine
         /// <param name="testExtensionExemptionId">The TEST_EXTENSION_EXEMPTION_ID to evaluate.</param>
         /// <param name="monPlanId">The MON_PLAN_ID to evaluate.</param>
         /// <param name="runMode">The type of run to perform.</param>
-        /// <param name="teeId">The teeId of the run.</param>
+        /// <param name="batchId">The batchId of the run.</param>
         /// <returns>True if the evaluation completed without processing errors.</returns>
 
-        public bool RunChecks_QaReport_Tee(string testExtensionExemptionId, string monPlanId, eCheckEngineRunMode runMode, string teeId)
+        public bool RunChecks_QaReport_Tee(string testExtensionExemptionId, string monPlanId, eCheckEngineRunMode runMode, string batchId)
         {
             bool result;
 
@@ -522,7 +526,7 @@ namespace ECMPS.Checks.CheckEngine
                                        "cOtherQAMain",
                                        new object[] { this },
                                        runMode,
-                                       teeId);
+                                       batchId);
 
 
             return result;
@@ -534,10 +538,10 @@ namespace ECMPS.Checks.CheckEngine
         /// <param name="monPlanId">The MON_PLAN_ID to evaluate.</param>
         /// <param name="testSumId">The TEST_SUM_ID to evaluate.</param>
         /// <param name="runMode">The type of run to perform.</param>
-        /// <param name="testId">The testId of the run.</param>
+        /// <param name="batchId">The batchId of the run.</param>
         /// <returns>True if the evaluation completed without processing errors.</returns>
 
-        public bool RunChecks_QaReport_Test(string testSumId, string monPlanId, eCheckEngineRunMode runMode, string testId)
+        public bool RunChecks_QaReport_Test(string testSumId, string monPlanId, eCheckEngineRunMode runMode, string batchId)
 
         {
             bool result;
@@ -558,7 +562,8 @@ namespace ECMPS.Checks.CheckEngine
                                        "cQAMain",
                                        new object[] { this },
                                        runMode,
-                                       testId);
+                                       batchId,
+                                       testSumId,null);
 
             return result;
         }
@@ -721,7 +726,8 @@ namespace ECMPS.Checks.CheckEngine
         /// <param name="processClassName">The class name of the process.</param>
         /// <param name="processConstructorArgements">The constructor arguments of the process.</param>
         /// <param name="runMode">The type of run to perform.</param>
-        /// <param name="id">The id generated for the specified QA checks.</param>
+        /// <param name="batchId">The id generated for the specified batch of checks.</param>
+        /// <param name="qaId">The id generated for the specified QA checks.</param>
         /// <param name="additionalInitialization">Delegate for additional initialization that should occur before running checks.</param>
         /// <returns>Return true if processing is successful.</returns>
         private bool RunChecks_Process(string processCd,
@@ -731,7 +737,8 @@ namespace ECMPS.Checks.CheckEngine
                                         string processClassName,
                                         object[] processConstructorArgements,
                                         eCheckEngineRunMode runMode,
-                                        string id,
+                                        string batchId,
+                                        string qaId,
                                         dAdditionalInitialization additionalInitialization
                                         )
         {
@@ -756,9 +763,9 @@ namespace ECMPS.Checks.CheckEngine
                                                                               processConstructorArgements,
                                                                               null, null).Unwrap();
 
-                            Process.QaId = id;
+                            Process.QaId = qaId;
 
-                            if (CheckSessionInit())
+                            if (CheckSessionInit(batchId))
                             {
                                 LogHelper.info("Ready to run checks");
                                 
@@ -851,6 +858,7 @@ namespace ECMPS.Checks.CheckEngine
                                        processConstructorArgements,
                                        runMode,
                                        id,
+                                       null,
                                        null);
 
             return result;
@@ -884,6 +892,7 @@ namespace ECMPS.Checks.CheckEngine
                                        processClassName,
                                        processConstructorArgements,
                                        runMode,
+                                       null,
                                        null,
                                        null);
 
@@ -956,7 +965,7 @@ namespace ECMPS.Checks.CheckEngine
         /// Initializes a Check Session
         /// </summary>
         /// <returns></returns>
-        private bool CheckSessionInit()
+        private bool CheckSessionInit(string batchId)
         {
             bool result;
 
@@ -974,6 +983,7 @@ namespace ECMPS.Checks.CheckEngine
                                           EvaluationBeganDate,
                                           EvaluationEndedDate,
                                           UserId,
+                                          batchId,
                                           ref chkSessionId,
                                           ref resultChar,
                                           ref errorMessage);

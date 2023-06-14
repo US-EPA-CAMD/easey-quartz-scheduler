@@ -490,6 +490,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                 cLastDailyCalibration lastFailedOrAbortedDailyCalObject = (cLastDailyCalibration)LastFailedOrAbortedDailyCalObject.Value;
 
                                 bool lastAlternateFailedOrAborted = false;
+                                bool lastAlternateOverlapsFailedOrAborted = false;
                                 {
                                     if (lastFailedOrAbortedDailyCalObject.Get(AltComponentID, AltAnalyzerRange, opDateHour, out foundDailyCal))
                                     {
@@ -508,6 +509,20 @@ namespace ECMPS.Checks.EmissionsChecks
                                             {
                                                 lastAlternateFailedOrAborted = true;
                                             }
+                                            else
+                                            {
+                                                DateTime priorUpscaleTime = cDateFunctions.CombineToHour(priorDailyCalRecord, "UPSCALE_INJECTION_DATE", "UPSCALE_INJECTION_HOUR", "UPSCALE_INJECTION_MIN").Value;
+                                                DateTime priorZeroTime = cDateFunctions.CombineToHour(priorDailyCalRecord, "ZERO_INJECTION_DATE", "ZERO_INJECTION_HOUR", "ZERO_INJECTION_MIN").Value;
+                                                DateTime failedAltUpscaleTime = cDateFunctions.CombineToHour(foundDailyCal, "UPSCALE_INJECTION_DATE", "UPSCALE_INJECTION_HOUR", "UPSCALE_INJECTION_MIN").Value;
+                                                DateTime failedAltZeroTime = cDateFunctions.CombineToHour(foundDailyCal, "ZERO_INJECTION_DATE", "ZERO_INJECTION_HOUR", "ZERO_INJECTION_MIN").Value;
+
+                                                // Check for overlap between Prior Test and the Failed Alternate with understanding that there is no order to Zero and Upscale Injections
+                                                if ((cDateFunctions.Earliest(priorUpscaleTime, priorZeroTime) <= cDateFunctions.LatestDate(failedAltUpscaleTime, failedAltZeroTime)) &&
+                                                    (cDateFunctions.LatestDate(priorUpscaleTime, priorZeroTime) >= cDateFunctions.Earliest(failedAltUpscaleTime, failedAltZeroTime)))
+                                                {
+                                                    lastAlternateOverlapsFailedOrAborted = true;
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -515,6 +530,10 @@ namespace ECMPS.Checks.EmissionsChecks
                                 if (lastAlternateFailedOrAborted)
                                 {
                                     Status = "OOC-No Passing Test After Alternate Range Failed Test";
+                                }
+                                else if (lastAlternateOverlapsFailedOrAborted)
+                                {
+                                    Status = "OOC-Passed Prior Test Overlaps Alternate Range Failed Test";
                                 }
                                 else
                                 {
@@ -528,6 +547,20 @@ namespace ECMPS.Checks.EmissionsChecks
                                         if (foundDateHour > altDateHour)
                                         {
                                             Status = "OOC-No Passing Alternate Range Test After Failed Test";
+                                        }
+                                        else
+                                        {
+                                            DateTime passedAltUpscaleTime = cDateFunctions.CombineToHour(AltDailyCalRec, "UPSCALE_INJECTION_DATE", "UPSCALE_INJECTION_HOUR", "UPSCALE_INJECTION_MIN").Value;
+                                            DateTime passedAltZeroTime = cDateFunctions.CombineToHour(AltDailyCalRec, "ZERO_INJECTION_DATE", "ZERO_INJECTION_HOUR", "ZERO_INJECTION_MIN").Value;
+                                            DateTime failedCurUpscaleTime = cDateFunctions.CombineToHour(foundDailyCal, "UPSCALE_INJECTION_DATE", "UPSCALE_INJECTION_HOUR", "UPSCALE_INJECTION_MIN").Value;
+                                            DateTime failedCurZeroTime = cDateFunctions.CombineToHour(foundDailyCal, "ZERO_INJECTION_DATE", "ZERO_INJECTION_HOUR", "ZERO_INJECTION_MIN").Value;
+
+                                            // Check for overlap between Passed Alternate and previous Failed Current with understanding that there is no order to Zero and Upscale Injections
+                                            if ((cDateFunctions.Earliest(passedAltUpscaleTime, passedAltZeroTime) <= cDateFunctions.LatestDate(failedCurUpscaleTime, failedCurZeroTime)) &&
+                                                (cDateFunctions.LatestDate(passedAltUpscaleTime, passedAltZeroTime) >= cDateFunctions.Earliest(failedCurUpscaleTime, failedCurZeroTime)))
+                                            {
+                                                Status = "OOC-Passed Alternate Range Test Overlaps Failed Current Range Test";
+                                            }
                                         }
                                     }
                                 }

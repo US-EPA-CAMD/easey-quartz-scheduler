@@ -171,13 +171,14 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <param name="evaluationEndDate">The evaluation date range end date.</param>
         /// <param name="userId">The user id for the user performing the evaluation.</param>
         /// <param name="chkSessionId">The Check Session Id for the evaluation.</param>
+        /// <param name="setId">The set / batch Id of the current runs [Identifies records belonging to a certain batch]</param>
         /// <param name="result">'T' if the update was successful and 'F' if it was not.</param>
         /// <param name="errorMessage">The error message produced when the update was not successful.</param>
         /// <returns>0</returns>
         public int CheckSessionInit(string processCd, string categoryCd, string monPlanId, System.Nullable<int> rptPeriodId,
                                     string testSumId, string qaCertEventId, string testExtensionExemptionId,
                                     System.Nullable<System.DateTime> evaluationBeginDate, System.Nullable<System.DateTime> evaluationEndDate,
-                                    string userId, ref string chkSessionId,
+                                    string userId, string setId, ref string chkSessionId,
                                     ref System.Nullable<char> result, ref string errorMessage)
         {
             string resultString = string.Empty;
@@ -203,6 +204,9 @@ namespace ECMPS.Checks.DatabaseAccess
             var evaluationEndDateParam = object.Equals(evaluationEndDate, null)
                 ? "null"
                 : $"'{evaluationEndDate}'";
+            var batchId = object.Equals(setId, null)
+                ? "null"
+                : $"'{setId}'";
 
             DataTable AResultTable;
             string Sql = @$"select camdecmpswks.check_session_init(
@@ -215,7 +219,8 @@ namespace ECMPS.Checks.DatabaseAccess
                 {testExtensionExemptionIdParam},
                 {evaluationBeginDateParam},
                 {evaluationEndDateParam},
-                '{userId}'
+                '{userId}',
+                {batchId}
             )";
 
             try
