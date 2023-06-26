@@ -111,15 +111,15 @@ namespace ECMPS.Checks.EmissionsReport
             string monPlanId = emissionsReportProcess.CheckEngine.MonPlanId;
             int rptPeriodId = emissionsReportProcess.CheckEngine.RptPeriodId.Value;
 
-            result = InitSourceDataDo("nsps4t_summary_data", "ORIS_CODE, LOCATION_NAME", monPlanId, rptPeriodId, emissionsReportProcess) && result;
-            result = InitSourceDataDo("nsps4t_compliance_period_data", "ORIS_CODE, LOCATION_NAME, END_YEAR desc, END_MONTH desc", monPlanId, rptPeriodId, emissionsReportProcess) && result;
-            result = InitSourceDataDo("nsps4t_annual_data", "ORIS_CODE, LOCATION_NAME", monPlanId, rptPeriodId, emissionsReportProcess) && result;
+            result = InitSourceDataDo("Nsps4tSummary", "nsps4t_summary_data", "ORIS_CODE, LOCATION_NAME", monPlanId, rptPeriodId, emissionsReportProcess) && result;
+            result = InitSourceDataDo("Nsps4tCompliancePeriod", "nsps4t_compliance_period_data", "ORIS_CODE, LOCATION_NAME, END_YEAR desc, END_MONTH desc", monPlanId, rptPeriodId, emissionsReportProcess) && result;
+            result = InitSourceDataDo("Nsps4tAnnual", "nsps4t_annual_data", "ORIS_CODE, LOCATION_NAME", monPlanId, rptPeriodId, emissionsReportProcess) && result;
 
             return result;
         }
 
 
-        private static bool InitSourceDataDo(string sourceName, string sourceSort, string monPlanId, int rptPeriodId,
+        private static bool InitSourceDataDo(string targetName, string sourceName, string sourceSort, string monPlanId, int rptPeriodId,
                                              cEmissionsReportProcess emissionsReportProcess)
         {
             bool result = true;
@@ -133,7 +133,7 @@ namespace ECMPS.Checks.EmissionsReport
                 //SqlDataAdapter Adapter = new SqlDataAdapter(sql, sqlConnection);
                 NpgsqlDataAdapter Adapter = new NpgsqlDataAdapter(sql, sqlConnection);
                 DataSet sourceDataSet = emissionsReportProcess.SourceData;
-                DataTable Table = new DataTable(sourceName);
+                DataTable Table = new DataTable(targetName);
                 
                 // this defaults to 30 seconds if we don't override it
                 if (Adapter.SelectCommand != null)
