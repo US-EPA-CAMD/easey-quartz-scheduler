@@ -526,7 +526,8 @@ namespace ECMPS.Checks.CheckEngine
                                        "cOtherQAMain",
                                        new object[] { this },
                                        runMode,
-                                       batchId);
+                                       batchId,
+                                       testExtensionExemptionId, null);
 
 
             return result;
