@@ -37,5 +37,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 
 		[Column("status_cd")]
  		public string StatusCode { get; set; }
+
+		[Column("details")]
+ 		public string Details { get; set; }
 	}
 }

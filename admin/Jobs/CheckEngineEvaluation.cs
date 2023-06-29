@@ -16,6 +16,7 @@ using Epa.Camd.Logger;
 using DatabaseAccess;
 using ECMPS.Checks.CheckEngine;
 using ECMPS.Checks.CheckEngine.Definitions;
+using Newtonsoft.Json;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -75,16 +76,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       _dbContext.Evaluations.Update(evalRecord);
       _dbContext.SaveChanges();
 
+      string processCode = dataMap.GetString("ProcessCode");
+      int facilityId = dataMap.GetIntValue("FacilityId");
+      string facilityName = dataMap.GetString("FacilityName");
+      string monitorPlanId = dataMap.GetString("MonitorPlanId");
+      string monPlanConfig = dataMap.GetString("Configuration");
+      string userId = dataMap.GetString("UserId");
+      string userEmail = dataMap.GetString("UserEmail");
+      string submittedOn = dataMap.GetString("SubmittedOn");
+
       try
       {
-        string processCode = dataMap.GetString("ProcessCode");
-        int facilityId = dataMap.GetIntValue("FacilityId");
-        string facilityName = dataMap.GetString("FacilityName");
-        string monitorPlanId = dataMap.GetString("MonitorPlanId");
-        string monPlanConfig = dataMap.GetString("Configuration");
-        string userId = dataMap.GetString("UserId");
-        string userEmail = dataMap.GetString("UserEmail");
-        string submittedOn = dataMap.GetString("SubmittedOn");
         string connectionString = ConnectionStringManager.getConnectionString(Configuration);
 
         LogHelper.info(
@@ -251,6 +253,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
       catch (Exception ex)
       {
+        evalRecord.Details = JsonConvert.SerializeObject(ex);
+
         evalRecord.StatusCode = "ERROR";
         _dbContext.Evaluations.Update(evalRecord);
         _dbContext.SaveChanges();
@@ -258,6 +262,44 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
         context.MergedJobDataMap.Add("EvaluationStatus", "FATAL");
         LogHelper.error(ex.ToString());
+
+
+        switch(processCode){ //Reset status codes to EVAL in case of an evaluation error
+          case "MP":
+            MonitorPlan mp = _dbContext.MonitorPlans.Find(monitorPlanId);
+            mp.EvalStatus = "EVAL";
+            _dbContext.MonitorPlans.Update(mp);
+            break;
+          case "QA":
+            if(!string.IsNullOrWhiteSpace(dataMap.GetString("testSumId"))){
+              string testId = dataMap.GetString("testSumId");
+              TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
+              testSummaryRecord.EvalStatus = "EVAL";
+              _dbContext.TestSummaries.Update(testSummaryRecord);
+            }
+            else if(!string.IsNullOrWhiteSpace(dataMap.GetString("qaCertId"))){
+              string certId = dataMap.GetString("qaCertId");
+              CertEvent certIdRecord = _dbContext.CertEvents.Find(certId);
+              certIdRecord.EvalStatus = "EVAL";
+              _dbContext.CertEvents.Update(certIdRecord);
+            }
+            else{
+              string extensionExemptionId = dataMap.GetString("testExtensionExemption");
+              TestExtensionExemption extensionExemptionRecord = _dbContext.TestExtensionExemptions.Find(extensionExemptionId);
+              extensionExemptionRecord.EvalStatus = "EVAL";
+              _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
+            }
+            break;
+          case "EM":
+            int rptPeriodId = Int32.Parse(dataMap.GetString("rptPeriodId"));
+            ReportingPeriod rp = _dbContext.ReportingPeriods.Find(rptPeriodId);
+            EmissionEvaluation emissionEvalRecord = _dbContext.EmissionEvaluations.Find(monitorPlanId, rptPeriodId); //TODO LOOK UP COMPOSITE PRIMARY KEY
+            emissionEvalRecord.EvalStatus = "EVAL";
+            _dbContext.EmissionEvaluations.Update(emissionEvalRecord);
+            break;
+        }
+        _dbContext.SaveChanges();
+
         return Task.FromException(ex);
       }
     }
