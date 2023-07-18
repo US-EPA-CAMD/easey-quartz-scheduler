@@ -21,11 +21,29 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public DbSet<BulkFileMetadata> BulkFileMetadataSet {get; set; }
     public DbSet<BulkFileQueue> BulkFileQueue {get; set; }
     public DbSet<JobLog> JobLogs {get; set; }
+    public DbSet<ReportingPeriod> ReportingPeriods {get; set; }
     public DbSet<BulkFileLog> BulkFileLogs {get; set; }
+    public DbSet<EmailToProcess> EmailToProcessQueue {get; set; }
+    public DbSet<EmailToSend> EmailToSend {get; set; }
     public DbSet<ProgramCode> ProgramCodes { get; set; } 
     //public DbSet<EmissionEvaluation> EmissionEvaluations { get; set; } 
+    public DbSet<EvaluationSet> EvaluationSet { get; set; } 
+    public DbSet<Evaluation> Evaluations { get; set; }    
+    public DbSet<SeverityCode> SeverityCodes { get; set; }
+    public DbSet<EmissionEvaluation> EmissionEvaluations { get; set; }
+    public DbSet<EvalStatusCode> EvalStatusCodes { get; set; }
+    public DbSet<CheckSession> CheckSessions { get; set; }
     public DbSet<CorsOptions> CorsOptions { get; set; }
     public DbSet<Facility> Facilities { get; set; }
+    public DbSet<MonitorPlan> MonitorPlans { get; set; }
+
+    public DbSet<CertEvent> CertEvents { get; set; }
+
+    public DbSet<TestSummary> TestSummaries { get; set; }
+
+    public DbSet<TestExtensionExemption> TestExtensionExemptions { get; set; }
+    public DbSet<MonitorLocation> MonitorLocations { get; set; }
+    public DbSet<MonitorPlanLocation> MonitorPlanLocations { get; set; }
 
     public NpgSqlContext(IConfiguration configuration, ILogger<NpgSqlContext> logger, DbContextOptions<NpgSqlContext> options) : base(options)
     {
