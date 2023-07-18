@@ -15,7 +15,6 @@ using DatabaseAccess;
 
 using Epa.Camd.Quartz.Scheduler.Jobs;
 using Epa.Camd.Quartz.Scheduler.Models;
-using Epa.Camd.Quartz.Scheduler.Jobs.Listeners;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
@@ -115,16 +114,6 @@ namespace Epa.Camd.Quartz.Scheduler
       AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
       EmissionsComplianceBulkDataFiles.RegisterWithQuartz(services);
       FacilityAttributesBulkDataFiles.RegisterWithQuartz(services);
-      
-      CheckEngineEvaluation.RegisterWithQuartz(services);
-      EvaluationJobQueue.RegisterWithQuartz(services);
-
-      EmailQueue.RegisterWithQuartz(services);
-      SubmissionWindowProcessQueue.RegisterWithQuartz(services);
-      SubmissionReminderProcessQueue.RegisterWithQuartz(services);
-
-      services.AddTransient<CheckEngineEvaluationListener>(); //DI for CheckEngineListener
-      CheckEngineEvaluationListener.ServiceCollection = services; // Set service collection of the listener
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -172,13 +161,6 @@ namespace Epa.Camd.Quartz.Scheduler
       AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
-      SubmissionReminderProcessQueue.ScheduleWithQuartz(scheduler, app);
-      SubmissionWindowProcessQueue.ScheduleWithQuartz(scheduler, app);
-      EmailQueue.ScheduleWithQuartz(scheduler, app);
-
-      //Schedule Listeners
-      CheckEngineEvaluationListener.ScheduleWithQuartz(scheduler);
     }
   }
 }
