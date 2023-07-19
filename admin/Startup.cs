@@ -119,6 +119,10 @@ namespace Epa.Camd.Quartz.Scheduler
       CheckEngineEvaluation.RegisterWithQuartz(services);
       EvaluationJobQueue.RegisterWithQuartz(services);
 
+      EmailQueue.RegisterWithQuartz(services);
+      SubmissionWindowProcessQueue.RegisterWithQuartz(services);
+      SubmissionReminderProcessQueue.RegisterWithQuartz(services);
+
       services.AddTransient<CheckEngineEvaluationListener>(); //DI for CheckEngineListener
       CheckEngineEvaluationListener.ServiceCollection = services; // Set service collection of the listener
     }
@@ -169,6 +173,9 @@ namespace Epa.Camd.Quartz.Scheduler
       EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
       EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
+      SubmissionReminderProcessQueue.ScheduleWithQuartz(scheduler, app);
+      SubmissionWindowProcessQueue.ScheduleWithQuartz(scheduler, app);
+      EmailQueue.ScheduleWithQuartz(scheduler, app);
 
       //Schedule Listeners
       CheckEngineEvaluationListener.ScheduleWithQuartz(scheduler);
