@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -95,7 +96,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 if(i < inQueue.Count){
                   Evaluation toSchedule = inQueue[i];
                   EvaluationSet es = _dbContext.EvaluationSet.Find(toSchedule.EvaluationSetId);
-                  
+                                    
                   await CheckEngineEvaluation.StartNow(
                     context.Scheduler,
                     toSchedule.EvaluationId,
@@ -113,6 +114,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     toSchedule.TeeId,
                     toSchedule.RptPeriod
                   );
+
+                  Thread.Sleep(5000);
+
                 }
               }
             }
