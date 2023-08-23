@@ -129,7 +129,7 @@ namespace Epa.Camd.Quartz.Scheduler
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       Console.WriteLine("Configuring Quartz");
 
@@ -165,22 +165,22 @@ namespace Epa.Camd.Quartz.Scheduler
       IScheduler scheduler = app.GetScheduler();
 
       BulkDataFile.setScheduler(scheduler);
-      BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
-      BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
-      ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
-      AllowanceHoldingsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
-      SubmissionReminderProcessQueue.ScheduleWithQuartz(scheduler, app);
-      SubmissionWindowProcessQueue.ScheduleWithQuartz(scheduler, app);
-      EmailQueue.ScheduleWithQuartz(scheduler, app);
-      SubmissionJobQueue.ScheduleWithQuartz(scheduler, app);
+      await BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
+      await EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
+      await BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
+      await ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
+      await AllowanceHoldingsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      await AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      await AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      await EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      await FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
+      await SubmissionReminderProcessQueue.ScheduleWithQuartz(scheduler, app);
+      await SubmissionWindowProcessQueue.ScheduleWithQuartz(scheduler, app);
+      await EmailQueue.ScheduleWithQuartz(scheduler, app);
+      await SubmissionJobQueue.ScheduleWithQuartz(scheduler, app);
 
       //Schedule Listeners
-      CheckEngineEvaluationListener.ScheduleWithQuartz(scheduler);
+      await CheckEngineEvaluationListener.ScheduleWithQuartz(scheduler);
     }
   }
 }
