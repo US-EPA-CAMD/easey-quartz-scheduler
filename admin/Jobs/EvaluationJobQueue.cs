@@ -25,7 +25,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       public static readonly string JobName = "Evaluation Job Queue";
       public static readonly string JobDescription = "Operates on an interval to determine if files in evaluation queue can be triggered.";
       public static readonly string TriggerName = "Check evaluation queue every minute";
-      public static readonly string TriggerDescription = "Operate every minute to determine if there are files in queue which can be triggered";
+      public static readonly string TriggerDescription = "Operate every minute to determine if there are files in evaluation queue which can be triggered";
     }
 
     public static void RegisterWithQuartz(IServiceCollection services)
