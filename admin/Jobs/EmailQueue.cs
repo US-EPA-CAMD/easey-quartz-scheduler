@@ -23,7 +23,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private IConfiguration Configuration { get; }
 
-    public static class Identity
+    public static class EmailQueueIdentity
     {
       public static readonly string Group = Constants.QuartzGroups.MAINTAINANCE;
       public static readonly string JobName = "Email Queue";
@@ -34,24 +34,24 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static void RegisterWithQuartz(IServiceCollection services)
     {
-      services.AddQuartzJob<EmailQueue>(WithJobKey(), Identity.JobDescription);
+      services.AddQuartzJob<EmailQueue>(WithEmailQueueJobKey(), EmailQueueIdentity.JobDescription);
     }
 
     public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
       try {
-        JobKey jobKey = WithJobKey();
+        JobKey jobKey = WithEmailQueueJobKey();
         string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EMAIL_QUEUE_SCHEDULE"] ?? "0 0/1 * 1/1 * ? *";
-        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
+        TriggerBuilder triggerBuilder = WithEmailQueueCronSchedule(cronExpression);
 
         if (await scheduler.CheckExists(jobKey)) {
-          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
+          ITrigger trigger = await scheduler.GetTrigger(WithEmailQueueTriggerKey());
 
           if (
             trigger is ICronTrigger cronTrigger &&
             cronTrigger.CronExpressionString != cronExpression
           ) {
-            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            await scheduler.RescheduleJob(WithEmailQueueTriggerKey(), triggerBuilder.Build());
             Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
           }
         } else {
@@ -129,29 +129,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public static JobKey WithJobKey()
+    public static JobKey WithEmailQueueJobKey()
     {
-      return new JobKey(Identity.JobName, Identity.Group);
+      return new JobKey(EmailQueueIdentity.JobName, EmailQueueIdentity.Group);
     }
 
-    public static TriggerKey WithTriggerKey()
+    public static TriggerKey WithEmailQueueTriggerKey()
     {
-      return new TriggerKey(Identity.TriggerName, Identity.Group);
+      return new TriggerKey(EmailQueueIdentity.TriggerName, EmailQueueIdentity.Group);
     }
 
-    public static IJobDetail WithJobDetail()
+    public static IJobDetail WithEmailQueueJobDetail()
     {
       return JobBuilder.Create<EmailQueue>()
-          .WithIdentity(WithJobKey())
-          .WithDescription(Identity.JobDescription)
+          .WithIdentity(WithEmailQueueJobKey())
+          .WithDescription(EmailQueueIdentity.JobDescription)
           .Build();
     }
 
-    public static TriggerBuilder WithCronSchedule(string cronExpression)
+    public static TriggerBuilder WithEmailQueueCronSchedule(string cronExpression)
     {
       return TriggerBuilder.Create()
-          .WithIdentity(WithTriggerKey())
-          .WithDescription(Identity.TriggerDescription)
+          .WithIdentity(WithEmailQueueTriggerKey())
+          .WithDescription(EmailQueueIdentity.TriggerDescription)
           .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }

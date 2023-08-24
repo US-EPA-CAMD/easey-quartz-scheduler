@@ -13,7 +13,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Threading;
-
+using System.CodeDom;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -23,7 +23,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private IConfiguration Configuration { get; }
 
-    public static class Identity
+    public static class SubmissionJobQueueIdentity
     {
       public static readonly string Group = Constants.QuartzGroups.MAINTAINANCE;
       public static readonly string JobName = "Submission Job Queue";
@@ -34,24 +34,24 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static void RegisterWithQuartz(IServiceCollection services)
     {
-      services.AddQuartzJob<SubmissionJobQueue>(WithJobKey(), Identity.JobDescription);
+      services.AddQuartzJob<SubmissionJobQueue>(WithSubmissionJobQueueKey(),  SubmissionJobQueueIdentity.JobDescription);
     }
 
     public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
       try {
-        JobKey jobKey = WithJobKey();
+        JobKey jobKey = WithSubmissionJobQueueKey();
         string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_SUBMISSION_QUEUE_SCHEDULE"] ?? "0 0/1 * 1/1 * ? *";
-        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
+        TriggerBuilder triggerBuilder = WithSubmissionJobQueueCronSchedule(cronExpression);
 
         if (await scheduler.CheckExists(jobKey)) {
-          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
+          ITrigger trigger = await scheduler.GetTrigger(WithSubmissionJobQueueTriggerKey());
 
           if (
             trigger is ICronTrigger cronTrigger &&
             cronTrigger.CronExpressionString != cronExpression
           ) {
-            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            await scheduler.RescheduleJob(WithSubmissionJobQueueTriggerKey(), triggerBuilder.Build());
             Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
           }
         } else {
@@ -130,29 +130,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public static JobKey WithJobKey()
+    public static JobKey WithSubmissionJobQueueKey()
     {
-      return new JobKey(Identity.JobName, Identity.Group);
+      return new JobKey(SubmissionJobQueueIdentity.JobName, SubmissionJobQueueIdentity.Group);
     }
 
-    public static TriggerKey WithTriggerKey()
+    public static TriggerKey WithSubmissionJobQueueTriggerKey()
     {
-      return new TriggerKey(Identity.TriggerName, Identity.Group);
+      return new TriggerKey(SubmissionJobQueueIdentity.TriggerName, SubmissionJobQueueIdentity.Group);
     }
 
-    public static IJobDetail WithJobDetail()
+    public static IJobDetail WithSubmissionJobQueueJobDetail()
     {
       return JobBuilder.Create<SubmissionJobQueue>()
-          .WithIdentity(WithJobKey())
-          .WithDescription(Identity.JobDescription)
+          .WithIdentity(WithSubmissionJobQueueKey())
+          .WithDescription(SubmissionJobQueueIdentity.JobDescription)
           .Build();
     }
 
-    public static TriggerBuilder WithCronSchedule(string cronExpression)
+    public static TriggerBuilder WithSubmissionJobQueueCronSchedule(string cronExpression)
     {
       return TriggerBuilder.Create()
-          .WithIdentity(WithTriggerKey())
-          .WithDescription(Identity.TriggerDescription)
+          .WithIdentity(WithSubmissionJobQueueTriggerKey())
+          .WithDescription(SubmissionJobQueueIdentity.TriggerDescription)
           .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
