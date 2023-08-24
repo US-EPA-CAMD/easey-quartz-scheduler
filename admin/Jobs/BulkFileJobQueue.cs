@@ -21,7 +21,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private IConfiguration Configuration { get; }
 
-    public static class Identity
+    public static class BulkFileJobQueueIdentity
     {
       public static readonly string Group = Constants.QuartzGroups.MAINTAINANCE;
       public static readonly string JobName = "Bulk File Job Queue";
@@ -32,24 +32,24 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static void RegisterWithQuartz(IServiceCollection services)
     {
-      services.AddQuartzJob<BulkFileJobQueue>(WithJobKey(), Identity.JobDescription);
+      services.AddQuartzJob<BulkFileJobQueue>(WithBulkFileJobQueueKey(), BulkFileJobQueueIdentity.JobDescription);
     }
 
     public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
       try {
-        JobKey jobKey = WithJobKey();
+        JobKey jobKey = WithBulkFileJobQueueKey();
         string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_BULK_FILE_QUEUE_SCHEDULE"] ?? "0 0/1 * 1/1 * ? *";
-        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
+        TriggerBuilder triggerBuilder = WithBulkFileJobQueueCronSchedule(cronExpression);
 
         if (await scheduler.CheckExists(jobKey)) {
-          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
+          ITrigger trigger = await scheduler.GetTrigger(WithBulkFileJobQueueTriggerKey());
 
           if (
             trigger is ICronTrigger cronTrigger &&
             cronTrigger.CronExpressionString != cronExpression
           ) {
-            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            await scheduler.RescheduleJob(WithBulkFileJobQueueTriggerKey(), triggerBuilder.Build());
             Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
           }
         } else {
@@ -111,29 +111,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public static JobKey WithJobKey()
+    public static JobKey WithBulkFileJobQueueKey()
     {
-      return new JobKey(Identity.JobName, Identity.Group);
+      return new JobKey(BulkFileJobQueueIdentity.JobName, BulkFileJobQueueIdentity.Group);
     }
 
-    public static TriggerKey WithTriggerKey()
+    public static TriggerKey WithBulkFileJobQueueTriggerKey()
     {
-      return new TriggerKey(Identity.TriggerName, Identity.Group);
+      return new TriggerKey(BulkFileJobQueueIdentity.TriggerName, BulkFileJobQueueIdentity.Group);
     }
 
-    public static IJobDetail WithJobDetail()
+    public static IJobDetail WithBulkFileJobQueueJobDetail()
     {
       return JobBuilder.Create<BulkFileJobQueue>()
-          .WithIdentity(WithJobKey())
-          .WithDescription(Identity.JobDescription)
+          .WithIdentity(WithBulkFileJobQueueKey())
+          .WithDescription(BulkFileJobQueueIdentity.JobDescription)
           .Build();
     }
 
-    public static TriggerBuilder WithCronSchedule(string cronExpression)
+    public static TriggerBuilder WithBulkFileJobQueueCronSchedule(string cronExpression)
     {
       return TriggerBuilder.Create()
-          .WithIdentity(WithTriggerKey())
-          .WithDescription(Identity.TriggerDescription)
+          .WithIdentity(WithBulkFileJobQueueTriggerKey())
+          .WithDescription(BulkFileJobQueueIdentity.TriggerDescription)
           .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }

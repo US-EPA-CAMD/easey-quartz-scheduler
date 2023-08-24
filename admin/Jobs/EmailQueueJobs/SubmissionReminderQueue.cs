@@ -24,35 +24,35 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private IConfiguration Configuration { get; }
 
-    public static class Identity
+    public static class SubmissionReminderProcessQueueIdentity
     {
       public static readonly string Group = Constants.QuartzGroups.MAINTAINANCE;
       public static readonly string JobName = "Submission Reminder Process Queue";
       public static readonly string JobDescription = "Operates on an interval to determine if submissions reminder emails can be processed.";
       public static readonly string TriggerName = "Check file queue every minute for submission reminder emails";
-      public static readonly string TriggerDescription = "Operate every minute to determine if there are files in the queue which can be processed  for Submission Reminders";
+      public static readonly string TriggerDescription = "Operate every minute to determine if there are files in the queue which can be processed for Submission Reminders";
     }
 
     public static void RegisterWithQuartz(IServiceCollection services)
     {
-      services.AddQuartzJob<SubmissionReminderProcessQueue>(WithJobKey(), Identity.JobDescription);
+      services.AddQuartzJob<SubmissionReminderProcessQueue>(WithSubmissionReminderProcessQueueIdentityJobKey(), SubmissionReminderProcessQueueIdentity.JobDescription);
     }
 
     public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
       try {
-        JobKey jobKey = WithJobKey();
+        JobKey jobKey = WithSubmissionReminderProcessQueueIdentityJobKey();
         string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_SUBMISSION_REMINDER_QUEUE_SCHEDULE"] ?? "0 0/1 * 1/1 * ? *";
-        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
+        TriggerBuilder triggerBuilder = WithSubmissionReminderProcessQueueIdentityCronSchedule(cronExpression);
 
         if (await scheduler.CheckExists(jobKey)) {
-          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
+          ITrigger trigger = await scheduler.GetTrigger(WithSubmissionReminderProcessQueueIdentityTriggerKey());
 
           if (
             trigger is ICronTrigger cronTrigger &&
             cronTrigger.CronExpressionString != cronExpression
           ) {
-            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            await scheduler.RescheduleJob(WithSubmissionReminderProcessQueueIdentityTriggerKey(), triggerBuilder.Build());
             Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
           }
         } else {
@@ -165,29 +165,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public static JobKey WithJobKey()
+    public static JobKey WithSubmissionReminderProcessQueueIdentityJobKey()
     {
-      return new JobKey(Identity.JobName, Identity.Group);
+      return new JobKey(SubmissionReminderProcessQueueIdentity.JobName, SubmissionReminderProcessQueueIdentity.Group);
     }
 
-    public static TriggerKey WithTriggerKey()
+    public static TriggerKey WithSubmissionReminderProcessQueueIdentityTriggerKey()
     {
-      return new TriggerKey(Identity.TriggerName, Identity.Group);
+      return new TriggerKey(SubmissionReminderProcessQueueIdentity.TriggerName, SubmissionReminderProcessQueueIdentity.Group);
     }
 
-    public static IJobDetail WithJobDetail()
+    public static IJobDetail WithSubmissionReminderProcessQueueIdentityJobDetail()
     {
       return JobBuilder.Create<SubmissionReminderProcessQueue>()
-          .WithIdentity(WithJobKey())
-          .WithDescription(Identity.JobDescription)
+          .WithIdentity(WithSubmissionReminderProcessQueueIdentityJobKey())
+          .WithDescription(SubmissionReminderProcessQueueIdentity.JobDescription)
           .Build();
     }
 
-    public static TriggerBuilder WithCronSchedule(string cronExpression)
+    public static TriggerBuilder WithSubmissionReminderProcessQueueIdentityCronSchedule(string cronExpression)
     {
       return TriggerBuilder.Create()
-          .WithIdentity(WithTriggerKey())
-          .WithDescription(Identity.TriggerDescription)
+          .WithIdentity(WithSubmissionReminderProcessQueueIdentityTriggerKey())
+          .WithDescription(SubmissionReminderProcessQueueIdentity.TriggerDescription)
           .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }

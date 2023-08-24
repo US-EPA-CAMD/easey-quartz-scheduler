@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -18,35 +19,35 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private IConfiguration Configuration { get; }
 
-    public static class Identity
+    public static class EvaluationJobQueueIdentity
     {
       public static readonly string Group = Constants.QuartzGroups.MAINTAINANCE;
       public static readonly string JobName = "Evaluation Job Queue";
       public static readonly string JobDescription = "Operates on an interval to determine if files in evaluation queue can be triggered.";
       public static readonly string TriggerName = "Check evaluation queue every minute";
-      public static readonly string TriggerDescription = "Operate every minute to determine if there are files in queue which can be triggered";
+      public static readonly string TriggerDescription = "Operate every minute to determine if there are files in evaluation queue which can be triggered";
     }
 
     public static void RegisterWithQuartz(IServiceCollection services)
     {
-      services.AddQuartzJob<EvaluationJobQueue>(WithJobKey(), Identity.JobDescription);
+      services.AddQuartzJob<EvaluationJobQueue>(WithEvaluationJobQueueJobKey(), EvaluationJobQueueIdentity.JobDescription);
     }
 
     public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
       try {
-        JobKey jobKey = WithJobKey();
+        JobKey jobKey = WithEvaluationJobQueueJobKey();
         string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATION_QUEUE_SCHEDULE"] ?? "0 0/1 * 1/1 * ? *";
-        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
+        TriggerBuilder triggerBuilder = WithEvaluationJobQueueCronSchedule(cronExpression);
 
         if (await scheduler.CheckExists(jobKey)) {
-          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
+          ITrigger trigger = await scheduler.GetTrigger(WithEvaluationJobQueueTriggerKey());
 
           if (
             trigger is ICronTrigger cronTrigger &&
             cronTrigger.CronExpressionString != cronExpression
           ) {
-            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            await scheduler.RescheduleJob(WithEvaluationJobQueueTriggerKey(), triggerBuilder.Build());
             Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
           }
         } else {
@@ -95,7 +96,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 if(i < inQueue.Count){
                   Evaluation toSchedule = inQueue[i];
                   EvaluationSet es = _dbContext.EvaluationSet.Find(toSchedule.EvaluationSetId);
-                  
+                                    
                   await CheckEngineEvaluation.StartNow(
                     context.Scheduler,
                     toSchedule.EvaluationId,
@@ -113,6 +114,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     toSchedule.TeeId,
                     toSchedule.RptPeriod
                   );
+
+                  Thread.Sleep(5000);
+
                 }
               }
             }
@@ -128,29 +132,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public static JobKey WithJobKey()
+    public static JobKey WithEvaluationJobQueueJobKey()
     {
-      return new JobKey(Identity.JobName, Identity.Group);
+      return new JobKey(EvaluationJobQueueIdentity.JobName, EvaluationJobQueueIdentity.Group);
     }
 
-    public static TriggerKey WithTriggerKey()
+    public static TriggerKey WithEvaluationJobQueueTriggerKey()
     {
-      return new TriggerKey(Identity.TriggerName, Identity.Group);
+      return new TriggerKey(EvaluationJobQueueIdentity.TriggerName, EvaluationJobQueueIdentity.Group);
     }
 
-    public static IJobDetail WithJobDetail()
+    public static IJobDetail WithEvaluationJobQueueJobDetail()
     {
       return JobBuilder.Create<EvaluationJobQueue>()
-          .WithIdentity(WithJobKey())
-          .WithDescription(Identity.JobDescription)
+          .WithIdentity(WithEvaluationJobQueueJobKey())
+          .WithDescription(EvaluationJobQueueIdentity.JobDescription)
           .Build();
     }
 
-    public static TriggerBuilder WithCronSchedule(string cronExpression)
+    public static TriggerBuilder WithEvaluationJobQueueCronSchedule(string cronExpression)
     {
       return TriggerBuilder.Create()
-          .WithIdentity(WithTriggerKey())
-          .WithDescription(Identity.TriggerDescription)
+          .WithIdentity(WithEvaluationJobQueueTriggerKey())
+          .WithDescription(EvaluationJobQueueIdentity.TriggerDescription)
           .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }

@@ -4,58 +4,58 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using SilkierQuartz;
-
 using Epa.Camd.Quartz.Scheduler.Models;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Net.Http;
 using Newtonsoft.Json;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
 using System.Threading;
+using System.CodeDom;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
-  public class EmailQueue : IJob
+  public class SubmissionJobQueue : IJob
   {
     private NpgSqlContext _dbContext = null;
 
     private IConfiguration Configuration { get; }
 
-    public static class EmailQueueIdentity
+    public static class SubmissionJobQueueIdentity
     {
       public static readonly string Group = Constants.QuartzGroups.MAINTAINANCE;
-      public static readonly string JobName = "Email Queue";
-      public static readonly string JobDescription = "Operates on an interval to determine if emails in the send email table can be sent.";
-      public static readonly string TriggerName = "Check to_send email queue every minute";
-      public static readonly string TriggerDescription = "Operate every minute to determine if there are emails in the queue which can be sent";
+      public static readonly string JobName = "Submission Job Queue";
+      public static readonly string JobDescription = "Operates on an interval to determine if sets in SubmissionSet table can be submitted.";
+      public static readonly string TriggerName = "Check submission queue every minute";
+      public static readonly string TriggerDescription = "Operate every minute to determine if there are files in submission queue which can be triggered";
     }
 
     public static void RegisterWithQuartz(IServiceCollection services)
     {
-      services.AddQuartzJob<EmailQueue>(WithEmailQueueJobKey(), EmailQueueIdentity.JobDescription);
+      services.AddQuartzJob<SubmissionJobQueue>(WithSubmissionJobQueueKey(),  SubmissionJobQueueIdentity.JobDescription);
     }
 
     public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
       try {
-        JobKey jobKey = WithEmailQueueJobKey();
-        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_EMAIL_QUEUE_SCHEDULE"] ?? "0 0/1 * 1/1 * ? *";
-        TriggerBuilder triggerBuilder = WithEmailQueueCronSchedule(cronExpression);
+        JobKey jobKey = WithSubmissionJobQueueKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_SUBMISSION_QUEUE_SCHEDULE"] ?? "0 0/1 * 1/1 * ? *";
+        TriggerBuilder triggerBuilder = WithSubmissionJobQueueCronSchedule(cronExpression);
 
         if (await scheduler.CheckExists(jobKey)) {
-          ITrigger trigger = await scheduler.GetTrigger(WithEmailQueueTriggerKey());
+          ITrigger trigger = await scheduler.GetTrigger(WithSubmissionJobQueueTriggerKey());
 
           if (
             trigger is ICronTrigger cronTrigger &&
             cronTrigger.CronExpressionString != cronExpression
           ) {
-            await scheduler.RescheduleJob(WithEmailQueueTriggerKey(), triggerBuilder.Build());
+            await scheduler.RescheduleJob(WithSubmissionJobQueueTriggerKey(), triggerBuilder.Build());
             Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
           }
         } else {
-          app.UseQuartzJob<EmailQueue>(triggerBuilder);
+          app.UseQuartzJob<SubmissionJobQueue>(triggerBuilder);
           Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
         }
       } catch(Exception e) {
@@ -64,7 +64,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public EmailQueue(NpgSqlContext dbContext, IConfiguration configuration)
+    public SubmissionJobQueue(NpgSqlContext dbContext, IConfiguration configuration)
     {
       _dbContext = dbContext;
       Configuration = configuration;
@@ -76,34 +76,35 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       {
         Console.Write("Checking Queue Now");
 
-        List<EmailToSend> inQueue = _dbContext.EmailToSend.FromSqlRaw(@"
+        List<SubmissionSet> inQueue = _dbContext.SubmissionSet.FromSqlRaw(@"
             SELECT *
-            FROM camdecmpsaux.email_to_send
+            FROM camdecmpsaux.submission_set
             WHERE status_cd = 'QUEUED'"
           ).ToList();
 
-        List<EmailToSend> inWIP = _dbContext.EmailToSend.FromSqlRaw(@"
+        List<SubmissionSet> inWIP = _dbContext.SubmissionSet.FromSqlRaw(@"
             SELECT *
-            FROM camdecmpsaux.email_to_send
+            FROM camdecmpsaux.submission_set
             WHERE status_cd = 'WIP'"
           ).ToList();
 
-        string clientToken = await Utils.generateClientToken();
 
-        if(inWIP.Count < Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_EMAILS_TO_SEND"])){
+        if(inWIP.Count < Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_SUBMISSION_JOBS"])){
           if(inQueue.Count > 0){
-            int jobs_to_schedule = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_EMAILS_TO_SEND"]) - inWIP.Count;
+            int jobs_to_schedule = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_SUBMISSION_JOBS"]) - inWIP.Count;
             Console.WriteLine("Scheduling Jobs: " + jobs_to_schedule);
             int index = 0;
+
+            string clientToken = await Utils.generateClientToken();
+
             for(int i = 0; i < jobs_to_schedule; i++){
               if(index < inQueue.Count){
-                //Call Camd-Service email service
                 inQueue[i].StatusCode = "WIP";
-                _dbContext.EmailToSend.Update(inQueue[i]);
+                _dbContext.SubmissionSet.Update(inQueue[i]);
                 _dbContext.SaveChanges();
 
-                ToProcessPayload payload = new ToProcessPayload();
-                payload.emailToProcessId = Convert.ToInt64(inQueue[i].SendId);
+                ToProcessSubmissionPayload payload = new ToProcessSubmissionPayload();
+                payload.submissionSetId = inQueue[i].SetId;
 
                 HttpClient client = new HttpClient();
                 StringContent httpContent = new StringContent(JsonConvert.SerializeObject(payload), System.Text.Encoding.UTF8, "application/json");
@@ -111,7 +112,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 client.DefaultRequestHeaders.Add("x-client-id", Configuration["EASEY_QUARTZ_SCHEDULER_CLIENT_ID"]);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", clientToken);
                 
-                HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_CAMD_SERVICES"] + "/support/email/process", httpContent); //TODO: Replace this with mocked result
+                HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_CAMD_SERVICES"] + "/submission/process", httpContent); //TODO: Replace this with mocked result
 
                 Thread.Sleep(1000);
                 index++;
@@ -129,29 +130,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public static JobKey WithEmailQueueJobKey()
+    public static JobKey WithSubmissionJobQueueKey()
     {
-      return new JobKey(EmailQueueIdentity.JobName, EmailQueueIdentity.Group);
+      return new JobKey(SubmissionJobQueueIdentity.JobName, SubmissionJobQueueIdentity.Group);
     }
 
-    public static TriggerKey WithEmailQueueTriggerKey()
+    public static TriggerKey WithSubmissionJobQueueTriggerKey()
     {
-      return new TriggerKey(EmailQueueIdentity.TriggerName, EmailQueueIdentity.Group);
+      return new TriggerKey(SubmissionJobQueueIdentity.TriggerName, SubmissionJobQueueIdentity.Group);
     }
 
-    public static IJobDetail WithEmailQueueJobDetail()
+    public static IJobDetail WithSubmissionJobQueueJobDetail()
     {
-      return JobBuilder.Create<EmailQueue>()
-          .WithIdentity(WithEmailQueueJobKey())
-          .WithDescription(EmailQueueIdentity.JobDescription)
+      return JobBuilder.Create<SubmissionJobQueue>()
+          .WithIdentity(WithSubmissionJobQueueKey())
+          .WithDescription(SubmissionJobQueueIdentity.JobDescription)
           .Build();
     }
 
-    public static TriggerBuilder WithEmailQueueCronSchedule(string cronExpression)
+    public static TriggerBuilder WithSubmissionJobQueueCronSchedule(string cronExpression)
     {
       return TriggerBuilder.Create()
-          .WithIdentity(WithEmailQueueTriggerKey())
-          .WithDescription(EmailQueueIdentity.TriggerDescription)
+          .WithIdentity(WithSubmissionJobQueueTriggerKey())
+          .WithDescription(SubmissionJobQueueIdentity.TriggerDescription)
           .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
