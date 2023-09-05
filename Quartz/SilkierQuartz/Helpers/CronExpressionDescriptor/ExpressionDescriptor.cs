@@ -559,7 +559,7 @@ namespace CronExpressionDescriptor
       }
       else if (expression.IndexOfAny(new char[] { '/', '-', ',' }) == -1)
       {
-        description = string.Format(getDescriptionFormat(expression), getSingleItemDescription(expression));
+        //description = string.Format(getDescriptionFormat(expression), getSingleItemDescription(expression));
       }
       else if (expression.Contains("/"))
       {

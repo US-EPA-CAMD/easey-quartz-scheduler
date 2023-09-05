@@ -10,9 +10,9 @@
       "request": "launch",
       "preLaunchTask": "build",
       // If you have changed target frameworks, make sure to update the program path.
-      "program": "${workspaceFolder}/CheckEngine/CheckEngineRunner/bin/Debug/netcoreapp3.1/CheckEngineRunner.dll",
-      "args": [],
-      "cwd": "${workspaceFolder}/CheckEngine/CheckEngineRunner",
+      "program": "${workspaceFolder}/admin/bin/Debug/netcoreapp6.0/easey-job-scheduler.dll",
+      "args": ["EM", "CLV2UA3431-665B4D63BCFB4936893A28A7751749E6", "116"],
+      "cwd": "${workspaceFolder}/admin",
       "stopAtEntry": false,
       // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
       "serverReadyAction": {

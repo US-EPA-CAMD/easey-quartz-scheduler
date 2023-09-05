@@ -1,7 +1,7 @@
 instances: 2
-memory: 2048M
+displayUI: false
 environment: staging
+healthCheckType: process
 host: easey-stg.app.cloud.gov
-apiHost: api-easey-stg.app.cloud.gov
 apiGatewayHost: api.epa.gov/easey/staging
 bulkDataS3Bucket: cg-e8f4cca5-5be8-434f-8987-bbdfa072f142

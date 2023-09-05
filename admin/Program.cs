@@ -1,19 +1,46 @@
 using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-
+using Quartz.Logging;
 using Serilog;
-using Serilog.Events;
-using Serilog.Formatting.Compact;
-
 using SilkierQuartz;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
   public class Program
   {
-    public static int Main(string[] args)
+
+    private class ConsoleLogProvider : ILogProvider
     {
+        public global::Quartz.Logging.Logger GetLogger(string name)
+        {
+            return (level, func, exception, parameters) =>
+            {
+                if (level >= LogLevel.Info && func != null)
+                {
+                    Console.WriteLine("[" + DateTime.Now.ToLongTimeString() + "] [" + level + "] " + func(), parameters);
+                }
+                return true;
+            };
+        }
+
+        public IDisposable OpenNestedContext(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDisposable OpenMappedContext(string key, object value, bool destructure = false)
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+
+    public static int Main(string[] args)
+    {      
+      LogProvider.SetCurrentLogProvider(new ConsoleLogProvider());
+
       try
       {
         DotNetEnv.Env.Load();
@@ -34,7 +61,6 @@ namespace Epa.Camd.Quartz.Scheduler
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
-            //.UseSerilog()
             .ConfigureWebHostDefaults(webBuilder =>
             {
               webBuilder.UseStartup<Startup>();

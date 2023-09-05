@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
+using Quartz.Impl.Matchers;
 
 namespace SilkierQuartz
 {
@@ -85,6 +86,14 @@ namespace SilkierQuartz
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(jobDetail, new List<ITrigger>()));
             return services;
         }
+
+        public static IServiceCollection AddJobListener<T>(this IServiceCollection services, params IMatcher<JobKey>[] matchers) where T : class, IJobListener
+        {
+            services.AddTransient<IJobListener, T>();
+            services.AddSingleton(new JobListenerConfiguration(typeof(T), matchers));
+            return services;
+        }
+
         public static IApplicationBuilder UseQuartzJob<TJob>(
                 this IApplicationBuilder app,
                 Func<TriggerBuilder> triggerBuilder_func)
