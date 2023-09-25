@@ -244,7 +244,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         // Update our queued record
         evalRecord.StatusCode = "COMPLETE";
-        evalRecord.ServerityCode = evaluationStatus;
+        evalRecord.EvalStatusCode = evaluationStatus;
         _dbContext.Evaluations.Update(evalRecord);
         _dbContext.SaveChanges();
 
