@@ -29,8 +29,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
         [Column("rpt_period_id")]
  		public Int32? RptPeriod { get; set; }
 
-        [Column("severity_cd")]
- 		public string ServerityCode { get; set; }
+        [Column("eval_status_cd")]
+ 		public string EvalStatusCode { get; set; }
 
 		[Column("submitted_on")]
  		public DateTime SubmittedOn { get; set; }
