@@ -9,6 +9,7 @@ using Quartz.Impl;
 using Quartz;
 using Quartz.Spi;
 using System.Linq;
+using Quartz.Listener;
 
 namespace SilkierQuartz.HostedService
 {
@@ -52,6 +53,14 @@ namespace SilkierQuartz.HostedService
                         await _scheduler.ScheduleJob(trigger, cancellationToken);
                     isNewJob = false;
                 }
+            }
+
+            var jobListeners = Services.GetServices<IJobListener>();
+            var jobListenerConfigurations = Services.GetServices<JobListenerConfiguration>().ToArray();
+            foreach (var listener in jobListeners)
+            {
+                var configuration = jobListenerConfigurations.SingleOrDefault(x => x.ListenerType == listener.GetType());
+                _scheduler.ListenerManager.AddJobListener(listener, configuration?.Matchers ?? Array.Empty<IMatcher<JobKey>>());
             }
         }
 

@@ -59,12 +59,8 @@ namespace ECMPS.Checks.DatabaseAccess
                 {
                     facId = int.Parse(row["facId"].ToString());
 
-                    if(row["firstEcmpsRptPeriodId"] == DBNull.Value){
-                        firstEcmpsRptPeriodId = null;
-                    }else{
-                        firstEcmpsRptPeriodId =  int.Parse(row["firstEcmpsRptPeriodId"].ToString());
-                    }
-                    
+                    firstEcmpsRptPeriodId = (row["firstEcmpsRptPeriodId"] != DBNull.Value) ? int.Parse(row["firstEcmpsRptPeriodId"].ToString()) : (int?)null; // Must handle a null firstEcmpsrptPeriodId
+
                     errorMessage = row["error_msg"].ToString();
                 }
 
@@ -183,7 +179,7 @@ namespace ECMPS.Checks.DatabaseAccess
         }
 
         /// <summary>
-        /// Calls ECMPS.Check.GetReportPeriodInfo stored procedure.
+        /// Selects repoting period information from the row in CAMDECMPSMD.REPORTING_PERIOD with the RPT_PERIOD_ID matching the passed rptPeriodId value.
         /// </summary>
         /// <param name="rptPeriodId">The RPT_PERIOD_ID of the reporting period information to return.</param>
         /// <param name="calendarYear">The calendar year of the reporting period.</param>
@@ -195,35 +191,46 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <param name="result">T if the SP ran successfully, F if it did not.</param>
         /// <param name="errorMessage">The message returned when the SP did not run successfully.</param>
         /// <returns></returns>
-        public int GetReportPeriodInfo(System.Nullable<int> rptPeriodId, ref System.Nullable<int> calendarYear, ref System.Nullable<int> quarter, ref string periodDescription_in, ref string periodAbbreviation, ref System.Nullable<System.DateTime> beginDate, ref System.Nullable<System.DateTime> endDate, ref System.Nullable<char> result, ref string errorMessage)
+        public int GetReportPeriodInfo(int rptPeriodId, ref int? calendarYear, ref int? quarter, ref string periodDescription_in, ref string periodAbbreviation, ref DateTime? beginDate, ref DateTime? endDate, ref char? result, ref string errorMessage)
         {
             //TODO (EC-3519): Testing Needed
             string resultString = string.Empty;
 
             DataTable AResultTable;
-            string Sql = "SELECT * FROM  camdecmpswks.get_report_period_info('" + rptPeriodId + "')";
+            string Sql = "select calendar_year, quarter, period_description, period_abbreviation, begin_date, end_date from camdecmpsmd.reporting_period where rpt_period_id = " + rptPeriodId;
 
             try
             {
                 AResultTable = Database.GetDataTable(Sql);
 
-                foreach (DataRow row in AResultTable.Rows)
+                if (AResultTable.Rows.Count == 1)
                 {
-                    calendarYear = int.Parse(row["p_calendarYear_in"].ToString());
-                    quarter = int.Parse(row["p_quarter_in"].ToString());
-                    periodDescription_in = row["p_periodDescription_in"].ToString();
-                    periodAbbreviation = row["p_periodAbbreviation_in"].ToString();
-                    beginDate = DateTime.Parse(row["p_beginDate"].ToString());
-                    endDate = DateTime.Parse(row["p_endDate"].ToString());
-                    resultString = row["p_result"].ToString();
-                    errorMessage = row["p_errorMessage"].ToString();
-                   
+                    DataRow row = AResultTable.Rows[0];
+                    calendarYear = int.Parse(row["calendar_year"].ToString());
+                    quarter = int.Parse(row["quarter"].ToString());
+                    periodDescription_in = row["period_description"].ToString();
+                    periodAbbreviation = row["period_abbreviation"].ToString();
+                    beginDate = DateTime.Parse(row["begin_date"].ToString());
+                    endDate = DateTime.Parse(row["end_date"].ToString());
+
+                    result = 'Y';
+                    errorMessage = null;
                 }
-
-
+                else if (AResultTable.Rows.Count > 1)
+                {
+                    result = 'N';
+                    errorMessage = $"Multiple reporting period rows found for id '{rptPeriodId}'";
+                }
+                else 
+                {
+                    result = 'N';
+                    errorMessage = $"No reporting period row was found for id '{rptPeriodId}'";
+                }
             }
             catch (Exception ex)
             {
+                result = 'N';
+                errorMessage = $"Error '{ex.Message}' encountered when getting information for reporting period id '{rptPeriodId}'";
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
             }
 
@@ -276,7 +283,7 @@ namespace ECMPS.Checks.DatabaseAccess
             //resultString = Database.GetParameterString("@result");
             //errorMessage = Database.GetParameterString("@errorMessage");
 
-            result = !string.IsNullOrWhiteSpace(resultString) ? resultString[0] : (char?)null;
+            //result = !string.IsNullOrWhiteSpace(resultString) ? resultString[0] : (char?)null;
 
             return 0;
         }

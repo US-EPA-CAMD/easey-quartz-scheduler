@@ -1,3 +1,4 @@
+using System.Net;
 using System;
 using System.Data;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using Quartz;
-using Quartz.Impl;
 using Epa.Camd.Quartz.Scheduler.Jobs;
 
 using Npgsql;
@@ -19,126 +19,43 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public IConfiguration Configuration { get; }
 
     public DbSet<BulkFileMetadata> BulkFileMetadataSet {get; set; }
+    public DbSet<BulkFileQueue> BulkFileQueue {get; set; }
     public DbSet<JobLog> JobLogs {get; set; }
     public DbSet<BulkFileLog> BulkFileLogs {get; set; }
-    public DbSet<ProgramCode> ProgramCodes { get; set; }    
-    public DbSet<SeverityCode> SeverityCodes { get; set; }
-    public DbSet<EvalStatusCode> EvalStatusCodes { get; set; }
-    public DbSet<CheckSession> CheckSessions { get; set; }
+    public DbSet<ProgramCode> ProgramCodes { get; set; } 
+    //public DbSet<EmissionEvaluation> EmissionEvaluations { get; set; } 
     public DbSet<CorsOptions> CorsOptions { get; set; }
     public DbSet<Facility> Facilities { get; set; }
-    public DbSet<MonitorPlan> MonitorPlans { get; set; }
-
-    public DbSet<CertEvent> CertEvents { get; set; }
-
-    public DbSet<TestSummary> TestSummaries { get; set; }
-
-    public DbSet<TestExtensionExemption> TestExtensionExemptions { get; set; }
-
-    public DbSet<MonitorLocation> MonitorLocations { get; set; }
-    public DbSet<MonitorPlanLocation> MonitorPlanLocations { get; set; }
 
     public NpgSqlContext(IConfiguration configuration, ILogger<NpgSqlContext> logger, DbContextOptions<NpgSqlContext> options) : base(options)
     {
       _logger = logger;
       Configuration = configuration;
     }
-    public async Task<IJobDetail> CreateBulkFileJob(decimal? year, decimal? quarter, string stateCd, string dataType, string subType, string url, string fileName, Guid job_id, string program_code){
-      
+    public async Task CreateBulkFileRecord(string name, Guid parent_id, int? year, int? quarter, string stateCd, string dataType, string subType, string url, string fileName, Guid job_id, string program_code){
       try{
         Guid child_job_id = Guid.NewGuid();
-
-        Console.Write(year);
-
-        JobLog jl = new JobLog();
+        BulkFileQueue jl = new BulkFileQueue();
         jl.JobId = child_job_id;
-        jl.JobSystem = "Quartz";
-        jl.JobClass = "Bulk Data File";
+        jl.ParentJobId = parent_id;
         jl.AddDate = Utils.getCurrentEasternTime();
         jl.StartDate = null;
         jl.EndDate = null;
         jl.StatusCd = "QUEUED";
-
-        BulkFileLog bfl = new BulkFileLog();
-        bfl.JobId = child_job_id;
-        bfl.ParentJobId = job_id;
-        bfl.DataType = dataType;
-        bfl.DataSubType = subType;
-        bfl.Year = year;
-
-        if(year == null)
-          bfl.Year = null;
-        else
-          bfl.Year = year;
-
-        if(program_code == null)
-          bfl.PrgCd = null;
-        else
-          bfl.PrgCd = program_code;
-
-        if(quarter != null){
-          bfl.Quarter = quarter;
-          bfl.StateCd = null;
-        }
-        else if(stateCd != null){
-          bfl.Quarter = null;
-          bfl.StateCd = stateCd;
-        }
-        else{
-          bfl.Quarter = null;
-          bfl.StateCd = null;
-        }
-
-        if(dataType.Equals("Facility")){
-          jl.JobName = "facility-" + year;
-        }
-        else if(dataType.Equals("Compliance")){
-          if(year != null){
-            jl.JobName = "emissions-compliance-" + year;
-          }else{
-            jl.JobName = "allowance-compliance-" + program_code;
-          }
-        }
-        else if(dataType.Equals("Allowance")){
-          if(year != null){
-            jl.JobName = "allowance-transactions-"+ program_code;
-          }
-          else{
-            jl.JobName = "allowance-holdings-"+ program_code;
-          }
-        }
-        else{
-          if(quarter != null){
-            jl.JobName = dataType + "-" + subType + "-" + year + "-q" + quarter;
-          }else{
-            jl.JobName = dataType + "-" + subType + "-" + year + "-" + stateCd;
-          }
-        }
-
-        await this.JobLogs.AddAsync(jl);
+        jl.Year = year;
+        jl.Quarter = quarter;
+        jl.StateCode = stateCd;
+        jl.DataType = dataType;
+        jl.SubType = subType;
+        jl.Url = url;
+        jl.FileName = fileName;
+        jl.ProgramCode = program_code;
+        jl.JobName = name;
+        await this.BulkFileQueue.AddAsync(jl);
         await this.SaveChangesAsync();
-
-        await this.BulkFileLogs.AddAsync(bfl);
-        await this.SaveChangesAsync();
-
-        IJobDetail newJob = BulkDataFile.CreateJobDetail(child_job_id.ToString());
-        newJob.JobDataMap.Add("job_id", child_job_id);
-        newJob.JobDataMap.Add("parent_job_id", job_id);
-        newJob.JobDataMap.Add("format", "text/csv");
-        newJob.JobDataMap.Add("url", url);
-        newJob.JobDataMap.Add("fileName", fileName);
-        newJob.JobDataMap.Add("StateCode", stateCd);
-        newJob.JobDataMap.Add("DataType", dataType);
-        newJob.JobDataMap.Add("DataSubType", subType);
-        newJob.JobDataMap.Add("Year", year);
-        newJob.JobDataMap.Add("Quarter", quarter);
-        newJob.JobDataMap.Add("ProgramCode", program_code);
-
-        return newJob;
       }catch(Exception e){
         throw new Exception(e.Message);
       }
-
     }
 
     public async Task<List<ProgramCode>> getProgramCodes(){
@@ -181,6 +98,27 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       }
 
       return rows;
+    }
+
+    public async Task ExecuteEmissionRefreshProcedure(string monPlanId, decimal year, decimal quarter){
+      var connectionString = this.Database.GetConnectionString();
+      var connection = new NpgsqlConnection(connectionString);
+
+      if (connection.State != ConnectionState.Open)
+            connection.Open();
+
+      await using var cmd = new NpgsqlCommand("CALL camdecmpswks.refresh_emissions_views($1, $2, $3)", connection)
+      {
+          Parameters =
+          {
+              new() { Value = monPlanId },
+              new() { Value = year },
+              new() { Value = quarter }
+          }
+      };
+
+      await cmd.ExecuteNonQueryAsync();
+      connection.Close();
     }
 
     public void ExecuteSql(string commandText)

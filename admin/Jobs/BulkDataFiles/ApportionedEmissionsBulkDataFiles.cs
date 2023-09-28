@@ -33,15 +33,30 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       services.AddQuartzJob<ApportionedEmissionsBulkData>(WithJobKey(), Identity.JobDescription);
     }
 
-    public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
+    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
-      if (!await scheduler.CheckExists(WithJobKey()))
-      {
-        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_APPORTIONED_EMISSIONS_SCHEDULE"] != null){
-          app.UseQuartzJob<ApportionedEmissionsBulkData>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_APPORTIONED_EMISSIONS_SCHEDULE"]));
+      try {
+        JobKey jobKey = WithJobKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_APPORTIONED_EMISSIONS_SCHEDULE"] ?? "0 0/10 4-6 ? * * *";
+        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
+
+        if (await scheduler.CheckExists(jobKey)) {
+          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
+
+          if (
+            trigger is ICronTrigger cronTrigger &&
+            cronTrigger.CronExpressionString != cronExpression
+          ) {
+            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
+          }
+        } else {
+          app.UseQuartzJob<ApportionedEmissionsBulkData>(triggerBuilder);
+          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
         }
-        else
-          app.UseQuartzJob<ApportionedEmissionsBulkData>(WithCronSchedule("0 0/10 4-8 ? * * *"));
+      } catch(Exception e) {
+        Console.WriteLine("ERROR");
+        Console.WriteLine(e.Message);
       }
     }
 
@@ -54,7 +69,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       
       
-
       // Does this job already exist? Otherwise create and schedule a new copy
       List<List<Object>> jobAlreadyExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Apportioned Emissions' AND add_date::date = now()::date;", 9);
       if(jobAlreadyExists.Count != 0){
@@ -63,12 +77,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
       if(Utils.Configuration["EASEY_EMISSIONS_NIGHTLY_BYPASS"] != "true"){
         // Does emissions nightly exists for current date and has it completed
-        List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Emissions Nightly' AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
+        List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Emission Nightly' AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
         if(datamartExists.Count == 0){
           return;
         }
       }
-
       
 
       LogHelper.info("Executing ApportionedEmissionsBulkDataFiles job");
@@ -94,32 +107,32 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         List<List<Object>> rowsPerQuarter = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_annual_emissions_bulk_files_per_quarter_to_generate", 4);
         
         for(int row = 0; row < rowsPerState.Count; row++){
-          decimal year = (decimal) rowsPerState[row][0];
+          int year = Convert.ToInt32(rowsPerState[row][0]);
           DateTime currentDate = DateTime.Now.ToUniversalTime();
 
-          if( Math.Ceiling(currentDate.Year - year) > 1 || ( Math.Ceiling(currentDate.Year - year) == 1 && currentDate.Month > 1)){ // Past year, or last year after january            
-            string stateCd = (string) rowsPerState[row][1];
-            string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + stateCd;
+          string stateCd = (string)rowsPerState[row][1];
+          string urlParams = "beginDate=" + year + "-01-01&endDate=" + year + "-12-31&stateCode=" + stateCd;
 
-            await _dbContext.CreateBulkFileJob(year, null, stateCd, "Emissions", "Hourly", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/hourly?" + urlParams, "emissions/hourly/state/emissions-hourly-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
-            await _dbContext.CreateBulkFileJob(year, null, stateCd, "Emissions", "Daily", Utils.Configuration["EASEY_STREAMING_SERVICES"] +  "/emissions/apportioned/daily?" + urlParams, "emissions/daily/state/emissions-daily-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
-            if(year >= 2015){ // MATS data started in 2015
-              await _dbContext.CreateBulkFileJob(year, null, stateCd, "Mercury and Air Toxics Emissions (MATS)", "Daily", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/mats/hourly?" + urlParams, "mats/hourly/state/mats-hourly-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
-            }
+          await _dbContext.CreateBulkFileRecord("Hourly-Apportioned-Emissions-"+stateCd+"-"+year,  job_id,year, null, stateCd, "Emissions", "Hourly", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/hourly?" + urlParams, "emissions/hourly/state/emissions-hourly-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
+          await _dbContext.CreateBulkFileRecord("Daily-Apportioned-Emissions-"+stateCd+"-"+year, job_id,year, null, stateCd, "Emissions", "Daily", Utils.Configuration["EASEY_STREAMING_SERVICES"] +  "/emissions/apportioned/daily?" + urlParams, "emissions/daily/state/emissions-daily-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
+          if(year >= 2015){ // MATS data started in 2015
+            await _dbContext.CreateBulkFileRecord("Hourly-MATS-"+stateCd+"-"+year, job_id,year, null, stateCd, "Mercury and Air Toxics Emissions (MATS)", "Daily", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/mats/hourly?" + urlParams, "mats/hourly/state/mats-hourly-" + year + "-" + stateCd.ToLower() + ".csv", job_id, null);
           }
         }
         
         for(int row = 0; row < rowsPerQuarter.Count; row++){
-          decimal year = (decimal) rowsPerQuarter[row][0];
-          decimal quarter = (decimal) rowsPerQuarter[row][1];
-          NpgsqlTypes.NpgsqlDate startDate = (NpgsqlTypes.NpgsqlDate) rowsPerQuarter[row][2];
-          NpgsqlTypes.NpgsqlDate endDate = (NpgsqlTypes.NpgsqlDate) rowsPerQuarter[row][3];
+          int year = Convert.ToInt32(rowsPerQuarter[row][0]);
+          int quarter = Convert.ToInt32(rowsPerQuarter[row][1]);
+
+          string startDate = Convert.ToString(rowsPerQuarter[row][2]);
+          string endDate = Convert.ToString(rowsPerQuarter[row][3]);
+
           string urlParams = "beginDate=" + startDate.ToString() + "&endDate=" + endDate.ToString();
 
-          await _dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", "Hourly", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/hourly?" + urlParams, "emissions/hourly/quarter/emissions-hourly-" + year + "-q" + quarter + ".csv", job_id, null);
-          await _dbContext.CreateBulkFileJob(year, quarter, null, "Emissions", "Daily", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/daily?" + urlParams, "emissions/daily/quarter/emissions-daily-" + year + "-q" + quarter + ".csv", job_id, null);
+          await _dbContext.CreateBulkFileRecord("Hourly-Apportioned-Emissions-Q"+quarter+"-"+year, job_id,year, quarter, null, "Emissions", "Hourly", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/hourly?" + urlParams, "emissions/hourly/quarter/emissions-hourly-" + year + "-q" + quarter + ".csv", job_id, null);
+          await _dbContext.CreateBulkFileRecord("Daily-Apportioned-Emissions-Q"+quarter+"-"+year, job_id,year, quarter, null, "Emissions", "Daily", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/daily?" + urlParams, "emissions/daily/quarter/emissions-daily-" + year + "-q" + quarter + ".csv", job_id, null);
           if(year >= 2015){ // MATS data started in 2015
-            await _dbContext.CreateBulkFileJob(year, quarter, null, "Mercury and Air Toxics Emissions (MATS)", "Hourly", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/mats/hourly?" + urlParams, "mats/hourly/quarter/mats-hourly-" + year + "-q" + quarter + ".csv", job_id, null);
+            await _dbContext.CreateBulkFileRecord("Hourly-MATS-Q"+quarter+"-"+year,job_id,year, quarter, null, "Mercury and Air Toxics Emissions (MATS)", "Hourly", Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/emissions/apportioned/mats/hourly?" + urlParams, "mats/hourly/quarter/mats-hourly-" + year + "-q" + quarter + ".csv", job_id, null);
           }
         }
 
@@ -167,7 +180,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       return TriggerBuilder.Create()
           .WithIdentity(WithTriggerKey())
           .WithDescription(Identity.TriggerDescription)
-          .WithCronSchedule(cronExpression);
+          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }

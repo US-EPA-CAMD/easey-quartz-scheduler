@@ -34,15 +34,30 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       services.AddQuartzJob<AllowanceHoldingsBulkDataFiles>(WithJobKey(), Identity.JobDescription);
     }
 
-    public static async void ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
+    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
-      if (!await scheduler.CheckExists(WithJobKey()))
-      {
-        if(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_HOLDINGS_SCHEDULE"] != null){
-          app.UseQuartzJob<AllowanceHoldingsBulkDataFiles>(WithCronSchedule(Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_HOLDINGS_SCHEDULE"]));
+      try {
+        JobKey jobKey = WithJobKey();
+        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_HOLDINGS_SCHEDULE"] ?? "0 0/10 2-4 ? * * *";
+        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
+
+        if (await scheduler.CheckExists(jobKey)) {
+          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
+
+          if (
+            trigger is ICronTrigger cronTrigger &&
+            cronTrigger.CronExpressionString != cronExpression
+          ) {
+            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
+            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
+          }
+        } else {
+          app.UseQuartzJob<AllowanceHoldingsBulkDataFiles>(triggerBuilder);
+          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
         }
-        else
-          app.UseQuartzJob<AllowanceHoldingsBulkDataFiles>(WithCronSchedule("0 0/10 1-5 ? * * *"));
+      } catch(Exception e) {
+        Console.WriteLine("ERROR");
+        Console.WriteLine(e.Message);
       }
     }
 
@@ -60,7 +75,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       if(jobAlreadyExists.Count != 0){
         return; // Job already exists , do not run again
       }
-
       
       // Does data mart nightly exists for current date and has it completed
       if(Utils.Configuration["EASEY_DATAMART_BYPASS"] != "true"){
@@ -69,7 +83,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           return;
         }
       }
-      
 
       JobLog jl = new JobLog(); 
 
@@ -100,7 +113,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           decimal year = DateTime.Now.ToUniversalTime().Year - 1;
           string urlParams = "programCodeInfo=" + code;
 
-          await _dbContext.CreateBulkFileJob(null, null, null, "Allowance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-holdings?" + urlParams, "allowance/holdings-" + code.ToLower() + ".csv", job_id, code);
+          await _dbContext.CreateBulkFileRecord("Allowance-Holdings-" + code, job_id,null, null, null, "Allowance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-holdings?" + urlParams, "allowance/holdings-" + code.ToLower() + ".csv", job_id, code);
         }
         
         jl.StatusCd = "COMPLETE";
@@ -143,7 +156,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       return TriggerBuilder.Create()
           .WithIdentity(WithTriggerKey())
           .WithDescription(Identity.TriggerDescription)
-          .WithCronSchedule(cronExpression);
+          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }
