@@ -215,6 +215,7 @@ namespace ECMPS.Checks.OtherQAEvaluation
 						SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
 					SourceDataAdapter.Fill(SourceDataTable);
 					mSourceData.Tables.Add(SourceDataTable);
+					
 
 					//get cert event tests for this location ID
 					//SourceDataTable = new DataTable("QACertEventTest");
@@ -223,7 +224,7 @@ namespace ECMPS.Checks.OtherQAEvaluation
 					//	"WHERE QA_CERT_EVENT_ID = '" + mCheckEngine.QaCertEventId + "')", mCheckEngine.DbDataConnection.SQLConnection);
 					SourceDataTable = new DataTable("QACertEventTest");
 					SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_CERT_EVENT " +
-						"WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM camdecmpswks.VW_QA_CERT_EVENT " +
+						"WHERE MON_LOC_ID = (SELECT MON_LOC_ID FROM camdecmpswks.VW_QA_CERT_EVENT " +
 						"WHERE QA_CERT_EVENT_ID = '" + mCheckEngine.QaCertEventId + "')", mCheckEngine.DbDataConnection.SQLConnection);
 					// this defaults to 30 seconds if we don't override it
 					// this defaults to 30 seconds if we don't override it
