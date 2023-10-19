@@ -4642,7 +4642,7 @@ namespace ECMPS.Checks.RATAChecks
             {
                 Category.SetCheckParameter("RATA_Calc_Stack_Pressure", null, eParameterDataType.Decimal);
                 DataRowView CurrentFlowRATARun = (DataRowView)Category.GetCheckParameter("Current_Flow_RATA_Run").ParameterValue;
-                decimal StackStatPress = cDBConvert.ToDecimal(CurrentFlowRATARun["_STACK_PRESSURE"]);
+                decimal StackStatPress = cDBConvert.ToDecimal(CurrentFlowRATARun["STATIC_STACK_PRESSURE"]);
                 decimal BarPress = cDBConvert.ToDecimal(CurrentFlowRATARun["BAROMETRIC_PRESSURE"]);
                 if (StackStatPress == decimal.MinValue)
                 {
@@ -7745,7 +7745,7 @@ namespace ECMPS.Checks.RATAChecks
                     }
                     else
                     {
-                        decimal StackPress = cDBConvert.ToDecimal(CurrentFlowRATARun["_STACK_PRESSURE"]);
+                        decimal StackPress = cDBConvert.ToDecimal(CurrentFlowRATARun["STATIC_STACK_PRESSURE"]);
                         decimal BarPress = cDBConvert.ToDecimal(CurrentFlowRATARun["BAROMETRIC_PRESSURE"]);
                         decimal StackDiam = cDBConvert.ToDecimal(CurrentRATASummary["STACK_DIAMETER"]);
                         if (StackDiam <= 0 || BarPress < 20 || 35 < BarPress || StackPress < -30 || 30 < StackPress ||
@@ -7988,7 +7988,7 @@ namespace ECMPS.Checks.RATAChecks
                         Category.CheckCatalogResult = "B";
                     else
                     {
-                        decimal StackPress = cDBConvert.ToDecimal(CurrentFlowRATARun["_STACK_PRESSURE"]);
+                        decimal StackPress = cDBConvert.ToDecimal(CurrentFlowRATARun["STATIC_STACK_PRESSURE"]);
                         decimal BarPress = cDBConvert.ToDecimal(CurrentFlowRATARun["BAROMETRIC_PRESSURE"]);
                         decimal VelCalCoef = cDBConvert.ToDecimal(CurrentRATATraverse["VEL_CAL_COEF"]);
                         decimal TStackTemp = cDBConvert.ToDecimal(CurrentRATATraverse["T_STACK_TEMP"]);
@@ -8114,7 +8114,7 @@ namespace ECMPS.Checks.RATAChecks
                         decimal PercCO2 = cDBConvert.ToDecimal(drv1["PERCENT_CO2"]);
                         decimal PercO2 = cDBConvert.ToDecimal(drv1["PERCENT_O2"]);
                         decimal PercMoist = cDBConvert.ToDecimal(drv1["PERCENT_MOISTURE"]);
-                        decimal StackPress = cDBConvert.ToDecimal(drv1["_STACK_PRESSURE"]);
+                        decimal StackPress = cDBConvert.ToDecimal(drv1["STATIC_STACK_PRESSURE"]);
                         decimal BarPress = cDBConvert.ToDecimal(drv1["BAROMETRIC_PRESSURE"]);
                         decimal StackDiam = cDBConvert.ToDecimal(drv1["STACK_DIAMETER"]);
                         int NumTravPt = cDBConvert.ToInteger(drv1["NUM_TRAVERSE_POINT"]);
