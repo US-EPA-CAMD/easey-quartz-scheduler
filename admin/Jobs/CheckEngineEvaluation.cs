@@ -142,13 +142,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               }
             }else{
               List<Evaluation> emEvals = _dbContext.Evaluations.FromSqlRaw(@"
-                SELECT *
-                FROM camdecmpsaux.evaluation_queue
-                WHERE process_cd = 'EM' AND evaluation_set_id = {0}
-                ", es.SetId).ToList();
-              foreach(Evaluation e in emEvals){
-                e.StatusCode = "QUEUED";
-                _dbContext.Evaluations.Update(e);
+                SELECT eq.*
+                FROM camdecmpsaux.evaluation_queue eq
+                JOIN camdecmpsaux.evaluation_set es USING(evaluation_set_id)
+                WHERE eq.process_cd = 'EM' AND eq.status_cd = 'PENDING' AND es.mon_plan_id = {0}
+                ORDER BY eq.rpt_period_id
+                ", es.MonPlanId).ToList();
+
+              if(emEvals.Count >= 1){
+                emEvals[0].StatusCode = "QUEUED"; //Only take the first EM record with the earliest rpt_period_id, let the EM portion of this job handle scheduling the others
+               _dbContext.Evaluations.Update(emEvals[0]);
               }
             }
             // --------
@@ -204,13 +207,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
             // Flip Emissions Records After QA Is Run
             List<Evaluation> qaEmEvals = _dbContext.Evaluations.FromSqlRaw(@"
-                SELECT *
-                FROM camdecmpsaux.evaluation_queue
-                WHERE process_cd = 'EM' AND evaluation_set_id = {0}
-                ", es.SetId).ToList();
-            foreach(Evaluation e in qaEmEvals){
-              e.StatusCode = "QUEUED";
-              _dbContext.Evaluations.Update(e);
+                SELECT eq.*
+                FROM camdecmpsaux.evaluation_queue eq
+                JOIN camdecmpsaux.evaluation_set es USING(evaluation_set_id)
+                WHERE eq.process_cd = 'EM' AND eq.status_cd = 'PENDING' AND es.mon_plan_id = {0}
+                ORDER BY eq.rpt_period_id
+                ", es.MonPlanId).ToList();
+
+            if(qaEmEvals.Count >= 1){
+              qaEmEvals[0].StatusCode = "QUEUED"; //Only take the first EM record with the earliest rpt_period_id, let the EM portion of this job handle scheduling the others
+              _dbContext.Evaluations.Update(qaEmEvals[0]);
             }
             
     
@@ -220,6 +226,24 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           case "EM":
             int rptPeriodId = Int32.Parse(dataMap.GetString("rptPeriodId"));
             ReportingPeriod rp = _dbContext.ReportingPeriods.Find(rptPeriodId);
+
+            //During each emission evaluation fetch the latest queued or pending emissions records
+             List<Evaluation> otherEmEvals = _dbContext.Evaluations.FromSqlRaw(@" 
+                SELECT eq.*
+                FROM camdecmpsaux.evaluation_queue eq
+                JOIN camdecmpsaux.evaluation_set es USING(evaluation_set_id)
+                WHERE eq.process_cd = 'EM' AND eq.status_cd IN ('PENDING', 'QUEUED', 'WIP') AND es.mon_plan_id = {0}
+                ORDER BY eq.rpt_period_id
+                ", es.MonPlanId).ToList();
+
+            if(otherEmEvals[0].RptPeriod != rptPeriodId){
+              //There is an earlier record in pending, queued, or wip status for emissions
+              evalRecord.StatusCode = "PENDING";
+              _dbContext.Evaluations.Update(evalRecord);
+              _dbContext.SaveChanges();
+              return Task.CompletedTask;
+            }
+
 
             EmissionEvaluation emissionEvalRecord = _dbContext.EmissionEvaluations.Find(monitorPlanId, rptPeriodId); //TODO LOOK UP COMPOSITE PRIMARY KEY
             emissionEvalRecord.EvalStatus = "WIP";
@@ -235,6 +259,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             _dbContext.EmissionEvaluations.Update(emissionEvalRecord);
 
             _dbContext.ExecuteEmissionRefreshProcedure(monitorPlanId, rp.year, rp.quarter);
+
+
+            List<Evaluation> remainingEmEvals = _dbContext.Evaluations.FromSqlRaw(@"
+                SELECT eq.*
+                FROM camdecmpsaux.evaluation_queue eq
+                JOIN camdecmpsaux.evaluation_set es USING(evaluation_set_id)
+                WHERE eq.process_cd = 'EM' AND eq.status_cd = 'PENDING' AND es.mon_plan_id = {0}
+                ORDER BY eq.rpt_period_id
+                ", es.MonPlanId).ToList();
+
+            if(remainingEmEvals.Count >= 1){
+              remainingEmEvals[0].StatusCode = "QUEUED"; //Only take the first EM record with the earliest rpt_period_id, let the EM portion of this job handle scheduling the others
+              _dbContext.Evaluations.Update(remainingEmEvals[0]);
+            }
+
+
             break;
           default:
             throw new Exception("A Process Code of [MP, QA-QCE, QA-TEE, EM] is required and was not provided");
