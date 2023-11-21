@@ -4712,8 +4712,7 @@ namespace ECMPS.Checks.EmissionsReport
                         DbWsConnection.BulkLoad(FCalcDailyEmission, "camdecmpscalc.daily_emission", ref errorMessage) &&
                         DbWsConnection.BulkLoad(FCalcDailyFuel, "camdecmpscalc.daily_fuel", ref errorMessage) &&
                         
-                        // TODO: [JW] WE DO NOT HAVE THIS TABLE
-                        //DbWsConnection.BulkLoad(FOperatingSuppData, "op_supp_data", ref errorMessage) &&
+                        DbWsConnection.BulkLoad(FOperatingSuppData, "camdecmpscalc.operating_supp_data", ref errorMessage) &&
                         
                         DbWsConnection.BulkLoad(FCalcSummaryValue, "camdecmpscalc.summary_value", ref errorMessage) &&
                         DbWsConnection.BulkLoad(CalcMATSDHVData, "camdecmpscalc.mats_derived_hrly_value", ref errorMessage) &&
