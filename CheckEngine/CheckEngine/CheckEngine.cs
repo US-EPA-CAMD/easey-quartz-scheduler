@@ -549,10 +549,6 @@ namespace ECMPS.Checks.CheckEngine
 
             RunChecks_PropertiesClear();
 
-            //TODO -- Remove these
-            EvaluationBeganDate = new DateTime(2008, 1, 1);
-            EvaluationEndedDate = DateTime.Now.AddYears(1);
-
             TestSumId = testSumId;
             MonPlanId = monPlanId;
 
