@@ -90,8 +90,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       try
       {
 
-        List<List<Object>> rowsPerPrg = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_allowance_based_compliance_bulk_files_to_generate", 1);
-
         jl.JobId = job_id;
         jl.JobSystem = "Quartz";
         jl.JobClass = "Bulk Data File";
@@ -104,6 +102,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.JobLogs.Add(jl);
         await _dbContext.SaveChangesAsync();
         
+        List<List<Object>> rowsPerPrg = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_allowance_based_compliance_bulk_files_to_generate", 1);
+
+
         for(int row = 0; row < rowsPerPrg.Count; row++){
           string code = (string) rowsPerPrg[row][0];
           string urlParams = "programCodeInfo=" + code;
