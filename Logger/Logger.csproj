@@ -6,6 +6,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp6.0</TargetFramework>
+    <SelfContained>false</SelfContained>
     <RootNamespace>Epa.Camd.Logger</RootNamespace>
   </PropertyGroup>
 
