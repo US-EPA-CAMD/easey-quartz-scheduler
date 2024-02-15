@@ -6,6 +6,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp6.0</TargetFramework>
+    <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
     <RootNamespace>Epa.Camd.Logger</RootNamespace>
   </PropertyGroup>
 
