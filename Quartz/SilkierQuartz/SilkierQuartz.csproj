@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netcoreapp6.0</TargetFrameworks>
-		<SelfContained>false</SelfContained>
 		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
 		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
