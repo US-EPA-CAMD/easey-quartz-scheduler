@@ -99,7 +99,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
 
         _dbContext.ExecuteSql("DELETE from camdaux.bulk_file_queue where add_date < now() - interval '30 days'");
-        _dbContext.ExecuteSql("DELETE from camdaux.job_log where add_date < now() - interval '30 days'");
+        _dbContext.ExecuteSql("DELETE from camdaux.job_log where add_date < now() - interval '90 days'");
 
         _dbContext.ExecuteSql("CALL camdaux.procedure_bulk_file_requeue_check();");
 

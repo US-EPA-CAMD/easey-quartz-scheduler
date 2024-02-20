@@ -5,21 +5,31 @@
 [![Develop Branch Pipeline](https://github.com/US-EPA-CAMD/easey-quartz-scheduler/workflows/Develop%20Branch%20Workflow/badge.svg)](https://github.com/US-EPA-CAMD/easey-ecmps-ui/actions)<br>
 Quartz Job Scheduler
 
-## `Available Scripts`
+## Setup
+	
+### Scheduler
 
-From within the `admin` folder within the project directory, you can run:
+	1) Clone the easey-quartz-scheduler repository
+	2) Set the current working directory to the easey-quartz-scheduler/admin
+	3) Run `dotnet restore` in the command line
+	4) Run `dotnet run` to launch the application [The database connection MUST also be running]
 
-### `yarn start`
+These setup steps will launch the quartz-scheduler locally, and will optionally fire up the user interface if the ```EASEY_QUARTZ_SCHEDULER_DISPLAY_UI``` environment  variable has been set to true.
 
-Runs the app in the development mode.<br />
+### Check Engine
 
-- Open [http://localhost:5000/quartz](http://localhost:5000/quartz) to view Home page.
+The Check Engine is a legacy C# process that performs an evaluation process / populates evaluation logs for Monitor Plan, QA, and Emission files. Due to the complexity of the Check Engine, debugging this process is typically done through a standalone project included in the source bundle called ```CheckEngineRunner```.  This .NET project serves a debug entry-point for running evaluations quickly. In order to launch the ```CheckEngineRunner```:
 
-You will also see any lint errors in the console.
+	1) Set the current working directory to CheckEngine/CheckEngineRunner
+	2) Modify your debug profile accordingly to configure the debugger entrypoint
+	3) Execute donet build 
+	4) Start the debugger
 
-### `yarn build`
+### User Interface
 
-Builds the app for production to the `dist` folder.<br />
+The Quartz Job Scheduler includes a user interface. The UI [Forked from a public repository called Silkier Quartz] is a wrapper that is built around Quartz.net, and enables developers and CAMD admins to schedule, create, and delete existing jobs. In order to enable the UI, the ```EASEY_QUARTZ_SCHEDULER_DISPLAY_UI``` environment variable needs to be toggled to True. 
+
+The UI is located on the ```/quartz```  route. Upon launching the UI, a valid cdx login is required to sign in. Upon authentication, quartz job instances can be created, edited, scheduled, and deleted from the UI. 
 
 ## Environment Variables
 
