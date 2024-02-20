@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <PackageReference Include="Serilog.AspNetCore" Version="6.0.0" />
-    <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
   </ItemGroup>
 
   <PropertyGroup>

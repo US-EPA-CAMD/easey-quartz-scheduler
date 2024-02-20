@@ -69,7 +69,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public async Task Execute(IJobExecutionContext context)
     {
       // Does this job already exist? Otherwise create and schedule a new copy
-      List<List<Object>> jobAlreadyExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Emissions Compliance' AND add_date::date = now()::date;", 9);
+      List<List<Object>> jobAlreadyExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Allowance Compliance' AND add_date::date = now()::date;", 9);
       if(jobAlreadyExists.Count != 0){
         return; // Job already exists , do not run again
       }
@@ -103,8 +103,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         await _dbContext.SaveChangesAsync();
         
         List<List<Object>> rowsPerPrg = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.vw_allowance_based_compliance_bulk_files_to_generate", 1);
-        
-        
+
+
         for(int row = 0; row < rowsPerPrg.Count; row++){
           string code = (string) rowsPerPrg[row][0];
           string urlParams = "programCodeInfo=" + code;
