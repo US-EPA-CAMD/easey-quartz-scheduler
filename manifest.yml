@@ -3,7 +3,7 @@ applications:
     memory: ((memory))
     instances: ((instances))
     buildpacks:
-      - https://github.com/cloudfoundry/dotnet-core-buildpack.git#v2.4.17
+      - https://github.com/cloudfoundry/dotnet-core-buildpack.git#v2.4.15
     health-check-type: ((healthCheckType))
     env:
       OPTIMIZE_MEMORY: true
