@@ -1711,7 +1711,7 @@ namespace ECMPS.Checks.DatabaseAccess
                                     }
 
                                     if (row[i] != DBNull.Value && row[i].GetType() == typeof(string)){
-                                        columnValue = row[i].ToString().Replace("/n", "//n").Replace("/t", "//t").Replace("/r", "//r").Replace("/b", "//b").Replace("/f", "//f").Replace("/v", "//v");
+                                        columnValue = row[i].ToString().Replace("\n", "\\n").Replace("\t", "\\t").Replace("\r", "\\r").Replace("\b", "\\b").Replace("\f", "\\f").Replace("\v", "\\v");
                                         writer.Write(columnValue);
                                     }
                                     else{
