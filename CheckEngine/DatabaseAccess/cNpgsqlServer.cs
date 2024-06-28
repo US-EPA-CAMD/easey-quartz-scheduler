@@ -1698,6 +1698,7 @@ namespace ECMPS.Checks.DatabaseAccess
                             excludeColumnIndex.Add(sourceTable.Columns.IndexOf(column));
                     insertColumns = insertColumns.TrimEnd(',').ToLower();
 
+                    string columnValue;
                     Console.WriteLine("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (NULL './0')");
 
                     using (var writer = m_sqlConn.BeginTextImport("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (NULL './0')")) {
@@ -1709,7 +1710,13 @@ namespace ECMPS.Checks.DatabaseAccess
                                         writer.Write("./0");
                                     }
 
-                                    writer.Write(row[i]);
+                                    if (row[i] != DBNull.Value && row[i].GetType() == typeof(string)){
+                                        columnValue = row[i].ToString().Replace("\n", "\\n").Replace("\t", "\\t").Replace("\r", "\\r").Replace("\b", "\\b").Replace("\f", "\\f").Replace("\v", "\\v");
+                                        writer.Write(columnValue);
+                                    }
+                                    else{
+                                        writer.Write(row[i]);
+                                    }
 
                                     if(i < row.ItemArray.Length - 1){
                                         writer.Write("\t");
