@@ -73,8 +73,8 @@ namespace ECMPS.ErrorSuppression
       {
         match = false;
       }
-      else if (LocationNameList.HasValue() && 
-               (!errorSuppressValues.LocationName.HasValue() ||
+      else if (!LocationNameList.IsEmpty() && 
+               (errorSuppressValues.LocationName.IsEmpty() ||
                 errorSuppressValues.LocationName.ToUpper().NotInList(LocationNameList.ToUpper())))
       {
         match = false;
