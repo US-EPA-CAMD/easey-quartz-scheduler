@@ -73,13 +73,13 @@ namespace ECMPS.ErrorSuppression
       {
         match = false;
       }
-      else if (LocationNameList.HasValue() && 
-               (!errorSuppressValues.LocationName.HasValue() ||
+      else if (!LocationNameList.IsEmpty() && 
+               (errorSuppressValues.LocationName.IsEmpty() ||
                 errorSuppressValues.LocationName.ToUpper().NotInList(LocationNameList.ToUpper())))
       {
         match = false;
       }
-      else if ((EsMatchDataTypeCd != null) && (MatchDataValue != null) &&
+      else if (!EsMatchDataTypeCd.IsEmpty() && !MatchDataValue.IsEmpty() &&
           ((errorSuppressValues.EsMatchDataTypeCd != EsMatchDataTypeCd) ||
            (errorSuppressValues.MatchDataValue != MatchDataValue)))
       {
@@ -92,7 +92,7 @@ namespace ECMPS.ErrorSuppression
       {
         match = false;
       }
-      else if ((EsMatchTimeTypeCd != null) && (EsMatchTimeTypeCd != "HISTIND") &&
+      else if (!EsMatchTimeTypeCd.IsEmpty() && (EsMatchTimeTypeCd != "HISTIND") &&
                ((MatchTimeBeginValue != null) || (MatchTimeEndValue != null)) &&
                ((errorSuppressValues.EsMatchTimeTypeCd != EsMatchTimeTypeCd) ||
                 errorSuppressValues.MatchTimeValue.NotBetween(MatchTimeBeginValue, MatchTimeEndValue)))
