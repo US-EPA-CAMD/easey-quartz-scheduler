@@ -23,6 +23,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public DbSet<JobLog> JobLogs {get; set; }
     public DbSet<ReportingPeriod> ReportingPeriods {get; set; }
     public DbSet<BulkFileLog> BulkFileLogs {get; set; }
+    public DbSet<InventoryStatusLog> InventoryStatusLogs {get; set; }
 
     public DbSet<SubmissionSet> SubmissionSet {get; set; }
 
