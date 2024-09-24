@@ -1,7 +1,7 @@
 namespace Epa.Camd.Quartz.Scheduler.Models
 {
-    public class InventoryChangesJobLogAdditionalDetails
-    {
-        public int LastProcessedInventoryStatusLogId { get; set; }
-    }
+  public class InventoryChangesJobLogAdditionalDetails
+  {
+    public int LastProcessedInventoryStatusLogId { get; set; }
+  }
 }
