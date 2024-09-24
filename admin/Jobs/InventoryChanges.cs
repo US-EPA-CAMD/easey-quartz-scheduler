@@ -1,9 +1,16 @@
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Newtonsoft.Json;
+using Npgsql;
+using NpgsqlTypes;
 using Quartz;
 using SilkierQuartz;
 
@@ -86,12 +93,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
 
         // Get the last job log record for the job name "Inventory Changes".
-        JobLog lastCompletedJobLog = _dbContext.JobLogs.FromSqlRaw($@"
+        JobLog lastCompletedJobLog = _dbContext.JobLogs.FromSqlRaw(@"
                         SELECT * FROM camdaux.job_log
-                        WHERE job_name = '{InventoryChangesIdentity.JobName}'
+                        WHERE job_name = {0}
                         AND status_cd = 'COMPLETE'
                         ORDER BY start_date DESC
-                        LIMIT 1"
+                        LIMIT 1", InventoryChangesIdentity.JobName
                 ).FirstOrDefault();
 
         JobLog jl = new JobLog();
@@ -118,30 +125,36 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           jl.AdditionalDetails = JsonConvert.SerializeObject(new InventoryChangesJobLogAdditionalDetails { LastProcessedInventoryStatusLogId = lastProcessedInventoryStatusLogId });
 
           // Retrieve all inventory status log records after the last processed log and with a data type code of eith `INVENTORY` or `UNIT_PROGRAM`.
-          List<InventoryStatusLog> inventoryStatusLogs = _dbContext.InventoryStatusLogs.FromSqlRaw($@"
+          List<InventoryStatusLog> inventoryStatusLogs = _dbContext.InventoryStatusLogs.FromSqlRaw(@"
                         SELECT * FROM camdaux.inventory_status_log
-                        WHERE inventory_status_log_id > {lastProcessedInventoryStatusLogId}
+                        WHERE inventory_status_log_id > {0}
                         AND data_type_cd IN ('INVENTORY', 'UNIT_PROGRAM')
-                        ORDER BY inventory_status_log_id"
+                        ORDER BY inventory_status_log_id", lastProcessedInventoryStatusLogId
               ).ToList();
 
           // Call the stored procedure `camdecmpswks.update_mp_eval_status_and_reporting_freq` for each log record.
           // This is done sequentially to ensure that the records are processed in the same order that they were retrieved.
-          NpgsqlTransaction sqlTransaction = mCheckEngine.DbDataConnection.BeginTransaction();
+          var connectionString = _dbContext.Database.GetConnectionString();
+          var connection = new NpgsqlConnection(connectionString);
+          var sqlTransaction = connection.BeginTransaction();
           try
           {
             foreach (InventoryStatusLog inventoryStatusLog in inventoryStatusLogs)
             {
-              UpdateMpEvalStatusAndReportingFreq(inventoryStatusLog, sqlTransaction);
+              UpdateMpEvalStatusAndReportingFreq(inventoryStatusLog, connection, sqlTransaction);
               // Update the additional details table with the ID of the last processed inventory status log.
               jl.AdditionalDetails = JsonConvert.SerializeObject(new InventoryChangesJobLogAdditionalDetails { LastProcessedInventoryStatusLogId = inventoryStatusLog.InventoryStatusLogId });
             }
             sqlTransaction.Commit();
           }
-          catch (Exception e)
+          catch (Exception)
           {
             sqlTransaction.Rollback();
             throw;
+          }
+          finally
+          {
+            connection.Close();
           }
 
           jl.StatusCd = "COMPLETE";
@@ -167,14 +180,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       Console.Write("Completed Inventory Changes job");
     }
 
-    private IsJobInProgress()
+    private bool IsJobInProgress()
     {
       // Get the last job log record for the job name "Inventory Changes".
-      JobLog lastJobLog = _dbContext.JobLogs.FromSqlRaw($@"
+      JobLog lastJobLog = _dbContext.JobLogs.FromSqlRaw(@"
                         SELECT * FROM camdaux.job_log
-                        WHERE job_name = '{InventoryChangesIdentity.JobName}'
+                        WHERE job_name = '{0}'
                         ORDER BY start_date DESC
-                        LIMIT 1"
+                        LIMIT 1", InventoryChangesIdentity.JobName
               ).FirstOrDefault();
 
       // Check the status of the last job log. If the status is "WIP", then return.
@@ -185,17 +198,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       return false;
     }
 
-    private UpdateMpEvalStatusAndReportingFreq(InventoryStatusLog inventoryStatusLog, NpgsqlTransaction sqlTransaction)
+    private void UpdateMpEvalStatusAndReportingFreq(InventoryStatusLog inventoryStatusLog, NpgsqlConnection connection, NpgsqlTransaction sqlTransaction)
     {
-      _dbContext.CreateTextCommand(
-          "CALL camdecmpswks.update_mp_eval_status_and_reporting_freq(par_V_UNIT_ID, par_V_DATA_TYPE_CD);",
-          sqlTransaction
-      );
-
-      _dbContext.AddInputParameter("par_V_UNIT_ID", inventoryStatusLog.UnitId);
-      _dbContext.AddInputParameter("par_V_DATA_TYPE_CD", inventoryStatusLog.DataTypeCd);
-      _dbContext.ExecuteNonQuery();
+        var parameters = new List<NpgsqlParameter>
+        {
+          _dbContext.CreateParameter("par_V_UNIT_ID", inventoryStatusLog.UnitId.ToString(), NpgsqlDbType.Numeric, ParameterDirection.Input),
+          _dbContext.CreateParameter("par_V_DATA_TYPE_CD", inventoryStatusLog.DataTypeCd, NpgsqlDbType.Varchar, ParameterDirection.Input),
+        };
+      _dbContext.ExecuteProcedure("camdecmpswks.update_mp_eval_status_and_reporting_freq", parameters, connection, sqlTransaction);
     }
+
 
     public static JobKey WithInventoryChangesKey()
     {

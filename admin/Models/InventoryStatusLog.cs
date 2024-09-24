@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Epa.Camd.Quartz.Scheduler.Models
 {
   [Table("inventory_status_log", Schema = "camdaux")]
-  public class JobLog
+  public class InventoryStatusLog
   {
     [Key]
     [Column("inventory_status_log_id")]
