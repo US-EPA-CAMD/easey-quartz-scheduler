@@ -134,8 +134,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
           // Call the stored procedure `camdecmpswks.update_mp_eval_status_and_reporting_freq` for each log record.
           // This is done sequentially to ensure that the records are processed in the same order that they were retrieved.
-          var connectionString = _dbContext.Database.GetConnectionString();
-          var connection = new NpgsqlConnection(connectionString);
+          var connection = new NpgsqlConnection(_dbContext.Database.GetConnectionString());
           var sqlTransaction = connection.BeginTransaction();
           try
           {
@@ -200,7 +199,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private void UpdateMpEvalStatusAndReportingFreq(InventoryStatusLog inventoryStatusLog, NpgsqlConnection connection, NpgsqlTransaction sqlTransaction)
     {
-        var parameters = new List<NpgsqlParameter>
+      var parameters = new List<NpgsqlParameter>
         {
           _dbContext.CreateParameter("par_V_UNIT_ID", inventoryStatusLog.UnitId.ToString(), NpgsqlDbType.Numeric, ParameterDirection.Input),
           _dbContext.CreateParameter("par_V_DATA_TYPE_CD", inventoryStatusLog.DataTypeCd, NpgsqlDbType.Varchar, ParameterDirection.Input),
