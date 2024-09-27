@@ -73,6 +73,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       Evaluation evalRecord = _dbContext.Evaluations.Find(Int64.Parse(id));
 
       evalRecord.StatusCode = "WIP";
+      evalRecord.StartedTime = DateTime.Now;
       _dbContext.Evaluations.Update(evalRecord);
       _dbContext.SaveChanges();
 
@@ -83,7 +84,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       string monPlanConfig = dataMap.GetString("Configuration");
       string userId = dataMap.GetString("UserId");
       string userEmail = dataMap.GetString("UserEmail");
-      string submittedOn = dataMap.GetString("SubmittedOn");
+      string queuedTime = dataMap.GetString("QueuedTime");
 
       try
       {
@@ -99,7 +100,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           new LogVariable("Configuration", monPlanConfig),
           new LogVariable("User Id", userId),
           new LogVariable("User Email", userEmail),
-          new LogVariable("Submitted On", submittedOn)
+          new LogVariable("Queued Time", queuedTime)
         );
 
         string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
@@ -284,6 +285,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         // Update our queued record
         evalRecord.StatusCode = "COMPLETE";
+        evalRecord.CompletedTime = DateTime.Now;
         evalRecord.EvalStatusCode = evaluationStatus;
         _dbContext.Evaluations.Update(evalRecord);
         _dbContext.SaveChanges();
@@ -296,6 +298,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         evalRecord.Details = JsonConvert.SerializeObject(ex);
 
         evalRecord.StatusCode = "ERROR";
+        evalRecord.Note = ex.Message;
+        evalRecord.NoteTime = DateTime.Now;
         _dbContext.Evaluations.Update(evalRecord);
         _dbContext.SaveChanges();
 
@@ -391,7 +395,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       string monPlanConfig,
       string userId,
       string userEmail,
-      DateTime submittedOn,
+      DateTime queuedTime,
       string testSumId,
       string qaCertEventId,
       string teeId,
@@ -416,7 +420,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         .UsingJobData("Configuration", monPlanConfig)
         .UsingJobData("UserId", userId)
         .UsingJobData("UserEmail", userEmail)        
-        .UsingJobData("SubmittedOn", submittedOn.ToString())
+        .UsingJobData("QueuedTime", queuedTime.ToString())
         .UsingJobData("qaCertId", qaCertEventId)
         .UsingJobData("testExtensionExemption", teeId)
         .UsingJobData("testSumId", testSumId)
