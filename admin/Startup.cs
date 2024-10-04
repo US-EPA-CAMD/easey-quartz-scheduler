@@ -123,7 +123,6 @@ namespace Epa.Camd.Quartz.Scheduler
       SubmissionWindowProcessQueue.RegisterWithQuartz(services);
       SubmissionReminderProcessQueue.RegisterWithQuartz(services);
       SubmissionJobQueue.RegisterWithQuartz(services);
-      InventoryChanges.RegisterWithQuartz(services);
 
       services.AddTransient<CheckEngineEvaluationListener>(); //DI for CheckEngineListener
       CheckEngineEvaluationListener.ServiceCollection = services; // Set service collection of the listener
@@ -179,7 +178,6 @@ namespace Epa.Camd.Quartz.Scheduler
       await SubmissionWindowProcessQueue.ScheduleWithQuartz(scheduler, app);
       await EmailQueue.ScheduleWithQuartz(scheduler, app);
       await SubmissionJobQueue.ScheduleWithQuartz(scheduler, app);
-      await InventoryChanges.ScheduleWithQuartz(scheduler, app);
 
       //Schedule Listeners
       await CheckEngineEvaluationListener.ScheduleWithQuartz(scheduler);
