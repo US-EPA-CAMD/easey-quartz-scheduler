@@ -10,7 +10,6 @@ using Quartz;
 using Epa.Camd.Quartz.Scheduler.Jobs;
 
 using Npgsql;
-using NpgsqlTypes;
 
 namespace Epa.Camd.Quartz.Scheduler.Models
 {
@@ -24,7 +23,6 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public DbSet<JobLog> JobLogs {get; set; }
     public DbSet<ReportingPeriod> ReportingPeriods {get; set; }
     public DbSet<BulkFileLog> BulkFileLogs {get; set; }
-    public DbSet<InventoryStatusLog> InventoryStatusLogs {get; set; }
 
     public DbSet<SubmissionSet> SubmissionSet {get; set; }
 
@@ -197,25 +195,12 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       var connectionString = this.Database.GetConnectionString();
       var connection = new NpgsqlConnection(connectionString);
 
-      var command = ExecuteProcedure(name, parameters, connection);
-
-      connection.Close();
-
-      return command;
-    }
-
-    public NpgsqlCommand ExecuteProcedure(string name, List<NpgsqlParameter> parameters, NpgsqlConnection connection, NpgsqlTransaction transaction = null)
-    {
       if (connection.State != ConnectionState.Open)
         connection.Open();
 
       var command = connection.CreateCommand();
       command.CommandText = name;
       command.CommandType = CommandType.StoredProcedure;
-      if (transaction != null)
-      {
-        command.Transaction = transaction;
-      }
 
       foreach (var param in parameters)
       {
@@ -223,11 +208,12 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       }
 
       command.ExecuteNonQuery();
+      connection.Close();
 
       return command;
     }
 
-    public NpgsqlParameter CreateParameter(string name, string value, NpgsqlDbType type, ParameterDirection direction)
+    public NpgsqlParameter CreateParameter(string name, string value, NpgsqlTypes.NpgsqlDbType type, System.Data.ParameterDirection direction)
     {
       object oValue = value;
       if (string.IsNullOrEmpty(value))
