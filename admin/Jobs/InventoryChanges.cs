@@ -134,26 +134,28 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
           // Call the stored procedure `camdecmpswks.update_mp_eval_status_and_reporting_freq` for each log record.
           // This is done sequentially to ensure that the records are processed in the same order that they were retrieved.
-          var connection = new NpgsqlConnection(_dbContext.Database.GetConnectionString());
-          var sqlTransaction = connection.BeginTransaction();
-          try
+          using (var connection = new NpgsqlConnection(_dbContext.Database.GetConnectionString()))
           {
-            foreach (InventoryStatusLog inventoryStatusLog in inventoryStatusLogs)
+            connection.Open();
+
+            using (var sqlTransaction = connection.BeginTransaction())
             {
-              UpdateMpEvalStatusAndReportingFreq(inventoryStatusLog, connection, sqlTransaction);
-              // Update the additional details table with the ID of the last processed inventory status log.
-              jl.AdditionalDetails = JsonConvert.SerializeObject(new InventoryChangesJobLogAdditionalDetails { LastProcessedInventoryStatusLogId = inventoryStatusLog.InventoryStatusLogId });
+              try
+              {
+                foreach (InventoryStatusLog inventoryStatusLog in inventoryStatusLogs)
+                {
+                  UpdateMpEvalStatusAndReportingFreq(inventoryStatusLog, connection, sqlTransaction);
+                  // Update the additional details table with the ID of the last processed inventory status log.
+                  jl.AdditionalDetails = JsonConvert.SerializeObject(new InventoryChangesJobLogAdditionalDetails { LastProcessedInventoryStatusLogId = inventoryStatusLog.InventoryStatusLogId });
+                }
+                sqlTransaction.Commit();
+              }
+              catch (Exception)
+              {
+                sqlTransaction.Rollback();
+                throw;
+              }
             }
-            sqlTransaction.Commit();
-          }
-          catch (Exception)
-          {
-            sqlTransaction.Rollback();
-            throw;
-          }
-          finally
-          {
-            connection.Close();
           }
 
           jl.StatusCd = "COMPLETE";
