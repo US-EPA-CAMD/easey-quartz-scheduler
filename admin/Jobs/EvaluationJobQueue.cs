@@ -115,8 +115,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     toSchedule.RptPeriod
                   );
 
-                  Thread.Sleep(5000);
-
+                  Thread.Sleep(Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATION_JOB_QUEUE_DELAY"] ?? "1") * 1000);
                 }
               }
             }
