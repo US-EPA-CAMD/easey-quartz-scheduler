@@ -73,7 +73,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       Evaluation evalRecord = _dbContext.Evaluations.Find(Int64.Parse(id));
 
       evalRecord.StatusCode = "WIP";
-      evalRecord.StartedTime = DateTime.UtcNow;
+      evalRecord.StartedTime = Utils.getCurrentEasternTime();
       _dbContext.Evaluations.Update(evalRecord);
       _dbContext.SaveChanges();
 
@@ -285,7 +285,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         // Update our queued record
         evalRecord.StatusCode = "COMPLETE";
-        evalRecord.CompletedTime = DateTime.UtcNow;
+        evalRecord.CompletedTime = Utils.getCurrentEasternTime();
         evalRecord.EvalStatusCode = evaluationStatus;
         _dbContext.Evaluations.Update(evalRecord);
         _dbContext.SaveChanges();
@@ -299,7 +299,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         evalRecord.StatusCode = "ERROR";
         evalRecord.Note = ex.Message;
-        evalRecord.NoteTime = DateTime.UtcNow;
+        evalRecord.NoteTime = Utils.getCurrentEasternTime();
         _dbContext.Evaluations.Update(evalRecord);
         _dbContext.SaveChanges();
 
