@@ -14,8 +14,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
         [Column("mon_plan_id")]
  		public string MonPlanId { get; set; }
 
-		[Column("submitted_on")]
- 		public DateTime SubmittedOn { get; set; }
+		[Column("queued_time")]
+ 		public DateTime QueuedTime { get; set; }
 
         [Column("user_id")]
  		public string UserId { get; set; }
@@ -38,7 +38,16 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 		[Column("status_cd")]
  		public string StatusCode { get; set; }
 
-		[Column("details")]
- 		public string Details { get; set; }
+ 		[Column("started_time")]
+        public DateTime? StartedTime { get; set; }
+
+        [Column("completed_time")]
+        public DateTime? CompletedTime { get; set; }
+
+        [Column("note")]
+        public string Note { get; set; }
+
+        [Column("note_time")]
+        public DateTime? NoteTime { get; set; }
 	}
 }
