@@ -120,7 +120,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_CAMD_SERVICES"] + "/submission/process", httpContent); //TODO: Replace this with mocked result
                 _logger.LogInformation("Submitted job for SubmissionSetId {SubmissionSetId} with response {ResponseStatusCode}", inQueue[i]?.SetId, response != null ? response.StatusCode.ToString() : "null");
 
-                Thread.Sleep(1000);
+                Thread.Sleep(Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_SUBMISSION_JOB_QUEUE_DELAY"] ?? "1") * 1000);
                 index++;
               }
             }

@@ -95,7 +95,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             for(int i = 0; i < jobs_to_schedule; i++){
               if(index < inQueue.Count){
                 await BulkDataFile.CreateAndScheduleJobDetail(inQueue[i]);
-                Thread.Sleep(5000);
+                Thread.Sleep(Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_BULK_FILE_JOB_QUEUE_DELAY"] ?? "5") * 1000);
                 index++;
               }
             }

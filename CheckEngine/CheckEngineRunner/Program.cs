@@ -128,6 +128,17 @@ namespace CheckEngineRunner
                         bool result = checkEngine.RunChecks_QaReport_Qce(qaCertEventId, monPlanId, eCheckEngineRunMode.Normal, batchId);
                     }
                     break;
+                case "TEE":
+                    {
+                        string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
+                        string teeId = ((args != null) && (args.Length >= 3)) ? args[2] : null;
+
+                        string dllPath = Path.Combine(baseDir, "QA", "obj", "Debug", "netcoreapp6.0") + Path.DirectorySeparatorChar;
+                        cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
+
+                        bool result = checkEngine.RunChecks_QaReport_Tee(teeId, monPlanId, eCheckEngineRunMode.Normal, batchId);
+                    }
+                    break;
             }
 
             Console.ReadLine();
