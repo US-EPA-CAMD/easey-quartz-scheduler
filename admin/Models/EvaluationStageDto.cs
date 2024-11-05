@@ -1,5 +1,8 @@
-public class EvaluationStageDto
+namespace Epa.Camd.Quartz.Scheduler.Models
 {
-    public string action { get; set; }
-    public string dateTime { get; set; }
+    public class EvaluationStageDto
+    {
+        public string action { get; set; }
+        public string dateTime { get; set; }
+    }
 }
