@@ -17,8 +17,6 @@ using DatabaseAccess;
 using ECMPS.Checks.CheckEngine;
 using ECMPS.Checks.CheckEngine.Definitions;
 using Newtonsoft.Json;
-using System.Net.Http;
-using System.Net.Http.Headers;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -67,12 +65,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public Task Execute(IJobExecutionContext context)
     {
-      // Initialize evaluation stages
-      List<EvaluationStageDto> evaluationStages = new List<EvaluationStageDto>
-      {
-        new EvaluationStageDto { action = "EVAL_STARTED", dateTime = DateTime.UtcNow.ToString("o") }
-      };
-
       JobDataMap dataMap = context.MergedJobDataMap;
       JobKey key = context.JobDetail.Key;
 
@@ -85,12 +77,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       _dbContext.Evaluations.Update(evalRecord);
       _dbContext.SaveChanges();
 
-      evaluationStages.Add(new EvaluationStageDto
-      {
-          action = "EVAL_RECORD_UPDATED",
-          dateTime = DateTime.UtcNow.ToString("o")
-      });
-
       string processCode = dataMap.GetString("ProcessCode");
       int facilityId = dataMap.GetIntValue("FacilityId");
       string facilityName = dataMap.GetString("FacilityName");
@@ -99,8 +85,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       string userId = dataMap.GetString("UserId");
       string userEmail = dataMap.GetString("UserEmail");
       string queuedTime = dataMap.GetString("QueuedTime");
-
-      EvaluationSet es = null;
 
       try
       {
@@ -126,7 +110,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         string evaluationStatus = "";
 
-        es = _dbContext.EvaluationSet.Find(dataMap.GetString("SetId"));
+        EvaluationSet es = _dbContext.EvaluationSet.Find(dataMap.GetString("SetId"));
 
         switch (processCode)
         {
@@ -172,12 +156,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               }
             }
             // --------
-
-            evaluationStages.Add(new EvaluationStageDto
-            {
-               action = "RUN_CHECK_MP_REPORT_COMPLETED",
-               dateTime = DateTime.UtcNow.ToString("o")
-            });
 
             LogHelper.info($"RunChecks_MpReport returned a result of {mpResult}!");
             break;
@@ -242,11 +220,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               _dbContext.Evaluations.Update(qaEmEvals[0]);
             }
             
-            evaluationStages.Add(new EvaluationStageDto
-            {
-               action = "IMPORT_CHECKS_QA_COMPLETED",
-               dateTime = DateTime.UtcNow.ToString("o")
-            });
+    
             LogHelper.info($"QA import checks finished");
 
             break;
@@ -287,6 +261,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
             _dbContext.ExecuteEmissionRefreshProcedure(monitorPlanId, rp.year, rp.quarter);
 
+
             List<Evaluation> remainingEmEvals = _dbContext.Evaluations.FromSqlRaw(@"
                 SELECT eq.*
                 FROM camdecmpsaux.evaluation_queue eq
@@ -300,11 +275,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               _dbContext.Evaluations.Update(remainingEmEvals[0]);
             }
 
-            evaluationStages.Add(new EvaluationStageDto
-            {
-               action = "EM_EVAL_COMPLETED",
-               dateTime = DateTime.UtcNow.ToString("o")
-            });
 
             break;
           default:
@@ -312,12 +282,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
 
         context.MergedJobDataMap.Add("EvaluationResult", "COMPLETED");
-
-        evaluationStages.Add(new EvaluationStageDto
-        {
-           action = "EVAL_COMPLETED",
-           dateTime = DateTime.UtcNow.ToString("o")
-        });
 
         // Update our queued record
         evalRecord.StatusCode = "COMPLETE";
@@ -380,55 +344,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
         _dbContext.SaveChanges();
 
-        // Send the error email
-        _ = SendEvaluationErrorEmail(ex.Message, es.SetId, evalRecord.EvaluationId, evaluationStages);
-
         return Task.FromException(ex);
       }
     }
-
-    private async Task SendEvaluationErrorEmail(string rootError, string evaluationSetId, long evaluationId, List<EvaluationStageDto> evaluationStages)
-    {
-        try
-        {
-            var client = new HttpClient();
-            // Populate request payload
-            var payload = new
-            {
-                evaluationSetId = evaluationSetId,
-                evaluationId = evaluationId,
-                rootError = rootError,
-                evaluationStages = evaluationStages
-            };
-
-            var httpContent = new StringContent(JsonConvert.SerializeObject(payload), System.Text.Encoding.UTF8, "application/json");
-
-            // Set up headers
-            client.DefaultRequestHeaders.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
-            client.DefaultRequestHeaders.Add("x-client-id", Configuration["EASEY_QUARTZ_SCHEDULER_CLIENT_ID"]);
-
-            string clientToken = await Utils.generateClientToken();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", clientToken);
-
-            // Make the HTTP POST request
-            HttpResponseMessage response = await client.PostAsync($"{Configuration["EASEY_CAMD_SERVICES"]}/email/eval-error", httpContent);
-
-            // Log the response
-            if (response.IsSuccessStatusCode)
-            {
-                LogHelper.info($"Evaluation error email sent successfully for EvaluationSet ID: {evaluationSetId}");
-            }
-            else
-            {
-                LogHelper.error($"Failed to send evaluation error email. Status Code: {response.StatusCode}, Reason: {response.ReasonPhrase}");
-            }
-        }
-        catch (Exception e)
-        {
-            LogHelper.error($"Error sending evaluation error email: {e.Message}");
-        }
-    }
-
 
     public static string GetProcess(string processCode)
     {
