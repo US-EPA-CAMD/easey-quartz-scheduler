@@ -78,14 +78,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             SELECT *
             FROM camdecmpsaux.evaluation_queue
             WHERE process_cd = {0} AND status_cd = 'QUEUED'
-            ORDER BY submitted_on", type
+            ORDER BY queued_time", type
           ).ToList();
 
           List<Evaluation> wip = _dbContext.Evaluations.FromSqlRaw(@"
             SELECT *
             FROM camdecmpsaux.evaluation_queue
             WHERE process_cd = {0} AND status_cd = 'WIP'
-            ORDER BY submitted_on", type
+            ORDER BY queued_time", type
           ).ToList();
 
           if(wip.Count < Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_" + type +"_EVALUATIONS"])){
@@ -108,15 +108,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     es.Config,
                     es.UserId,
                     es.UserEmail,
-                    toSchedule.SubmittedOn,
+                    toSchedule.QueuedTime,
                     toSchedule.TestSumId,
                     toSchedule.QaCertEventId,
                     toSchedule.TeeId,
                     toSchedule.RptPeriod
                   );
 
-                  Thread.Sleep(5000);
-
+                  Thread.Sleep(Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATION_JOB_QUEUE_DELAY"] ?? "1") * 1000);
                 }
               }
             }
