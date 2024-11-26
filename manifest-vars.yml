@@ -4,7 +4,7 @@ title: Clean Air Markets EASEY Quartz Scheduler
 path: quartz
 displayUI: true
 healthCheckType: port
-email: noreply@epa.gov
+email: ecmps@epa.gov
 smtpHost: smtp.epa.gov
 smtpPort: 25
 checkEngineDllPath: ./
