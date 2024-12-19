@@ -141,6 +141,7 @@ namespace CheckEngineRunner
                     break;
             }
 
+            Console.WriteLine("Check Engine run completed");
             Console.ReadLine();
         }
     }
