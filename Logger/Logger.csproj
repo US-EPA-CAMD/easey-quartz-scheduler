@@ -5,7 +5,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>netcoreapp6.0</TargetFramework>
     <RootNamespace>Epa.Camd.Logger</RootNamespace>
   </PropertyGroup>
 
