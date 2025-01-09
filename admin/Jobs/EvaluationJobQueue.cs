@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
+using Epa.Camd.Logger;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -68,67 +69,85 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
-      try
-      {
-        Console.Write("Checking Queue Now");
-        string[] types = new string[]{"MP", "QA", "EM"};
+        string instanceIndex = Environment.GetEnvironmentVariable("CF_INSTANCE_INDEX") ?? "unknown";
 
-        foreach(string type in types){
-          List<Evaluation> inQueue = _dbContext.Evaluations.FromSqlRaw(@"
-            SELECT *
-            FROM camdecmpsaux.evaluation_queue
-            WHERE process_cd = {0} AND status_cd = 'QUEUED'
-            ORDER BY queued_time", type
-          ).ToList();
+        try
+        {
+            LogHelper.info($"[Instance {instanceIndex}] Starting evaluation queue check");
+            
+            string[] types = new string[]{"MP", "QA", "EM"};
 
-          List<Evaluation> wip = _dbContext.Evaluations.FromSqlRaw(@"
-            SELECT *
-            FROM camdecmpsaux.evaluation_queue
-            WHERE process_cd = {0} AND status_cd = 'WIP'
-            ORDER BY queued_time", type
-          ).ToList();
+            foreach(string type in types){
+                LogHelper.info($"[Instance {instanceIndex}] Checking {type} evaluations");
+                
+                List<Evaluation> inQueue = _dbContext.Evaluations.FromSqlRaw(@"
+                    SELECT *
+                    FROM camdecmpsaux.evaluation_queue
+                    WHERE process_cd = {0} AND status_cd = 'QUEUED'
+                    ORDER BY queued_time", type
+                ).ToList();
 
-          if(wip.Count < Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_" + type +"_EVALUATIONS"])){
-            if(inQueue.Count > 0){
-              int jobs_to_schedule = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_" + type +"_EVALUATIONS"]) - wip.Count;
+                LogHelper.info($"[Instance {instanceIndex}] Found {inQueue.Count} {type} evaluations in QUEUED status");
 
-              for(int i = 0; i < jobs_to_schedule; i++){
-                if(i < inQueue.Count){
-                  Evaluation toSchedule = inQueue[i];
-                  EvaluationSet es = _dbContext.EvaluationSet.Find(toSchedule.EvaluationSetId);
-                                    
-                  await CheckEngineEvaluation.StartNow(
-                    context.Scheduler,
-                    toSchedule.EvaluationId,
-                    es.SetId,
-                    toSchedule.ProcessCode,
-                    es.FacId,
-                    es.FacName,
-                    es.MonPlanId,
-                    es.Config,
-                    es.UserId,
-                    es.UserEmail,
-                    toSchedule.QueuedTime,
-                    toSchedule.TestSumId,
-                    toSchedule.QaCertEventId,
-                    toSchedule.TeeId,
-                    toSchedule.RptPeriod
-                  );
+                List<Evaluation> wip = _dbContext.Evaluations.FromSqlRaw(@"
+                    SELECT *
+                    FROM camdecmpsaux.evaluation_queue
+                    WHERE process_cd = {0} AND status_cd = 'WIP'
+                    ORDER BY queued_time", type
+                ).ToList();
 
-                  Thread.Sleep(Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATION_JOB_QUEUE_DELAY"] ?? "1") * 1000);
+                LogHelper.info($"[Instance {instanceIndex}] Found {wip.Count} {type} evaluations in WIP status");
+
+                int maxAllowed = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_" + type +"_EVALUATIONS"]);
+                LogHelper.info($"[Instance {instanceIndex}] Max allowed {type} evaluations: {maxAllowed}");
+
+                if(wip.Count < maxAllowed){
+                    if(inQueue.Count > 0){
+                        int jobs_to_schedule = maxAllowed - wip.Count;
+                        LogHelper.info($"[Instance {instanceIndex}] Attempting to schedule {jobs_to_schedule} {type} evaluations");
+
+                        for(int i = 0; i < jobs_to_schedule; i++){
+                            if(i < inQueue.Count){
+                                Evaluation toSchedule = inQueue[i];
+                                LogHelper.info($"[Instance {instanceIndex}] Processing evaluation ID {toSchedule.EvaluationId}");
+                                
+                                EvaluationSet es = _dbContext.EvaluationSet.Find(toSchedule.EvaluationSetId);
+                                
+                                LogHelper.info($"[Instance {instanceIndex}] Starting CheckEngineEvaluation for ID {toSchedule.EvaluationId}");
+                                await CheckEngineEvaluation.StartNow(
+                                    context.Scheduler,
+                                    toSchedule.EvaluationId,
+                                    es.SetId,
+                                    toSchedule.ProcessCode,
+                                    es.FacId,
+                                    es.FacName,
+                                    es.MonPlanId,
+                                    es.Config,
+                                    es.UserId,
+                                    es.UserEmail,
+                                    toSchedule.QueuedTime,
+                                    toSchedule.TestSumId,
+                                    toSchedule.QaCertEventId,
+                                    toSchedule.TeeId,
+                                    toSchedule.RptPeriod
+                                );
+
+                                int delaySeconds = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATION_JOB_QUEUE_DELAY"] ?? "1");
+                                LogHelper.info($"[Instance {instanceIndex}] Waiting {delaySeconds}s before next evaluation");
+                                Thread.Sleep(delaySeconds * 1000);
+                            }
+                        }
+                    }
+                } else {
+                    LogHelper.info($"[Instance {instanceIndex}] Maximum number of {type} evaluations ({maxAllowed}) already in progress");
                 }
-              }
             }
-          }
-
         }
-        return;
-      }
-      catch (Exception e)
-      {
-        Console.Write(e.Message);
-        return;
-      }
+        catch (Exception e)
+        {
+            LogHelper.error($"[Instance {instanceIndex}] Error in evaluation queue: {e.Message}");
+            return;
+        }
     }
 
     public static JobKey WithEvaluationJobQueueJobKey()
