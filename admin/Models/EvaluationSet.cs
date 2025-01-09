@@ -14,8 +14,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
         [Column("mon_plan_id")]
  		public string MonPlanId { get; set; }
 
-		[Column("submitted_on")]
- 		public DateTime SubmittedOn { get; set; }
+		[Column("queued_time")]
+ 		public DateTime QueuedTime { get; set; }
 
         [Column("user_id")]
  		public string UserId { get; set; }
