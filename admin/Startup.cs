@@ -16,7 +16,6 @@ using DatabaseAccess;
 using Epa.Camd.Quartz.Scheduler.Jobs;
 using Epa.Camd.Quartz.Scheduler.Models;
 using Epa.Camd.Quartz.Scheduler.Jobs.Listeners;
-using Microsoft.AspNetCore.Http;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
@@ -155,10 +154,10 @@ namespace Epa.Camd.Quartz.Scheduler
       app.UseSilkierQuartz(displayUi: displayFlag);
 
       app.Use(async (context, next) => {
-        context.Response.Headers.Append("Vary", "Origin");
-        context.Response.Headers.Append("Cache-Control", "no-cache, no-store, must-revalidate");
-        context.Response.Headers.Append("Pragma", "no-cache");
-        context.Response.Headers.Append("Expires", "0");
+        context.Response.Headers.Add("Vary", "Origin");
+        context.Response.Headers.Add("Cache-Control", "no-cache, no-store, must-revalidate");
+        context.Response.Headers.Add("Pragma", "no-cache");
+        context.Response.Headers.Add("Expires", "0");
         await next();
       });
 
