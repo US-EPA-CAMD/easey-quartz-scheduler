@@ -19,6 +19,7 @@ using ECMPS.Checks.CheckEngine.Definitions;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -26,6 +27,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
   {
     private NpgSqlContext _dbContext = null;
     private IConfiguration Configuration { get; }
+    private readonly ILogger<CheckEngineEvaluation> _logger;
     static SemaphoreSlim semaphore;
 
     public static class Identity
@@ -46,11 +48,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public CheckEngineEvaluation(
       NpgSqlContext dbContext,
-      IConfiguration configuration
+      IConfiguration configuration,
+      ILogger<CheckEngineEvaluation> logger
     )
     {
       _dbContext = dbContext;
       Configuration = configuration;
+      _logger = logger;
     }
 
     private EvalStatusCode getStatusCodeByCheckId(string checkSessionId, bool result){
@@ -79,7 +83,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         JobKey key = context.JobDetail.Key;
 
         string id = dataMap.GetString("Id");
-        LogHelper.info($"[Instance {instanceIndex}] Starting evaluation ID: {id}");
+        _logger.LogInformation("[Instance {InstanceIndex}] Starting evaluation ID: {EvalId}", instanceIndex, id);
 
         Evaluation evalRecord = _dbContext.Evaluations.Find(Int64.Parse(id));
 
@@ -109,8 +113,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         {
             string connectionString = ConnectionStringManager.getConnectionString(Configuration);
 
-            LogHelper.info(
-                $"[Instance {instanceIndex}] Executing {key.Group}.{key.Name}",
+            _logger.LogInformation(
+                "[Instance {InstanceIndex}] Executing {Group}.{Name}",
+                instanceIndex,
+                key.Group,
+                key.Name,
                 new LogVariable("Id", id),
                 new LogVariable("Process Code", processCode),
                 new LogVariable("Facility Id", facilityId),
@@ -134,14 +141,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             switch (processCode)
             {
                 case "MP":
-                    LogHelper.info($"[Instance {instanceIndex}] Running MP checks for evaluation {id}");
+                    _logger.LogInformation("[Instance {InstanceIndex}] Running MP checks for evaluation {EvalId}", instanceIndex, id);
 
                     mp.EvalStatus = "WIP";
                     _dbContext.MonitorPlans.Update(mp);
                     _dbContext.SaveChanges();
 
                     bool mpResult = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal, es.SetId);
-                    LogHelper.info($"[Instance {instanceIndex}] MP checks completed for evaluation {id} with result: {mpResult}");
+                    _logger.LogInformation("[Instance {InstanceIndex}] MP checks completed for evaluation {EvalId} with result: {Result}", 
+                        instanceIndex, id, mpResult);
 
                     _dbContext.Entry<MonitorPlan>(mp).Reload();
                     EvalStatusCode evalStatus = getStatusCodeByCheckId(mp.CheckSessionId, mpResult);
@@ -150,20 +158,23 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     _dbContext.MonitorPlans.Update(mp);
                     context.MergedJobDataMap.Add("EvaluationStatus", evalStatus.Description);
 
-                    LogHelper.info($"[Instance {instanceIndex}] Checking for QA evaluations for set {es.SetId}");
+                    _logger.LogInformation("[Instance {InstanceIndex}] Checking for QA evaluations for set {SetId}", 
+                        instanceIndex, es.SetId);
                     List<Evaluation> qaEvals = _dbContext.Evaluations.FromSqlRaw(@"
                         SELECT *
                         FROM camdecmpsaux.evaluation_queue
                         WHERE process_cd = 'QA' AND evaluation_set_id = {0}
                     ", es.SetId).ToList();
                     if(qaEvals.Count > 0){
-                        LogHelper.info($"[Instance {instanceIndex}] Found {qaEvals.Count} QA evaluations to queue");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Found {Count} QA evaluations to queue", 
+                            instanceIndex, qaEvals.Count);
                         foreach(Evaluation e in qaEvals){
                             e.StatusCode = "QUEUED";
                             _dbContext.Evaluations.Update(e);
                         }
                     } else {
-                        LogHelper.info($"[Instance {instanceIndex}] Checking for EM evaluations for monitor plan {es.MonPlanId}");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Checking for EM evaluations for monitor plan {MonPlanId}", 
+                            instanceIndex, es.MonPlanId);
                         List<Evaluation> emEvals = _dbContext.Evaluations.FromSqlRaw(@"
                             SELECT eq.*
                             FROM camdecmpsaux.evaluation_queue eq
@@ -173,7 +184,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                         ", es.MonPlanId).ToList();
 
                         if(emEvals.Count >= 1){
-                            LogHelper.info($"[Instance {instanceIndex}] Queueing first EM evaluation");
+                            _logger.LogInformation("[Instance {InstanceIndex}] Queueing first EM evaluation", instanceIndex);
                             emEvals[0].StatusCode = "QUEUED"; //Only take the first EM record with the earliest rpt_period_id, let the EM portion of this job handle scheduling the others
                             _dbContext.Evaluations.Update(emEvals[0]);
                         }
@@ -186,20 +197,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                        dateTime = DateTime.UtcNow.ToString("o")
                     });
 
-                    LogHelper.info($"RunChecks_MpReport returned a result of {mpResult}!");
+                    _logger.LogInformation("RunChecks_MpReport returned a result of {Result}!", mpResult);
                     break;
 
                 case "QA":
-                    LogHelper.info($"[Instance {instanceIndex}] Starting QA checks for evaluation {id}");
+                    _logger.LogInformation("[Instance {InstanceIndex}] Starting QA checks for evaluation {EvalId}", instanceIndex, id);
                     if(!string.IsNullOrWhiteSpace(dataMap.GetString("testSumId"))){
                         string testId = dataMap.GetString("testSumId");
-                        LogHelper.info($"[Instance {instanceIndex}] Processing test summary {testId}");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Processing test summary {TestId}", 
+                            instanceIndex, testId);
                         TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
                         testSummaryRecord.EvalStatus = "WIP";
                         _dbContext.TestSummaries.Update(testSummaryRecord);
 
                         bool listResult = checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, es.SetId);
-                        LogHelper.info($"[Instance {instanceIndex}] Test summary checks completed with result: {listResult}");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Test summary checks completed with result: {Result}", 
+                            instanceIndex, listResult);
 
                         _dbContext.Entry<TestSummary>(testSummaryRecord).Reload();
                         EvalStatusCode testSumEvalStatus = getStatusCodeByCheckId(testSummaryRecord.CheckSessionId, listResult);
@@ -209,14 +222,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     }
                     else if(!string.IsNullOrWhiteSpace(dataMap.GetString("qaCertId"))){
                         string certId = dataMap.GetString("qaCertId");
-                        LogHelper.info($"[Instance {instanceIndex}] Processing QA certification {certId}");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Processing QA certification {CertId}", 
+                            instanceIndex, certId);
                         CertEvent certIdRecord = _dbContext.CertEvents.Find(certId);
                         certIdRecord.EvalStatus = "WIP";
                         _dbContext.CertEvents.Update(certIdRecord);
                         _dbContext.SaveChanges();
 
                         bool listResult = checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, es.SetId);
-                        LogHelper.info($"[Instance {instanceIndex}] QA certification checks completed with result: {listResult}");
+                        _logger.LogInformation("[Instance {InstanceIndex}] QA certification checks completed with result: {Result}", 
+                            instanceIndex, listResult);
 
                         _dbContext.Entry<CertEvent>(certIdRecord).Reload();
                         EvalStatusCode certEvalStatus = getStatusCodeByCheckId(certIdRecord.CheckSessionId, listResult);
@@ -226,14 +241,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     }
                     else{
                         string extensionExemptionId = dataMap.GetString("testExtensionExemption");
-                        LogHelper.info($"[Instance {instanceIndex}] Processing test extension exemption {extensionExemptionId}");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Processing test extension exemption {ExemptionId}", 
+                            instanceIndex, extensionExemptionId);
                         TestExtensionExemption extensionExemptionRecord = _dbContext.TestExtensionExemptions.Find(extensionExemptionId);
                         extensionExemptionRecord.EvalStatus = "WIP";
                         _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
                         _dbContext.SaveChanges();
 
                         bool listResult = checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, es.SetId);
-                        LogHelper.info($"[Instance {instanceIndex}] Extension exemption checks completed with result: {listResult}");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Extension exemption checks completed with result: {Result}", 
+                            instanceIndex, listResult);
 
                         _dbContext.Entry<TestExtensionExemption>(extensionExemptionRecord).Reload();
                         EvalStatusCode teeEvalStatus = getStatusCodeByCheckId(extensionExemptionRecord.CheckSessionId, listResult);
@@ -242,7 +259,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                         _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
                     }
 
-                    LogHelper.info($"[Instance {instanceIndex}] Checking for EM evaluations after QA for monitor plan {es.MonPlanId}");
+                    _logger.LogInformation("[Instance {InstanceIndex}] Checking for EM evaluations after QA for monitor plan {MonPlanId}", 
+                        instanceIndex, es.MonPlanId);
                     List<Evaluation> qaEmEvals = _dbContext.Evaluations.FromSqlRaw(@"
                         SELECT eq.*
                         FROM camdecmpsaux.evaluation_queue eq
@@ -252,7 +270,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                         ", es.MonPlanId).ToList();
 
                     if(qaEmEvals.Count >= 1){
-                        LogHelper.info($"[Instance {instanceIndex}] Queueing first EM evaluation after QA");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Queueing first EM evaluation after QA", instanceIndex);
                         qaEmEvals[0].StatusCode = "QUEUED";
                         _dbContext.Evaluations.Update(qaEmEvals[0]);
                     }
@@ -262,14 +280,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                        action = "IMPORT_CHECKS_QA_COMPLETED",
                        dateTime = DateTime.UtcNow.ToString("o")
                     });
-                    LogHelper.info($"QA import checks finished");
+                    _logger.LogInformation("[Instance {InstanceIndex}] QA import checks finished", instanceIndex);
 
                     break;
 
                 case "EM":
                     int rptPeriodId = Int32.Parse(dataMap.GetString("rptPeriodId"));
+                    _logger.LogInformation("[Instance {InstanceIndex}] Starting EM checks for period {PeriodId}", 
+                        instanceIndex, rptPeriodId);
                     ReportingPeriod rp = _dbContext.ReportingPeriods.Find(rptPeriodId);
-                    LogHelper.info($"[Instance {instanceIndex}] Starting EM checks for period {rptPeriodId}");
 
                     List<Evaluation> otherEmEvals = _dbContext.Evaluations.FromSqlRaw(@"
                         SELECT eq.*
@@ -280,7 +299,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                         ", es.MonPlanId).ToList();
 
                     if(otherEmEvals[0].RptPeriod != rptPeriodId){
-                        LogHelper.info($"[Instance {instanceIndex}] Earlier EM evaluation exists, setting status to PENDING");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Earlier EM evaluation exists, setting status to PENDING");
                         evalRecord.StatusCode = "PENDING";
                         _dbContext.Evaluations.Update(evalRecord);
                         _dbContext.SaveChanges();
@@ -294,7 +313,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     _dbContext.SaveChanges();
 
                     bool evalResult = checkEngine.RunChecks_EmReport(monitorPlanId, rptPeriodId, eCheckEngineRunMode.Normal, es.SetId);
-                    LogHelper.info($"[Instance {instanceIndex}] EM checks completed with result: {evalResult}");
+                    _logger.LogInformation("[Instance {InstanceIndex}] EM checks completed with result: {Result}", 
+                        instanceIndex, evalResult);
 
                     _dbContext.Entry<EmissionEvaluation>(emissionEvalRecord).Reload();
                     EvalStatusCode emissionEvalStatus = getStatusCodeByCheckId(emissionEvalRecord.CheckSessionId, evalResult);
@@ -304,7 +324,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
                     _dbContext.ExecuteEmissionRefreshProcedure(monitorPlanId, rp.year, rp.quarter);
 
-                    LogHelper.info($"[Instance {instanceIndex}] Checking for remaining EM evaluations");
+                    _logger.LogInformation("[Instance {InstanceIndex}] Checking for remaining EM evaluations");
                     List<Evaluation> remainingEmEvals = _dbContext.Evaluations.FromSqlRaw(@"
                         SELECT eq.*
                         FROM camdecmpsaux.evaluation_queue eq
@@ -314,7 +334,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                         ", es.MonPlanId).ToList();
 
                     if(remainingEmEvals.Count >= 1){
-                        LogHelper.info($"[Instance {instanceIndex}] Queueing next EM evaluation");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Queueing next EM evaluation", instanceIndex);
                         remainingEmEvals[0].StatusCode = "QUEUED"; //Only take the first EM record with the earliest rpt_period_id, let the EM portion of this job handle scheduling the others
                         _dbContext.Evaluations.Update(remainingEmEvals[0]);
                     }
@@ -345,12 +365,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             _dbContext.Evaluations.Update(evalRecord);
             _dbContext.SaveChanges();
 
-            LogHelper.info($"[Instance {instanceIndex}] Evaluation {id} completed successfully with status {evaluationStatus}");
+            _logger.LogInformation("[Instance {InstanceIndex}] Evaluation {EvalId} completed successfully with status {Status}", 
+                instanceIndex, id, evaluationStatus);
             return Task.CompletedTask;
         }
         catch (Exception ex)
         {
-            LogHelper.error($"[Instance {instanceIndex}] Evaluation {id} failed with error: {ex.Message}");
+            _logger.LogError("[Instance {InstanceIndex}] Evaluation {EvalId} failed with error: {ErrorMessage}", 
+                instanceIndex, id, ex.Message);
             evalRecord.Details = JsonConvert.SerializeObject(ex);
 
             evalRecord.StatusCode = "ERROR";
@@ -361,12 +383,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
             context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
             context.MergedJobDataMap.Add("EvaluationStatus", "FATAL");
-            LogHelper.error(ex.ToString());
+            _logger.LogError(ex.ToString());
 
 
         switch(processCode){ //Reset status codes to EVAL in case of an evaluation error
                 case "MP":
-                    LogHelper.info($"[Instance {instanceIndex}] Resetting MP evaluation status to EVAL");
+                    _logger.LogInformation("[Instance {InstanceIndex}] Resetting MP evaluation status to EVAL", instanceIndex);
                     MonitorPlan mp = _dbContext.MonitorPlans.Find(monitorPlanId);
                     mp.EvalStatus = "EVAL";
                     _dbContext.MonitorPlans.Update(mp);
@@ -374,29 +396,33 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 case "QA":
                     if(!string.IsNullOrWhiteSpace(dataMap.GetString("testSumId"))){
                         string testId = dataMap.GetString("testSumId");
-                        LogHelper.info($"[Instance {instanceIndex}] Resetting test summary {testId} status to EVAL");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Resetting test summary {TestId} status to EVAL", 
+                            instanceIndex, testId);
                         TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
                         testSummaryRecord.EvalStatus = "EVAL";
                         _dbContext.TestSummaries.Update(testSummaryRecord);
                     }
                     else if(!string.IsNullOrWhiteSpace(dataMap.GetString("qaCertId"))){
                         string certId = dataMap.GetString("qaCertId");
-                        LogHelper.info($"[Instance {instanceIndex}] Resetting QA certification {certId} status to EVAL");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Resetting QA certification {CertId} status to EVAL", 
+                            instanceIndex, certId);
                         CertEvent certIdRecord = _dbContext.CertEvents.Find(certId);
                         certIdRecord.EvalStatus = "EVAL";
                         _dbContext.CertEvents.Update(certIdRecord);
                     }
                     else{
                         string extensionExemptionId = dataMap.GetString("testExtensionExemption");
-                        LogHelper.info($"[Instance {instanceIndex}] Resetting extension exemption {extensionExemptionId} status to EVAL");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Resetting extension exemption {ExemptionId} status to EVAL", 
+                            instanceIndex, extensionExemptionId);
                         TestExtensionExemption extensionExemptionRecord = _dbContext.TestExtensionExemptions.Find(extensionExemptionId);
                         extensionExemptionRecord.EvalStatus = "EVAL";
                         _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
                     }
                     break;
                 case "EM":
-                    int rptPeriodId = Int32.Parse(dataMap.GetString("rptPeriodId")); 
-                    LogHelper.info($"[Instance {instanceIndex}] Resetting EM evaluation status to EVAL for period {rptPeriodId}");
+                    int rptPeriodId = Int32.Parse(dataMap.GetString("rptPeriodId"));
+                    _logger.LogInformation("[Instance {InstanceIndex}] Resetting EM evaluation status to EVAL for period {PeriodId}",
+                                            instanceIndex, rptPeriodId);
                     ReportingPeriod rp = _dbContext.ReportingPeriods.Find(rptPeriodId);
                     EmissionEvaluation emissionEvalRecord = _dbContext.EmissionEvaluations.Find(monitorPlanId, rptPeriodId);
                     emissionEvalRecord.EvalStatus = "EVAL";
@@ -441,16 +467,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             // Log the response
             if (response.IsSuccessStatusCode)
             {
-                LogHelper.info($"Evaluation error email sent successfully for EvaluationSet ID: {evaluationSetId}");
+                _logger.LogInformation("Evaluation error email sent successfully for EvaluationSet ID: {EvaluationSetId}", evaluationSetId);
             }
             else
             {
-                LogHelper.error($"Failed to send evaluation error email. Status Code: {response.StatusCode}, Reason: {response.ReasonPhrase}");
+                _logger.LogError("Failed to send evaluation error email. Status Code: {StatusCode}, Reason: {ReasonPhrase}", 
+                    response.StatusCode, response.ReasonPhrase);
             }
         }
         catch (Exception e)
         {
-            LogHelper.error($"Error sending evaluation error email: {e.Message}");
+            _logger.LogError("Error sending evaluation error email: {ErrorMessage}", e.Message);
         }
     }
 

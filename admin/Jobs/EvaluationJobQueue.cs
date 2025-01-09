@@ -11,13 +11,14 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using Epa.Camd.Logger;
+using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   public class EvaluationJobQueue : IJob
   {
     private NpgSqlContext _dbContext = null;
-
+    private readonly ILogger<EvaluationJobQueue> _logger;
     private IConfiguration Configuration { get; }
 
     public static class EvaluationJobQueueIdentity
@@ -61,10 +62,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public EvaluationJobQueue(NpgSqlContext dbContext, IConfiguration configuration)
+    public EvaluationJobQueue(NpgSqlContext dbContext, IConfiguration configuration, ILogger<EvaluationJobQueue> logger)
     {
       _dbContext = dbContext;
       Configuration = configuration;
+      _logger = logger;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -73,12 +75,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         try
         {
-            LogHelper.info($"[Instance {instanceIndex}] Starting evaluation queue check");
+            _logger.LogInformation("[Instance {InstanceIndex}] Starting evaluation queue check", instanceIndex);
             
             string[] types = new string[]{"MP", "QA", "EM"};
 
             foreach(string type in types){
-                LogHelper.info($"[Instance {instanceIndex}] Checking {type} evaluations");
+                _logger.LogInformation("[Instance {InstanceIndex}] Checking {Type} evaluations", instanceIndex, type);
                 
                 List<Evaluation> inQueue = _dbContext.Evaluations.FromSqlRaw(@"
                     SELECT *
@@ -87,7 +89,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     ORDER BY queued_time", type
                 ).ToList();
 
-                LogHelper.info($"[Instance {instanceIndex}] Found {inQueue.Count} {type} evaluations in QUEUED status");
+                _logger.LogInformation("[Instance {InstanceIndex}] Found {Count} {Type} evaluations in QUEUED status", 
+                    instanceIndex, inQueue.Count, type);
 
                 List<Evaluation> wip = _dbContext.Evaluations.FromSqlRaw(@"
                     SELECT *
@@ -96,24 +99,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     ORDER BY queued_time", type
                 ).ToList();
 
-                LogHelper.info($"[Instance {instanceIndex}] Found {wip.Count} {type} evaluations in WIP status");
+                _logger.LogInformation("[Instance {InstanceIndex}] Found {Count} {Type} evaluations in WIP status", 
+                    instanceIndex, wip.Count, type);
 
                 int maxAllowed = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_" + type +"_EVALUATIONS"]);
-                LogHelper.info($"[Instance {instanceIndex}] Max allowed {type} evaluations: {maxAllowed}");
+                _logger.LogInformation("[Instance {InstanceIndex}] Max allowed {Type} evaluations: {MaxAllowed}", 
+                    instanceIndex, type, maxAllowed);
 
                 if(wip.Count < maxAllowed){
                     if(inQueue.Count > 0){
                         int jobs_to_schedule = maxAllowed - wip.Count;
-                        LogHelper.info($"[Instance {instanceIndex}] Attempting to schedule {jobs_to_schedule} {type} evaluations");
+                        _logger.LogInformation("[Instance {InstanceIndex}] Attempting to schedule {JobCount} {Type} evaluations", 
+                            instanceIndex, jobs_to_schedule, type);
 
                         for(int i = 0; i < jobs_to_schedule; i++){
                             if(i < inQueue.Count){
                                 Evaluation toSchedule = inQueue[i];
-                                LogHelper.info($"[Instance {instanceIndex}] Processing evaluation ID {toSchedule.EvaluationId}");
+                                _logger.LogInformation("[Instance {InstanceIndex}] Processing evaluation ID {EvalId}", 
+                                    instanceIndex, toSchedule.EvaluationId);
                                 
                                 EvaluationSet es = _dbContext.EvaluationSet.Find(toSchedule.EvaluationSetId);
                                 
-                                LogHelper.info($"[Instance {instanceIndex}] Starting CheckEngineEvaluation for ID {toSchedule.EvaluationId}");
+                                _logger.LogInformation("[Instance {InstanceIndex}] Starting CheckEngineEvaluation for ID {EvalId}", 
+                                    instanceIndex, toSchedule.EvaluationId);
                                 await CheckEngineEvaluation.StartNow(
                                     context.Scheduler,
                                     toSchedule.EvaluationId,
@@ -133,19 +141,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                                 );
 
                                 int delaySeconds = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATION_JOB_QUEUE_DELAY"] ?? "1");
-                                LogHelper.info($"[Instance {instanceIndex}] Waiting {delaySeconds}s before next evaluation");
+                                _logger.LogInformation("[Instance {InstanceIndex}] Waiting {Delay}s before next evaluation", 
+                                    instanceIndex, delaySeconds);
                                 Thread.Sleep(delaySeconds * 1000);
                             }
                         }
                     }
                 } else {
-                    LogHelper.info($"[Instance {instanceIndex}] Maximum number of {type} evaluations ({maxAllowed}) already in progress");
+                    _logger.LogInformation("[Instance {InstanceIndex}] Maximum number of {Type} evaluations ({MaxAllowed}) already in progress", 
+                        instanceIndex, type, maxAllowed);
                 }
             }
         }
         catch (Exception e)
         {
-            LogHelper.error($"[Instance {instanceIndex}] Error in evaluation queue: {e.Message}");
+            _logger.LogError("[Instance {InstanceIndex}] Error in evaluation queue: {ErrorMessage}", 
+                instanceIndex, e.Message);
             return;
         }
     }
