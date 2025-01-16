@@ -1,12 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
 using Quartz;
-using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
 using Epa.Camd.Logger;
@@ -19,47 +16,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     private Guid job_id = Guid.NewGuid();
 
     private NpgSqlContext _dbContext = null;
-
-    public static class Identity
-    {
-      public static readonly string Group = Constants.QuartzGroups.BULK_DATA;
-      public static readonly string JobName = "Allowance Compliance Bulk Data";
-      public static readonly string JobDescription = "Determine which allowance compliance data needs to be regenerated and schedule BulkDataFile jobs to handle the regen";
-      public static readonly string TriggerName = "Run yearly and check which allowance compliance files need to be regenerated";
-      public static readonly string TriggerDescription = "Runs yearly to determine if files need to be regenerated based on query results";
-    }
-
-    public static void RegisterWithQuartz(IServiceCollection services)
-    {
-      services.AddQuartzJob<AllowanceComplianceBulkDataFiles>(WithJobKey(), Identity.JobDescription);
-    }
-
-    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
-    {
-      try {
-        JobKey jobKey = WithJobKey();
-        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_ALLOWANCE_COMPLIANCE_SCHEDULE"] ?? "0 0/10 2-4 15 * ? *";
-        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
-
-        if (await scheduler.CheckExists(jobKey)) {
-          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
-
-          if (
-            trigger is ICronTrigger cronTrigger &&
-            cronTrigger.CronExpressionString != cronExpression
-          ) {
-            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
-            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
-          }
-        } else {
-          app.UseQuartzJob<AllowanceComplianceBulkDataFiles>(triggerBuilder);
-          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
-        }
-      } catch(Exception e) {
-        Console.WriteLine("ERROR");
-        Console.WriteLine(e.Message);
-      }
-    }
 
     public AllowanceComplianceBulkDataFiles (NpgSqlContext dbContext, IConfiguration configuration)
     {
@@ -128,32 +84,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         await _dbContext.SaveChangesAsync();
         LogHelper.error(e.Message);
       }
-    }
-
-    public static JobKey WithJobKey()
-    {
-      return new JobKey(Identity.JobName, Identity.Group);
-    }
-
-    public static TriggerKey WithTriggerKey()
-    {
-      return new TriggerKey(Identity.TriggerName, Identity.Group);
-    }
-
-    public static IJobDetail WithJobDetail()
-    {
-      return JobBuilder.Create<AllowanceComplianceBulkDataFiles>()
-          .WithIdentity(WithJobKey())
-          .WithDescription(Identity.JobDescription)
-          .Build();
-    }
-
-    public static TriggerBuilder WithCronSchedule(string cronExpression)
-    {
-      return TriggerBuilder.Create()
-          .WithIdentity(WithTriggerKey())
-          .WithDescription(Identity.TriggerDescription)
-          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }
