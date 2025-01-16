@@ -24,7 +24,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private NpgSqlContext _dbContext = null;
 
-    private IConfiguration Configuration { get; }
+    private IConfiguration _configuration { get; }
 
     public static class InventoryChangesIdentity
     {
@@ -77,7 +77,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public InventoryChanges(NpgSqlContext dbContext, IConfiguration configuration)
     {
       _dbContext = dbContext;
-      Configuration = configuration;
+      _configuration = configuration;
     }
 
     public async Task Execute(IJobExecutionContext context)

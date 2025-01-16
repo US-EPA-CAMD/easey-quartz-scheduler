@@ -21,8 +21,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
   {
     private readonly NpgSqlContext _dbContext;
     private readonly IConfiguration _configuration;
-    private readonly ILogger<CheckEngineEvaluation> _logger;
-    private static readonly JobConfiguration _jobConfig = new JobConfiguration
+    private readonly ILogger<DynamicJobScheduler> _logger;
+    private static readonly JobConfiguration s_jobConfig = new JobConfiguration
     {
       JobName = "Dynamic Job Scheduler",
       JobDescription = "Operates on an interval to determine if any new jobs need to be executed, scheduled, or rescheduled",
@@ -30,11 +30,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       JobType = "DynamicJobScheduler",
       TriggerName = "Check job queue every minute",
       TriggerDescription = "Operate every minute to determine if there are any new jobs to be scheduled or rescheduled",
-      CronExpression = "0 0/1 * * * ?",
+      CronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_DYNAMIC_JOB_SCHEDULER_SCHEDULE"] ?? "0 0/1 * * * ?",
       IsActive = true,
     };
 
-    public DynamicJobScheduler(NpgSqlContext dbContext, IConfiguration configuration)
+    public DynamicJobScheduler(NpgSqlContext dbContext, IConfiguration configuration, ILogger<DynamicJobScheduler> logger)
     {
       _dbContext = dbContext;
       _configuration = configuration;
@@ -70,7 +70,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
-      Console.WriteLine("Starting Dynamic Job Scheduler");
+      _logger.LogInformation("Starting Dynamic Job Scheduler");
 
       try
       {
@@ -85,7 +85,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         {
           try
           {
-            await DynamicJobScheduler.ScheduleJob(scheduler, serviceProvider, jobConfig);
+            await ScheduleJob(scheduler, serviceProvider, jobConfig);
           }
           catch (Exception e)
           {
@@ -95,7 +95,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
       catch (Exception e)
       {
-        Console.WriteLine($"Error in Dynamic Job Scheduler: {e.Message}");
+        _logger.LogError($"Error in Dynamic Job Scheduler: {e.Message}");
       }
 
       _logger.LogInformation("Completed Dynamic Job Scheduler");
@@ -107,17 +107,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       services.AddQuartzJob(jobType, CreateJobKey(jobConfig), jobConfig.JobDescription);
     }
 
-    private static async Task ScheduleJob(IScheduler scheduler, IApplicationBuilder app, JobConfiguration jobConfig)
-    {
-      await ScheduleJobInternal(scheduler, jobConfig, (jobType, triggerBuilder) =>
-      {
-        app.UseQuartzJob(jobType, triggerBuilder);
-      });
-    }
-
     public static void RegisterWithQuartz(IServiceCollection services, NpgSqlContext dbContext)
     {
-      RegisterJob(services, _jobConfig);
+      RegisterJob(services, s_jobConfig);
 
       var jobs = dbContext.JobConfigurations
           .ToList();
@@ -128,16 +120,24 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    private static async Task ScheduleJob(IScheduler scheduler, IServiceProvider serviceProvider, JobConfiguration jobConfig)
+    private static async Task ScheduleJob(IScheduler scheduler, IApplicationBuilder app, ILogger logger, JobConfiguration jobConfig)
     {
-      await ScheduleJobInternal(scheduler, jobConfig, (jobType, triggerBuilder) =>
+      await ScheduleJobInternal(scheduler, jobConfig, logger, (jobType, triggerBuilder) =>
+      {
+        app.UseQuartzJob(jobType, triggerBuilder);
+      });
+    }
+
+    private async Task ScheduleJob(IScheduler scheduler, IServiceProvider serviceProvider, JobConfiguration jobConfig)
+    {
+      await ScheduleJobInternal(scheduler, jobConfig, _logger, (jobType, triggerBuilder) =>
       {
         var scheduleJobs = serviceProvider.GetService<IEnumerable<IScheduleJob>>();
         IJobRegistratorExtensions.UseQuartzJob(scheduleJobs, jobType, triggerBuilder);
       });
     }
 
-    private static async Task ScheduleJobInternal(IScheduler scheduler, JobConfiguration jobConfig, Action<Type, TriggerBuilder> scheduleAction)
+    private static async Task ScheduleJobInternal(IScheduler scheduler, JobConfiguration jobConfig, ILogger logger, Action<Type, TriggerBuilder> scheduleAction)
     {
       JobKey jobKey = CreateJobKey(jobConfig);
       TriggerKey triggerKey = CreateTriggerKey(jobConfig);
@@ -152,20 +152,20 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         )
         {
           await scheduler.RescheduleJob(triggerKey, triggerBuilder.Build());
-          Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
+          logger.LogInformation($"Rescheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
         }
       }
       else
       {
         var jobType = GetJobType(jobConfig);
         scheduleAction(jobType, triggerBuilder);
-        Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
+        logger.LogInformation($"Scheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
       }
     }
 
-    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
+    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app, ILogger logger)
     {
-      await ScheduleJob(scheduler, app, _jobConfig);
+      await ScheduleJob(scheduler, app, logger, s_jobConfig);
     }
   }
 }
