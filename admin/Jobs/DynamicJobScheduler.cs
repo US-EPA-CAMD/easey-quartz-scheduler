@@ -1,5 +1,6 @@
-// DynamicJobScheduler.cs
-
+/// <summary>
+/// Provides the implementation for the dynamic job scheduler, which operates at regular intervals to determine if any new jobs need to be executed, scheduled, or rescheduled.
+/// </summary>
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 using Quartz;
 using SilkierQuartz;
 using SilkierQuartz.HostedService;
@@ -17,11 +19,18 @@ using Epa.Camd.Quartz.Scheduler.Models;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
+  /// <summary>
+  /// Represents a job scheduler that dynamically schedules or reschedules jobs based on database configurations.
+  /// </summary>
   public class DynamicJobScheduler : IJob
   {
     private readonly NpgSqlContext _dbContext;
     private readonly IConfiguration _configuration;
     private readonly ILogger<DynamicJobScheduler> _logger;
+
+    /// <summary>
+    /// Static job configuration for the dynamic job scheduler.
+    /// </summary>
     private static readonly JobConfiguration s_jobConfig = new JobConfiguration
     {
       JobName = "Dynamic Job Scheduler",
@@ -34,17 +43,35 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       IsActive = true,
     };
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DynamicJobScheduler"/> class.
+    /// </summary>
+    /// <param name="dbContext">The database context.</param>
+    /// <param name="configuration">The application configuration.</param>
+    /// <param name="logger">The logger instance.</param>
     public DynamicJobScheduler(NpgSqlContext dbContext, IConfiguration configuration, ILogger<DynamicJobScheduler> logger)
     {
       _dbContext = dbContext;
       _configuration = configuration;
+      _logger = logger;
     }
 
+    /// <summary>
+    /// Creates a new <see cref="JobKey"/> based on the provided job configuration.
+    /// </summary>
+    /// <param name="jobConfig">The job configuration.</param>
+    /// <returns>A <see cref="JobKey"/> object.</returns>
     private static JobKey CreateJobKey(JobConfiguration jobConfig)
     {
       return new JobKey(jobConfig.JobName, jobConfig.JobGroup);
     }
 
+    /// <summary>
+    /// Creates a new <see cref="TriggerBuilder"/> based on the provided job configuration.
+    /// </summary>
+    /// <param name="jobConfig">The job configuration.</param>
+    /// <returns>A <see cref="TriggerBuilder"/> object.</returns>
+    /// <exception cref="FormatException">Thrown if the cron expression is invalid.</exception>
     private static TriggerBuilder CreateTriggerBuilder(JobConfiguration jobConfig)
     {
       if (!CronExpression.IsValidExpression(jobConfig.CronExpression))
@@ -57,11 +84,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         .WithSchedule(CronScheduleBuilder.CronSchedule(jobConfig.CronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
 
+    /// <summary>
+    /// Creates a new <see cref="TriggerKey"/> based on the provided job configuration.
+    /// </summary>
+    /// <param name="jobConfig">The job configuration.</param>
+    /// <returns>A <see cref="TriggerKey"/> object.</returns>
     private static TriggerKey CreateTriggerKey(JobConfiguration jobConfig)
     {
       return new TriggerKey(jobConfig.TriggerName ?? jobConfig.JobName, jobConfig.JobGroup);
     }
 
+    /// <summary>
+    /// Retrieves the <see cref="Type"/> of the job specified in the job configuration.
+    /// </summary>
+    /// <param name="jobConfig">The job configuration.</param>
+    /// <returns>The <see cref="Type"/> of the job.</returns>
+    /// <exception cref="Exception">Thrown if the job type cannot be found.</exception>
     private static Type GetJobType(JobConfiguration jobConfig)
     {
       var jobType = Type.GetType($"Epa.Camd.Quartz.Scheduler.Jobs.{jobConfig.JobType}");
@@ -72,6 +110,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       return jobType;
     }
 
+    /// <summary>
+    /// Executes the dynamic job scheduler logic to schedule or reschedule jobs.
+    /// </summary>
+    /// <param name="context">The job execution context.</param>
     public async Task Execute(IJobExecutionContext context)
     {
       _logger.LogInformation("Starting Dynamic Job Scheduler");
@@ -121,18 +163,27 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       _logger.LogInformation("Completed Dynamic Job Scheduler");
     }
 
+    /// <summary>
+    /// Registers a job with the specified services based on the job configuration.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="jobConfig">The job configuration.</param>
     private static void RegisterJob(IServiceCollection services, JobConfiguration jobConfig)
     {
       var jobType = GetJobType(jobConfig);
       services.AddQuartzJob(jobType, CreateJobKey(jobConfig), jobConfig.JobDescription);
     }
 
+    /// <summary>
+    /// Registers all jobs with Quartz based on database configurations.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="dbContext">The database context.</param>
     public static void RegisterWithQuartz(IServiceCollection services, NpgSqlContext dbContext)
     {
       RegisterJob(services, s_jobConfig);
 
-      var jobs = dbContext.JobConfigurations
-          .ToList();
+      var jobs = dbContext.JobConfigurations.ToList();
 
       foreach (var jobConfig in jobs)
       {
@@ -140,6 +191,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
+    /// <summary>
+    /// Schedules a job using the provided scheduler, application builder, and logger.
+    /// </summary>
+    /// <param name="scheduler">The scheduler instance.</param>
+    /// <param name="app">The application builder.</param>
+    /// <param name="logger">The logger instance.</param>
+    /// <param name="jobConfig">The job configuration.</param>
     private static async Task ScheduleJob(IScheduler scheduler, IApplicationBuilder app, ILogger logger, JobConfiguration jobConfig)
     {
       await ScheduleJobInternal(scheduler, jobConfig, logger, (jobType, triggerBuilder) =>
@@ -148,6 +206,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       });
     }
 
+    /// <summary>
+    /// Schedules a job using the provided scheduler, service provider, and job configuration.
+    /// </summary>
+    /// <param name="scheduler">The scheduler instance.</param>
+    /// <param name="serviceProvider">The service provider.</param>
+    /// <param name="jobConfig">The job configuration.</param>
     private async Task ScheduleJob(IScheduler scheduler, IServiceProvider serviceProvider, JobConfiguration jobConfig)
     {
       await ScheduleJobInternal(scheduler, jobConfig, _logger, (jobType, triggerBuilder) =>
@@ -157,6 +221,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       });
     }
 
+    /// <summary>
+    /// Internal method to schedule a job using the specified scheduler, job configuration, logger, and schedule action.
+    /// </summary>
+    /// <param name="scheduler">The scheduler instance.</param>
+    /// <param name="jobConfig">The job configuration.</param>
+    /// <param name="logger">The logger instance.</param>
+    /// <param name="scheduleAction">The action to schedule the job.</param>
     private static async Task ScheduleJobInternal(IScheduler scheduler, JobConfiguration jobConfig, ILogger logger, Action<Type, TriggerBuilder> scheduleAction)
     {
       if (string.IsNullOrEmpty(jobConfig.CronExpression))
@@ -189,7 +260,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public async Task ScheduleJobOnce(IScheduler scheduler, JobKey jobKey, TriggerKey triggerKey, DateTime? runAt = null)
+    /// <summary>
+    /// Schedules a job to run once, immediately or at a specified time.
+    /// </summary>
+    /// <param name="scheduler">The scheduler instance.</param>
+    /// <param name="jobKey">The job key.</param>
+    /// <param name="triggerKey">The trigger key.</param>
+    /// <param name="runAt">The time to run the job, or null to run immediately.</param>
+    private async Task ScheduleJobOnce(IScheduler scheduler, JobKey jobKey, TriggerKey triggerKey, DateTime? runAt = null)
     {
       // Retrieve the job detail using the JobKey.
       IJobDetail jobDetail = await scheduler.GetJobDetail(jobKey);
