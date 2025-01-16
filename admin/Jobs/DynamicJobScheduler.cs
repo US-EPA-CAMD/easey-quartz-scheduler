@@ -47,6 +47,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private static TriggerBuilder CreateTriggerBuilder(JobConfiguration jobConfig)
     {
+      if (!CronExpression.IsValidExpression(jobConfig.CronExpression))
+      {
+        throw new FormatException($"Invalid cron expression: {jobConfig.CronExpression}");
+      }
       return TriggerBuilder.Create()
         .WithIdentity(CreateTriggerKey(jobConfig))
         .WithDescription(jobConfig.TriggerDescription)
@@ -55,7 +59,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private static TriggerKey CreateTriggerKey(JobConfiguration jobConfig)
     {
-      return new TriggerKey(jobConfig.TriggerName, jobConfig.JobGroup);
+      return new TriggerKey(jobConfig.TriggerName ?? jobConfig.JobName, jobConfig.JobGroup);
     }
 
     private static Type GetJobType(JobConfiguration jobConfig)
@@ -77,6 +81,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         var jobsToSchedule = await _dbContext.JobConfigurations
             .Where(j => j.IsActive)
             .ToListAsync();
+        _logger.LogInformation($"Found {jobsToSchedule.Count} jobs to schedule");
 
         var serviceProvider = (IServiceProvider)context.MergedJobDataMap["ServiceProvider"];
         var scheduler = context.Scheduler;
@@ -85,7 +90,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         {
           try
           {
+            // Schedule the job according to its configured cron expression.
             await ScheduleJob(scheduler, serviceProvider, jobConfig);
+
+            if (jobConfig.RunOnce == true)
+            {
+              var runAt = jobConfig.RunAt;
+
+              // Toggle the `RunOnce` flag to prevent the job from running again.
+              jobConfig.RunOnce = false;
+              jobConfig.RunAt = null;
+              _dbContext.JobConfigurations.Update(jobConfig);
+              await _dbContext.SaveChangesAsync();
+
+              // Schedule the job to run once at a specified time.
+              await ScheduleJobOnce(scheduler, CreateJobKey(jobConfig), CreateTriggerKey(jobConfig), runAt);
+            }
           }
           catch (Exception e)
           {
@@ -139,6 +159,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private static async Task ScheduleJobInternal(IScheduler scheduler, JobConfiguration jobConfig, ILogger logger, Action<Type, TriggerBuilder> scheduleAction)
     {
+      if (string.IsNullOrEmpty(jobConfig.CronExpression))
+      {
+        logger.LogWarning($"Job {jobConfig.JobName} has no cron expression and will not be scheduled");
+        return;
+      }
+
       JobKey jobKey = CreateJobKey(jobConfig);
       TriggerKey triggerKey = CreateTriggerKey(jobConfig);
       TriggerBuilder triggerBuilder = CreateTriggerBuilder(jobConfig);
@@ -161,6 +187,37 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         scheduleAction(jobType, triggerBuilder);
         logger.LogInformation($"Scheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
       }
+    }
+
+    public async Task ScheduleJobOnce(IScheduler scheduler, JobKey jobKey, TriggerKey triggerKey, DateTime? runAt = null)
+    {
+      // Retrieve the job detail using the JobKey.
+      IJobDetail jobDetail = await scheduler.GetJobDetail(jobKey);
+      if (jobDetail == null)
+      {
+        throw new Exception($"Job with key {jobKey.Name} not found.");
+      }
+
+      // Create the trigger to run once, immediately or at a specified time.
+      TriggerBuilder triggerBuilder = TriggerBuilder.Create()
+          .WithIdentity(triggerKey)
+          .WithDescription($"Run once trigger for job {jobKey.Name}");
+
+      if (runAt.HasValue)
+      {
+        // Ensure `runAt` is in Eastern Time.
+        var easternTime = TimeZoneInfo.ConvertTime(runAt.Value, Utils.getCurrentEasternZone());
+        triggerBuilder.StartAt(easternTime);
+        _logger.LogInformation($"Scheduling job {jobKey.Name} to run once at {easternTime}");
+      }
+      else
+      {
+        triggerBuilder.StartNow(); // Schedule the job to run immediately
+        _logger.LogInformation($"Scheduling job {jobKey.Name} to run immediately");
+      }
+
+      // Schedule the job with the one-time trigger
+      await scheduler.ScheduleJob(jobDetail, triggerBuilder.Build());
     }
 
     public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app, ILogger logger)

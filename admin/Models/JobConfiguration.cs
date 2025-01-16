@@ -1,9 +1,10 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Epa.Camd.Quartz.Scheduler.Models
 {
-  [Table("job_configurations", Schema = "camdaux")]
+  [Table("job_configuration", Schema = "camdaux")]
   public class JobConfiguration
   {
     [Key]
@@ -30,5 +31,11 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 
     [Column("active")]
     public bool IsActive { get; set; }
+
+    [Column("run_once")]
+    public bool RunOnce { get; set; }
+
+    [Column("run_at")]
+    public DateTime? RunAt { get; set; }
   }
 }
