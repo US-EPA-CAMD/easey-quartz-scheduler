@@ -284,7 +284,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       if (runAt.HasValue)
       {
         // Ensure `runAt` is in Eastern Time.
-        var easternTime = TimeZoneInfo.ConvertTime(runAt.Value, Utils.getCurrentEasternZone());
+        TimeZoneInfo easternZone = Utils.getCurrentEasternZone();
+        DateTimeOffset easternTime = new DateTimeOffset(runAt.Value, easternZone.GetUtcOffset(runAt.Value));
         triggerBuilder.StartAt(easternTime);
         _logger.LogInformation($"Scheduling job {jobKey.Name} to run once at {easternTime}");
       }
