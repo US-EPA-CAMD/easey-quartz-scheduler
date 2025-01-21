@@ -6,6 +6,7 @@ applications:
       - dotnet_core_buildpack
     health-check-type: ((healthCheckType))
     env:
+      PUBLISH_RELEASE_CONFIG: true
       OPTIMIZE_MEMORY: true
       CACHE_NUGET_PACKAGES: false
       EASEY_AUTH_API: https://((apiGatewayHost))/auth-mgmt

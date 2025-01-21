@@ -14,9 +14,4 @@
     <DebugSymbols>False</DebugSymbols>
   </PropertyGroup>  
 
-  <PropertyGroup>
-    <OutputPath>bin\$(Configuration)\$(TargetFramework)\</OutputPath>
-    <IntermediateOutputPath>obj\$(Configuration)\$(TargetFramework)\</IntermediateOutputPath>
-  </PropertyGroup>
-
 </Project>
