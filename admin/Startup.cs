@@ -16,25 +16,26 @@ using DatabaseAccess;
 using Epa.Camd.Quartz.Scheduler.Jobs;
 using Epa.Camd.Quartz.Scheduler.Models;
 using Epa.Camd.Quartz.Scheduler.Jobs.Listeners;
+using Epa.Camd.Quartz.Scheduler.Jobs.SubmissionWindowJob.Extensions;
 using Microsoft.AspNetCore.Http;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
-  public class Startup
+  public class Startup(IConfiguration configuration)
   {
-    private string connectionString;
+    private string connectionString = ConnectionStringManager.getConnectionString(configuration);
     private readonly string corsPolicy = "AllowedCORSOptions";
-    private IConfiguration Configuration { get; }
-
-    public Startup(IConfiguration configuration)
-    {
-      Configuration = configuration;
-      connectionString = ConnectionStringManager.getConnectionString(configuration);
-    }
+    private IConfiguration Configuration { get; } = configuration;
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+       // Add HTTP client for Auth API
+      services.AddHttpClient("AuthApi");
+      
+      // Register the Quartz job
+      services.RegisterWithQuartz();
+      
       AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
       Utils.Configuration = Configuration;
