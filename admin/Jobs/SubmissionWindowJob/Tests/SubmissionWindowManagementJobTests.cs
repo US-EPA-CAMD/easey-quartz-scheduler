@@ -64,8 +64,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.SubmissionWindowJob.Tests
             await Task.CompletedTask; // Add this to satisfy the async requirement
         }
 
-        // ... rest of your test methods remain the same ...
-
         private static IJobExecutionContext CreateJobContext(string eventType, string? windowId = null)
         {
             var dataMap = new JobDataMap();
