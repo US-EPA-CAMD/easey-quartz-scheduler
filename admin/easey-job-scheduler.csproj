@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Epa.Camd.Quartz.Scheduler</RootNamespace>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
     <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <DebugType>None</DebugType>
@@ -32,7 +33,7 @@
     <ProjectReference Include="..\CheckEngine\CheckEngine\CheckEngine.csproj" />
     <ProjectReference Include="..\CheckEngine\DatabaseAccess\DatabaseAccess.csproj" />
     <ProjectReference Include="..\CheckEngine\MonitorPlan\MonitorPlan.csproj" />
-	  <ProjectReference Include="..\CheckEngine\QA\QA.csproj" />
+	<ProjectReference Include="..\CheckEngine\QA\QA.csproj" />
     <ProjectReference Include="..\CheckEngine\Emissions\Emissions.csproj" />
     <ProjectReference Include="..\CheckEngine\DM\DM.csproj" />
     <ProjectReference Include="..\CheckEngine\LME\LME.csproj" />

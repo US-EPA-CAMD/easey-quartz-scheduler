@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 using Npgsql;
 using NpgsqlTypes;
 using Quartz;
-using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
 
@@ -24,60 +21,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private NpgSqlContext _dbContext = null;
 
-    private IConfiguration Configuration { get; }
-
-    public static class InventoryChangesIdentity
-    {
-      public static readonly string Group = Constants.QuartzGroups.MAINTAINANCE;
-      public static readonly string JobName = "Inventory Changes";
-      public static readonly string JobDescription = "Operates on an interval to determine if any remote facility/unit inventory changes require changes to existing monitoring plans.";
-      public static readonly string TriggerName = "Check status log every 5 minutes";
-      public static readonly string TriggerDescription = "Operate every 5 minutes to determine if there are any new changes recorded in the inventory status log.";
-    }
-
-    public static void RegisterWithQuartz(IServiceCollection services)
-    {
-      services.AddQuartzJob<InventoryChanges>(WithInventoryChangesKey(), InventoryChangesIdentity.JobDescription);
-    }
-
-    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
-    {
-      try
-      {
-        JobKey jobKey = WithInventoryChangesKey();
-        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_INVENTORY_CHANGES_SCHEDULE"] ?? "0 0/5 * * * ?";
-        TriggerBuilder triggerBuilder = WithInventoryChangesCronSchedule(cronExpression);
-
-        if (await scheduler.CheckExists(jobKey))
-        {
-          ITrigger trigger = await scheduler.GetTrigger(WithInventoryChangesTriggerKey());
-
-          if (
-            trigger is ICronTrigger cronTrigger &&
-            cronTrigger.CronExpressionString != cronExpression
-          )
-          {
-            await scheduler.RescheduleJob(WithInventoryChangesTriggerKey(), triggerBuilder.Build());
-            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
-          }
-        }
-        else
-        {
-          app.UseQuartzJob<InventoryChanges>(triggerBuilder);
-          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
-        }
-      }
-      catch (Exception e)
-      {
-        Console.WriteLine("ERROR");
-        Console.WriteLine(e.Message);
-      }
-    }
+    private IConfiguration _configuration { get; }
 
     public InventoryChanges(NpgSqlContext dbContext, IConfiguration configuration)
     {
       _dbContext = dbContext;
-      Configuration = configuration;
+      _configuration = configuration;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -86,7 +35,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
       try
       {
-        if (IsJobInProgress())
+        if (IsJobInProgress(context))
         {
           Console.Write("Inventory Changes job is already in progress, skipping");
           return;
@@ -98,7 +47,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                         WHERE job_name = {0}
                         AND status_cd = 'COMPLETE'
                         ORDER BY start_date DESC
-                        LIMIT 1", InventoryChangesIdentity.JobName
+                        LIMIT 1", context.JobDetail.Key.Name
                 ).FirstOrDefault();
 
         JobLog jl = new JobLog();
@@ -107,7 +56,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           jl.JobId = job_id;
           jl.JobSystem = "Quartz";
           jl.JobClass = "Maintainance";
-          jl.JobName = InventoryChangesIdentity.JobName;
+          jl.JobName = context.JobDetail.Key.Name;
           jl.AddDate = Utils.getCurrentEasternTime();
           jl.StartDate = Utils.getCurrentEasternTime();
           jl.EndDate = null;
@@ -181,14 +130,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       Console.Write("Completed Inventory Changes job");
     }
 
-    private bool IsJobInProgress()
+    private bool IsJobInProgress(IJobExecutionContext context)
     {
       // Get the last job log record for the job name "Inventory Changes".
       JobLog lastJobLog = _dbContext.JobLogs.FromSqlRaw(@"
                         SELECT * FROM camdaux.job_log
                         WHERE job_name = '{0}'
                         ORDER BY start_date DESC
-                        LIMIT 1", InventoryChangesIdentity.JobName
+                        LIMIT 1", context.JobDetail.Key.Name
               ).FirstOrDefault();
 
       // Check the status of the last job log. If the status is "WIP", then return.
@@ -207,33 +156,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           _dbContext.CreateParameter("par_V_DATA_TYPE_CD", inventoryStatusLog.DataTypeCd, NpgsqlDbType.Varchar, ParameterDirection.Input),
         };
       _dbContext.ExecuteProcedure("camdecmpswks.update_mp_eval_status_and_reporting_freq", parameters, connection, sqlTransaction);
-    }
-
-
-    public static JobKey WithInventoryChangesKey()
-    {
-      return new JobKey(InventoryChangesIdentity.JobName, InventoryChangesIdentity.Group);
-    }
-
-    public static TriggerKey WithInventoryChangesTriggerKey()
-    {
-      return new TriggerKey(InventoryChangesIdentity.TriggerName, InventoryChangesIdentity.Group);
-    }
-
-    public static IJobDetail WithInventoryChangesJobDetail()
-    {
-      return JobBuilder.Create<InventoryChanges>()
-          .WithIdentity(WithInventoryChangesKey())
-          .WithDescription(InventoryChangesIdentity.JobDescription)
-          .Build();
-    }
-
-    public static TriggerBuilder WithInventoryChangesCronSchedule(string cronExpression)
-    {
-      return TriggerBuilder.Create()
-          .WithIdentity(WithInventoryChangesTriggerKey())
-          .WithDescription(InventoryChangesIdentity.TriggerDescription)
-          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }

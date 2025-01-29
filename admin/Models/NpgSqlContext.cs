@@ -1,4 +1,3 @@
-using System.Net;
 using System;
 using System.Data;
 using System.Collections.Generic;
@@ -6,8 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using Quartz;
-using Epa.Camd.Quartz.Scheduler.Jobs;
 
 using Npgsql;
 using NpgsqlTypes;
@@ -19,21 +16,22 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     private readonly ILogger _logger;
     public IConfiguration Configuration { get; }
 
-    public DbSet<BulkFileMetadata> BulkFileMetadataSet {get; set; }
-    public DbSet<BulkFileQueue> BulkFileQueue {get; set; }
-    public DbSet<JobLog> JobLogs {get; set; }
-    public DbSet<ReportingPeriod> ReportingPeriods {get; set; }
-    public DbSet<BulkFileLog> BulkFileLogs {get; set; }
-    public DbSet<InventoryStatusLog> InventoryStatusLogs {get; set; }
+    public DbSet<BulkFileMetadata> BulkFileMetadataSet { get; set; }
+    public DbSet<BulkFileQueue> BulkFileQueue { get; set; }
+    public DbSet<JobConfiguration> JobConfigurations { get; set; }
+    public DbSet<JobLog> JobLogs { get; set; }
+    public DbSet<ReportingPeriod> ReportingPeriods { get; set; }
+    public DbSet<BulkFileLog> BulkFileLogs { get; set; }
+    public DbSet<InventoryStatusLog> InventoryStatusLogs { get; set; }
 
-    public DbSet<SubmissionSet> SubmissionSet {get; set; }
+    public DbSet<SubmissionSet> SubmissionSet { get; set; }
 
-    public DbSet<EmailToProcess> EmailToProcessQueue {get; set; }
-    public DbSet<EmailToSend> EmailToSend {get; set; }
-    public DbSet<ProgramCode> ProgramCodes { get; set; } 
+    public DbSet<EmailToProcess> EmailToProcessQueue { get; set; }
+    public DbSet<EmailToSend> EmailToSend { get; set; }
+    public DbSet<ProgramCode> ProgramCodes { get; set; }
     //public DbSet<EmissionEvaluation> EmissionEvaluations { get; set; } 
-    public DbSet<EvaluationSet> EvaluationSet { get; set; } 
-    public DbSet<Evaluation> Evaluations { get; set; }    
+    public DbSet<EvaluationSet> EvaluationSet { get; set; }
+    public DbSet<Evaluation> Evaluations { get; set; }
     public DbSet<SeverityCode> SeverityCodes { get; set; }
     public DbSet<EmissionEvaluation> EmissionEvaluations { get; set; }
     public DbSet<EvalStatusCode> EvalStatusCodes { get; set; }
@@ -55,8 +53,10 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       _logger = logger;
       Configuration = configuration;
     }
-    public async Task CreateBulkFileRecord(string name, Guid parent_id, int? year, int? quarter, string stateCd, string dataType, string subType, string url, string fileName, Guid job_id, string program_code){
-      try{
+    public async Task CreateBulkFileRecord(string name, Guid parent_id, int? year, int? quarter, string stateCd, string dataType, string subType, string url, string fileName, Guid job_id, string program_code)
+    {
+      try
+      {
         Guid child_job_id = Guid.NewGuid();
         BulkFileQueue jl = new BulkFileQueue();
         jl.JobId = child_job_id;
@@ -76,16 +76,19 @@ namespace Epa.Camd.Quartz.Scheduler.Models
         jl.JobName = name;
         await this.BulkFileQueue.AddAsync(jl);
         await this.SaveChangesAsync();
-      }catch(Exception e){
+      }
+      catch (Exception e)
+      {
         throw new Exception(e.Message);
       }
     }
 
-    public async Task<List<ProgramCode>> getProgramCodes(){
+    public async Task<List<ProgramCode>> getProgramCodes()
+    {
       return await this.ProgramCodes.ToListAsync();
     }
 
-    public async  Task<List<List<Object>>> ExecuteSqlQuery(string commandText, int columns)
+    public async Task<List<List<Object>>> ExecuteSqlQuery(string commandText, int columns)
     {
 
       var connectionString = this.Database.GetConnectionString();
@@ -103,13 +106,14 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 
           while (reader.Read())
           {
-              List<Object> row = new List<Object>();
-              
-              for(int i = 0; i < columns; i++){
-                row.Add(reader.GetProviderSpecificValue(i));
-              }
-                            
-              rows.Add(row);
+            List<Object> row = new List<Object>();
+
+            for (int i = 0; i < columns; i++)
+            {
+              row.Add(reader.GetProviderSpecificValue(i));
+            }
+
+            rows.Add(row);
           }
 
           connection.Close();
@@ -123,16 +127,17 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       return rows;
     }
 
-    public async Task ExecuteEmissionRefreshProcedure(string monPlanId, decimal year, decimal quarter){
+    public async Task ExecuteEmissionRefreshProcedure(string monPlanId, decimal year, decimal quarter)
+    {
       var connectionString = this.Database.GetConnectionString();
       var connection = new NpgsqlConnection(connectionString);
 
       if (connection.State != ConnectionState.Open)
-            connection.Open();
+        connection.Open();
 
       await using var cmd = new NpgsqlCommand("CALL camdecmpswks.refresh_emissions_views($1, $2, $3)", connection)
       {
-          Parameters =
+        Parameters =
           {
               new() { Value = monPlanId },
               new() { Value = year },

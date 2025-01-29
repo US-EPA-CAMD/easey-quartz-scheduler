@@ -71,6 +71,17 @@ namespace SilkierQuartz
             return services;
         }
 
+        public static IServiceCollection AddQuartzJob(this IServiceCollection services, Type t, JobKey key, string description)
+        {
+            if (!services.Any(sd => sd.ServiceType == t))
+            {
+                services.AddTransient(t);
+            }
+            var jobDetail = JobBuilder.Create(t).WithIdentity(key).WithDescription(description).Build();
+            services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(jobDetail, new List<ITrigger>()));
+            return services;
+        }
+
         public static IServiceCollection AddQuartzJobDetail(this IServiceCollection services, IJobDetail detail)
         {
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(detail, new List<ITrigger>()));
@@ -172,6 +183,16 @@ namespace SilkierQuartz
                 }
             }
             return app;
+        }
+
+        public static void UseQuartzJob(IEnumerable<IScheduleJob> scheduleJobs, Type t, TriggerBuilder triggerBuilder)
+        {
+            var job = scheduleJobs.FirstOrDefault(js => js.JobDetail.JobType == t);
+            if (job != null)
+            {
+                var lstgs = (List<ITrigger>)job.Triggers;
+                lstgs.Add(triggerBuilder.ForJob(job.JobDetail).Build());
+            }
         }
 
         public static IJobRegistrator RegiserJob<TJob>(

@@ -1,10 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 
 using Quartz;
-using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
 using System.Collections.Generic;
@@ -23,47 +20,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     private NpgSqlContext _dbContext = null;
 
     private IConfiguration Configuration { get; }
-
-    public static class SubmissionReminderProcessQueueIdentity
-    {
-      public static readonly string Group = Constants.QuartzGroups.MAINTAINANCE;
-      public static readonly string JobName = "Submission Reminder Process Queue";
-      public static readonly string JobDescription = "Operates on an interval to determine if submissions reminder emails can be processed.";
-      public static readonly string TriggerName = "Check file queue every minute for submission reminder emails";
-      public static readonly string TriggerDescription = "Operate every minute to determine if there are files in the queue which can be processed for Submission Reminders";
-    }
-
-    public static void RegisterWithQuartz(IServiceCollection services)
-    {
-      services.AddQuartzJob<SubmissionReminderProcessQueue>(WithSubmissionReminderProcessQueueIdentityJobKey(), SubmissionReminderProcessQueueIdentity.JobDescription);
-    }
-
-    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
-    {
-      try {
-        JobKey jobKey = WithSubmissionReminderProcessQueueIdentityJobKey();
-        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_SUBMISSION_REMINDER_QUEUE_SCHEDULE"] ?? "0 0/1 * 1/1 * ? *";
-        TriggerBuilder triggerBuilder = WithSubmissionReminderProcessQueueIdentityCronSchedule(cronExpression);
-
-        if (await scheduler.CheckExists(jobKey)) {
-          ITrigger trigger = await scheduler.GetTrigger(WithSubmissionReminderProcessQueueIdentityTriggerKey());
-
-          if (
-            trigger is ICronTrigger cronTrigger &&
-            cronTrigger.CronExpressionString != cronExpression
-          ) {
-            await scheduler.RescheduleJob(WithSubmissionReminderProcessQueueIdentityTriggerKey(), triggerBuilder.Build());
-            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
-          }
-        } else {
-          app.UseQuartzJob<SubmissionReminderProcessQueue>(triggerBuilder);
-          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
-        }
-      } catch(Exception e) {
-        Console.WriteLine("ERROR");
-        Console.WriteLine(e.Message);
-      }
-    }
 
     public SubmissionReminderProcessQueue(NpgSqlContext dbContext, IConfiguration configuration)
     {
@@ -163,32 +119,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         Console.Write(e.Message);
         return;
       }
-    }
-
-    public static JobKey WithSubmissionReminderProcessQueueIdentityJobKey()
-    {
-      return new JobKey(SubmissionReminderProcessQueueIdentity.JobName, SubmissionReminderProcessQueueIdentity.Group);
-    }
-
-    public static TriggerKey WithSubmissionReminderProcessQueueIdentityTriggerKey()
-    {
-      return new TriggerKey(SubmissionReminderProcessQueueIdentity.TriggerName, SubmissionReminderProcessQueueIdentity.Group);
-    }
-
-    public static IJobDetail WithSubmissionReminderProcessQueueIdentityJobDetail()
-    {
-      return JobBuilder.Create<SubmissionReminderProcessQueue>()
-          .WithIdentity(WithSubmissionReminderProcessQueueIdentityJobKey())
-          .WithDescription(SubmissionReminderProcessQueueIdentity.JobDescription)
-          .Build();
-    }
-
-    public static TriggerBuilder WithSubmissionReminderProcessQueueIdentityCronSchedule(string cronExpression)
-    {
-      return TriggerBuilder.Create()
-          .WithIdentity(WithSubmissionReminderProcessQueueIdentityTriggerKey())
-          .WithDescription(SubmissionReminderProcessQueueIdentity.TriggerDescription)
-          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }
