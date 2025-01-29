@@ -3,9 +3,10 @@ applications:
     memory: ((memory))
     instances: ((instances))
     buildpacks:
-      - https://github.com/cloudfoundry/dotnet-core-buildpack.git#v2.4.17
+      - dotnet_core_buildpack
     health-check-type: ((healthCheckType))
     env:
+      PUBLISH_RELEASE_CONFIG: true
       OPTIMIZE_MEMORY: true
       CACHE_NUGET_PACKAGES: false
       EASEY_AUTH_API: https://((apiGatewayHost))/auth-mgmt
