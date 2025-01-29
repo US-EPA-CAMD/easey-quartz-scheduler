@@ -3,7 +3,7 @@ using Quartz;
 
 namespace SilkierQuartz.HostedService
 {
-    internal interface IScheduleJob
+    public interface IScheduleJob
     {
         IJobDetail JobDetail { get; set; }
         IEnumerable<ITrigger> Triggers { get; set; }
