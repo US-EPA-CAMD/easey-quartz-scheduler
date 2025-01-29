@@ -198,9 +198,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// <param name="app">The application builder.</param>
     /// <param name="logger">The logger instance.</param>
     /// <param name="jobConfig">The job configuration.</param>
-    private static async Task ScheduleJob(IScheduler scheduler, IApplicationBuilder app, ILogger logger, JobConfiguration jobConfig)
+    private static async Task ScheduleJob(IScheduler scheduler, IApplicationBuilder app, JobConfiguration jobConfig)
     {
-      await ScheduleJobInternal(scheduler, jobConfig, logger, (jobType, triggerBuilder) =>
+      await ScheduleJobInternal(scheduler, jobConfig, (jobType, triggerBuilder) =>
       {
         app.UseQuartzJob(jobType, triggerBuilder);
       });
@@ -214,7 +214,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// <param name="jobConfig">The job configuration.</param>
     private async Task ScheduleJob(IScheduler scheduler, IServiceProvider serviceProvider, JobConfiguration jobConfig)
     {
-      await ScheduleJobInternal(scheduler, jobConfig, _logger, (jobType, triggerBuilder) =>
+      await ScheduleJobInternal(scheduler, jobConfig, (jobType, triggerBuilder) =>
       {
         var scheduleJobs = serviceProvider.GetService<IEnumerable<IScheduleJob>>();
         IJobRegistratorExtensions.UseQuartzJob(scheduleJobs, jobType, triggerBuilder);
@@ -228,11 +228,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// <param name="jobConfig">The job configuration.</param>
     /// <param name="logger">The logger instance.</param>
     /// <param name="scheduleAction">The action to schedule the job.</param>
-    private static async Task ScheduleJobInternal(IScheduler scheduler, JobConfiguration jobConfig, ILogger logger, Action<Type, TriggerBuilder> scheduleAction)
+    private static async Task ScheduleJobInternal(IScheduler scheduler, JobConfiguration jobConfig, Action<Type, TriggerBuilder> scheduleAction)
     {
       if (string.IsNullOrEmpty(jobConfig.CronExpression))
       {
-        logger.LogWarning($"Job {jobConfig.JobName} has no cron expression and will not be scheduled");
+        Console.WriteLine($"Job {jobConfig.JobName} has no cron expression and will not be scheduled");
         return;
       }
 
@@ -249,14 +249,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         )
         {
           await scheduler.RescheduleJob(triggerKey, triggerBuilder.Build());
-          logger.LogInformation($"Rescheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
+          Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
         }
       }
       else
       {
         var jobType = GetJobType(jobConfig);
         scheduleAction(jobType, triggerBuilder);
-        logger.LogInformation($"Scheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
+        Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
       }
     }
 
@@ -299,9 +299,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       await scheduler.ScheduleJob(jobDetail, triggerBuilder.Build());
     }
 
-    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app, ILogger logger)
+    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
     {
-      await ScheduleJob(scheduler, app, logger, s_jobConfig);
+      await ScheduleJob(scheduler, app, s_jobConfig);
     }
   }
 }

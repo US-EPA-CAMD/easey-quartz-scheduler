@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 using Quartz;
 
@@ -25,13 +24,11 @@ namespace Epa.Camd.Quartz.Scheduler
     private string _connectionString;
     private static readonly string s_corsPolicy = "AllowedCORSOptions";
     private IConfiguration _configuration { get; }
-    private readonly ILogger _logger;
 
-    public Startup(IConfiguration configuration, ILogger<Startup> logger)
+    public Startup(IConfiguration configuration)
     {
       _configuration = configuration;
       _connectionString = ConnectionStringManager.getConnectionString(configuration);
-      _logger = logger;
     }
 
     // This method gets called by the runtime. Use this method to add services to the container.
@@ -119,7 +116,7 @@ namespace Epa.Camd.Quartz.Scheduler
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-      _logger.LogInformation("Configuring Quartz");
+      Console.WriteLine("Configuring Quartz");
 
       if (env.IsDevelopment())
       {
@@ -148,13 +145,13 @@ namespace Epa.Camd.Quartz.Scheduler
         await next();
       });
 
-      _logger.LogInformation("Attempting to schedule quartz jobs");
+      Console.WriteLine("Attempting to schedule quartz jobs");
 
       IScheduler scheduler = app.GetScheduler();
 
       BulkDataFile.setScheduler(scheduler);
 
-      await DynamicJobScheduler.ScheduleWithQuartz(scheduler, app, _logger);
+      await DynamicJobScheduler.ScheduleWithQuartz(scheduler, app);
 
       //Schedule Listeners
       await CheckEngineEvaluationListener.ScheduleWithQuartz(scheduler);
