@@ -16,6 +16,7 @@ using Epa.Camd.Quartz.Scheduler.Jobs;
 using Epa.Camd.Quartz.Scheduler.Models;
 using Epa.Camd.Quartz.Scheduler.Jobs.Listeners;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
@@ -114,9 +115,9 @@ namespace Epa.Camd.Quartz.Scheduler
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public async void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
     {
-      Console.WriteLine("Configuring Quartz");
+      logger.LogInformation("Configuring Quartz");
 
       if (env.IsDevelopment())
       {
@@ -145,13 +146,13 @@ namespace Epa.Camd.Quartz.Scheduler
         await next();
       });
 
-      Console.WriteLine("Attempting to schedule quartz jobs");
+      logger.LogInformation("Attempting to schedule quartz jobs");
 
       IScheduler scheduler = app.GetScheduler();
 
       BulkDataFile.setScheduler(scheduler);
 
-      await DynamicJobScheduler.ScheduleWithQuartz(scheduler, app);
+      await DynamicJobScheduler.ScheduleWithQuartz(scheduler, app, logger);
 
       //Schedule Listeners
       await CheckEngineEvaluationListener.ScheduleWithQuartz(scheduler);
