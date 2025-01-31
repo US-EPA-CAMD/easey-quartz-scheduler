@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -27,6 +26,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     private readonly NpgSqlContext _dbContext;
     private readonly IConfiguration _configuration;
     private readonly ILogger<DynamicJobScheduler> _logger;
+    private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
     /// Static job configuration for the dynamic job scheduler.
@@ -49,11 +49,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// <param name="dbContext">The database context.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The logger instance.</param>
-    public DynamicJobScheduler(NpgSqlContext dbContext, IConfiguration configuration, ILogger<DynamicJobScheduler> logger)
+    public DynamicJobScheduler(NpgSqlContext dbContext, IConfiguration configuration, ILogger<DynamicJobScheduler> logger, IServiceProvider serviceProvider)
     {
       _dbContext = dbContext;
       _configuration = configuration;
       _logger = logger;
+      _serviceProvider = serviceProvider;
     }
 
     /// <summary>
@@ -120,11 +121,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
       try
       {
-        var jobConfigs = await _dbContext.JobConfigurations
-            .ToListAsync();
+        var jobConfigs = _dbContext.JobConfigurations.ToList();
         _logger.LogInformation($"Found {jobConfigs.Count} job configurations");
 
-        var serviceProvider = (IServiceProvider)context.MergedJobDataMap["ServiceProvider"];
         var scheduler = context.Scheduler;
 
         foreach (var jobConfig in jobConfigs)
@@ -134,7 +133,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             try
             {
               // Schedule the job according to its configured cron expression.
-              await ScheduleJob(scheduler, serviceProvider, jobConfig);
+              await ScheduleJob(scheduler, jobConfig);
 
               if (jobConfig.RunOnce == true)
               {
@@ -159,11 +158,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           {
             try
             {
-              await RemoveJob(scheduler, jobConfig);
+              await UnscheduleJob(scheduler, jobConfig, _logger);
             }
             catch (Exception e)
             {
-              _logger.LogError($"Error removing job {jobConfig.JobName}: {e.Message}");
+              _logger.LogError($"Error unscheduling job {jobConfig.JobName}: {e.Message}");
             }
           }
         }
@@ -205,29 +204,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     }
 
     /// <summary>
-    /// Removes a job from the scheduler based on the job configuration.
-    /// </summary>
-    /// <param name="scheduler">The scheduler instance.</param>
-    /// <param name="jobConfig">The job configuration.</param>
-    public async Task RemoveJob(IScheduler scheduler, JobConfiguration jobConfig)
-    {
-      JobKey jobKey = CreateJobKey(jobConfig);
-
-      if (await scheduler.CheckExists(jobKey))
-      {
-        bool deleted = await scheduler.DeleteJob(jobKey);
-        if (deleted)
-        {
-          _logger.LogInformation($"Successfully de-scheduled job: {jobConfig.JobName}");
-        }
-        else
-        {
-          _logger.LogWarning($"Failed to remove job: {jobConfig.JobName}. It may not exist or was already removed.");
-        }
-      }
-    }
-
-    /// <summary>
     /// Schedules a job using the provided scheduler, application builder, and logger.
     /// </summary>
     /// <param name="scheduler">The scheduler instance.</param>
@@ -246,13 +222,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// Schedules a job using the provided scheduler, service provider, and job configuration.
     /// </summary>
     /// <param name="scheduler">The scheduler instance.</param>
-    /// <param name="serviceProvider">The service provider.</param>
     /// <param name="jobConfig">The job configuration.</param>
-    private async Task ScheduleJob(IScheduler scheduler, IServiceProvider serviceProvider, JobConfiguration jobConfig)
+    private async Task ScheduleJob(IScheduler scheduler, JobConfiguration jobConfig)
     {
       await ScheduleJobInternal(scheduler, jobConfig, _logger, (jobType, triggerBuilder) =>
       {
-        var scheduleJobs = serviceProvider.GetService<IEnumerable<IScheduleJob>>();
+        var scheduleJobs = _serviceProvider.GetService<IEnumerable<IScheduleJob>>();
         IJobRegistratorExtensions.UseQuartzJob(scheduleJobs, jobType, triggerBuilder);
       });
     }
@@ -311,7 +286,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       IJobDetail jobDetail = await scheduler.GetJobDetail(jobKey);
       if (jobDetail == null)
       {
-        throw new Exception($"Job with key {jobKey.Name} not found.");
+        _logger.LogInformation($"Job with key {jobKey.Name} not found. Adding job to the scheduler.");
+
+        // Create a new job detail.
+        jobDetail = JobBuilder
+          .Create(GetJobType(jobConfig))
+          .WithIdentity(jobKey)
+          .WithDescription(jobConfig.JobDescription)
+          .Build();
+
+        await scheduler.AddJob(jobDetail, replace: true); // Add the job to the scheduler
       }
 
       // Create the trigger to run once, immediately or at a specified time.
