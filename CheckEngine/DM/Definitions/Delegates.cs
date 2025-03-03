@@ -30,7 +30,7 @@ namespace ECMPS.DM.Definitions
     public delegate bool dGetFactorFormulaeArray(string monPlanId, int rptPeriodId,
                                                  cUnitInfo[] unitInfo, cLocationInfo[] locationInfo,
                                                  out cFactorFormulae[] factorFormulaeArray,
-                                                 ref string errorMessage);
+                                                 out string errorMessage);
 
     /// <summary>
     /// Delegate used for methods that log errors.
@@ -49,19 +49,20 @@ namespace ECMPS.DM.Definitions
     /// <summary>
     /// Delegate for the method called to update the check log, set apportionment type, and set emissions created to 'N'.
     /// </summary>
-    /// <param name="dmEmissionsId">The DM_EMISSIONS_ID of the update.</param>
+    /// <param name="pdemReportId">The PDEM_REPORT_ID of the update.</param>
     /// <param name="apportionmentType">The apportionment type of the update.</param>
-    public delegate void dUpdateFailure(string dmEmissionsId,
-                                        eApportionmentType? apportionmentType);
+    /// <param name="failureMessage">The message indicating the failure that occurred.</param>
+    public delegate void dUpdateFailure(long pdemReportId,
+                                        eApportionmentType? apportionmentType,
+                                        string failureMessage);
 
     /// <summary>
     /// Delegate for the method called to initialize the DM Update process.
     /// </summary>
     /// <param name="monPlanId">The monitor plan of the emissions report to update.</param>
     /// <param name="rptPeriodId">The reporting period of the emissions report to update.</param>
-    /// <param name="userId">The user name to use for any created rows.</param>
-    /// <param name="dmEmissionsId">The DM_EMISSIONS_ID to store in created rows.</param>
-    /// <param name="dataSource">The Data Source to store in created rows.</param>
+    /// <param name="submissionId">The submission id for the emissions report.</param>
+    /// <param name="pdemReportId">The PDEM_REPORT_ID to store in created rows.</param>
     /// <param name="isMatsEmissionReport">Indicates whether the emission report is a MATS report.</param>
     /// <param name="locationTable">Table of location information for the monitor plan.</param>
     /// <param name="rptPeriodInfoTable">Table with a row containing reporting period information.</param>
@@ -72,9 +73,9 @@ namespace ECMPS.DM.Definitions
     /// <param name="monitorHourTable">The monitor hour information for the emission report.</param>
     /// <param name="errorMessage">The error message returned if the init failed.</param>
     /// <returns>False if the init failed.</returns>
-    public delegate bool dUpdateInit(string monPlanId, int rptPeriodId, string userId,
-                                     out string dmEmissionsId,
-                                     out string dataSource,
+    public delegate bool dUpdateInit(long pdemReportId,
+                                     out string monPlanId,
+                                     out int? rptPeriodId,
                                      out bool? isMatsEmissionReport,
                                      out DataTable locationTable,
                                      out DataTable rptPeriodInfoTable,
@@ -89,11 +90,11 @@ namespace ECMPS.DM.Definitions
     /// Delegate for the method called to update the apportionment type, unit hour data 
     /// and check log.
     /// </summary>
-    /// <param name="dmEmissionsId">The DM_EMISSIONS_ID of the update.</param>
+    /// <param name="pdemReportId">The PDEM_REPORT_ID of the update.</param>
     /// <param name="apportionmentType">The apportionment type of the update.</param>
     /// <param name="isMatsEmissionReport">Indicates whether the emission report is a MATS report.</param>
     /// <param name="unitKeyArray">The UNIT_ID update array.</param>
-    /// <param name="dmEmissionsIdArray">The DM_EMISSIONS_ID update array.</param>
+    /// <param name="pdemReportIdArray">The PDEM_REPORT_ID update array.</param>
     /// <param name="opDateArray">The op date update array.</param>
     /// <param name="opHourArray">The op hour update array.</param>
     /// <param name="opTimeArray">The op time update array.</param>
@@ -130,12 +131,11 @@ namespace ECMPS.DM.Definitions
     /// <param name="monPlanIdArray">The MON_PLAN_ID update array.</param>
     /// <param name="rptPeriodIdArray">The RPT_PERIOD_ID update array.</param>
     /// <param name="opYearArray">The op year update array.</param>
-    /// <param name="dataSourceArray">The data source update array.</param>
-    /// <param name="userIdArray">The user id update array.</param>
-    public delegate void dUpdateSuccess(string dmEmissionsId,
-                                        eApportionmentType apportionmentType,
+    /// <param name="errorMessage">The error message indicating why the updated failed.</param>
+    public delegate bool dUpdateSuccess(long pdemReportId,
+                                        eApportionmentType? apportionmentType,
                                         bool? isMatsEmissionReport,
-                                        string[] dmEmissionsIdArray,
+                                        long[] pdemReportIdArray,
                                         int?[] unitKeyArray,
                                         DateTime?[] opDateArray,
                                         int?[] opHourArray,
@@ -173,7 +173,6 @@ namespace ECMPS.DM.Definitions
                                         string[] monPlanIdArray,
                                         int?[] rptPeriodIdArray,
                                         int?[] opYearArray,
-                                        string[] dataSourceArray,
-                                        string[] userIdArray);
+                                        out string errorMessage);
 
 }

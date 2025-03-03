@@ -1,4 +1,5 @@
 ﻿
+using ECMPS.DM;
 using ECMPS.Checks.CheckEngine;
 using ECMPS.Checks.CheckEngine.Definitions;
 using Quartz;
@@ -6,6 +7,7 @@ using Quartz.Impl;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace CheckEngineRunner
 {
@@ -137,6 +139,56 @@ namespace CheckEngineRunner
                         cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
 
                         bool result = checkEngine.RunChecks_QaReport_Tee(teeId, monPlanId, eCheckEngineRunMode.Normal, batchId);
+                    }
+                    break;
+                case "PDEM":
+                    {
+                        string pdemReportIdText = ((args != null) && (args.Length >= 2)) ? args[1] : null;
+
+                        int pdemReportId;
+                        {
+                            if (!int.TryParse(pdemReportIdText, out pdemReportId)) { pdemReportId = 0; }
+                        }
+
+                        string dllPath = Path.Combine(baseDir, "DM", "obj", "Debug", "net8.0") + Path.DirectorySeparatorChar;
+
+
+                        //Define the path to the text file
+                        string logFilePath = "console_log.txt";
+
+                        //Create a StreamWriter to write logs to a text file
+                        using (StreamWriter logFileWriter = new StreamWriter(logFilePath, append: true))
+                        {
+                            //Create an ILoggerFactory
+                            ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+                            {
+                                //Add console output
+                                builder.AddSimpleConsole(options =>
+                                {
+                                    options.IncludeScopes = true;
+                                    options.SingleLine = true;
+                                    options.TimestampFormat = "HH:mm:ss ";
+                                });
+
+                                //Add a custom log provider to write logs to text files
+                                builder.AddProvider(new CustomFileLoggerProvider(logFileWriter));
+                            });
+
+                            //Create an ILogger
+                            ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
+
+                            // Output some text on the console
+                            using (logger.BeginScope("[scope is enabled]"))
+                            {
+                                logger.LogInformation("Hello World!");
+                                logger.LogInformation("Logs contain timestamp and log level.");
+                                logger.LogInformation("Each log message is fit in a single line.");
+                            }
+
+                            cUpdateEmissions updateEmissions = new cUpdateEmissions(CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, logger, 20);
+
+                            updateEmissions.ProcessEmissionReport(pdemReportId);
+                        }
                     }
                     break;
             }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 
 using Npgsql;
 using NpgsqlTypes;
@@ -1540,6 +1541,7 @@ namespace ECMPS.Checks.DatabaseAccess
         /// </summary>
         /// <param name="sParamName">The name of the parameter</param>
         /// <param name="nSize">The size/length of the Varchar parameter</param>
+        /// <param name="oValue">The input value of the parameter.</param>
         public void AddInputOutputParameterString(string sParamName, int nSize, object oValue)
         {
             Debug.Assert(m_sqlCmd != null, "m_sqlCmd is null.");
@@ -1691,26 +1693,38 @@ namespace ECMPS.Checks.DatabaseAccess
                 {
                     List<int> excludeColumnIndex = new List<int>();
                     string insertColumns = string.Empty;
-                    foreach (DataColumn column in sourceTable.Columns)
-                        if (!excludeColumnNames.Contains(column.ColumnName))
-                            insertColumns += column.ColumnName + ",";
-                        else
-                            excludeColumnIndex.Add(sourceTable.Columns.IndexOf(column));
+                    {
+                        List<string> excludeColumnCompareNames = new List<string>();
+                        foreach (string excludeColumnName in excludeColumnNames)
+                            excludeColumnCompareNames.Add(excludeColumnName.ToLower());
+
+                        foreach (DataColumn column in sourceTable.Columns)
+                            if (!excludeColumnCompareNames.Contains(column.ColumnName.ToLower()))
+                                insertColumns += column.ColumnName + ",";
+                            else
+                                excludeColumnIndex.Add(sourceTable.Columns.IndexOf(column));
+                    }
                     insertColumns = insertColumns.TrimEnd(',').ToLower();
 
                     string columnValue;
                     Console.WriteLine("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (NULL './0')");
 
-                    using (var writer = m_sqlConn.BeginTextImport("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (NULL './0')")) {
+                    using (TextWriter writer = m_sqlConn.BeginTextImport("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (NULL './0')")) {
+                        string delim;
+
                         foreach (DataRow row in sourceTable.Rows)
                         {
+                            delim = "";
+
                             for (int i = 0; i < row.ItemArray.Length; i++){
-                                if (!excludeColumnIndex.Contains(i)){
+                                if (!excludeColumnIndex.Contains(i))
+                                {
+                                    writer.Write(delim);
+
                                     if (row[i] == DBNull.Value || (row[i].GetType() == typeof(string) && row[i].Equals(""))){
                                         writer.Write("./0");
                                     }
-
-                                    if (row[i] != DBNull.Value && row[i].GetType() == typeof(string)){
+                                    else if (row[i] != DBNull.Value && row[i].GetType() == typeof(string)){
                                         columnValue = row[i].ToString().Replace("\n", "\\n").Replace("\t", "\\t").Replace("\r", "\\r").Replace("\b", "\\b").Replace("\f", "\\f").Replace("\v", "\\v");
                                         writer.Write(columnValue);
                                     }
@@ -1718,9 +1732,7 @@ namespace ECMPS.Checks.DatabaseAccess
                                         writer.Write(row[i]);
                                     }
 
-                                    if(i < row.ItemArray.Length - 1){
-                                        writer.Write("\t");
-                                    }
+                                    delim = "\t";
                                 }
                             }
                             writer.WriteLine();

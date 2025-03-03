@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 
 using ECMPS.DM.Definitions;
 using ECMPS.DM.HourlyEmissions;
 using ECMPS.DM.Miscellaneous;
 using ECMPS.DM.Utilities;
 
+using ECMPS.Checks.DatabaseAccess;
 using ECMPS.Definitions.Extensions;
+using ECMPS.Checks.EmissionsReport;
+using Npgsql;
+using Microsoft.Extensions.Logging;
 
 
 namespace ECMPS.DM
@@ -26,33 +27,20 @@ namespace ECMPS.DM
         /// <summary>
         /// Creates a cUpdateEmissions object.
         /// </summary>
-        /// <param name="updateInit">The delegate initialize processing.</param>
-        /// <param name="updateSuccess">The delegate used to update after successful apportionment.</param>
-        /// <param name="updateFailure">The delegate used to update after apportionment failure.</param>
-        /// <param name="getFactorFormulaeArray"></param>
-        /// <param name="logError">The delegate called to log errors.</param>
-        /// <param name="userId">The user id to use in updated rows.</param>
-        public cUpdateEmissions(dUpdateInit updateInit,
-                                dUpdateSuccess updateSuccess,
-                                dUpdateFailure updateFailure,
-                                dGetFactorFormulaeArray getFactorFormulaeArray,
-                                dLogError logError,
-                                string userId)
+        /// <param name="dbConnectionString">The database string for the ECMPS PostgreSQL database.</param>
+        /// <param name="logger">The ILogger instance to use.</param>
+        /// <param name="commandTimeout">The timeout to use</param>
+        public cUpdateEmissions( string dbConnectionString, ILogger logger, int commandTimeout = 300 ) 
         {
-            if (logError != null)
-            {
-                cErrorHandler.Initialize(logError);
+            cDatabase.AuxConnectionString = dbConnectionString;
+            cDatabase.DataConnectionString = dbConnectionString;
+            cDatabase.WorkspaceConnectionString = dbConnectionString;
 
-                UpdateInit = updateInit;
-                UpdateSuccess = updateSuccess;
-                UpdateFailure = updateFailure;
-                GetFactorFormulaeArray = getFactorFormulaeArray;
-                UserId = userId;
-            }
-            else
-                throw new System.ArgumentException("Argument cannot be null", "logError");
+            _dbConnection = cDatabase.GetConnection( cDatabase.eCatalog.AUX, commandTimeout, "Apportionment" );
+            _logger = logger;
+            _updateEmissionsDb = new cUpdateEmissionsDb( _dbConnection, logger);
         }
-
+        
         #endregion
 
 
@@ -71,13 +59,22 @@ namespace ECMPS.DM
         #endregion
 
 
+        #region Private Properties
+
+        private dGetFactorFormulaeArray GetFactorFormulaeArray { get { return (_updateEmissionsDb != null) ? _updateEmissionsDb.GetFactorFormulaeArray : null; } }
+        private dUpdateFailure UpdateFailure { get { return (_updateEmissionsDb != null) ? _updateEmissionsDb.UpdateFailure : null; } }
+        private dUpdateInit UpdateInit { get { return (_updateEmissionsDb != null) ? _updateEmissionsDb.UpdateInit : null; } }
+        private dUpdateSuccess UpdateSuccess { get { return (_updateEmissionsDb != null) ? _updateEmissionsDb.UpdateSuccess : null; } }
+
+        #endregion
+
+
         #region Private Fields
 
-        private dGetFactorFormulaeArray GetFactorFormulaeArray;
-        private dUpdateFailure UpdateFailure;
-        private dUpdateInit UpdateInit;
-        private dUpdateSuccess UpdateSuccess;
-        private string UserId;
+        private readonly cDatabase _dbConnection;
+        private readonly ILogger _logger;
+        private readonly cUpdateEmissionsDb _updateEmissionsDb;
+
 
         #endregion
 
@@ -89,14 +86,17 @@ namespace ECMPS.DM
         /// </summary>
         /// <param name="monPlanId">The monitor plan id of the emissions report.</param>
         /// <param name="rptPeriodId">The report period id of the emissions report.</param>
-        public void ProcessEmissionReport(string monPlanId, int rptPeriodId)
+        /// <param name="submissionId">The submission id for the emissions report.</param>
+        public void ProcessEmissionReport(long pdemReportId)
         {
             try
             {
+                _updateEmissionsDb.TransactionBegin();
+
                 string errorMessage = "";
 
-                string dmEmissionsId;
-                string dataSource;
+                string monPlanId;
+                int? rptPeriodId;
                 bool? isMatsEmissionReport;
                 DataTable locationTable;
                 DataTable rptPeriodInfoTable;
@@ -106,9 +106,9 @@ namespace ECMPS.DM
                 DataTable specialMethodCountTable;
                 DataTable monitorHourTable;
 
-                if (UpdateInit(monPlanId, rptPeriodId, UserId,
-                               out dmEmissionsId,
-                               out dataSource,
+                if (UpdateInit(pdemReportId,
+                               out monPlanId, 
+                               out rptPeriodId,
                                out isMatsEmissionReport,
                                out locationTable,
                                out rptPeriodInfoTable,
@@ -133,22 +133,28 @@ namespace ECMPS.DM
                         {
                             case eApportionmentType.Error:
                                 {
-                                    cErrorHandler.LogError("Unable to determine apportionment type.");
-                                    UpdateFailure(dmEmissionsId, apportionmentType);
+                                    _updateEmissionsDb.TransactionRollback();
+                                    errorMessage = "Unable to determine apportionment type.";
+                                    _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
+                                    UpdateFailure(pdemReportId, apportionmentType, errorMessage);
                                 }
                                 break;
 
                             case eApportionmentType.MultiplePipe:
                                 {
-                                    cErrorHandler.LogError("Multiple pipe apportionment not supported");
-                                    UpdateFailure(dmEmissionsId, apportionmentType);
+                                    _updateEmissionsDb.TransactionRollback();
+                                    errorMessage = "Multiple pipe apportionment not supported";
+                                    _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
+                                    UpdateFailure(pdemReportId, apportionmentType, errorMessage);
                                 }
                                 break;
 
                             case eApportionmentType.MultiplePipeInvolved:
                                 {
-                                    cErrorHandler.LogError("Apportionment involving multiple pipes not supported");
-                                    UpdateFailure(dmEmissionsId, apportionmentType);
+                                    _updateEmissionsDb.TransactionRollback();
+                                    errorMessage = "Apportionment involving multiple pipes not supported";
+                                    _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
+                                    UpdateFailure(pdemReportId, apportionmentType, errorMessage);
                                 }
                                 break;
 
@@ -158,26 +164,18 @@ namespace ECMPS.DM
 
                                     if (GetLocationInfo(locationTable, out locationInfo))
                                     {
-                                        cHourlyRawData hourlyRawData = new cHourlyRawData(dmEmissionsId,
-                                                                                          monPlanId, rptPeriodId,
-                                                                                          locationInfo,
-                                                                                          year, quarter,
-                                                                                          dataSource, UserId);
+                                        cHourlyRawData hourlyRawData = new cHourlyRawData(pdemReportId, monPlanId, rptPeriodId.Value, locationInfo, year, quarter, _logger);
 
                                         cFactorFormulae[] factorFormulaeArray;
                                         cHourlyApportionedData hourlyApportionedData;
 
                                         if (hourlyRawData.Update(monitorHourTable) &&
-                                            GetFactorFormulae(monPlanId, rptPeriodId, hourlyRawData.UnitInfo, hourlyRawData.LocationInfo, out factorFormulaeArray) &&
-                                            cHourlyApportionedData.GetApportionedData(apportionmentType,
-                                                                                      hourlyRawData,
-                                                                                      factorFormulaeArray,
-                                                                                      out hourlyApportionedData))
-                                        {
-                                            UpdateSuccess(dmEmissionsId,
+                                            GetFactorFormulae(monPlanId, rptPeriodId.Value, hourlyRawData.UnitInfo, hourlyRawData.LocationInfo, out factorFormulaeArray) &&
+                                            GetApportionedData(apportionmentType, hourlyRawData, factorFormulaeArray, out hourlyApportionedData) &&
+                                            UpdateSuccess(pdemReportId,
                                                           apportionmentType,
                                                           isMatsEmissionReport,
-                                                          hourlyApportionedData.DmEmissionsIdArray,
+                                                          hourlyApportionedData.PdemReportIdArray,
                                                           hourlyApportionedData.UnitKeyArray,
                                                           hourlyApportionedData.OpDateArray,
                                                           hourlyApportionedData.OpHourArray,
@@ -215,13 +213,22 @@ namespace ECMPS.DM
                                                           hourlyApportionedData.MonPlanIdArray,
                                                           hourlyApportionedData.RptPeriodIdArray,
                                                           hourlyApportionedData.OpYearArray,
-                                                          hourlyApportionedData.DataSourceArray,
-                                                          hourlyApportionedData.UserIdArray);
+                                                          out errorMessage))
+                                        {
+                                            _updateEmissionsDb.TransactionCommit();
                                         }
                                         else
                                         {
-                                            UpdateFailure(dmEmissionsId, apportionmentType);
+                                            _updateEmissionsDb.TransactionRollback();
+                                            _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
+                                            UpdateFailure(pdemReportId, apportionmentType, errorMessage);
                                         }
+                                    }
+                                    else
+                                    {
+                                        _updateEmissionsDb.TransactionRollback();
+                                        _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
+                                        UpdateFailure(pdemReportId, apportionmentType, errorMessage);
                                     }
                                 }
                                 break;
@@ -229,20 +236,24 @@ namespace ECMPS.DM
                     }
                     else
                     {
-                        cErrorHandler.LogError(string.Format("Unknown reporting period: {0}", rptPeriodId));
-                        UpdateFailure(dmEmissionsId, null);
+                        _updateEmissionsDb.TransactionRollback();
+                        errorMessage = $"Unknown reporting period: {rptPeriodId}";
+                        _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
+                        UpdateFailure(pdemReportId, null, errorMessage);
                     }
                 }
                 else
                 {
-                    cErrorHandler.LogError(errorMessage);
-                    UpdateFailure(dmEmissionsId, null);
+                    _updateEmissionsDb.TransactionRollback();
+                    _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
+                    UpdateFailure(pdemReportId, null, errorMessage);
                 }
             }
             catch (Exception ex)
             {
-                cErrorHandler.LogError(ex.Message);
-                UpdateFailure(null, null);
+                _updateEmissionsDb.TransactionRollback();
+                _logger?.LogError(ex, "PDEM.ProcessEmissionReport({pdemReportId})", pdemReportId);
+                UpdateFailure(pdemReportId, null, ex.Message);
             }
         }
 
@@ -251,6 +262,82 @@ namespace ECMPS.DM
 
         #region Private Methods
 
+        /// <summary>
+        /// Returns an apportionment class corresponding to the indicated apportionment type.
+        /// </summary>
+        /// <param name="apportionmentType">The apportionment type of the apportionment class.</param>
+        /// <param name="hourlyRawData">The raw data to apportion.</param>
+        /// <param name="factorFormulaeArray"></param>
+        /// <param name="hourlyApportionedData">The resulting apportionment class.</param>
+        /// <returns>False if the apportionment type is not handled or an unhandled exception occurs.</returns>
+        public bool GetApportionedData(eApportionmentType apportionmentType,
+                                       cHourlyRawData hourlyRawData,
+                                       cFactorFormulae[] factorFormulaeArray,
+                                       out cHourlyApportionedData hourlyApportionedData)
+        {
+            bool result;
+
+            try
+            {
+                if ((factorFormulaeArray != null) && (factorFormulaeArray.Length > 0))
+                {
+                    hourlyApportionedData = new cHourlyApportionedDataComplex(hourlyRawData, factorFormulaeArray, _logger);
+                }
+                else
+                {
+                    switch (apportionmentType)
+                    {
+                        case eApportionmentType.CommonPipe:
+                            hourlyApportionedData = new cHourlyApportionedDataCommonPipe(hourlyRawData, _logger);
+                            break;
+
+                        case eApportionmentType.CommonPipeLtff:
+                            hourlyApportionedData = new cHourlyApportionedDataUnit(hourlyRawData, _logger);
+                            break;
+
+                        case eApportionmentType.CommonStack:
+                            hourlyApportionedData = new cHourlyApportionedDataCommonStack(hourlyRawData, _logger);
+                            break;
+
+                        case eApportionmentType.CommonStackAndPipe:
+                            hourlyApportionedData = new cHourlyApportionedDataCommonStackAndPipe(hourlyRawData, _logger);
+                            break;
+
+                        case eApportionmentType.MultipleStack:
+                            hourlyApportionedData = new cHourlyApportionedDataMultipleStack(hourlyRawData, _logger);
+                            break;
+
+                        case eApportionmentType.Unit:
+                            hourlyApportionedData = new cHourlyApportionedDataUnit(hourlyRawData, _logger);
+                            break;
+
+                        default:
+                            hourlyApportionedData = null;
+                            break;
+                    }
+                }
+
+                if (hourlyApportionedData != null)
+                {
+                    result = hourlyApportionedData.Apportion();
+                }
+                else
+                {
+                    _logger?.LogError("PDEM.GetApportionedData({apportionmentType}): Apportionment Type not handled.", apportionmentType);
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                hourlyApportionedData = null;
+                _logger?.LogError(ex, "PDEM.GetApportionedData({apportionmentType})", apportionmentType);
+                result = false;
+            }
+
+            return result;
+        }
+
+
         private eApportionmentType DetermineApportionmentType(DataTable locationTypeCountTable,
                                                               DataTable locationLinkSpanCountTable,
                                                               DataTable locationLinkActiveTable,
@@ -258,105 +345,114 @@ namespace ECMPS.DM
         {
             eApportionmentType result;
 
-            if ((locationTypeCountTable.Rows.Count == 1) &&
-                (locationLinkSpanCountTable.Rows.Count <= 1) &&
-                (locationLinkActiveTable.Rows.Count <= 1) &&
-                (specialMethodCountTable.Rows.Count == 1))
+            try
             {
-                // Location Type Counts
-                int csCount = locationTypeCountTable.Rows[0]["CS"].AsInteger().Default(0);
-                int msCount = locationTypeCountTable.Rows[0]["MS"].AsInteger().Default(0);
-                int cpCount = locationTypeCountTable.Rows[0]["CP"].AsInteger().Default(0);
-                int mpCount = locationTypeCountTable.Rows[0]["MP"].AsInteger().Default(0);
-                int unCount = locationTypeCountTable.Rows[0]["UN"].AsInteger().Default(0);
 
-                // Location Link Span Counts
-                int csLinkSpanCount = ((locationLinkSpanCountTable.Rows.Count == 1)
-                                    ? locationLinkSpanCountTable.Rows[0]["CS"].AsInteger().Default(0)
-                                    : 0);
-                int msLinkSpanCount = ((locationLinkSpanCountTable.Rows.Count == 1)
-                                    ? locationLinkSpanCountTable.Rows[0]["MS"].AsInteger().Default(0)
-                                    : 0);
-                int cpLinkSpanCount = ((locationLinkSpanCountTable.Rows.Count == 1)
-                                    ? locationLinkSpanCountTable.Rows[0]["CP"].AsInteger().Default(0)
-                                    : 0);
-                int mpLinkSpanCount = ((locationLinkSpanCountTable.Rows.Count == 1)
-                                    ? locationLinkSpanCountTable.Rows[0]["MP"].AsInteger().Default(0)
-                                    : 0);
-
-                // Location Link Active Counts
-                int csLinkActiveCount = ((locationLinkActiveTable.Rows.Count == 1)
-                                      ? locationLinkActiveTable.Rows[0]["CS"].AsInteger().Default(0)
-                                      : 0);
-                int msLinkActiveCount = ((locationLinkActiveTable.Rows.Count == 1)
-                                      ? locationLinkActiveTable.Rows[0]["MS"].AsInteger().Default(0)
-                                      : 0);
-                int cpLinkActiveCount = ((locationLinkActiveTable.Rows.Count == 1)
-                                      ? locationLinkActiveTable.Rows[0]["CP"].AsInteger().Default(0)
-                                      : 0);
-                int mpLinkActiveCount = ((locationLinkActiveTable.Rows.Count == 1)
-                                      ? locationLinkActiveTable.Rows[0]["MP"].AsInteger().Default(0)
-                                      : 0);
-
-                // CP LTFF Active
-                bool cpLtffActive = (specialMethodCountTable.Rows[0]["CP_LTFF"].AsInteger().Default(0) >= 1);
-
-                if ((unCount >= 1) && (csCount == 0) && (msCount == 0) && (cpCount == 0) && (mpCount == 0))
+                if ((locationTypeCountTable.Rows.Count == 1) &&
+                    (locationLinkSpanCountTable.Rows.Count <= 1) &&
+                    (locationLinkActiveTable.Rows.Count <= 1) &&
+                    (specialMethodCountTable.Rows.Count == 1))
                 {
-                    result = eApportionmentType.Unit;
-                }
-                // Always peform after sunit test
-                else if ((csLinkActiveCount == 0) && (msLinkActiveCount == 0) &&
-                         (cpLinkActiveCount == 0) && (mpLinkActiveCount == 0))
-                {
-                    result = eApportionmentType.Error;
-                }
-                // Always perform after error test and before Changed and Complex test.
-                else if (mpCount > 0)
-                {
-                    if ((unCount == 1) && (csCount == 0) && (msCount == 0) && (cpCount == 0) && (mpCount > 1))
-                        result = eApportionmentType.MultiplePipe;
+                    // Location Type Counts
+                    int csCount = locationTypeCountTable.Rows[0]["CS"].AsInteger().Default(0);
+                    int msCount = locationTypeCountTable.Rows[0]["MS"].AsInteger().Default(0);
+                    int cpCount = locationTypeCountTable.Rows[0]["CP"].AsInteger().Default(0);
+                    int mpCount = locationTypeCountTable.Rows[0]["MP"].AsInteger().Default(0);
+                    int unCount = locationTypeCountTable.Rows[0]["UN"].AsInteger().Default(0);
+
+                    // Location Link Span Counts
+                    int csLinkSpanCount = ((locationLinkSpanCountTable.Rows.Count == 1)
+                                        ? locationLinkSpanCountTable.Rows[0]["CS"].AsInteger().Default(0)
+                                        : 0);
+                    int msLinkSpanCount = ((locationLinkSpanCountTable.Rows.Count == 1)
+                                        ? locationLinkSpanCountTable.Rows[0]["MS"].AsInteger().Default(0)
+                                        : 0);
+                    int cpLinkSpanCount = ((locationLinkSpanCountTable.Rows.Count == 1)
+                                        ? locationLinkSpanCountTable.Rows[0]["CP"].AsInteger().Default(0)
+                                        : 0);
+                    int mpLinkSpanCount = ((locationLinkSpanCountTable.Rows.Count == 1)
+                                        ? locationLinkSpanCountTable.Rows[0]["MP"].AsInteger().Default(0)
+                                        : 0);
+
+                    // Location Link Active Counts
+                    int csLinkActiveCount = ((locationLinkActiveTable.Rows.Count == 1)
+                                          ? locationLinkActiveTable.Rows[0]["CS"].AsInteger().Default(0)
+                                          : 0);
+                    int msLinkActiveCount = ((locationLinkActiveTable.Rows.Count == 1)
+                                          ? locationLinkActiveTable.Rows[0]["MS"].AsInteger().Default(0)
+                                          : 0);
+                    int cpLinkActiveCount = ((locationLinkActiveTable.Rows.Count == 1)
+                                          ? locationLinkActiveTable.Rows[0]["CP"].AsInteger().Default(0)
+                                          : 0);
+                    int mpLinkActiveCount = ((locationLinkActiveTable.Rows.Count == 1)
+                                          ? locationLinkActiveTable.Rows[0]["MP"].AsInteger().Default(0)
+                                          : 0);
+
+                    // CP LTFF Active
+                    bool cpLtffActive = (specialMethodCountTable.Rows[0]["CP_LTFF"].AsInteger().Default(0) >= 1);
+
+                    if ((unCount >= 1) && (csCount == 0) && (msCount == 0) && (cpCount == 0) && (mpCount == 0))
+                    {
+                        result = eApportionmentType.Unit;
+                    }
+                    // Always peform after sunit test
+                    else if ((csLinkActiveCount == 0) && (msLinkActiveCount == 0) &&
+                             (cpLinkActiveCount == 0) && (mpLinkActiveCount == 0))
+                    {
+                        result = eApportionmentType.Error;
+                    }
+                    // Always perform after error test and before Changed and Complex test.
+                    else if (mpCount > 0)
+                    {
+                        if ((unCount == 1) && (csCount == 0) && (msCount == 0) && (cpCount == 0) && (mpCount > 1))
+                            result = eApportionmentType.MultiplePipe;
+                        else
+                            result = eApportionmentType.MultiplePipeInvolved;
+                    }
+                    else if ((csLinkSpanCount != csLinkActiveCount) || (msLinkSpanCount != msLinkActiveCount) ||
+                             (cpLinkSpanCount != cpLinkActiveCount) || (mpLinkSpanCount != mpLinkActiveCount))
+                    {
+                        result = eApportionmentType.Changed;
+                    }
+                    else if (((csCount * unCount) != csLinkSpanCount) ||
+                             ((msCount * unCount) != msLinkSpanCount) ||
+                             ((cpCount * unCount) != cpLinkSpanCount) ||
+                             ((mpCount * unCount) != mpLinkSpanCount))
+                    {
+                        result = eApportionmentType.Complex;
+                    }
+                    else if ((unCount > 1) && (csCount >= 1) && (msCount == 0) && (cpCount == 0) && (mpCount == 0))
+                    {
+                        result = eApportionmentType.CommonStack;
+                    }
+                    else if ((unCount > 1) && (csCount == 0) && (msCount == 0) && (cpCount >= 1) && (mpCount == 0))
+                    {
+                        if (cpLtffActive)
+                            result = eApportionmentType.CommonPipeLtff;
+                        else
+                            result = eApportionmentType.CommonPipe;
+                    }
+                    else if ((unCount == 1) && (csCount == 0) && (msCount > 1) && (cpCount == 0) && (mpCount == 0))
+                    {
+                        result = eApportionmentType.MultipleStack;
+                    }
+                    else if ((unCount > 1) && (csCount >= 1) && (msCount == 0) && (cpCount >= 1) && (mpCount == 0))
+                    {
+                        result = eApportionmentType.CommonStackAndPipe;
+                    }
                     else
-                        result = eApportionmentType.MultiplePipeInvolved;
-                }
-                else if ((csLinkSpanCount != csLinkActiveCount) || (msLinkSpanCount != msLinkActiveCount) ||
-                         (cpLinkSpanCount != cpLinkActiveCount) || (mpLinkSpanCount != mpLinkActiveCount))
-                {
-                    result = eApportionmentType.Changed;
-                }
-                else if (((csCount * unCount) != csLinkSpanCount) ||
-                         ((msCount * unCount) != msLinkSpanCount) ||
-                         ((cpCount * unCount) != cpLinkSpanCount) ||
-                         ((mpCount * unCount) != mpLinkSpanCount))
-                {
-                    result = eApportionmentType.Complex;
-                }
-                else if ((unCount > 1) && (csCount >= 1) && (msCount == 0) && (cpCount == 0) && (mpCount == 0))
-                {
-                    result = eApportionmentType.CommonStack;
-                }
-                else if ((unCount > 1) && (csCount == 0) && (msCount == 0) && (cpCount >= 1) && (mpCount == 0))
-                {
-                    if (cpLtffActive)
-                        result = eApportionmentType.CommonPipeLtff;
-                    else
-                        result = eApportionmentType.CommonPipe;
-                }
-                else if ((unCount == 1) && (csCount == 0) && (msCount > 1) && (cpCount == 0) && (mpCount == 0))
-                {
-                    result = eApportionmentType.MultipleStack;
-                }
-                else if ((unCount > 1) && (csCount >= 1) && (msCount == 0) && (cpCount >= 1) && (mpCount == 0))
-                {
-                    result = eApportionmentType.CommonStackAndPipe;
+                    {
+                        result = eApportionmentType.Complex;
+                    }
                 }
                 else
                 {
-                    result = eApportionmentType.Complex;
+                    throw new Exception("On or more Location Information tables have unexpected row counts.");
                 }
             }
-            else
+            catch (Exception ex)
             {
+                _logger?.LogError(ex, "PDEM.DetermineApportionmentType()");
                 result = eApportionmentType.Error;
             }
 
@@ -378,13 +474,13 @@ namespace ECMPS.DM
 
             string errorMessage = null;
 
-            if (GetFactorFormulaeArray(monPlanId, rptPeriodId, unitInfo, locationInfo, out factorFormulaeArray, ref errorMessage))
+            if (GetFactorFormulaeArray(monPlanId, rptPeriodId, unitInfo, locationInfo, out factorFormulaeArray, out errorMessage))
             {
                 result = true;
             }
             else
             {
-                cErrorHandler.LogError(errorMessage, string.Format("MON_PLAN_ID: {0} and RPT_PERIOD_ID: {1}", monPlanId, rptPeriodId));
+                _logger?.LogError(errorMessage, monPlanId, rptPeriodId);
                 result = false;
             }
 
@@ -411,7 +507,7 @@ namespace ECMPS.DM
                 }
                 catch (Exception ex)
                 {
-                    cErrorHandler.LogError(ex.Message, "MON_LOC_ID: " + locationRow["MON_LOC_ID"].AsString());
+                    _logger?.LogError(ex, $"GetLocationInfoMON_LOC_ID: {locationRow["MON_LOC_ID"]}");
                     result = false;
                 }
             }

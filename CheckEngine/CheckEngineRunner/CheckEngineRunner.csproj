@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CheckEngine\CheckEngine.csproj" />
+    <ProjectReference Include="..\DM\DM.csproj" />
   </ItemGroup>
 
 </Project>
