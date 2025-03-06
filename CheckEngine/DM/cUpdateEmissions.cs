@@ -11,6 +11,7 @@ using ECMPS.Definitions.Extensions;
 using ECMPS.Checks.EmissionsReport;
 using Npgsql;
 using Microsoft.Extensions.Logging;
+using System.Runtime;
 
 
 namespace ECMPS.DM
@@ -59,16 +60,6 @@ namespace ECMPS.DM
         #endregion
 
 
-        #region Private Properties
-
-        private dGetFactorFormulaeArray GetFactorFormulaeArray { get { return (_updateEmissionsDb != null) ? _updateEmissionsDb.GetFactorFormulaeArray : null; } }
-        private dUpdateFailure UpdateFailure { get { return (_updateEmissionsDb != null) ? _updateEmissionsDb.UpdateFailure : null; } }
-        private dUpdateInit UpdateInit { get { return (_updateEmissionsDb != null) ? _updateEmissionsDb.UpdateInit : null; } }
-        private dUpdateSuccess UpdateSuccess { get { return (_updateEmissionsDb != null) ? _updateEmissionsDb.UpdateSuccess : null; } }
-
-        #endregion
-
-
         #region Private Fields
 
         private readonly cDatabase _dbConnection;
@@ -84,9 +75,7 @@ namespace ECMPS.DM
         /// <summary>
         /// Performs the actions needed to create the DataMart (AMPD) Emissions data.
         /// </summary>
-        /// <param name="monPlanId">The monitor plan id of the emissions report.</param>
-        /// <param name="rptPeriodId">The report period id of the emissions report.</param>
-        /// <param name="submissionId">The submission id for the emissions report.</param>
+        /// <param name="pdemReportId">The PDEM_REPORT_ID of the update.</param>
         public void ProcessEmissionReport(long pdemReportId)
         {
             try
@@ -106,18 +95,18 @@ namespace ECMPS.DM
                 DataTable specialMethodCountTable;
                 DataTable monitorHourTable;
 
-                if (UpdateInit(pdemReportId,
-                               out monPlanId, 
-                               out rptPeriodId,
-                               out isMatsEmissionReport,
-                               out locationTable,
-                               out rptPeriodInfoTable,
-                               out locationTypeCountTable,
-                               out locationLinkSpanCountTable,
-                               out locationLinkActiveTable,
-                               out specialMethodCountTable,
-                               out monitorHourTable,
-                               ref errorMessage))
+                if (_updateEmissionsDb.UpdateInit(pdemReportId,
+                                                  out monPlanId, 
+                                                  out rptPeriodId,
+                                                  out isMatsEmissionReport,
+                                                  out locationTable,
+                                                  out rptPeriodInfoTable,
+                                                  out locationTypeCountTable,
+                                                  out locationLinkSpanCountTable,
+                                                  out locationLinkActiveTable,
+                                                  out specialMethodCountTable,
+                                                  out monitorHourTable,
+                                                  ref errorMessage))
                 {
                     if (rptPeriodInfoTable.Rows.Count == 1)
                     {
@@ -136,7 +125,7 @@ namespace ECMPS.DM
                                     _updateEmissionsDb.TransactionRollback();
                                     errorMessage = "Unable to determine apportionment type.";
                                     _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
-                                    UpdateFailure(pdemReportId, apportionmentType, errorMessage);
+                                    _updateEmissionsDb.UpdateFailure(pdemReportId, apportionmentType, errorMessage);
                                 }
                                 break;
 
@@ -145,7 +134,7 @@ namespace ECMPS.DM
                                     _updateEmissionsDb.TransactionRollback();
                                     errorMessage = "Multiple pipe apportionment not supported";
                                     _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
-                                    UpdateFailure(pdemReportId, apportionmentType, errorMessage);
+                                    _updateEmissionsDb.UpdateFailure(pdemReportId, apportionmentType, errorMessage);
                                 }
                                 break;
 
@@ -154,7 +143,7 @@ namespace ECMPS.DM
                                     _updateEmissionsDb.TransactionRollback();
                                     errorMessage = "Apportionment involving multiple pipes not supported";
                                     _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
-                                    UpdateFailure(pdemReportId, apportionmentType, errorMessage);
+                                    _updateEmissionsDb.UpdateFailure(pdemReportId, apportionmentType, errorMessage);
                                 }
                                 break;
 
@@ -170,50 +159,11 @@ namespace ECMPS.DM
                                         cHourlyApportionedData hourlyApportionedData;
 
                                         if (hourlyRawData.Update(monitorHourTable) &&
-                                            GetFactorFormulae(monPlanId, rptPeriodId.Value, hourlyRawData.UnitInfo, hourlyRawData.LocationInfo, out factorFormulaeArray) &&
+                                            _updateEmissionsDb.GetFactorFormulaeArray(monPlanId, rptPeriodId.Value, hourlyRawData.UnitInfo, hourlyRawData.LocationInfo, out factorFormulaeArray, out errorMessage) &&
                                             GetApportionedData(apportionmentType, hourlyRawData, factorFormulaeArray, out hourlyApportionedData) &&
-                                            UpdateSuccess(pdemReportId,
-                                                          apportionmentType,
-                                                          isMatsEmissionReport,
-                                                          hourlyApportionedData.PdemReportIdArray,
-                                                          hourlyApportionedData.UnitKeyArray,
-                                                          hourlyApportionedData.OpDateArray,
-                                                          hourlyApportionedData.OpHourArray,
-                                                          hourlyApportionedData.OpTimeArray,
-                                                          hourlyApportionedData.GLoadArray,
-                                                          hourlyApportionedData.MLoadArray,
-                                                          hourlyApportionedData.SLoadArray,
-                                                          hourlyApportionedData.TLoadArray,
-                                                          hourlyApportionedData.HitArray,
-                                                          hourlyApportionedData.HitMeasureArray,
-                                                          hourlyApportionedData.So2mArray,
-                                                          hourlyApportionedData.So2mMeasureArray,
-                                                          hourlyApportionedData.So2rArray,
-                                                          hourlyApportionedData.So2rMeasureArray,
-                                                          hourlyApportionedData.Co2mArray,
-                                                          hourlyApportionedData.Co2mMeasureArray,
-                                                          hourlyApportionedData.Co2rArray,
-                                                          hourlyApportionedData.Co2rMeasureArray,
-                                                          hourlyApportionedData.NoxmArray,
-                                                          hourlyApportionedData.NoxmMeasureArray,
-                                                          hourlyApportionedData.NoxrArray,
-                                                          hourlyApportionedData.NoxrMeasureArray,
-                                                          hourlyApportionedData.HgRateEoArray,
-                                                          hourlyApportionedData.HgRateHiArray,
-                                                          hourlyApportionedData.HgMassArray,
-                                                          hourlyApportionedData.HgMeasureArray,
-                                                          hourlyApportionedData.HclRateEoArray,
-                                                          hourlyApportionedData.HclRateHiArray,
-                                                          hourlyApportionedData.HclMassArray,
-                                                          hourlyApportionedData.HclMeasureArray,
-                                                          hourlyApportionedData.HfRateEoArray,
-                                                          hourlyApportionedData.HfRateHiArray,
-                                                          hourlyApportionedData.HfMassArray,
-                                                          hourlyApportionedData.HfMeasureArray,
-                                                          hourlyApportionedData.MonPlanIdArray,
-                                                          hourlyApportionedData.RptPeriodIdArray,
-                                                          hourlyApportionedData.OpYearArray,
-                                                          out errorMessage))
+                                            _updateEmissionsDb.UpdateUnitHourData(isMatsEmissionReport, hourlyApportionedData, out errorMessage) &&
+                                            _updateEmissionsDb.UpdatePublic(pdemReportId, out errorMessage) &&
+                                            _updateEmissionsDb.UpdateSuccess(pdemReportId, apportionmentType, isMatsEmissionReport, out errorMessage))
                                         {
                                             _updateEmissionsDb.TransactionCommit();
                                         }
@@ -221,14 +171,14 @@ namespace ECMPS.DM
                                         {
                                             _updateEmissionsDb.TransactionRollback();
                                             _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
-                                            UpdateFailure(pdemReportId, apportionmentType, errorMessage);
+                                            _updateEmissionsDb.UpdateFailure(pdemReportId, apportionmentType, errorMessage);
                                         }
                                     }
                                     else
                                     {
                                         _updateEmissionsDb.TransactionRollback();
                                         _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
-                                        UpdateFailure(pdemReportId, apportionmentType, errorMessage);
+                                        _updateEmissionsDb.UpdateFailure(pdemReportId, apportionmentType, errorMessage);
                                     }
                                 }
                                 break;
@@ -239,21 +189,21 @@ namespace ECMPS.DM
                         _updateEmissionsDb.TransactionRollback();
                         errorMessage = $"Unknown reporting period: {rptPeriodId}";
                         _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
-                        UpdateFailure(pdemReportId, null, errorMessage);
+                        _updateEmissionsDb.UpdateFailure(pdemReportId, null, errorMessage);
                     }
                 }
                 else
                 {
                     _updateEmissionsDb.TransactionRollback();
                     _logger?.LogError("PDEM.ProcessEmissionReport({pdemReportId}): {errorMessage}", pdemReportId, errorMessage);
-                    UpdateFailure(pdemReportId, null, errorMessage);
+                    _updateEmissionsDb.UpdateFailure(pdemReportId, null, errorMessage);
                 }
             }
             catch (Exception ex)
             {
                 _updateEmissionsDb.TransactionRollback();
                 _logger?.LogError(ex, "PDEM.ProcessEmissionReport({pdemReportId})", pdemReportId);
-                UpdateFailure(pdemReportId, null, ex.Message);
+                _updateEmissionsDb.UpdateFailure(pdemReportId, null, ex.Message);
             }
         }
 
@@ -454,34 +404,6 @@ namespace ECMPS.DM
             {
                 _logger?.LogError(ex, "PDEM.DetermineApportionmentType()");
                 result = eApportionmentType.Error;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="monPlanId"></param>
-        /// <param name="rptPeriodId"></param>
-        /// <param name="unitInfo"></param>
-        /// <param name="locationInfo"></param>
-        /// <param name="factorFormulaeArray"></param>
-        /// <returns></returns>
-        private bool GetFactorFormulae(string monPlanId, int rptPeriodId, cUnitInfo[] unitInfo, cLocationInfo[] locationInfo, out cFactorFormulae[] factorFormulaeArray)
-        {
-            bool result;
-
-            string errorMessage = null;
-
-            if (GetFactorFormulaeArray(monPlanId, rptPeriodId, unitInfo, locationInfo, out factorFormulaeArray, out errorMessage))
-            {
-                result = true;
-            }
-            else
-            {
-                _logger?.LogError(errorMessage, monPlanId, rptPeriodId);
-                result = false;
             }
 
             return result;

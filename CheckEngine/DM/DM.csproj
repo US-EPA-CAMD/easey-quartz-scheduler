@@ -15,6 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Definitions\Delegates.cs" />
     <Compile Remove="Miscellaneous\cErrorHandler.cs" />
   </ItemGroup>
 

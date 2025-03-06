@@ -6,6 +6,7 @@ using ECMPS.Checks.DatabaseAccess;
 using ECMPS.Checks.TypeUtilities;
 using ECMPS.Definitions.Extensions;
 using ECMPS.DM.Definitions;
+using ECMPS.DM.HourlyEmissions;
 using ECMPS.DM.Miscellaneous;
 using ECMPS.DM.Utilities;
 
@@ -28,6 +29,7 @@ namespace ECMPS.Checks.EmissionsReport
         /// Creates a DB object with methods to handle DM.cUpdateEmissions calls.
         /// </summary>
         /// <param name="db">The ECMPS EASEY database.</param>
+        /// <param name="logger">The ILogger instance to use.</param>
         public cUpdateEmissionsDb(cDatabase db, ILogger logger)
         {
             Db = db;
@@ -512,138 +514,88 @@ namespace ECMPS.Checks.EmissionsReport
         }
 
         /// <summary>
+        /// Update the check log, set apportionment type, and set emissions created to 'N'.
+        /// </summary>
+        /// <param name="pdemReportId">The PDEM_REPORT_ID of the update.</param>
+        /// <param name="errorMessage">The error message if an error occurs.</param>
+        /// <returns>True if the SP executed without error.</returns>
+        public bool UpdatePublic(long pdemReportId,
+                                 out string errorMessage)
+        {
+            errorMessage = null;
+            bool result;
+
+            try
+            {
+                Db.CreateTextCommand("call camdecmpsaux.PDEM_UPDATE_PUBLIC( $1, $2, $3 )");
+
+                Db.Command.Parameters.Add(null, NpgsqlTypes.NpgsqlDbType.Bigint).Value = pdemReportId.DbValue();
+                Db.Command.Parameters.Add(null, NpgsqlTypes.NpgsqlDbType.Boolean).Value = DBNull.Value;
+                Db.Command.Parameters.Add(null, NpgsqlTypes.NpgsqlDbType.Varchar).Value = DBNull.Value;
+
+                NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(Db.Command);
+                DataTable dataTable = new DataTable("ResultsTable");
+                adapter.Fill(dataTable);
+
+                result = (dataTable.Rows.Count > 0) ? bool.Parse(dataTable.Rows[0][0].AsString()) : false;
+
+                if (!result)
+                {
+                    errorMessage = (dataTable.Rows.Count > 0) ? dataTable.Rows[0][1].AsString() : $"Result row not returned by '{Db.Command.CommandText}'";
+                    throw new Exception(errorMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "PDEM.UpdatePublic({pdemReportId})", pdemReportId);
+                errorMessage = ex.Message;
+                result = false;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Delegate for the method called to update the apportionment type, unit hour data 
         /// and check log.
         /// </summary>
         /// <param name="pdemReportId">The PDEM_REPORT_ID of the update.</param>
         /// <param name="apportionmentType">The apportionment type of the update.</param>
         /// <param name="isMatsEmissionReport">Indicates whether the emission report is a MATS report.</param>
-        /// <param name="pdemReportIdArray">The PDEM_REPORT_ID update array.</param>
-        /// <param name="unitKeyArray">The UNIT_ID update array.</param>
-        /// <param name="opDateArray">The op date update array.</param>
-        /// <param name="opHourArray">The op hour update array.</param>
-        /// <param name="opTimeArray">The op time update array.</param>
-        /// <param name="gLoadArray">The g-load update array.</param>
-        /// <param name="mLoadArray">The MATS load update array.</param>
-        /// <param name="sLoadArray">The s-load update array.</param>
-        /// <param name="tLoadArray">The t-load update array.</param>
-        /// <param name="hitArray">The HIT update array.</param>
-        /// <param name="hitMeasureArray">The HIT hour measure update array.</param>
-        /// <param name="so2mArray">The SO2M update array.</param>
-        /// <param name="so2mMeasureArray">The SO2M hour measure update array.</param>
-        /// <param name="so2rArray">The SO2R update array.</param>
-        /// <param name="so2rMeasureArray">The SO2R hour measure update array.</param>
-        /// <param name="co2mArray">The CO2M update array.</param>
-        /// <param name="co2mMeasureArray">The CO2M hour measure update array.</param>
-        /// <param name="co2rArray">The CO2R update array.</param>
-        /// <param name="co2rMeasureArray">The CO2R hour measure update array.</param>
-        /// <param name="noxmArray">The NOXM update array.</param>
-        /// <param name="noxmMeasureArray">The NOXM hour measure update array.</param>
-        /// <param name="noxrArray">The NOXR update array.</param>
-        /// <param name="noxrMeasureArray">The NOXR hour measure update array.</param>
-        /// <param name="hgRateEoArray">The Hg Rate Electrical Output update array.</param>
-        /// <param name="hgRateHiArray">The Hg Rate Heat Input update array.</param>
-        /// <param name="hgMassArray">The Hg Mass update array.</param>
-        /// <param name="hgMeasureArray">The Hg hour measure update array.</param>
-        /// <param name="hclRateEoArray">The HCl Rate Electrical Output update array.</param>
-        /// <param name="hclRateHiArray">The HCl Rate Heat Input update array.</param>
-        /// <param name="hclMassArray">The HCl Mass update array.</param>
-        /// <param name="hclMeasureArray">The HCl hour measure update array.</param>
-        /// <param name="hfRateEoArray">The HF Rate Electrical Output update array.</param>
-        /// <param name="hfRateHiArray">The HF Rate Heat Input update array.</param>
-        /// <param name="hfMassArray">The HF Mass update array.</param>
-        /// <param name="hfMeasureArray">The HF hour measure update array.</param>
-        /// <param name="monPlanIdArray">The MON_PLAN_ID update array.</param>
-        /// <param name="rptPeriodIdArray">The RPT_PERIOD_ID update array.</param>
-        /// <param name="opYearArray">The op year update array.</param>
         /// <param name="errorMessage">The error message indicating why the updated failed.</param>
         public bool UpdateSuccess(long pdemReportId,
                                   eApportionmentType? apportionmentType,
                                   bool? isMatsEmissionReport,
-                                  long[] pdemReportIdArray,
-                                  int?[] unitKeyArray,
-                                  DateTime?[] opDateArray,
-                                  int?[] opHourArray,
-                                  decimal?[] opTimeArray,
-                                  decimal?[] gLoadArray,
-                                  decimal?[] mLoadArray,
-                                  decimal?[] sLoadArray,
-                                  decimal?[] tLoadArray,
-                                  decimal?[] hitArray,
-                                  string[] hitMeasureArray,
-                                  decimal?[] so2mArray,
-                                  string[] so2mMeasureArray,
-                                  decimal?[] so2rArray,
-                                  string[] so2rMeasureArray,
-                                  decimal?[] co2mArray,
-                                  string[] co2mMeasureArray,
-                                  decimal?[] co2rArray,
-                                  string[] co2rMeasureArray,
-                                  decimal?[] noxmArray,
-                                  string[] noxmMeasureArray,
-                                  decimal?[] noxrArray,
-                                  string[] noxrMeasureArray,
-                                  decimal?[] hgRateEoArray,
-                                  decimal?[] hgRateHiArray,
-                                  decimal?[] hgMassArray,
-                                  string[] hgMeasureArray,
-                                  decimal?[] hclRateEoArray,
-                                  decimal?[] hclRateHiArray,
-                                  decimal?[] hclMassArray,
-                                  string[] hclMeasureArray,
-                                  decimal?[] hfRateEoArray,
-                                  decimal?[] hfRateHiArray,
-                                  decimal?[] hfMassArray,
-                                  string[] hfMeasureArray,
-                                  string[] monPlanIdArray,
-                                  int?[] rptPeriodIdArray,
-                                  int?[] opYearArray,
                                   out string errorMessage)
         {
             bool result = true;
             errorMessage = null;
 
-            if (UpdateUnitHour(isMatsEmissionReport,
-                               pdemReportIdArray, unitKeyArray, opDateArray, opHourArray,
-                               opTimeArray, gLoadArray, mLoadArray, sLoadArray, tLoadArray,
-                               hitArray, hitMeasureArray,
-                               so2mArray, so2mMeasureArray, so2rArray, so2rMeasureArray,
-                               co2mArray, co2mMeasureArray, co2rArray, co2rMeasureArray,
-                               noxmArray, noxmMeasureArray, noxrArray, noxrMeasureArray,
-                               hgRateEoArray, hgRateHiArray, hgMassArray, hgMeasureArray,
-                               hclRateEoArray, hclRateHiArray, hclMassArray, hclMeasureArray,
-                               hfRateEoArray, hfRateHiArray, hfMassArray, hfMeasureArray,
-                               monPlanIdArray, rptPeriodIdArray, opYearArray))
+            try
             {
-                try
+                Db.CreateTextCommand("call camdecmpsaux.PDEM_UPDATE_SUCCESS( $1, $2, $3, $4 )");
+
+                Db.Command.Parameters.Add(null, NpgsqlTypes.NpgsqlDbType.Bigint).Value = pdemReportId.DbValue();
+                Db.Command.Parameters.Add(null, NpgsqlTypes.NpgsqlDbType.Varchar).Value = ((apportionmentType != null) ? apportionmentType?.DbCode() : DBNull.Value);
+                Db.Command.Parameters.Add(null, NpgsqlTypes.NpgsqlDbType.Boolean).Value = DBNull.Value;
+                Db.Command.Parameters.Add(null, NpgsqlTypes.NpgsqlDbType.Text).Value = DBNull.Value;
+
+                NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(Db.Command);
+                DataTable dataTable = new DataTable("ResultsTable");
+                adapter.Fill(dataTable);
+
+                result = (dataTable.Rows.Count > 0) ? bool.Parse(dataTable.Rows[0][0].AsString()) : false;
+                errorMessage = (dataTable.Rows.Count > 0) ? dataTable.Rows[0][1].AsString() : $"Result row not returned by '{Db.Command.CommandText}'";
+
+                if (!result)
                 {
-                    Db.CreateTextCommand("call camdecmpsaux.PDEM_UPDATE_SUCCESS( $1, $2, $3, $4 )");
-
-                    Db.Command.Parameters.Add(null, NpgsqlTypes.NpgsqlDbType.Bigint).Value = pdemReportId.DbValue();
-                    Db.Command.Parameters.Add(null, NpgsqlTypes.NpgsqlDbType.Varchar).Value = ((apportionmentType != null) ? apportionmentType?.DbCode() : DBNull.Value);
-                    Db.Command.Parameters.Add(null, NpgsqlTypes.NpgsqlDbType.Boolean).Value = DBNull.Value;
-                    Db.Command.Parameters.Add(null, NpgsqlTypes.NpgsqlDbType.Text).Value = DBNull.Value;
-
-                    NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(Db.Command);
-                    DataTable dataTable = new DataTable("ResultsTable");
-                    adapter.Fill(dataTable);
-
-                    result = (dataTable.Rows.Count > 0) ? bool.Parse(dataTable.Rows[0][0].AsString()) : false;
-                    errorMessage = (dataTable.Rows.Count > 0) ? dataTable.Rows[0][1].AsString() : $"Result row not returned by '{Db.Command.CommandText}'";
-
-                    if (!result)
-                    {
-                        throw new Exception(errorMessage);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger?.LogError(ex, "PDEM.UpdateSuccess({pdemReportId}, {apportionmentType}, {isMatsEmissionReport})", pdemReportId, apportionmentType, isMatsEmissionReport);
-                    result = false;
+                    throw new Exception(errorMessage);
                 }
             }
-            else
+            catch (Exception ex)
             {
+                _logger?.LogError(ex, "PDEM.UpdateSuccess({pdemReportId}, {apportionmentType}, {isMatsEmissionReport})", pdemReportId, apportionmentType, isMatsEmissionReport);
+                errorMessage = ex.Message;
                 result = false;
             }
 
@@ -651,92 +603,57 @@ namespace ECMPS.Checks.EmissionsReport
         }
 
 
-        #region Helper Methods
-
         /// <summary>
         /// Updates UNIT_HOUR with the apportioned data.
         /// </summary>
         /// <param name="isMatsEmissionReport">Indicates whether the emission report is a MATS report.</param>
-        /// <param name="pdemReportIdArray">The PDEM_REPORT_ID update array.</param>
-        /// <param name="unitKeyArray">The UNIT_ID update array.</param>
-        /// <param name="opDateArray">The op date update array.</param>
-        /// <param name="opHourArray">The op hour update array.</param>
-        /// <param name="opTimeArray">The op time update array.</param>
-        /// <param name="gLoadArray">The g-load update array.</param>
-        /// <param name="mLoadArray">The MATS load update array.</param>
-        /// <param name="sLoadArray">The s-load update array.</param>
-        /// <param name="tLoadArray">The t-load update array.</param>
-        /// <param name="hitArray">The HIT update array.</param>
-        /// <param name="hitMeasureArray">The HIT hour measure update array.</param>
-        /// <param name="so2mArray">The SO2M update array.</param>
-        /// <param name="so2mMeasureArray">The SO2M hour measure update array.</param>
-        /// <param name="so2rArray">The SO2R update array.</param>
-        /// <param name="so2rMeasureArray">The SO2R hour measure update array.</param>
-        /// <param name="co2mArray">The CO2M update array.</param>
-        /// <param name="co2mMeasureArray">The CO2M hour measure update array.</param>
-        /// <param name="co2rArray">The CO2R update array.</param>
-        /// <param name="co2rMeasureArray">The CO2R hour measure update array.</param>
-        /// <param name="noxmArray">The NOXM update array.</param>
-        /// <param name="noxmMeasureArray">The NOXM hour measure update array.</param>
-        /// <param name="noxrArray">The NOXR update array.</param>
-        /// <param name="noxrMeasureArray">The NOXR hour measure update array.</param>
-        /// <param name="hgRateEoArray">The Hg Rate Electrical Output update array.</param>
-        /// <param name="hgRateHiArray">The Hg Rate Heat Input update array.</param>
-        /// <param name="hgMassArray">The Hg Mass update array.</param>
-        /// <param name="hgMeasureArray">The Hg hour measure update array.</param>
-        /// <param name="hclRateEoArray">The HCl Rate Electrical Output update array.</param>
-        /// <param name="hclRateHiArray">The HCl Rate Heat Input update array.</param>
-        /// <param name="hclMassArray">The HCl Mass update array.</param>
-        /// <param name="hclMeasureArray">The HCl hour measure update array.</param>
-        /// <param name="hfRateEoArray">The HF Rate Electrical Output update array.</param>
-        /// <param name="hfRateHiArray">The HF Rate Heat Input update array.</param>
-        /// <param name="hfMassArray">The HF Mass update array.</param>
-        /// <param name="hfMeasureArray">The HF hour measure update array.</param>
-        /// <param name="monPlanIdArray">The MON_PLAN_ID update array.</param>
-        /// <param name="rptPeriodIdArray">The RPT_PERIOD_ID update array.</param>
-        /// <param name="opYearArray">The op year update array.</param>
+        /// <param name="hourlyApportionedData">The apportioned data.</param>
+        /// <param name="errorMessage">The error message indicating why the updated failed.</param>
         /// <returns>True if successful.</returns>
-        private bool UpdateUnitHour(bool? isMatsEmissionReport,
-                                    long[] pdemReportIdArray,
-                                    int?[] unitKeyArray,
-                                    DateTime?[] opDateArray,
-                                    int?[] opHourArray,
-                                    decimal?[] opTimeArray,
-                                    decimal?[] gLoadArray,
-                                    decimal?[] mLoadArray,
-                                    decimal?[] sLoadArray,
-                                    decimal?[] tLoadArray,
-                                    decimal?[] hitArray,
-                                    string[] hitMeasureArray,
-                                    decimal?[] so2mArray,
-                                    string[] so2mMeasureArray,
-                                    decimal?[] so2rArray,
-                                    string[] so2rMeasureArray,
-                                    decimal?[] co2mArray,
-                                    string[] co2mMeasureArray,
-                                    decimal?[] co2rArray,
-                                    string[] co2rMeasureArray,
-                                    decimal?[] noxmArray,
-                                    string[] noxmMeasureArray,
-                                    decimal?[] noxrArray,
-                                    string[] noxrMeasureArray,
-                                    decimal?[] hgRateEoArray,
-                                    decimal?[] hgRateHiArray,
-                                    decimal?[] hgMassArray,
-                                    string[] hgMeasureArray,
-                                    decimal?[] hclRateEoArray,
-                                    decimal?[] hclRateHiArray,
-                                    decimal?[] hclMassArray,
-                                    string[] hclMeasureArray,
-                                    decimal?[] hfRateEoArray,
-                                    decimal?[] hfRateHiArray,
-                                    decimal?[] hfMassArray,
-                                    string[] hfMeasureArray,
-                                    string[] monPlanIdArray,
-                                    int?[] rptPeriodIdArray,
-                                    int?[] opYearArray)
+        public bool UpdateUnitHourData(bool? isMatsEmissionReport,
+                                       cHourlyApportionedData hourlyApportionedData,
+                                       out string errorMessage)
         {
             bool result;
+
+            long[] pdemReportIdArray = hourlyApportionedData.PdemReportIdArray;
+            int?[] unitKeyArray = hourlyApportionedData.UnitKeyArray;
+            DateTime?[] opDateArray = hourlyApportionedData.OpDateArray;
+            int?[] opHourArray = hourlyApportionedData.OpHourArray;
+            decimal?[] opTimeArray = hourlyApportionedData.OpTimeArray;
+            decimal?[] gLoadArray = hourlyApportionedData.GLoadArray;
+            decimal?[] mLoadArray = hourlyApportionedData.MLoadArray;
+            decimal?[] sLoadArray = hourlyApportionedData.SLoadArray;
+            decimal?[] tLoadArray = hourlyApportionedData.TLoadArray;
+            decimal?[] hitArray = hourlyApportionedData.HitArray;
+            string[] hitMeasureArray = hourlyApportionedData.HitMeasureArray;
+            decimal?[] so2mArray = hourlyApportionedData.So2mArray;
+            string[] so2mMeasureArray = hourlyApportionedData.So2mMeasureArray;
+            decimal?[] so2rArray = hourlyApportionedData.So2rArray;
+            string[] so2rMeasureArray = hourlyApportionedData.So2rMeasureArray;
+            decimal?[] co2mArray = hourlyApportionedData.Co2mArray;
+            string[] co2mMeasureArray = hourlyApportionedData.Co2mMeasureArray;
+            decimal?[] co2rArray = hourlyApportionedData.Co2rArray;
+            string[] co2rMeasureArray = hourlyApportionedData.Co2rMeasureArray;
+            decimal?[] noxmArray = hourlyApportionedData.NoxmArray;
+            string[] noxmMeasureArray = hourlyApportionedData.NoxmMeasureArray;
+            decimal?[] noxrArray = hourlyApportionedData.NoxrArray;
+            string[] noxrMeasureArray = hourlyApportionedData.NoxrMeasureArray;
+            decimal?[] hgRateEoArray = hourlyApportionedData.HgRateEoArray;
+            decimal?[] hgRateHiArray = hourlyApportionedData.HgRateHiArray;
+            decimal?[] hgMassArray = hourlyApportionedData.HgMassArray;
+            string[] hgMeasureArray = hourlyApportionedData.HgMeasureArray;
+            decimal?[] hclRateEoArray = hourlyApportionedData.HclRateEoArray;
+            decimal?[] hclRateHiArray = hourlyApportionedData.HclRateHiArray;
+            decimal?[] hclMassArray = hourlyApportionedData.HclMassArray;
+            string[] hclMeasureArray = hourlyApportionedData.HclMeasureArray;
+            decimal?[] hfRateEoArray = hourlyApportionedData.HfRateEoArray;
+            decimal?[] hfRateHiArray = hourlyApportionedData.HfRateHiArray;
+            decimal?[] hfMassArray = hourlyApportionedData.HfMassArray;
+            string[] hfMeasureArray = hourlyApportionedData.HfMeasureArray;
+            string[] monPlanIdArray = hourlyApportionedData.MonPlanIdArray;
+            int?[] rptPeriodIdArray = hourlyApportionedData.RptPeriodIdArray;
+            int?[] opYearArray = hourlyApportionedData.OpYearArray;
 
             try
             {
@@ -811,8 +728,8 @@ namespace ECMPS.Checks.EmissionsReport
                         }
                     }
 
+                    errorMessage = null;
                     result = true;
-                    string errorMessage = null;
 
                     if (!Db.BulkLoad(unitHourTable,
                                      "camdecmpsaux.PDEM_P75_UNIT_HOUR",
@@ -822,10 +739,8 @@ namespace ECMPS.Checks.EmissionsReport
                         throw new Exception($"{errorMessage} (P75 Unit Hourly BulkLoad)");
                     }
 
-                    if (isMatsEmissionReport.Default(false))
+                    if (result && isMatsEmissionReport.Default(false))
                     {
-                        errorMessage = null;
-
                         if (!Db.BulkLoad(matsUnitHourTable,
                                         "camdecmpsaux.PDEM_MATS_UNIT_HOUR",
                                         new string[] { "PDEM_MATS_UNIT_HOUR_ID", "ADD_DATE" },
@@ -836,18 +751,20 @@ namespace ECMPS.Checks.EmissionsReport
                     }
                 }
                 else
+                {
+                    errorMessage = null;
                     result = true;
+                }
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex, "PDEM.UpdateUnitHour({isMatsEmissionReport})", isMatsEmissionReport);
+                errorMessage = ex.Message;
                 result = false;
             }
 
             return result;
         }
-
-        #endregion
 
         #endregion
 
