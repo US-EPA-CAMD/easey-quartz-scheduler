@@ -40,7 +40,6 @@ applications:
       EASEY_DB_STATEMENT_TIMEOUT: ((statementTimeout))
       EASEY_DB_IDLE_TRANS_SESSION_TIMEOUT: ((idleInTransactionSessionTimeout))
       EASEY_DB_CONNECTION_LIFE_TIME: ((connectionLifeTime))
-
     routes:
       - route: ((host))/((path))
     services:
