@@ -17,7 +17,7 @@ bulkDataS3Bucket: cg-e7433599-fb63-4afa-9e14-652c10fa370a
 bulkBufferSize: 5242880
 maxConnectionPool: 25
 idleTimeout: 300
-connectionTimeout: 15
+connectionTimeout: 30
 statementTimeout: 300
 idleInTransactionSessionTimeout: 300000
 connectionLifeTime: 1800

@@ -7,7 +7,7 @@ apiGatewayHost: api.epa.gov/easey/beta
 bulkDataS3Bucket: cg-fad47021-99a0-4ae0-a73c-3d9b3dd9d446
 maxConnectionPool: 25
 idleTimeout: 300
-connectionTimeout: 15
+connectionTimeout: 30
 statementTimeout: 300
 idleInTransactionSessionTimeout: 300000
 connectionLifeTime: 1800
