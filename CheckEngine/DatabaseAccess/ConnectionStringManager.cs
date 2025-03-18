@@ -66,7 +66,7 @@ namespace DatabaseAccess
                     + $"Timeout={connectionTimeout};"          // Maximum time (ms) to wait for a new connection before timing out.
                     + $"CommandTimeout={statementTimeout};"  //Npgsql (Client-side) kills if query (command) takes longer than statementTimeout
                     + $"ConnectionLifeTime={connectionLifeTime};"  //The total maximum lifetime of connections (in seconds).
-                    + $"Options='-c idle_in_transaction_session_timeout={idleInTransactionSessionTimeout}';"; //PostgreSQL (db-side) kills if query takes longer than statementTimeout
+                    + $"Options='-c statement_timeout={statementTimeout}';"; //PostgreSQL (db-side) kills if query takes longer than statementTimeout
         }
     }
 }
