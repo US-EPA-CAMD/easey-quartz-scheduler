@@ -24,111 +24,94 @@ namespace Epa.Camd.Quartz.Scheduler
   {
     private string _connectionString;
     private static readonly string s_corsPolicy = "AllowedCORSOptions";
-    private readonly ILogger<Startup> _logger;
     private IConfiguration _configuration { get; }
 
-    public Startup(IConfiguration configuration, ILogger<Startup> logger)
+    public Startup(IConfiguration configuration)
     {
       _configuration = configuration;
       _connectionString = ConnectionStringManager.getConnectionString(configuration);
-      _logger = logger;
     }
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      try
+      AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+      Utils.Configuration = _configuration;
+
+      services.AddAppConfiguration(_configuration);
+
+      services.AddDbContext<NpgSqlContext>(options =>
+        options.UseNpgsql(_connectionString)
+      );
+
+      NpgSqlContext dbContext = services.BuildServiceProvider().GetService<NpgSqlContext>();
+      List<CorsOptions> options =  dbContext.CorsOptions.ToListAsync<CorsOptions>().Result;
+
+      List<string> allowedOrigins = new List<string>();
+      List<string> allowedMethods = new List<string>();
+      List<string> allowedHeaders = new List<string>();
+
+      if (_configuration["EASEY_QUARTZ_SCHEDULER_ENV"] != "production") {
+          allowedOrigins.Add("http://localhost:3000");
+      }
+
+      foreach(CorsOptions opts in options){
+        switch(opts.Key){
+          case "origin":
+            allowedOrigins.Add(opts.Value);
+            break;
+          case "header":
+            allowedHeaders.Add(opts.Value);
+            break;
+          case "method":
+            allowedMethods.Add(opts.Value);
+            break;
+        }
+      }
+
+      services.AddCors(options => {
+        options.AddPolicy(s_corsPolicy, builder => {
+          builder.WithOrigins(allowedOrigins.ToArray())
+            .WithHeaders(allowedHeaders.ToArray())
+            .WithMethods(allowedMethods.ToArray());
+        });
+      });
+
+      services.AddSession();
+      services.AddRazorPages();
+    
+      services.AddSilkierQuartz(options => {
+        options.VirtualPathRoot = "/quartz";
+        options.UseLocalTime = true;
+        options.DefaultDateFormat = "yyyy-MM-dd";
+        options.DefaultTimeFormat = "HH:mm:ss";
+        options.CronExpressionOptions = new CronExpressionDescriptor.Options()
         {
-          _logger.LogInformation("Configuring services...");
-          AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+          DayOfWeekStartIndexZero = false //Quartz uses 1-7 as the range
+        };
+      },
+      authenticationOptions => {
+        authenticationOptions.AccessRequirement = SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowOnlyAuthenticated;
+      },
+      nameValueCollection => {
+        var quartzConfig = _configuration.GetSection("Quartz").GetChildren().GetEnumerator();
 
-          Utils.Configuration = _configuration;
+        while (quartzConfig.MoveNext())
+        {
+          nameValueCollection.Set(quartzConfig.Current.Key, quartzConfig.Current.Value);
+        }
+        nameValueCollection.Set("quartz.dataSource.default.connectionString", _connectionString);
+      });
 
-          services.AddAppConfiguration(_configuration);
+      services.AddOptions();
+      
+      CheckEngineEvaluation.RegisterWithQuartz(services);
+      BulkDataFile.RegisterWithQuartz(services);
+      DynamicJobScheduler.RegisterWithQuartz(services, dbContext);
 
-          _logger.LogInformation("Setting up database context...");
-          services.AddDbContext<NpgSqlContext>(options =>
-            options.UseNpgsql(_connectionString)
-          );
-
-          NpgSqlContext dbContext = services.BuildServiceProvider().GetService<NpgSqlContext>();
-
-          _logger.LogInformation("Fetching CORS options from database...");
-          List<CorsOptions> options =  dbContext.CorsOptions.ToListAsync<CorsOptions>().Result;
-
-          List<string> allowedOrigins = new List<string>();
-          List<string> allowedMethods = new List<string>();
-          List<string> allowedHeaders = new List<string>();
-
-          if (_configuration["EASEY_QUARTZ_SCHEDULER_ENV"] != "production") {
-              allowedOrigins.Add("http://localhost:3000");
-          }
-
-          foreach(CorsOptions opts in options){
-            switch(opts.Key){
-              case "origin":
-                allowedOrigins.Add(opts.Value);
-                break;
-              case "header":
-                allowedHeaders.Add(opts.Value);
-                break;
-              case "method":
-                allowedMethods.Add(opts.Value);
-                break;
-            }
-          }
-
-          services.AddCors(options => {
-            options.AddPolicy(s_corsPolicy, builder => {
-              builder.WithOrigins(allowedOrigins.ToArray())
-                .WithHeaders(allowedHeaders.ToArray())
-                .WithMethods(allowedMethods.ToArray());
-            });
-          });
-
-          services.AddSession();
-          services.AddRazorPages();
-
-          _logger.LogInformation("Configuring SilkierQuartz...");
-          services.AddSilkierQuartz(options => {
-            options.VirtualPathRoot = "/quartz";
-            options.UseLocalTime = true;
-            options.DefaultDateFormat = "yyyy-MM-dd";
-            options.DefaultTimeFormat = "HH:mm:ss";
-            options.CronExpressionOptions = new CronExpressionDescriptor.Options()
-            {
-              DayOfWeekStartIndexZero = false //Quartz uses 1-7 as the range
-            };
-          },
-          authenticationOptions => {
-            authenticationOptions.AccessRequirement = SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowOnlyAuthenticated;
-          },
-          nameValueCollection => {
-            _logger.LogInformation("Applying Quartz configuration...");
-            var quartzConfig = _configuration.GetSection("Quartz").GetChildren().GetEnumerator();
-
-            while (quartzConfig.MoveNext())
-            {
-              nameValueCollection.Set(quartzConfig.Current.Key, quartzConfig.Current.Value);
-            }
-            nameValueCollection.Set("quartz.dataSource.default.connectionString", _connectionString);
-          });
-
-          services.AddOptions();
-
-          _logger.LogInformation("Registering Quartz Jobs...");
-          CheckEngineEvaluation.RegisterWithQuartz(services);
-          BulkDataFile.RegisterWithQuartz(services);
-          DynamicJobScheduler.RegisterWithQuartz(services, dbContext);
-
-          services.AddTransient<CheckEngineEvaluationListener>(); //DI for CheckEngineListener
-          CheckEngineEvaluationListener.ServiceCollection = services; // Set service collection of the listener
-          _logger.LogInformation("Services successfully configured.");
-      }
-      catch (Exception ex) {
-          _logger.LogError(ex, "Error during service configuration.");
-          throw;
-      }
+      services.AddTransient<CheckEngineEvaluationListener>(); //DI for CheckEngineListener
+      CheckEngineEvaluationListener.ServiceCollection = services; // Set service collection of the listener
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

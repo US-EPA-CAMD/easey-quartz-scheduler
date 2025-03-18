@@ -14,15 +14,6 @@ namespace DatabaseAccess
         private static string db { get; set; }
         private static string vcapServices { get; set; }
 
-        //Connection options
-        private static string appName { get; set; }
-        private static int maxConnectionPool { get; set; }
-        private static int connectionIdleLifetime { get; set; }
-        private static int connectionTimeout { get; set; }
-        private static int statementTimeout { get; set; }
-        private static int connectionLifeTime { get; set; }
-        private static int idleInTransactionSessionTimeout { get; set; }
-
         private static string connectionString { get; set; }
 
         /// getConnectionString
@@ -51,22 +42,7 @@ namespace DatabaseAccess
                 db = vcapSvcCreds.name;
             }
 
-            appName                 = Configuration["name"] ?? "quartz-scheduler";
-            maxConnectionPool       = Configuration.GetValue<int>("EASEY_DB_MAX_CONNECTION_POOL", 15);
-            connectionIdleLifetime  = Configuration.GetValue<int>("EASEY_DB_IDLE_TIMEOUT", 300);
-            connectionTimeout       = Configuration.GetValue<int>("EASEY_DB_CONNECTION_TIMEOUT", 15);
-            statementTimeout        = Configuration.GetValue<int>("EASEY_DB_STATEMENT_TIMEOUT", 300);
-            connectionLifeTime       = Configuration.GetValue<int>("EASEY_DB_CONNECTION_LIFE_TIME", 1800);
-            idleInTransactionSessionTimeout = Configuration.GetValue<int>("EASEY_DB_IDLE_TRANS_SESSION_TIMEOUT", 300000);
-
-            return connectionString = $"Server={host};Port={port};Username={user};Password={password};Database={db};Pooling=true;";
-                    //+ $"ApplicationName={appName};"
-                    //+ $"MaxPoolSize={maxConnectionPool};"      // Max connections in pool
-                    //+ $"ConnectionIdleLifetime={connectionIdleLifetime};" // Close idle connections
-                    //+ $"Timeout={connectionTimeout};"          // Maximum time (ms) to wait for a new connection before timing out.
-                    //+ $"CommandTimeout={statementTimeout};"  //Npgsql (Client-side) kills if query (command) takes longer than statementTimeout
-                    //+ $"ConnectionLifeTime={connectionLifeTime};"  //The total maximum lifetime of connections (in seconds).
-                    //+ $"Options='-c statement_timeout={statementTimeout}';"; //PostgreSQL (db-side) kills if query takes longer than statementTimeout
+            return connectionString = $"server={host};port={port};user id={user};password={password};database={db};pooling=true";
         }
     }
 }
