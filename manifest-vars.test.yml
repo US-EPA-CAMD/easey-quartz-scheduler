@@ -5,9 +5,9 @@ healthCheckType: port
 host: easey-tst.app.cloud.gov
 apiGatewayHost: api.epa.gov/easey/test
 bulkDataS3Bucket: cg-fceefece-417a-4e3d-8fd4-6943acd8ea55
-maxConnectionPool: 5
-idleTimeout: 5000
-connectionTimeout: 5000
-statementTimeout: 200000
+maxConnectionPool: 10
+idleTimeout: 30
+connectionTimeout: 10
+statementTimeout: 15
 idleInTransactionSessionTimeout: 60000
-connectionLifeTime: 120
+connectionLifeTime: 300

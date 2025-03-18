@@ -5,9 +5,9 @@ healthCheckType: process
 host: easey-stg.app.cloud.gov
 apiGatewayHost: api.epa.gov/easey/staging
 bulkDataS3Bucket: cg-e8f4cca5-5be8-434f-8987-bbdfa072f142
-maxConnectionPool: 5
-idleTimeout: 5000
-connectionTimeout: 5000
-statementTimeout: 200000
+maxConnectionPool: 10
+idleTimeout: 30
+connectionTimeout: 10
+statementTimeout: 15
 idleInTransactionSessionTimeout: 60000
-connectionLifeTime: 120
+connectionLifeTime: 300

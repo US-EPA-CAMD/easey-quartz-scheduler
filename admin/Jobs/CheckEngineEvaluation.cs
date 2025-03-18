@@ -112,7 +112,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         try
         {
             string connectionString = ConnectionStringManager.getConnectionString(Configuration);
-            int commandTimeout = Configuration.GetValue<int>("EASEY_DB_STATEMENT_TIMEOUT", 300000);
+            int commandTimeout = Configuration.GetValue<int>("EASEY_DB_STATEMENT_TIMEOUT", 30);
 
                 _logger.LogInformation(
                 "[Instance {InstanceIndex}] Executing {Group}.{Name}",
