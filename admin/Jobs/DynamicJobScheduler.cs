@@ -100,15 +100,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// </summary>
     /// <param name="jobConfig">The job configuration.</param>
     /// <returns>The <see cref="Type"/> of the job.</returns>
-    /// <exception cref="Exception">Thrown if the job type cannot be found.</exception>
     private static Type GetJobType(JobConfiguration jobConfig)
     {
-      var jobType = Type.GetType($"Epa.Camd.Quartz.Scheduler.Jobs.{jobConfig.JobType}");
-      if (jobType == null)
-      {
-        throw new Exception($"Job type {jobConfig.JobType} not found");
-      }
-      return jobType;
+      return Type.GetType($"Epa.Camd.Quartz.Scheduler.Jobs.{jobConfig.JobType}");
     }
 
     /// <summary>
@@ -183,7 +177,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     private static void RegisterJob(IServiceCollection services, JobConfiguration jobConfig)
     {
       var jobType = GetJobType(jobConfig);
-      services.AddQuartzJob(jobType, CreateJobKey(jobConfig), jobConfig.JobDescription);
+      if (jobType != null)
+      {
+        services.AddQuartzJob(jobType, CreateJobKey(jobConfig), jobConfig.JobDescription);
+        Console.WriteLine($"Registered job: {jobConfig.JobType} with Quartz"); // TODO: Replace with proper logging
+      }
     }
 
     /// <summary>
@@ -266,6 +264,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       else
       {
         var jobType = GetJobType(jobConfig);
+        if (jobType == null)
+        {
+          logger.LogError($"Job type {jobConfig.JobType} not found.");
+          return;
+        }
         scheduleAction(jobType, triggerBuilder);
         logger.LogInformation($"Scheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
       }
@@ -289,6 +292,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _logger.LogInformation($"Job with key {jobKey.Name} not found. Adding job to the scheduler.");
 
         // Create a new job detail.
+        var jobType = GetJobType(jobConfig);
+        if (jobType == null)
+        {
+          _logger.LogError($"Job type {jobConfig.JobType} not found.");
+          return;
+        }
         jobDetail = JobBuilder
           .Create(GetJobType(jobConfig))
           .WithIdentity(jobKey)
