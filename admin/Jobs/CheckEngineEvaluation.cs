@@ -105,6 +105,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       try
       {
         string connectionString = ConnectionStringManager.getConnectionString(Configuration);
+        int commandTimeout = Configuration.GetValue<int>("EASEY_DB_STATEMENT_TIMEOUT", 300);
 
         LogHelper.info(
           $"Executing {key.Group}.{key.Name} with data map...",
@@ -120,7 +121,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         );
 
         string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
-        cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", 20);
+        cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", commandTimeout);
 
         MonitorPlan mp = _dbContext.MonitorPlans.Find(monitorPlanId);
 
