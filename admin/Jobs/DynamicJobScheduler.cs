@@ -100,7 +100,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// </summary>
     /// <param name="jobConfig">The job configuration.</param>
     /// <returns>The <see cref="Type"/> of the job.</returns>
-    /// <exception cref="Exception">Thrown if the job type cannot be found.</exception>
     private static Type GetJobType(JobConfiguration jobConfig)
     {
       return Type.GetType($"Epa.Camd.Quartz.Scheduler.Jobs.{jobConfig.JobType}");
