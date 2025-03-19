@@ -115,7 +115,7 @@ namespace Epa.Camd.Quartz.Scheduler
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public async void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
+    public async void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger, NpgSqlContext dbContext)
     {
       logger.LogInformation("Configuring Quartz");
 
@@ -152,7 +152,7 @@ namespace Epa.Camd.Quartz.Scheduler
 
       BulkDataFile.setScheduler(scheduler);
 
-      await DynamicJobScheduler.ScheduleWithQuartz(scheduler, app, logger);
+      await DynamicJobScheduler.ScheduleWithQuartz(scheduler, app, logger, dbContext);
 
       //Schedule Listeners
       await CheckEngineEvaluationListener.ScheduleWithQuartz(scheduler);
