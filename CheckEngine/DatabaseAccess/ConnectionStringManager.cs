@@ -16,7 +16,6 @@ namespace DatabaseAccess
 
         private static string connectionString { get; set; }
 
-
         /// getConnectionString
         public static string getConnectionString(IConfiguration configuration)
         {
