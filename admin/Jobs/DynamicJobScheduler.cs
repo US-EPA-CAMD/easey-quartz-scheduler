@@ -337,9 +337,24 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app, ILogger logger)
+    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app, ILogger logger, NpgSqlContext dbContext)
     {
-      await ScheduleJob(scheduler, app, s_jobConfig, logger);
+      var jobConfigs = dbContext.JobConfigurations.ToList();
+      foreach (var jobConfig in jobConfigs)
+      {
+        try
+        {
+          // Schedule the job according to its configured cron expression.
+          await ScheduleJob(scheduler, app, jobConfig, logger);
+        }
+        catch (Exception e)
+        {
+          logger.LogError($"Error scheduling job {jobConfig.JobName}: {e.Message}");
+        }
+
+      }
+      // FIXME: Disable the scheduling of _this_ job for now while figuring out problems with de- and rescheduling.
+      //await ScheduleJob(scheduler, app, s_jobConfig, logger);
     }
 
     /// <summary>
