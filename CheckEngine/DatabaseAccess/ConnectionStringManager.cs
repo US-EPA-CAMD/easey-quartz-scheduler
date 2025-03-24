@@ -52,7 +52,7 @@ namespace DatabaseAccess
             }
 
             appName                 = Configuration["name"] ?? "quartz-scheduler";
-            maxConnectionPool       = Configuration.GetValue<int>("EASEY_DB_MAX_CONNECTION_POOL", 15);
+            maxConnectionPool       = Configuration.GetValue<int>("EASEY_DB_MAX_CONNECTION_POOL", 100);
             connectionIdleLifetime  = Configuration.GetValue<int>("EASEY_DB_IDLE_TIMEOUT", 300);
             connectionTimeout       = Configuration.GetValue<int>("EASEY_DB_CONNECTION_TIMEOUT", 15);
             statementTimeout        = Configuration.GetValue<int>("EASEY_DB_STATEMENT_TIMEOUT", 300);

@@ -15,7 +15,7 @@ using Epa.Camd.Quartz.Scheduler.Models;
 using Quartz;
 using SilkierQuartz;
 
-using Epa.Camd.Logger;
+using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -27,6 +27,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public static IScheduler BulkDataScheduler {get; set;}
 
     private NpgSqlContext _dbContext = null;
+    private readonly ILogger<BulkDataFile> _logger;
 
     public static class Identity
     {
@@ -45,10 +46,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       return new JobKey(Identity.JobName, Identity.Group);
     }
 
-    public BulkDataFile(NpgSqlContext dbContext, IConfiguration configuration)
+    public BulkDataFile(NpgSqlContext dbContext, IConfiguration configuration, ILogger<BulkDataFile> logger)
     {
       _dbContext = dbContext;
       Configuration = configuration;
+      _logger = logger;
     }
 
     private async Task<string> getDescription(string dataType, string subType, decimal? year, decimal? quarter, string state, string programCode){
@@ -110,7 +112,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       try {
         string description = await getDescription(dataType, dataSubType, year, quarter, stateCode, programCode);
 
-        LogHelper.info("Executing new stream", new LogVariable("url", url));
+        _logger.LogInformation("Executing new stream. Url: {Url}", url ?? "null");
 
         IAmazonS3 s3Client = new AmazonS3Client(
           Configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_S3_AWS_ACCESS_KEY_ID"],
@@ -124,7 +126,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.BulkFileQueue.Update(bulkFile);
         await _dbContext.SaveChangesAsync();
 
-        Console.Write(url);
+        _logger.LogInformation("Stream URL: {Url}", url ?? "null");
 
         HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
         myHttpWebRequest.Headers.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
@@ -265,14 +267,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         await context.Scheduler.DeleteJob(new JobKey(job_id.ToString()));
 
-        LogHelper.info("Executed stream successfully", new LogVariable("url", url));      
+        _logger.LogInformation("Executed stream successfully. Url: {Url}", url ?? "null");
       }
       catch (Exception e)
       {
-        Console.WriteLine("ERRORED");
-        Console.WriteLine(bulkFile.JobId);
-        Console.Write(e);
-        LogHelper.error(e.Message);
+        _logger.LogError(e, "Error executing bulk data stream. JobId: {JobId}", bulkFile?.JobId);
         
         try{
         bulkFile.StatusCd = "ERROR";
@@ -283,13 +282,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         await _dbContext.SaveChangesAsync();
         }
         catch(Exception er){
-          Console.WriteLine("INNER ERROR");
-          Console.WriteLine(er);
+          _logger.LogError(er, "INNER ERROR while updating BulkFileQueue error state.");
+          _logger.LogError(er, "Failed to persist error state for JobId: {JobId}", bulkFile?.JobId);
         }
       }
     }
 
-    public static async Task CreateAndScheduleJobDetail(BulkFileQueue record)
+    public static async Task CreateAndScheduleJobDetail(BulkFileQueue record, ILogger<BulkFileJobQueue> logger)
     {
       // Remove job if one already exists that has failed out
       if(await BulkDataScheduler.CheckExists(new JobKey(record.JobId.ToString()))){
@@ -315,7 +314,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         .StartNow()
         .Build();
 
-      Console.WriteLine("SCHEDULED NEW JOB");
+      logger.LogInformation("Scheduled new BulkDataFile job. JobId: {JobId}", record.JobId);
 
       await BulkDataScheduler.ScheduleJob(job, trigger);
     }
