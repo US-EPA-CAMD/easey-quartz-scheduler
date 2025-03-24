@@ -11,3 +11,4 @@ connectionTimeout: 30
 statementTimeout: 300
 idleInTransactionSessionTimeout: 60000
 connectionLifeTime: 300
+loggingLevel: Debug
