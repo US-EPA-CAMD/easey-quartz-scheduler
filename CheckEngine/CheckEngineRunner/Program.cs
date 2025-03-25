@@ -6,6 +6,9 @@ using Quartz.Impl;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Compact;
 
 namespace CheckEngineRunner
 {
@@ -121,6 +124,7 @@ namespace CheckEngineRunner
                     .Enrich.FromLogContext()
                     .WriteTo.Console(new RenderedCompactJsonFormatter())
                     .CreateLogger();
+            }
             catch (Exception ex)
             {
                 Console.WriteLine("FATAL: Logging configuration failed: " + ex.Message);
