@@ -6,6 +6,10 @@ using Quartz.Impl;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Compact;
+using Microsoft.Extensions.Logging;
 
 namespace CheckEngineRunner
 {
@@ -121,6 +125,16 @@ namespace CheckEngineRunner
                     .Enrich.FromLogContext()
                     .WriteTo.Console(new RenderedCompactJsonFormatter())
                     .CreateLogger();
+
+                // Configure LoggerProvider
+                var factory = LoggerFactory.Create(builder =>
+                {
+                    builder.ClearProviders();
+                    builder.AddSerilog();
+                });
+
+                Epa.Camd.Logger.LoggerProvider.Configure(factory);
+            }
             catch (Exception ex)
             {
                 Console.WriteLine("FATAL: Logging configuration failed: " + ex.Message);

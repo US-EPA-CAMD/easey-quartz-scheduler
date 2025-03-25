@@ -43,7 +43,18 @@
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .UseSerilog()
+                .ConfigureLogging((ctx, logging) =>
+                  {
+                    // Create the factory and wire it to LoggerProvider
+                    var factory = LoggerFactory.Create(builder =>
+                    {
+                      builder.ClearProviders();
+                      builder.AddSerilog(); // use the Serilog pipeline already built
+                    });
+
+                    Epa.Camd.Logger.LoggerProvider.Configure(factory);
+                })
+                .UseSerilog() // required to wire Serilog to Microsoft.Extensions.Logging
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                   webBuilder.UseStartup<Startup>();

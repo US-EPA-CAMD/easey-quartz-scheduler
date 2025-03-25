@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ECMPS.Definitions.Extensions;
+using Epa.Camd.Logger;
+using Microsoft.Extensions.Logging;
 
 namespace ECMPS.Checks.Parameters
 {
@@ -9,6 +12,8 @@ namespace ECMPS.Checks.Parameters
   /// </summary>
   public class cCheckCategory
   {
+
+    protected readonly ILogger _logger;
 
     #region Protected Constructors
 
@@ -19,6 +24,7 @@ namespace ECMPS.Checks.Parameters
     /// <param name="ACategoryCd">The cateogry code associated with the check category object</param>
     protected cCheckCategory(cCheckProcess ACheckProcess, string ACategoryCd)
     {
+      _logger = LoggerProvider.GetLogger(GetType().FullName);
       FCheckProcess = ACheckProcess;
       FCategoryCd = ACategoryCd;
       FParentCategory = null;
@@ -32,6 +38,7 @@ namespace ECMPS.Checks.Parameters
     /// <param name="AParentCategory">The parent category of this category.</param>
     protected cCheckCategory(cCheckProcess ACheckProcess, string ACategoryCd, cCheckCategory AParentCategory)
     {
+      _logger = LoggerProvider.GetLogger(GetType().FullName);
       FCheckProcess = ACheckProcess;
       FCategoryCd = ACategoryCd;
       FParentCategory = AParentCategory;
@@ -43,6 +50,7 @@ namespace ECMPS.Checks.Parameters
     /// </summary>
     protected cCheckCategory()
     {
+        _logger = LoggerProvider.GetLogger(GetType().FullName);
     }
 
     #endregion
