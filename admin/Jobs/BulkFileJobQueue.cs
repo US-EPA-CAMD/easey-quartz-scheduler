@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using System.Threading;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -17,12 +18,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     private NpgSqlContext _dbContext = null;
 
     private IConfiguration Configuration { get; }
+    private readonly ILogger<BulkFileJobQueue> _logger;
 
-
-    public BulkFileJobQueue(NpgSqlContext dbContext, IConfiguration configuration)
+    public BulkFileJobQueue(NpgSqlContext dbContext, IConfiguration configuration, ILogger<BulkFileJobQueue> logger)
     {
       _dbContext = dbContext;
       Configuration = configuration;
+      _logger = logger;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -55,7 +57,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             {
               if (index < inQueue.Count)
               {
-                await BulkDataFile.CreateAndScheduleJobDetail(inQueue[i]);
+                await BulkDataFile.CreateAndScheduleJobDetail(inQueue[i], _logger);
                 Thread.Sleep(Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_BULK_FILE_JOB_QUEUE_DELAY"] ?? "5") * 1000);
                 index++;
               }
