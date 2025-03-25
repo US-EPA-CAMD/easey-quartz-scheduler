@@ -60,8 +60,8 @@ namespace DatabaseAccess
             idleInTransactionSessionTimeout = Configuration.GetValue<int>("EASEY_DB_IDLE_TRANS_SESSION_TIMEOUT", 300000);
 
             return connectionString = $"Server={host};Port={port};Username={user};Password={password};Database={db};Pooling=true;"
-                    + $"ApplicationName={appName};";
-            //        + $"MaxPoolSize={maxConnectionPool};"      // Max connections in pool
+                    + $"ApplicationName={appName};"
+                    + $"MaxPoolSize={maxConnectionPool};";      // Max connections in pool
             //        + $"ConnectionIdleLifetime={connectionIdleLifetime};" // Close idle connections
             //        + $"Timeout={connectionTimeout};"          // Maximum time (ms) to wait for a new connection before timing out.
             //        + $"CommandTimeout={statementTimeout};"  //Npgsql (Client-side) kills if query (command) takes longer than statementTimeout
