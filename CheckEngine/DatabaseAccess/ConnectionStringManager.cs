@@ -62,8 +62,8 @@ namespace DatabaseAccess
             return connectionString = $"Server={host};Port={port};Username={user};Password={password};Database={db};Pooling=true;"
                     + $"ApplicationName={appName};"
                     + $"MaxPoolSize={maxConnectionPool};"      // Max connections in pool
-                    + $"ConnectionIdleLifetime={connectionIdleLifetime};"; // Close idle connections
-            //        + $"Timeout={connectionTimeout};"          // Maximum time (ms) to wait for a new connection before timing out.
+                    + $"ConnectionIdleLifetime={connectionIdleLifetime};" // Close idle connections
+                    + $"Timeout={connectionTimeout};";          // Maximum time (ms) to wait for a new connection before timing out.
             //        + $"CommandTimeout={statementTimeout};"  //Npgsql (Client-side) kills if query (command) takes longer than statementTimeout
             //        + $"ConnectionLifeTime={connectionLifeTime};"  //The total maximum lifetime of connections (in seconds).
             //        + $"Options='-c statement_timeout={statementTimeout} -c idle_in_transaction_session_timeout={idleInTransactionSessionTimeout}';"; //PostgreSQL (db-side) kills if query takes longer than statementTimeout
