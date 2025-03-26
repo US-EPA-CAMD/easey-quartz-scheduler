@@ -6,6 +6,7 @@ using ECMPS.Checks.TypeUtilities;
 
 using ECMPS.Definitions.Extensions;
 using ECMPS.Definitions.SeverityCode;
+using Microsoft.Extensions.Logging;
 using Epa.Camd.Logger;
 
 namespace ECMPS.Checks.CheckEngine
@@ -15,6 +16,8 @@ namespace ECMPS.Checks.CheckEngine
     /// </summary>
     public class cCheckEngine //: IJob
     {
+        private readonly ILogger<cCheckEngine> _logger = LoggerProvider.GetLogger<cCheckEngine>();
+
         // /// <summary>
         // /// Description.
         // /// </summary>
@@ -753,6 +756,8 @@ namespace ECMPS.Checks.CheckEngine
                     {
                         if (RunChecks_ProcessInit(processCd, categoryCd, additionalInitialization))
                         {
+                            _logger.LogInformation("Initializing check process for {ProcessCd} {CategoryCd}", processCd, categoryCd);
+
                             //This step may actually be completely unnecessary (includes should handle finding dlls)
                             Process = (cProcess)Activator.CreateInstanceFrom(ChecksDllPath + processDllName,
                                                                               processNameSpace + "." + processClassName,
@@ -764,26 +769,30 @@ namespace ECMPS.Checks.CheckEngine
 
                             if (CheckSessionInit(batchId))
                             {
-                                LogHelper.info("Ready to run checks");
+                                _logger.LogInformation("Check session initialized for MonPlanId: {MonPlanId}, BatchId: {BatchId}", MonPlanId ?? "null", batchId ?? "null");
                                 
                                 if (Process.ExecuteChecks(ChecksDllPath, ref errorMessage))
                                 {
-                                    LogHelper.info("Processed Monplan checks", new LogVariable("MonPlanId", MonPlanId));
+                                    _logger.LogInformation("Checks executed successfully for MonPlanId: {MonPlanId}", MonPlanId ?? "null");
                                     result = CheckSessionCompleted(Process.SeverityCd);
                                 }
                                 else
                                 {
                                     CheckSessionFailed(errorMessage);
 
-                                    HandleProcessingError(string.Format("Check execution failed: {0}", errorMessage));
+                                    _logger.LogError("Check execution failed: {ErrorMessage}", errorMessage);
                                     result = false;
                                 }
                             }
                             else
+                            {
+                                _logger.LogWarning("Check session initialization failed for process {ProcessCd}", processCd);
                                 result = false;
+                             }
                         }
                         else
                         {
+                            _logger.LogWarning("RunChecks_ProcessInit returned false for {ProcessCd} {CategoryCd}", processCd, categoryCd);
                             result = false;
                         }
                     }
@@ -806,17 +815,20 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
+                        _logger.LogError("Check procedure init failed: {Error}", errorMessage);
                         HandleProcessingError(string.Format("Check procedure init failed: {0}", errorMessage));
                         result = false;
                     }
                 }
                 else
                 {
+                    _logger.LogWarning("RunChecks_ProcessInit returned false for {ProcessCd}", processCd);
                     result = false;
                 }
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Unexpected exception while executing checks for process {ProcessCd}", processCd);
                 HandleProcessingError(string.Format("Check execution failed: {0}  {1}", ex.Message, ex.StackTrace));
                 result = false;
             }
@@ -1086,12 +1098,14 @@ namespace ECMPS.Checks.CheckEngine
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogError(ex, "ECMPS data context creation failed for process {ProcessCd}", processCd);
                     HandleProcessingError(string.Format("ECMPS data context creation failed: {0}", ex.Message));
                     result = false;
                 }
             }
             else
             {
+                _logger.LogError("ECMPS connection failed for process {ProcessCd}, {Error}", processCd, DbDataConnection.LastError);
                 HandleProcessingError(string.Format("ECMPS connection failed: {0}", DbDataConnection.LastError));
                 result = false;
             }
@@ -1105,18 +1119,21 @@ namespace ECMPS.Checks.CheckEngine
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogError(ex, "ECMPS AUX data context creation failed");
                     HandleProcessingError(string.Format("ECMPS_AUX data context creation failed: {0}", ex.Message));
                     result = false;
                 }
             }
             else
             {
+                 _logger.LogError("ECMPS connection failed: {Error}", DbAuxConnection.LastError);
                 HandleProcessingError(string.Format("ECMPS connection failed: {0}", DbAuxConnection.LastError));
                 result = false;
             }
 
             if (DbWsConnection == null)
             {
+                _logger.LogError("ECMPS connection failed: {Error}", DbAuxConnection.LastError);
                 HandleProcessingError(string.Format("ECMPS connection failed: {0}", DbWsConnection.LastError));
                 result = false;
             }

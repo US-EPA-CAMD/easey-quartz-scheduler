@@ -9,11 +9,13 @@ namespace Epa.Camd.Quartz.Scheduler
     public static void Main(string[] args)
     {
       
-      Log.Logger = new LoggerConfiguration()
+      /// Commented out because it has been replaced by <see cref="LoggerProvider"/>
+
+      /* Log.Logger = new LoggerConfiguration()
         .Enrich.FromLogContext()
         .WriteTo.Console(new RenderedCompactJsonFormatter())
         .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-        .CreateLogger();
+        .CreateLogger(); */
       
     }
   }

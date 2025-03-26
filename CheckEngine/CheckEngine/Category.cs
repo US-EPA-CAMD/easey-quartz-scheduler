@@ -11,6 +11,7 @@ using ECMPS.Common;
 using ECMPS.Definitions.SeverityCode;
 using ECMPS.ErrorSuppression;
 using ECMPS.Definitions.Extensions;
+using Microsoft.Extensions.Logging;
 using Epa.Camd.Logger;
 
 namespace ECMPS.Checks.CheckEngine
@@ -322,6 +323,7 @@ namespace ECMPS.Checks.CheckEngine
             catch (Exception ex)
             {
                 CurrentMonLocId = AMonitorLocationId;
+                _logger.LogError(ex, "Exception in ProcessChecks. Category: {CategoryCd}, MonLocId: {MonLocId}", this.CategoryCd ?? "N/A", AMonitorLocationId ?? "N/A");
                 Process.UpdateErrors(string.Format("Category: {0}  MonLocId: {1}  Message: {2}",
                                                    this.CategoryCd, AMonitorLocationId, ex.Message));
                 return false;
@@ -414,7 +416,7 @@ namespace ECMPS.Checks.CheckEngine
             {
                 System.Diagnostics.Debug.WriteLine("");
                 System.Diagnostics.Debug.WriteLine(string.Format("Check Category: {0}", this.CategoryCd));
-                LogHelper.info(string.Format("Check Category: {0}", this.CategoryCd));
+                _logger.LogInformation("Check Category: {CategoryCd}", this.CategoryCd ?? "N/A");
             }
 
             string ErrorMessage = "";
@@ -555,10 +557,11 @@ namespace ECMPS.Checks.CheckEngine
                                                            CurrentMonLocId, CurrentTestSumId, CurrentOpDate, CurrentOpHour,
                                                            TableName, CurrentRowId, RecordIdentifier, this, out SeverityCd);
 
-                            System.Diagnostics.Debug.WriteLine(string.Format("Check Execution Error: {0}-{1} [{2}]",
-                                                                             ARuleCheck.CheckTypeCd,
-                                                                             ARuleCheck.CheckNumber.ToString(),
-                                                                             AErrorMessage));
+                            _logger.LogError("Check Execution Error: {CheckType}-{CheckNum} [{ErrorMessage}]",
+                                ARuleCheck.CheckTypeCd ?? "null",
+                                ARuleCheck.CheckNumber.ToString(),
+                                AErrorMessage ?? "No message");
+
                             this.UpdateSeverity(SeverityCd);
                         }
 
