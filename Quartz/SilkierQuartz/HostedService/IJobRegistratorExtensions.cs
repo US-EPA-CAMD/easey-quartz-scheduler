@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Quartz.Impl.Matchers;
 
@@ -77,7 +78,7 @@ namespace SilkierQuartz
             {
                 services.AddTransient(t);
             }
-            var jobDetail = JobBuilder.Create(t).WithIdentity(key).WithDescription(description).Build();
+            var jobDetail = JobBuilder.Create(t).WithIdentity(key).WithDescription(description).StoreDurably(true).Build();
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(jobDetail, new List<ITrigger>()));
             return services;
         }
@@ -168,8 +169,8 @@ namespace SilkierQuartz
         }
 
         public static IApplicationBuilder UseQuartzJob(
-   this IApplicationBuilder app, Type t,
-   IEnumerable<TriggerBuilder> triggerBuilders)
+           this IApplicationBuilder app, Type t,
+           IEnumerable<TriggerBuilder> triggerBuilders)
         {
             var _scheduleJobs = app.ApplicationServices.GetService<IEnumerable<IScheduleJob>>();
             var job = from js in _scheduleJobs where js.JobDetail.JobType == t select js;
@@ -185,13 +186,19 @@ namespace SilkierQuartz
             return app;
         }
 
-        public static void UseQuartzJob(IEnumerable<IScheduleJob> scheduleJobs, Type t, TriggerBuilder triggerBuilder)
+        public static async Task UseQuartzJob(IEnumerable<IScheduleJob> scheduleJobs, IScheduler scheduler, Type t, TriggerBuilder triggerBuilder)
         {
             var job = scheduleJobs.FirstOrDefault(js => js.JobDetail.JobType == t);
             if (job != null)
             {
+                if (!await scheduler.CheckExists(job.JobDetail.Key))
+                {
+                    await scheduler.AddJob(job.JobDetail, replace: false);
+                }
                 var lstgs = (List<ITrigger>)job.Triggers;
-                lstgs.Add(triggerBuilder.ForJob(job.JobDetail).Build());
+                var newTrigger = triggerBuilder.ForJob(job.JobDetail).Build();
+                lstgs.Add(newTrigger);
+                await scheduler.ScheduleJob(newTrigger);
             }
         }
 
