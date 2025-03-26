@@ -152,7 +152,19 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             _logger.LogInformation("[Instance {InstanceIndex}] MP checks completed for evaluation {EvalId} with result: {Result}",
                                     instanceIndex, id, mpResult);
 
-            _dbContext.Entry<MonitorPlan>(mp).Reload();
+            if (!mpResult)
+            {
+                string exMessage = "MP Report Check Run Failed.";
+
+                if (!checkEngine.CheckEngineErrors.IsWhitespace())
+                {
+                    exMessage += Environment.NewLine + Environment.NewLine + checkEngine.CheckEngineErrors;
+                }
+
+                throw new Exception(exMessage);
+            }
+
+                        _dbContext.Entry<MonitorPlan>(mp).Reload();
             EvalStatusCode evalStatus = getStatusCodeByCheckId(mp.CheckSessionId, mpResult);
             mp.EvalStatus = evalStatus.Code;
             evaluationStatus = evalStatus.Code;
@@ -206,6 +218,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               _dbContext.TestSummaries.Update(testSummaryRecord);
 
               bool listResult = checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, es.SetId);
+                        
+              if (!listResult)
+              {
+                string exMessage = "QAT Report Check Run Failed.";
+
+                if (!checkEngine.CheckEngineErrors.IsWhitespace())
+                {
+                    exMessage += Environment.NewLine + Environment.NewLine + checkEngine.CheckEngineErrors;
+                }
+
+                throw new Exception(exMessage);
+              }
 
               _dbContext.Entry<TestSummary>(testSummaryRecord).Reload();
               EvalStatusCode testSumEvalStatus = getStatusCodeByCheckId(testSummaryRecord.CheckSessionId, listResult);
@@ -222,6 +246,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
               bool listResult = checkEngine.RunChecks_QaReport_Qce(certId, monitorPlanId, eCheckEngineRunMode.Normal, es.SetId);
 
+              if (!listResult)
+              {
+                  string exMessage = "QCE Report Check Run Failed.";
+
+                  if (!checkEngine.CheckEngineErrors.IsWhitespace())
+                  {
+                      exMessage += Environment.NewLine + Environment.NewLine + checkEngine.CheckEngineErrors;
+                  }
+
+                  throw new Exception(exMessage);
+              }
+
               _dbContext.Entry<CertEvent>(certIdRecord).Reload();
               EvalStatusCode certEvalStatus = getStatusCodeByCheckId(certIdRecord.CheckSessionId, listResult);
               evaluationStatus = certEvalStatus.Code;
@@ -236,6 +272,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               _dbContext.SaveChanges();
 
               bool listResult = checkEngine.RunChecks_QaReport_Tee(extensionExemptionId, monitorPlanId, eCheckEngineRunMode.Normal, es.SetId);
+
+              if (!listResult)
+              {
+                  string exMessage = "TEE Report Check Run Failed.";
+
+                  if (!checkEngine.CheckEngineErrors.IsWhitespace())
+                  {
+                      exMessage += Environment.NewLine + Environment.NewLine + checkEngine.CheckEngineErrors;
+                  }
+
+                  throw new Exception(exMessage);
+              }
 
               _dbContext.Entry<TestExtensionExemption>(extensionExemptionRecord).Reload();
               EvalStatusCode teeEvalStatus = getStatusCodeByCheckId(extensionExemptionRecord.CheckSessionId, listResult);
@@ -295,6 +343,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             _dbContext.SaveChanges();
 
             bool evalResult = checkEngine.RunChecks_EmReport(monitorPlanId, rptPeriodId, eCheckEngineRunMode.Normal, es.SetId);
+
+            if (!evalResult) {
+                string exMessage = "EM Report Check Run Failed.";
+
+                if (!checkEngine.CheckEngineErrors.IsWhitespace())
+                {
+                    exMessage += Environment.NewLine + Environment.NewLine + checkEngine.CheckEngineErrors;
+                }
+
+                throw new Exception(exMessage);
+            }
+
             _dbContext.Entry<EmissionEvaluation>(emissionEvalRecord).Reload();
             EvalStatusCode emissionEvalStatus = getStatusCodeByCheckId(emissionEvalRecord.CheckSessionId, evalResult);
             evaluationStatus = emissionEvalStatus.Code;
