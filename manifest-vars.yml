@@ -18,7 +18,8 @@ bulkBufferSize: 5242880
 maxConnectionPool: 100
 idleTimeout: 300
 connectionTimeout: 30
-statementTimeout: 300
+commandTimeout: 300
+statementTimeout: 300000
 idleInTransactionSessionTimeout: 300000
 connectionLifeTime: 1800
 loggingLevel: Debug

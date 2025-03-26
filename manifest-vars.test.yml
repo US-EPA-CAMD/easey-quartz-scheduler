@@ -8,7 +8,8 @@ bulkDataS3Bucket: cg-fceefece-417a-4e3d-8fd4-6943acd8ea55
 maxConnectionPool: 75
 idleTimeout: 30
 connectionTimeout: 30
-statementTimeout: 300
+commandTimeout: 300
+statementTimeout: 300000
 idleInTransactionSessionTimeout: 60000
 connectionLifeTime: 300
 loggingLevel: Debug
