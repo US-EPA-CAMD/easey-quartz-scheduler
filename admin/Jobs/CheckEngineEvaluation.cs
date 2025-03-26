@@ -11,7 +11,7 @@ using Quartz;
 using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
-using Epa.Camd.Logger;
+using Microsoft.Extensions.Logging;
 
 using DatabaseAccess;
 using ECMPS.Checks.CheckEngine;
@@ -19,6 +19,8 @@ using ECMPS.Checks.CheckEngine.Definitions;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Microsoft.Extensions.Logging;
+using ECMPS.Definitions.Extensions;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -26,6 +28,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
   {
     private NpgSqlContext _dbContext = null;
     private IConfiguration Configuration { get; }
+    private readonly ILogger<CheckEngineEvaluation> _logger;
     static SemaphoreSlim semaphore;
 
     public static class Identity
@@ -46,11 +49,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public CheckEngineEvaluation(
       NpgSqlContext dbContext,
-      IConfiguration configuration
+      IConfiguration configuration,
+      ILogger<CheckEngineEvaluation> logger
     )
     {
       _dbContext = dbContext;
       Configuration = configuration;
+      _logger = logger;
     }
 
     private EvalStatusCode getStatusCodeByCheckId(string checkSessionId, bool result){
@@ -67,6 +72,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public Task Execute(IJobExecutionContext context)
     {
+      string instanceIndex = Environment.GetEnvironmentVariable("CF_INSTANCE_INDEX") ?? "unknown";
+
       // Initialize evaluation stages
       List<EvaluationStageDto> evaluationStages = new List<EvaluationStageDto>
       {
@@ -77,6 +84,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       JobKey key = context.JobDetail.Key;
 
       string id = dataMap.GetString("Id");
+      _logger.LogInformation("[Instance {InstanceIndex}] Starting evaluation ID: {EvalId}", instanceIndex, id);
 
       Evaluation evalRecord = _dbContext.Evaluations.Find(Int64.Parse(id));
 
@@ -105,19 +113,21 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       try
       {
         string connectionString = ConnectionStringManager.getConnectionString(Configuration);
-        int commandTimeout = Configuration.GetValue<int>("EASEY_DB_STATEMENT_TIMEOUT", 300);
+        int commandTimeout = Configuration.GetValue<int>("EASEY_DB_COMMAND_TIMEOUT", 300);
 
-        LogHelper.info(
-          $"Executing {key.Group}.{key.Name} with data map...",
-          new LogVariable("Id", id),
-          new LogVariable("Process Code", processCode),
-          new LogVariable("Facility Id", facilityId),
-          new LogVariable("Facility Name", facilityName),
-          new LogVariable("Monior Plan Id", monitorPlanId),
-          new LogVariable("Configuration", monPlanConfig),
-          new LogVariable("User Id", userId),
-          new LogVariable("User Email", userEmail),
-          new LogVariable("Queued Time", queuedTime)
+            _logger.LogInformation(
+                "Executing {Group}.{Name} | Id: {Id}, Process Code: {ProcessCode}, Facility Id: {FacilityId}, Facility Name: {FacilityName}, Monitor Plan Id: {MonitorPlanId}, Configuration: {Configuration}, User Id: {UserId}, User Email: {UserEmail}, Queued Time: {QueuedTime}",
+                key.Group,
+                key.Name,
+                id,
+                processCode,
+                facilityId,
+                facilityName,
+                monitorPlanId,
+                monPlanConfig,
+                userId,
+                userEmail,
+                queuedTime
         );
 
         string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
@@ -132,13 +142,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         switch (processCode)
         {
           case "MP":
-            LogHelper.info("Running RunChecks_MpReport...");
+            _logger.LogInformation("[Instance {InstanceIndex}] Running MP checks for evaluation {EvalId}", instanceIndex, id);
 
             mp.EvalStatus = "WIP";
             _dbContext.MonitorPlans.Update(mp);
             _dbContext.SaveChanges();
 
             bool mpResult = checkEngine.RunChecks_MpReport(monitorPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal, es.SetId);
+            _logger.LogInformation("[Instance {InstanceIndex}] MP checks completed for evaluation {EvalId} with result: {Result}",
+                                    instanceIndex, id, mpResult);
 
             _dbContext.Entry<MonitorPlan>(mp).Reload();
             EvalStatusCode evalStatus = getStatusCodeByCheckId(mp.CheckSessionId, mpResult);
@@ -146,6 +158,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             evaluationStatus = evalStatus.Code;
             _dbContext.MonitorPlans.Update(mp);
             context.MergedJobDataMap.Add("EvaluationStatus", evalStatus.Description);
+
+            _logger.LogInformation("[Instance {InstanceIndex}] Checking for QA evaluations for set {SetId}",
+                                    instanceIndex, es.SetId);
 
             // Logic to flip state and unlock qa or emissions files after run of MP
             List<Evaluation> qaEvals = _dbContext.Evaluations.FromSqlRaw(@"
@@ -180,10 +195,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                dateTime = DateTime.UtcNow.ToString("o")
             });
 
-            LogHelper.info($"RunChecks_MpReport returned a result of {mpResult}!");
+            _logger.LogInformation("RunChecks_MpReport returned a result of {Result}!", mpResult);
             break;
           case "QA":
-            LogHelper.info("Running QA import checks...");
+            _logger.LogInformation("[Instance {InstanceIndex}] Starting QA checks for evaluation {EvalId}", instanceIndex, id);
             if(!string.IsNullOrWhiteSpace(dataMap.GetString("testSumId"))){
               string testId = dataMap.GetString("testSumId");
               TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
@@ -248,7 +263,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                action = "IMPORT_CHECKS_QA_COMPLETED",
                dateTime = DateTime.UtcNow.ToString("o")
             });
-            LogHelper.info($"QA import checks finished");
+            _logger.LogInformation("[Instance {InstanceIndex}] QA import checks finished", instanceIndex);
 
             break;
           case "EM":
@@ -327,7 +342,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _dbContext.Evaluations.Update(evalRecord);
         _dbContext.SaveChanges();
 
-        LogHelper.info($"{key.Group}.{key.Name} COMPLETED successfully!");
+        _logger.LogInformation("[Instance {InstanceIndex}] Evaluation {EvalId} completed successfully with status {Status}",
+                instanceIndex, id, evaluationStatus);
         return Task.CompletedTask;
       }
       catch (Exception ex)
@@ -342,7 +358,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
         context.MergedJobDataMap.Add("EvaluationStatus", "FATAL");
-        LogHelper.error(ex.ToString());
+        _logger.LogError(ex.ToString());
 
 
         switch(processCode){ //Reset status codes to EVAL in case of an evaluation error
@@ -417,16 +433,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             // Log the response
             if (response.IsSuccessStatusCode)
             {
-                LogHelper.info($"Evaluation error email sent successfully for EvaluationSet ID: {evaluationSetId}");
+                _logger.LogInformation("Evaluation error email sent successfully for EvaluationSet ID: {EvaluationSetId}", evaluationSetId);
             }
             else
             {
-                LogHelper.error($"Failed to send evaluation error email. Status Code: {response.StatusCode}, Reason: {response.ReasonPhrase}");
+                _logger.LogError("Failed to send evaluation error email. Status Code: {StatusCode}, Reason: {ReasonPhrase}",
+                    response.StatusCode, response.ReasonPhrase);
             }
         }
         catch (Exception e)
         {
-            LogHelper.error($"Error sending evaluation error email: {e.Message}");
+            _logger.LogError("Error sending evaluation error email: {ErrorMessage}", e.Message);
         }
     }
 
