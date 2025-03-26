@@ -26,16 +26,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
-        string instanceIndex = Environment.GetEnvironmentVariable("CF_INSTANCE_INDEX") ?? "unknown";
-
         try
         {
-            _logger.LogInformation("[Instance {InstanceIndex}] Starting evaluation queue check", instanceIndex);
+            _logger.LogInformation("Starting evaluation queue check");
             
             string[] types = new string[]{"MP", "QA", "EM"};
 
             foreach(string type in types){
-                _logger.LogInformation("[Instance {InstanceIndex}] Checking {Type} evaluations", instanceIndex, type);
+                _logger.LogInformation("Checking {Type} evaluations", type);
                 
                 List<Evaluation> inQueue = _dbContext.Evaluations.FromSqlRaw(@"
                     SELECT *
@@ -44,8 +42,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     ORDER BY queued_time", type
                 ).ToList();
 
-                _logger.LogInformation("[Instance {InstanceIndex}] Found {Count} {Type} evaluations in QUEUED status", 
-                    instanceIndex, inQueue.Count, type);
+                _logger.LogInformation("Found {Count} {Type} evaluations in QUEUED status", 
+                    inQueue.Count, type);
 
                 List<Evaluation> wip = _dbContext.Evaluations.FromSqlRaw(@"
                     SELECT *
@@ -54,29 +52,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     ORDER BY queued_time", type
                 ).ToList();
 
-                _logger.LogInformation("[Instance {InstanceIndex}] Found {Count} {Type} evaluations in WIP status", 
-                    instanceIndex, wip.Count, type);
+                _logger.LogInformation("Found {Count} {Type} evaluations in WIP status", 
+                    wip.Count, type);
 
                 int maxAllowed = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_" + type +"_EVALUATIONS"]);
-                _logger.LogInformation("[Instance {InstanceIndex}] Max allowed {Type} evaluations: {MaxAllowed}", 
-                    instanceIndex, type, maxAllowed);
+                _logger.LogInformation("Max allowed {Type} evaluations: {MaxAllowed}", 
+                    type, maxAllowed);
 
                 if(wip.Count < maxAllowed){
                     if(inQueue.Count > 0){
                         int jobs_to_schedule = maxAllowed - wip.Count;
-                        _logger.LogInformation("[Instance {InstanceIndex}] Attempting to schedule {JobCount} {Type} evaluations", 
-                            instanceIndex, jobs_to_schedule, type);
+                        _logger.LogInformation("Attempting to schedule {JobCount} {Type} evaluations", 
+                            jobs_to_schedule, type);
 
                         for(int i = 0; i < jobs_to_schedule; i++){
                             if(i < inQueue.Count){
                                 Evaluation toSchedule = inQueue[i];
-                                _logger.LogInformation("[Instance {InstanceIndex}] Processing evaluation ID {EvalId}", 
-                                    instanceIndex, toSchedule.EvaluationId);
+                                _logger.LogInformation("Processing evaluation ID {EvalId}", 
+                                    toSchedule.EvaluationId);
                                 
                                 EvaluationSet es = _dbContext.EvaluationSet.Find(toSchedule.EvaluationSetId);
                                 
-                                _logger.LogInformation("[Instance {InstanceIndex}] Starting CheckEngineEvaluation for ID {EvalId}", 
-                                    instanceIndex, toSchedule.EvaluationId);
+                                _logger.LogInformation("Starting CheckEngineEvaluation for ID {EvalId}", 
+                                    toSchedule.EvaluationId);
                                 await CheckEngineEvaluation.StartNow(
                                     context.Scheduler,
                                     toSchedule.EvaluationId,
@@ -96,22 +94,21 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                                 );
 
                                 int delaySeconds = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATION_JOB_QUEUE_DELAY"] ?? "1");
-                                _logger.LogInformation("[Instance {InstanceIndex}] Waiting {Delay}s before next evaluation", 
-                                    instanceIndex, delaySeconds);
+                                _logger.LogInformation("Waiting {Delay}s before next evaluation", 
+                                    delaySeconds);
                                 Thread.Sleep(delaySeconds * 1000);
                             }
                         }
                     }
                 } else {
-                    _logger.LogInformation("[Instance {InstanceIndex}] Maximum number of {Type} evaluations ({MaxAllowed}) already in progress", 
-                        instanceIndex, type, maxAllowed);
+                    _logger.LogInformation("Maximum number of {Type} evaluations ({MaxAllowed}) already in progress", 
+                        type, maxAllowed);
                 }
             }
         }
         catch (Exception e)
         {
-            _logger.LogError("[Instance {InstanceIndex}] Error in evaluation queue: {ErrorMessage}", 
-                instanceIndex, e.Message);
+            _logger.LogError("Error in evaluation queue: {ErrorMessage}",  e.Message);
             return;
         }
     }
