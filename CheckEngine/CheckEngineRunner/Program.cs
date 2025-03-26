@@ -6,6 +6,10 @@ using Quartz.Impl;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Compact;
+using Microsoft.Extensions.Logging;
 
 namespace CheckEngineRunner
 {
@@ -26,45 +30,7 @@ namespace CheckEngineRunner
 
         static async Task Main(string[] args)
         {
-
-            /*
-            string fileTypeCd = ((args != null) && (args.Length >= 1)) ? args[0] : null;
-            string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
-            string otherId = ((args != null) && (args.Length >= 3)) ? args[2] : null;
-
-
-            // 1. Create a scheduler Factory
-            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
-
-            // 2. Get and start a scheduler
-            IScheduler scheduler = await schedulerFactory.GetScheduler();
-            await scheduler.Start();
-
-            // 3. Create a job
-            IJobDetail job = JobBuilder.Create<CheckEnginerJob>()
-
-                .WithIdentity("Monitor Plan Evaluation", "DEFAULT")
-                .UsingJobData("connectionString", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr)
-                .UsingJobData("ProcessCode", "MP")
-                .UsingJobData("fileTypeCd", fileTypeCd)
-                .UsingJobData("monPlanId", monPlanId)
-                .UsingJobData("otherId", otherId)
-                .Build();
-
-            // 4. Create a trigger
-            ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity("Monitor Plan Evaluation", "DEFAULT")
-                .UsingJobData("MonitorPlanId", "request.MonitorPlanId")
-                .UsingJobData("ConfigurationName", "request.ConfigurationName")
-                .StartNow()
-                .Build();
-
-            // 5. Schedule the job using the job and trigger 
-            await scheduler.ScheduleJob(job, trigger);
-
-            Console.ReadLine();
-
-            */
+            ConfigureLogging();
 
             string batchId = Guid.NewGuid().ToString();
 
@@ -141,7 +107,41 @@ namespace CheckEngineRunner
                     break;
             }
 
+            Console.WriteLine("Check Engine run completed");
             Console.ReadLine();
+        }
+
+        private static void ConfigureLogging()
+        {
+            try
+            {
+                DotNetEnv.Env.Load(); //Loads from .env if present
+                var logLevelEnv = Environment.GetEnvironmentVariable("LOGGING__LEVEL") ?? "Information";
+                var parsedLevel = Enum.TryParse(logLevelEnv, true, out LogEventLevel logLevel)
+                    ? logLevel
+                    : LogEventLevel.Information;
+
+                Log.Logger = new LoggerConfiguration()
+                    .MinimumLevel.Is(parsedLevel)
+                    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                    .Enrich.FromLogContext()
+                    .WriteTo.Console(new RenderedCompactJsonFormatter())
+                    .CreateLogger();
+
+                // Configure LoggerProvider
+                var factory = LoggerFactory.Create(builder =>
+                {
+                    builder.ClearProviders();
+                    builder.AddSerilog();
+                });
+
+                Epa.Camd.Logger.LoggerProvider.Configure(factory);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("FATAL: Logging configuration failed: " + ex.Message);
+                Console.WriteLine(ex);
+            }
         }
     }
 

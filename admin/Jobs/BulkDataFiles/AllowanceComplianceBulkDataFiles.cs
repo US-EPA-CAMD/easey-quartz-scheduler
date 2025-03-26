@@ -9,7 +9,7 @@ using Quartz;
 using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
-using Epa.Camd.Logger;
+using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -19,6 +19,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     private Guid job_id = Guid.NewGuid();
 
     private NpgSqlContext _dbContext = null;
+    private readonly ILogger<AllowanceComplianceBulkDataFiles> _logger;
 
     public static class Identity
     {
@@ -61,13 +62,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public AllowanceComplianceBulkDataFiles (NpgSqlContext dbContext, IConfiguration configuration)
+    public AllowanceComplianceBulkDataFiles (NpgSqlContext dbContext, IConfiguration configuration, ILogger<AllowanceComplianceBulkDataFiles> logger)
     {
       _dbContext = dbContext;
+      _logger = logger;
     }
 
     public async Task Execute(IJobExecutionContext context)
     {
+      _logger.LogInformation("Executing AllowanceComplianceBulkDataFiles job. JobId: {JobId}", job_id);
+
       // Does this job already exist? Otherwise create and schedule a new copy
       List<List<Object>> jobAlreadyExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Allowance Compliance' AND add_date::date = now()::date;", 9);
       if(jobAlreadyExists.Count != 0){
@@ -83,7 +87,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
       }
 
-      LogHelper.info("Executing AllowanceComplianceBulkDataFiles job");
+      _logger.LogInformation("Creating Allowance Compliance JobLog. JobId: {JobId}", job_id);
 
       JobLog jl = new JobLog(); 
 
@@ -117,7 +121,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         jl.EndDate = Utils.getCurrentEasternTime();
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
-        LogHelper.info("Executing AllowanceComplianceBulkDataFiles job successfully");
+        _logger.LogInformation("AllowanceComplianceBulkDataFiles job completed successfully. JobId: {JobId}", job_id);
       }
       catch (Exception e)
       {
@@ -126,7 +130,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         jl.AdditionalDetails = e.Message;
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
-        LogHelper.error(e.Message);
+        _logger.LogError(e, "Error executing AllowanceComplianceBulkDataFiles job. JobId: {JobId}", job_id);
       }
     }
 

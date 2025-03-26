@@ -9,7 +9,7 @@ using Quartz;
 using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
-using Epa.Camd.Logger;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +21,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     private Guid job_id = Guid.NewGuid();
 
     private NpgSqlContext _dbContext = null;
+    private readonly ILogger<BulkDataFileMaintenance> _logger;
 
     public static class Identity
     {
@@ -63,14 +64,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public BulkDataFileMaintenance(NpgSqlContext dbContext, IConfiguration configuration)
+    public BulkDataFileMaintenance(NpgSqlContext dbContext, IConfiguration configuration, ILogger<BulkDataFileMaintenance> logger)
     {
       _dbContext = dbContext;
+      _logger = logger;
     }
 
     public async Task Execute(IJobExecutionContext context)
     {
-      LogHelper.info("Executing BulkDataFileMaintenance job");
+      _logger.LogInformation("Executing BulkDataFileMaintenance job. JobId: {JobId}", job_id);
 
       JobLog jl = new JobLog();
       try{
@@ -91,16 +93,21 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             WHERE status_cd IN('QUEUED', 'ERROR', 'WIP') AND add_date < now() - interval '30 days'"
           ).ToList();
 
+        _logger.LogInformation("Found {Count} stale job(s) to remove from scheduler", toDelete?.Count ?? 0);
+
         foreach (BulkFileQueue record in toDelete)
         {
             if(await context.Scheduler.CheckExists(new JobKey(record.JobId.ToString()))){
+              _logger.LogInformation("Deleting stale job from scheduler. JobId: {JobId}", record.JobId);
               await context.Scheduler.DeleteJob(new JobKey(record.JobId.ToString()));
             }
         }
 
+        _logger.LogInformation("Cleaning up stale records in bulk_file_queue and job_log tables");
         _dbContext.ExecuteSql("DELETE from camdaux.bulk_file_queue where add_date < now() - interval '30 days'");
         _dbContext.ExecuteSql("DELETE from camdaux.job_log where add_date < now() - interval '90 days'");
 
+        _logger.LogInformation("Calling camdaux.procedure_bulk_file_requeue_check()");
         _dbContext.ExecuteSql("CALL camdaux.procedure_bulk_file_requeue_check();");
 
         jl.StatusCd = "COMPLETE";
@@ -114,10 +121,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         jl.AdditionalDetails = e.Message;
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
-        LogHelper.error(e.Message);
+        _logger.LogError(e, "Error executing BulkDataFileMaintenance job. JobId: {JobId}", job_id);
       }
 
-      LogHelper.info("Executed BulkDataFileMaintenance job");
+      _logger.LogInformation("Executed BulkDataFileMaintenance job. JobId: {JobId}", job_id);
     }
 
     public static JobKey WithJobKey()
