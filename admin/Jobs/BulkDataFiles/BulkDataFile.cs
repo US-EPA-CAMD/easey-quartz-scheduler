@@ -98,6 +98,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
+      _logger.LogInformation("Executing BulkDataFiles job");
+
       string url =  (string) context.JobDetail.JobDataMap.Get("url");
       string fileName = (string) context.JobDetail.JobDataMap.Get("fileName");
       Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
@@ -108,6 +110,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       int? quarter = (int?) context.JobDetail.JobDataMap.Get("Quarter");
       string programCode = (string) context.JobDetail.JobDataMap.Get("ProgramCode");
       BulkFileQueue bulkFile = await _dbContext.BulkFileQueue.FindAsync(job_id);
+
+      _logger.LogInformation("Assigned JobId: {JobId}", job_id);
 
       try {
         string description = await getDescription(dataType, dataSubType, year, quarter, stateCode, programCode);
@@ -138,6 +142,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         Stream s = myHttpWebResponse.GetResponseStream();
         
         List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
+
+        _logger.LogInformation("Successfully received stream response. Starting upload to AWS bucket");
         
         InitiateMultipartUploadRequest initiateRequest = new InitiateMultipartUploadRequest
         {
@@ -260,6 +266,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         }
 
+        _logger.LogInformation("AWS upload completed. JobId: {JobId}", job_id);
+
         bulkFile.StatusCd = "COMPLETE";
         bulkFile.EndDate = Utils.getCurrentEasternTime();
         _dbContext.BulkFileQueue.Update(bulkFile);
@@ -290,8 +298,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public static async Task CreateAndScheduleJobDetail(BulkFileQueue record, ILogger<BulkFileJobQueue> logger)
     {
+      logger.LogInformation("Scheduling job detail. record.JobId: {RecordJobId}", record?.JobId.ToString());
+
       // Remove job if one already exists that has failed out
       if(await BulkDataScheduler.CheckExists(new JobKey(record.JobId.ToString()))){
+        logger.LogInformation("Job already exists, deleting. record.JobId: {RecordJobId}", record?.JobId.ToString());
         await BulkDataScheduler.DeleteJob(new JobKey(record.JobId.ToString()));
       }
 

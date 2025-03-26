@@ -23,7 +23,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
-      _logger.LogInformation("Executing {JobName} job. JobId: {JobId}", nameof(AllowanceHoldingsBulkDataFiles), _jobId);
+      _logger.LogInformation("Executing AllowanceHoldingsBulkDataFiles job. JobId: {JobId}", _jobId);
 
       // Does this job already exist? Otherwise create and schedule a new copy
       List<List<Object>> jobAlreadyExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Allowance Holdings' AND add_date::date = now()::date;", 9);
@@ -40,6 +40,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           return;
         }
       }
+
+      _logger.LogInformation("Creating Allowance Holdings JobLog. JobId: {JobId}", _jobId);
 
       JobLog jl = new JobLog(); 
 

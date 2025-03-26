@@ -11,7 +11,7 @@ using Quartz;
 using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
-using Epa.Camd.Logger;
+using Microsoft.Extensions.Logging;
 
 using DatabaseAccess;
 using ECMPS.Checks.CheckEngine;
@@ -115,21 +115,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             string connectionString = ConnectionStringManager.getConnectionString(Configuration);
             int commandTimeout = Configuration.GetValue<int>("EASEY_DB_COMMAND_TIMEOUT", 300);
 
-                _logger.LogInformation(
-                "[Instance {InstanceIndex}] Executing {Group}.{Name}",
+            _logger.LogInformation(
+                "[Instance {InstanceIndex}] Executing {Group}.{Name} | Id: {Id}, Process Code: {ProcessCode}, Facility Id: {FacilityId}, Facility Name: {FacilityName}, Monitor Plan Id: {MonitorPlanId}, Configuration: {Configuration}, User Id: {UserId}, User Email: {UserEmail}, Queued Time: {QueuedTime}",
                 instanceIndex,
                 key.Group,
                 key.Name,
-                new LogVariable("Id", id),
-                new LogVariable("Process Code", processCode),
-                new LogVariable("Facility Id", facilityId),
-                new LogVariable("Facility Name", facilityName),
-                new LogVariable("Monitor Plan Id", monitorPlanId),
-                new LogVariable("Configuration", monPlanConfig),
-                new LogVariable("User Id", userId),
-                new LogVariable("User Email", userEmail),
-                new LogVariable("Queued Time", queuedTime)
+                id,
+                processCode,
+                facilityId,
+                facilityName,
+                monitorPlanId,
+                monPlanConfig,
+                userId,
+                userEmail,
+                queuedTime
             );
+
 
             string dllPath = Configuration["EASEY_QUARTZ_SCHEDULER_CHECK_ENGINE_DLL_PATH"];
             cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", commandTimeout);
