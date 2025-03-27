@@ -137,7 +137,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 jobConfig.RunOnce = false;
                 jobConfig.RunAt = null;
                 _dbContext.JobConfigurations.Update(jobConfig);
-                await _dbContext.SaveChangesAsync();
+                _dbContext.SaveChanges();
 
                 // Schedule the job to run once at a specified time.
                 await ScheduleJobOnce(scheduler, jobConfig, runAt);
@@ -212,7 +212,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       await ScheduleJobInternal(scheduler, jobConfig, logger, (jobType, triggerBuilder) =>
       {
-        app.UseQuartzJob(jobType, triggerBuilder);
+        return Task.Run(() => app.UseQuartzJob(jobType, triggerBuilder));
       });
     }
 
@@ -223,10 +223,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// <param name="jobConfig">The job configuration.</param>
     private async Task ScheduleJob(IScheduler scheduler, JobConfiguration jobConfig)
     {
-      await ScheduleJobInternal(scheduler, jobConfig, _logger, (jobType, triggerBuilder) =>
+      await ScheduleJobInternal(scheduler, jobConfig, _logger, async (jobType, triggerBuilder) =>
       {
         var scheduleJobs = _serviceProvider.GetService<IEnumerable<IScheduleJob>>();
-        IJobRegistratorExtensions.UseQuartzJob(scheduleJobs, jobType, triggerBuilder);
+        await IJobRegistratorExtensions.UseQuartzJob(scheduleJobs, scheduler, jobType, triggerBuilder);
       });
     }
 
@@ -237,10 +237,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// <param name="jobConfig">The job configuration.</param>
     /// <param name="logger">The logger instance.</param>
     /// <param name="scheduleAction">The action to schedule the job.</param>
-    private static async Task ScheduleJobInternal(IScheduler scheduler, JobConfiguration jobConfig, ILogger logger, Action<Type, TriggerBuilder> scheduleAction)
+    private static async Task ScheduleJobInternal(IScheduler scheduler, JobConfiguration jobConfig, ILogger logger, Func<Type, TriggerBuilder, Task> scheduleAction)
     {
       if (string.IsNullOrEmpty(jobConfig.CronExpression))
       {
+        // Unschedule the job if the cron expression is empty.
         await UnscheduleJob(scheduler, jobConfig, logger);
         return;
       }
@@ -251,25 +252,36 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
       if (await scheduler.CheckExists(jobKey))
       {
-        ITrigger trigger = await scheduler.GetTrigger(triggerKey);
-        if (
-          trigger is ICronTrigger cronTrigger &&
-          cronTrigger.CronExpressionString != jobConfig.CronExpression
-        )
+        if (await scheduler.CheckExists(triggerKey))
         {
-          await scheduler.RescheduleJob(triggerKey, triggerBuilder.Build());
-          logger.LogInformation($"Rescheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
+          // Reschedule if the job's cron expression has changed.
+          ITrigger trigger = await scheduler.GetTrigger(triggerKey);
+          if (
+            trigger is ICronTrigger cronTrigger &&
+            cronTrigger.CronExpressionString != jobConfig.CronExpression
+          )
+          {
+            await scheduler.RescheduleJob(triggerKey, triggerBuilder.Build());
+            logger.LogInformation($"Rescheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
+          }
+        }
+        else
+        {
+          // Schedule the job with the new trigger.
+          await scheduler.ScheduleJob(triggerBuilder.ForJob(jobKey).Build());
+          logger.LogInformation($"Scheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
         }
       }
       else
       {
+        // Create a new job detail and schedule the job.
         var jobType = GetJobType(jobConfig);
         if (jobType == null)
         {
           logger.LogError($"Job type {jobConfig.JobType} not found.");
           return;
         }
-        scheduleAction(jobType, triggerBuilder);
+        await scheduleAction(jobType, triggerBuilder);
         logger.LogInformation($"Scheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
       }
     }
@@ -298,13 +310,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           _logger.LogError($"Job type {jobConfig.JobType} not found.");
           return;
         }
+
         jobDetail = JobBuilder
-          .Create(GetJobType(jobConfig))
+          .Create(jobType)
           .WithIdentity(jobKey)
           .WithDescription(jobConfig.JobDescription)
+          .StoreDurably(true) // Ensure job persists even without a trigger
           .Build();
 
-        await scheduler.AddJob(jobDetail, replace: true); // Add the job to the scheduler
+        await scheduler.AddJob(jobDetail, replace: false); // Only add the job if it doesn't exist
       }
 
       // Create the trigger to run once, immediately or at a specified time.
@@ -322,39 +336,25 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
       else
       {
-        triggerBuilder.StartNow(); // Schedule the job to run immediately
+        triggerBuilder.StartNow();
         _logger.LogInformation($"Scheduling job {jobKey.Name} to run immediately");
       }
 
+      var newTrigger = triggerBuilder.ForJob(jobKey).Build();
+
       if (await scheduler.CheckExists(triggerKey))
       {
-        await scheduler.RescheduleJob(triggerKey, triggerBuilder.Build());
+        await scheduler.RescheduleJob(triggerKey, newTrigger);
       }
       else
       {
-        // Schedule the job with the one-time trigger
-        await scheduler.ScheduleJob(jobDetail, triggerBuilder.Build());
+        await scheduler.ScheduleJob(newTrigger);
       }
     }
 
-    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app, ILogger logger, NpgSqlContext dbContext)
+    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app, ILogger logger)
     {
-      var jobConfigs = dbContext.JobConfigurations.ToList();
-      foreach (var jobConfig in jobConfigs)
-      {
-        try
-        {
-          // Schedule the job according to its configured cron expression.
-          await ScheduleJob(scheduler, app, jobConfig, logger);
-        }
-        catch (Exception e)
-        {
-          logger.LogError($"Error scheduling job {jobConfig.JobName}: {e.Message}");
-        }
-
-      }
-      // FIXME: Disable the scheduling of _this_ job for now while figuring out problems with de- and rescheduling.
-      //await ScheduleJob(scheduler, app, s_jobConfig, logger);
+      await ScheduleJob(scheduler, app, s_jobConfig, logger);
     }
 
     /// <summary>
