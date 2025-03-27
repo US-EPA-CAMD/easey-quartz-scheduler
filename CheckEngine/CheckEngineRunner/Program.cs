@@ -10,6 +10,7 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
 using Microsoft.Extensions.Logging;
+using Epa.Camd.Logger;
 
 namespace CheckEngineRunner
 {
@@ -23,12 +24,30 @@ namespace CheckEngineRunner
         private static string dbConnString = "server = localhost; port = " + dbPort + "; user id = " + dbUser + "; password = " + dbPwd + "; database = " + dbName + "; pooling = true";
 
         public static string CheckEngineRunnerDBConnectionStr { get { return dbConnString; } }
+
+        public static void LogConnectionInfo(ILogger<Program> logger)
+        {
+            var dbInfo = new
+            {
+                Host = "localhost",
+                Port = dbPort,
+                User = dbUser,
+                Database = dbName
+            };
+
+            logger.LogInformation("Database connection details (excluding password): {@DbInfo}", dbInfo);
+        }
     }
+
     class Program
     {
+        private static ILogger<Program> _logger;
+
         static async Task Main(string[] args)
         {
             ConfigureLogging();
+
+            CheckEngineRunnerDBCredentials.LogConnectionInfo(_logger);
 
             string batchId = Guid.NewGuid().ToString();
 
@@ -105,7 +124,7 @@ namespace CheckEngineRunner
                     break;
             }
 
-            Console.WriteLine("Check Engine run completed");
+            _logger.LogInformation("Check Engine run completed");
             Console.ReadLine();
         }
 
@@ -134,9 +153,13 @@ namespace CheckEngineRunner
                 });
 
                 Epa.Camd.Logger.LoggerProvider.Configure(factory);
+
+                // Initialize logger for this class
+                _logger = LoggerProvider.GetLogger<Program>();
             }
             catch (Exception ex)
             {
+                //Keep this logging as Console logging. It is possible that Logger configuration was not successful.
                 Console.WriteLine("FATAL: Logging configuration failed: " + ex.Message);
                 Console.WriteLine(ex);
             }
