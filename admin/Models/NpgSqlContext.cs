@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Npgsql;
 using NpgsqlTypes;
 
+using Microsoft.Extensions.Logging;
+
 namespace Epa.Camd.Quartz.Scheduler.Models
 {
   public class NpgSqlContext : DbContext
@@ -121,7 +123,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       }
       catch (Exception e)
       {
-        Console.WriteLine(e);
+        _logger.LogError(e, "Error executing query.  commandText: {commandText}", commandText);
       }
 
       return rows;
@@ -154,7 +156,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       var connectionString = this.Database.GetConnectionString();
 
 
-      Console.Write(commandText);
+      _logger.LogInformation("Executing SQL command. commandText: {commandText}", commandText);
       try
       {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -172,7 +174,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
       }
       catch (Exception e)
       {
-        Console.WriteLine(e);
+        _logger.LogError(e, "Error executing sql command.  commandText: {commandText}", commandText);
       }
     }
 

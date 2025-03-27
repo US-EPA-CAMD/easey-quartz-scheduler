@@ -114,7 +114,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             int commandTimeout = Configuration.GetValue<int>("EASEY_DB_COMMAND_TIMEOUT", 300);
 
             _logger.LogInformation(
-                "Executing {Group}.{Name} | Id: {Id}, Process Code: {ProcessCode}, Facility Id: {FacilityId}, Facility Name: {FacilityName}, Monitor Plan Id: {MonitorPlanId}, Configuration: {Configuration}, User Id: {UserId}, User Email: {UserEmail}, Queued Time: {QueuedTime}",
+                "Executing {Group}.{Name} | Id: {Id}, Process Code: {ProcessCode}, Facility Id: {FacilityId}, Facility Name: {FacilityName}, Monitor Plan Id: {MonitorPlanId}, Configuration: {Configuration}, User Id: {UserId}, Queued Time: {QueuedTime}",
                 key.Group,
                 key.Name,
                 id,
@@ -124,7 +124,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 monitorPlanId,
                 monPlanConfig,
                 userId,
-                userEmail,
                 queuedTime
             );
 

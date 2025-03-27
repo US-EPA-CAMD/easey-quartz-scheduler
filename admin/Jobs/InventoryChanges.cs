@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 using Npgsql;
@@ -20,24 +21,25 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     private Guid job_id = Guid.NewGuid();
 
     private NpgSqlContext _dbContext = null;
-
+    private readonly ILogger<InventoryChanges> _logger;
     private IConfiguration _configuration { get; }
 
-    public InventoryChanges(NpgSqlContext dbContext, IConfiguration configuration)
+    public InventoryChanges(NpgSqlContext dbContext, IConfiguration configuration, ILogger<InventoryChanges> logger)
     {
       _dbContext = dbContext;
       _configuration = configuration;
+      _logger = logger;
     }
 
     public async Task Execute(IJobExecutionContext context)
     {
-      Console.Write("Starting Inventory Changes job");
+      _logger.LogInformation("Starting Inventory Changes job. Job ID: {JobId}", job_id);
 
       try
       {
         if (IsJobInProgress(context))
         {
-          Console.Write("Inventory Changes job is already in progress, skipping");
+          _logger.LogInformation("Inventory Changes job is already in progress, skipping execution. Job ID: {JobId}", job_id);
           return;
         }
 
@@ -124,10 +126,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
       catch (Exception e)
       {
-        Console.Write(e.Message);
+        _logger.LogError(e, "An error occurred during the Inventory Changes job. Job ID: {JobId}", job_id);
       }
 
-      Console.Write("Completed Inventory Changes job");
+      _logger.LogInformation("Completed Inventory Changes job successfully. Job ID: {JobId}", job_id);
     }
 
     private bool IsJobInProgress(IJobExecutionContext context)

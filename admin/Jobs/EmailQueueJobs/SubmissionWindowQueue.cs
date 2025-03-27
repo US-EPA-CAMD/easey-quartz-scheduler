@@ -11,20 +11,21 @@ using Newtonsoft.Json;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
-
+using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   public class SubmissionWindowProcessQueue : IJob
   {
     private NpgSqlContext _dbContext = null;
-
+    private readonly ILogger<SubmissionWindowProcessQueue> _logger;
     private IConfiguration Configuration { get; }
 
-    public SubmissionWindowProcessQueue(NpgSqlContext dbContext, IConfiguration configuration)
+    public SubmissionWindowProcessQueue(NpgSqlContext dbContext, IConfiguration configuration, ILogger<SubmissionWindowProcessQueue> logger)
     {
       _dbContext = dbContext;
       Configuration = configuration;
+      _logger = logger;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -65,15 +66,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         string clientToken = await Utils.generateClientToken();     
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", clientToken);
+
+        _logger.LogInformation("Sending POST request to /support/email/emailRecipientList.");
         
         HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_CAMD_SERVICES"] + "/support/email/emailRecipientList", httpContent); //TODO: Replace this with mocked result
         response.EnsureSuccessStatusCode();
 
-        Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+        _logger.LogInformation("Received successful response: {ResponseContent}", response.Content.ReadAsStringAsync().Result);
 
         RecipientResponse recipientResponse = JsonConvert.DeserializeObject<RecipientResponse>(response.Content.ReadAsStringAsync().Result);
 
-        
         //Build a master list of facilityIds to userEmails [performance will be improved greatly in case of large process email set]
         Dictionary<decimal, HashSet<string>> facIdToEmails = new Dictionary<decimal, HashSet<string>>();
         foreach(Recipient r in recipientResponse.recipientList){
@@ -116,7 +118,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
       catch (Exception e)
       {
-        Console.Write(e.Message);
+        _logger.LogError(e, "Error scheduling Submission Window Queue job");
         return;
       }
     }

@@ -4,11 +4,16 @@ using System.Threading.Tasks;
 using Epa.Camd.Quartz.Scheduler.Models;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Epa.Camd.Logger;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
   public static class Utils
   {
+
+    //Cannot use 'LoggerProvider.GetLogger<Utils>()' as this class is static.
+    private static readonly ILogger _logger = LoggerProvider.GetLogger("Utils");
 
     public static IConfiguration Configuration {get; set;}
 
@@ -40,7 +45,7 @@ namespace Epa.Camd.Quartz.Scheduler
         ClientTokenResponse tokenResponse = JsonConvert.DeserializeObject<ClientTokenResponse>(response.Content.ReadAsStringAsync().Result);
         return tokenResponse.token;
       }catch(Exception e){
-        Console.WriteLine(e);
+        _logger.LogError(e, "Error generating client token.");
         throw new Exception("Error generating client token");
       }
     }

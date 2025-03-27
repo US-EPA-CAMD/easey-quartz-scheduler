@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz.Impl.Matchers;
+using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
 {
@@ -21,14 +22,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
     public override string Name => "Check Engine Evaluation Listener";
 
     private IConfiguration Configuration { get; }
+    private readonly ILogger<CheckEngineEvaluationListener> _logger;
     private NpgSqlContext _dbContext = null;
 
     public static IServiceCollection ServiceCollection {get; set;}
 
-    public CheckEngineEvaluationListener(NpgSqlContext dbContext, IConfiguration configuration)
+    public CheckEngineEvaluationListener(NpgSqlContext dbContext, IConfiguration configuration, ILogger<CheckEngineEvaluationListener> logger)
     {
       _dbContext = dbContext;
       Configuration = configuration;
+      _logger = logger;
     }
 
     public static async Task ScheduleWithQuartz(IScheduler scheduler){
@@ -78,9 +81,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
 
       await base.JobWasExecuted(context, jobException, cancellationToken);
       }catch(Exception e){
-        Console.WriteLine("\n\n\n\n");
-        Console.WriteLine(e.Message);
-        Console.WriteLine("\n\n\n\n");
+        _logger.LogError(e, "An error occurred during processing Check Engine Evaluation Listener. ");
       }
     }
   }

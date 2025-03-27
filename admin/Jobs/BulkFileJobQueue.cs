@@ -31,7 +31,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       try
       {
-        Console.Write("Checking Queue Now");
+        _logger.LogInformation("Checking Bulk File Queue now");
 
         List<BulkFileQueue> inQueue = _dbContext.BulkFileQueue.FromSqlRaw(@"
             SELECT *
@@ -51,7 +51,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           if (inQueue.Count > 0)
           {
             int jobs_to_schedule = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_BULK_FILE_JOBS"]) - inWIP.Count;
-            Console.WriteLine("Scheduling Jobs: " + jobs_to_schedule);
+            _logger.LogInformation("Scheduling {JobCount} Bulk File Queue jobs", jobs_to_schedule);
             int index = 0;
             for (int i = 0; i < jobs_to_schedule; i++)
             {
@@ -69,7 +69,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
       catch (Exception e)
       {
-        Console.Write(e.Message);
+        _logger.LogError(e, "Error scheduling Bulk File Queue job");
         return;
       }
     }

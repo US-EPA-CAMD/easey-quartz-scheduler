@@ -15,6 +15,7 @@ using ECMPS.Definitions.Extensions;
 using ECMPS.Definitions.SeverityCode;
 using Npgsql;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace ECMPS.Checks.CheckEngine
 {
@@ -1317,7 +1318,7 @@ namespace ECMPS.Checks.CheckEngine
                         errorMessage = string.Format(resultTemplate, "DB", errorMessage);
                         result = false;
                     }
-                    Console.WriteLine("Completed update_ecmps_status_for_evaluation: " + (result ? "Success" : "Failure"));
+                    _logger.LogInformation("Completed update_ecmps_status_for_evaluation. result: {result}", result ? "Success" : "Failure");
                 }
                 catch (Exception ex)
                 {

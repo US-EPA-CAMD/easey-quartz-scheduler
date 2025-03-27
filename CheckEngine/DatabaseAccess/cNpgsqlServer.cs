@@ -9,6 +9,8 @@ using NpgsqlTypes;
 
 using ECMPS.Common;
 using ECMPS.Definitions.Extensions;
+using Microsoft.Extensions.Logging;
+using Epa.Camd.Logger;
 
 namespace ECMPS.Checks.DatabaseAccess
 {
@@ -65,6 +67,8 @@ namespace ECMPS.Checks.DatabaseAccess
         static private string _sDataConnString = null;
         static private string _sAuxConnString = null;
         static private string _sWorkspaceConnString = null;
+
+        private readonly ILogger<cDatabase> _logger = LoggerProvider.GetLogger<cDatabase>();
 
         /// <summary>
         /// The default command timeout (15 minutes)
@@ -1699,7 +1703,7 @@ namespace ECMPS.Checks.DatabaseAccess
                     insertColumns = insertColumns.TrimEnd(',').ToLower();
 
                     string columnValue;
-                    Console.WriteLine("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (NULL './0')");
+                    _logger.LogInformation("COPY {Table} ({Columns}) FROM STDIN (NULL './0')", targetTableName, insertColumns);
 
                     using (var writer = m_sqlConn.BeginTextImport("COPY " + targetTableName + " (" + insertColumns + ") FROM STDIN (NULL './0')")) {
                         foreach (DataRow row in sourceTable.Rows)

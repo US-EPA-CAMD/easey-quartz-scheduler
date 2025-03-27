@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Epa.Camd.Logger;
 
 using Quartz;
 using SilkierQuartz;
@@ -176,11 +177,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// <param name="jobConfig">The job configuration.</param>
     private static void RegisterJob(IServiceCollection services, JobConfiguration jobConfig)
     {
+      ILogger<DynamicJobScheduler> staticLogger = LoggerProvider.GetLogger<DynamicJobScheduler>();
       var jobType = GetJobType(jobConfig);
       if (jobType != null)
       {
         services.AddQuartzJob(jobType, CreateJobKey(jobConfig), jobConfig.JobDescription);
-        Console.WriteLine($"Registered job: {jobConfig.JobType} with Quartz"); // TODO: Replace with proper logging
+        staticLogger.LogInformation("Registered job: {JobType} with Quartz", jobConfig.JobType);
       }
     }
 
