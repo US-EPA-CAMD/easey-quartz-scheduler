@@ -135,6 +135,25 @@ public static void DoWork()
 private static readonly ILogger<MyClass> _logger = LoggerProvider.GetLogger<MyClass>();
 ```
 
+### Logging levels
+
+You can control the logging level by setting the `EASEY_LOG_LEVEL` parameter in the app.  It is currently set to `Debug` 
+in test environments and `Warning' for production environments. 
+
+You can change the value by running `cf set-env quartz-scheduler EASEY_LOG_LEVEL Information` from a cf cli. 
+
+Here are the available values.
+
+| Serilog Level | Description                                                                  |
+|---------------|------------------------------------------------------------------------------|
+| `Verbose`     | The most detailed logs. Typically used only for internal debugging.          |
+| `Debug`       | Detailed debug information useful during development.                        |
+| `Information` | General application flow events — startup, shutdown, etc.                    |
+| `Warning`     | Indicators of potential problems or unexpected behavior.                     |
+| `Error`       | Errors that prevent parts of the application from functioning correctly.     |
+| `Fatal`       | Critical errors causing complete failure — app cannot continue.              |
+
+
 ## License & Contributing
 
 ​
