@@ -10,21 +10,19 @@ using ECMPS.Checks.MonitorPlan;
 using ECMPS.Checks.Mp.Parameters;
 using ECMPS.Checks.Parameters;
 using ECMPS.Checks.TypeUtilities;
-
 using ECMPS.Definitions.Extensions;
-using Epa.Camd.Logger;
+using Microsoft.Extensions.Logging;
 
 namespace ECMPS.Checks.MonitorPlanEvaluation
 {
     public class cMonitorPlan : cMpProcess
     {
-
         #region Constructors
 
         public cMonitorPlan(cCheckEngine CheckEngine)
           : base(CheckEngine)
         {
-            LogHelper.info("Initalizing Monitoring Plan");
+           _logger.LogInformation("Initializing Monitoring Plan");
         }
 
         #endregion
@@ -69,7 +67,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
             {
                 errorMessage = ex.FormatError();
                 result = false;
-                LogHelper.error(errorMessage);
+                _logger.LogError(ex, "{ErrorMessage}", errorMessage);
             }
 
             return result;
@@ -82,7 +80,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
                 bool RunResult;
                 string Result = "";
 
-                LogHelper.info("Running Monitoring Plan Checks");
+                _logger.LogInformation("Running Monitoring Plan Checks");
 
                 // Create category objects with check bands initialized
                 cMonitorPlanCategory MonitorPlanCategory = new cMonitorPlanCategory().GetInitialized(mCheckEngine, this, ref mpParams);
@@ -381,11 +379,11 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
                 DbUpdate(ref Result);
 
-                LogHelper.info("Completed Monitoring Plan Checks");
+                _logger.LogInformation("Completed Monitoring Plan Checks");
                 return Result;
             }
             catch (Exception e) {
-                LogHelper.error("checks Failed" + e.ToString());
+                _logger.LogError(e, "Checks failed: {Message}", e.Message);
             }
             return "false";
         }

@@ -46,7 +46,7 @@ namespace Epa.Camd.Quartz.Scheduler
       );
 
       NpgSqlContext dbContext = services.BuildServiceProvider().GetService<NpgSqlContext>();
-      List<CorsOptions> options =  dbContext.CorsOptions.ToListAsync<CorsOptions>().Result;
+      List<CorsOptions> options = dbContext.CorsOptions.ToListAsync<CorsOptions>().Result;
 
       List<string> allowedOrigins = new List<string>();
       List<string> allowedMethods = new List<string>();

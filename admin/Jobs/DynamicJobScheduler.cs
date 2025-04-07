@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Epa.Camd.Logger;
 
 using Quartz;
 using SilkierQuartz;
@@ -100,15 +101,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// </summary>
     /// <param name="jobConfig">The job configuration.</param>
     /// <returns>The <see cref="Type"/> of the job.</returns>
-    /// <exception cref="Exception">Thrown if the job type cannot be found.</exception>
     private static Type GetJobType(JobConfiguration jobConfig)
     {
-      var jobType = Type.GetType($"Epa.Camd.Quartz.Scheduler.Jobs.{jobConfig.JobType}");
-      if (jobType == null)
-      {
-        throw new Exception($"Job type {jobConfig.JobType} not found");
-      }
-      return jobType;
+      return Type.GetType($"Epa.Camd.Quartz.Scheduler.Jobs.{jobConfig.JobType}");
     }
 
     /// <summary>
@@ -143,7 +138,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 jobConfig.RunOnce = false;
                 jobConfig.RunAt = null;
                 _dbContext.JobConfigurations.Update(jobConfig);
-                await _dbContext.SaveChangesAsync();
+                _dbContext.SaveChanges();
 
                 // Schedule the job to run once at a specified time.
                 await ScheduleJobOnce(scheduler, jobConfig, runAt);
@@ -182,8 +177,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// <param name="jobConfig">The job configuration.</param>
     private static void RegisterJob(IServiceCollection services, JobConfiguration jobConfig)
     {
+      ILogger<DynamicJobScheduler> staticLogger = LoggerProvider.GetLogger<DynamicJobScheduler>();
       var jobType = GetJobType(jobConfig);
-      services.AddQuartzJob(jobType, CreateJobKey(jobConfig), jobConfig.JobDescription);
+      if (jobType != null)
+      {
+        services.AddQuartzJob(jobType, CreateJobKey(jobConfig), jobConfig.JobDescription);
+        staticLogger.LogInformation("Registered job: {JobType} with Quartz", jobConfig.JobType);
+      }
     }
 
     /// <summary>
@@ -214,7 +214,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       await ScheduleJobInternal(scheduler, jobConfig, logger, (jobType, triggerBuilder) =>
       {
-        app.UseQuartzJob(jobType, triggerBuilder);
+        return Task.Run(() => app.UseQuartzJob(jobType, triggerBuilder));
       });
     }
 
@@ -225,10 +225,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// <param name="jobConfig">The job configuration.</param>
     private async Task ScheduleJob(IScheduler scheduler, JobConfiguration jobConfig)
     {
-      await ScheduleJobInternal(scheduler, jobConfig, _logger, (jobType, triggerBuilder) =>
+      await ScheduleJobInternal(scheduler, jobConfig, _logger, async (jobType, triggerBuilder) =>
       {
         var scheduleJobs = _serviceProvider.GetService<IEnumerable<IScheduleJob>>();
-        IJobRegistratorExtensions.UseQuartzJob(scheduleJobs, jobType, triggerBuilder);
+        await IJobRegistratorExtensions.UseQuartzJob(scheduleJobs, scheduler, jobType, triggerBuilder);
       });
     }
 
@@ -239,10 +239,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// <param name="jobConfig">The job configuration.</param>
     /// <param name="logger">The logger instance.</param>
     /// <param name="scheduleAction">The action to schedule the job.</param>
-    private static async Task ScheduleJobInternal(IScheduler scheduler, JobConfiguration jobConfig, ILogger logger, Action<Type, TriggerBuilder> scheduleAction)
+    private static async Task ScheduleJobInternal(IScheduler scheduler, JobConfiguration jobConfig, ILogger logger, Func<Type, TriggerBuilder, Task> scheduleAction)
     {
       if (string.IsNullOrEmpty(jobConfig.CronExpression))
       {
+        // Unschedule the job if the cron expression is empty.
         await UnscheduleJob(scheduler, jobConfig, logger);
         return;
       }
@@ -253,20 +254,36 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
       if (await scheduler.CheckExists(jobKey))
       {
-        ITrigger trigger = await scheduler.GetTrigger(triggerKey);
-        if (
-          trigger is ICronTrigger cronTrigger &&
-          cronTrigger.CronExpressionString != jobConfig.CronExpression
-        )
+        if (await scheduler.CheckExists(triggerKey))
         {
-          await scheduler.RescheduleJob(triggerKey, triggerBuilder.Build());
-          logger.LogInformation($"Rescheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
+          // Reschedule if the job's cron expression has changed.
+          ITrigger trigger = await scheduler.GetTrigger(triggerKey);
+          if (
+            trigger is ICronTrigger cronTrigger &&
+            cronTrigger.CronExpressionString != jobConfig.CronExpression
+          )
+          {
+            await scheduler.RescheduleJob(triggerKey, triggerBuilder.Build());
+            logger.LogInformation($"Rescheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
+          }
+        }
+        else
+        {
+          // Schedule the job with the new trigger.
+          await scheduler.ScheduleJob(triggerBuilder.ForJob(jobKey).Build());
+          logger.LogInformation($"Scheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
         }
       }
       else
       {
+        // Create a new job detail and schedule the job.
         var jobType = GetJobType(jobConfig);
-        scheduleAction(jobType, triggerBuilder);
+        if (jobType == null)
+        {
+          logger.LogError($"Job type {jobConfig.JobType} not found.");
+          return;
+        }
+        await scheduleAction(jobType, triggerBuilder);
         logger.LogInformation($"Scheduled {jobKey.Name} with cron expression [{jobConfig.CronExpression}]");
       }
     }
@@ -289,13 +306,21 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         _logger.LogInformation($"Job with key {jobKey.Name} not found. Adding job to the scheduler.");
 
         // Create a new job detail.
+        var jobType = GetJobType(jobConfig);
+        if (jobType == null)
+        {
+          _logger.LogError($"Job type {jobConfig.JobType} not found.");
+          return;
+        }
+
         jobDetail = JobBuilder
-          .Create(GetJobType(jobConfig))
+          .Create(jobType)
           .WithIdentity(jobKey)
           .WithDescription(jobConfig.JobDescription)
+          .StoreDurably(true) // Ensure job persists even without a trigger
           .Build();
 
-        await scheduler.AddJob(jobDetail, replace: true); // Add the job to the scheduler
+        await scheduler.AddJob(jobDetail, replace: false); // Only add the job if it doesn't exist
       }
 
       // Create the trigger to run once, immediately or at a specified time.
@@ -313,18 +338,19 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
       else
       {
-        triggerBuilder.StartNow(); // Schedule the job to run immediately
+        triggerBuilder.StartNow();
         _logger.LogInformation($"Scheduling job {jobKey.Name} to run immediately");
       }
 
+      var newTrigger = triggerBuilder.ForJob(jobKey).Build();
+
       if (await scheduler.CheckExists(triggerKey))
       {
-        await scheduler.RescheduleJob(triggerKey, triggerBuilder.Build());
+        await scheduler.RescheduleJob(triggerKey, newTrigger);
       }
       else
       {
-        // Schedule the job with the one-time trigger
-        await scheduler.ScheduleJob(jobDetail, triggerBuilder.Build());
+        await scheduler.ScheduleJob(newTrigger);
       }
     }
 

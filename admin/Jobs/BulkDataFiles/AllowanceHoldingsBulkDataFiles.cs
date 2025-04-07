@@ -2,11 +2,9 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-
 using Quartz;
-
 using Epa.Camd.Quartz.Scheduler.Models;
-using Epa.Camd.Logger;
+using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
@@ -15,19 +13,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private Guid _jobId = Guid.NewGuid();
     private NpgSqlContext _dbContext = null;
+    private readonly ILogger<AllowanceHoldingsBulkDataFiles> _logger;
 
-    public AllowanceHoldingsBulkDataFiles(NpgSqlContext dbContext, IConfiguration configuration)
+    public AllowanceHoldingsBulkDataFiles(NpgSqlContext dbContext, IConfiguration configuration, ILogger<AllowanceHoldingsBulkDataFiles> logger)
     {
       _dbContext = dbContext;
+      _logger = logger;
     }
 
     public async Task Execute(IJobExecutionContext context)
     {
-      LogHelper.info("Executing AllowanceHoldingsBulkDataFiles job");
+      _logger.LogInformation("Executing AllowanceHoldingsBulkDataFiles job. JobId: {JobId}", _jobId);
 
       // Does this job already exist? Otherwise create and schedule a new copy
       List<List<Object>> jobAlreadyExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Allowance Holdings' AND add_date::date = now()::date;", 9);
       if(jobAlreadyExists.Count != 0){
+        _logger.LogInformation("Job already exists for today. Skipping execution. JobId: {JobId}", _jobId);
         return; // Job already exists , do not run again
       }
       
@@ -35,9 +36,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       if(Utils.Configuration["EASEY_DATAMART_BYPASS"] != "true"){
         List<List<Object>> datamartExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name in ('Datamart Nightly') AND add_date::date = now()::date AND end_date IS NOT NULL;", 9);
         if(datamartExists.Count == 0){
+          _logger.LogInformation("Datamart nightly job has not completed. Skipping execution. JobId: {JobId}", _jobId);
           return;
         }
       }
+
+      _logger.LogInformation("Creating Allowance Holdings JobLog. JobId: {JobId}", _jobId);
 
       JobLog jl = new JobLog(); 
 
@@ -68,6 +72,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           decimal year = DateTime.Now.ToUniversalTime().Year - 1;
           string urlParams = "programCodeInfo=" + code;
 
+          _logger.LogInformation("Creating bulk file record for programCode: {ProgramCode}", code);
           await _dbContext.CreateBulkFileRecord("Allowance-Holdings-" + code, _jobId ,null, null, null, "Allowance", null, Utils.Configuration["EASEY_STREAMING_SERVICES"] + "/allowance-holdings?" + urlParams, "allowance/holdings-" + code.ToLower() + ".csv", _jobId, code);
         }
         
@@ -75,16 +80,19 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         jl.EndDate = Utils.getCurrentEasternTime();
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
-        LogHelper.info("Executing AllowanceHoldingsBulkDataFiles job successfully");
+        _logger.LogInformation("{JobName} job completed successfully. JobId: {JobId}", nameof(AllowanceHoldingsBulkDataFiles), _jobId);
       }
       catch (Exception e)
       {
+        _logger.LogError(e, "Error executing {JobName}. JobId: {JobId}, Error: {ErrorMessage}", nameof(AllowanceHoldingsBulkDataFiles),
+                _jobId,
+                e.Message ?? "No message");
+
         jl.StatusCd = "ERROR";
         jl.EndDate = Utils.getCurrentEasternTime();
         jl.AdditionalDetails = e.Message;
         _dbContext.JobLogs.Update(jl);
         await _dbContext.SaveChangesAsync();
-        LogHelper.error(e.Message);
       }
     }
   }

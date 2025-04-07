@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using Epa.Camd.Logger;
 
 namespace ECMPS.Checks.DatabaseAccess
@@ -13,6 +14,8 @@ namespace ECMPS.Checks.DatabaseAccess
     /// </summary>
     public class AuxDBDataContext
      {
+
+        private readonly ILogger<AuxDBDataContext> _logger = LoggerProvider.GetLogger<AuxDBDataContext>();
 
         /// <summary>
         /// Creates a DataDBDataContext instance using the cDatabase instance and command timeout defaulted to 30 seconds.
@@ -52,7 +55,7 @@ namespace ECMPS.Checks.DatabaseAccess
 
             //Database.CreateStoredProcedureCommand("Check.CheckSessionCompleted");
 
-            LogHelper.info("Running Check session Complete");
+            _logger.LogInformation("Running CheckSessionCompleted for session {ChkSessionId}", chkSessionId);
 
             DataTable AResultTable;
             string Sql = "select camdecmpswks.check_session_completed('" + chkSessionId + "','" + severityCd + "')";
@@ -75,11 +78,11 @@ namespace ECMPS.Checks.DatabaseAccess
                 }
                 result = values[0].ToCharArray()[0];
                 errorMessage = values[1];
-                LogHelper.info("Completed Check session Complete");
+                _logger.LogInformation("CheckSessionCompleted completed with result: {Result}, error: {Error}", result, errorMessage ?? "none");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                _logger.LogError(ex, "CheckSessionCompleted failed for session {ChkSessionId}", chkSessionId);
             }
 
             //Database.AddInputParameter("@V_CHK_SESSION_ID", chkSessionId);
@@ -108,6 +111,8 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <returns>0</returns>
         public int CheckSessionFailed(string chkSessionId, string errorComment, ref System.Nullable<char> result, ref string errorMessage)
         {
+            _logger.LogInformation("Running CheckSessionFailed for session {ChkSessionId}", chkSessionId);
+
             //TODO (EC-3519): Testing Needed
             string resultString = string.Empty;
             List<string> values = new List<string>();
@@ -133,10 +138,12 @@ namespace ECMPS.Checks.DatabaseAccess
                 }
                 resultString = values[0];
                 errorMessage = values[1];
+
+                _logger.LogInformation("CheckSessionFailed completed with result: {Result}, error: {Error}", resultString ?? "N/A", errorMessage ?? "N/A");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                _logger.LogError(ex, "CheckSessionFailed failed for session {ChkSessionId}", chkSessionId);
             }
 
             //Database.CreateStoredProcedureCommand("Check.CheckSessionFailed");
@@ -181,6 +188,8 @@ namespace ECMPS.Checks.DatabaseAccess
                                     string userId, string setId, ref string chkSessionId,
                                     ref System.Nullable<char> result, ref string errorMessage)
         {
+            _logger.LogInformation("Running CheckSessionInit with process {ProcessCd}, monPlanId {MonPlanId}, user {UserId}", processCd, monPlanId, userId);
+
             string resultString = string.Empty;
             List<string> values = new List<string>();
             var categoryCdParam = object.Equals(categoryCd, null)
@@ -243,11 +252,11 @@ namespace ECMPS.Checks.DatabaseAccess
                 resultString = values[1];
                 errorMessage = values[2];
 
-                LogHelper.info("CheckSessionInit Created");
+                _logger.LogInformation("CheckSessionInit Created with sessionId: {ChkSessionId}, result: {Result}, error: {Error}", chkSessionId ?? "N/A", errorMessage ?? "N/A");
             }
             catch (Exception ex)
             {
-                LogHelper.error("CheckSessionInit failed "+Sql+"*****"+ex.ToString());
+                _logger.LogError(ex, "CheckSessionInit failed.");
             }
 
             //Database.AddInputParameter("@V_PROCESS_CD", processCd);
@@ -283,6 +292,8 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <returns></returns>
 		public int sp_GetNextSessionID(ref System.Nullable<decimal> sessionId, ref System.Nullable<char> result, ref string errorMessage)
         {
+            _logger.LogInformation("Processing sp_GetNextSessionID");
+
             //TODO (EC-3519): Testing Needed
 
             string resultString;
@@ -300,6 +311,8 @@ namespace ECMPS.Checks.DatabaseAccess
             errorMessage = Database.GetParameterString("@V_ERROR_MSG");
 
             result = !string.IsNullOrWhiteSpace(resultString) ? resultString[0] : (char?)null;
+
+            _logger.LogInformation("sp_GetNextSessionID completed with sessionId: {SessionId}, result: {Result}", sessionId, result);
 
             return 0;
         }

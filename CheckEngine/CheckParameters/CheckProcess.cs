@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Epa.Camd.Logger;
+using Microsoft.Extensions.Logging;
 
 namespace ECMPS.Checks.Parameters
 {
@@ -9,6 +11,8 @@ namespace ECMPS.Checks.Parameters
   /// </summary>
   public class cCheckProcess
   {
+
+    protected readonly ILogger _logger;
  
     #region Constructors
 
@@ -18,6 +22,7 @@ namespace ECMPS.Checks.Parameters
     /// <param name="AProcessCd">The process code associated with the check process object</param>
     public cCheckProcess(string AProcessCd)
     {
+      _logger = LoggerProvider.GetLogger(GetType().FullName);
       FProcessCd = AProcessCd;
     }
 
@@ -27,6 +32,7 @@ namespace ECMPS.Checks.Parameters
     /// </summary>
     protected cCheckProcess()
     {
+      _logger = LoggerProvider.GetLogger(GetType().FullName);
     }
 
     #endregion
