@@ -34,8 +34,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         public Task Execute(IJobExecutionContext context)
         {
-            string instanceIndex = Environment.GetEnvironmentVariable("CF_INSTANCE_INDEX") ?? "unknown";
-            int maxAllowed = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_PDEM"] ?? "3");  //TODO: Need to create/handle EASEY_QUARTZ_SCHEDULER_MAX_PDEM
+            int maxAllowed = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_PDEM"] ?? "3");
 
             try
             {
@@ -45,7 +44,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
                     if (pdemReportList.Count > 0)
                     {
-                        cUpdateEmissions updateEmissions = new(ConnectionStringManager.getConnectionString(Configuration), _logger, 20);
+                        int commandTimeout = Configuration.GetValue<int>("EASEY_DB_COMMAND_TIMEOUT", 300);
+                        cUpdateEmissions updateEmissions = new(ConnectionStringManager.getConnectionString(Configuration), _logger, commandTimeout);
 
                         updateEmissions.ProcessEmissionReport(pdemReportList[0].PdemReportId);
                     }
@@ -55,7 +55,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             }
             catch (Exception ex)
             {
-                _logger.LogError("[Instance {InstanceIndex}] Error in evaluation queue: {ErrorMessage}", instanceIndex, ex.Message);
+                _logger.LogError("Error in evaluation queue: {ErrorMessage}", ex.Message);
                 return Task.FromException(ex);
             }
         }

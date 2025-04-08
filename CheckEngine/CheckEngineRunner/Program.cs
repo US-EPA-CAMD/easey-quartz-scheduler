@@ -159,14 +159,6 @@ namespace CheckEngineRunner
                             //Create an ILogger
                             ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
 
-                            // Output some text on the console
-                            using (logger.BeginScope("[scope is enabled]"))
-                            {
-                                logger.LogInformation("Hello World!");
-                                logger.LogInformation("Logs contain timestamp and log level.");
-                                logger.LogInformation("Each log message is fit in a single line.");
-                            }
-
                             cUpdateEmissions updateEmissions = new cUpdateEmissions(CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, logger, 20);
 
                             updateEmissions.ProcessEmissionReport(pdemReportId);
