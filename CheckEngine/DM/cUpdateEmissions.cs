@@ -31,7 +31,7 @@ namespace ECMPS.DM
         /// <param name="dbConnectionString">The database string for the ECMPS PostgreSQL database.</param>
         /// <param name="logger">The ILogger instance to use.</param>
         /// <param name="commandTimeout">The timeout to use</param>
-        public cUpdateEmissions( string dbConnectionString, ILogger logger, int commandTimeout = 300 ) 
+        public cUpdateEmissions( string dbConnectionString, ILogger<cUpdateEmissionsDb> logger, int commandTimeout = 300 ) 
         {
             cDatabase.AuxConnectionString = dbConnectionString;
             cDatabase.DataConnectionString = dbConnectionString;
@@ -63,7 +63,7 @@ namespace ECMPS.DM
         #region Private Fields
 
         private readonly cDatabase _dbConnection;
-        private readonly ILogger _logger;
+        private readonly ILogger<cUpdateEmissionsDb> _logger;
         private readonly cUpdateEmissionsDb _updateEmissionsDb;
 
 

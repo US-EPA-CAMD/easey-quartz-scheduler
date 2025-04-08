@@ -12,6 +12,7 @@ using Serilog.Events;
 using Serilog.Formatting.Compact;
 using Microsoft.Extensions.Logging;
 using Epa.Camd.Logger;
+using ECMPS.Checks.EmissionsReport;
 
 namespace CheckEngineRunner
 {
@@ -157,7 +158,7 @@ namespace CheckEngineRunner
                             });
 
                             //Create an ILogger
-                            ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
+                            ILogger<cUpdateEmissionsDb> logger = loggerFactory.CreateLogger<cUpdateEmissionsDb>();
 
                             cUpdateEmissions updateEmissions = new cUpdateEmissions(CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, logger, 20);
 

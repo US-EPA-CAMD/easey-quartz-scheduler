@@ -30,7 +30,7 @@ namespace ECMPS.Checks.EmissionsReport
         /// </summary>
         /// <param name="db">The ECMPS EASEY database.</param>
         /// <param name="logger">The ILogger instance to use.</param>
-        public cUpdateEmissionsDb(cDatabase db, ILogger logger)
+        public cUpdateEmissionsDb(cDatabase db, ILogger<cUpdateEmissionsDb> logger)
         {
             Db = db;
 
@@ -129,7 +129,7 @@ namespace ECMPS.Checks.EmissionsReport
 
         #region Private Fields
 
-        private readonly ILogger _logger;
+        private readonly ILogger<cUpdateEmissionsDb> _logger;
 
 
         #endregion
