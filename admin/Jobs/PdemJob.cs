@@ -13,6 +13,7 @@ using Epa.Camd.Quartz.Scheduler.Models;
 
 using DatabaseAccess;
 using ECMPS.DM;
+using ECMPS.Checks.EmissionsReport;
 
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
@@ -21,7 +22,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public class PdemJob : IJob
     {
 
-        public PdemJob(NpgSqlContext dbContext, IConfiguration configuration, ILogger<PdemJob> logger)
+        public PdemJob(NpgSqlContext dbContext, IConfiguration configuration, ILogger<cUpdateEmissionsDb> logger)
         {
             _dbContext = dbContext;
             Configuration = configuration;
@@ -30,7 +31,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         public IConfiguration Configuration { get; }
         private NpgSqlContext _dbContext = null;
-        private readonly ILogger<PdemJob> _logger;
+        private readonly ILogger<cUpdateEmissionsDb> _logger;
 
         public Task Execute(IJobExecutionContext context)
         {
