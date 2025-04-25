@@ -80,12 +80,80 @@ Once a job has been registered, an instance of it can be created within the UI "
 
 ## Logging
 
-In order to handle JSON logging, A static LogHelper class has been put in place. In order to log information a call to `LogHelper.info()` or `LogHelper.error()` can be made.
+### Preferred Approach: `ILogger<T>`
 
-- `LogVariable(string key, object value)` - Class that holds a key value pair to be JSON logged
+Logging in this application should **always be done using `ILogger<T>` via dependency injection (DI)** whenever possible. This ensures logs are structured, typed, and consistent with the .NET logging pipeline.
 
-- `LogHelper.info(ILogger logger, string Message, params LogVariable[] parameters)` - To use the info method pass the ILogger instance, a Message string, and an optional number of LogVariable() key-value objects
-- `LogHelper.error(ILogger logger, string Message, params LogVariable[] parameters)` - behaves the same as info, but will generate and attach a unique error ID to the log
+#### Example (Constructor Injection)
+
+```csharp
+private readonly ILogger<SubmissionWindowProcessQueue> _logger;
+
+public SubmissionWindowProcessQueue(NpgSqlContext dbContext, IConfiguration configuration, ILogger<SubmissionWindowProcessQueue> logger)
+{
+    _dbContext = dbContext;
+    Configuration = configuration;
+    _logger = logger;
+}
+```
+
+Then use `_logger` throughout the class:
+
+```csharp
+_logger.LogInformation("Processing submission window for ID {SubmissionId}", submissionId);
+```
+
+---
+
+### Legacy / Static Logging
+
+If a class cannot receive `ILogger<T>` via DI (e.g., static utility classes), use the new `LoggerProvider` instead.
+
+> ⚠️ **Deprecated**: `LogHelper` is now obsolete and should no longer be used.  
+> ✅ **Use**: `LoggerProvider` for logging in non-DI contexts.
+
+---
+
+### LoggerProvider Usage
+
+`LoggerProvider` is a static class that provides access to `ILogger` instances without DI. It must be **configured once at application startup**:
+See `admin/Program.cs` or `CheckEngineRunner/Program.cs` on how it is initialized.
+
+#### Example (Access from static class):
+
+```csharp
+private static readonly ILogger _logger = LoggerProvider.GetLogger("MyUtilityClass");
+
+public static void DoWork()
+{
+    _logger.LogWarning("Static log message with ID {Id}", someId);
+}
+```
+
+#### Generic Version:
+
+```csharp
+private static readonly ILogger<MyClass> _logger = LoggerProvider.GetLogger<MyClass>();
+```
+
+### Logging levels
+
+You can control the logging level by setting the `EASEY_LOG_LEVEL` parameter in the app.  It is currently set to `Debug` 
+in test environments and `Warning' for production environments. 
+
+You can change the value by running `cf set-env quartz-scheduler EASEY_LOG_LEVEL Information` from a cf cli. 
+
+Here are the available values.
+
+| Serilog Level | Description                                                                  |
+|---------------|------------------------------------------------------------------------------|
+| `Verbose`     | The most detailed logs. Typically used only for internal debugging.          |
+| `Debug`       | Detailed debug information useful during development.                        |
+| `Information` | General application flow events — startup, shutdown, etc.                    |
+| `Warning`     | Indicators of potential problems or unexpected behavior.                     |
+| `Error`       | Errors that prevent parts of the application from functioning correctly.     |
+| `Fatal`       | Critical errors causing complete failure — app cannot continue.              |
+
 
 ## License & Contributing
 

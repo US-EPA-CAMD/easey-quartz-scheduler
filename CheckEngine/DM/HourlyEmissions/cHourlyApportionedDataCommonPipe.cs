@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using ECMPS.DM.Definitions;
 using ECMPS.DM.Utilities;
+
+using Microsoft.Extensions.Logging;
+
 
 namespace ECMPS.DM.HourlyEmissions
 {
@@ -15,14 +15,15 @@ namespace ECMPS.DM.HourlyEmissions
   public class cHourlyApportionedDataCommonPipe : cHourlyApportionedData
   {
 
-    #region Public Constructors
+        #region Public Constructors
 
-    /// <summary>
-    /// Creates an instance of the Unit Hourly Apportioned Data class.
-    /// </summary>
-    /// <param name="hourlyRawData">The raw data on which the apportionment will occur.</param>
-    public cHourlyApportionedDataCommonPipe(cHourlyRawData hourlyRawData)
-      : base(hourlyRawData)
+        /// <summary>
+        /// Creates an instance of the Unit Hourly Apportioned Data class.
+        /// </summary>
+        /// <param name="hourlyRawData">The raw data on which the apportionment will occur.</param>
+        /// <param name="logger">The ILogger instance to use.</param>
+        public cHourlyApportionedDataCommonPipe(cHourlyRawData hourlyRawData, ILogger logger)
+      : base(hourlyRawData, logger)
     {
     }
 

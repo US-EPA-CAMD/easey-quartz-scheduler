@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -15,11 +15,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Definitions\Delegates.cs" />
+    <Compile Remove="Miscellaneous\cErrorHandler.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DatabaseAccess\DatabaseAccess.csproj" />
     <ProjectReference Include="..\EcmpsCommon\EcmpsCommon.csproj" />
+    <ProjectReference Include="..\TypeUtilities\TypeUtilities.csproj" />
   </ItemGroup>
 
 </Project>

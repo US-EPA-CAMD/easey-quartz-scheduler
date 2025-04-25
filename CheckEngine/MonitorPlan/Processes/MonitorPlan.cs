@@ -10,7 +10,6 @@ using ECMPS.Checks.MonitorPlan;
 using ECMPS.Checks.Mp.Parameters;
 using ECMPS.Checks.Parameters;
 using ECMPS.Checks.TypeUtilities;
-
 using ECMPS.Definitions.Extensions;
 using Microsoft.Extensions.Logging;
 
@@ -18,7 +17,6 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 {
     public class cMonitorPlan : cMpProcess
     {
-
         #region Constructors
 
         public cMonitorPlan(cCheckEngine CheckEngine)

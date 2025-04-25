@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -18,7 +18,6 @@
     <ProjectReference Include="..\CheckEngine\CheckEngine.csproj" />
     <ProjectReference Include="..\CheckParameters\CheckParameters.csproj" />
     <ProjectReference Include="..\DatabaseAccess\DatabaseAccess.csproj" />
-    <ProjectReference Include="..\DM\DM.csproj" />
     <ProjectReference Include="..\EcmpsCommon\EcmpsCommon.csproj" />
     <ProjectReference Include="..\TypeUtilities\TypeUtilities.csproj" />
   </ItemGroup>

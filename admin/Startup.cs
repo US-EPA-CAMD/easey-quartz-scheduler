@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Quartz;
-using Quartz.Impl.Matchers;
 
 using SilkierQuartz;
 using DatabaseAccess;
@@ -16,19 +15,21 @@ using DatabaseAccess;
 using Epa.Camd.Quartz.Scheduler.Jobs;
 using Epa.Camd.Quartz.Scheduler.Models;
 using Epa.Camd.Quartz.Scheduler.Jobs.Listeners;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler
 {
   public class Startup
   {
-    private string connectionString;
-    private readonly string corsPolicy = "AllowedCORSOptions";
-    private IConfiguration Configuration { get; }
+    private string _connectionString;
+    private static readonly string s_corsPolicy = "AllowedCORSOptions";
+    private IConfiguration _configuration { get; }
 
     public Startup(IConfiguration configuration)
     {
-      Configuration = configuration;
-      connectionString = ConnectionStringManager.getConnectionString(configuration);
+      _configuration = configuration;
+      _connectionString = ConnectionStringManager.getConnectionString(configuration);
     }
 
     // This method gets called by the runtime. Use this method to add services to the container.
@@ -36,22 +37,22 @@ namespace Epa.Camd.Quartz.Scheduler
     {
       AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-      Utils.Configuration = Configuration;
+      Utils.Configuration = _configuration;
 
-      services.AddAppConfiguration(Configuration);
+      services.AddAppConfiguration(_configuration);
 
       services.AddDbContext<NpgSqlContext>(options =>
-        options.UseNpgsql(connectionString)
+        options.UseNpgsql(_connectionString)
       );
 
       NpgSqlContext dbContext = services.BuildServiceProvider().GetService<NpgSqlContext>();
-      List<CorsOptions> options =  dbContext.CorsOptions.ToListAsync<CorsOptions>().Result;
+      List<CorsOptions> options = dbContext.CorsOptions.ToListAsync<CorsOptions>().Result;
 
       List<string> allowedOrigins = new List<string>();
       List<string> allowedMethods = new List<string>();
       List<string> allowedHeaders = new List<string>();
 
-      if (Configuration["EASEY_QUARTZ_SCHEDULER_ENV"] != "production") {
+      if (_configuration["EASEY_QUARTZ_SCHEDULER_ENV"] != "production") {
           allowedOrigins.Add("http://localhost:3000");
       }
 
@@ -70,7 +71,7 @@ namespace Epa.Camd.Quartz.Scheduler
       }
 
       services.AddCors(options => {
-        options.AddPolicy(corsPolicy, builder => {
+        options.AddPolicy(s_corsPolicy, builder => {
           builder.WithOrigins(allowedOrigins.ToArray())
             .WithHeaders(allowedHeaders.ToArray())
             .WithMethods(allowedMethods.ToArray());
@@ -94,45 +95,29 @@ namespace Epa.Camd.Quartz.Scheduler
         authenticationOptions.AccessRequirement = SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowOnlyAuthenticated;
       },
       nameValueCollection => {
-        var quartzConfig = Configuration.GetSection("Quartz").GetChildren().GetEnumerator();
+        var quartzConfig = _configuration.GetSection("Quartz").GetChildren().GetEnumerator();
 
         while (quartzConfig.MoveNext())
         {
           nameValueCollection.Set(quartzConfig.Current.Key, quartzConfig.Current.Value);
         }
-        nameValueCollection.Set("quartz.dataSource.default.connectionString", connectionString);
+        nameValueCollection.Set("quartz.dataSource.default.connectionString", _connectionString);
       });
 
       services.AddOptions();
       
-      BulkDataFile.RegisterWithQuartz(services);
-      BulkFileJobQueue.RegisterWithQuartz(services);
-      BulkDataFileMaintenance.RegisterWithQuartz(services);
-
-      ApportionedEmissionsBulkData.RegisterWithQuartz(services);
-      AllowanceHoldingsBulkDataFiles.RegisterWithQuartz(services);
-      AllowanceTransactionsBulkDataFiles.RegisterWithQuartz(services);
-      AllowanceComplianceBulkDataFiles.RegisterWithQuartz(services);
-      EmissionsComplianceBulkDataFiles.RegisterWithQuartz(services);
-      FacilityAttributesBulkDataFiles.RegisterWithQuartz(services);
-      
       CheckEngineEvaluation.RegisterWithQuartz(services);
-      EvaluationJobQueue.RegisterWithQuartz(services);
-
-      EmailQueue.RegisterWithQuartz(services);
-      SubmissionWindowProcessQueue.RegisterWithQuartz(services);
-      SubmissionReminderProcessQueue.RegisterWithQuartz(services);
-      SubmissionJobQueue.RegisterWithQuartz(services);
-      InventoryChanges.RegisterWithQuartz(services);
+      BulkDataFile.RegisterWithQuartz(services);
+      DynamicJobScheduler.RegisterWithQuartz(services, dbContext);
 
       services.AddTransient<CheckEngineEvaluationListener>(); //DI for CheckEngineListener
       CheckEngineEvaluationListener.ServiceCollection = services; // Set service collection of the listener
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public async void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
     {
-      Console.WriteLine("Configuring Quartz");
+      logger.LogInformation("Configuring Quartz");
 
       if (env.IsDevelopment())
       {
@@ -146,40 +131,28 @@ namespace Epa.Camd.Quartz.Scheduler
       app.UseSession();
       app.UseStaticFiles();
       app.UseRouting();
-      app.UseCors(corsPolicy);
+      app.UseCors(s_corsPolicy);
       app.UseAuthentication();
       app.UseAuthorization();
       
-      bool displayFlag = bool.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_DISPLAY_UI"]);
+      bool displayFlag = bool.Parse(_configuration["EASEY_QUARTZ_SCHEDULER_DISPLAY_UI"]);
       app.UseSilkierQuartz(displayUi: displayFlag);
 
       app.Use(async (context, next) => {
-        context.Response.Headers.Add("Vary", "Origin");
-        context.Response.Headers.Add("Cache-Control", "no-cache, no-store, must-revalidate");
-        context.Response.Headers.Add("Pragma", "no-cache");
-        context.Response.Headers.Add("Expires", "0");
+        context.Response.Headers.Append("Vary", "Origin");
+        context.Response.Headers.Append("Cache-Control", "no-cache, no-store, must-revalidate");
+        context.Response.Headers.Append("Pragma", "no-cache");
+        context.Response.Headers.Append("Expires", "0");
         await next();
       });
 
-      Console.WriteLine("Attempting to schedule quartz jobs");
+      logger.LogInformation("Attempting to schedule quartz jobs");
 
       IScheduler scheduler = app.GetScheduler();
 
       BulkDataFile.setScheduler(scheduler);
-      await BulkFileJobQueue.ScheduleWithQuartz(scheduler, app);
-      await EvaluationJobQueue.ScheduleWithQuartz(scheduler, app);
-      await BulkDataFileMaintenance.ScheduleWithQuartz(scheduler, app);
-      await ApportionedEmissionsBulkData.ScheduleWithQuartz(scheduler, app);
-      await AllowanceHoldingsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      await AllowanceTransactionsBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      await AllowanceComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      await EmissionsComplianceBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      await FacilityAttributesBulkDataFiles.ScheduleWithQuartz(scheduler, app);
-      await SubmissionReminderProcessQueue.ScheduleWithQuartz(scheduler, app);
-      await SubmissionWindowProcessQueue.ScheduleWithQuartz(scheduler, app);
-      await EmailQueue.ScheduleWithQuartz(scheduler, app);
-      await SubmissionJobQueue.ScheduleWithQuartz(scheduler, app);
-      await InventoryChanges.ScheduleWithQuartz(scheduler, app);
+
+      await DynamicJobScheduler.ScheduleWithQuartz(scheduler, app, logger);
 
       //Schedule Listeners
       await CheckEngineEvaluationListener.ScheduleWithQuartz(scheduler);

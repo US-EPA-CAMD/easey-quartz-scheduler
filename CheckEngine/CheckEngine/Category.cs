@@ -16,6 +16,7 @@ using Epa.Camd.Logger;
 
 namespace ECMPS.Checks.CheckEngine
 {
+
     /// <summary>
     /// Category base class
     /// </summary>

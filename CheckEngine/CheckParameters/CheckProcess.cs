@@ -11,6 +11,8 @@ namespace ECMPS.Checks.Parameters
   /// </summary>
   public class cCheckProcess
   {
+
+    protected readonly ILogger _logger;
  
     protected readonly ILogger _logger;
 

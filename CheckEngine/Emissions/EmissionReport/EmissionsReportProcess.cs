@@ -10,7 +10,6 @@ using ECMPS.Checks.Parameters;
 using ECMPS.Checks.TypeUtilities;
 using ECMPS.Definitions.Extensions;
 using ECMPS.Definitions.SeverityCode;
-using ECMPS.DM;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -35,21 +34,6 @@ namespace ECMPS.Checks.EmissionsReport
             : base(CheckEngine, "HOURLY")
         {
             mHourlyProcess = true;
-
-            // Create Update Emissions Database object.
-            UpdateEmissionsDb = new cUpdateEmissionsDb(CheckEngine.DbDataConnection,
-                                                       CheckEngine.DbAuxConnection,
-                                                       CheckEngine.DbWsConnection,
-                                                       null,
-                                                       null);
-
-            // Create Update Emissions object.
-            UpdateEmissions = new cUpdateEmissions(UpdateEmissionsDb.UpdateInit,
-                                                   UpdateEmissionsDb.UpdateSuccess,
-                                                   UpdateEmissionsDb.UpdateFailure,
-                                                   UpdateEmissionsDb.GetFactorFormulaeArray,
-                                                   UpdateEmissionsDb.LogError,
-                                                   CheckEngine.UserId);
         }
 
         #endregion
@@ -1041,18 +1025,6 @@ namespace ECMPS.Checks.EmissionsReport
         /// Keeps track of the latest online and offline Daily Interference Checks
         /// </summary>
         public cLastDailyInterferenceCheck LatesDailyInterferenceCheckObject { get; private set; }
-
-        /// <summary>
-        /// The Update Emissions object used to update DM emissons.
-        /// </summary>
-        public cUpdateEmissions UpdateEmissions { get; private set; }
-
-        /// <summary>
-        /// The Update Emissions Database object used to handle database updates for the DM emissons update.
-        /// </summary>
-        public cUpdateEmissionsDb UpdateEmissionsDb { get; private set; }
-
-
 
         #endregion
 
@@ -3410,23 +3382,6 @@ namespace ECMPS.Checks.EmissionsReport
         #endregion
 
         #region Miscellaneous
-
-        private bool ExecuteChecksWork_HandleDmEmissions(string monPlanId, int rptPeriodId,
-                                                             string checkSessionId,
-                                                             ref string errorMessage)
-        {
-            bool result;
-
-            if (UpdateEmissionsDb.InitErrorLogging(checkSessionId, ref errorMessage))
-            {
-                UpdateEmissions.ProcessEmissionReport(monPlanId, rptPeriodId);
-                result = true;
-            }
-            else
-                result = false;
-
-            return result;
-        }
 
         private bool ExecuteChecksWork_LongTermFuelFlow(String monLocID)
         {

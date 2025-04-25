@@ -1,10 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 
 using Quartz;
-using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
 using System.Collections.Generic;
@@ -14,61 +11,21 @@ using Newtonsoft.Json;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
-
+using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   public class SubmissionWindowProcessQueue : IJob
   {
     private NpgSqlContext _dbContext = null;
-
+    private readonly ILogger<SubmissionWindowProcessQueue> _logger;
     private IConfiguration Configuration { get; }
 
-    public static class SubmissionWindowProcessQueueIdentity
-    {
-      public static readonly string Group = Constants.QuartzGroups.MAINTAINANCE;
-      public static readonly string JobName = "Submission Window Process Queue";
-      public static readonly string JobDescription = "Operates on an interval to determine if submission window reminder emails can be processed.";
-      public static readonly string TriggerName = "Check file queue every minute for submission window reminder emails";
-      public static readonly string TriggerDescription = "Operate every minute to determine if there are files in the queue which can be processed for Submission Window Reminders";
-    }
-
-    public static void RegisterWithQuartz(IServiceCollection services)
-    {
-      services.AddQuartzJob<SubmissionWindowProcessQueue>(WithSubmissionWindowProcessQueueJobKey(), SubmissionWindowProcessQueueIdentity.JobDescription);
-    }
-
-    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
-    {
-      try {
-        JobKey jobKey = WithSubmissionWindowProcessQueueJobKey();
-        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_SUBMISSION_WINDOW_QUEUE_SCHEDULE"] ?? "0 0/1 * 1/1 * ? *";
-        TriggerBuilder triggerBuilder = WithSubmissionWindowProcessQueueCronSchedule(cronExpression);
-
-        if (await scheduler.CheckExists(jobKey)) {
-          ITrigger trigger = await scheduler.GetTrigger(WithSubmissionWindowProcessQueueTriggerKey());
-
-          if (
-            trigger is ICronTrigger cronTrigger &&
-            cronTrigger.CronExpressionString != cronExpression
-          ) {
-            await scheduler.RescheduleJob(WithSubmissionWindowProcessQueueTriggerKey(), triggerBuilder.Build());
-            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
-          }
-        } else {
-          app.UseQuartzJob<SubmissionWindowProcessQueue>(triggerBuilder);
-          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
-        }
-      } catch(Exception e) {
-        Console.WriteLine("ERROR");
-        Console.WriteLine(e.Message);
-      }
-    }
-
-    public SubmissionWindowProcessQueue(NpgSqlContext dbContext, IConfiguration configuration)
+    public SubmissionWindowProcessQueue(NpgSqlContext dbContext, IConfiguration configuration, ILogger<SubmissionWindowProcessQueue> logger)
     {
       _dbContext = dbContext;
       Configuration = configuration;
+      _logger = logger;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -109,15 +66,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         string clientToken = await Utils.generateClientToken();     
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", clientToken);
+
+        _logger.LogInformation("Sending POST request to /support/email/emailRecipientList.");
         
         HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_CAMD_SERVICES"] + "/support/email/emailRecipientList", httpContent); //TODO: Replace this with mocked result
         response.EnsureSuccessStatusCode();
 
-        Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+        _logger.LogInformation("Received successful response: {ResponseContent}", response.Content.ReadAsStringAsync().Result);
 
         RecipientResponse recipientResponse = JsonConvert.DeserializeObject<RecipientResponse>(response.Content.ReadAsStringAsync().Result);
 
-        
         //Build a master list of facilityIds to userEmails [performance will be improved greatly in case of large process email set]
         Dictionary<decimal, HashSet<string>> facIdToEmails = new Dictionary<decimal, HashSet<string>>();
         foreach(Recipient r in recipientResponse.recipientList){
@@ -160,35 +118,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
       catch (Exception e)
       {
-        Console.Write(e.Message);
+        _logger.LogError(e, "Error scheduling Submission Window Queue job");
         return;
       }
-    }
-
-    public static JobKey WithSubmissionWindowProcessQueueJobKey()
-    {
-      return new JobKey(SubmissionWindowProcessQueueIdentity.JobName, SubmissionWindowProcessQueueIdentity.Group);
-    }
-
-    public static TriggerKey WithSubmissionWindowProcessQueueTriggerKey()
-    {
-      return new TriggerKey(SubmissionWindowProcessQueueIdentity.TriggerName, SubmissionWindowProcessQueueIdentity.Group);
-    }
-
-    public static IJobDetail WithSubmissionWindowProcessQueueJobDetail()
-    {
-      return JobBuilder.Create<SubmissionWindowProcessQueue>()
-          .WithIdentity(WithSubmissionWindowProcessQueueJobKey())
-          .WithDescription(SubmissionWindowProcessQueueIdentity.JobDescription)
-          .Build();
-    }
-
-    public static TriggerBuilder WithSubmissionWindowProcessQueueCronSchedule(string cronExpression)
-    {
-      return TriggerBuilder.Create()
-          .WithIdentity(WithSubmissionWindowProcessQueueTriggerKey())
-          .WithDescription(SubmissionWindowProcessQueueIdentity.TriggerDescription)
-          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }
