@@ -8,7 +8,7 @@ namespace Epa.Camd.Quartz.Scheduler
   {
     public static void Main(string[] args)
     {
-      
+
       /// Commented out because it has been replaced by <see cref="LoggerProvider"/>
 
       /* Log.Logger = new LoggerConfiguration()

@@ -1,12 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
 using Quartz;
-using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
 using Microsoft.Extensions.Logging;
@@ -20,47 +17,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     private NpgSqlContext _dbContext = null;
     private readonly ILogger<ApportionedEmissionsBulkData> _logger;
 
-    public static class Identity
-    {
-      public static readonly string Group = Constants.QuartzGroups.BULK_DATA;
-      public static readonly string JobName = "Apportioned Emissions Bulk Data";
-      public static readonly string JobDescription = "Determine which emissions need to be regenerated and schedule BulkDataFile jobs to handle the regen";
-      public static readonly string TriggerName = "Run nightly and check which emissions files need to be regenerated";
-      public static readonly string TriggerDescription = "Runs nightly to determine if files need to be regenerated based on query results or end of reporting quarter";
-    }
-
-    public static void RegisterWithQuartz(IServiceCollection services)
-    {
-      services.AddQuartzJob<ApportionedEmissionsBulkData>(WithJobKey(), Identity.JobDescription);
-    }
-
-    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
-    {
-      try {
-        JobKey jobKey = WithJobKey();
-        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_APPORTIONED_EMISSIONS_SCHEDULE"] ?? "0 0/10 4-6 ? * * *";
-        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
-
-        if (await scheduler.CheckExists(jobKey)) {
-          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
-
-          if (
-            trigger is ICronTrigger cronTrigger &&
-            cronTrigger.CronExpressionString != cronExpression
-          ) {
-            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
-            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
-          }
-        } else {
-          app.UseQuartzJob<ApportionedEmissionsBulkData>(triggerBuilder);
-          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
-        }
-      } catch(Exception e) {
-        Console.WriteLine("ERROR");
-        Console.WriteLine(e.Message);
-      }
-    }
-
     public ApportionedEmissionsBulkData(NpgSqlContext dbContext, IConfiguration configuration, ILogger<ApportionedEmissionsBulkData> logger)
     {
       _dbContext = dbContext;
@@ -70,7 +26,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     public async Task Execute(IJobExecutionContext context)
     {
       _logger.LogInformation("Executing ApportionedEmissionsBulkDataFiles job. JobId: {JobId}", job_id);
-      
+
       // Does this job already exist? Otherwise create and schedule a new copy
       List<List<Object>> jobAlreadyExists = await _dbContext.ExecuteSqlQuery("SELECT * FROM camdaux.job_log WHERE job_name = 'Apportioned Emissions' AND add_date::date = now()::date;", 9);
       if(jobAlreadyExists.Count != 0){
@@ -86,7 +42,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           return;
         }
       }
-      
+
       _logger.LogInformation("Creating Apportioned Emissions JobLog. JobId: {JobId}", job_id);
 
       JobLog jl = new JobLog(); 
@@ -164,32 +120,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         await _dbContext.SaveChangesAsync();
         _logger.LogError(e, "Error executing ApportionedEmissionsBulkDataFiles job. JobId: {JobId}", job_id);
       }
-    }
-
-    public static JobKey WithJobKey()
-    {
-      return new JobKey(Identity.JobName, Identity.Group);
-    }
-
-    public static TriggerKey WithTriggerKey()
-    {
-      return new TriggerKey(Identity.TriggerName, Identity.Group);
-    }
-
-    public static IJobDetail WithJobDetail()
-    {
-      return JobBuilder.Create<ApportionedEmissionsBulkData>()
-          .WithIdentity(WithJobKey())
-          .WithDescription(Identity.JobDescription)
-          .Build();
-    }
-
-    public static TriggerBuilder WithCronSchedule(string cronExpression)
-    {
-      return TriggerBuilder.Create()
-          .WithIdentity(WithTriggerKey())
-          .WithDescription(Identity.TriggerDescription)
-          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }

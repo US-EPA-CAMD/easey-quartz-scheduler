@@ -1,4 +1,5 @@
 ﻿
+using ECMPS.DM;
 using ECMPS.Checks.CheckEngine;
 using ECMPS.Checks.CheckEngine.Definitions;
 using Quartz;
@@ -10,6 +11,8 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
 using Microsoft.Extensions.Logging;
+using Epa.Camd.Logger;
+using ECMPS.Checks.EmissionsReport;
 
 namespace CheckEngineRunner
 {
@@ -23,14 +26,30 @@ namespace CheckEngineRunner
         private static string dbConnString = "server = localhost; port = " + dbPort + "; user id = " + dbUser + "; password = " + dbPwd + "; database = " + dbName + "; pooling = true";
 
         public static string CheckEngineRunnerDBConnectionStr { get { return dbConnString; } }
+
+        public static void LogConnectionInfo(ILogger<Program> logger)
+        {
+            var dbInfo = new
+            {
+                Host = "localhost",
+                Port = dbPort,
+                User = dbUser,
+                Database = dbName
+            };
+
+            logger.LogInformation("Database connection details (excluding password): {@DbInfo}", dbInfo);
+        }
     }
+
     class Program
     {
-        
+        private static ILogger<Program> _logger;
 
         static async Task Main(string[] args)
         {
             ConfigureLogging();
+
+            CheckEngineRunnerDBCredentials.LogConnectionInfo(_logger);
 
             string batchId = Guid.NewGuid().ToString();
 
@@ -45,7 +64,7 @@ namespace CheckEngineRunner
                     {
                         string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
 
-                        string dllPath = Path.Combine(baseDir, "MonitorPlan", "obj", "Debug", "netcoreapp6.0") + Path.DirectorySeparatorChar;
+                        string dllPath = Path.Combine(baseDir, "MonitorPlan", "obj", "Debug", "net8.0") + Path.DirectorySeparatorChar;
                         cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
 
                         bool result = checkEngine.RunChecks_MpReport(monPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal, batchId);
@@ -62,7 +81,7 @@ namespace CheckEngineRunner
                             if (!int.TryParse(rpPeriodIdText, out rptPeriodId)) { rptPeriodId = 0; }
                         }
 
-                        string dllPath = Path.Combine(baseDir, "Emissions", "obj", "Debug", "netcoreapp6.0") + Path.DirectorySeparatorChar;
+                        string dllPath = Path.Combine(baseDir, "Emissions", "obj", "Debug", "net8.0") + Path.DirectorySeparatorChar;
                         cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
 
                         bool result = checkEngine.RunChecks_EmReport(monPlanId, rptPeriodId, eCheckEngineRunMode.Normal, batchId);
@@ -74,7 +93,7 @@ namespace CheckEngineRunner
                         string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
                         string testSumId = ((args != null) && (args.Length >= 3)) ? args[2] : null;
 
-                        string dllPath = Path.Combine(baseDir, "QA", "obj", "Debug", "netcoreapp6.0") + Path.DirectorySeparatorChar;
+                        string dllPath = Path.Combine(baseDir, "QA", "obj", "Debug", "net8.0") + Path.DirectorySeparatorChar;
                         cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
 
 
@@ -87,7 +106,7 @@ namespace CheckEngineRunner
                         string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
                         string qaCertEventId = ((args != null) && (args.Length >= 3)) ? args[2] : null;
 
-                        string dllPath = Path.Combine(baseDir, "QA", "obj", "Debug", "netcoreapp6.0") + Path.DirectorySeparatorChar;
+                        string dllPath = Path.Combine(baseDir, "QA", "obj", "Debug", "net8.0") + Path.DirectorySeparatorChar;
                         cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
 
 
@@ -99,15 +118,57 @@ namespace CheckEngineRunner
                         string monPlanId = ((args != null) && (args.Length >= 2)) ? args[1] : null;
                         string teeId = ((args != null) && (args.Length >= 3)) ? args[2] : null;
 
-                        string dllPath = Path.Combine(baseDir, "QA", "obj", "Debug", "netcoreapp6.0") + Path.DirectorySeparatorChar;
+                        string dllPath = Path.Combine(baseDir, "QA", "obj", "Debug", "net8.0") + Path.DirectorySeparatorChar;
                         cCheckEngine checkEngine = new cCheckEngine("userId", CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, dllPath, "dumpfilePath", 20);
 
                         bool result = checkEngine.RunChecks_QaReport_Tee(teeId, monPlanId, eCheckEngineRunMode.Normal, batchId);
                     }
                     break;
+                case "PDEM":
+                    {
+                        string pdemReportIdText = ((args != null) && (args.Length >= 2)) ? args[1] : null;
+
+                        int pdemReportId;
+                        {
+                            if (!int.TryParse(pdemReportIdText, out pdemReportId)) { pdemReportId = 0; }
+                        }
+
+                        string dllPath = Path.Combine(baseDir, "DM", "obj", "Debug", "net8.0") + Path.DirectorySeparatorChar;
+
+
+                        //Define the path to the text file
+                        string logFilePath = "console_log.txt";
+
+                        //Create a StreamWriter to write logs to a text file
+                        using (StreamWriter logFileWriter = new StreamWriter(logFilePath, append: true))
+                        {
+                            //Create an ILoggerFactory
+                            ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+                            {
+                                //Add console output
+                                builder.AddSimpleConsole(options =>
+                                {
+                                    options.IncludeScopes = true;
+                                    options.SingleLine = true;
+                                    options.TimestampFormat = "HH:mm:ss ";
+                                });
+
+                                //Add a custom log provider to write logs to text files
+                                builder.AddProvider(new CustomFileLoggerProvider(logFileWriter));
+                            });
+
+                            //Create an ILogger
+                            ILogger<cUpdateEmissionsDb> logger = loggerFactory.CreateLogger<cUpdateEmissionsDb>();
+
+                            cUpdateEmissions updateEmissions = new cUpdateEmissions(CheckEngineRunnerDBCredentials.CheckEngineRunnerDBConnectionStr, logger, 20);
+
+                            updateEmissions.ProcessEmissionReport(pdemReportId);
+                        }
+                    }
+                    break;
             }
 
-            Console.WriteLine("Check Engine run completed");
+            _logger.LogInformation("Check Engine run completed");
             Console.ReadLine();
         }
 
@@ -136,9 +197,13 @@ namespace CheckEngineRunner
                 });
 
                 Epa.Camd.Logger.LoggerProvider.Configure(factory);
+
+                // Initialize logger for this class
+                _logger = LoggerProvider.GetLogger<Program>();
             }
             catch (Exception ex)
             {
+                //Keep this logging as Console logging. It is possible that Logger configuration was not successful.
                 Console.WriteLine("FATAL: Logging configuration failed: " + ex.Message);
                 Console.WriteLine(ex);
             }
@@ -167,7 +232,7 @@ namespace CheckEngineRunner
             {
                 case "MP":
                     {
-                        string dllPath = Path.Combine(baseDir, "MonitorPlan", "obj", "Debug", "netcoreapp6.0") + Path.DirectorySeparatorChar;
+                        string dllPath = Path.Combine(baseDir, "MonitorPlan", "obj", "Debug", "net8.0") + Path.DirectorySeparatorChar;
                         cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
 
                         bool result = checkEngine.RunChecks_MpReport(monPlanId, new DateTime(2008, 1, 1), DateTime.Now.AddYears(1), eCheckEngineRunMode.Normal, batchId);
@@ -179,7 +244,7 @@ namespace CheckEngineRunner
                     {
                         string testSumId = dataMap.GetString("otherId");
 
-                        string dllPath = Path.Combine(baseDir, "QA", "obj", "Debug", "netcoreapp6.0") + Path.DirectorySeparatorChar;
+                        string dllPath = Path.Combine(baseDir, "QA", "obj", "Debug", "net8.0") + Path.DirectorySeparatorChar;
                         cCheckEngine checkEngine = new cCheckEngine("userId", connStr, connStr, connStr, dllPath, "dumpfilePath", 20);
 
                         bool result = checkEngine.RunChecks_QaReport_Test(testSumId, monPlanId, eCheckEngineRunMode.Normal, batchId);
