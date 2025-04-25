@@ -144,8 +144,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
 
         _logger.LogInformation("Successfully received stream response. Starting upload to AWS bucket");
-        
-        _logger.LogInformation("Successfully received stream response. Starting upload to AWS bucket");
 
         InitiateMultipartUploadRequest initiateRequest = new InitiateMultipartUploadRequest
         {
