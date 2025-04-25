@@ -13,8 +13,6 @@ namespace ECMPS.Checks.Parameters
   {
 
     protected readonly ILogger _logger;
- 
-    protected readonly ILogger _logger;
 
     #region Constructors
 
