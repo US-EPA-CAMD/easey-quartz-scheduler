@@ -54,7 +54,7 @@ namespace ECMPS.Checks.CheckEngine
         //                 string k = System.AppDomain.CurrentDomain.BaseDirectory;
         //                 Console.WriteLine(k);
         //                 System.Diagnostics.Debug.WriteLine(k);
-        //                 //this.CheckEngine("testUser", connectionString, "C:\\Users\\simerahailu\\Documents\\GitHub\\easey-job-scheduler\\MonitorPlan\\obj\\Debug\\netcoreapp6.0\\", "dumpfilePath", 20);
+        //                 //this.CheckEngine("testUser", connectionString, "C:\\Users\\simerahailu\\Documents\\GitHub\\easey-job-scheduler\\MonitorPlan\\obj\\Debug\\net8.0\\", "dumpfilePath", 20);
         //                 //this.RunChecks_MpReport("02022-614W-168CEAA018EA4CBDAE347BE98F95A548", new DateTime(2011, 2, 12), new DateTime(2011, 2, 12), eCheckEngineRunMode.Normal);
         //                 System.Threading.Thread.Sleep(30000);
         //                 break;
@@ -788,7 +788,7 @@ namespace ECMPS.Checks.CheckEngine
                             {
                                 _logger.LogWarning("Check session initialization failed for process {ProcessCd}", processCd);
                                 result = false;
-                             }
+                            }
                         }
                         else
                         {

@@ -1,12 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
 using Quartz;
-using SilkierQuartz;
 
 using Epa.Camd.Quartz.Scheduler.Models;
 using Microsoft.Extensions.Logging;
@@ -22,47 +19,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private NpgSqlContext _dbContext = null;
     private readonly ILogger<BulkDataFileMaintenance> _logger;
-
-    public static class Identity
-    {
-      public static readonly string Group = Constants.QuartzGroups.BULK_DATA;
-      public static readonly string JobName = "Bulk Data File Maintenance";
-      public static readonly string JobDescription = "Run a check on the bulk data file maintenance queue";
-      public static readonly string TriggerName = "Run nightly and check which files need to have maintenance performed";
-      public static readonly string TriggerDescription = "Run nightly and check which files need to get rerun or cleaned up";
-    }
-
-    public static void RegisterWithQuartz(IServiceCollection services)
-    {
-      services.AddQuartzJob<BulkDataFileMaintenance>(WithJobKey(), Identity.JobDescription);
-    }
-
-    public static async Task ScheduleWithQuartz(IScheduler scheduler, IApplicationBuilder app)
-    {
-      try {
-        JobKey jobKey = WithJobKey();
-        string cronExpression = Utils.Configuration["EASEY_QUARTZ_SCHEDULER_BULK_FILE_MAINTENANCE_SCHEDULE"] ?? "0 0 6 ? * * *";
-        TriggerBuilder triggerBuilder = WithCronSchedule(cronExpression);
-
-        if (await scheduler.CheckExists(jobKey)) {
-          ITrigger trigger = await scheduler.GetTrigger(WithTriggerKey());
-
-          if (
-            trigger is ICronTrigger cronTrigger &&
-            cronTrigger.CronExpressionString != cronExpression
-          ) {
-            await scheduler.RescheduleJob(WithTriggerKey(), triggerBuilder.Build());
-            Console.WriteLine($"Rescheduled {jobKey.Name} with cron expression [{cronExpression}]");
-          }
-        } else {
-          app.UseQuartzJob<BulkDataFileMaintenance>(triggerBuilder);
-          Console.WriteLine($"Scheduled {jobKey.Name} with cron expression [{cronExpression}]");
-        }
-      } catch(Exception e) {
-        Console.WriteLine("ERROR");
-        Console.WriteLine(e.Message);
-      }
-    }
 
     public BulkDataFileMaintenance(NpgSqlContext dbContext, IConfiguration configuration, ILogger<BulkDataFileMaintenance> logger)
     {
@@ -125,32 +81,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
 
       _logger.LogInformation("Executed BulkDataFileMaintenance job. JobId: {JobId}", job_id);
-    }
-
-    public static JobKey WithJobKey()
-    {
-      return new JobKey(Identity.JobName, Identity.Group);
-    }
-
-    public static TriggerKey WithTriggerKey()
-    {
-      return new TriggerKey(Identity.TriggerName, Identity.Group);
-    }
-
-    public static IJobDetail WithJobDetail()
-    {
-      return JobBuilder.Create<BulkDataFileMaintenance>()
-          .WithIdentity(WithJobKey())
-          .WithDescription(Identity.JobDescription)
-          .Build();
-    }
-
-    public static TriggerBuilder WithCronSchedule(string cronExpression)
-    {
-      return TriggerBuilder.Create()
-          .WithIdentity(WithTriggerKey())
-          .WithDescription(Identity.TriggerDescription)
-          .WithSchedule(CronScheduleBuilder.CronSchedule(cronExpression).InTimeZone(Utils.getCurrentEasternZone()));
     }
   }
 }

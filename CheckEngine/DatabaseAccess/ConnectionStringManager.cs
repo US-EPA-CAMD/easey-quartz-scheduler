@@ -57,7 +57,7 @@ namespace DatabaseAccess
             connectionIdleLifetime  = Configuration.GetValue<int>("EASEY_DB_IDLE_TIMEOUT", 300);
             connectionTimeout       = Configuration.GetValue<int>("EASEY_DB_CONNECTION_TIMEOUT", 15);
             commandTimeout          = Configuration.GetValue<int>("EASEY_DB_COMMAND_TIMEOUT", 300);
-            connectionLifeTime       = Configuration.GetValue<int>("EASEY_DB_CONNECTION_LIFE_TIME", 1800);
+            connectionLifeTime      = Configuration.GetValue<int>("EASEY_DB_CONNECTION_LIFE_TIME", 1800);
             statementTimeout        = Configuration.GetValue<int>("EASEY_DB_STATEMENT_TIMEOUT", 300000);
             idleInTransactionSessionTimeout = Configuration.GetValue<int>("EASEY_DB_IDLE_TRANS_SESSION_TIMEOUT", 300000);
 
