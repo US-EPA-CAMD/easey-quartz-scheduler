@@ -116,7 +116,7 @@ namespace CheckEngineRunner
             try
             {
                 DotNetEnv.Env.Load(); //Loads from .env if present
-                var logLevelEnv = Environment.GetEnvironmentVariable("LOGGING__LEVEL") ?? "Information";
+                var logLevelEnv = Environment.GetEnvironmentVariable("EASEY_LOG_LEVEL") ?? "Information";
                 var parsedLevel = Enum.TryParse(logLevelEnv, true, out LogEventLevel logLevel)
                     ? logLevel
                     : LogEventLevel.Information;

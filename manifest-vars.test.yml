@@ -12,4 +12,4 @@ commandTimeout: 300
 statementTimeout: 300000
 idleInTransactionSessionTimeout: 60000
 connectionLifeTime: 300
-loggingLevel: Debug
+logLevel: Debug
