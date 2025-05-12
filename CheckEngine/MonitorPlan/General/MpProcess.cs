@@ -37,7 +37,7 @@ namespace ECMPS.Checks.MonitorPlan
     /// </summary>
     protected override void InitCheckParameters()
     {
-      ProcessParameters = new cMpCheckParameters(this, mCheckEngine.DbAuxConnection);
+      ProcessParameters = new cMpCheckParameters(this, mCheckEngine.DbConnection);
     }
 
     #endregion

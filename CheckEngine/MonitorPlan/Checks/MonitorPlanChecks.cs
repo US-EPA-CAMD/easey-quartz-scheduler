@@ -344,7 +344,7 @@ namespace ECMPS.Checks.MonitorPlanChecks
                     VwMpMonitorMethodRow mpMonitorMethodRow
                       = mpParams.MpMethodRecords.FindEarliestRow
                         (
-                          new cFilterCondition("PARAMETER_CD", "HGRE,HGRH,HCLRE,HCLRH,HFRE,HFRH,SO2RE,SO2RH", eFilterConditionStringCompare.InList)
+                          new cFilterCondition("PARAMETER_CD", "HGRE,HGRH,HCLRE,HCLRH,HFRE,HFRH,SO2RE,SO2RH,PMRE,PMRH", eFilterConditionStringCompare.InList)
                         );
 
                     if (mpMonitorMethodRow != null)

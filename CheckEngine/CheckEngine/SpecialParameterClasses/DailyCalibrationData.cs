@@ -18,11 +18,17 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
     {
 
         #region Public Constructors
+
+        /// <summary>
+        /// Emission Parameters Class
+        /// </summary>
         public EmParameters emParams;
+
         /// <summary>
         /// Instantiates a cDailyCalibrationRunningData object.
         /// </summary>
         /// <param name="dailyCalibrationSeverityCd">The daily alibration category object's severity code.</param>
+        /// <param name="emparams">Emission Parameters class.</param>
         public cDailyCalibrationData(eSeverityCd dailyCalibrationSeverityCd, ref EmParameters emparams)
         {
             DailyCalibrationSeverityCd = dailyCalibrationSeverityCd;
@@ -33,9 +39,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         }
 
         #endregion
-        public cDailyCalibrationData()
-        {
-        }
+
 
         #region Public Properties
 
@@ -367,7 +371,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// Updates the supplemental data load tables for each component.
         /// </summary>
         /// <param name="rptPeriodId"></param>
-        /// <param name="workspaceSessionId"></param>
+        /// <param name="checkSessionId"></param>
         /// <param name="connection"></param>
         public void LoadIntoSupplementalDataTables(int rptPeriodId, string checkSessionId, NpgsqlConnection connection)
         //public void LoadIntoSupplementalDataTables(int rptPeriodId, decimal workspaceSessionId, SqlConnection connection)

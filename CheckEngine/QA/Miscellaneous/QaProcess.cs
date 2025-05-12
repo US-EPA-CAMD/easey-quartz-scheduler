@@ -62,7 +62,7 @@ namespace ECMPS.Checks.QA
     /// </summary>
     protected override void InitCheckParameters()
     {
-      ProcessParameters = new cQaCheckParameters(this, mCheckEngine.DbAuxConnection);
+      ProcessParameters = new cQaCheckParameters(this, mCheckEngine.DbConnection);
     }
 
     #endregion

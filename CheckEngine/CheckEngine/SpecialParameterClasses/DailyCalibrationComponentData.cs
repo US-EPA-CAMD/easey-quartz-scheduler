@@ -21,6 +21,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// </summary>
         /// <param name="componentId">The Component Id represented by the object.</param>
         /// <param name="componentIdentifier">The Component Identifier of the Component Id.</param>
+        /// <param name="param">Emission Parameters class.</param>
         public cDailyCalibrationComponentData(string componentId, string componentIdentifier, ref EmParameters param)
         {
             ComponentId = componentId;

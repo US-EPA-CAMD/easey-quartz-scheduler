@@ -578,7 +578,7 @@ namespace ECMPS.Checks.SystemChecks
             if (MonitorMethodFilterView.Count == 0)
               Category.CheckCatalogResult = "A";
           }
-          else
+          else if ((SystemTypeCd != "PM") || (CurrentSystem["End_Date"] == DBNull.Value)) //Only check PM if Active and check all other System Types
           {
             DataView MethodToSystemTypeView = (DataView)Category.GetCheckParameter("Method_to_System_Type_Cross_Check_Table").ParameterValue;
             sFilterPair[] MethodToSystemTypeFilter = new sFilterPair[1];

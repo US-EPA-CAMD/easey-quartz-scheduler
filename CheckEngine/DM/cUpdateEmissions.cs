@@ -33,11 +33,9 @@ namespace ECMPS.DM
         /// <param name="commandTimeout">The timeout to use</param>
         public cUpdateEmissions( string dbConnectionString, ILogger<cUpdateEmissionsDb> logger, int commandTimeout = 300 ) 
         {
-            cDatabase.AuxConnectionString = dbConnectionString;
-            cDatabase.DataConnectionString = dbConnectionString;
-            cDatabase.WorkspaceConnectionString = dbConnectionString;
+            cDatabase.DbConnectionString = dbConnectionString;
 
-            _dbConnection = cDatabase.GetConnection( cDatabase.eCatalog.AUX, commandTimeout, "Apportionment" );
+            _dbConnection = cDatabase.GetConnection( commandTimeout, "Apportionment" );
             _logger = logger;
             _updateEmissionsDb = new cUpdateEmissionsDb( _dbConnection, logger);
         }

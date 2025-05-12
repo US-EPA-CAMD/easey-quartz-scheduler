@@ -24,6 +24,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// 
         /// </summary>
         /// <param name="dailyCalibrationSeverityCd">The daily alibration category object's severity code.</param>
+        /// <param name="emParams">Emission Parameters class.</param>
         public cDailyCalibrationTestData(eSeverityCd dailyCalibrationSeverityCd, ref EmParameters emParams)
         {
             string errorMessage;
@@ -310,7 +311,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="SupplementalDataUpdateLocationDataTable"></param>
         /// <param name="SupplementalDataUpdateSystemDataTable"></param>
         /// <param name="rptPeriodId"></param>
-        /// <param name="workspaceSessionId"></param>
+        /// <param name="checkSessionId"></param>
         public void LoadIntoSupplementalDataTables(DataTable SupplementalDataUpdateLocationDataTable, DataTable SupplementalDataUpdateSystemDataTable, int rptPeriodId, string checkSessionId)
         {
             // Only store values for tests that are not incomplete or ignored (Valid is null), and are online tests

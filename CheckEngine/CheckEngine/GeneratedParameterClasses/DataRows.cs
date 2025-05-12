@@ -138759,7 +138759,7 @@ namespace ECMPS.Checks.Data.Ecmps.Dbo.View
         {
             SourceRow = sourceRow;
         }
-        
+
         /// <summary>
         /// This constructor is required because the class is used as a type argument for a generic.
         /// </summary>
@@ -138792,6 +138792,8 @@ namespace ECMPS.Checks.Data.Ecmps.Dbo.View
         /// <param name="componentIdentifier">COMPONENT_IDENTIFIER</param>
         /// <param name="acqCd">ACQ_CD</param>
         /// <param name="hgConverterInd">HG_CONVERTER_IND</param>
+        /// <param name="beginDatehour">BEGIN_DATEHOUR</param>
+        /// <param name="endDatehour">END_DATEHOUR</param>
         public VwQaTestSummaryLineRow(
                     string testSumId = null, 
                     string monLocId = null, 
