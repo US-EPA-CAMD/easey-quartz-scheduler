@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 
 using ECMPS.Checks.TypeUtilities;
 using Npgsql;
@@ -64,7 +63,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// Creates a new instance of SupplementalDataUpdateDataTable and populates it with data from the passed dictionary array.  
         /// </summary>
         /// <param name="supplementalDataDictionaryArray">Dictionary containing data used to update the table.</param>
-        /// <param name="workspaceSessionId">The workspace session id for check session.</param>
+        /// <param name="checkSessionId">The id for check session.</param>
         /// <param name="connection">Database connection to use when creating the internal supplemental data table.</param>
 
         public static void LoadSupplementalDataUpdateDataTable(Dictionary<string, SystemOperatingSupplementalData>[] supplementalDataDictionaryArray, string checkSessionId, NpgsqlConnection connection)

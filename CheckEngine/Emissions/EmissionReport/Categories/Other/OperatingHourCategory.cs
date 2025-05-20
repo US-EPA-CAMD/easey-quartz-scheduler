@@ -2,7 +2,6 @@ using System;
 using System.Data;
 
 using ECMPS.Checks.CheckEngine;
-using ECMPS.Checks.Data.Ecmps.CheckEm.Function;
 using ECMPS.Checks.Em.Parameters;
 using ECMPS.Checks.Parameters;
 using ECMPS.Checks.TypeUtilities;
@@ -20,7 +19,7 @@ namespace ECMPS.Checks.EmissionsReport
     {
 
         #region Constructors
-        public EmParameters emParams;
+
         public cOperatingHourCategory(cCheckEngine ACheckEngine,
                                       cEmissionsReportProcess AHourlyEmissionsData,
                                       cHourlyConfigurationInitializationCategory AHourlyConfigurationInitializationCategory, ref EmParameters emparams)

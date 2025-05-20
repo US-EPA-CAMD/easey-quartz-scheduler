@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Epa.Camd.Logger;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +9,9 @@ namespace ECMPS.Checks.Parameters
   public class cCheckProcess
   {
 
+    /// <summary>
+    /// The ILogger instance to use.
+    /// </summary>
     protected readonly ILogger _logger;
  
     #region Constructors

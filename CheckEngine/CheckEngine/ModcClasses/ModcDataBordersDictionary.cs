@@ -1,12 +1,9 @@
 using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Collections.Generic;
 
-using ECMPS.Checks.TypeUtilities;
 using ECMPS.Definitions.Extensions;
 using Npgsql;
-using NpgsqlTypes;
 
 namespace ECMPS.Checks.CheckEngine
 {
@@ -243,7 +240,6 @@ namespace ECMPS.Checks.CheckEngine
                 //command.Dispose();
                 //command = null;
             }
-            return true;
 
         }
 

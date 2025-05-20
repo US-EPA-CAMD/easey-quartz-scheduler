@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using ECMPS.Checks.Em.Parameters;
 using ECMPS.Checks.TypeUtilities;
 using ECMPS.Definitions.Extensions;
 using ECMPS.Definitions.SeverityCode;
 using Npgsql;
-using NpgsqlTypes;
 
 namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 {
@@ -18,11 +16,17 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
     {
 
         #region Public Constructors
+
+        /// <summary>
+        /// The provided check parameters for this process.
+        /// </summary>
         public EmParameters emParams;
+
         /// <summary>
         /// Instantiates a cDailyCalibrationRunningData object.
         /// </summary>
         /// <param name="dailyCalibrationSeverityCd">The daily alibration category object's severity code.</param>
+        /// <param name="emparams">The check parameters for this process.</param>
         public cDailyCalibrationData(eSeverityCd dailyCalibrationSeverityCd, ref EmParameters emparams)
         {
             DailyCalibrationSeverityCd = dailyCalibrationSeverityCd;
@@ -33,6 +37,10 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         }
 
         #endregion
+
+        /// <summary>
+        /// The constructor for an object of cDailyCalibrationData.
+        /// </summary>
         public cDailyCalibrationData()
         {
         }
@@ -367,7 +375,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// Updates the supplemental data load tables for each component.
         /// </summary>
         /// <param name="rptPeriodId"></param>
-        /// <param name="workspaceSessionId"></param>
+        /// <param name="checkSessionId"></param>
         /// <param name="connection"></param>
         public void LoadIntoSupplementalDataTables(int rptPeriodId, string checkSessionId, NpgsqlConnection connection)
         //public void LoadIntoSupplementalDataTables(int rptPeriodId, decimal workspaceSessionId, SqlConnection connection)

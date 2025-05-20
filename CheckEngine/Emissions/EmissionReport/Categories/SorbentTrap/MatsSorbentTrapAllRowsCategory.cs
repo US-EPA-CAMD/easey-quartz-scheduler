@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using ECMPS.Checks.CheckEngine;
 using ECMPS.Checks.Em.Parameters;
-using ECMPS.Checks.Parameters;
-using ECMPS.Checks.TypeUtilities;
 
-using ECMPS.Definitions.Extensions;
 using ECMPS.ErrorSuppression;
 
 
@@ -22,7 +16,6 @@ namespace ECMPS.Checks.EmissionsReport
   {
 
         #region Constructors
-        public EmParameters emParams;
 
         /// <summary>
         /// Creates a category object to represent the category indicated by the passed code, 
@@ -31,10 +24,10 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="parentCategory">The parent category.</param>
         /// <param name="categoryCd">The category code of the category the object will represent.</param>
         public MatsSorbentTrapAllRowsCategory(cCategory parentCategory, string categoryCd, ref EmParameters emparams)
-      : base(parentCategory, categoryCd)
-    {
+          : base(parentCategory, categoryCd)
+        {
             emParams = emparams;
-     }
+        }
 
     #endregion
 

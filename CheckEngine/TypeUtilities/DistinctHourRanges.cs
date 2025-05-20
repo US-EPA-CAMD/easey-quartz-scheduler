@@ -289,25 +289,11 @@ namespace ECMPS.Checks.TypeUtilities
             }
             else
             {
-                if (this.Began == null && other.Began == null)
-                    result = 0;
-                else if (this.Began == null)
-                    result = -1;
-                else if (other.Began == null)
-                    result = 1;
-                else
-                    result = this.Began.CompareTo(other.Began);
+                result = this.Began.CompareTo(other.Began);
 
                 if (result == 0)
                 {
-                    if (this.Ended == null && other.Ended == null)
-                        result = 0;
-                    else if (this.Ended == null)
-                        result = 1;
-                    else if (other.Ended == null)
-                        result = -1;
-                    else
-                        result = this.Ended.CompareTo(other.Ended);
+                    result = this.Ended.CompareTo(other.Ended);
                 }
             }
 
@@ -377,8 +363,8 @@ namespace ECMPS.Checks.TypeUtilities
         /// <returns>The string version of the object.</returns>
         public override string ToString()
         {
-            string beganText = (Began != null) ? FormatHour(Began) : "min";
-            string endedText = (Ended != null) ? FormatHour(Ended) : "max";
+            string beganText = FormatHour(Began);
+            string endedText = FormatHour(Ended);
 
             return $"[{beganText}]..[{endedText}]";
         }

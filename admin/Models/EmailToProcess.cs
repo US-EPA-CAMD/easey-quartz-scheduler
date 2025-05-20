@@ -1,4 +1,5 @@
-using System;
+#nullable enable
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,34 +15,34 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 		[Column("fac_id")]
  		public decimal FacId { get; set; }
 
-        [Column("email_type")]
- 		public string EmailType { get; set; }
+    [Column("email_type")]
+ 		public required string EmailType { get; set; }
 
 		[Column("event_code")]
- 		public int EventCode { get; set; } 
+ 		public int? EventCode { get; set; } 
 
 		[Column("userid")]
  		public string? UserId { get; set; } 
 
 		[Column("mon_plan_id")]
- 		public string MonPlanId { get; set; } 
+ 		public string? MonPlanId { get; set; } 
 
 		[Column("rpt_period_id")]
- 		public decimal RptPeriodId { get; set; }
+ 		public decimal? RptPeriodId { get; set; }
 
 		[Column("em_sub_access_id")]
- 		public long EmSubAccessId { get; set; }
+ 		public long? EmSubAccessId { get; set; }
 
 		[Column("submission_type")]
- 		public string SubmissionType { get; set; }
+ 		public string? SubmissionType { get; set; }
 
 		[Column("is_mats")]
- 		public System.Nullable<bool> IsMats { get; set; }
+ 		public bool? IsMats { get; set; }
 
 		[Column("context")]
- 		public string Context { get; set; }
+ 		public string? Context { get; set; }
 
 		[Column("status_cd")]
- 		public string StatusCode { get; set; }
+    public required string StatusCode { get; set; }
 	}
 }

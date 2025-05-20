@@ -1,12 +1,9 @@
 using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Collections.Generic;
 
 using ECMPS.Checks.TypeUtilities;
 using ECMPS.Definitions.Extensions;
-using Npgsql;
-using NpgsqlTypes;
 
 namespace ECMPS.Checks.CheckEngine
 {
@@ -136,6 +133,9 @@ namespace ECMPS.Checks.CheckEngine
 
         #region cModcDataBorderItem Class
 
+        /// <summary>
+        /// Class to track last and next measured data borders and the missing data count for a location or system.
+        /// </summary>
         public class cModcDataBorderItem
         {
 
@@ -190,6 +190,9 @@ namespace ECMPS.Checks.CheckEngine
             private decimal FNextBorderUnadjustedValue = decimal.MinValue;
             private int FNextRangeCount = 0;
 
+            /// <summary>
+            /// The MON_LOC_ID to track.
+            /// </summary>
             public string MonLocId
             {
                 get
@@ -203,6 +206,9 @@ namespace ECMPS.Checks.CheckEngine
             /// </summary>
             public string MonSysId { get; private set; }
 
+            /// <summary>
+            /// List of flags indicating whether the parent has a particular method of determination code.
+            /// </summary>
             public bool[] ModcList
             {
                 get
@@ -210,20 +216,34 @@ namespace ECMPS.Checks.CheckEngine
                     return FParent.ModcList;
                 }
             }
+
+            /// <summary>
+            /// Flag indicating whether the parent has a border method of determination code.
+            /// </summary>
             public bool BorderModc
             {
                 get { return FParent.BorderModc; }
             }
 
+            /// <summary>
+            /// The quarter of the emission report quarter.
+            /// </summary>
             public int CurrentQuarter
             {
                 get { return FCurrentQuarter; }
             }
+
+            /// <summary>
+            /// The year of the emission report quarter.
+            /// </summary>
             public int CurrentYear
             {
                 get { return FCurrentYear; }
             }
 
+            /// <summary>
+            /// Flag indicating whether the last border was found.
+            /// </summary>
             public bool LastFound
             {
                 get
@@ -231,6 +251,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastFound;
                 }
             }
+
+            /// <summary>
+            /// The date of the last op hour from supplemental data.
+            /// </summary>
             public DateTime LastBorderDate
             {
                 get
@@ -238,6 +262,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastBorderDate;
                 }
             }
+
+            /// <summary>
+            /// The hour of the last op hour from supplemental data.
+            /// </summary>
             public int LastBorderHour
             {
                 get
@@ -245,7 +273,15 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastBorderHour;
                 }
             }
+
+            /// <summary>
+            /// The last adjusted or unadjusted value from supplemental data, usually used when parameter can be derived or monitored.
+            /// </summary>
             public decimal LastBorderValue { get; private set; }
+
+            /// <summary>
+            /// The last adjusted value from supplemental data.
+            /// </summary>
             public decimal LastBorderAdjustedValue
             {
                 get
@@ -253,6 +289,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastBorderAdjustedValue;
                 }
             }
+
+            /// <summary>
+            /// The last unadjusted value from supplemental data.
+            /// </summary>
             public decimal LastBorderUnadjustedValue
             {
                 get
@@ -260,7 +300,15 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastBorderUnadjustedValue;
                 }
             }
+
+            /// <summary>
+            /// Flag indicating whether the last item was supplemental data.
+            /// </summary>
             public bool LastIsSuppData { get { return FLastIsSuppData; } set { FLastIsSuppData = value; } }
+
+            /// <summary>
+            /// The last skip hour count.
+            /// </summary>
             public int LastSkipHourCount
             {
                 get
@@ -268,6 +316,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastSkipHourCount;
                 }
             }
+
+            /// <summary>
+            /// The last range count.
+            /// </summary>
             public int LastRangeCount
             {
                 get
@@ -275,6 +327,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastRangeCount;
                 }
             }
+
+            /// <summary>
+            /// The next border status.
+            /// </summary>
             public eBorderStatus NextBorderStatus
             {
                 get
@@ -282,6 +338,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FNextBorderStatus;
                 }
             }
+
+            /// <summary>
+            /// The date of the next op hour from supplemental data.
+            /// </summary>
             public DateTime NextBorderDate
             {
                 get
@@ -289,6 +349,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FNextBorderDate;
                 }
             }
+
+            /// <summary>
+            /// The hour of the next op hour from supplemental data.
+            /// </summary>
             public int NextBorderHour
             {
                 get
@@ -296,7 +360,15 @@ namespace ECMPS.Checks.CheckEngine
                     return FNextBorderHour;
                 }
             }
+
+            /// <summary>
+            /// The next adjusted or unadjusted value from supplemental data, usually used when parameter can be derived or monitored.
+            /// </summary>
             public decimal NextBorderValue { get; private set; }
+
+            /// <summary>
+            /// The next adjusted value from supplemental data.
+            /// </summary>
             public decimal NextBorderAdjustedValue
             {
                 get
@@ -304,6 +376,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FNextBorderAdjustedValue;
                 }
             }
+
+            /// <summary>
+            /// The next unadjusted value from supplemental data.
+            /// </summary>
             public decimal NextBorderUnadjustedValue
             {
                 get
@@ -311,6 +387,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FNextBorderUnadjustedValue;
                 }
             }
+
+            /// <summary>
+            /// The next range count.
+            /// </summary>
             public int NextRangeCount
             {
                 get
@@ -482,6 +562,20 @@ namespace ECMPS.Checks.CheckEngine
 
             #region cModcDataBorderItem Public Methods: For Programmer Testing
 
+            /// <summary>
+            /// TestCaseSet
+            /// </summary>
+            /// <param name="ALastFound"></param>
+            /// <param name="ANextBorderStatus"></param>
+            /// <param name="ALastSkipHourCount"></param>
+            /// <param name="ALastBorderDate"></param>
+            /// <param name="ALastBorderHour"></param>
+            /// <param name="ALastBorderAdjustedValue"></param>
+            /// <param name="ALastBorderUnadjustedValue"></param>
+            /// <param name="ANextBorderDate"></param>
+            /// <param name="ANextBorderHour"></param>
+            /// <param name="ANextBorderAdjustedValue"></param>
+            /// <param name="ANextBorderUnadjustedValue"></param>
             public void TestCaseSet(bool ALastFound, eBorderStatus ANextBorderStatus, int ALastSkipHourCount,
                                     DateTime ALastBorderDate, int ALastBorderHour, decimal ALastBorderAdjustedValue, decimal ALastBorderUnadjustedValue,
                                     DateTime ANextBorderDate, int ANextBorderHour, decimal ANextBorderAdjustedValue, decimal ANextBorderUnadjustedValue)
@@ -508,7 +602,14 @@ namespace ECMPS.Checks.CheckEngine
 
         #region Private Fields
 
+        /// <summary>
+        /// A list of MODC data borders for monitor locations.
+        /// </summary>
         public cModcDataBorderItem[] ModcDataBorderLocations;
+
+        /// <summary>
+        /// A mapping of monitor locations to their monitor systems' MODC data borders.
+        /// </summary>
         public Dictionary<string, cModcDataBorderItem>[] ModcDataBorderLocationSystems;
         private DataTable FHourlyTable;
         private bool FSkipNewHour = false;

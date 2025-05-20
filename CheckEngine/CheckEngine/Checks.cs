@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Data;
 
 using ECMPS.Checks.Parameters;
@@ -91,7 +90,7 @@ namespace ECMPS.Checks.CheckEngine
 		/// Check procedure delegate
 		/// </summary>
 		/// <param name="Category"></param>
-		/// <param name="Log"></param>
+		/// <param name="emParams"></param>
 		/// <returns></returns>
 		public delegate string dCheckProcedures(cCategory Category,  EmParameters emParams);
 
@@ -155,15 +154,14 @@ namespace ECMPS.Checks.CheckEngine
 
 		/// <summary>
 		/// reference to mpParams for all current checks
-		/// </summary
-
+		/// </summary>
 		public EmGenerationParameters emGenerationParameters;
 
 
 
 		/// <summary>
 		/// reference to mpParams for all current checks
-		/// </summary
+		/// </summary>
 
 
 		public EmImportParameters emImportParameters;

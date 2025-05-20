@@ -1,3 +1,5 @@
+#nullable enable
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,18 +13,18 @@ namespace Epa.Camd.Quartz.Scheduler.Models
  		public long SendId { get; set; }
 
 		[Column("to_email")]
- 		public string ToEmail { get; set; }
+ 		public string? ToEmail { get; set; }
 
-        [Column("from_email")]
- 		public string FromEmail { get; set; }
+    [Column("from_email")]
+ 		public string? FromEmail { get; set; }
 
 		[Column("template_id")]
- 		public long TemplateId { get; set; } 
+ 		public long? TemplateId { get; set; } 
 
 		[Column("context")]
- 		public string Context { get; set; } 
+ 		public string? Context { get; set; } 
 
 		[Column("status_cd")]
- 		public string StatusCode { get; set; } 
+ 		public required string StatusCode { get; set; }
 	}
 }
