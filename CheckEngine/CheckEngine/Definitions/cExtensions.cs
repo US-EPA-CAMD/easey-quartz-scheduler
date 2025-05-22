@@ -121,32 +121,18 @@ namespace ECMPS.Checks.CheckEngine.Definitions
         }
 
         /// <summary>
-        /// Initicalized the cDatabase connection string needed for Severity info if it is null.
-        /// </summary>
-        /// <param name="dataConnectionString">The ECMPS database connection string.</param>
-        /// <param name="auxConnectionString">The ECMPS_AUX database connection string.</param>
-        /// <param name="workspaceConnectionString">The ECMPS_WS database connection string.</param>
-        public static void CheckSeverityDatabase(string dataConnectionString,
-                                                 string auxConnectionString,
-                                                 string workspaceConnectionString)
-        {
-            if (string.IsNullOrEmpty(cDatabase.AuxConnectionString))
-                cDatabase.AuxConnectionString = auxConnectionString;
-        }
-
-        /// <summary>
         /// Load the severity code table, _dvSeverityCode, if successful
         /// </summary>
         /// <returns>true if successful, false if an error</returns>
         private static bool LoadSeverityCode()
         {
             bool bRetVal = false;
-            string Sql = "select Severity_Cd, Severity_Cd_Description, Severity_Level, 0 as Blocks_Submission from camdecmpsmd.severity_code";
-            cDatabase AuxConn = cDatabase.GetConnection(cDatabase.eCatalog.AUX, "LoadSeverityCode");
+            string sql = "select Severity_Cd, Severity_Cd_Description, Severity_Level, 0 as Blocks_Submission from camdecmpsmd.severity_code";
+            cDatabase dbConnection = cDatabase.GetConnection("LoadSeverityCode");
 
             try
             {
-                DataTable dtSeverityCode = AuxConn.GetDataTable(Sql);
+                DataTable dtSeverityCode = dbConnection.GetDataTable(sql);
                 _dvSeverityCode = new DataView(dtSeverityCode, null, "Severity_Cd", DataViewRowState.CurrentRows);
                 foreach (DataRowView drSeverityCode in _dvSeverityCode)
                 {
@@ -166,7 +152,7 @@ namespace ECMPS.Checks.CheckEngine.Definitions
                 bRetVal = false;
             }
 
-            AuxConn.Close();
+            dbConnection.Close();
             return bRetVal;
         }
 

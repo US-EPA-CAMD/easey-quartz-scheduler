@@ -56,7 +56,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       {
         Category = new cUnitCapacityCategory(ACheckEngine, AMonitorPlanProcess);
 
-        bool Result = Category.InitCheckBands(ACheckEngine.DbAuxConnection, ref ErrorMessage);
+        bool Result = Category.InitCheckBands(ACheckEngine.DbConnection, ref ErrorMessage);
 
         if (!Result)
         {
