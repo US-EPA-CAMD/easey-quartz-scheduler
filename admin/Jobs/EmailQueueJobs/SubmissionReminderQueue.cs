@@ -46,6 +46,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
         _dbContext.SaveChanges();
 
+        //Comment out the call to camd-services/support/email/emailRecipientList because the endpoint does not yet exist.
+        /*
         //Create list of plantListIds
         long[] plantIdList = new long[plantIdSet.Count];
         plantIdSet.CopyTo(plantIdList);
@@ -94,13 +96,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             }
           }
         }
+        */
 
         //Load our to-send emails
         foreach(EmailToProcess process in inQueue){
           process.StatusCode = "COMPLETE";
           _dbContext.EmailToProcessQueue.Update(process);
 
-          foreach(string emailTo in facIdToEmails[process.FacId]){
+          /* foreach(string emailTo in facIdToEmails[process.FacId]){
             EmailToSend es = new EmailToSend();
 
             es.Context = process.Context;
@@ -110,7 +113,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             es.FromEmail = Configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"];
 
             _dbContext.EmailToSend.Add(es);
-          }
+          } */
         }
         _dbContext.SaveChanges();
 
