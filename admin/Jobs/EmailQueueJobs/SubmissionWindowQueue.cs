@@ -46,9 +46,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
         _dbContext.SaveChanges();
 
+        //Comment out the call to camd-services/support/email/emailRecipientList because the endpoint does not yet exist.
+        /*
         //Create list of plantListIds
         long[] plantIdList = new long[plantIdSet.Count];
         plantIdSet.CopyTo(plantIdList);
+
+
 
         //Fire API Call
         ReminderNotificationPayload payload = new ReminderNotificationPayload();
@@ -58,6 +62,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         payload.plantId = null;
         payload.submissionType = null;
         payload.userId = null;
+
 
         HttpClient client = new HttpClient();
         StringContent httpContent = new StringContent(JsonConvert.SerializeObject(payload), System.Text.Encoding.UTF8, "application/json");
@@ -76,6 +81,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         RecipientResponse recipientResponse = JsonConvert.DeserializeObject<RecipientResponse>(response.Content.ReadAsStringAsync().Result);
 
+
         //Build a master list of facilityIds to userEmails [performance will be improved greatly in case of large process email set]
         Dictionary<decimal, HashSet<string>> facIdToEmails = new Dictionary<decimal, HashSet<string>>();
         foreach(Recipient r in recipientResponse.recipientList){
@@ -93,14 +99,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               facIdToEmails.Add(facId, emails);
             }
           }
-        }
+        } */
 
         //Load our to-send emails
         foreach(EmailToProcess process in inQueue){
           process.StatusCode = "COMPLETE";
           _dbContext.EmailToProcessQueue.Update(process);
 
-          foreach(string emailTo in facIdToEmails[process.FacId]){
+          /*foreach(string emailTo in facIdToEmails[process.FacId]){
             EmailToSend es = new EmailToSend();
 
             es.Context = process.Context;
@@ -110,7 +116,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             es.FromEmail = Configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"];
 
             _dbContext.EmailToSend.Add(es);
-          }
+          }*/
         }
         _dbContext.SaveChanges();
 
