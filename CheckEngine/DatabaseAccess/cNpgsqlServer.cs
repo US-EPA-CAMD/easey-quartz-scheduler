@@ -817,6 +817,65 @@ namespace ECMPS.Checks.DatabaseAccess
         }
 
         /// <summary>
+        /// Gets a Data.DataTable from the supplied SQL Statement
+        /// </summary>
+        /// <param name="selectSqlFormat">The SQL statement to run</param>
+        /// <param name="selectSqlParameters">The ordered list of parameters values for the select SQL.</param>
+        /// <returns>The DataTable result, or null if an error and LastError will be set</returns>
+        public DataTable GetDataTable(string selectSqlFormat, NpgsqlParameter[] selectSqlParameters)
+        {
+            DataTable dtResults = null;
+            NpgsqlDataAdapter adapter = null;
+
+            Debug.Assert(m_sqlConn != null, "m_sqlConn is null.");
+            if (m_sqlConn == null)
+                return null;
+
+            // reset our error flag!
+            m_bInternalError = false;
+
+            try
+            {
+                adapter = new NpgsqlDataAdapter(selectSqlFormat, m_sqlConn);
+                // this defaults to 30 seconds if we don't override it
+                if (adapter.SelectCommand != null)
+                {
+                    adapter.SelectCommand.CommandTimeout = m_nCmdTimeout;
+                    adapter.SelectCommand.Parameters.AddRange(selectSqlParameters);
+                }
+                dtResults = new DataTable();
+                adapter.Fill(dtResults);
+            }
+            catch (PostgresException sqlEx)
+            {
+                Debug.WriteLine(sqlEx.Message);
+                m_sLastError = sqlEx.Message;
+                _LastException = sqlEx;
+
+                // set our error flag!
+                m_bInternalError = true;
+                throw _LastException;
+            }
+            catch (Exception genEx)
+            {
+                Debug.WriteLine(genEx.Message);
+                m_sLastError = genEx.Message;
+                _LastException = genEx;
+
+                // set our error flag!
+                m_bInternalError = true;
+                throw _LastException;
+            }
+            finally
+            {
+                adapter.Dispose();
+                adapter = null;
+            }
+
+            return dtResults;
+        }
+
+        /// <summary>
         /// Get the schema (structure) of a table
         /// </summary>
         /// <param name="sTableName">The table name in question</param>
