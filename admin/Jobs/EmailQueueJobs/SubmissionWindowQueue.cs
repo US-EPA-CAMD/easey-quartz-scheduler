@@ -53,7 +53,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         plantIdSet.CopyTo(plantIdList);
 
 
-
+         
         //Fire API Call
         ReminderNotificationPayload payload = new ReminderNotificationPayload();
         payload.plantIdList = plantIdList;
@@ -63,7 +63,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         payload.submissionType = null;
         payload.userId = null;
 
-
+        
         HttpClient client = new HttpClient();
         StringContent httpContent = new StringContent(JsonConvert.SerializeObject(payload), System.Text.Encoding.UTF8, "application/json");
         client.DefaultRequestHeaders.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
