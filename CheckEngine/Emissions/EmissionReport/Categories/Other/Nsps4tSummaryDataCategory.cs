@@ -54,7 +54,7 @@ namespace ECMPS.Checks.EmissionsReport
             {
                 string errorMessage = null;
 
-                if (nsps4tSummaryDataCategory.InitCheckBands(summaryValueInitializationCategory.CheckEngine.DbConnection, ref errorMessage))
+                if (nsps4tSummaryDataCategory.InitCheckBands(summaryValueInitializationCategory.CheckEngine.DbAuxConnection, ref errorMessage))
                 {
                     /* Setup non changing check parameters needed by the checks */
                     DataSet sourceDataSet = summaryValueInitializationCategory.Process.SourceData;
@@ -129,7 +129,7 @@ namespace ECMPS.Checks.EmissionsReport
                 string sql = string.Format("select * from camdecmpswks.{0}('{2}', {3}) order by {1}", sourceName, sourceSort, monPlanId, rptPeriodId);
 
                 // SqlConnection sqlConnection = emissionsReportProcess.CheckEngine.DbDataConnection.SQLConnection;
-                NpgsqlConnection sqlConnection = emissionsReportProcess.CheckEngine.DbConnection.SQLConnection;
+                NpgsqlConnection sqlConnection = emissionsReportProcess.CheckEngine.DbDataConnection.SQLConnection;
                 //SqlDataAdapter Adapter = new SqlDataAdapter(sql, sqlConnection);
                 NpgsqlDataAdapter Adapter = new NpgsqlDataAdapter(sql, sqlConnection);
                 DataSet sourceDataSet = emissionsReportProcess.SourceData;

@@ -781,7 +781,7 @@ namespace ECMPS.Checks.EmissionsChecks
                             if (cDBConvert.ToString(NoxMonitorMethodView[0]["SUB_DATA_CD"]).StartsWith("FSP75"))
                                 Category.SetCheckParameter("NOx_Mass_Fuel_Specific_Missing_Data", true, eParameterDataType.Boolean);
 
-                            if (MethodCode.InList("CEM,NOXR,CEMNOXR,AMS,CALC"))
+                            if (MethodCode.InList("CEM,NOXR,CEMNOXR,AMS"))
                                 Category.SetCheckParameter("NOx_Mass_Method_Active_For_Hour", true, eParameterDataType.Boolean);
 
                             if ((MethodCode == "LME") && Category.GetCheckParameter("Current_Unit_Is_Arp").ValueAsBool())

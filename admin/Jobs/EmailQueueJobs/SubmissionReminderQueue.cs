@@ -39,16 +39,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           ).ToList();
 
         HashSet<long> plantIdSet = new HashSet<long>();
-        foreach (EmailToProcess process in inQueue)
-        {
+        foreach(EmailToProcess process in inQueue){
           process.StatusCode = "WIP";
           _dbContext.EmailToProcessQueue.Update(process);
           plantIdSet.Add(Convert.ToInt64(process.FacId));
         }
         _dbContext.SaveChanges();
 
-        //Comment out the call to camd-services/support/email/emailRecipientList because the endpoint does not yet exist.
-        /*
         //Create list of plantListIds
         long[] plantIdList = new long[plantIdSet.Count];
         plantIdSet.CopyTo(plantIdList);
@@ -97,15 +94,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             }
           }
         }
-        */
 
         //Load our to-send emails
-        foreach (EmailToProcess process in inQueue)
-        {
+        foreach(EmailToProcess process in inQueue){
           process.StatusCode = "COMPLETE";
           _dbContext.EmailToProcessQueue.Update(process);
 
-          /*foreach(string emailTo in facIdToEmails[process.FacId]){
+          foreach(string emailTo in facIdToEmails[process.FacId]){
             EmailToSend es = new EmailToSend {
               Context = process.Context,
               StatusCode = "QUEUED",
@@ -115,7 +110,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             };
 
             _dbContext.EmailToSend.Add(es);
-          } */
+          }
         }
         _dbContext.SaveChanges();
 

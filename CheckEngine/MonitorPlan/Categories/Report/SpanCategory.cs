@@ -48,7 +48,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       {
         Category = new cSpanCategory(ACheckEngine, AMonitorPlanProcess);
 
-        bool Result = Category.InitCheckBands(ACheckEngine.DbConnection, ref ErrorMessage);
+        bool Result = Category.InitCheckBands(ACheckEngine.DbAuxConnection, ref ErrorMessage);
 
         if (!Result)
         {

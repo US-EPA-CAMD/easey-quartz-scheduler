@@ -649,8 +649,8 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
         private void LoadCrossChecks()
         {
-            DataTable Catalog = mCheckEngine.DbConnection.GetDataTable("SELECT * FROM camdecmpsmd.cross_check_catalog");
-            DataTable Value = mCheckEngine.DbConnection.GetDataTable("SELECT * FROM camdecmpsmd.vw_cross_check_catalog_value"); //SQL Source: vw_Cross_Check_Catalog_Value
+            DataTable Catalog = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM camdecmpsmd.cross_check_catalog");
+            DataTable Value = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM camdecmpsmd.vw_cross_check_catalog_value"); //SQL Source: vw_Cross_Check_Catalog_Value
             DataTable CrossCheck;
             DataRow CrossCheckRow;
             string CrossCheckName;

@@ -65,7 +65,9 @@ namespace ECMPS.Checks.DatabaseAccess
         private int m_nCmdTimeout = 60 * 15;     // 15 minutes
         private int m_nConnTimeout = 5;         // 5 seconds
 
-        static private string _sDbConnectionString = null;
+        static private string _sDataConnString = null;
+        static private string _sAuxConnString = null;
+        static private string _sWorkspaceConnString = null;
 
         private readonly ILogger<cDatabase> _logger = LoggerProvider.GetLogger<cDatabase>();
 
@@ -136,10 +138,28 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <summary>
         /// Connection string used to connect to ECMPS Data database
         /// </summary>
-        static public string DbConnectionString
+        static public string DataConnectionString
         {
-            get { return _sDbConnectionString; }
-            set { _sDbConnectionString = value; }
+            get { return _sDataConnString; }
+            set { _sDataConnString = value; }
+        }
+
+        /// <summary>
+        /// Connection string used to connect to ECMPS_Aux database
+        /// </summary>
+        static public string AuxConnectionString
+        {
+            get { return _sAuxConnString; }
+            set { _sAuxConnString = value; }
+        }
+
+        /// <summary>
+        /// Connection string used to connect to ECMPS_WS database
+        /// </summary>
+        static public string WorkspaceConnectionString
+        {
+            get { return _sWorkspaceConnString; }
+            set { _sWorkspaceConnString = value; }
         }
 
         /// <summary>
@@ -224,13 +244,14 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <summary>
         /// Create a cNpgsqlDatabase object and get a connection to the specified catalog
         /// </summary>
+        /// <param name="initCatalog">The name of the catalog to connect to</param>
         /// <param name="nCmdTimeout">The timeout to assign to the command objects created.</param>
         /// <param name="sModule">The calling module</param>
         /// <returns>A cNpgsqlDatabase object with the connection already opened</returns>
-        public static cDatabase GetConnection(int nCmdTimeout, string sModule)
+        public static cDatabase GetConnection(eCatalog initCatalog, int nCmdTimeout, string sModule)
         {
             cDatabase me = new cDatabase(sModule, nCmdTimeout);
-            me.Open();
+            me.Open(initCatalog);
 
             return me;
         }
@@ -238,14 +259,25 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <summary>
         /// Create a cNpgsqlDatabase object and get a connection to the specified catalog
         /// </summary>
+        /// <param name="initCatalog">The name of the catalog to connect to</param>
+        /// <param name="sModule">The calling module</param>
+        /// <returns>A cNpgsqlDatabase object with the connection already opened</returns>
+        public static cDatabase GetConnection(eCatalog initCatalog, string sModule)
+        {
+            cDatabase me = new cDatabase(sModule);
+            me.Open(initCatalog);
+
+            return me;
+        }
+
+        /// <summary>
+        /// Create a cNpgsqlDatabase object and get a connection to the ECMPS "DATA" catalog
+        /// </summary>
         /// <param name="sModule">The calling module</param>
         /// <returns>A cNpgsqlDatabase object with the connection already opened</returns>
         public static cDatabase GetConnection(string sModule)
         {
-            cDatabase me = new cDatabase(sModule);
-            me.Open();
-
-            return me;
+            return GetConnection(eCatalog.DATA, sModule);
         }
 
         /// <summary>
@@ -303,10 +335,20 @@ namespace ECMPS.Checks.DatabaseAccess
         #region Public Methods: Database Access
 
         /// <summary>
+        /// Get a connection to the ECMPS "DATA" database
+        /// </summary>
+        /// <returns>True if a connection was made to the ECMPS database, or false if error and LastError will contain error message</returns>
+        public bool Open()
+        {
+            return Open(eCatalog.DATA);
+        }
+
+        /// <summary>
         /// Get a connection to the ECMPS database for the Initial Catalog in question
         /// </summary>
+        /// <param name="initCatalog">The name of the database to connect to</param>
         /// <returns>An open connection to the ECMPS database, or null if error and LastError will contain error message</returns>
-        public bool Open()
+        public bool Open(eCatalog initCatalog)
         {
             bool bRetVal = false;
 
@@ -332,17 +374,23 @@ namespace ECMPS.Checks.DatabaseAccess
                 }
             }
 
-            m_sqlConn = new NpgsqlConnection(_sDbConnectionString);
+            string sConnString = _sDataConnString;
+            if (initCatalog == eCatalog.AUX)
+                sConnString = _sAuxConnString;
+            else if (initCatalog == eCatalog.WORKSPACE)
+                sConnString = _sWorkspaceConnString;
+            m_sqlConn = new NpgsqlConnection(sConnString);
 
             try
             {
                 m_sqlConn.Open();
-
+                if (initCatalog == eCatalog.MASTER || initCatalog == eCatalog.CHET)
+                    ChangeDatabase(initCatalog);
                 bRetVal = true;
             }
             catch (NpgsqlException sqlEx)
             {
-                string sError = string.Format("The action failed. Connection String: {0}", _sDbConnectionString);
+                string sError = string.Format("The action failed. Connection String: {0}", sConnString);
 
                 _LastException = new Exception(sError, sqlEx);
                 _LastException.Source = "ECMPS.Client.Common.cNpgsqlDatabase.Open()";
@@ -784,65 +832,6 @@ namespace ECMPS.Checks.DatabaseAccess
                 // this defaults to 30 seconds if we don't override it
                 if (adapter.SelectCommand != null)
                     adapter.SelectCommand.CommandTimeout = m_nCmdTimeout;
-                dtResults = new DataTable();
-                adapter.Fill(dtResults);
-            }
-            catch (PostgresException sqlEx)
-            {
-                Debug.WriteLine(sqlEx.Message);
-                m_sLastError = sqlEx.Message;
-                _LastException = sqlEx;
-
-                // set our error flag!
-                m_bInternalError = true;
-                throw _LastException;
-            }
-            catch (Exception genEx)
-            {
-                Debug.WriteLine(genEx.Message);
-                m_sLastError = genEx.Message;
-                _LastException = genEx;
-
-                // set our error flag!
-                m_bInternalError = true;
-                throw _LastException;
-            }
-            finally
-            {
-                adapter.Dispose();
-                adapter = null;
-            }
-
-            return dtResults;
-        }
-
-        /// <summary>
-        /// Gets a Data.DataTable from the supplied SQL Statement
-        /// </summary>
-        /// <param name="selectSqlFormat">The SQL statement to run</param>
-        /// <param name="selectSqlParameters">The ordered list of parameters values for the select SQL.</param>
-        /// <returns>The DataTable result, or null if an error and LastError will be set</returns>
-        public DataTable GetDataTable(string selectSqlFormat, NpgsqlParameter[] selectSqlParameters)
-        {
-            DataTable dtResults = null;
-            NpgsqlDataAdapter adapter = null;
-
-            Debug.Assert(m_sqlConn != null, "m_sqlConn is null.");
-            if (m_sqlConn == null)
-                return null;
-
-            // reset our error flag!
-            m_bInternalError = false;
-
-            try
-            {
-                adapter = new NpgsqlDataAdapter(selectSqlFormat, m_sqlConn);
-                // this defaults to 30 seconds if we don't override it
-                if (adapter.SelectCommand != null)
-                {
-                    adapter.SelectCommand.CommandTimeout = m_nCmdTimeout;
-                    adapter.SelectCommand.Parameters.AddRange(selectSqlParameters);
-                }
                 dtResults = new DataTable();
                 adapter.Fill(dtResults);
             }
@@ -2432,12 +2421,12 @@ namespace ECMPS.Checks.DatabaseAccess
 
         private static bool LoadSeverityCode()
         {
-            string sql = "select Severity_Cd, Severity_Cd_Description, Severity_Level from camdecmpsmd.severity_code";
-            cDatabase dbConnection = cDatabase.GetConnection("LoadSeverityCode");
+            string Sql = "select Severity_Cd, Severity_Cd_Description, Severity_Level from camdecmpsmd.severity_code";
+            cDatabase AuxConn = cDatabase.GetConnection(eCatalog.AUX, "LoadSeverityCode");
 
             try
             {
-                DataTable SverityCodeTable = dbConnection.GetDataTable(sql);
+                DataTable SverityCodeTable = AuxConn.GetDataTable(Sql);
                 m_dvSeverityCode = new DataView(SverityCodeTable, null, "Severity_Cd", DataViewRowState.CurrentRows);
                 return true;
             }

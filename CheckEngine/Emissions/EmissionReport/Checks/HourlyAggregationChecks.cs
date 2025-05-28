@@ -1150,7 +1150,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                         if (AnnNOxMCalcVal != decimal.MinValue && AnnNOxMCalcVal != YTDTotal)
                                             noxmSummaryInvalidFields = noxmSummaryInvalidFields.ListAdd("YearToDateTotal");
                                         if (OSNOxMCalcVal != decimal.MinValue && OSNOxMCalcVal != OSTotal)
-                                            if (Math.Abs(OSNOxMCalcVal - OSTotal) > Tolerance)
+                                            if ((Math.Abs(OSNOxMCalcVal - OSTotal) > Tolerance) || (RptPerRowQuarter > 2))
                                                 noxmSummaryInvalidFields = noxmSummaryInvalidFields.ListAdd("OzoneSeasonToDateTotal");
                                         if (noxmSummaryInvalidFields != "")
                                         {
@@ -1689,11 +1689,12 @@ namespace ECMPS.Checks.EmissionsChecks
                                         if (OSHITCalcVal != decimal.MinValue && OSHITCalcVal != OSTotal)
                                             if (!Category.GetCheckParameter("Legacy_Data_Evaluation").ValueAsBool())
                                             {
-                                                if (Math.Abs(OSHITCalcVal - OSTotal) > Tolerance)
+                                                if ((Math.Abs(OSHITCalcVal - OSTotal) > Tolerance) || (RptPerRowQuarter > 2))
                                                     InvalidFields = InvalidFields.ListAdd("OzoneSeasonToDateTotal");
                                             }
                                             else
-                                              if (Math.Abs(OSHITCalcVal - Math.Round(OSTotal, MidpointRounding.AwayFromZero)) > Tolerance)
+                                              if ((Math.Abs(OSHITCalcVal - Math.Round(OSTotal, MidpointRounding.AwayFromZero)) > Tolerance)
+                                                  || (RptPerRowQuarter > 2))
                                                 InvalidFields = InvalidFields.ListAdd("OzoneSeasonToDateTotal");
                                         if (InvalidFields != "")
                                             if (InvalidFields.Contains("YearToDateTotal"))
@@ -1939,7 +1940,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                     if (AnnOpTimeCalcVal != decimal.MinValue && AnnOpTimeCalcVal != YTDTotal)
                                         InvalidFields = InvalidFields.ListAdd("YearToDateTotal");
                                     if (OSOpTimeCalcVal != decimal.MinValue && OSOpTimeCalcVal != OSTotal)
-                                        if (Math.Abs(OSOpTimeCalcVal - OSTotal) > Tolerance)
+                                        if ((Math.Abs(OSOpTimeCalcVal - OSTotal) > Tolerance) || (RptPerRowQuarter > 2))
                                             InvalidFields = InvalidFields.ListAdd("OzoneSeasonToDateTotal");
                                     if (InvalidFields != "")
                                     {
@@ -2164,7 +2165,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                     if (AnnOpHrsCalcVal != int.MinValue && AnnOpHrsCalcVal != YTDTotal)
                                         InvalidFields = InvalidFields.ListAdd("YearToDateTotal");
                                     if (OSOpHrsCalcVal != int.MinValue && OSOpHrsCalcVal != OSTotal)
-                                        if (Math.Abs(OSOpHrsCalcVal - OSTotal) > Tolerance)
+                                        if ((Math.Abs(OSOpHrsCalcVal - OSTotal) > Tolerance) || (RptPerRowQuarter > 2))
                                             InvalidFields = InvalidFields.ListAdd("OzoneSeasonToDateTotal");
                                     if (InvalidFields != "")
                                     {

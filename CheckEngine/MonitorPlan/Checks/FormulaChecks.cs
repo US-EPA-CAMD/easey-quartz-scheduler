@@ -976,22 +976,8 @@ namespace ECMPS.Checks.FormulaChecks
 											  FormulaEvaluationBeginDate, FormulaEvaluationEndDate, false, true, false);
 											if (LocationFuelRecords.Count > 0)
 												SystemFound = true;
-                                        }
-                                        else if (cDBConvert.ToString(drvFormulaParameterAndComponentTypeAndBasisToFormulaCode["ComponentTypeAndBasis"]).InList("PMD,PMW"))
-                                        {
-                                            SystemComponentRecords.RowFilter
-                                                = AddToDataViewFilter(OldSystemComponentFilter, "Component_Type_Cd = 'PM' and Basis_Cd is null");
-                                            SystemComponentRecords.RowFilter
-                                                = AddEvaluationDateHourRangeToDataViewFilter
-                                                    (
-                                                        SystemComponentRecords.RowFilter,
-                                                        FormulaEvaluationBeginDate, FormulaEvaluationEndDate, FormulaEvaluationBeginHour, FormulaEvaluationEndHour, false, true
-                                                    );
-
-                                            if (SystemComponentRecords.Count > 0)
-                                                SystemFound = true;
-                                        }
-                                    }
+										}
+									}
 									SystemComponentRecords.RowFilter = OldSystemComponentFilter;
 								}
 

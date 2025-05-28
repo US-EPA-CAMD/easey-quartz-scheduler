@@ -138759,7 +138759,7 @@ namespace ECMPS.Checks.Data.Ecmps.Dbo.View
         {
             SourceRow = sourceRow;
         }
-
+        
         /// <summary>
         /// This constructor is required because the class is used as a type argument for a generic.
         /// </summary>

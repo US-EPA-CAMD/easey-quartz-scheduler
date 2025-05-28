@@ -5,7 +5,6 @@ using System.Data;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Epa.Camd.Logger;
-using Npgsql;
 
 namespace ECMPS.Checks.DatabaseAccess
 {
@@ -112,19 +111,17 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <returns>0</returns>
         public int CheckSessionFailed(string chkSessionId, string errorComment, ref System.Nullable<char> result, ref string errorMessage)
         {
-            _logger.LogInformation("CheckSessionFailed started for session '{ChkSessionId}' and comment '{Comment}'", chkSessionId ?? "null", errorComment ?? "null");
+            _logger.LogInformation("Running CheckSessionFailed for session {ChkSessionId}", chkSessionId);
 
             //TODO (EC-3519): Testing Needed
             string resultString = string.Empty;
             List<string> values = new List<string>();
             DataTable AResultTable;
-            
-            string selectSqlFormat = "select camdecmpswks.check_session_failed( $1, $2 )";
-            NpgsqlParameter[] selectSqlParameters = { new() { Value = chkSessionId }, new() { Value = errorComment } };
+            string Sql = "select camdecmpswks.check_session_failed('" + chkSessionId + "','" + errorComment + "')";
 
             try
             {
-                AResultTable = Database.GetDataTable(selectSqlFormat, selectSqlParameters);
+                AResultTable = Database.GetDataTable(Sql);
 
                 foreach (DataRow row in AResultTable.Rows)
                 {
@@ -142,11 +139,11 @@ namespace ECMPS.Checks.DatabaseAccess
                 resultString = values[0];
                 errorMessage = values[1];
 
-                _logger.LogInformation("CheckSessionFailed completed for session '{ChkSessionId}' with result '{Result}' and error: '{Error}'", chkSessionId ?? "(null)", resultString ?? "N/A", errorMessage ?? "N/A");
+                _logger.LogInformation("CheckSessionFailed completed with result: {Result}, error: {Error}", resultString ?? "N/A", errorMessage ?? "N/A");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "CheckSessionFailed failed for session '{ChkSessionId}' and comment '{Comment}'", chkSessionId ?? "null", errorComment ?? "null");
+                _logger.LogError(ex, "CheckSessionFailed failed for session {ChkSessionId}", chkSessionId);
             }
 
             //Database.CreateStoredProcedureCommand("Check.CheckSessionFailed");

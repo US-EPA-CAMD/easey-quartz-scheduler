@@ -243,16 +243,8 @@ namespace ECMPS.Checks.ComponentChecks
 								}
 							}
 						}
-                    }
-                    else if (ComponentTypeCode == "PM")
-                    {
-                        if ((BasisCode != "") /*not null*/ && (BasisCode != "D") && (BasisCode != "W"))
-                        {
-                            Category.CheckCatalogResult = "B";
-                            ComponentBasisCodeValid = false;
-                        }
-                    }
-                    else
+					}
+					else
 					{
 						if (CurrentComponent["Basis_Cd"] != DBNull.Value)
 						{

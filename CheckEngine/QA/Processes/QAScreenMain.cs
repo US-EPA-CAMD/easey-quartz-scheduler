@@ -980,7 +980,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get linearity injection records for this test sum ID
             SourceDataTable = new DataTable("QALinearityInjection");
 			SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM CheckQa.LinearityInjection " +
-			  "('" + mCheckEngine.TestSumId + "')", mCheckEngine.DbConnection.SQLConnection);
+			  "('" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -990,7 +990,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get linearity summary records for this test sum ID
             SourceDataTable = new DataTable("QALinearitySummary");
 			SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM CheckQa.LinearitySummary " +
-               "('" + mCheckEngine.TestSumId + "')", mCheckEngine.DbConnection.SQLConnection);
+               "('" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1006,7 +1006,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get linearity summary records for this test sum ID
             SourceDataTable = new DataTable("QALinearitySummary");
 			SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM CheckQa.LinearitySummary " +
-				"('" + mCheckEngine.TestSumId + "')", mCheckEngine.DbConnection.SQLConnection);
+				"('" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1020,7 +1020,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           {
             //get test basis codes
             SourceDataTable = new DataTable("TestBasisCode");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM test_basis_code", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM test_basis_code", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1031,7 +1031,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get Flow To Load Checks for this location ID
             SourceDataTable = new DataTable("QAFlowLoadCheck");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_F2LCHK " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1044,7 +1044,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get loadrecords for this location ID
             SourceDataTable = new DataTable("QALoad");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_LOAD " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1054,7 +1054,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get monitor location records for this facility
             SourceDataTable = new DataTable("QALocation");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_LOCATION " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1067,7 +1067,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata run records for this test sum ID
             SourceDataTable = new DataTable("QARATARun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_RATA_RUN " +
-                "WHERE FAC_ID = '" + mCheckEngine.FacilityID + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE FAC_ID = '" + mCheckEngine.FacilityID + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1077,7 +1077,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata summary records ... for?
             SourceDataTable = new DataTable("QARATASummary");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_RATA_SUMMARY " +
-                "WHERE FAC_ID = '" + mCheckEngine.FacilityID + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE FAC_ID = '" + mCheckEngine.FacilityID + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1087,7 +1087,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get Unit Stack Configuration records for this stack
             SourceDataTable = new DataTable("QAUnitStackConfiguration");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_UNIT_STACK_CONFIGURATION " +
-              "WHERE FAC_ID = '" + mCheckEngine.FacilityID + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE FAC_ID = '" + mCheckEngine.FacilityID + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1097,7 +1097,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get monitor location record for the location
             SourceDataTable = new DataTable("MonitorLocation");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_LOCATION " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1110,7 +1110,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get cycle time injection records for this test sum ID
             SourceDataTable = new DataTable("QACycleTimeInjection");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_CYCLE_TIME_INJECTION " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1122,7 +1122,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           {
             //get rata frequency codes
             SourceDataTable = new DataTable("RATAFrequencyCode");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM rata_frequency_code", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM rata_frequency_code", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1132,7 +1132,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get system records for this location ID
             SourceDataTable = new DataTable("QASystem");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SYSTEM " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1144,7 +1144,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           {
             //get ref method codes
             SourceDataTable = new DataTable("RefMethodCode");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM ref_method_code", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM ref_method_code", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1154,7 +1154,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata summary records for this test sum ID
             SourceDataTable = new DataTable("QARATASummary");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_RATA_SUMMARY " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1164,7 +1164,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata records for this test sum ID
             SourceDataTable = new DataTable("QARATA");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_RATA " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1177,7 +1177,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get flow rata run records for this test sum ID
             SourceDataTable = new DataTable("QAFlowRATARun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_FLOW_RATA_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1188,7 +1188,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata run records for this test sum ID
             SourceDataTable = new DataTable("QARATARun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_RATA_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1198,7 +1198,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata records for this test sum ID
             SourceDataTable = new DataTable("QARATA");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_RATA " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1212,7 +1212,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata run records for this test sum ID
             SourceDataTable = new DataTable("QARATARun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_RATA_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             SourceDataAdapter.Fill(SourceDataTable);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
@@ -1222,7 +1222,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata summary records for this test sum ID
             SourceDataTable = new DataTable("QARATASummary");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_RATA_SUMMARY " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1232,7 +1232,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata records for this test sum ID
             SourceDataTable = new DataTable("QARATA");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_RATA " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1245,7 +1245,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           {
             //get pressure measure codes
             SourceDataTable = new DataTable("PressureMeasureCode");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM pressure_measure_code", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM pressure_measure_code", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1255,7 +1255,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata traverse records for this test sum ID
             SourceDataTable = new DataTable("QARATATraverse");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_RATA_TRAVERSE " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1265,7 +1265,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata run records for this test sum ID
             SourceDataTable = new DataTable("QARATARun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_RATA_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1275,7 +1275,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get flow rata run records for this test sum ID
             SourceDataTable = new DataTable("QAFlowRATARun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_FLOW_RATA_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1285,7 +1285,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata records for this test sum ID
             SourceDataTable = new DataTable("QARATA");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_RATA " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1298,7 +1298,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata summary records for this test sum ID
             SourceDataTable = new DataTable("QARATASummary");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_RATA_SUMMARY " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1309,7 +1309,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             SourceDataTable = new DataTable("MonitorSystemRecords");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SYSTEM " +
                 "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
-                "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1319,7 +1319,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get loadrecords for this location ID
             SourceDataTable = new DataTable("QALoad");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_LOAD " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1331,7 +1331,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           {
             //get ref method codes
             SourceDataTable = new DataTable("RefMethodCode");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM ref_method_code", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM ref_method_code", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1341,7 +1341,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get location attribute records for this location ID
             SourceDataTable = new DataTable("QALocationAttribute");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_LOCATION_ATTRIBUTE " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1351,7 +1351,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata run records for this test sum ID
             SourceDataTable = new DataTable("QARATARun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_RATA_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1361,7 +1361,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata records for this test sum ID
             SourceDataTable = new DataTable("QARATA");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_RATA " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1374,7 +1374,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get flow rata run records for this test sum ID
             SourceDataTable = new DataTable("QAFlowRATARun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_FLOW_RATA_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1383,7 +1383,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get ref method codes
             SourceDataTable = new DataTable("RefMethodCode");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM ref_method_code", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM ref_method_code", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1396,7 +1396,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata traverse records for this test sum ID
             SourceDataTable = new DataTable("QARATATraverse");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_RATA_TRAVERSE " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1406,7 +1406,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata summary records for this test sum ID
             SourceDataTable = new DataTable("QARATASummary");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_RATA_SUMMARY " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1415,7 +1415,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get ref method codes
             SourceDataTable = new DataTable("RefMethodCode");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM ref_method_code", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM ref_method_code", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1425,7 +1425,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get flow rata run records for this test sum ID
             SourceDataTable = new DataTable("QAFlowRATARun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_FLOW_RATA_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1435,7 +1435,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get location attribute records for this location ID
             SourceDataTable = new DataTable("QALocationAttribute");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_LOCATION_ATTRIBUTE " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1449,7 +1449,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get test claim records for this test sum ID
             SourceDataTable = new DataTable("QATestClaim");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_CLAIM " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1459,7 +1459,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get rata records for this test sum ID
             SourceDataTable = new DataTable("QARATA");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_RATA " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1472,7 +1472,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get System Component records for this component
             SourceDataTable = new DataTable("QASystemComponent");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SYSTEM_COMPONENT " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1481,7 +1481,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get test method codes
             SourceDataTable = new DataTable("TestMethodCode");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_ACCURACY_TEST_METHOD_CODE", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_ACCURACY_TEST_METHOD_CODE", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1493,7 +1493,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           {
             //get accuracy specification codes
             SourceDataTable = new DataTable("AccuracySpecCode");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_ACCURACY_SPEC_CODE", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_ACCURACY_SPEC_CODE", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1506,7 +1506,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get System Component records for this component
             SourceDataTable = new DataTable("QASystemComponent");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SYSTEM_COMPONENT " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1516,7 +1516,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get System records for this location
             SourceDataTable = new DataTable("QASystem");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SYSTEM " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1526,7 +1526,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get loadrecords for this location ID
             SourceDataTable = new DataTable("QALoad");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_LOAD " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1535,7 +1535,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get UOM lookup table
             SourceDataTable = new DataTable("UnitsOfMeasureLookup");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_PARAMETER_UOM", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_PARAMETER_UOM", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1547,7 +1547,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           {
             //get UOM lookup table
             SourceDataTable = new DataTable("UnitsOfMeasureLookup");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_PARAMETER_UOM", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_PARAMETER_UOM", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1556,7 +1556,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get test basis codes
             SourceDataTable = new DataTable("TestBasisCode");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM test_basis_code", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM test_basis_code", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1569,7 +1569,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get appe summary records for this test sum ID
             SourceDataTable = new DataTable("QAAppendixESummary");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_AE_CORRELATION_TEST_SUM " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1582,7 +1582,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get appe summary records for this test sum ID
             SourceDataTable = new DataTable("QAAppendixESummary");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_AE_CORRELATION_TEST_SUM " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1592,7 +1592,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get AppendixE Run records for this test sum ID
             SourceDataTable = new DataTable("QAAppendixERun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_AE_CORRELATION_TEST_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1606,7 +1606,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             SourceDataTable = new DataTable("MonitorSystemRecords");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SYSTEM " +
                 "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
-                "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1616,7 +1616,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get Oil records APPE_Oil_Records
             SourceDataTable = new DataTable("QAAppendixEOil");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_AE_HI_OIL " +
-               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1626,7 +1626,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get appe summary records for this test sum ID
             SourceDataTable = new DataTable("QAAppendixESummary");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_AE_CORRELATION_TEST_SUM " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1636,7 +1636,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get AppendixE Run records for this test sum ID
             SourceDataTable = new DataTable("QAAppendixERun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_AE_CORRELATION_TEST_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1645,7 +1645,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get UOM lookup table
             SourceDataTable = new DataTable("UnitsOfMeasureLookup");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_PARAMETER_UOM", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_PARAMETER_UOM", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1659,7 +1659,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get appe summary records for this test sum ID
             SourceDataTable = new DataTable("QAAppendixESummary");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_AE_CORRELATION_TEST_SUM " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1669,7 +1669,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get AppendixE Run records for this test sum ID
             SourceDataTable = new DataTable("QAAppendixERun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_AE_CORRELATION_TEST_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1679,7 +1679,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get Gas records APPE_Gas_Records
             SourceDataTable = new DataTable("QAAppendixEGas");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_AE_HI_GAS " +
-                "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1689,7 +1689,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get AppendixE tests for this test sum ID
             SourceDataTable = new DataTable("QAAppendixE");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_APPE " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1698,7 +1698,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get UOM lookup table
             SourceDataTable = new DataTable("UnitsOfMeasureLookup");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_PARAMETER_UOM", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_PARAMETER_UOM", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1711,7 +1711,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get AppendixE Run records for this test sum ID
             SourceDataTable = new DataTable("QAAppendixERun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_AE_CORRELATION_TEST_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1721,7 +1721,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get Gas records APPE_Gas_Records
             SourceDataTable = new DataTable("QAAppendixEGas");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_AE_HI_GAS " +
-                "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1731,7 +1731,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get Oil records APPE_Oil_Records
             SourceDataTable = new DataTable("QAAppendixEOil");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_AE_HI_OIL " +
-               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+               "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1744,7 +1744,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get AppendixE Run records for this test sum ID
             SourceDataTable = new DataTable("QAAppendixERun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_AE_CORRELATION_TEST_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1756,7 +1756,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           {
             SourceDataTable = new DataTable("QACertEvent");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_CERT_EVENT " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1766,7 +1766,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get Monitor System records for this component
             SourceDataTable = new DataTable("MonitorSystemRecords");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SYSTEM " +
-                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1776,7 +1776,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get System Component records for this location
             SourceDataTable = new DataTable("QAComponent");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_COMPONENT " +
-                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1786,7 +1786,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get System Component records for this component
             SourceDataTable = new DataTable("QASystemComponent");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SYSTEM_COMPONENT " +
-                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1799,7 +1799,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
           {
             SourceDataTable = new DataTable("QATEE");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_TEST_EXTENSION_EXEMPTION " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1808,7 +1808,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get reporting period lookup table
             SourceDataTable = new DataTable("ReportingPeriodLookup");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM REPORTING_PERIOD", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM REPORTING_PERIOD", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1817,7 +1817,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get fuel code lookup table
             SourceDataTable = new DataTable("FuelCodeLookup");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_FUEL_CODE", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_FUEL_CODE", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1827,7 +1827,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get analyzer range records for the location
             SourceDataTable = new DataTable("AnalyzerRangeRecords");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_ANALYZER_RANGE " +
-                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1837,7 +1837,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get location reporting frequency records for the location
             SourceDataTable = new DataTable("LocationReportingFrequency");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_LOCATION_REPORTING_FREQUENCY " +
-                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1847,7 +1847,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get System Component records for this location
             SourceDataTable = new DataTable("LocationSystemComponent");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SYSTEM_COMPONENT " +
-                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1857,7 +1857,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get Monitor System records for this component
             SourceDataTable = new DataTable("MonitorSystemRecords");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SYSTEM " +
-                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1867,7 +1867,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get System Component records for this location
             SourceDataTable = new DataTable("QAComponent");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_COMPONENT " +
-                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1877,7 +1877,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get system records for this location ID
             SourceDataTable = new DataTable("QASystem");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SYSTEM " +
-                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1891,7 +1891,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get unit default test records for location
             SourceDataTable = new DataTable("UnitDefaultRecords");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_UNITDEF " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1900,7 +1900,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get fuel code lookup table
             SourceDataTable = new DataTable("FuelCodeLookup");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_FUEL_CODE", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_FUEL_CODE", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1914,7 +1914,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get unit default test run records for test sum ID
             SourceDataTable = new DataTable("QAUnitDefaultRun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_UNIT_DEFAULT_TEST_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1927,7 +1927,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get linearity injection records for this test sum ID
             SourceDataTable = new DataTable("QALinearityInjection");
 			SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM CheckQa.LinearityInjection " +
-			  "('" + mCheckEngine.TestSumId + "')", mCheckEngine.DbConnection.SQLConnection);
+			  "('" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1941,7 +1941,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get System Component records for this component
             SourceDataTable = new DataTable("QASystemComponent");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SYSTEM_COMPONENT " +
-                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1951,7 +1951,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get span records for this location ID
             SourceDataTable = new DataTable("QASpan");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SPAN " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1964,7 +1964,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get monitor location record for the location
             SourceDataTable = new DataTable("MonitorLocation");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_LOCATION " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1973,7 +1973,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get CS test codes
             SourceDataTable = new DataTable("CSTestCode");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM COMMON_STACK_TEST_CODE", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM COMMON_STACK_TEST_CODE", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1983,7 +1983,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get monitor location records for this facility
             SourceDataTable = new DataTable("QALocation");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_LOCATION " +
-              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1997,7 +1997,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             SourceDataTable = new DataTable("QAFacilityLocation");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_LOCATION " +
               "WHERE FAC_ID IN (SELECT FAC_ID FROM TEST_SUMMARY " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2007,7 +2007,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             SourceDataTable = new DataTable("QAQualification");
             SourceDataAdapter = new NpgsqlDataAdapter("select * from vw_mp_monitor_qualification " +
                 "where mon_loc_id in (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
-                "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbConnection.SQLConnection);
+                "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2017,7 +2017,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get Unit Stack Configuration records for this stack
             SourceDataTable = new DataTable("QAUnitStackConfiguration");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_UNIT_STACK_CONFIGURATION " +
-              "WHERE FAC_ID = '" + mCheckEngine.FacilityID + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE FAC_ID = '" + mCheckEngine.FacilityID + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2026,7 +2026,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
             //get ref method codes
             SourceDataTable = new DataTable("RefMethodCode");
-            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM ref_method_code", mCheckEngine.DbConnection.SQLConnection);
+            SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM ref_method_code", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2037,7 +2037,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             SourceDataTable = new DataTable("QAHgLMEDefaultTest");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_HGLME " +
               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2047,7 +2047,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get HgLME Default summary records for this test sum ID
             SourceDataTable = new DataTable("QAHgLMEDefaultLevel");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_HG_LME_DEFAULT_TEST_DATA " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2060,7 +2060,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get HgLME Default run records for this test sum IDCSTestCode
             SourceDataTable = new DataTable("QAHgLMEDefaultRun");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_HG_LME_DEFAULT_TEST_RUN " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2074,7 +2074,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             SourceDataTable = new DataTable("QAGFM");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY_GFMCAL " +
               "WHERE MON_LOC_ID IN (SELECT MON_LOC_ID FROM TEST_SUMMARY " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "')", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2084,7 +2084,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
             //get GFM summary records for this test sum ID
             SourceDataTable = new DataTable("QAGFMData");
             SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_QA_GFM_CALIBRATION_DATA " +
-              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+              "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
               SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2117,7 +2117,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
       {
         //get operating level codes
         SourceDataTable = new DataTable("OperatingLevelCode");
-        SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM operating_level_code", mCheckEngine.DbConnection.SQLConnection);
+        SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM operating_level_code", mCheckEngine.DbDataConnection.SQLConnection);
         // this defaults to 30 seconds if we don't override it
         if (SourceDataAdapter.SelectCommand != null)
           SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2129,7 +2129,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
       {
         //get reporting period lookup table
         SourceDataTable = new DataTable("ReportingPeriodLookup");
-        SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM REPORTING_PERIOD", mCheckEngine.DbConnection.SQLConnection);
+        SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM REPORTING_PERIOD", mCheckEngine.DbDataConnection.SQLConnection);
         // this defaults to 30 seconds if we don't override it
         if (SourceDataAdapter.SelectCommand != null)
           SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2149,7 +2149,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
         //get test summary records for this location ID
         SourceDataTable = new DataTable("TestSummary");
         SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_TEST_SUMMARY " +
-          "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+          "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
         // this defaults to 30 seconds if we don't override it
         if (SourceDataAdapter.SelectCommand != null)
           SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2159,7 +2159,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
         //get qa supp records for this location ID
         SourceDataTable = new DataTable("QASuppData");
         SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM camdecmpswks.VW_QA_SUPP_DATA " +
-          "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+          "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
         // this defaults to 30 seconds if we don't override it
         if (SourceDataAdapter.SelectCommand != null)
           SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2168,7 +2168,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
         //get test reason codes
         SourceDataTable = new DataTable("TestReasonCode");
-        SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM test_reason_code", mCheckEngine.DbConnection.SQLConnection);
+        SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM test_reason_code", mCheckEngine.DbDataConnection.SQLConnection);
         // this defaults to 30 seconds if we don't override it
         if (SourceDataAdapter.SelectCommand != null)
           SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2177,7 +2177,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
         //get test result codes
         SourceDataTable = new DataTable("TestResultCode");
-        SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM test_result_code", mCheckEngine.DbConnection.SQLConnection);
+        SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM test_result_code", mCheckEngine.DbDataConnection.SQLConnection);
         // this defaults to 30 seconds if we don't override it
         if (SourceDataAdapter.SelectCommand != null)
           SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2189,7 +2189,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
         //get test summary records for this test
         SourceDataTable = new DataTable("QATestSummary");
         SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM TEST_SUMMARY " +
-          "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbConnection.SQLConnection);
+          "WHERE TEST_SUM_ID = '" + mCheckEngine.TestSumId + "'", mCheckEngine.DbDataConnection.SQLConnection);
         // this defaults to 30 seconds if we don't override it
         if (SourceDataAdapter.SelectCommand != null)
           SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2206,7 +2206,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
         //get analyzer range records for this component ID
         SourceDataTable = new DataTable("QAAnalyzerRange");
         SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_ANALYZER_RANGE " +
-          "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+          "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
         // this defaults to 30 seconds if we don't override it
         if (SourceDataAdapter.SelectCommand != null)
           SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2216,7 +2216,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
         //get component records for this location ID
         SourceDataTable = new DataTable("QAComponent");
         SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_COMPONENT " +
-          "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+          "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
         // this defaults to 30 seconds if we don't override it
         if (SourceDataAdapter.SelectCommand != null)
           SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2229,7 +2229,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
         //get System Component records for this location
         SourceDataTable = new DataTable("QAComponent");
         SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_COMPONENT " +
-            "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+            "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
         // this defaults to 30 seconds if we don't override it
         if (SourceDataAdapter.SelectCommand != null)
           SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2239,7 +2239,7 @@ namespace ECMPS.Checks.QAScreenEvaluation
         //get system records for this location ID
         SourceDataTable = new DataTable("QASystem");
         SourceDataAdapter = new NpgsqlDataAdapter("SELECT * FROM VW_MONITOR_SYSTEM " +
-          "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbConnection.SQLConnection);
+          "WHERE MON_LOC_ID = '" + mCheckEngine.MonLocId + "'", mCheckEngine.DbDataConnection.SQLConnection);
         // this defaults to 30 seconds if we don't override it
         if (SourceDataAdapter.SelectCommand != null)
           SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -2257,8 +2257,8 @@ namespace ECMPS.Checks.QAScreenEvaluation
 
     private void LoadCrossChecks()
     {
-      DataTable Catalog = mCheckEngine.DbConnection.GetDataTable("SELECT * FROM vw_Cross_Check_Catalog");
-      DataTable Value = mCheckEngine.DbConnection.GetDataTable("SELECT * FROM camdecmpsmd.vw_Cross_Check_Catalog_Value");
+      DataTable Catalog = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM vw_Cross_Check_Catalog");
+      DataTable Value = mCheckEngine.DbAuxConnection.GetDataTable("SELECT * FROM camdecmpsmd.vw_Cross_Check_Catalog_Value");
       DataTable CrossCheck;
       DataRow CrossCheckRow;
       string CrossCheckName;

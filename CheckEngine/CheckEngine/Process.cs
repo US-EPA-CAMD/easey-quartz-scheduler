@@ -112,7 +112,17 @@ namespace ECMPS.Checks.CheckEngine
     /// <summary>
     /// Connection to ECMPS database
     /// </summary>
-    public cDatabase DbConnection { get { return (mCheckEngine != null) ? CheckEngine.DbConnection : null; } }
+    public cDatabase DbDataConnection { get { return (mCheckEngine != null) ? CheckEngine.DbDataConnection : null; } }
+
+    /// <summary>
+    /// Connection to ECMPS_AUX database
+    /// </summary>
+    public cDatabase DbAuxConnection { get { return (mCheckEngine != null) ? CheckEngine.DbAuxConnection : null; } }
+
+    /// <summary>
+    /// Connection to ECMPS_WS database
+    /// </summary>
+    public cDatabase DbWsConnection { get { return (mCheckEngine != null) ? CheckEngine.DbWsConnection : null; } }
 
     /// <summary>
     /// Used to limit this distance of dates in the future.
@@ -382,7 +392,7 @@ namespace ECMPS.Checks.CheckEngine
     /// <returns>True if the population is successful.</returns>
     public cCheckParameterBands GetCheckBands(string ACategoryCd, ref string AErrorMessage)
     {
-      return GetCheckBands(ACategoryCd, mCheckEngine.DbConnection, ref AErrorMessage);
+      return GetCheckBands(ACategoryCd, mCheckEngine.DbAuxConnection, ref AErrorMessage);
     }
 
     /// <summary>
@@ -394,7 +404,7 @@ namespace ECMPS.Checks.CheckEngine
     {
       string ErrorMessage = "";
 
-      return GetCheckBands(ACategoryCd, mCheckEngine.DbConnection, ref ErrorMessage);
+      return GetCheckBands(ACategoryCd, mCheckEngine.DbAuxConnection, ref ErrorMessage);
     }
 
     /// <summary>
@@ -697,7 +707,7 @@ namespace ECMPS.Checks.CheckEngine
     /// </summary>
     protected virtual void InitCheckParameters()
     {
-      ProcessParameters = new cCheckParametersDefault(this, mCheckEngine.DbConnection);
+      ProcessParameters = new cCheckParametersDefault(this, mCheckEngine.DbAuxConnection);
     }
 
 
@@ -952,7 +962,7 @@ namespace ECMPS.Checks.CheckEngine
     {
       bool result;
             //     SqlTransaction sqlTransaction = mCheckEngine.DbDataConnection.BeginTransaction();
-            NpgsqlTransaction sqlTransaction = mCheckEngine.DbConnection.BeginTransaction();
+            NpgsqlTransaction sqlTransaction = mCheckEngine.DbDataConnection.BeginTransaction();
 
             try
             {
@@ -1000,14 +1010,14 @@ namespace ECMPS.Checks.CheckEngine
 
       try
       {
-        if (!DbConnection.MigrateWorkspaceSession(DbUpdate_WorkspaceDataType,
+        if (!DbDataConnection.MigrateWorkspaceSession(DbUpdate_WorkspaceDataType,
                                                       CheckEngine.ChkSessionId,
                                                       CheckEngine.MonPlanId,
                                                       CheckEngine.RptPeriodId,
                                                       CheckEngine.UserId,
                                                       ref sqlTransaction))
         {
-          errorMessage = string.Format(resultTemplate, "DB", dbFunction, DbConnection.LastError);
+          errorMessage = string.Format(resultTemplate, "DB", dbFunction, DbDataConnection.LastError);
           result = false;
         }
         else
@@ -1061,7 +1071,7 @@ namespace ECMPS.Checks.CheckEngine
 
       DbUpdate_CheckLogMerge();
 
-      result = mCheckEngine.DbConnection.BulkLoad(mCheckLogsMerged,
+      result = mCheckEngine.DbDataConnection.BulkLoad(mCheckLogsMerged,
                                                      "camdecmpswks.check_log",
                                                      new string[] { "CHK_LOG_ID" },
                                                      sqlTransaction,
@@ -1283,7 +1293,7 @@ namespace ECMPS.Checks.CheckEngine
 
                 try
                 {
-                    AResultTable = DbConnection.GetDataTable(Sql);
+                    AResultTable = DbDataConnection.GetDataTable(Sql);
 
                     foreach (DataRow row in AResultTable.Rows)
                     {
@@ -1520,7 +1530,7 @@ namespace ECMPS.Checks.CheckEngine
     protected virtual void AddSourceData(string sTableNm, string sSQL)
     {
       DataTable dtSourceDataTable = new DataTable(sTableNm);
-            NpgsqlDataAdapter SourceDataAdapter = new NpgsqlDataAdapter(sSQL, mCheckEngine.DbConnection.SQLConnection);
+            NpgsqlDataAdapter SourceDataAdapter = new NpgsqlDataAdapter(sSQL, mCheckEngine.DbDataConnection.SQLConnection);
             // SqlDataAdapter SourceDataAdapter = new SqlDataAdapter(sSQL, mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
@@ -1571,7 +1581,7 @@ namespace ECMPS.Checks.CheckEngine
 
       SourceDataTable = new DataTable(sDataTableNm);
             // SourceDataAdapter = new SqlDataAdapter(sSQL, mCheckEngine.DbDataConnection.SQLConnection);
-             SourceDataAdapter = new NpgsqlDataAdapter(sSQL, mCheckEngine.DbConnection.SQLConnection);
+             SourceDataAdapter = new NpgsqlDataAdapter(sSQL, mCheckEngine.DbDataConnection.SQLConnection);
             // this defaults to 30 seconds if we don't override it
             if (SourceDataAdapter.SelectCommand != null)
         SourceDataAdapter.SelectCommand.CommandTimeout = mCheckEngine.CommandTimeout;
@@ -1585,7 +1595,7 @@ namespace ECMPS.Checks.CheckEngine
     /// <returns></returns>
     protected long GetFacilityID()
     {
-      return cDBConvert.ToInteger(mCheckEngine.DbConnection.ExecuteScalar("SELECT FAC_ID FROM camdecmpswks.monitor_plan WHERE MON_PLAN_ID = '" + mCheckEngine.MonPlanId + "'"));
+      return cDBConvert.ToInteger(mCheckEngine.DbDataConnection.ExecuteScalar("SELECT FAC_ID FROM camdecmpswks.monitor_plan WHERE MON_PLAN_ID = '" + mCheckEngine.MonPlanId + "'"));
     }
 
     /// <summary>
