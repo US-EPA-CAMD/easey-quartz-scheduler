@@ -190,14 +190,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// Registers all jobs with Quartz based on database configurations.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="dbContext">The database context.</param>
-    public static void RegisterWithQuartz(IServiceCollection services, NpgSqlContext dbContext)
+    /// <param name="jobConfigs">A list of job configurations to register.</param>
+    public static void RegisterWithQuartz(IServiceCollection services, List<JobConfiguration> jobConfigs)
     {
       RegisterJob(services, s_jobConfig);
 
-      var jobs = dbContext.JobConfigurations.ToList();
-
-      foreach (var jobConfig in jobs)
+      foreach (var jobConfig in jobConfigs)
       {
         RegisterJob(services, jobConfig);
       }

@@ -255,7 +255,7 @@ namespace ECMPS.Checks.DatabaseAccess
                 resultString = values[1];
                 errorMessage = values[2];
 
-                _logger.LogInformation("CheckSessionInit Created with sessionId: {ChkSessionId}, result: {Result}, error: {Error}", chkSessionId ?? "N/A", errorMessage ?? "N/A");
+                _logger.LogInformation("CheckSessionInit Created with sessionId: {ChkSessionId}, result: {Result}, error: {Error}", chkSessionId ?? "N/A", resultString ?? "N/A", errorMessage ?? "N/A");
             }
             catch (Exception ex)
             {

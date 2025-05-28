@@ -34,7 +34,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
       _logger = logger;
     }
 
-    public static async Task ScheduleWithQuartz(IScheduler scheduler){
+    public static void ScheduleWithQuartz(IScheduler scheduler){
       CheckEngineEvaluationListener listener = ServiceCollection.BuildServiceProvider().GetService<CheckEngineEvaluationListener>();
       scheduler.ListenerManager.AddJobListener(listener, GroupMatcher<JobKey>.GroupEquals(Constants.QuartzGroups.EVALUATIONS));
     }

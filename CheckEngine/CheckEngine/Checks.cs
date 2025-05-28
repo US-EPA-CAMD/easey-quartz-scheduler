@@ -158,8 +158,6 @@ namespace ECMPS.Checks.CheckEngine
 		/// </summary>
 		public EmGenerationParameters emGenerationParameters;
 
-
-
 		/// <summary>
 		/// reference to mpParams for all current checks
 		/// </summary>
