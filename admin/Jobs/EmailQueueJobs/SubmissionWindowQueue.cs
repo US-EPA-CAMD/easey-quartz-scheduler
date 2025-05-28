@@ -120,7 +120,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
         _dbContext.SaveChanges();
 
-        await Task.Yield(); // TODO: Remove when the API call is implemented
         return;
       }
       catch (Exception e)
