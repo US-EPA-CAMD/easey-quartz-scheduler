@@ -83,9 +83,9 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
         cGenerationCategory locationHourlyCategory = new cGenerationCategory(locationCategory, "EMGENHR", emGenerationParameters);
         cGenerationCategory locationSummaryCategory = new cGenerationCategory(locationCategory, "EMGENSV", emGenerationParameters);
 
-        if (!locationCategory.InitCheckBands(CheckEngine.DbAuxConnection, ref resultMessage) ||
-            !locationHourlyCategory.InitCheckBands(CheckEngine.DbAuxConnection, ref resultMessage) ||
-            !locationSummaryCategory.InitCheckBands(CheckEngine.DbAuxConnection, ref resultMessage))
+        if (!locationCategory.InitCheckBands(CheckEngine.DbConnection, ref resultMessage) ||
+            !locationHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref resultMessage) ||
+            !locationSummaryCategory.InitCheckBands(CheckEngine.DbConnection, ref resultMessage))
         {
           result = false;
         }
@@ -242,31 +242,31 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// </summary>
     private void GeneratedDataInit()
     {
-      HrlyOpDataTable = DbDataConnection.CloneDataTable("CheckEmGen.HrlyOpData");
-      if (DbDataConnection.InternalError) throw DbDataConnection.LastException;
+      HrlyOpDataTable = DbConnection.CloneDataTable("CheckEmGen.HrlyOpData");
+      if (DbConnection.InternalError) throw DbConnection.LastException;
 
-      SummaryValueTable = DbDataConnection.CloneDataTable("CheckEmGen.SummaryValue");
-      if (DbDataConnection.InternalError) throw DbDataConnection.LastException;
+      SummaryValueTable = DbConnection.CloneDataTable("CheckEmGen.SummaryValue");
+      if (DbConnection.InternalError) throw DbConnection.LastException;
     }
 
-        /// <summary>
-        /// Loads ECMPS_WS tables for the process with calculated values.
-        /// </summary>
-        /// <param name="sqlTransaction">The transaction to use with any commands.  Use null for no transaction.</param>
-        /// <param name="errorMessage">The error message returned on failure.</param>
-        /// <returns>Returns true if the update succeeds.</returns>
+    /// <summary>
+    /// Loads ECMPS_WS tables for the process with calculated values.
+    /// </summary>
+    /// <param name="sqlTransaction">The transaction to use with any commands.  Use null for no transaction.</param>
+    /// <param name="errorMessage">The error message returned on failure.</param>
+    /// <returns>Returns true if the update succeeds.</returns>
 
-   private bool GeneratedDataPush(NpgsqlTransaction sqlTransaction, ref string errorMessage)
-//  private bool GeneratedDataPush(SqlTransaction sqlTransaction, ref string errorMessage)
+    private bool GeneratedDataPush(NpgsqlTransaction sqlTransaction, ref string errorMessage)
+    //  private bool GeneratedDataPush(SqlTransaction sqlTransaction, ref string errorMessage)
     {
       bool result;
 
-      if (mCheckEngine.DbWsConnection.ClearUpdateSession(eWorkspaceDataType.EMGEN, CheckEngine.ChkSessionId))
+      if (mCheckEngine.DbConnection.ClearUpdateSession(eWorkspaceDataType.EMGEN, CheckEngine.ChkSessionId))
       {
         if (MigrateGeneratedData)
         {
-          if (DbWsConnection.BulkLoad(HrlyOpDataTable, "CheckEmGen.HrlyOpData", ref errorMessage) &&
-              DbWsConnection.BulkLoad(SummaryValueTable, "CheckEmGen.SummaryValue", ref errorMessage))
+          if (DbConnection.BulkLoad(HrlyOpDataTable, "CheckEmGen.HrlyOpData", ref errorMessage) &&
+              DbConnection.BulkLoad(SummaryValueTable, "CheckEmGen.SummaryValue", ref errorMessage))
             result = true;
           else
             result = false;
@@ -276,7 +276,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
       }
       else
       {
-        errorMessage = mCheckEngine.DbWsConnection.LastError;
+        errorMessage = mCheckEngine.DbConnection.LastError;
         result = false;
       }
 
@@ -387,7 +387,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
 
         Checks[52] = (cChecks)Activator.CreateInstanceFrom(checksDllPath + "ECMPS.Checks.Emissions.dll",
                                                            "ECMPS.Checks.NonOperatingEmissionGeneration.cGenerationChecks",
-                                                           true, 0, null, arguments, null, null ).Unwrap();
+                                                           true, 0, null, arguments, null, null).Unwrap();
         Checks[52].emGenerationParameters = emGenerationParameters;
 
         result = true;
@@ -417,7 +417,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
       }
 
       return result;
-        }
+    }
 
     /// <summary>
     /// Loads ECMPS_WS tables for the process with calculated values.
@@ -425,9 +425,9 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// <param name="sqlTransaction">The transaction to use with any commands.  Use null for no transaction.</param>
     /// <param name="errorMessage">The error message returned on failure.</param>
     /// <returns>Returns true if the update succeeds.</returns>
-   
-        protected override bool DbUpdate_CalcWsLoad(NpgsqlTransaction sqlTransaction, ref string errorMessage)
-   // protected override bool DbUpdate_CalcWsLoad(SqlTransaction sqlTransaction, ref string errorMessage)
+
+    protected override bool DbUpdate_CalcWsLoad(NpgsqlTransaction sqlTransaction, ref string errorMessage)
+    // protected override bool DbUpdate_CalcWsLoad(SqlTransaction sqlTransaction, ref string errorMessage)
     {
       bool result;
 
@@ -452,7 +452,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// </summary>
     protected override void InitCheckParameters()
     {
-      ProcessParameters = new cGenerationParameters(this, mCheckEngine.DbAuxConnection);
+      ProcessParameters = new cGenerationParameters(this, mCheckEngine.DbConnection);
     }
 
     /// <summary>
@@ -465,16 +465,16 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
 
       try
       {
-        DbDataConnection.CreateStoredProcedureCommand("CheckEmGen.GetSourceData");
-        DbDataConnection.AddInputParameter("@monPlanId", CheckEngine.MonPlanId);
-        DbDataConnection.AddInputParameter("@rptPeriodId", CheckEngine.RptPeriodId);
-        DbDataConnection.AddOutputParameterString("@result", 1);
-        DbDataConnection.AddOutputParameterString("@resultMessage", 200);
+        DbConnection.CreateStoredProcedureCommand("CheckEmGen.GetSourceData");
+        DbConnection.AddInputParameter("@monPlanId", CheckEngine.MonPlanId);
+        DbConnection.AddInputParameter("@rptPeriodId", CheckEngine.RptPeriodId);
+        DbConnection.AddOutputParameterString("@result", 1);
+        DbConnection.AddOutputParameterString("@resultMessage", 200);
 
-        mSourceData = DbDataConnection.GetDataSet();
+        mSourceData = DbConnection.GetDataSet();
 
-        errorMessage = DbDataConnection.GetParameterString("@resultMessage");
-        result = (DbDataConnection.GetParameterString("@result") == "T");
+        errorMessage = DbConnection.GetParameterString("@resultMessage");
+        result = (DbConnection.GetParameterString("@result") == "T");
 
         if (result)
         {
@@ -499,7 +499,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// </summary>
     protected override void InitStaticParameterClass()
     {
-            emGenerationParameters.Init(this);
+      emGenerationParameters.Init(this);
     }
 
     /// <summary>
@@ -508,7 +508,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// <param name="category"></param>
     public override void SetStaticParameterCategory(cCategory category)
     {
-            emGenerationParameters.Category = category;
+      emGenerationParameters.Category = category;
     }
 
     #endregion
