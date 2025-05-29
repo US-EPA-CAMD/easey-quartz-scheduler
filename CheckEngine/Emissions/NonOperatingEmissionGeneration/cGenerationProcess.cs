@@ -88,9 +88,9 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
         cGenerationCategory locationHourlyCategory = new cGenerationCategory(locationCategory, "EMGENHR", emGenerationParameters);
                 cGenerationCategory locationSummaryCategory = new cGenerationCategory(locationCategory, "EMGENSV", emGenerationParameters);
 
-                if (!locationCategory.InitCheckBands(CheckEngine.DbAuxConnection, ref resultMessage) ||
-            !locationHourlyCategory.InitCheckBands(CheckEngine.DbAuxConnection, ref resultMessage) ||
-            !locationSummaryCategory.InitCheckBands(CheckEngine.DbAuxConnection, ref resultMessage))
+                if (!locationCategory.InitCheckBands(CheckEngine.DbConnection, ref resultMessage) ||
+            !locationHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref resultMessage) ||
+            !locationSummaryCategory.InitCheckBands(CheckEngine.DbConnection, ref resultMessage))
         {
           result = false;
         }
@@ -247,11 +247,11 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// </summary>
     private void GeneratedDataInit()
     {
-      HrlyOpDataTable = DbDataConnection.CloneDataTable("CheckEmGen.HrlyOpData");
-      if (DbDataConnection.InternalError) throw DbDataConnection.LastException;
+      HrlyOpDataTable = DbConnection.CloneDataTable("CheckEmGen.HrlyOpData");
+      if (DbConnection.InternalError) throw DbConnection.LastException;
 
-      SummaryValueTable = DbDataConnection.CloneDataTable("CheckEmGen.SummaryValue");
-      if (DbDataConnection.InternalError) throw DbDataConnection.LastException;
+      SummaryValueTable = DbConnection.CloneDataTable("CheckEmGen.SummaryValue");
+      if (DbConnection.InternalError) throw DbConnection.LastException;
     }
 
         /// <summary>
@@ -266,12 +266,12 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     {
       bool result;
 
-      if (mCheckEngine.DbWsConnection.ClearUpdateSession(eWorkspaceDataType.EMGEN, CheckEngine.ChkSessionId))
+      if (mCheckEngine.DbConnection.ClearUpdateSession(eWorkspaceDataType.EMGEN, CheckEngine.ChkSessionId))
       {
         if (MigrateGeneratedData)
         {
-          if (DbWsConnection.BulkLoad(HrlyOpDataTable, "CheckEmGen.HrlyOpData", ref errorMessage) &&
-              DbWsConnection.BulkLoad(SummaryValueTable, "CheckEmGen.SummaryValue", ref errorMessage))
+          if (DbConnection.BulkLoad(HrlyOpDataTable, "CheckEmGen.HrlyOpData", ref errorMessage) &&
+              DbConnection.BulkLoad(SummaryValueTable, "CheckEmGen.SummaryValue", ref errorMessage))
             result = true;
           else
             result = false;
@@ -281,7 +281,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
       }
       else
       {
-        errorMessage = mCheckEngine.DbWsConnection.LastError;
+        errorMessage = mCheckEngine.DbConnection.LastError;
         result = false;
       }
 
@@ -457,7 +457,7 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
     /// </summary>
     protected override void InitCheckParameters()
     {
-      ProcessParameters = new cGenerationParameters(this, mCheckEngine.DbAuxConnection);
+      ProcessParameters = new cGenerationParameters(this, mCheckEngine.DbConnection);
     }
 
     /// <summary>
@@ -470,16 +470,16 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
 
       try
       {
-        DbDataConnection.CreateStoredProcedureCommand("CheckEmGen.GetSourceData");
-        DbDataConnection.AddInputParameter("@monPlanId", CheckEngine.MonPlanId);
-        DbDataConnection.AddInputParameter("@rptPeriodId", CheckEngine.RptPeriodId);
-        DbDataConnection.AddOutputParameterString("@result", 1);
-        DbDataConnection.AddOutputParameterString("@resultMessage", 200);
+        DbConnection.CreateStoredProcedureCommand("CheckEmGen.GetSourceData");
+        DbConnection.AddInputParameter("@monPlanId", CheckEngine.MonPlanId);
+        DbConnection.AddInputParameter("@rptPeriodId", CheckEngine.RptPeriodId);
+        DbConnection.AddOutputParameterString("@result", 1);
+        DbConnection.AddOutputParameterString("@resultMessage", 200);
 
-        mSourceData = DbDataConnection.GetDataSet();
+        mSourceData = DbConnection.GetDataSet();
 
-        errorMessage = DbDataConnection.GetParameterString("@resultMessage");
-        result = (DbDataConnection.GetParameterString("@result") == "T");
+        errorMessage = DbConnection.GetParameterString("@resultMessage");
+        result = (DbConnection.GetParameterString("@result") == "T");
 
         if (result)
         {

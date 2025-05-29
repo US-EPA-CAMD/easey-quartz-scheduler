@@ -19,7 +19,12 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
     {
 
         #region Public Constructors
+
+        /// <summary>
+        /// Emission Parameters class.
+        /// </summary>
         public EmParameters emParameters; 
+
         /// <summary>
         /// The constructor for an object of cDailyCalibrationTestDataQueue.
         /// </summary>
@@ -102,7 +107,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="SupplementalDataUpdateLocationDataTable"></param>
         /// <param name="SupplementalDataUpdateSystemDataTable"></param>
         /// <param name="rptPeriodId"></param>
-        /// <param name="workspaceSessionId"></param>
+        /// <param name="checkSessionId"></param>
         public void LoadIntoSupplementalDataTables(DataTable SupplementalDataUpdateLocationDataTable, DataTable SupplementalDataUpdateSystemDataTable, int rptPeriodId, string checkSessionId)
         {
             if (TestDataQueue[0] != null)

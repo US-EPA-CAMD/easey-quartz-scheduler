@@ -243,7 +243,6 @@ namespace ECMPS.Checks.CheckEngine
                 //command.Dispose();
                 //command = null;
             }
-            return true;
 
         }
 

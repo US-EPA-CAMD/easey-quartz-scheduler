@@ -136,6 +136,9 @@ namespace ECMPS.Checks.CheckEngine
 
         #region cModcDataBorderItem Class
 
+        /// <summary>
+        /// 
+        /// </summary>
         public class cModcDataBorderItem
         {
 
@@ -190,6 +193,9 @@ namespace ECMPS.Checks.CheckEngine
             private decimal FNextBorderUnadjustedValue = decimal.MinValue;
             private int FNextRangeCount = 0;
 
+            /// <summary>
+            /// 
+            /// </summary>
             public string MonLocId
             {
                 get
@@ -203,6 +209,9 @@ namespace ECMPS.Checks.CheckEngine
             /// </summary>
             public string MonSysId { get; private set; }
 
+            /// <summary>
+            /// 
+            /// </summary>
             public bool[] ModcList
             {
                 get
@@ -210,20 +219,34 @@ namespace ECMPS.Checks.CheckEngine
                     return FParent.ModcList;
                 }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public bool BorderModc
             {
                 get { return FParent.BorderModc; }
             }
 
+            /// <summary>
+            /// 
+            /// </summary>
             public int CurrentQuarter
             {
                 get { return FCurrentQuarter; }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public int CurrentYear
             {
                 get { return FCurrentYear; }
             }
 
+            /// <summary>
+            /// 
+            /// </summary>
             public bool LastFound
             {
                 get
@@ -231,6 +254,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastFound;
                 }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public DateTime LastBorderDate
             {
                 get
@@ -238,6 +265,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastBorderDate;
                 }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public int LastBorderHour
             {
                 get
@@ -245,7 +276,15 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastBorderHour;
                 }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public decimal LastBorderValue { get; private set; }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public decimal LastBorderAdjustedValue
             {
                 get
@@ -253,6 +292,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastBorderAdjustedValue;
                 }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public decimal LastBorderUnadjustedValue
             {
                 get
@@ -260,7 +303,15 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastBorderUnadjustedValue;
                 }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public bool LastIsSuppData { get { return FLastIsSuppData; } set { FLastIsSuppData = value; } }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public int LastSkipHourCount
             {
                 get
@@ -268,6 +319,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastSkipHourCount;
                 }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public int LastRangeCount
             {
                 get
@@ -275,6 +330,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FLastRangeCount;
                 }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public eBorderStatus NextBorderStatus
             {
                 get
@@ -282,6 +341,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FNextBorderStatus;
                 }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public DateTime NextBorderDate
             {
                 get
@@ -289,6 +352,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FNextBorderDate;
                 }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public int NextBorderHour
             {
                 get
@@ -296,7 +363,15 @@ namespace ECMPS.Checks.CheckEngine
                     return FNextBorderHour;
                 }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public decimal NextBorderValue { get; private set; }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public decimal NextBorderAdjustedValue
             {
                 get
@@ -304,6 +379,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FNextBorderAdjustedValue;
                 }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public decimal NextBorderUnadjustedValue
             {
                 get
@@ -311,6 +390,10 @@ namespace ECMPS.Checks.CheckEngine
                     return FNextBorderUnadjustedValue;
                 }
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
             public int NextRangeCount
             {
                 get
@@ -482,6 +565,20 @@ namespace ECMPS.Checks.CheckEngine
 
             #region cModcDataBorderItem Public Methods: For Programmer Testing
 
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="ALastFound"></param>
+            /// <param name="ANextBorderStatus"></param>
+            /// <param name="ALastSkipHourCount"></param>
+            /// <param name="ALastBorderDate"></param>
+            /// <param name="ALastBorderHour"></param>
+            /// <param name="ALastBorderAdjustedValue"></param>
+            /// <param name="ALastBorderUnadjustedValue"></param>
+            /// <param name="ANextBorderDate"></param>
+            /// <param name="ANextBorderHour"></param>
+            /// <param name="ANextBorderAdjustedValue"></param>
+            /// <param name="ANextBorderUnadjustedValue"></param>
             public void TestCaseSet(bool ALastFound, eBorderStatus ANextBorderStatus, int ALastSkipHourCount,
                                     DateTime ALastBorderDate, int ALastBorderHour, decimal ALastBorderAdjustedValue, decimal ALastBorderUnadjustedValue,
                                     DateTime ANextBorderDate, int ANextBorderHour, decimal ANextBorderAdjustedValue, decimal ANextBorderUnadjustedValue)
@@ -508,8 +605,16 @@ namespace ECMPS.Checks.CheckEngine
 
         #region Private Fields
 
+        /// <summary>
+        /// 
+        /// </summary>
         public cModcDataBorderItem[] ModcDataBorderLocations;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public Dictionary<string, cModcDataBorderItem>[] ModcDataBorderLocationSystems;
+
         private DataTable FHourlyTable;
         private bool FSkipNewHour = false;
 

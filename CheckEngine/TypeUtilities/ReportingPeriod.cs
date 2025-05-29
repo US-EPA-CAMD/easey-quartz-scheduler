@@ -308,7 +308,7 @@ namespace ECMPS.Checks.TypeUtilities
         {
           try
           {
-            cDatabase Database = cDatabase.GetConnection(cDatabase.eCatalog.DATA, "cDateFunctions");
+            cDatabase Database = cDatabase.GetConnection("cDateFunctions");
 
             FLookupTable = Database.GetDataTable("select * from camdecmpsmd.reporting_period order by Calendar_Year, Quarter");
           }

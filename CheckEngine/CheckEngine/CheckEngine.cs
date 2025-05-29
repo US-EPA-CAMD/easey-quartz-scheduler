@@ -84,42 +84,6 @@ namespace ECMPS.Checks.CheckEngine
         #region Public Constructors
 
         /// <summary>
-        /// Creates a cCheckEngine object and initialized the UserId, DataConnectionString,
-        /// AuxConnectionString, WsConnectionString, DllPath and SystemStateDumpPath properties.
-        /// </summary>
-        /// <param name="userId">The current user id.</param>
-        /// <param name="dataConnectionString">The ECMPS database connection string.</param>
-        /// <param name="auxConnectionString">The ECMPS_AUX database conneciton string.</param>
-        /// <param name="workspaceConnectionString">The ECMPS_WS database connection string.</param>
-        /// <param name="checksDllPath">The path of the checks DLLs.</param>
-        /// <param name="systemStateDumpFilePath">The path in which to dump system state information.</param>
-        /// <param name="commandTimeout">The timeout to use on SQL commands.</param>
-        public cCheckEngine(string userId,
-                            string dataConnectionString,
-                            string auxConnectionString,
-                            string workspaceConnectionString,
-                            string checksDllPath,
-                            string systemStateDumpFilePath,
-                            int? commandTimeout)
-        {
-            cDecimalPrecision.Initialize();
-
-            UserId = userId;
-
-            DataConnectionString = dataConnectionString;
-            AuxConnectionString = auxConnectionString;
-            WorkspaceConnectionString = workspaceConnectionString;
-
-            ChecksDllPath = checksDllPath;
-
-            CommandTimeout = commandTimeout.Default(300);
-        }
-
-        #endregion
-
-        #region Public Constructors
-
-        /// <summary>
         /// Creates a CheckEngine object and initialized the UserId, DataConnectionString,
         /// AuxConnectionString, WsConnectionString, DllPath and SystemStateDumpPath properties.
         /// </summary>
@@ -138,9 +102,7 @@ namespace ECMPS.Checks.CheckEngine
 
             UserId = userId;
 
-            DataConnectionString = dataConnectionString;
-            AuxConnectionString = dataConnectionString;
-            WorkspaceConnectionString = dataConnectionString;
+            DbConnectionString = dataConnectionString;
 
             ChecksDllPath = checksDllPath;
             CommandTimeout = commandTimeout.Default(300);
@@ -242,88 +204,6 @@ namespace ECMPS.Checks.CheckEngine
 
         #endregion
 
-        #region LME
-
-        /// <summary>
-        /// Runs the evaluation for an 'LMEGEN' process.
-        /// </summary>
-        /// <param name="monPlanId">The MON_PLAN_ID of the emissions report.</param>
-        /// <param name="rptPeriodId">The RPT_PERIOD_ID of the emissions report.</param>
-        /// <param name="runMode">The type of run to perform.</param>
-        /// <returns>True if the evaluation completed without processing errors.</returns>
-        public bool RunChecks_LmeGenerate(string monPlanId, int rptPeriodId, eCheckEngineRunMode runMode)
-        {
-            bool result;
-
-            RunChecks_PropertiesClear();
-            MonPlanId = monPlanId;
-            RptPeriodId = rptPeriodId;
-
-            result = RunChecks_Process("LMEGEN", null,
-                                       "ECMPS.Checks.LME.dll",
-                                       "ECMPS.Checks.LME",
-                                       "cLMEGenerationProcess",
-                                       new object[] { this },
-                                       runMode);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Runs the evaluation for an 'LMEIMPT' process.
-        /// </summary>
-        /// <param name="sORISCode">The ORIS_CODE for the import</param>
-        /// <param name="runMode">The type of run to perform.</param>
-        /// <returns>True if the evaluation completed without processing errors.</returns>
-        public bool RunChecks_LmeImport(string sORISCode, eCheckEngineRunMode runMode)
-        {
-            bool result;
-
-            RunChecks_PropertiesClear();
-            ORISCode = sORISCode;
-
-            result = RunChecks_Process("LMEIMPT", null,
-                                       "ECMPS.Checks.LME.dll",
-                                       "ECMPS.Checks.LME",
-                                       "cLMEImportProcess",
-                                       new object[] { this },
-                                       runMode);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Runs the evaluation for an 'LMESCRN' process.
-        /// </summary>
-        /// <param name="categoryCd">The category code for which to evaluate.</param>
-        /// <param name="thisTable">The table of data to evaluate.</param>
-        /// <param name="monPlanId">The MON_PLAN_ID to evaluate.</param>
-        /// <param name="rptPeriodId">The RPT_PERIOD_ID of the emissions report.</param>
-        /// <param name="monLocId">The MON_LOC_ID to evaluate.</param>
-        /// <param name="runMode">The type of run to perform.</param>
-        /// <returns>True if the evaluation completed without processing errors.</returns>
-        public bool RunChecks_LmeScreen(string categoryCd, DataTable thisTable, string monPlanId, int rptPeriodId, string monLocId, eCheckEngineRunMode runMode)
-        {
-            bool result;
-
-            RunChecks_PropertiesClear();
-            ThisTable = thisTable;
-            MonPlanId = monPlanId;
-            RptPeriodId = rptPeriodId;
-            MonLocId = monLocId;
-
-            result = RunChecks_Process("LMESCRN", categoryCd,
-                                       "ECMPS.Checks.LME.dll",
-                                       "ECMPS.Checks.LME",
-                                       "cLMEScreenProcess",
-                                       new object[] { this, categoryCd },
-                                       runMode);
-
-            return result;
-        }
-
-        #endregion
-
         #region MP
 
         /// <summary>
@@ -417,7 +297,7 @@ namespace ECMPS.Checks.CheckEngine
         {
             bool result;
 
-            DataDBDataContext dataDb = DbDataConnection.GetDataDBContext();
+            DataDBDataContext dataDb = DbConnection.GetDataDBContext();
 
             DateTime? evaluationEndDate = null;
             DateTime? maximumFutureDate = null;
@@ -654,58 +534,6 @@ namespace ECMPS.Checks.CheckEngine
                                        "QA.dll",
                                        "ECMPS.Checks.QAScreenEvaluation",
                                        "cQAScreenMain",
-                                       new object[] { this, categoryCd },
-                                       runMode);
-
-            return result;
-        }
-
-        #endregion
-
-        #region Comment
-
-        /// <summary>
-        /// Runs the evaluation for an 'MPSCRN' process.
-        /// </summary>
-        /// <param name="categoryCd">The category code for which to evaluate.</param>
-        /// <param name="thisTable">The table of data to evaluate.</param>
-        /// <param name="monPlanId">The MON_PLAN_ID to evaluate.</param>
-        /// <param name="monLocId">The MON_LOC_ID to evaluate.</param>
-        /// <param name="runMode">The type of run to perform.</param>
-        /// <returns>True if the evaluation completed without processing errors.</returns>
-        public bool RunChecks_Comment(string categoryCd, DataTable thisTable, string monPlanId, string monLocId, eCheckEngineRunMode runMode)
-        {
-            bool result;
-
-            RunChecks_PropertiesClear();
-
-            ThisTable = thisTable;
-            MonPlanId = monPlanId;
-            MonLocId = monLocId;
-
-            string processCd, processDllName, processNameSpace, processClassName;
-            {
-                if (categoryCd == "EMCOMM")
-                {
-                    processCd = "LMESCRN";
-                    processDllName = "ECMPS.Checks.LME.dll";
-                    processNameSpace = "ECMPS.Checks.LME";
-                    processClassName = "cLMEScreenProcess";
-                }
-                else
-                {
-                    processCd = "MPSCRN";
-                    processDllName = "ECMPS.Checks.MonitorPlan.dll";
-                    processNameSpace = "ECMPS.Checks.MPScreenEvaluation";
-                    processClassName = "cMPScreenMain";
-                }
-            }
-
-            result = RunChecks_Process(processCd,
-                                       categoryCd,
-                                       processDllName,
-                                       processNameSpace,
-                                       processClassName,
                                        new object[] { this, categoryCd },
                                        runMode);
 
@@ -1020,7 +848,7 @@ namespace ECMPS.Checks.CheckEngine
         {
             bool result;
 
-            decimal? TempId = DbAuxConnection.GetNextSessionID();
+            decimal? TempId = DbConnection.GetNextSessionID();
 
             if (TempId.HasValue)
             {
@@ -1083,18 +911,19 @@ namespace ECMPS.Checks.CheckEngine
                     module = string.Format("CheckEngine: {0}.{1}", processCd, categoryCd);
             }
 
-            DbDataConnection = cDatabase.GetConnection(cDatabase.eCatalog.DATA, CommandTimeout, module);
-            DbAuxConnection = cDatabase.GetConnection(cDatabase.eCatalog.AUX, CommandTimeout, module);
-            DbWsConnection = cDatabase.GetConnection(cDatabase.eCatalog.WORKSPACE, CommandTimeout, module);
+            DbConnection = cDatabase.GetConnection(CommandTimeout, module);
 
             result = true;
 
-            if (DbDataConnection != null)
+            if (DbConnection != null)
             {
                 try
                 {
-                    DbDataContext = new DataDBDataContext(DbDataConnection);
+                    DbDataContext = new DataDBDataContext(DbConnection);
                     DbDataContext.CommandTimeout = CommandTimeout;
+
+                    DbAuxContext = new AuxDBDataContext(DbConnection);
+                    DbAuxContext.CommandTimeout = CommandTimeout;
                 }
                 catch (Exception ex)
                 {
@@ -1105,36 +934,8 @@ namespace ECMPS.Checks.CheckEngine
             }
             else
             {
-                _logger.LogError("ECMPS connection failed for process {ProcessCd}, {Error}", processCd, DbDataConnection.LastError);
-                HandleProcessingError(string.Format("ECMPS connection failed: {0}", DbDataConnection.LastError));
-                result = false;
-            }
-
-            if (DbAuxConnection != null)
-            {
-                try
-                {
-                    DbAuxContext = new AuxDBDataContext(DbAuxConnection);
-                    DbAuxContext.CommandTimeout = CommandTimeout;
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "ECMPS AUX data context creation failed");
-                    HandleProcessingError(string.Format("ECMPS_AUX data context creation failed: {0}", ex.Message));
-                    result = false;
-                }
-            }
-            else
-            {
-                 _logger.LogError("ECMPS connection failed: {Error}", DbAuxConnection.LastError);
-                HandleProcessingError(string.Format("ECMPS connection failed: {0}", DbAuxConnection.LastError));
-                result = false;
-            }
-
-            if (DbWsConnection == null)
-            {
-                _logger.LogError("ECMPS connection failed: {Error}", DbAuxConnection.LastError);
-                HandleProcessingError(string.Format("ECMPS connection failed: {0}", DbWsConnection.LastError));
+                _logger.LogError("ECMPS connection failed for process {ProcessCd}, {Error}", processCd, DbConnection.LastError);
+                HandleProcessingError(string.Format("ECMPS connection failed: {0}", DbConnection.LastError));
                 result = false;
             }
 
@@ -1212,7 +1013,7 @@ namespace ECMPS.Checks.CheckEngine
             facilityId = null;
             firstEcmpsReportingPeriodId = null;
 
-            if (DbDataConnection.GetFacilityInfo(facilityLookupType,
+            if (DbConnection.GetFacilityInfo(facilityLookupType,
                                                  facilityLookupId,
                                                  ref facilityId,
                                                  ref firstEcmpsReportingPeriodId,
@@ -1372,7 +1173,7 @@ namespace ECMPS.Checks.CheckEngine
 
             try
             {
-                ResultCatalog = new cResultCatalog(DbAuxConnection);
+                ResultCatalog = new cResultCatalog(DbConnection);
                 result = true;
             }
             catch (Exception ex)
@@ -1402,14 +1203,8 @@ namespace ECMPS.Checks.CheckEngine
         /// </summary>
         private void RunChecks_ProcessFini_Connections()
         {
-            if ((DbDataConnection != null) && (DbDataConnection.State == ConnectionState.Open)) DbDataConnection.Close();
-            DbDataConnection = null;
-
-            if ((DbAuxConnection != null) && (DbAuxConnection.State == ConnectionState.Open)) DbAuxConnection.Close();
-            DbAuxConnection = null;
-
-            if ((DbWsConnection != null) && (DbWsConnection.State == ConnectionState.Open)) DbWsConnection.Close();
-            DbWsConnection = null;
+            if ((DbConnection != null) && (DbConnection.State == ConnectionState.Open)) DbConnection.Close();
+            DbConnection = null;
         }
 
         #endregion
@@ -1479,15 +1274,6 @@ namespace ECMPS.Checks.CheckEngine
         #region Constructor Initialized
 
         /// <summary>
-        /// The ECMPS_AUX database connection string.
-        /// </summary>
-        public string AuxConnectionString
-        {
-            get { return cDatabase.AuxConnectionString; }
-            set { cDatabase.AuxConnectionString = value; }
-        }
-
-        /// <summary>
         /// The path of the checks DLLs.
         /// </summary>
         public string ChecksDllPath { get; set; }
@@ -1500,25 +1286,16 @@ namespace ECMPS.Checks.CheckEngine
         /// <summary>
         /// The ECMPS database connection string.
         /// </summary>
-        public string DataConnectionString
+        public string DbConnectionString
         {
-            get { return cDatabase.DataConnectionString; }
-            set { cDatabase.DataConnectionString = value; }
+            get { return cDatabase.DbConnectionString; }
+            set { cDatabase.DbConnectionString = value; }
         }
 
         /// <summary>
         /// The current user id.
         /// </summary>
         public string UserId { get; set; }
-
-        /// <summary>
-        /// The ECMPS_WS database connection string.
-        /// </summary>
-        public string WorkspaceConnectionString
-        {
-            get { return cDatabase.WorkspaceConnectionString; }
-            set { cDatabase.WorkspaceConnectionString = value; }
-        }
 
         #endregion
 
@@ -1710,17 +1487,12 @@ namespace ECMPS.Checks.CheckEngine
         /// <summary>
         /// Connection to ECMPS database
         /// </summary>
-        public cDatabase DbDataConnection { get; private set; }
+        public cDatabase DbConnection { get; private set; }
 
         /// <summary>
         /// Data context for the ECMPS database
         /// </summary>
         public DataDBDataContext DbDataContext { get; private set; }
-
-        /// <summary>
-        /// Connection to the ECMPS_WS database
-        /// </summary>
-        public cDatabase DbWsConnection { get; private set; }
 
         #endregion
 

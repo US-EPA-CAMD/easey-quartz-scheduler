@@ -102,7 +102,6 @@ namespace ECMPS.Checks.TypeUtilities
         /// <summary>
         /// Returns an empty DataTable matching the catalog 
         /// </summary>
-        /// <param name="databaseName">The name of the database containing the template table for the datatable.</param>
         /// <param name="schemaName">The name of the schema containing the template table for the datatable.</param>
         /// <param name="tableName">The name of the template table for the datatable.</param>
         /// <param name="connection">The connection to use to access the template table.</param>

@@ -12,6 +12,9 @@ namespace ECMPS.Checks.Parameters
   public class cCheckProcess
   {
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected readonly ILogger _logger;
 
     #region Constructors

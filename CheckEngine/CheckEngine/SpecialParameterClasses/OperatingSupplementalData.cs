@@ -266,7 +266,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="supplementalData">The data used to update the table.</param>
         /// <param name="idColumnName">The name of the id column used as the supplemental data key.</param>
         /// <param name="SupplementalDataUpdateDataTable">Table to update with data.</param>
-        /// <param name="workspaceSessionId">The workspace session id for check session.</param>
+        /// <param name="checkSessionId">The workspace session id for check session.</param>
         protected static void LoadSupplementalDataUpdateDataDoRow(OperatingSupplementalData supplementalData, string idColumnName, DataTable SupplementalDataUpdateDataTable, string checkSessionId)
         {
             if (SupplementalDataUpdateDataTable != null)
@@ -298,7 +298,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="idColumnName">The name of the id column used as the supplemental data key.</param>
         /// <param name="SupplementalDataUpdateDataTable">Table to update with data.</param>
         /// <param name="supplementalDataGroup">The counts from which to populate the row.</param>
-        /// <param name="workspaceSessionId">The workspace session id for check session.</param>
+        /// <param name="checkSessionId">The workspace session id for check session.</param>
         private static void LoadSupplementalDataUpdateDataDoRow(string suppDataCd, string idColumnName, 
                                                                 DataTable SupplementalDataUpdateDataTable, OperatingSupplementalDataGroup supplementalDataGroup, 
                                                                 string checkSessionId)

@@ -13,6 +13,9 @@ namespace ECMPS.Checks.Parameters
   public class cCheckCategory
   {
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected readonly ILogger _logger;
 
     #region Protected Constructors

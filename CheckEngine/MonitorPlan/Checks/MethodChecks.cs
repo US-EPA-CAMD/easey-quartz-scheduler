@@ -353,7 +353,7 @@ namespace ECMPS.Checks.MethodChecks
 					DataView dvMethod2SubDataCdCrossCheck = (DataView)Category.GetCheckParameter("Method_To_Substitute_Data_Code_Cross_Check_Table").ParameterValue;
 					string sMethod2SubDataCdFilter = dvMethod2SubDataCdCrossCheck.RowFilter;
 					string sFilter = "";
-					if (ParameterCd.InList("HGRE,HGRH,HCLRE,HCLRH,HFRE,HFRH,SO2RE,SO2RH"))
+					if (ParameterCd.InList("HGRE,HGRH,HCLRE,HCLRH,HFRE,HFRH,PMRE,PMRH,SO2RE,SO2RH"))
 					{
 						if (CurrentMethod["sub_data_cd"] != DBNull.Value)
 						{
