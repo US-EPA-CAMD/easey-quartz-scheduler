@@ -56,7 +56,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 try
                 {
                     // Call the stored procedure to do the actual management of submission window
-                    await CallInitAndCloseEmSubmissionAccess();
+                    await InitAndCloseEmSubmissionAccess();
+
+                    // Trigger follow-up jobs
+                    await TriggerFollowUpJobs(context);
 
                     // Mark job as completed
                     jl.StatusCd = "COMPLETE";
@@ -102,7 +105,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             return false;
         }
 
-        private async Task CallInitAndCloseEmSubmissionAccess()
+        private async Task InitAndCloseEmSubmissionAccess()
         {
             _logger.LogInformation("Calling stored procedure camdecmpsaux.init_and_close_em_submission_access with date: {Date}", DateTime.Today.ToString("yyyy-MM-dd"));
 
@@ -135,6 +138,51 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             }
 
             _logger.LogInformation("camdecmpsaux.init_and_close_em_submission_access completed successfully");
+        }
+
+        private async Task TriggerFollowUpJobs(IJobExecutionContext context)
+        {
+            try
+            {
+                _logger.LogInformation("Triggering follow-up jobs: ProcessSubmissionReminders and ProcessWindowNotifications");
+
+                // Trigger ProcessSubmissionReminders
+                string reminderJobId = Guid.NewGuid().ToString();
+                IJobDetail reminderJob = JobBuilder.Create<ProcessSubmissionReminders>()
+                    .WithIdentity(new JobKey(reminderJobId, Epa.Camd.Quartz.Scheduler.Constants.QuartzGroups.MAINTAINANCE))
+                    .WithDescription("Process submission reminder emails triggered by SubmissionWindowManagement")
+                    .Build();
+
+                ITrigger reminderTrigger = TriggerBuilder.Create()
+                    .WithIdentity(new TriggerKey("ProcessSubmissionReminders-" + reminderJobId, Epa.Camd.Quartz.Scheduler.Constants.QuartzGroups.MAINTAINANCE))
+                    .StartNow()
+                    .Build();
+
+                await context.Scheduler.ScheduleJob(reminderJob, reminderTrigger);
+                _logger.LogInformation("Successfully scheduled ProcessSubmissionReminders job with ID: {JobId}", reminderJobId);
+
+                // Trigger ProcessWindowNotifications
+                string windowJobId = Guid.NewGuid().ToString();
+                IJobDetail windowJob = JobBuilder.Create<ProcessWindowNotifications>()
+                    .WithIdentity(new JobKey(windowJobId, Epa.Camd.Quartz.Scheduler.Constants.QuartzGroups.MAINTAINANCE))
+                    .WithDescription("Process window notification emails triggered by SubmissionWindowManagement")
+                    .Build();
+
+                ITrigger windowTrigger = TriggerBuilder.Create()
+                    .WithIdentity(new TriggerKey("ProcessWindowNotifications-" + windowJobId, Epa.Camd.Quartz.Scheduler.Constants.QuartzGroups.MAINTAINANCE))
+                    .StartNow()
+                    .Build();
+
+                await context.Scheduler.ScheduleJob(windowJob, windowTrigger);
+                _logger.LogInformation("Successfully scheduled ProcessWindowNotifications job with ID: {JobId}", windowJobId);
+
+                _logger.LogInformation("All follow-up jobs triggered successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error triggering follow-up jobs");
+                throw;
+            }
         }
     }
 }
