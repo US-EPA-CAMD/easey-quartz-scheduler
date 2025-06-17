@@ -109,6 +109,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                   await _dbContext.SaveChangesAsync();
                 }
 
+                // Delay between email processing to avoid overwhelming the email service and maintain rate limiting
                 Thread.Sleep(Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_EMAIL_QUEUE_DELAY"] ?? "1") * 1000);
               }
               catch (Exception emailEx)

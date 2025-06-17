@@ -126,18 +126,30 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             var result = resultParam.Value != DBNull.Value ? resultParam.Value.ToString() : null;
             var errorMsg = errorMsgParam.Value != DBNull.Value ? errorMsgParam.Value.ToString() : null;
 
-            if (!string.IsNullOrEmpty(result))
-            {
-                _logger.LogInformation("camdecmpsaux.init_and_close_em_submission_access completed with result: {Result}", result);
-            }
+            // Get input parameters for error logging
+            var sysdateParam = command.Parameters["par_v_sysdate"];
+            var facIdParam = command.Parameters["par_v_fac_id"];
+            var sysdate = sysdateParam.Value != DBNull.Value ? sysdateParam.Value.ToString() : "null";
+            var facId = facIdParam.Value != DBNull.Value ? facIdParam.Value.ToString() : "null";
 
-            if (!string.IsNullOrEmpty(errorMsg))
-            {
-                _logger.LogError("camdecmpsaux.init_and_close_em_submission_access returned error: {ErrorMsg}", errorMsg);
-                throw new Exception("camdecmpsaux.init_and_close_em_submission_access returned error: " + errorMsg);
-            }
+            // Always log the result value, including when it's null
+            _logger.LogInformation("camdecmpsaux.init_and_close_em_submission_access completed with result: {Result}", result ?? "null");
 
-            _logger.LogInformation("camdecmpsaux.init_and_close_em_submission_access completed successfully");
+            // Validate result and handle unexpected values
+            if (result == "T")
+            {
+                _logger.LogInformation("camdecmpsaux.init_and_close_em_submission_access completed successfully");
+            }
+            else if (result == "F")
+            {
+                _logger.LogError("camdecmpsaux.init_and_close_em_submission_access returned error: {ErrorMsg}. Parameters: sysdate={Sysdate}, fac_id={FacId}", errorMsg ?? "null", sysdate, facId);
+            }
+            else
+            {
+                // Unexpected result value - treat as error
+                _logger.LogError("camdecmpsaux.init_and_close_em_submission_access returned unexpected result value: {Result}. Expected 'T' or 'F'. Error message: {ErrorMsg}. Parameters: sysdate={Sysdate}, fac_id={FacId}", result ?? "null", errorMsg ?? "null", sysdate, facId);
+                throw new Exception($"camdecmpsaux.init_and_close_em_submission_access returned unexpected result value: '{result ?? "null"}'. Expected 'T' or 'F'. Error message: {errorMsg ?? "null"}. Parameters: sysdate={sysdate}, fac_id={facId}");
+            }
         }
 
         private async Task TriggerFollowUpJobs(IJobExecutionContext context)
