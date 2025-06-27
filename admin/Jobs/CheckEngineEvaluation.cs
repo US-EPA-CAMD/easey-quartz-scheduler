@@ -488,24 +488,33 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             }
             _dbContext.SaveChanges();
 
-        // Send the error email
-            _ = SendEvaluationErrorEmail(ex.Message, es.SetId, evalRecord.EvaluationId, evaluationStages);
+            // Send the error email
+            _ = SendEvaluationErrorEmail(ex, es.SetId, evalRecord.EvaluationId, evaluationStages);
 
             return Task.FromException(ex);
         }
     }
 
-    private async Task SendEvaluationErrorEmail(string rootError, string evaluationSetId, long evaluationId, List<EvaluationStageDto> evaluationStages)
+    private async Task SendEvaluationErrorEmail(Exception exception, string evaluationSetId, long evaluationId, List<EvaluationStageDto> evaluationStages)
     {
         try
         {
             var client = new HttpClient();
+
+            // Trim stack trace to reasonable length (max 8000 chars)
+            string stackTrace = exception.StackTrace;
+            if (!string.IsNullOrEmpty(stackTrace) && stackTrace.Length > 8000)
+            {
+                stackTrace = stackTrace.Substring(0, 8000) + "\n... [Stack trace truncated]";
+            }
+
             // Populate request payload
             var payload = new
             {
                 evaluationSetId = evaluationSetId,
                 evaluationId = evaluationId,
-                rootError = rootError,
+                rootError = exception.Message,
+                errorStack = stackTrace,
                 evaluationStages = evaluationStages
             };
 
