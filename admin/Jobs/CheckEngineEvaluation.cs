@@ -19,7 +19,6 @@ using ECMPS.Checks.CheckEngine.Definitions;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Microsoft.Extensions.Logging;
 using ECMPS.Definitions.Extensions;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
@@ -29,7 +28,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     private NpgSqlContext _dbContext = null;
     private IConfiguration Configuration { get; }
     private readonly ILogger<CheckEngineEvaluation> _logger;
-    static SemaphoreSlim semaphore;
 
     public static class Identity
     {
@@ -70,7 +68,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       }
     }
 
-    public Task Execute(IJobExecutionContext context)
+    public async Task Execute(IJobExecutionContext context)
     {
         // Initialize evaluation stages
         List<EvaluationStageDto> evaluationStages = new List<EvaluationStageDto>
@@ -349,7 +347,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                         evalRecord.StatusCode = "PENDING";
                         _dbContext.Evaluations.Update(evalRecord);
                         _dbContext.SaveChanges();
-                        return Task.CompletedTask;
+                        return;
                     }
 
 
@@ -379,7 +377,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     emissionEvalRecord.EvalStatus = evaluationStatus;
                     _dbContext.EmissionEvaluations.Update(emissionEvalRecord);
 
-                    _dbContext.ExecuteEmissionRefreshProcedure(monitorPlanId, rp.year, rp.quarter);
+                    await _dbContext.ExecuteEmissionRefreshProcedure(monitorPlanId, rp.year, rp.quarter);
 
                     _logger.LogInformation("Checking for remaining EM evaluations");
                     List<Evaluation> remainingEmEvals = _dbContext.Evaluations.FromSqlRaw(@"
@@ -424,7 +422,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
             _logger.LogInformation("Evaluation {EvalId} completed successfully with status {Status}", 
                 id, evaluationStatus);
-            return Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -443,7 +440,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             _logger.LogError(ex.ToString());
 
 
-        switch(processCode){ //Reset status codes to EVAL in case of an evaluation error
+            switch(processCode){ //Reset status codes to EVAL in case of an evaluation error
                 case "MP":
                     _logger.LogInformation("Resetting MP evaluation status to EVAL");
                     MonitorPlan mp = _dbContext.MonitorPlans.Find(monitorPlanId);
@@ -488,24 +485,31 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             }
             _dbContext.SaveChanges();
 
-        // Send the error email
-            _ = SendEvaluationErrorEmail(ex.Message, es.SetId, evalRecord.EvaluationId, evaluationStages);
-
-            return Task.FromException(ex);
+            // Send the error email
+            _ = SendEvaluationErrorEmail(ex, es.SetId, evalRecord.EvaluationId, evaluationStages);
         }
     }
 
-    private async Task SendEvaluationErrorEmail(string rootError, string evaluationSetId, long evaluationId, List<EvaluationStageDto> evaluationStages)
+    private async Task SendEvaluationErrorEmail(Exception exception, string evaluationSetId, long evaluationId, List<EvaluationStageDto> evaluationStages)
     {
         try
         {
             var client = new HttpClient();
+
+            // Trim stack trace to reasonable length (max 8000 chars)
+            string stackTrace = exception.StackTrace;
+            if (!string.IsNullOrEmpty(stackTrace) && stackTrace.Length > 8000)
+            {
+                stackTrace = stackTrace.Substring(0, 8000) + "\n... [Stack trace truncated]";
+            }
+
             // Populate request payload
             var payload = new
             {
                 evaluationSetId = evaluationSetId,
                 evaluationId = evaluationId,
-                rootError = rootError,
+                rootError = exception.Message,
+                errorStack = stackTrace,
                 evaluationStages = evaluationStages
             };
 

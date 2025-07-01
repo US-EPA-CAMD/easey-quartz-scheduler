@@ -137,7 +137,7 @@ namespace ECMPS.Checks.CheckEngine
         #region cModcDataBorderItem Class
 
         /// <summary>
-        /// 
+        /// Class to track last and next measured data borders and the missing data count for a location or system.
         /// </summary>
         public class cModcDataBorderItem
         {
@@ -194,7 +194,7 @@ namespace ECMPS.Checks.CheckEngine
             private int FNextRangeCount = 0;
 
             /// <summary>
-            /// 
+            /// The MON_LOC_ID to track.
             /// </summary>
             public string MonLocId
             {
@@ -210,7 +210,7 @@ namespace ECMPS.Checks.CheckEngine
             public string MonSysId { get; private set; }
 
             /// <summary>
-            /// 
+            /// List of flags indicating whether the parent has a particular method of determination code.
             /// </summary>
             public bool[] ModcList
             {
@@ -221,7 +221,7 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// Flag indicating whether the parent has a border method of determination code.
             /// </summary>
             public bool BorderModc
             {
@@ -229,7 +229,7 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// The quarter of the emission report quarter.
             /// </summary>
             public int CurrentQuarter
             {
@@ -237,7 +237,7 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// The year of the emission report quarter.
             /// </summary>
             public int CurrentYear
             {
@@ -245,7 +245,7 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// Flag indicating whether the last border was found.
             /// </summary>
             public bool LastFound
             {
@@ -256,7 +256,7 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// The date of the last op hour from supplemental data.
             /// </summary>
             public DateTime LastBorderDate
             {
@@ -267,7 +267,7 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// The hour of the last op hour from supplemental data.
             /// </summary>
             public int LastBorderHour
             {
@@ -278,12 +278,12 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// The last adjusted or unadjusted value from supplemental data, usually used when parameter can be derived or monitored.
             /// </summary>
             public decimal LastBorderValue { get; private set; }
 
             /// <summary>
-            /// 
+            /// The last adjusted value from supplemental data.
             /// </summary>
             public decimal LastBorderAdjustedValue
             {
@@ -294,7 +294,7 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// The last unadjusted value from supplemental data.
             /// </summary>
             public decimal LastBorderUnadjustedValue
             {
@@ -305,12 +305,12 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// Flag indicating whether the last item was supplemental data.
             /// </summary>
             public bool LastIsSuppData { get { return FLastIsSuppData; } set { FLastIsSuppData = value; } }
 
             /// <summary>
-            /// 
+            /// The last skip hour count.
             /// </summary>
             public int LastSkipHourCount
             {
@@ -321,7 +321,7 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// The last range count.
             /// </summary>
             public int LastRangeCount
             {
@@ -332,7 +332,7 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// The next border status.
             /// </summary>
             public eBorderStatus NextBorderStatus
             {
@@ -343,7 +343,7 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// The date of the next op hour from supplemental data.
             /// </summary>
             public DateTime NextBorderDate
             {
@@ -354,7 +354,7 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// The hour of the next op hour from supplemental data.
             /// </summary>
             public int NextBorderHour
             {
@@ -365,12 +365,12 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// The next adjusted or unadjusted value from supplemental data, usually used when parameter can be derived or monitored.
             /// </summary>
             public decimal NextBorderValue { get; private set; }
 
             /// <summary>
-            /// 
+            /// The next adjusted value from supplemental data.
             /// </summary>
             public decimal NextBorderAdjustedValue
             {
@@ -381,7 +381,7 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// The next unadjusted value from supplemental data.
             /// </summary>
             public decimal NextBorderUnadjustedValue
             {
@@ -392,7 +392,7 @@ namespace ECMPS.Checks.CheckEngine
             }
 
             /// <summary>
-            /// 
+            /// The next range count.
             /// </summary>
             public int NextRangeCount
             {
@@ -566,7 +566,7 @@ namespace ECMPS.Checks.CheckEngine
             #region cModcDataBorderItem Public Methods: For Programmer Testing
 
             /// <summary>
-            /// 
+            /// TestCaseSet
             /// </summary>
             /// <param name="ALastFound"></param>
             /// <param name="ANextBorderStatus"></param>
@@ -606,12 +606,12 @@ namespace ECMPS.Checks.CheckEngine
         #region Private Fields
 
         /// <summary>
-        /// 
+        /// A list of MODC data borders for monitor locations.
         /// </summary>
         public cModcDataBorderItem[] ModcDataBorderLocations;
 
         /// <summary>
-        /// 
+        /// A mapping of monitor locations to their monitor systems' MODC data borders.
         /// </summary>
         public Dictionary<string, cModcDataBorderItem>[] ModcDataBorderLocationSystems;
 
