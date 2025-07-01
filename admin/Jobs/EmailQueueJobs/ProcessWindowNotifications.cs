@@ -106,19 +106,20 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           _dbContext.EmailToProcessQueue.Update(process);
 
           /*foreach(string emailTo in facIdToEmails[process.FacId]){
-            EmailToSend es = new EmailToSend();
-
-            es.Context = process.Context;
-            es.StatusCode = "QUEUED";
-            es.TemplateId = process.EventCode;
-            es.ToEmail = emailTo;
-            es.FromEmail = Configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"];
+            EmailToSend es = new EmailToSend {
+              Context = process.Context,
+              StatusCode = "QUEUED",
+              TemplateId = process.EventCode,
+              ToEmail = emailTo,
+              FromEmail = Configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"],
+            };
 
             _dbContext.EmailToSend.Add(es);
           }*/
         }
         _dbContext.SaveChanges();
 
+        await Task.Yield(); // TODO: Remove this line when the actual email sending logic is implemented
         return;
       }
       catch (Exception e)

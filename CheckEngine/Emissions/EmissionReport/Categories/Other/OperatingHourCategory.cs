@@ -20,7 +20,6 @@ namespace ECMPS.Checks.EmissionsReport
     {
 
         #region Constructors
-        public EmParameters emParams;
         public cOperatingHourCategory(cCheckEngine ACheckEngine,
                                       cEmissionsReportProcess AHourlyEmissionsData,
                                       cHourlyConfigurationInitializationCategory AHourlyConfigurationInitializationCategory, ref EmParameters emparams)
