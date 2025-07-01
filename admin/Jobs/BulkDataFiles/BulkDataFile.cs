@@ -5,7 +5,8 @@ using System.IO;
 using Microsoft.Extensions.Configuration;
 using Amazon.S3.Model;
 using System.Collections.Generic;
-using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using Newtonsoft.Json;
 
 using Amazon;
@@ -28,6 +29,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     private NpgSqlContext _dbContext = null;
     private readonly ILogger<BulkDataFile> _logger;
+    private readonly HttpClient _httpClient;
 
     public static class Identity
     {
@@ -46,11 +48,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       return new JobKey(Identity.JobName, Identity.Group);
     }
 
-    public BulkDataFile(NpgSqlContext dbContext, IConfiguration configuration, ILogger<BulkDataFile> logger)
+    public BulkDataFile(NpgSqlContext dbContext, IConfiguration configuration, ILogger<BulkDataFile> logger, HttpClient httpClient)
     {
       _dbContext = dbContext;
       Configuration = configuration;
       _logger = logger;
+      _httpClient = httpClient;
     }
 
     private async Task<string> getDescription(string dataType, string subType, decimal? year, decimal? quarter, string state, string programCode){
@@ -100,6 +103,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       _logger.LogInformation("Executing BulkDataFiles job");
 
+      string format = (string) context.JobDetail.JobDataMap.Get("format");
       string url =  (string) context.JobDetail.JobDataMap.Get("url");
       string fileName = (string) context.JobDetail.JobDataMap.Get("fileName");
       Guid job_id = (Guid) context.JobDetail.JobDataMap.Get("job_id");
@@ -132,14 +136,17 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         _logger.LogInformation("Stream URL: {Url}", url ?? "null");
 
-        HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-        myHttpWebRequest.Headers.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
-        myHttpWebRequest.Headers.Add("accept", (string) context.JobDetail.JobDataMap.Get("format"));
-        myHttpWebRequest.Timeout = 1803000;
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
+        request.Headers.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(format));
 
-        HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
+        using HttpResponseMessage response = await _httpClient.SendAsync(
+          request, HttpCompletionOption.ResponseHeadersRead, context.CancellationToken);
 
-        Stream s = myHttpWebResponse.GetResponseStream();
+        response.EnsureSuccessStatusCode(); // Throws for non-2xx
+
+        using Stream s = await response.Content.ReadAsStreamAsync(context.CancellationToken);
+
         
         List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
 
@@ -228,8 +235,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         String[] split = fileName.Split("/");
         string name = split[split.Length - 1];
-        
-        myHttpWebResponse.Close();
         
         if(uploadPartNumber != 1 || totalReadBytes > 0){
 

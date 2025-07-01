@@ -606,7 +606,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         DateTime CertificationCheckDate;
                         CheckExistenceOfValidFuelFlowTest(Category, out ValidFuelFlowTestExistsForEachComponent, out CertificationCheckDate);
 
-                        if (ValidFuelFlowTestExistsForEachComponent && CertificationCheckDate != null)
+                        if (ValidFuelFlowTestExistsForEachComponent)
                         {
                             Category.SetCheckParameter("FF2L_Accuracy_Eligible", true, eParameterDataType.Boolean);
                             Category.SetCheckParameter("FF2L_Accuracy_Check_Date", CertificationCheckDate, eParameterDataType.Date);
@@ -945,7 +945,6 @@ namespace ECMPS.Checks.EmissionsChecks
                     DataRowView CurrentFFRecord = Category.GetCheckParameter("Current_Fuel_Flow_Record").ValueAsDataRowView();
                     string FuelCd = cDBConvert.ToString(CurrentFFRecord["FUEL_CD"]);
                     DataView OpSuppRecs = Category.GetCheckParameter("Operating_Supp_Data_Records_by_Location").ValueAsDataView();
-                    DataView OpSuppRecsFound;
                     sFilterPair[] FilterOpSupp = new sFilterPair[4];
                     FilterOpSupp[0].Set("OP_TYPE_CD", "OPHOURS");
                     FilterOpSupp[1].Set("FUEL_CD", FuelCd);
@@ -1329,7 +1328,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         DateTime CertificationCheckDate;
                         CheckExistenceOfValidFuelFlowTest(Category, out ValidFuelFlowTestExistsForEachComponent, out CertificationCheckDate);
 
-                        if (ValidFuelFlowTestExistsForEachComponent && CertificationCheckDate != null)
+                        if (ValidFuelFlowTestExistsForEachComponent)
                         {
                             Category.SetCheckParameter("FF2L_PEI_Eligible", true, eParameterDataType.Boolean);
                             Category.SetCheckParameter("FF2L_PEI_Check_Date", CertificationCheckDate, eParameterDataType.Date);

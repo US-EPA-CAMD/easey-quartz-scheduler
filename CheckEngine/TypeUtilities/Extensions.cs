@@ -85,7 +85,7 @@ namespace ECMPS.Checks.TypeUtilities
     /// <returns>Nullable System.DateTime representation of the value</returns>
     public static DateTime? AsDateTime(this cOperatingHour value)
     {
-      if ((value == null) || (value.Date == null))
+      if (value == null)
       {
         return null;
       }
@@ -131,7 +131,7 @@ namespace ECMPS.Checks.TypeUtilities
     /// <returns>Nullable System.DateTime representation of the value</returns>
     public static eHour? AsHour(this cOperatingHour value)
     {
-      if ((value == null) || (value.Date == null))
+      if (value == null)
       {
         return null;
       }
