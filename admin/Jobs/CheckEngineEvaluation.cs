@@ -23,13 +23,6 @@ using ECMPS.Definitions.Extensions;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
-  [Serializable]
-  public class CheckEngineException : Exception
-  {
-    public CheckEngineException(string message) : base(message) { }
-    public CheckEngineException(string message, Exception innerException) : base(message, innerException) { }
-  }
-
   public class CheckEngineEvaluation : IJob
   {
     private NpgSqlContext _dbContext = null;
@@ -43,6 +36,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       public static readonly string JobDescription = "Evaluates a {0} data set for accuracy as specified by the EPA Part 75 reporting instructions.";
       public static readonly string TriggerName = "{0} Evaluation ({1} {2}) {3}";
       public static readonly string TriggerDescription = "Evaluates a {0} data set for accuracy as specified by the EPA Part 75 reporting instructions.";
+    }
+
+    /// <summary>
+    /// Custom exception for errors emitted during check engine evaluations.
+    /// </summary>
+    public class CheckEngineException : Exception
+    {
+      public CheckEngineException(string message) : base(message) { }
+      public CheckEngineException(string message, Exception innerException) : base(message, innerException) { }
     }
 
     public static void RegisterWithQuartz(IServiceCollection services)
