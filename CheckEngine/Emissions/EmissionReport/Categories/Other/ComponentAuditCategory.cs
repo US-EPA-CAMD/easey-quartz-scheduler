@@ -52,7 +52,7 @@ namespace ECMPS.Checks.EmissionsReport
                     }
                     catch (Exception ex)
                     {
-                        Process.UpdateErrors("Component Audit - [" + emParams.ComponentRecordForAudit.ComponentId + "]: " + ex.Message);
+                        Process.UpdateErrors("Component Audit - [" + emParams.ComponentRecordForAudit.ComponentId + "]: " + ex.Message, ex.StackTrace);
                     }
                 }
             }

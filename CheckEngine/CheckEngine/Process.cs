@@ -1686,7 +1686,8 @@ namespace ECMPS.Checks.CheckEngine
     /// UpdateErrors
     /// </summary>
     /// <param name="AErrorText"></param>
-    public void UpdateErrors(string AErrorText)
+    /// <param name="stackTrace">The stack trace of the error, if available</param>
+    public void UpdateErrors(string AErrorText, string stackTrace = null)
     {
       CheckEngine.HandleProcessingError(AErrorText);
     }

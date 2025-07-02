@@ -147,7 +147,7 @@ namespace ECMPS.Checks.EmissionsReport
             catch (Exception ex)
             {
                 // Update errors with the returned init check band error.
-                emissionsReportProcess.UpdateErrors(string.Format("AddTable[{0}]: {1}", sourceName, ex.Message));
+                emissionsReportProcess.UpdateErrors(string.Format("AddTable[{0}]: {1}", sourceName, ex.Message), ex.StackTrace);
                 result = false;
             }
 

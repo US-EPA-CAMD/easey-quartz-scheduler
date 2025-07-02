@@ -1194,9 +1194,12 @@ namespace ECMPS.Checks.EmissionsReport
                                     }
                                     catch (Exception ex)
                                     {
-                                        UpdateErrors("[" + MonLocId + ", " + OpDate.ToShortDateString() +
-                                                             ", " + OpHour.ToString() +
-                                                             "]: " + ex.Message);
+                                        UpdateErrors(
+                                            "[" + MonLocId + ", " + OpDate.ToShortDateString() +
+                                                ", " + OpHour.ToString() +
+                                                "]: " + ex.Message,
+                                            ex.StackTrace
+                                        );
                                     }
                                 }
                             }
@@ -3424,7 +3427,7 @@ namespace ECMPS.Checks.EmissionsReport
                 }
                 catch (Exception ex)
                 {
-                    UpdateErrors("Summary - [" + MonLocId + "]: " + ex.Message);
+                    UpdateErrors("Summary - [" + MonLocId + "]: " + ex.Message, ex.StackTrace);
                 }
             }
 

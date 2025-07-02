@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Diagnostics;
 using ECMPS.Checks.CheckEngine.Definitions;
 using ECMPS.Checks.DatabaseAccess;
 using ECMPS.Checks.TypeUtilities;
@@ -609,18 +610,21 @@ namespace ECMPS.Checks.CheckEngine
                                     CheckSessionFailed(errorMessage);
 
                                     _logger.LogError("Check execution failed: {ErrorMessage}", errorMessage);
+                                    HandleProcessingError(string.Format("Check execution failed: {0}", errorMessage));
                                     result = false;
                                 }
                             }
                             else
                             {
                                 _logger.LogWarning("Check session initialization failed for process {ProcessCd}", processCd);
+                                HandleProcessingError(string.Format("Check session initialization failed for process {0}", processCd));
                                 result = false;
                             }
                         }
                         else
                         {
                             _logger.LogWarning("RunChecks_ProcessInit returned false for {ProcessCd} {CategoryCd}", processCd, categoryCd);
+                            HandleProcessingError(string.Format("RunChecks_ProcessInit returned false for {0} {1}", processCd, categoryCd));
                             result = false;
                         }
                     }
@@ -651,13 +655,17 @@ namespace ECMPS.Checks.CheckEngine
                 else
                 {
                     _logger.LogWarning("RunChecks_ProcessInit returned false for {ProcessCd}", processCd);
+                    HandleProcessingError(string.Format("RunChecks_ProcessInit returned false for {0}", processCd));
                     result = false;
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unexpected exception while executing checks for process {ProcessCd}", processCd);
-                HandleProcessingError(string.Format("Check execution failed: {0}  {1}", ex.Message, ex.StackTrace));
+                HandleProcessingError(
+                    string.Format("Check execution failed: {0}", ex.Message),
+                    ex.StackTrace
+                );
                 result = false;
             }
 
@@ -928,7 +936,10 @@ namespace ECMPS.Checks.CheckEngine
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "ECMPS data context creation failed for process {ProcessCd}", processCd);
-                    HandleProcessingError(string.Format("ECMPS data context creation failed: {0}", ex.Message));
+                    HandleProcessingError(
+                        string.Format("ECMPS data context creation failed: {0}", ex.Message),
+                        ex.StackTrace
+                    );
                     result = false;
                 }
             }
@@ -1146,7 +1157,10 @@ namespace ECMPS.Checks.CheckEngine
                     catch (Exception ex)
                     {
                         ReportingPeriod = null;
-                        HandleProcessingError(string.Format("Reporting Period load failed: {0}", ex.Message));
+                        HandleProcessingError(
+                            string.Format("Reporting Period load failed: {0}", ex.Message),
+                            ex.StackTrace
+                        );
                         result = false;
                     }
                 }
@@ -1256,14 +1270,21 @@ namespace ECMPS.Checks.CheckEngine
         /// Handles processing errors generated during a check session.
         /// </summary>
         /// <param name="message">The message to handle.</param>
-        public void HandleProcessingError(string message)
+        /// <param name="stackTrace">The stack trace of the error.</param>
+        public void HandleProcessingError(string message, string stackTrace = null)
         {
             if (message.HasValue())
             {
+                var error = string.Format("CheckEngine Error: {0}\nStack Trace:\n{1}",
+                    message,
+                    // Use the stack trace if provided, otherwise generate a new one starting from the calling function.
+                    stackTrace.HasValue() ? stackTrace : new StackTrace(skipFrames: 1, fNeedFileInfo: true).ToString()
+                );
+
                 if (CheckEngineErrors.IsEmpty())
-                    CheckEngineErrors = message;
+                    CheckEngineErrors = error;
                 else
-                    CheckEngineErrors += Environment.NewLine + message;
+                    CheckEngineErrors += Environment.NewLine + error;
             }
         }
 

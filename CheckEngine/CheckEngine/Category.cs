@@ -299,8 +299,10 @@ namespace ECMPS.Checks.CheckEngine
             }
             catch (Exception ex)
             {
-                Process.UpdateErrors(string.Format("Category: {0}  Message: {1}",
-                                                   this.CategoryCd, ex.Message));
+                Process.UpdateErrors(
+                    string.Format("Category: {0}  Message: {1}", this.CategoryCd, ex.Message),
+                    ex.StackTrace
+                );
                 return false;
             }
         }
@@ -325,8 +327,10 @@ namespace ECMPS.Checks.CheckEngine
             {
                 CurrentMonLocId = AMonitorLocationId;
                 _logger.LogError(ex, "Exception in ProcessChecks. Category: {CategoryCd}, MonLocId: {MonLocId}", this.CategoryCd ?? "N/A", AMonitorLocationId ?? "N/A");
-                Process.UpdateErrors(string.Format("Category: {0}  MonLocId: {1}  Message: {2}",
-                                                   this.CategoryCd, AMonitorLocationId, ex.Message));
+                Process.UpdateErrors(
+                    string.Format("Category: {0}  MonLocId: {1}  Message: {2}", this.CategoryCd, AMonitorLocationId, ex.Message),
+                    ex.StackTrace
+                );
                 return false;
             }
         }
@@ -351,8 +355,11 @@ namespace ECMPS.Checks.CheckEngine
             }
             catch (Exception ex)
             {
-                Process.UpdateErrors(string.Format("Category: {0}  MonLocId: {1}  TestSumId: {2}  Message: {3}",
-                                                   this.CategoryCd, AMonitorLocationId, ATestSummaryId, ex.Message));
+                Process.UpdateErrors(
+                    string.Format("Category: {0}  MonLocId: {1}  TestSumId: {2}  Message: {3}",
+                                                   this.CategoryCd, AMonitorLocationId, ATestSummaryId, ex.Message),
+                    ex.StackTrace
+                );
                 return false;
             }
         }
@@ -587,7 +594,7 @@ namespace ECMPS.Checks.CheckEngine
                                          CurrentMonLocId, CurrentTestSumId, CurrentOpDate, CurrentOpHour,
                                          TableName, CurrentRowId, RecordIdentifier, this, out SeverityCd);
 
-                    Process.UpdateErrors(AErrorMessage);
+                    Process.UpdateErrors(AErrorMessage, ex.StackTrace);
                     RunResult = false;
                 }
 
