@@ -6,7 +6,8 @@
     <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
     <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
-  <!-- Uncomment the following lines to disable debugging symbols in Release configuration -->
+  <!-- TODO: Make this property group configurable by an environment variable. -->
+  <!-- Uncomment the following lines to disable debugging symbols in Release configuration. -->
   <!--<PropertyGroup Condition="'$(Configuration)'=='Release'">
     <DebugType>None</DebugType>
     <DebugSymbols>False</DebugSymbols>
