@@ -1689,7 +1689,7 @@ namespace ECMPS.Checks.CheckEngine
     /// <param name="stackTrace">The stack trace of the error, if available</param>
     public void UpdateErrors(string AErrorText, string stackTrace = null)
     {
-      CheckEngine.HandleProcessingError(AErrorText);
+      CheckEngine.HandleProcessingError(AErrorText, stackTrace, depth: 2);
     }
 
     /// <summary>

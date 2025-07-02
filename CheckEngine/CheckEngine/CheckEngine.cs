@@ -1271,14 +1271,15 @@ namespace ECMPS.Checks.CheckEngine
         /// </summary>
         /// <param name="message">The message to handle.</param>
         /// <param name="stackTrace">The stack trace of the error.</param>
-        public void HandleProcessingError(string message, string stackTrace = null)
+        /// <param name="depth">The number of frames to skip in the stack trace.</param>
+        public void HandleProcessingError(string message, string stackTrace = null, int depth = 1)
         {
             if (message.HasValue())
             {
                 var error = string.Format("CheckEngine Error: {0}\nStack Trace:\n{1}",
                     message,
                     // Use the stack trace if provided, otherwise generate a new one starting from the calling function.
-                    stackTrace.HasValue() ? stackTrace : new StackTrace(skipFrames: 1, fNeedFileInfo: true).ToString()
+                    stackTrace.HasValue() ? stackTrace : new StackTrace(skipFrames: depth, fNeedFileInfo: true).ToString()
                 );
 
                 if (CheckEngineErrors.IsEmpty())
