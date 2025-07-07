@@ -15,5 +15,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 
 		[Column("severity_cd")]
  		public string SeverityCode { get; set; }
+
+		[Column("evaluation_id")]
+ 		public long? EvaluationId { get; set; }
 	}
 }

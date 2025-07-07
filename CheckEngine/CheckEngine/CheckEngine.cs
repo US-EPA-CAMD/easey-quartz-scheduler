@@ -597,24 +597,24 @@ namespace ECMPS.Checks.CheckEngine
 
                             if (CheckSessionInit(batchId))
                             {
-                                _logger.LogInformation("Check session initialized for MonPlanId: {MonPlanId}, BatchId: {BatchId}", MonPlanId ?? "null", batchId ?? "null");
+                                _logger.LogInformation("Check session initialized for MonPlanId: {MonPlanId}, BatchId: {BatchId}, EvalId: {EvalId}", MonPlanId ?? "null", batchId ?? "null", EvaluationId?.ToString() ?? "null");
                                 
                                 if (Process.ExecuteChecks(ChecksDllPath, ref errorMessage))
                                 {
-                                    _logger.LogInformation("Checks executed successfully for MonPlanId: {MonPlanId}", MonPlanId ?? "null");
+                                    _logger.LogInformation("Checks executed successfully for MonPlanId: {MonPlanId}, EvalId: {EvalId}", MonPlanId ?? "null", EvaluationId?.ToString() ?? "null");
                                     result = CheckSessionCompleted(Process.SeverityCd);
                                 }
                                 else
                                 {
                                     CheckSessionFailed(errorMessage);
 
-                                    _logger.LogError("Check execution failed: {ErrorMessage}", errorMessage);
+                                    _logger.LogError("Check execution failed for EvalId: {EvalId}, ErrorMessage: {ErrorMessage}", EvaluationId?.ToString() ?? "null", errorMessage);
                                     result = false;
                                 }
                             }
                             else
                             {
-                                _logger.LogWarning("Check session initialization failed for process {ProcessCd}", processCd);
+                                _logger.LogWarning("Check session initialization failed for process {ProcessCd}, EvalId: {EvalId}", processCd, EvaluationId?.ToString() ?? "null");
                                 result = false;
                             }
                         }
@@ -656,7 +656,7 @@ namespace ECMPS.Checks.CheckEngine
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unexpected exception while executing checks for process {ProcessCd}", processCd);
+                _logger.LogError(ex, "Unexpected exception while executing checks for process {ProcessCd}, EvalId: {EvalId}", processCd, EvaluationId?.ToString() ?? "null");
                 HandleProcessingError(string.Format("Check execution failed: {0}  {1}", ex.Message, ex.StackTrace));
                 result = false;
             }
@@ -821,6 +821,7 @@ namespace ECMPS.Checks.CheckEngine
                                           EvaluationEndedDate,
                                           UserId,
                                           batchId,
+                                          EvaluationId,
                                           ref chkSessionId,
                                           ref resultChar,
                                           ref errorMessage);
@@ -1296,6 +1297,11 @@ namespace ECMPS.Checks.CheckEngine
         /// The current user id.
         /// </summary>
         public string UserId { get; set; }
+
+        /// <summary>
+        /// The evaluation id from the evaluation queue.
+        /// </summary>
+        public long? EvaluationId { get; set; }
 
         #endregion
 
