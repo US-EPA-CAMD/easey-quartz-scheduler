@@ -324,7 +324,7 @@ namespace ECMPS.Checks.CheckEngine
             catch (Exception ex)
             {
                 CurrentMonLocId = AMonitorLocationId;
-                _logger.LogError(ex, "Exception in ProcessChecks. Category: {CategoryCd}, MonLocId: {MonLocId}", this.CategoryCd ?? "N/A", AMonitorLocationId ?? "N/A");
+                _logger.LogError(ex, "Exception in ProcessChecks. Category: {CategoryCd}, MonLocId: {MonLocId}, EvalId: {EvalId}", this.CategoryCd ?? "N/A", AMonitorLocationId ?? "N/A", CheckEngine.EvaluationId?.ToString() ?? "null");
                 Process.UpdateErrors(string.Format("Category: {0}  MonLocId: {1}  Message: {2}",
                                                    this.CategoryCd, AMonitorLocationId, ex.Message));
                 return false;
@@ -417,7 +417,7 @@ namespace ECMPS.Checks.CheckEngine
             {
                 System.Diagnostics.Debug.WriteLine("");
                 System.Diagnostics.Debug.WriteLine(string.Format("Check Category: {0}", this.CategoryCd));
-                _logger.LogInformation("Check Category: {CategoryCd}", this.CategoryCd ?? "N/A");
+                _logger.LogInformation("Check Category: {CategoryCd}, EvalId: {EvalId}", this.CategoryCd ?? "N/A", CheckEngine.EvaluationId?.ToString() ?? "null");
             }
 
             string ErrorMessage = "";
@@ -558,9 +558,10 @@ namespace ECMPS.Checks.CheckEngine
                                                            CurrentMonLocId, CurrentTestSumId, CurrentOpDate, CurrentOpHour,
                                                            TableName, CurrentRowId, RecordIdentifier, this, out SeverityCd);
 
-                            _logger.LogError("Check Execution Error: {CheckType}-{CheckNum} [{ErrorMessage}]",
+                            _logger.LogError("Check Execution Error: {CheckType}-{CheckNum} EvalId: {EvalId}, [{ErrorMessage}]",
                                 ARuleCheck.CheckTypeCd ?? "null",
                                 ARuleCheck.CheckNumber.ToString(),
+                                CheckEngine.EvaluationId?.ToString() ?? "null",
                                 AErrorMessage ?? "No message");
 
                             this.UpdateSeverity(SeverityCd);
