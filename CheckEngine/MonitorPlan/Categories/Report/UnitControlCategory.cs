@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Text;
 using System.Data;
@@ -66,7 +67,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
       _CtlID = CtlID;
       CurrentRowId = _CtlID;
 
-      System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, CurrentRowId));
+      _logger.LogError(string.Format("{0}: {1}", Label, CurrentRowId));
 
       return base.ProcessChecks(MonitorLocationID);
     }

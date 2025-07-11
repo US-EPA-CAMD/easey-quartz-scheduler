@@ -6,6 +6,8 @@ using ECMPS.Checks.Em.Parameters;
 using ECMPS.Checks.TypeUtilities;
 using ECMPS.Definitions.Extensions;
 using ECMPS.Definitions.SeverityCode;
+using Epa.Camd.Logger;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using NpgsqlTypes;
 
@@ -23,6 +25,8 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// Emission Parameters Class
         /// </summary>
         public EmParameters emParams;
+
+        private readonly ILogger<cDailyCalibrationData> _logger = LoggerProvider.GetLogger<cDailyCalibrationData>();
 
         /// <summary>
         /// Instantiates a cDailyCalibrationRunningData object.
@@ -440,9 +444,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 
             if (!Update(out errorMessage))
             {
-                System.Diagnostics.Debug.WriteLine("");
-                System.Diagnostics.Debug.WriteLine(string.Format("[cDailyCalibrationData.Update]: {0}", errorMessage));
-                System.Diagnostics.Debug.WriteLine("");
+                _logger.LogError(string.Format("[cDailyCalibrationData.Update]: {0}", errorMessage));
             }
         }
 

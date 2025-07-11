@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections;
 using System.Data;
 
@@ -74,7 +75,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
       result = base.ProcessChecks(monLocId);
 
-      System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, RecordIdentifier));
+      _logger.LogError(string.Format("{0}: {1}", Label, RecordIdentifier));
 
       return result;
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -66,7 +67,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 		mMATSMethodID = MATSMethodID;
 		CurrentRowId = mMATSMethodID;
 
-      System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, CurrentRowId));
+      _logger.LogError(string.Format("{0}: {1}", Label, CurrentRowId));
 
       return base.ProcessChecks(MonitorLocationID);
     }

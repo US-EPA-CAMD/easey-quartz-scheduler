@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -161,7 +162,7 @@ namespace ECMPS.Checks.Parameters
         }
       }
       else
-        System.Diagnostics.Debug.WriteLine(string.Format("Legacy Parameter Addition Error ({0}): {1}", CheckProcess.ProcessCd, ErrorMessage));
+        _logger.LogError(string.Format("Legacy Parameter Addition Error ({0}): {1}", CheckProcess.ProcessCd, ErrorMessage));
     }
 
     #endregion

@@ -10,6 +10,7 @@ using ECMPS.Checks.Parameters;
 using ECMPS.Checks.TypeUtilities;
 using ECMPS.Definitions.Extensions;
 using ECMPS.Definitions.SeverityCode;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -1112,7 +1113,7 @@ namespace ECMPS.Checks.EmissionsReport
                             RunResult = ExecuteChecksWork_LongTermFuelFlow((String)MonitorLocationRow["mon_loc_id"]);
                         }
                         DateTime ChecksEnded = DateTime.Now;
-                        System.Diagnostics.Debug.WriteLine(string.Format("LongTermFuelFlow Time: {0}", ElapsedTime(ChecksBegan, ChecksEnded)));
+                        _logger.LogError(string.Format("LongTermFuelFlow Time: {0}", ElapsedTime(ChecksBegan, ChecksEnded)));
                     }
 
                     if (!GetCheckParameter("Abort_Hourly_Checks").ValueAsBool())
@@ -1142,13 +1143,13 @@ namespace ECMPS.Checks.EmissionsReport
 
                     while (OpDate <= CheckEngine.EvalDefaultedEndedDate)
                     {
-                        //System.Diagnostics.Debug.WriteLine(string.Format("Emissions Checks: Date {0}", OpDate));
+                        //_logger.LogError(string.Format("Emissions Checks: Date {0}", OpDate));
 
                         SetCheckParameter("Current_Operating_Date", OpDate, eParameterDataType.Date);
 
                         for (int OpHour = 0; OpHour <= 23; OpHour++)
                         {
-                            //System.Diagnostics.Debug.WriteLine(string.Format("Emissions Checks: Date {0}-{1}", OpDate, OpHour));
+                            //_logger.LogError(string.Format("Emissions Checks: Date {0}-{1}", OpDate, OpHour));
 
                             ////debug
                             //if (OpDate == new DateTime(2015, 1, 15) && OpHour == 20)
@@ -1294,7 +1295,7 @@ namespace ECMPS.Checks.EmissionsReport
 
                 DateTime ExecuteEnded = DateTime.Now;
 
-                System.Diagnostics.Debug.WriteLine(string.Format("Execute Time: {0}", ElapsedTime(ExecuteBegan, ExecuteEnded)));
+                _logger.LogError(string.Format("Execute Time: {0}", ElapsedTime(ExecuteBegan, ExecuteEnded)));
 
 
                 return Result;
@@ -1483,7 +1484,7 @@ namespace ECMPS.Checks.EmissionsReport
 
             DateTime ExecuteEnded = DateTime.Now;
 
-            System.Diagnostics.Debug.WriteLine(string.Format("Categories Init Time: {0}", ElapsedTime(ExecuteBegan, ExecuteEnded)));
+            _logger.LogError(string.Format("Categories Init Time: {0}", ElapsedTime(ExecuteBegan, ExecuteEnded)));
 
             return Result;
         }
@@ -1711,7 +1712,7 @@ namespace ECMPS.Checks.EmissionsReport
 
             DateTime ExecuteEnded = DateTime.Now;
 
-            System.Diagnostics.Debug.WriteLine(string.Format("Check Bands Init Time: {0}", ElapsedTime(ExecuteBegan, ExecuteEnded)));
+            _logger.LogError(string.Format("Check Bands Init Time: {0}", ElapsedTime(ExecuteBegan, ExecuteEnded)));
 
             return true;
         }
@@ -3498,7 +3499,7 @@ namespace ECMPS.Checks.EmissionsReport
 
             DateTime InitSourceEnded = DateTime.Now;
 
-            System.Diagnostics.Debug.WriteLine(string.Format("InitSource Time: {0}", ElapsedTime(InitSourceBegan, InitSourceEnded)));
+            _logger.LogError(string.Format("InitSource Time: {0}", ElapsedTime(InitSourceBegan, InitSourceEnded)));
         }
 
         /// <summary>
@@ -4800,7 +4801,7 @@ namespace ECMPS.Checks.EmissionsReport
                         FCalcDerivedHourlyRowsHi[ALocationPos].EndEdit(); ;
                     }
                     else
-                        System.Diagnostics.Debug.WriteLine(string.Format("Derived Hourly record missing for apportioned {0} update: {1} for {2}-{3}",
+                        _logger.LogError(string.Format("Derived Hourly record missing for apportioned {0} update: {1} for {2}-{3}",
                                                                          "HI", ALocationName, AOpDate.ToShortDateString(), AOpHour));
                 }
             }
@@ -4819,7 +4820,7 @@ namespace ECMPS.Checks.EmissionsReport
                         FCalcDerivedHourlyRowsNoxm[ALocationPos].EndEdit(); ;
                     }
                     else
-                        System.Diagnostics.Debug.WriteLine(string.Format("Derived Hourly record missing for apportioned {0} update: {1} for {2}-{3}",
+                        _logger.LogError(string.Format("Derived Hourly record missing for apportioned {0} update: {1} for {2}-{3}",
                                                                          "NOxM", ALocationName, AOpDate.ToShortDateString(), AOpHour));
                 }
             }
@@ -4840,7 +4841,7 @@ namespace ECMPS.Checks.EmissionsReport
                         FCalcDerivedHourlyRowsNoxr[ALocationPos].EndEdit(); ;
                     }
                     else
-                        System.Diagnostics.Debug.WriteLine(string.Format("Derived Hourly record missing for apportioned {0} update: {1} for {2}-{3}",
+                        _logger.LogError(string.Format("Derived Hourly record missing for apportioned {0} update: {1} for {2}-{3}",
                                                                          "NOxR", ALocationName, AOpDate.ToShortDateString(), AOpHour));
                 }
             }
@@ -5819,7 +5820,7 @@ namespace ECMPS.Checks.EmissionsReport
                         CalcRow["OP_VALUE"] = OperatingValue.Value;
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Parameter {0} has decimal value {1} which is too large for {2} fields.",
+                        _logger.LogError(string.Format("Parameter {0} has decimal value {1} which is too large for {2} fields.",
                                                            AParameterName, OperatingValue.Value, eDecimalPrecision.OP_VALUE));
 
                         CalcRow["OP_VALUE"] = DBNull.Value;
@@ -5858,7 +5859,7 @@ namespace ECMPS.Checks.EmissionsReport
                     CalcRow["OP_VALUE"] = OperatingValue.Value;
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Parameter {0} has decimal value {1} which is too large for {2} fields.",
+                    _logger.LogError(string.Format("Parameter {0} has decimal value {1} which is too large for {2} fields.",
                                                        AParameterName, OperatingValue.Value, eDecimalPrecision.OP_VALUE));
 
                     CalcRow["OP_VALUE"] = DBNull.Value;
@@ -6073,10 +6074,10 @@ namespace ECMPS.Checks.EmissionsReport
             object ObjectValue = GetUpdateDecimalValue(ADecimalValue, ADecimalPrecision, out ValueError);
 
             if (ValueError == eValueError.Negative)
-                System.Diagnostics.Debug.WriteLine(string.Format("Decimal value {0} is less than zero.",
+                _logger.LogError(string.Format("Decimal value {0} is less than zero.",
                                                                  ADecimalValue, ADecimalPrecision));
             else if (ValueError == eValueError.ToLarge)
-                System.Diagnostics.Debug.WriteLine(string.Format("Decimal value {0} is too large for {1} fields.",
+                _logger.LogError(string.Format("Decimal value {0} is too large for {1} fields.",
                                                                  ADecimalValue, ADecimalPrecision));
 
             return ObjectValue;
@@ -6092,17 +6093,17 @@ namespace ECMPS.Checks.EmissionsReport
                 object ObjectValue = GetUpdateDecimalValue(DecimalValue, ADecimalPrecision, out ValueError);
 
                 if (ValueError == eValueError.Negative)
-                    System.Diagnostics.Debug.WriteLine(string.Format("Parameter {0} has decimal value {1} which is less than zero.",
+                    _logger.LogError(string.Format("Parameter {0} has decimal value {1} which is less than zero.",
                                                                      AValueParameterName, DecimalValue, ADecimalPrecision));
                 else if (ValueError == eValueError.ToLarge)
-                    System.Diagnostics.Debug.WriteLine(string.Format("Parameter {0} has decimal value {1} which is too large for {2} fields.",
+                    _logger.LogError(string.Format("Parameter {0} has decimal value {1} which is too large for {2} fields.",
                                                                      AValueParameterName, DecimalValue, ADecimalPrecision));
 
                 return ObjectValue;
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("Null parameter name is null while setting calculated field value in GetUpdateDecimalValue");
+                _logger.LogError("Null parameter name is null while setting calculated field value in GetUpdateDecimalValue");
                 return DBNull.Value;
             }
         }
@@ -6123,14 +6124,14 @@ namespace ECMPS.Checks.EmissionsReport
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Parameter {0} has a value {1} which is less than zero.",
+                    _logger.LogError(string.Format("Parameter {0} has a value {1} which is less than zero.",
                                                                      AValueParameterName, IntegerValue));
                     return DBNull.Value;
                 }
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("Null parameter name is null while setting calculated field value in GetUpdateDecimalValue");
+                _logger.LogError("Null parameter name is null while setting calculated field value in GetUpdateDecimalValue");
                 return DBNull.Value;
             }
         }
@@ -6145,7 +6146,7 @@ namespace ECMPS.Checks.EmissionsReport
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("Null parameter name is null while setting calculated field value in GetUpdateDecimalValue");
+                _logger.LogError("Null parameter name is null while setting calculated field value in GetUpdateDecimalValue");
                 result = DBNull.Value;
             }
 
@@ -6589,21 +6590,21 @@ namespace ECMPS.Checks.EmissionsReport
 
         private void CategoryCondtionDiagnostic(cCategory ACategory, params string[] AParameterNames)
         {
-            //System.Diagnostics.Debug.WriteLine("");
-            //System.Diagnostics.Debug.WriteLine(string.Format("Check Category: {0} - Skipped", ACategory.CategoryCd));
+            //_logger.LogError("");
+            //_logger.LogError(string.Format("Check Category: {0} - Skipped", ACategory.CategoryCd));
 
             //if (AParameterNames.Length > 0)
             //{
-            //  System.Diagnostics.Debug.WriteLine("");
+            //  _logger.LogError("");
 
             //  foreach (string ParameterName in AParameterNames)
             //  {
             //    string ParameterValue = cDBConvert.ToString(GetCheckParameter(ParameterName).ParameterValue);
-            //    System.Diagnostics.Debug.WriteLine(string.Format("Skip Parameter: [{0}] = '{1}'", ParameterName, ParameterValue));
+            //    _logger.LogError(string.Format("Skip Parameter: [{0}] = '{1}'", ParameterName, ParameterValue));
             //  }
             //}
 
-            //System.Diagnostics.Debug.WriteLine("");
+            //_logger.LogError("");
         }
 
         private string ElapsedTime(DateTime ABeganTime, DateTime AEndedTime)
@@ -6637,7 +6638,7 @@ namespace ECMPS.Checks.EmissionsReport
 #if DEBUG
         private void DisplayTiming()
         {
-            System.Diagnostics.Debug.WriteLine(string.Format("Timing for {0} {1}QTR{2}",
+            _logger.LogError(string.Format("Timing for {0} {1}QTR{2}",
                                                              mCheckEngine.MonPlanId,
                                                              mCheckEngine.RptPeriodYear,
                                                              mCheckEngine.RptPeriodQuarter));
@@ -6723,9 +6724,9 @@ namespace ECMPS.Checks.EmissionsReport
             if ((ACategory.StopWatchFilterData.ElapsedMilliseconds > 1000) ||
                 (ACategory.StopWatchProcessChecksDo.ElapsedMilliseconds > 1000))
             {
-                System.Diagnostics.Debug.WriteLine(ACategory.StopWatchFilterData.ElapsedMilliseconds + " ms", ACategory.CategoryCd + " FilterData()");
-                System.Diagnostics.Debug.WriteLine(ACategory.StopWatchProcessChecksDo.ElapsedMilliseconds + " ms", ACategory.CategoryCd + " ProcessChecksDo()");
-                System.Diagnostics.Debug.WriteLine("");
+                _logger.LogError(ACategory.StopWatchFilterData.ElapsedMilliseconds + " ms", ACategory.CategoryCd + " FilterData()");
+                _logger.LogError(ACategory.StopWatchProcessChecksDo.ElapsedMilliseconds + " ms", ACategory.CategoryCd + " ProcessChecksDo()");
+                _logger.LogError("");
             }
         }
 
