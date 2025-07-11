@@ -49,26 +49,9 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
     public  cQualificationLMECategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
-      cQualificationLMECategory Category;
-      string ErrorMessage = "";
+      var Category = new cQualificationLMECategory(ACheckEngine, AMonitorPlanProcess);
 
-      try
-      {
-        Category = new cQualificationLMECategory(ACheckEngine, AMonitorPlanProcess);
-
-        bool Result = Category.InitCheckBands(ACheckEngine.DbConnection, ref ErrorMessage);
-
-        if (!Result)
-        {
-          Category = null;
-          System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ErrorMessage));
-        }
-      }
-      catch (Exception ex)
-      {
-        Category = null;
-        System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ex.Message));
-      }
+      Category.InitCheckBands(ACheckEngine.DbConnection);
 
       return Category;
     }

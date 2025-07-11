@@ -52,46 +52,42 @@ namespace ECMPS.Checks.EmissionsReport
 
             try
             {
-                string errorMessage = null;
+                nsps4tSummaryDataCategory.InitCheckBands(summaryValueInitializationCategory.CheckEngine.DbConnection);
+                /* Setup non changing check parameters needed by the checks */
+                DataSet sourceDataSet = summaryValueInitializationCategory.Process.SourceData;
+                emparams.Nsps4tSummaryRecords = new CheckDataView<Nsps4tSummary>(new DataView(sourceDataSet.Tables["Nsps4tSummary"]));
+                emparams.Nsps4tCompliancePeriodRecords = new CheckDataView<Nsps4tCompliancePeriod>(new DataView(sourceDataSet.Tables["Nsps4tCompliancePeriod"]));
+                emparams.Nsps4tAnnualRecords = new CheckDataView<Nsps4tAnnual>(new DataView(sourceDataSet.Tables["Nsps4tAnnual"]));
 
-                if (nsps4tSummaryDataCategory.InitCheckBands(summaryValueInitializationCategory.CheckEngine.DbConnection, ref errorMessage))
+                /* Loop through each location in the MP */
+                for (int MonitorLocationDex = 0; MonitorLocationDex < MonitorLocationView.Count; MonitorLocationDex++)
                 {
-                    /* Setup non changing check parameters needed by the checks */
-                    DataSet sourceDataSet = summaryValueInitializationCategory.Process.SourceData;
-                    emparams.Nsps4tSummaryRecords = new CheckDataView<Nsps4tSummary>(new DataView(sourceDataSet.Tables["Nsps4tSummary"]));
-                    emparams.Nsps4tCompliancePeriodRecords = new CheckDataView<Nsps4tCompliancePeriod>(new DataView(sourceDataSet.Tables["Nsps4tCompliancePeriod"]));
-                    emparams.Nsps4tAnnualRecords = new CheckDataView<Nsps4tAnnual>(new DataView(sourceDataSet.Tables["Nsps4tAnnual"]));
+                    /* Setup loop dependent check parameters needed by the checks */
+                    emparams.CurrentMonitorPlanLocationRecord = new VwCeMpMonitorLocationRow(MonitorLocationView[MonitorLocationDex]);
+                    emparams.EmLocationProgramRecords 
+                        = new CheckDataView<VwMpLocationProgramRow>(nsps4tSummaryDataCategory.FilterLocation("LocationProgram", 
+                                                                                                             nsps4tSummaryDataCategory.LocationProgram,
+                                                                                                             emparams.CurrentMonitorPlanLocationRecord.MonLocId));
 
-                    /* Loop through each location in the MP */
-                    for (int MonitorLocationDex = 0; MonitorLocationDex < MonitorLocationView.Count; MonitorLocationDex++)
+                    /* Set CurrentMonLocId in the category object */
+                    nsps4tSummaryDataCategory.CurrentMonLocId = emparams.CurrentMonitorPlanLocationRecord.MonLocId;
+
+
+                    /* Execute the actual checks */
+                    if (!nsps4tSummaryDataCategory.ProcessChecks())
                     {
-                        /* Setup loop dependent check parameters needed by the checks */
-                        emparams.CurrentMonitorPlanLocationRecord = new VwCeMpMonitorLocationRow(MonitorLocationView[MonitorLocationDex]);
-                        emparams.EmLocationProgramRecords 
-                            = new CheckDataView<VwMpLocationProgramRow>(nsps4tSummaryDataCategory.FilterLocation("LocationProgram", 
-                                                                                                                 nsps4tSummaryDataCategory.LocationProgram,
-                                                                                                                 emparams.CurrentMonitorPlanLocationRecord.MonLocId));
-
-                        /* Set CurrentMonLocId in the category object */
-                        nsps4tSummaryDataCategory.CurrentMonLocId = emparams.CurrentMonitorPlanLocationRecord.MonLocId;
-
-
-                        /* Execute the actual checks */
-                        if (!nsps4tSummaryDataCategory.ProcessChecks())
-                        {
-                            result = false;
-                        }
-
-                        /* Erase any parameters created while processing the check category for this location */
-                        nsps4tSummaryDataCategory.EraseParameters();
+                        result = false;
                     }
+
+                    /* Erase any parameters created while processing the check category for this location */
+                    nsps4tSummaryDataCategory.EraseParameters();
                 }
-                else
-                {
-                    // Update errors with the returned init check band error.
-                    summaryValueInitializationCategory.Process.UpdateErrors(string.Format("Category: {0}  Message: {1}", nsps4tSummaryDataCategory.CategoryCd, errorMessage));
-                    result = false;
-                }
+            }
+            catch (Exception ex)
+            {
+                // Update errors with the returned init check band error.
+                summaryValueInitializationCategory.Process.UpdateErrors(string.Format("Category: {0}  Message: {1}", nsps4tSummaryDataCategory.CategoryCd, ex.Message), ex.StackTrace);
+                result = false;
             }
             finally
             {

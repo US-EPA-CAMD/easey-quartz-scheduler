@@ -41,26 +41,9 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
     public  cSystemFuelFlowCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
-      cSystemFuelFlowCategory Category;
-      string ErrorMessage = "";
+      var Category = new cSystemFuelFlowCategory(ACheckEngine, AMonitorPlanProcess);
 
-      try
-      {
-        Category = new cSystemFuelFlowCategory(ACheckEngine, AMonitorPlanProcess);
-
-        bool Result = Category.InitCheckBands(ACheckEngine.DbConnection, ref ErrorMessage);
-
-        if (!Result)
-        {
-          Category = null;
-          System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ErrorMessage));
-        }
-      }
-      catch (Exception ex)
-      {
-        Category = null;
-        System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ex.Message));
-      }
+      Category.InitCheckBands(ACheckEngine.DbConnection);
 
       return Category;
     }

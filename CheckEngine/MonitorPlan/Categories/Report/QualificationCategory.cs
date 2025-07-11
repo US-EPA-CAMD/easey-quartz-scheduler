@@ -49,28 +49,11 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
     #region Public  Methods
 
-    public  cQualificationCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
+    public cQualificationCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
-      cQualificationCategory Category;
-      string ErrorMessage = "";
+      var Category = new cQualificationCategory(ACheckEngine, AMonitorPlanProcess);
 
-      try
-      {
-        Category = new cQualificationCategory(ACheckEngine, AMonitorPlanProcess);
-
-        bool Result = Category.InitCheckBands(ACheckEngine.DbConnection, ref ErrorMessage);
-
-        if (!Result)
-        {
-          Category = null;
-          System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ErrorMessage));
-        }
-      }
-      catch (Exception ex)
-      {
-        Category = null;
-        System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ex.Message));
-      }
+      Category.InitCheckBands(ACheckEngine.DbConnection);
 
       return Category;
     }

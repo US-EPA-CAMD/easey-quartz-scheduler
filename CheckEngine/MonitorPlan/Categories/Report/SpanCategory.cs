@@ -41,26 +41,9 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
     public  cSpanCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
-      cSpanCategory Category;
-      string ErrorMessage = "";
+      var Category = new cSpanCategory(ACheckEngine, AMonitorPlanProcess);
 
-      try
-      {
-        Category = new cSpanCategory(ACheckEngine, AMonitorPlanProcess);
-
-        bool Result = Category.InitCheckBands(ACheckEngine.DbConnection, ref ErrorMessage);
-
-        if (!Result)
-        {
-          Category = null;
-          System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ErrorMessage));
-        }
-      }
-      catch (Exception ex)
-      {
-        Category = null;
-        System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ex.Message));
-      }
+      Category.InitCheckBands(ACheckEngine.DbConnection);
 
       return Category;
     }

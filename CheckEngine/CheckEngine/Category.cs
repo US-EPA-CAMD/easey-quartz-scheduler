@@ -1582,13 +1582,16 @@ namespace ECMPS.Checks.CheckEngine
         /// Populates the check bands for the category.
         /// </summary>
         /// <param name="ADatabaseAux">The AUX database object to use for the update.</param>
-        /// <param name="AErrorMessage">The error message returned on failure.</param>
-        /// <returns>True if the population is successful.</returns>
-        public bool InitCheckBands(cDatabase ADatabaseAux, ref string AErrorMessage)
+        public void InitCheckBands(cDatabase ADatabaseAux)
         {
+            string errorMessage = "";
             CheckParameterBands = new cCheckParameterBands(this.CategoryCd);
 
-            return CheckParameterBands.Populate(ADatabaseAux, this.Process.ProcessParameters, ref AErrorMessage);
+            bool result = CheckParameterBands.Populate(ADatabaseAux, this.Process.ProcessParameters, ref errorMessage);
+            if (!result)
+            {
+              throw new Exception(string.Format("Failed to initialize check bands for category {0}: {1}", this.CategoryCd, errorMessage));
+            }
         }
 
         /// <summary>

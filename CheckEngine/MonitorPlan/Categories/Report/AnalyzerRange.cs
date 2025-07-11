@@ -50,26 +50,9 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
     public  cAnalyzerRange GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
-      cAnalyzerRange Category;
-      string ErrorMessage = "";
+      var Category = new cAnalyzerRange(ACheckEngine, AMonitorPlanProcess);
 
-      try
-      {
-        Category = new cAnalyzerRange(ACheckEngine, AMonitorPlanProcess);
-
-        bool Result = Category.InitCheckBands(ACheckEngine.DbConnection, ref ErrorMessage);
-
-        if (!Result)
-        {
-          Category = null;
-          System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ErrorMessage));
-        }
-      }
-      catch (Exception ex)
-      {
-        Category = null;
-        System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ex.Message));
-      }
+      Category.InitCheckBands(ACheckEngine.DbConnection);
 
       return Category;
     }

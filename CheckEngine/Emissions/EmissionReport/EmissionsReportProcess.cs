@@ -1067,7 +1067,7 @@ namespace ECMPS.Checks.EmissionsReport
 
             if (ExecuteChecksWork_Handle_FilterObjects(ref ErrorMessage) &&
                   ExecuteChecksWork_Handle_CategoriesInit(ref ErrorMessage) &&
-                  ExecuteChecksWork_Handle_CheckBandsInit(ref ErrorMessage) &&
+                  ExecuteChecksWork_Handle_CheckBandsInit() &&
                   ExecuteChecksWork_Handle_MiscellaneousInit(MonitorLocationView, ref ErrorMessage))
             {
                 int RptPeriodId = ((mCheckEngine.RptPeriodId.Value > 0) ? mCheckEngine.RptPeriodId.Value : int.MinValue);
@@ -1579,143 +1579,141 @@ namespace ECMPS.Checks.EmissionsReport
             MatsSorbentTrapOverlapEvalCategory = null;
         }
 
-        private bool ExecuteChecksWork_Handle_CheckBandsInit(ref string AErrorMessage)
+        private bool ExecuteChecksWork_Handle_CheckBandsInit()
         {
-            bool Result = true;
-
             DateTime ExecuteBegan = DateTime.Now;
 
-            Result = Result && FCo2cCalculationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FCo2cDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FCo2cMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FCo2cOverallHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FCo2cSubDataMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FCo2mCalculationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FCo2mDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && ComponentAuditCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && DailyCalibrationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && WeeklySystemIntegrityTestCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && WeeklySystemIntegrityTestOperatingDatesCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FDailyEmissionsCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FDailyEmissionsInitializationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FDailyEmissionTestCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FDailyFuelCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FFlowMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FFFQAStatusEvaluationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            //Result = Result && FFuelFlowCalculationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);            
-            Result = Result && FFuelFlowCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FFuelFlowInitCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            //Result = Result && FFuelFlowOilCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FH2oCalculationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FH2oDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FH2oMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FHiCalculationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FHiDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && HourlyApportionmentVerificatonCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FHourlyConfigurationEvaluationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FHourlyConfigurationInitializationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
+            FCo2cCalculationCategory.InitCheckBands(CheckEngine.DbConnection);
+            FCo2cDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FCo2cMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FCo2cOverallHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FCo2cSubDataMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FCo2mCalculationCategory.InitCheckBands(CheckEngine.DbConnection);
+            FCo2mDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            ComponentAuditCategory.InitCheckBands(CheckEngine.DbConnection);
+            DailyCalibrationCategory.InitCheckBands(CheckEngine.DbConnection);
+            WeeklySystemIntegrityTestCategory.InitCheckBands(CheckEngine.DbConnection);
+            WeeklySystemIntegrityTestOperatingDatesCategory.InitCheckBands(CheckEngine.DbConnection);
+            FDailyEmissionsCategory.InitCheckBands(CheckEngine.DbConnection);
+            FDailyEmissionsInitializationCategory.InitCheckBands(CheckEngine.DbConnection);
+            FDailyEmissionTestCategory.InitCheckBands(CheckEngine.DbConnection);
+            FDailyFuelCategory.InitCheckBands(CheckEngine.DbConnection);
+            FFlowMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FFFQAStatusEvaluationCategory.InitCheckBands(CheckEngine.DbConnection);
+            //FFuelFlowCalculationCategory.InitCheckBands(CheckEngine.DbConnection);            
+            FFuelFlowCategory.InitCheckBands(CheckEngine.DbConnection);
+            FFuelFlowInitCategory.InitCheckBands(CheckEngine.DbConnection);
+            //FFuelFlowOilCategory.InitCheckBands(CheckEngine.DbConnection);
+            FH2oCalculationCategory.InitCheckBands(CheckEngine.DbConnection);
+            FH2oDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FH2oMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FHiCalculationCategory.InitCheckBands(CheckEngine.DbConnection);
+            FHiDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            HourlyApportionmentVerificatonCategory.InitCheckBands(CheckEngine.DbConnection);
+            FHourlyConfigurationEvaluationCategory.InitCheckBands(CheckEngine.DbConnection);
+            FHourlyConfigurationInitializationCategory.InitCheckBands(CheckEngine.DbConnection);
 
-            Result = Result && FLmeHourlyCo2mCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FLmeHourlyHitCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FLmeHourlyNoxmCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FLmeHourlySo2mCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FLongTermFuelFlowCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FNoxcMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FNoxmCalculationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FNoxmDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FNoxrCalculationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FNoxrDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FO2DryMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FO2WetMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FO2cSubDataMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FOperatingHourCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
+            FLmeHourlyCo2mCategory.InitCheckBands(CheckEngine.DbConnection);
+            FLmeHourlyHitCategory.InitCheckBands(CheckEngine.DbConnection);
+            FLmeHourlyNoxmCategory.InitCheckBands(CheckEngine.DbConnection);
+            FLmeHourlySo2mCategory.InitCheckBands(CheckEngine.DbConnection);
+            FLongTermFuelFlowCategory.InitCheckBands(CheckEngine.DbConnection);
+            FNoxcMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FNoxmCalculationCategory.InitCheckBands(CheckEngine.DbConnection);
+            FNoxmDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FNoxrCalculationCategory.InitCheckBands(CheckEngine.DbConnection);
+            FNoxrDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FO2DryMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FO2WetMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FO2cSubDataMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FOperatingHourCategory.InitCheckBands(CheckEngine.DbConnection);
 
-            Result = Result && FSo2CalculationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FSo2DerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FSo2MonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FSo2rDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FSummaryValueEvaluationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FSummaryValueInitializationCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
+            FSo2CalculationCategory.InitCheckBands(CheckEngine.DbConnection);
+            FSo2DerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FSo2MonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FSo2rDerivedHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            FSummaryValueEvaluationCategory.InitCheckBands(CheckEngine.DbConnection);
+            FSummaryValueInitializationCategory.InitCheckBands(CheckEngine.DbConnection);
 
-            Result = Result && FLinearityStatusCategoryCO2.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FLinearityStatusCategoryNOX.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FLinearityStatusCategoryO2D.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FLinearityStatusCategoryO2W.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FLinearityStatusCategorySO2.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
+            FLinearityStatusCategoryCO2.InitCheckBands(CheckEngine.DbConnection);
+            FLinearityStatusCategoryNOX.InitCheckBands(CheckEngine.DbConnection);
+            FLinearityStatusCategoryO2D.InitCheckBands(CheckEngine.DbConnection);
+            FLinearityStatusCategoryO2W.InitCheckBands(CheckEngine.DbConnection);
+            FLinearityStatusCategorySO2.InitCheckBands(CheckEngine.DbConnection);
 
-            Result = Result && FDailyCalibrationStatusCategoryCO2.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FDailyCalibrationStatusCategoryFlow.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FDailyCalibrationStatusCategoryNOx.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FDailyCalibrationStatusCategoryO2Dry.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FDailyCalibrationStatusCategoryO2Wet.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FDailyCalibrationStatusCategorySO2.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
+            FDailyCalibrationStatusCategoryCO2.InitCheckBands(CheckEngine.DbConnection);
+            FDailyCalibrationStatusCategoryFlow.InitCheckBands(CheckEngine.DbConnection);
+            FDailyCalibrationStatusCategoryNOx.InitCheckBands(CheckEngine.DbConnection);
+            FDailyCalibrationStatusCategoryO2Dry.InitCheckBands(CheckEngine.DbConnection);
+            FDailyCalibrationStatusCategoryO2Wet.InitCheckBands(CheckEngine.DbConnection);
+            FDailyCalibrationStatusCategorySO2.InitCheckBands(CheckEngine.DbConnection);
 
-            Result = Result && FRATAStatusCategoryCO2O2.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FRATAStatusCategoryFlow.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FRATAStatusCategoryH2O.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FRATAStatusCategoryH2OM.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FRATAStatusCategoryNOX.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FRATAStatusCategoryNOXC.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FRATAStatusCategorySO2.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
+            FRATAStatusCategoryCO2O2.InitCheckBands(CheckEngine.DbConnection);
+            FRATAStatusCategoryFlow.InitCheckBands(CheckEngine.DbConnection);
+            FRATAStatusCategoryH2O.InitCheckBands(CheckEngine.DbConnection);
+            FRATAStatusCategoryH2OM.InitCheckBands(CheckEngine.DbConnection);
+            FRATAStatusCategoryNOX.InitCheckBands(CheckEngine.DbConnection);
+            FRATAStatusCategoryNOXC.InitCheckBands(CheckEngine.DbConnection);
+            FRATAStatusCategorySO2.InitCheckBands(CheckEngine.DbConnection);
 
-            Result = Result && DailyInterferenceStatusCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FlowToLoadStatusCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && HgDailyCalibrationStatusCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && HgLinearityStatusCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && HgRataStatusCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && HgWsiStatusCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && LeakStatusCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
+            DailyInterferenceStatusCategory.InitCheckBands(CheckEngine.DbConnection);
+            FlowToLoadStatusCategory.InitCheckBands(CheckEngine.DbConnection);
+            HgDailyCalibrationStatusCategory.InitCheckBands(CheckEngine.DbConnection);
+            HgLinearityStatusCategory.InitCheckBands(CheckEngine.DbConnection);
+            HgRataStatusCategory.InitCheckBands(CheckEngine.DbConnection);
+            HgWsiStatusCategory.InitCheckBands(CheckEngine.DbConnection);
+            LeakStatusCategory.InitCheckBands(CheckEngine.DbConnection);
 
             // Added MATS 9/29/14
-            Result = Result && MATSMDHGRECategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMDHFRECategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMDHCLRECategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMDSO2RECategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMDHGRHCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMDHFRHCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMDHCLRHCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMDSO2RHCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMMHGCCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMMHFCCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMMHCLCCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMCHGRECategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMCHFRECategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMCHCLRECategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMCSO2RECategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMCHGRHCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMCHFRHCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMCHCLRHCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MATSMCSO2RHCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
+            MATSMDHGRECategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMDHFRECategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMDHCLRECategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMDSO2RECategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMDHGRHCategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMDHFRHCategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMDHCLRHCategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMDSO2RHCategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMMHGCCategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMMHFCCategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMMHCLCCategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMCHGRECategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMCHFRECategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMCHCLRECategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMCSO2RECategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMCHGRHCategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMCHFRHCategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMCHCLRHCategory.InitCheckBands(CheckEngine.DbConnection);
+            MATSMCSO2RHCategory.InitCheckBands(CheckEngine.DbConnection);
 
             /* Sorbent Trap related categories */
-            Result = Result && MatsHourlyGasFlowMeterEvalCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MatsSamplingTrainEvalCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MatsSamplingTrainInitCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MatsSamplingTrainSamplingRatioReviewCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MatsSorbentTrapEvalCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MatsSorbentTrapInitCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MatsSorbentTrapHourAndRangeEvalCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MatsSorbentTrapOperatingDaysReviewCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && MatsSorbentTrapOverlapEvalCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
+            MatsHourlyGasFlowMeterEvalCategory.InitCheckBands(CheckEngine.DbConnection);
+            MatsSamplingTrainEvalCategory.InitCheckBands(CheckEngine.DbConnection);
+            MatsSamplingTrainInitCategory.InitCheckBands(CheckEngine.DbConnection);
+            MatsSamplingTrainSamplingRatioReviewCategory.InitCheckBands(CheckEngine.DbConnection);
+            MatsSorbentTrapEvalCategory.InitCheckBands(CheckEngine.DbConnection);
+            MatsSorbentTrapInitCategory.InitCheckBands(CheckEngine.DbConnection);
+            MatsSorbentTrapHourAndRangeEvalCategory.InitCheckBands(CheckEngine.DbConnection);
+            MatsSorbentTrapOperatingDaysReviewCategory.InitCheckBands(CheckEngine.DbConnection);
+            MatsSorbentTrapOverlapEvalCategory.InitCheckBands(CheckEngine.DbConnection);
 
             /* Flow Averaging Status Checking Categories */
-            Result = Result && FlowAveragingDailyCalibrationStatusCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FlowAveragingDailyInterferenceStatusCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FlowAveragingLeakStatusCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && FlowAveragingStatusTestInitCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
+            FlowAveragingDailyCalibrationStatusCategory.InitCheckBands(CheckEngine.DbConnection);
+            FlowAveragingDailyInterferenceStatusCategory.InitCheckBands(CheckEngine.DbConnection);
+            FlowAveragingLeakStatusCategory.InitCheckBands(CheckEngine.DbConnection);
+            FlowAveragingStatusTestInitCategory.InitCheckBands(CheckEngine.DbConnection);
 
             /* NOXR Unused P-PB Monitor Hourly Evaluation */
-            Result = Result && NoxrUnusedPpbMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && NoxrUnusedPpbDaileyCalibrationStatusCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && NoxrUnusedPpbLinearityStatusCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && NoxrUnusedPpbRataStatusInitCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
-            Result = Result && NoxrUnusedPpbRataStatusCategory.InitCheckBands(CheckEngine.DbConnection, ref AErrorMessage);
+            NoxrUnusedPpbMonitorHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+            NoxrUnusedPpbDaileyCalibrationStatusCategory.InitCheckBands(CheckEngine.DbConnection);
+            NoxrUnusedPpbLinearityStatusCategory.InitCheckBands(CheckEngine.DbConnection);
+            NoxrUnusedPpbRataStatusInitCategory.InitCheckBands(CheckEngine.DbConnection);
+            NoxrUnusedPpbRataStatusCategory.InitCheckBands(CheckEngine.DbConnection);
 
             DateTime ExecuteEnded = DateTime.Now;
 
             System.Diagnostics.Debug.WriteLine(string.Format("Check Bands Init Time: {0}", ElapsedTime(ExecuteBegan, ExecuteEnded)));
 
-            return Result;
+            return true;
         }
 
         /// <summary>

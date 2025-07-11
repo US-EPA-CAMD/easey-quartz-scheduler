@@ -45,31 +45,13 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
     /// </summary>
     /// <param name="unitProgramCategory">The parent Unit Program Category object.</param>
     /// <returns></returns>
-    public  cUnitProgramParameterCategory GetInitialized(cUnitProgram unitProgramCategory)
+    public cUnitProgramParameterCategory GetInitialized(cUnitProgram unitProgramCategory)
     {
-      cUnitProgramParameterCategory result;
+      var category = new cUnitProgramParameterCategory(unitProgramCategory);
 
-      string ErrorMessage = "";
+      category.InitCheckBands(category.CheckEngine.DbConnection);
 
-      try
-      {
-        result = new cUnitProgramParameterCategory(unitProgramCategory);
-
-        bool Result = result.InitCheckBands(result.CheckEngine.DbConnection, ref ErrorMessage);
-
-        if (!Result)
-        {
-          result = null;
-          System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ErrorMessage));
-        }
-      }
-      catch (Exception ex)
-      {
-        result = null;
-        System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ex.Message));
-      }
-
-      return result;
+      return category;
     }
 
     #endregion
