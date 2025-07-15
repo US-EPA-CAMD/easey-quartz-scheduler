@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
@@ -427,12 +426,27 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         {
             _logger.LogError("Evaluation {EvalId} failed with error: {ErrorMessage}", 
                 id, ex.Message);
-            evalRecord.Details = JsonConvert.SerializeObject(ex);
 
+            var noteTime = Utils.getCurrentEasternTime();
+
+            evalRecord.Details = JsonConvert.SerializeObject(ex);
             evalRecord.StatusCode = "ERROR";
             evalRecord.Note = ex.Message;
-            evalRecord.NoteTime = Utils.getCurrentEasternTime();
+            evalRecord.NoteTime = noteTime;
             _dbContext.Evaluations.Update(evalRecord);
+
+            // Update other evaluations in the set to ERROR status.
+            var pendingSiblingEvalRecords = _dbContext.Evaluations
+              .Where(e => e.EvaluationSetId == evalRecord.EvaluationSetId && e.StatusCode == "PENDING")
+              .ToList();
+            foreach (var siblingEval in pendingSiblingEvalRecords)
+            {
+              siblingEval.StatusCode = "ERROR";
+              siblingEval.Note = $"{evalRecord.ProcessCode} evaluation {evalRecord.EvaluationId} failed with error: {ex.Message}";
+              siblingEval.NoteTime = noteTime;
+              _dbContext.Evaluations.Update(siblingEval);
+            }
+
             _dbContext.SaveChanges();
 
             context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
