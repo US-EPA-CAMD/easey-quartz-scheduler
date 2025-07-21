@@ -22,7 +22,6 @@ namespace ECMPS.Checks.EmissionsReport
   {
 
         #region Constructors
-        public EmParameters emParams;
 
         /// <summary>
         /// Creates a category object to represent the category indicated by the passed code, 

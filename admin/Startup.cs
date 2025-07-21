@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,8 +46,21 @@ namespace Epa.Camd.Quartz.Scheduler
         options.UseNpgsql(_connectionString)
       );
 
-      NpgSqlContext dbContext = services.BuildServiceProvider().GetService<NpgSqlContext>();
-      List<CorsOptions> options = dbContext.CorsOptions.ToListAsync<CorsOptions>().Result;
+#pragma warning disable ASP0000 
+      // Ignore warning [ASP0000]:
+      // >
+      // > "Calling 'BuildServiceProvider' from application code results in an additional copy of singleton services being created."
+      // >
+      // We want to access the `NpgSqlContext` here to retrieve the CORS options and job configurations from the database.
+      List<CorsOptions> corsOptions;
+      List<JobConfiguration> jobConfigurations;
+      using (var scope = services.BuildServiceProvider().CreateScope()) // Build a scoped service provider to access the DbContext
+      {
+        NpgSqlContext dbContext = scope.ServiceProvider.GetRequiredService<NpgSqlContext>();
+        corsOptions = dbContext.CorsOptions.ToList();
+        jobConfigurations = dbContext.JobConfigurations.ToList();
+      }
+#pragma warning restore ASP0000
 
       List<string> allowedOrigins = new List<string>();
       List<string> allowedMethods = new List<string>();
@@ -56,7 +70,7 @@ namespace Epa.Camd.Quartz.Scheduler
           allowedOrigins.Add("http://localhost:3000");
       }
 
-      foreach(CorsOptions opts in options){
+      foreach(CorsOptions opts in corsOptions){
         switch(opts.Key){
           case "origin":
             allowedOrigins.Add(opts.Value);
@@ -105,10 +119,17 @@ namespace Epa.Camd.Quartz.Scheduler
       });
 
       services.AddOptions();
+
+      // Inject a configured HttpClient for the `BulkDataFile` job.
+      services.AddHttpClient<BulkDataFile>(client =>
+      {
+          client.Timeout = TimeSpan.FromMilliseconds(1803000);
+      });
+
       
       CheckEngineEvaluation.RegisterWithQuartz(services);
       BulkDataFile.RegisterWithQuartz(services);
-      DynamicJobScheduler.RegisterWithQuartz(services, dbContext);
+      DynamicJobScheduler.RegisterWithQuartz(services, jobConfigurations);
 
       services.AddTransient<CheckEngineEvaluationListener>(); //DI for CheckEngineListener
       CheckEngineEvaluationListener.ServiceCollection = services; // Set service collection of the listener
@@ -155,7 +176,7 @@ namespace Epa.Camd.Quartz.Scheduler
       await DynamicJobScheduler.ScheduleWithQuartz(scheduler, app, logger);
 
       //Schedule Listeners
-      await CheckEngineEvaluationListener.ScheduleWithQuartz(scheduler);
+      CheckEngineEvaluationListener.ScheduleWithQuartz(scheduler);
     }
   }
 }

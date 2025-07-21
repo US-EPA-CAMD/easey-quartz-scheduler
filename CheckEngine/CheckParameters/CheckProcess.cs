@@ -13,7 +13,7 @@ namespace ECMPS.Checks.Parameters
   {
 
     /// <summary>
-    /// 
+    /// The ILogger instance to use.
     /// </summary>
     protected readonly ILogger _logger;
 
