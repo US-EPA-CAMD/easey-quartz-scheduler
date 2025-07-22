@@ -15,13 +15,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
-  public class SubmissionReminderProcessQueue : IJob
+  public class ProcessSubmissionReminders : IJob
   {
     private NpgSqlContext _dbContext = null;
-    private readonly ILogger<SubmissionReminderProcessQueue> _logger;
+    private readonly ILogger<ProcessSubmissionReminders> _logger;
     private IConfiguration Configuration { get; }
 
-    public SubmissionReminderProcessQueue(NpgSqlContext dbContext, IConfiguration configuration, ILogger<SubmissionReminderProcessQueue> logger)
+    public ProcessSubmissionReminders(NpgSqlContext dbContext, IConfiguration configuration, ILogger<ProcessSubmissionReminders> logger)
     {
       _dbContext = dbContext;
       Configuration = configuration;

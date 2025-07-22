@@ -15,13 +15,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
-  public class SubmissionWindowProcessQueue : IJob
+  public class ProcessWindowNotifications : IJob
   {
     private NpgSqlContext _dbContext = null;
-    private readonly ILogger<SubmissionWindowProcessQueue> _logger;
+    private readonly ILogger<ProcessWindowNotifications> _logger;
     private IConfiguration Configuration { get; }
 
-    public SubmissionWindowProcessQueue(NpgSqlContext dbContext, IConfiguration configuration, ILogger<SubmissionWindowProcessQueue> logger)
+    public ProcessWindowNotifications(NpgSqlContext dbContext, IConfiguration configuration, ILogger<ProcessWindowNotifications> logger)
     {
       _dbContext = dbContext;
       Configuration = configuration;
@@ -51,7 +51,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         //Create list of plantListIds
         long[] plantIdList = new long[plantIdSet.Count];
         plantIdSet.CopyTo(plantIdList);
-
 
          
         //Fire API Call
