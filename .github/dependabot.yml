@@ -12,6 +12,7 @@ updates:
       - "/CheckEngine/DatabaseAccess"
       - "/Logger"
       - "/Quartz/Quartz.Plugins.RecentHistory"
+      - "/Quartz/SilkierQuartz"
     schedule:
       interval: "daily" 
     open-pull-requests-limit: 10
