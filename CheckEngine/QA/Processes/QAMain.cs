@@ -1033,17 +1033,20 @@ namespace ECMPS.Checks.QAEvaluation
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                         QA.mCalculatedTestSummary.Rows.Add(NewRow);
 
-                        NewRow = QA.mCalculatedRATA.NewRow();
-                        NewRow["RATA_ID"] = RATAId;
-                        if (QA.GetCheckParameter("Overall_Relative_Accuracy").ParameterValue != null)
-                            NewRow["CALC_RELATIVE_ACCURACY"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Overall_Relative_Accuracy").ParameterValue);
-                        NewRow["CALC_RATA_FREQUENCY_CD"] = (string)QA.GetCheckParameter("RATA_Frequency").ParameterValue;
-                        if (QA.GetCheckParameter("Overall_BAF").ParameterValue != null)
-                            NewRow["CALC_OVERALL_BIAS_ADJ_FACTOR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Overall_BAF").ParameterValue);
-                        if (QA.GetCheckParameter("RATA_NUMBER_OF_LOAD_LEVELS").ParameterValue != null)
-                            NewRow["CALC_NUM_LOAD_LEVEL"] = cDBConvert.ToString((int)QA.GetCheckParameter("RATA_Number_Of_Load_Levels").ParameterValue);
-                        NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
-                        QA.mCalculatedRATA.Rows.Add(NewRow);
+                        if (!string.IsNullOrEmpty(RATAId))
+                        {
+                            NewRow = QA.mCalculatedRATA.NewRow();
+                            NewRow["RATA_ID"] = RATAId;
+                            if (QA.GetCheckParameter("Overall_Relative_Accuracy").ParameterValue != null)
+                                NewRow["CALC_RELATIVE_ACCURACY"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Overall_Relative_Accuracy").ParameterValue);
+                            NewRow["CALC_RATA_FREQUENCY_CD"] = (string)QA.GetCheckParameter("RATA_Frequency").ParameterValue;
+                            if (QA.GetCheckParameter("Overall_BAF").ParameterValue != null)
+                                NewRow["CALC_OVERALL_BIAS_ADJ_FACTOR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Overall_BAF").ParameterValue);
+                            if (QA.GetCheckParameter("RATA_NUMBER_OF_LOAD_LEVELS").ParameterValue != null)
+                                NewRow["CALC_NUM_LOAD_LEVEL"] = cDBConvert.ToString((int)QA.GetCheckParameter("RATA_Number_Of_Load_Levels").ParameterValue);
+                            NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
+                            QA.mCalculatedRATA.Rows.Add(NewRow);
+                        }
 
                         if (QA.CheckEngine.SeverityCd != eSeverityCd.FATAL)
                         {
@@ -1394,26 +1397,29 @@ namespace ECMPS.Checks.QAEvaluation
                 NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                 QA.mCalculatedTestSummary.Rows.Add(NewRow);
 
-                NewRow = QA.mCalculatedOOC.NewRow();
-                NewRow["ON_OFF_CAL_ID"] = OOCId;
-                if (QA.GetCheckParameter("OOC_Online_Zero_Injection_Calc_APS_Indicator").ParameterValue != null)
-                    NewRow["CALC_ONLINE_ZERO_APS_IND"] = cDBConvert.ToString((int)QA.GetCheckParameter("OOC_Online_Zero_Injection_Calc_APS_Indicator").ParameterValue);
-                if (QA.GetCheckParameter("OOC_Online_Zero_Injection_Calc_Result").ParameterValue != null)
-                    NewRow["CALC_ONLINE_ZERO_CAL_ERROR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("OOC_Online_Zero_Injection_Calc_Result").ParameterValue);
-                if (QA.GetCheckParameter("OOC_Online_Upscale_Injection_Calc_APS_Indicator").ParameterValue != null)
-                    NewRow["CALC_ONLINE_UPSCALE_APS_IND"] = cDBConvert.ToString((int)QA.GetCheckParameter("OOC_Online_Upscale_Injection_Calc_APS_Indicator").ParameterValue);
-                if (QA.GetCheckParameter("OOC_Online_Upscale_Injection_Calc_Result").ParameterValue != null)
-                    NewRow["CALC_ONLINE_UPSCALE_CAL_ERROR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("OOC_Online_Upscale_Injection_Calc_Result").ParameterValue);
-                if (QA.GetCheckParameter("OOC_Offline_Zero_Injection_Calc_APS_Indicator").ParameterValue != null)
-                    NewRow["CALC_OFFLINE_ZERO_APS_IND"] = cDBConvert.ToString((int)QA.GetCheckParameter("OOC_Offline_Zero_Injection_Calc_APS_Indicator").ParameterValue);
-                if (QA.GetCheckParameter("OOC_Offline_Zero_Injection_Calc_Result").ParameterValue != null)
-                    NewRow["CALC_OFFLINE_ZERO_CAL_ERROR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("OOC_Offline_Zero_Injection_Calc_Result").ParameterValue);
-                if (QA.GetCheckParameter("OOC_Offline_Upscale_Injection_Calc_APS_Indicator").ParameterValue != null)
-                    NewRow["CALC_OFFLINE_UPSCALE_APS_IND"] = cDBConvert.ToString((int)QA.GetCheckParameter("OOC_Offline_Upscale_Injection_Calc_APS_Indicator").ParameterValue);
-                if (QA.GetCheckParameter("OOC_Offline_Upscale_Injection_Calc_Result").ParameterValue != null)
-                    NewRow["CALC_OFFLINE_UPSCALE_CAL_ERROR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("OOC_Offline_Upscale_Injection_Calc_Result").ParameterValue);
-                NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
-                QA.mCalculatedOOC.Rows.Add(NewRow);
+                if (!string.IsNullOrEmpty(OOCId))
+                {
+                    NewRow = QA.mCalculatedOOC.NewRow();
+                    NewRow["ON_OFF_CAL_ID"] = OOCId;
+                    if (QA.GetCheckParameter("OOC_Online_Zero_Injection_Calc_APS_Indicator").ParameterValue != null)
+                        NewRow["CALC_ONLINE_ZERO_APS_IND"] = cDBConvert.ToString((int)QA.GetCheckParameter("OOC_Online_Zero_Injection_Calc_APS_Indicator").ParameterValue);
+                    if (QA.GetCheckParameter("OOC_Online_Zero_Injection_Calc_Result").ParameterValue != null)
+                        NewRow["CALC_ONLINE_ZERO_CAL_ERROR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("OOC_Online_Zero_Injection_Calc_Result").ParameterValue);
+                    if (QA.GetCheckParameter("OOC_Online_Upscale_Injection_Calc_APS_Indicator").ParameterValue != null)
+                        NewRow["CALC_ONLINE_UPSCALE_APS_IND"] = cDBConvert.ToString((int)QA.GetCheckParameter("OOC_Online_Upscale_Injection_Calc_APS_Indicator").ParameterValue);
+                    if (QA.GetCheckParameter("OOC_Online_Upscale_Injection_Calc_Result").ParameterValue != null)
+                        NewRow["CALC_ONLINE_UPSCALE_CAL_ERROR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("OOC_Online_Upscale_Injection_Calc_Result").ParameterValue);
+                    if (QA.GetCheckParameter("OOC_Offline_Zero_Injection_Calc_APS_Indicator").ParameterValue != null)
+                        NewRow["CALC_OFFLINE_ZERO_APS_IND"] = cDBConvert.ToString((int)QA.GetCheckParameter("OOC_Offline_Zero_Injection_Calc_APS_Indicator").ParameterValue);
+                    if (QA.GetCheckParameter("OOC_Offline_Zero_Injection_Calc_Result").ParameterValue != null)
+                        NewRow["CALC_OFFLINE_ZERO_CAL_ERROR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("OOC_Offline_Zero_Injection_Calc_Result").ParameterValue);
+                    if (QA.GetCheckParameter("OOC_Offline_Upscale_Injection_Calc_APS_Indicator").ParameterValue != null)
+                        NewRow["CALC_OFFLINE_UPSCALE_APS_IND"] = cDBConvert.ToString((int)QA.GetCheckParameter("OOC_Offline_Upscale_Injection_Calc_APS_Indicator").ParameterValue);
+                    if (QA.GetCheckParameter("OOC_Offline_Upscale_Injection_Calc_Result").ParameterValue != null)
+                        NewRow["CALC_OFFLINE_UPSCALE_CAL_ERROR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("OOC_Offline_Upscale_Injection_Calc_Result").ParameterValue);
+                    NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
+                    QA.mCalculatedOOC.Rows.Add(NewRow);
+                }
 
                 if (QA.CheckEngine.SeverityCd != eSeverityCd.FATAL)
                 {
@@ -1498,18 +1504,21 @@ namespace ECMPS.Checks.QAEvaluation
                 NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                 QA.mCalculatedTestSummary.Rows.Add(NewRow);
 
-                NewRow = QA.mCalculatedFlowToLoadReference.NewRow();
-                NewRow["FLOW_LOAD_REF_ID"] = FlowLoadReferenceId;
-                if (QA.GetCheckParameter("Flow_to_Load_Reference_Calc_Average_Gross_Unit_Load").ParameterValue != null)
-                    NewRow["CALC_AVG_GROSS_UNIT_LOAD"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Flow_to_Load_Reference_Calc_Average_Gross_Unit_Load").ParameterValue);
-                if (QA.GetCheckParameter("Flow_to_Load_Reference_Calc_Average_Reference_Method_Flow").ParameterValue != null)
-                    NewRow["CALC_AVG_REF_METHOD_FLOW"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Flow_to_Load_Reference_Calc_Average_Reference_Method_Flow").ParameterValue);
-                if (QA.GetCheckParameter("Flow_to_Load_Reference_Calc_Flow_To_Load_Ratio").ParameterValue != null)
-                    NewRow["CALC_REF_FLOW_LOAD_RATIO"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Flow_to_Load_Reference_Calc_Flow_To_Load_Ratio").ParameterValue);
-                if (QA.GetCheckParameter("Flow_to_Load_Reference_Calc_GHR").ParameterValue != null)
-                    NewRow["CALC_REF_GHR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Flow_to_Load_Reference_Calc_GHR").ParameterValue);
-                NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
-                QA.mCalculatedFlowToLoadReference.Rows.Add(NewRow);
+                if (!string.IsNullOrEmpty(FlowLoadReferenceId))
+                {
+                    NewRow = QA.mCalculatedFlowToLoadReference.NewRow();
+                    NewRow["FLOW_LOAD_REF_ID"] = FlowLoadReferenceId;
+                    if (QA.GetCheckParameter("Flow_to_Load_Reference_Calc_Average_Gross_Unit_Load").ParameterValue != null)
+                        NewRow["CALC_AVG_GROSS_UNIT_LOAD"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Flow_to_Load_Reference_Calc_Average_Gross_Unit_Load").ParameterValue);
+                    if (QA.GetCheckParameter("Flow_to_Load_Reference_Calc_Average_Reference_Method_Flow").ParameterValue != null)
+                        NewRow["CALC_AVG_REF_METHOD_FLOW"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Flow_to_Load_Reference_Calc_Average_Reference_Method_Flow").ParameterValue);
+                    if (QA.GetCheckParameter("Flow_to_Load_Reference_Calc_Flow_To_Load_Ratio").ParameterValue != null)
+                        NewRow["CALC_REF_FLOW_LOAD_RATIO"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Flow_to_Load_Reference_Calc_Flow_To_Load_Ratio").ParameterValue);
+                    if (QA.GetCheckParameter("Flow_to_Load_Reference_Calc_GHR").ParameterValue != null)
+                        NewRow["CALC_REF_GHR"] = cDBConvert.ToString((Decimal)QA.GetCheckParameter("Flow_to_Load_Reference_Calc_GHR").ParameterValue);
+                    NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
+                    QA.mCalculatedFlowToLoadReference.Rows.Add(NewRow);
+                }
 
                 if (QA.CheckEngine.SeverityCd != eSeverityCd.FATAL)
                 {
@@ -1851,12 +1860,15 @@ namespace ECMPS.Checks.QAEvaluation
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                         QA.mCalculatedTestSummary.Rows.Add(NewRow);
 
-                        NewRow = QA.mCalculatedCycleTimeSummary.NewRow();
-                        NewRow["CYCLE_TIME_SUM_ID"] = CycleTimeSummaryId;
-                        if (QA.GetCheckParameter("Cycle_Time_Calc_Total_Cycle_Time").ParameterValue != null)
-                            NewRow["CALC_TOTAL_TIME"] = cDBConvert.ToString((int)QA.GetCheckParameter("Cycle_Time_Calc_Total_Cycle_Time").ParameterValue);
-                        NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
-                        QA.mCalculatedCycleTimeSummary.Rows.Add(NewRow);
+                        if (!string.IsNullOrWhiteSpace(CycleTimeSummaryId))
+                        {
+                            NewRow = QA.mCalculatedCycleTimeSummary.NewRow();
+                            NewRow["CYCLE_TIME_SUM_ID"] = CycleTimeSummaryId;
+                            if (QA.GetCheckParameter("Cycle_Time_Calc_Total_Cycle_Time").ParameterValue != null)
+                                NewRow["CALC_TOTAL_TIME"] = cDBConvert.ToString((int)QA.GetCheckParameter("Cycle_Time_Calc_Total_Cycle_Time").ParameterValue);
+                            NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
+                            QA.mCalculatedCycleTimeSummary.Rows.Add(NewRow);
+                        }
 
                         if (QA.CheckEngine.SeverityCd != eSeverityCd.FATAL)
                         {
@@ -2645,12 +2657,15 @@ namespace ECMPS.Checks.QAEvaluation
                         NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
                         QA.mCalculatedTestSummary.Rows.Add(NewRow);
 
-                        NewRow = QA.mCalculatedUnitDefault.NewRow();
-                        NewRow["UNIT_DEFAULT_TEST_SUM_ID"] = UnitDefaultSummaryId;
-                        if (QA.GetCheckParameter("Unit_Default_Maximum_NOx_Rate").ParameterValue != null)
-                            NewRow["CALC_NOX_DEFAULT_RATE"] = cDBConvert.ToString(Convert.ToDecimal(QA.GetCheckParameter("Unit_Default_Maximum_NOx_Rate").ParameterValue));
-                        NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
-                        QA.mCalculatedUnitDefault.Rows.Add(NewRow);
+                        if (!string.IsNullOrEmpty(UnitDefaultSummaryId))
+                        {
+                            NewRow = QA.mCalculatedUnitDefault.NewRow();
+                            NewRow["UNIT_DEFAULT_TEST_SUM_ID"] = UnitDefaultSummaryId;
+                            if (QA.GetCheckParameter("Unit_Default_Maximum_NOx_Rate").ParameterValue != null)
+                                NewRow["CALC_NOX_DEFAULT_RATE"] = cDBConvert.ToString(Convert.ToDecimal(QA.GetCheckParameter("Unit_Default_Maximum_NOx_Rate").ParameterValue));
+                            NewRow["CHK_SESSION_ID"] = mCheckEngine.ChkSessionId;
+                            QA.mCalculatedUnitDefault.Rows.Add(NewRow);
+                        }
 
                         if (QA.CheckEngine.SeverityCd != eSeverityCd.FATAL)
                         {
