@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -7,6 +8,8 @@ using System.Text;
 using ECMPS.Checks.DatabaseAccess;
 
 using ECMPS.Definitions.Extensions;
+
+using Epa.Camd.Logger;
 
 
 namespace ECMPS.Checks.TypeUtilities
@@ -312,11 +315,11 @@ namespace ECMPS.Checks.TypeUtilities
 
             FLookupTable = Database.GetDataTable("select * from camdecmpsmd.reporting_period order by Calendar_Year, Quarter");
           }
-        catch (Exception ex)
-             {
-              System.Diagnostics.Debug.WriteLine(ex.ToString());
-                 FLookupTable = null;
-              }
+          catch (Exception ex)
+          {
+            LoggerProvider.GetLogger<cReportingPeriod>().LogError(ex, "Error retrieving Reporting Period Lookup Table");
+            FLookupTable = null;
+          }
         }
 
         return FLookupTable;

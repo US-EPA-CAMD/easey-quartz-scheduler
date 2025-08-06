@@ -38,6 +38,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       public static readonly string TriggerDescription = "Evaluates a {0} data set for accuracy as specified by the EPA Part 75 reporting instructions.";
     }
 
+    /// <summary>
+    /// Custom exception for errors emitted during check engine evaluations.
+    /// </summary>
+    public class CheckEngineException : Exception
+    {
+      public CheckEngineException(string message) : base(message) { }
+      public CheckEngineException(string message, Exception innerException) : base(message, innerException) { }
+    }
+
     public static void RegisterWithQuartz(IServiceCollection services)
     {
       services.AddQuartzJob<CheckEngineEvaluation>(WithJobKey("MP"), Identity.JobDescription);
@@ -104,6 +113,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         string userEmail = dataMap.GetString("UserEmail");
         string queuedTime = dataMap.GetString("QueuedTime");
 
+        cCheckEngine checkEngine = null;
         EvaluationSet es = null;
 
         try
@@ -134,7 +144,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 throw new InvalidOperationException($"Evaluation ID is required but was null for evaluation record ID: {id}");
             }
             
-            cCheckEngine checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", commandTimeout, evalRecord.EvaluationId);
+            checkEngine = new cCheckEngine(userId, connectionString, dllPath, "dumpfilePath", commandTimeout, evalRecord.EvaluationId);
             
             _logger.LogInformation("Check engine initialized with EvalId: {EvalId}", evalRecord.EvaluationId);
 
@@ -158,14 +168,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
                     if (!mpResult)
                     {
-                        string exMessage = "MP Report Check Run Failed.";
-
-                        if (!checkEngine.CheckEngineErrors.IsWhitespace())
-                        {
-                            exMessage += Environment.NewLine + Environment.NewLine + checkEngine.CheckEngineErrors;
-                        }
-
-                        throw new Exception(exMessage);
+                        throw new CheckEngineException("MP Report Check Run Failed.");
                     }
 
                     _dbContext.Entry<MonitorPlan>(mp).Reload();
@@ -233,14 +236,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
                         if (!listResult)
                         {
-                            string exMessage = "QAT Report Check Run Failed.";
-
-                            if (!checkEngine.CheckEngineErrors.IsWhitespace())
-                            {
-                                exMessage += Environment.NewLine + Environment.NewLine + checkEngine.CheckEngineErrors;
-                            }
-
-                            throw new Exception(exMessage);
+                            throw new CheckEngineException("QAT Report Check Run Failed.");
                         }
 
                             _dbContext.Entry<TestSummary>(testSummaryRecord).Reload();
@@ -264,14 +260,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
                         if (!listResult)
                         {
-                            string exMessage = "QCE Report Check Run Failed.";
-
-                            if (!checkEngine.CheckEngineErrors.IsWhitespace())
-                            {
-                                exMessage += Environment.NewLine + Environment.NewLine + checkEngine.CheckEngineErrors;
-                            }
-
-                            throw new Exception(exMessage);
+                            throw new CheckEngineException("QCE Report Check Run Failed.");
                         }
 
                             _dbContext.Entry<CertEvent>(certIdRecord).Reload();
@@ -295,14 +284,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
                         if (!listResult)
                         {
-                            string exMessage = "TEE Report Check Run Failed.";
-
-                            if (!checkEngine.CheckEngineErrors.IsWhitespace())
-                            {
-                                exMessage += Environment.NewLine + Environment.NewLine + checkEngine.CheckEngineErrors;
-                            }
-
-                            throw new Exception(exMessage);
+                            throw new CheckEngineException("TEE Report Check Run Failed.");
                         }
 
                             _dbContext.Entry<TestExtensionExemption>(extensionExemptionRecord).Reload();
@@ -370,14 +352,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                         evalResult, id);
 
                     if (!evalResult) {
-                        string exMessage = "EM Report Check Run Failed.";
-
-                        if (!checkEngine.CheckEngineErrors.IsWhitespace())
-                        {
-                            exMessage += Environment.NewLine + Environment.NewLine + checkEngine.CheckEngineErrors;
-                        }
-
-                        throw new Exception(exMessage);
+                        throw new CheckEngineException("EM Report Check Run Failed.");
                     }
 
                     _dbContext.Entry<EmissionEvaluation>(emissionEvalRecord).Reload();
@@ -436,7 +411,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         {
             _logger.LogError("Evaluation {EvalId} failed with error: {ErrorMessage}", 
                 id, ex.Message);
-            evalRecord.Details = JsonConvert.SerializeObject(ex);
+            string errorDetails = ex switch
+            {
+              CheckEngineException cee => $"{cee.Message}\n{checkEngine.CheckEngineErrors}",
+              _ => JsonConvert.SerializeObject(ex)
+            };
+            evalRecord.Details = errorDetails;
 
             evalRecord.StatusCode = "ERROR";
             evalRecord.Note = ex.Message;
@@ -495,18 +475,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             _dbContext.SaveChanges();
 
             // Send the error email
-            _ = SendEvaluationErrorEmail(ex, es.SetId, evalRecord.EvaluationId, evaluationStages);
+            _ = SendEvaluationErrorEmail(ex.Message, errorDetails, es.SetId, evalRecord.EvaluationId, evaluationStages);
         }
     }
 
-    private async Task SendEvaluationErrorEmail(Exception exception, string evaluationSetId, long evaluationId, List<EvaluationStageDto> evaluationStages)
+    private async Task SendEvaluationErrorEmail(string errorMessage, string errorDetails, string evaluationSetId, long evaluationId, List<EvaluationStageDto> evaluationStages)
     {
         try
         {
             var client = new HttpClient();
 
             // Trim stack trace to reasonable length (max 8000 chars)
-            string stackTrace = exception.StackTrace;
+            string stackTrace = errorDetails;
             if (!string.IsNullOrEmpty(stackTrace) && stackTrace.Length > 8000)
             {
                 stackTrace = stackTrace.Substring(0, 8000) + "\n... [Stack trace truncated]";
@@ -517,7 +497,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             {
                 evaluationSetId = evaluationSetId,
                 evaluationId = evaluationId,
-                rootError = exception.Message,
+                rootError = errorMessage,
                 errorStack = stackTrace,
                 evaluationStages = evaluationStages
             };

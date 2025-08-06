@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -153,9 +154,9 @@ namespace ECMPS.Checks.Parameters
         catch (Exception ex)
         {
           if (AOwner != null)
-            System.Diagnostics.Debug.WriteLine(string.Format("Problem Sort Specification: Category - {0}, Parameter - {1}: {2}", AOwner.CategoryCd, this.Name, ex.Message));
+            _logger.LogError(string.Format("Problem Sort Specification: Category - {0}, Parameter - {1}: {2}", AOwner.CategoryCd, this.Name, ex.Message));
           else
-            System.Diagnostics.Debug.WriteLine(string.Format("Problem Sort Specification: For Process, Parameter - {0}: {1}", this.Name, ex.Message));
+            _logger.LogError(string.Format("Problem Sort Specification: For Process, Parameter - {0}: {1}", this.Name, ex.Message));
         }
       }
     }

@@ -65,10 +65,10 @@ namespace ECMPS.Checks.LME
             cSummaryValueDataCategory SummaryValueDataCategory = new cSummaryValueDataCategory( mCheckEngine, this, LMEInitializationCategory );
 
             // Initialize Check Bands
-            LMEInitializationCategory.InitCheckBands( CheckEngine.DbAuxConnection, ref Result );
-            LTFFHICategory.InitCheckBands( CheckEngine.DbAuxConnection, ref Result );
-            HourlyEmissionsDataCategory.InitCheckBands( CheckEngine.DbAuxConnection, ref Result );
-            SummaryValueDataCategory.InitCheckBands( CheckEngine.DbAuxConnection, ref Result );
+            LMEInitializationCategory.InitCheckBands( CheckEngine.DbAuxConnection);
+            LTFFHICategory.InitCheckBands( CheckEngine.DbAuxConnection);
+            HourlyEmissionsDataCategory.InitCheckBands( CheckEngine.DbAuxConnection);
+            SummaryValueDataCategory.InitCheckBands( CheckEngine.DbAuxConnection);
 
             SetCheckParameter( "FACILITY_LOCATION_RECORDS", null, eParameterDataType.DataView );
 

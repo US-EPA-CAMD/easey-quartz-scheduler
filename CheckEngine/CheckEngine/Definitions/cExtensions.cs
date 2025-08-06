@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Data;
 using System.Diagnostics;
 using System.Reflection;
 
+using Epa.Camd.Logger;
 using ECMPS.Checks.DatabaseAccess;
 using ECMPS.Checks.TypeUtilities;
 using ECMPS.Common;
@@ -18,6 +20,8 @@ namespace ECMPS.Checks.CheckEngine.Definitions
     /// </summary>
     public static class cExtensions
     {
+
+        private static readonly ILogger _logger = LoggerProvider.GetLogger(typeof(cExtensions).FullName);
 
         #region Severity Code
 
@@ -147,8 +151,7 @@ namespace ECMPS.Checks.CheckEngine.Definitions
             catch (Exception ex)
             {
                 _dvSeverityCode = null;
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-                Logging.LogErrorMessage("Loading of SEVERITY_CODE view failed");
+                _logger.LogError(ex, "Loading of SEVERITY_CODE view failed");
                 bRetVal = false;
             }
 

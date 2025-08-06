@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Data;
 using System.Collections;
@@ -50,26 +51,9 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
     public  cMonitorLocationAttribute GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
-      cMonitorLocationAttribute Category;
-      string ErrorMessage = "";
+      var Category = new cMonitorLocationAttribute(ACheckEngine, AMonitorPlanProcess);
 
-      try
-      {
-        Category = new cMonitorLocationAttribute(ACheckEngine, AMonitorPlanProcess);
-
-        bool Result = Category.InitCheckBands(ACheckEngine.DbConnection, ref ErrorMessage);
-
-        if (!Result)
-        {
-          Category = null;
-          System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ErrorMessage));
-        }
-      }
-      catch (Exception ex)
-      {
-        Category = null;
-        System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ex.Message));
-      }
+      Category.InitCheckBands(ACheckEngine.DbConnection);
 
       return Category;
     }
@@ -85,7 +69,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
       CurrentRowId = mMonitorLocationAttributeID;
 
-      System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, CurrentRowId));
+      _logger.LogError(string.Format("{0}: {1}", Label, CurrentRowId));
 
       return base.ProcessChecks(MonitorLocationID);
     }

@@ -1,9 +1,11 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
 using ECMPS.Checks.TypeUtilities;
+using Epa.Camd.Logger;
 
 namespace ECMPS.Checks.Parameters
 {
@@ -12,7 +14,6 @@ namespace ECMPS.Checks.Parameters
   /// </summary>
   public abstract class cCheckParameter
   {
-
     #region Protected Constructors
 
     /// <summary>
@@ -29,6 +30,7 @@ namespace ECMPS.Checks.Parameters
       FCheckParameters = ACheckParameters;
       FName = AParameterName.Trim().ToUpper();
       FDataType = AParameterDataType;
+      _logger = LoggerProvider.GetLogger(GetType().FullName);
     }
 
     #endregion
@@ -40,6 +42,11 @@ namespace ECMPS.Checks.Parameters
     /// The parent check parameters object for this parameter.
     /// </summary>
     protected cCheckParameters FCheckParameters;
+
+    /// <summary>
+    /// The logger for the cCheckParameter class.
+    /// </summary>
+    protected readonly ILogger _logger;
 
     #endregion
 
@@ -370,18 +377,18 @@ namespace ECMPS.Checks.Parameters
       if (!FIsSet)
       {
         if (FOwner != null)
-          System.Diagnostics.Debug.WriteLine(string.Format("Cannot update uninitialized parameter: Category - {0}, Parameter - {1}", FOwner.CategoryCd, this.Name));
+          _logger.LogError(string.Format("Cannot update uninitialized parameter: Category - {0}, Parameter - {1}", FOwner.CategoryCd, this.Name));
         else
-          System.Diagnostics.Debug.WriteLine(string.Format("Cannot update uninitialized parameter: For Process, Parameter - {0}", this.Name));
+          _logger.LogError(string.Format("Cannot update uninitialized parameter: For Process, Parameter - {0}", this.Name));
 
         Result = false;
       }
       else if (!OwnerIsOrAncestorOf(ACategory))
       {
         if (FOwner != null)
-          System.Diagnostics.Debug.WriteLine(string.Format("Cannot update parameter initialized by another category: Category - {0}, Parameter - {1}", FOwner.CategoryCd, this.Name));
+          _logger.LogError(string.Format("Cannot update parameter initialized by another category: Category - {0}, Parameter - {1}", FOwner.CategoryCd, this.Name));
         else
-          System.Diagnostics.Debug.WriteLine(string.Format("Cannot update parameter initialized by another category: For Process, Parameter - {0}", this.Name));
+          _logger.LogError(string.Format("Cannot update parameter initialized by another category: For Process, Parameter - {0}", this.Name));
 
         Result = false;
       }
@@ -426,9 +433,9 @@ namespace ECMPS.Checks.Parameters
         
         /*
         if (AOwner != null)
-          System.Diagnostics.Debug.WriteLine(string.Format("Duplicate Parameter Value Init: Category - {0}, Parameter - {1}", AOwner.CategoryCd, this.Name));
+          _logger.LogError(string.Format("Duplicate Parameter Value Init: Category - {0}, Parameter - {1}", AOwner.CategoryCd, this.Name));
         else
-          System.Diagnostics.Debug.WriteLine(string.Format("Duplicate Parameter Value Init: For Process, Parameter - {0}", this.Name));
+          _logger.LogError(string.Format("Duplicate Parameter Value Init: For Process, Parameter - {0}", this.Name));
 
         Result = false;
         */
@@ -456,7 +463,7 @@ namespace ECMPS.Checks.Parameters
     //      mProcess.SetCheckParameter(AParameterName, ParameterValue, ParameterType, RunningRuleCheck, IsAccumulator, IsArray);
     //    }
     //    else
-    //      System.Diagnostics.Debug.WriteLine(string.Format("Duplicate Parameter Set: Category - {0}, Parameter - {1}", this.CategoryCd, ParameterName));
+    //      _logger.LogError(string.Format("Duplicate Parameter Set: Category - {0}, Parameter - {1}", this.CategoryCd, ParameterName));
     //  }
     //  else
     //  {
@@ -482,7 +489,7 @@ namespace ECMPS.Checks.Parameters
     //      mProcess.SetCheckParameter(ParameterName, ParameterValue, ParameterType, RunningRuleCheck);
     //    }
     //    else
-    //      System.Diagnostics.Debug.WriteLine(string.Format("Duplicate Parameter Set: Category - {0}, Parameter - {1}", this.CategoryCd, ParameterName));
+    //      _logger.LogError(string.Format("Duplicate Parameter Set: Category - {0}, Parameter - {1}", this.CategoryCd, ParameterName));
     //  }
     //  else
     //  {
@@ -557,7 +564,7 @@ namespace ECMPS.Checks.Parameters
     //  }
     //  else
     //  {
-    //    System.Diagnostics.Debug.WriteLine(string.Format("Aggregate Parameter does not exist: Category - {0}, Parameter - {1}", this.CategoryCd, AParameterName));
+    //    _logger.LogError(string.Format("Aggregate Parameter does not exist: Category - {0}, Parameter - {1}", this.CategoryCd, AParameterName));
     //  }
     //}
 

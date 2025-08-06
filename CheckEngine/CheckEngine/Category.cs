@@ -299,8 +299,10 @@ namespace ECMPS.Checks.CheckEngine
             }
             catch (Exception ex)
             {
-                Process.UpdateErrors(string.Format("Category: {0}  Message: {1}",
-                                                   this.CategoryCd, ex.Message));
+                Process.UpdateErrors(
+                    string.Format("Category: {0}  Message: {1}", this.CategoryCd, ex.Message),
+                    ex.StackTrace
+                );
                 return false;
             }
         }
@@ -325,8 +327,10 @@ namespace ECMPS.Checks.CheckEngine
             {
                 CurrentMonLocId = AMonitorLocationId;
                 _logger.LogError(ex, "Exception in ProcessChecks. Category: {CategoryCd}, MonLocId: {MonLocId}, EvalId: {EvalId}", this.CategoryCd ?? "N/A", AMonitorLocationId ?? "N/A", CheckEngine.EvaluationId?.ToString() ?? "null");
-                Process.UpdateErrors(string.Format("Category: {0}  MonLocId: {1}  Message: {2}",
-                                                   this.CategoryCd, AMonitorLocationId, ex.Message));
+                Process.UpdateErrors(
+                    string.Format("Category: {0}  MonLocId: {1}  Message: {2}", this.CategoryCd, AMonitorLocationId, ex.Message),
+                    ex.StackTrace
+                );
                 return false;
             }
         }
@@ -351,8 +355,11 @@ namespace ECMPS.Checks.CheckEngine
             }
             catch (Exception ex)
             {
-                Process.UpdateErrors(string.Format("Category: {0}  MonLocId: {1}  TestSumId: {2}  Message: {3}",
-                                                   this.CategoryCd, AMonitorLocationId, ATestSummaryId, ex.Message));
+                Process.UpdateErrors(
+                    string.Format("Category: {0}  MonLocId: {1}  TestSumId: {2}  Message: {3}",
+                                                   this.CategoryCd, AMonitorLocationId, ATestSummaryId, ex.Message),
+                    ex.StackTrace
+                );
                 return false;
             }
         }
@@ -415,8 +422,6 @@ namespace ECMPS.Checks.CheckEngine
         {
             if (Process.ProcessCd != "HOURLY")
             {
-                System.Diagnostics.Debug.WriteLine("");
-                System.Diagnostics.Debug.WriteLine(string.Format("Check Category: {0}", this.CategoryCd));
                 _logger.LogInformation("Check Category: {CategoryCd}, EvalId: {EvalId}", this.CategoryCd ?? "N/A", CheckEngine.EvaluationId?.ToString() ?? "null");
             }
 
@@ -450,7 +455,7 @@ namespace ECMPS.Checks.CheckEngine
                                 if (CheckEngine.DebugMode) MissingParameters = MissingParameters.ListAdd(RequiredParameter.Name);
 
                                 if ((CategoryCd != "OPHOUR") || (GetCheckParameter("Derived_Hourly_Checks_Needed").ValueAsBool()))
-                                    System.Diagnostics.Debug.WriteLine(string.Format("[Check: {0}-{1}, Parameter: {2}] - missing parameter  (Category: {3}, Id: {4})",
+                                    _logger.LogError(string.Format("[Check: {0}-{1}, Parameter: {2}] - missing parameter  (Category: {3}, Id: {4})",
                                                                        RuleCheck.CheckTypeCd, RuleCheck.CheckNumber, RequiredParameter.Name,
                                                                        this.CategoryCd, this.RecordIdentifier));
                             }
@@ -479,9 +484,6 @@ namespace ECMPS.Checks.CheckEngine
 
                 if (!RunResult) break;
             }
-
-            if (Process.ProcessCd != "HOURLY")
-                System.Diagnostics.Debug.WriteLine("");
 
             return RunResult;
         }
@@ -588,7 +590,7 @@ namespace ECMPS.Checks.CheckEngine
                                          CurrentMonLocId, CurrentTestSumId, CurrentOpDate, CurrentOpHour,
                                          TableName, CurrentRowId, RecordIdentifier, this, out SeverityCd);
 
-                    Process.UpdateErrors(AErrorMessage);
+                    Process.UpdateErrors(AErrorMessage, ex.StackTrace);
                     RunResult = false;
                 }
 
@@ -631,7 +633,7 @@ namespace ECMPS.Checks.CheckEngine
 
             if (Process.ProcessParameters == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameters Erase: Category - {0} : {1}",
+                _logger.LogError(string.Format("Failed Parameters Erase: Category - {0} : {1}",
                                                                  this.CategoryCd,
                                                                  "Check parameters object not implemented for this process."));
             }
@@ -685,11 +687,11 @@ namespace ECMPS.Checks.CheckEngine
         private void FailParameterGet(string AParameterName, string AFailureMessage)
         {
             if (this.RunningRuleCheck == null)
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Get: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Get: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd,
                                                                  AParameterName, AFailureMessage));
             else
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Get: Category - {0}, Check - {1}, Parameter - {2} : {3}",
+                _logger.LogError(string.Format("Failed Parameter Get: Category - {0}, Check - {1}, Parameter - {2} : {3}",
                                                                  this.CategoryCd,
                                                                  this.RunningRuleCheck.CheckName,
                                                                  AParameterName, AFailureMessage));
@@ -698,11 +700,11 @@ namespace ECMPS.Checks.CheckEngine
         private void FailParameterSet(string AParameterName, string AFailureMessage)
         {
             if (this.RunningRuleCheck == null)
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Set: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Set: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd,
                                                                  AParameterName, AFailureMessage));
             else
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Set: Category - {0}, Check - {1}, Parameter - {2} : {3}",
+                _logger.LogError(string.Format("Failed Parameter Set: Category - {0}, Check - {1}, Parameter - {2} : {3}",
                                                                  this.CategoryCd,
                                                                  this.RunningRuleCheck.CheckName,
                                                                  AParameterName, AFailureMessage));
@@ -831,13 +833,13 @@ namespace ECMPS.Checks.CheckEngine
         {
             if (Process.ProcessParameters == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameters object not implemented for this process."));
             }
             else if (!Process.ProcessParameters.ContainsLegacyParameter(AParameterName, this))
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameter not implemented for this process."));
             }
@@ -866,14 +868,14 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                        _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                          this.CategoryCd, AParameterName,
                                                                          "Check parameters object is not for booleans or is an array"));
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                    _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                        this.CategoryCd, AParameterName, ex.Message));
                 }
             }
@@ -888,13 +890,13 @@ namespace ECMPS.Checks.CheckEngine
         {
             if (Process.ProcessParameters == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameters object not implemented for this process."));
             }
             else if (!Process.ProcessParameters.ContainsLegacyParameter(AParameterName, this))
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameter not implemented for this process."));
             }
@@ -918,14 +920,14 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                        _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                          this.CategoryCd, AParameterName,
                                                                          "Check parameters object is not for decimals or is an array"));
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                    _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                        this.CategoryCd, AParameterName, ex.Message));
                 }
             }
@@ -940,13 +942,13 @@ namespace ECMPS.Checks.CheckEngine
         {
             if (Process.ProcessParameters == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameters object not implemented for this process."));
             }
             else if (!Process.ProcessParameters.ContainsLegacyParameter(AParameterName, this))
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameter not implemented for this process."));
             }
@@ -970,14 +972,14 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                        _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                          this.CategoryCd, AParameterName,
                                                                          "Check parameters object is not for integers or is an array"));
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                    _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                        this.CategoryCd, AParameterName, ex.Message));
                 }
             }
@@ -995,13 +997,13 @@ namespace ECMPS.Checks.CheckEngine
         {
             if (Process.ProcessParameters == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameters object not implemented for this process."));
             }
             else if (!Process.ProcessParameters.ContainsLegacyParameter(AParameterName, this))
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameter not implemented for this process."));
             }
@@ -1030,14 +1032,14 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                        _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                          this.CategoryCd, AParameterName,
                                                                          "Check parameters object is not for booleans or is an array"));
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                    _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                        this.CategoryCd, AParameterName, ex.Message));
                 }
             }
@@ -1054,13 +1056,13 @@ namespace ECMPS.Checks.CheckEngine
         {
             if (Process.ProcessParameters == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameters object not implemented for this process."));
             }
             else if (!Process.ProcessParameters.ContainsLegacyParameter(AParameterName, this))
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameter not implemented for this process."));
             }
@@ -1086,14 +1088,14 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                        _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                          this.CategoryCd, AParameterName,
                                                                          "Check parameters object is not for decimals or is an array"));
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                    _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                        this.CategoryCd, AParameterName, ex.Message));
                 }
             }
@@ -1110,13 +1112,13 @@ namespace ECMPS.Checks.CheckEngine
         {
             if (Process.ProcessParameters == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameters object not implemented for this process."));
             }
             else if (!Process.ProcessParameters.ContainsLegacyParameter(AParameterName, this))
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameter not implemented for this process."));
             }
@@ -1142,14 +1144,14 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                        _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                          this.CategoryCd, AParameterName,
                                                                          "Check parameters object is not for integers or is an array"));
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                    _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                        this.CategoryCd, AParameterName, ex.Message));
                 }
             }
@@ -1240,13 +1242,13 @@ namespace ECMPS.Checks.CheckEngine
         {
             if (Process.ProcessParameters == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameters object not implemented for this process."));
             }
             else if (!Process.ProcessParameters.ContainsLegacyParameter(AParameterName, this))
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameter not owned by category."));
             }
@@ -1272,14 +1274,14 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                        _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                          this.CategoryCd, AParameterName,
                                                                          "Check parameters object is not for booleans or is an array"));
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                    _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                        this.CategoryCd, AParameterName, ex.Message));
                 }
             }
@@ -1296,13 +1298,13 @@ namespace ECMPS.Checks.CheckEngine
         {
             if (Process.ProcessParameters == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameters object not implemented for this process."));
             }
             else if (!Process.ProcessParameters.ContainsLegacyParameter(AParameterName, this))
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameter not owned by category."));
             }
@@ -1328,14 +1330,14 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                        _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                          this.CategoryCd, AParameterName,
                                                                          "Check parameters object is not for decimals or is an array"));
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                    _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                        this.CategoryCd, AParameterName, ex.Message));
                 }
             }
@@ -1352,13 +1354,13 @@ namespace ECMPS.Checks.CheckEngine
         {
             if (Process.ProcessParameters == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameters object not implemented for this process."));
             }
             else if (!Process.ProcessParameters.ContainsLegacyParameter(AParameterName, this))
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameter not owned by category."));
             }
@@ -1384,14 +1386,14 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                        _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                          this.CategoryCd, AParameterName,
                                                                          "Check parameters object is not for decimals or is an array"));
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                    _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                        this.CategoryCd, AParameterName, ex.Message));
                 }
             }
@@ -1408,13 +1410,13 @@ namespace ECMPS.Checks.CheckEngine
         {
             if (Process.ProcessParameters == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameters object not implemented for this process."));
             }
             else if (!Process.ProcessParameters.ContainsLegacyParameter(AParameterName, this))
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameter not owned by category."));
             }
@@ -1440,14 +1442,14 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                        _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                          this.CategoryCd, AParameterName,
                                                                          "Check parameters object is not for decimals or is an array"));
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                    _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                        this.CategoryCd, AParameterName, ex.Message));
                 }
             }
@@ -1464,13 +1466,13 @@ namespace ECMPS.Checks.CheckEngine
         {
             if (Process.ProcessParameters == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameters object not implemented for this process."));
             }
             else if (!Process.ProcessParameters.ContainsLegacyParameter(AParameterName, this))
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameter not owned by category."));
             }
@@ -1496,14 +1498,14 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                        _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                          this.CategoryCd, AParameterName,
                                                                          "Check parameters object is not for decimals or is an array"));
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                    _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                        this.CategoryCd, AParameterName, ex.Message));
                 }
             }
@@ -1520,13 +1522,13 @@ namespace ECMPS.Checks.CheckEngine
         {
             if (Process.ProcessParameters == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameters object not implemented for this process."));
             }
             else if (!Process.ProcessParameters.ContainsLegacyParameter(AParameterName, this))
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                  this.CategoryCd, AParameterName,
                                                                  "Check parameter not owned by category."));
             }
@@ -1552,14 +1554,14 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                        _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                                          this.CategoryCd, AParameterName,
                                                                          "Check parameters object is not for decimals or is an array"));
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
+                    _logger.LogError(string.Format("Failed Parameter Accumulation: Category - {0}, Parameter - {1} : {2}",
                                                        this.CategoryCd, AParameterName, ex.Message));
                 }
             }
@@ -1576,13 +1578,16 @@ namespace ECMPS.Checks.CheckEngine
         /// Populates the check bands for the category.
         /// </summary>
         /// <param name="ADatabaseAux">The AUX database object to use for the update.</param>
-        /// <param name="AErrorMessage">The error message returned on failure.</param>
-        /// <returns>True if the population is successful.</returns>
-        public bool InitCheckBands(cDatabase ADatabaseAux, ref string AErrorMessage)
+        public void InitCheckBands(cDatabase ADatabaseAux)
         {
+            string errorMessage = "";
             CheckParameterBands = new cCheckParameterBands(this.CategoryCd);
 
-            return CheckParameterBands.Populate(ADatabaseAux, this.Process.ProcessParameters, ref AErrorMessage);
+            bool result = CheckParameterBands.Populate(ADatabaseAux, this.Process.ProcessParameters, ref errorMessage);
+            if (!result)
+            {
+              throw new Exception(string.Format("Failed to initialize check bands for category {0}: {1}", this.CategoryCd, errorMessage));
+            }
         }
 
         /// <summary>

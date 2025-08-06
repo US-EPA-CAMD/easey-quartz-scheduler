@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Data;
 
@@ -6,6 +7,8 @@ using ECMPS.Checks.Parameters;
 using ECMPS.Checks.TypeUtilities;
 
 using ECMPS.Definitions.Extensions;
+
+using Epa.Camd.Logger;
 
 
 namespace ECMPS.Checks.DefaultChecks
@@ -57,6 +60,8 @@ namespace ECMPS.Checks.DefaultChecks
 			CheckProcedures[96] = new dCheckProcedure(DEFAULT96);
 			CheckProcedures[97] = new dCheckProcedure(DEFAULT97);
 		}
+
+    private readonly ILogger<cDefaultChecks> _logger = LoggerProvider.GetLogger<cDefaultChecks>();
 
 		# region default
 
@@ -489,7 +494,7 @@ namespace ECMPS.Checks.DefaultChecks
 			catch (Exception ex)
 			{
 				ReturnVal = Category.CheckEngine.FormatError(ex, "DEFAULT50");
-				System.Diagnostics.Debug.WriteLine("inner exception " + ex.InnerException);
+				_logger.LogError("inner exception " + ex.InnerException);
 			}
 			return ReturnVal;
 		}

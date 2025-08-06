@@ -88,57 +88,52 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
         cGenerationCategory locationHourlyCategory = new cGenerationCategory(locationCategory, "EMGENHR", emGenerationParameters);
         cGenerationCategory locationSummaryCategory = new cGenerationCategory(locationCategory, "EMGENSV", emGenerationParameters);
 
-        if (!locationCategory.InitCheckBands(CheckEngine.DbConnection, ref resultMessage) ||
-            !locationHourlyCategory.InitCheckBands(CheckEngine.DbConnection, ref resultMessage) ||
-            !locationSummaryCategory.InitCheckBands(CheckEngine.DbConnection, ref resultMessage))
+        locationCategory.InitCheckBands(CheckEngine.DbConnection);
+        locationHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
+        locationSummaryCategory.InitCheckBands(CheckEngine.DbConnection);
+
+        SetDataParameterByMonitorPlan(CheckEngine.MonPlanId);
+
+        DataView monitorLocationView = new DataView(SourceData.Tables["MpMonitorLocation"], null, "Mon_Loc_Id", DataViewRowState.CurrentRows);
+
+        //Initialize Generated Data Store
+        GeneratedDataInit();
+
+        for (int monLocDex = 0; (monLocDex < monitorLocationView.Count) && MigrateGeneratedData; monLocDex++)
         {
-          result = false;
-        }
-        else
-        {
-          SetDataParameterByMonitorPlan(CheckEngine.MonPlanId);
+          DataRowView monitorLocationRow = monitorLocationView[monLocDex];
+          string monLocName = monitorLocationRow["LOCATION_NAME"].AsString();
 
-          DataView monitorLocationView = new DataView(SourceData.Tables["MpMonitorLocation"], null, "Mon_Loc_Id", DataViewRowState.CurrentRows);
+          MonLocId = monitorLocationRow["MON_LOC_ID"].AsString();
 
-          //Initialize Generated Data Store
-          GeneratedDataInit();
+          SetDataParameterByMonitorLocation(MonLocId);
 
-          for (int monLocDex = 0; (monLocDex < monitorLocationView.Count) && MigrateGeneratedData; monLocDex++)
+          // Run Checks
+          if (locationCategory.ProcessChecks(MonLocId, monLocDex, monLocName) && MigrateGeneratedData)
           {
-            DataRowView monitorLocationRow = monitorLocationView[monLocDex];
-            string monLocName = monitorLocationRow["LOCATION_NAME"].AsString();
-
-            MonLocId = monitorLocationRow["MON_LOC_ID"].AsString();
-
-            SetDataParameterByMonitorLocation(MonLocId);
-
-            // Run Checks
-            if (locationCategory.ProcessChecks(MonLocId, monLocDex, monLocName) && MigrateGeneratedData)
-            {
-              for (DateTime opDate = CheckEngine.EvaluationBeganDate.Value; opDate <= CheckEngine.EvaluationEndedDate.Value; opDate = opDate.AddDays(1))
-                for (int opHour = 0; opHour <= 23; opHour++)
-                {
-                  // Run Hourly Checks
-                  if (locationHourlyCategory.ProcessChecks(MonLocId, monLocDex, monLocName, opDate, opHour))
-                  {
-                    GeneratedDataAppendHourly();
-                  }
-                  locationHourlyCategory.EraseParameters();
-                }
-
-              //Run Summary Checks
-              locationSummaryCategory.ProcessChecks(MonLocId, monLocDex, monLocName);
+            for (DateTime opDate = CheckEngine.EvaluationBeganDate.Value; opDate <= CheckEngine.EvaluationEndedDate.Value; opDate = opDate.AddDays(1))
+              for (int opHour = 0; opHour <= 23; opHour++)
               {
-                GeneratedDataAppendSummary();
+                // Run Hourly Checks
+                if (locationHourlyCategory.ProcessChecks(MonLocId, monLocDex, monLocName, opDate, opHour))
+                {
+                  GeneratedDataAppendHourly();
+                }
+                locationHourlyCategory.EraseParameters();
               }
-              locationSummaryCategory.EraseParameters();
-            }
-            locationCategory.EraseParameters();
-          }
 
-          // Push Generated Data and Check Log Updates
-          DbUpdate(ref resultMessage);
+            //Run Summary Checks
+            locationSummaryCategory.ProcessChecks(MonLocId, monLocDex, monLocName);
+            {
+              GeneratedDataAppendSummary();
+            }
+            locationSummaryCategory.EraseParameters();
+          }
+          locationCategory.EraseParameters();
         }
+
+        // Push Generated Data and Check Log Updates
+        DbUpdate(ref resultMessage);
 
         locationCategory = null;
         locationHourlyCategory = null;
