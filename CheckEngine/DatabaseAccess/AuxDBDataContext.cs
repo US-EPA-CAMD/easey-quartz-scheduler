@@ -182,16 +182,17 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <param name="userId">The user id for the user performing the evaluation.</param>
         /// <param name="chkSessionId">The Check Session Id for the evaluation.</param>
         /// <param name="setId">The set / batch Id of the current runs [Identifies records belonging to a certain batch]</param>
+        /// <param name="evaluationId">The EVALUATION_ID from the evaluation queue.</param>
         /// <param name="result">'T' if the update was successful and 'F' if it was not.</param>
         /// <param name="errorMessage">The error message produced when the update was not successful.</param>
         /// <returns>0</returns>
         public int CheckSessionInit(string processCd, string categoryCd, string monPlanId, System.Nullable<int> rptPeriodId,
                                     string testSumId, string qaCertEventId, string testExtensionExemptionId,
                                     System.Nullable<System.DateTime> evaluationBeginDate, System.Nullable<System.DateTime> evaluationEndDate,
-                                    string userId, string setId, ref string chkSessionId,
+                                    string userId, string setId, long? evaluationId, ref string chkSessionId,
                                     ref System.Nullable<char> result, ref string errorMessage)
         {
-            _logger.LogInformation("Running CheckSessionInit with process {ProcessCd}, monPlanId {MonPlanId}, user {UserId}", processCd, monPlanId, userId);
+            _logger.LogInformation("Running CheckSessionInit with process {ProcessCd}, monPlanId {MonPlanId}, user {UserId}, EvalId: {EvalId}", processCd, monPlanId, userId, evaluationId?.ToString() ?? "null");
 
             string resultString = string.Empty;
             List<string> values = new List<string>();
@@ -219,6 +220,9 @@ namespace ECMPS.Checks.DatabaseAccess
             var batchId = object.Equals(setId, null)
                 ? "null"
                 : $"'{setId}'";
+            var evaluationIdParam = object.Equals(evaluationId, null)
+                ? "null"
+                : $"'{evaluationId}'";
 
             DataTable AResultTable;
             string Sql = @$"select camdecmpswks.check_session_init(
@@ -232,7 +236,8 @@ namespace ECMPS.Checks.DatabaseAccess
                 {evaluationBeginDateParam},
                 {evaluationEndDateParam},
                 '{userId}',
-                {batchId}
+                {batchId},
+                {evaluationIdParam}
             )";
 
             try
@@ -255,11 +260,11 @@ namespace ECMPS.Checks.DatabaseAccess
                 resultString = values[1];
                 errorMessage = values[2];
 
-                _logger.LogInformation("CheckSessionInit Created with sessionId: {ChkSessionId}, result: {Result}, error: {Error}", chkSessionId ?? "N/A", resultString ?? "N/A", errorMessage ?? "N/A");
+                _logger.LogInformation("CheckSessionInit Created with sessionId: {ChkSessionId}, result: {Result}, error: {Error}, EvalId: {EvalId}", chkSessionId ?? "N/A", resultString ?? "N/A", errorMessage ?? "N/A", evaluationId?.ToString() ?? "null");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "CheckSessionInit failed.");
+                _logger.LogError(ex, "CheckSessionInit failed for EvalId: {EvalId}.", evaluationId?.ToString() ?? "null");
             }
 
             //Database.AddInputParameter("@V_PROCESS_CD", processCd);

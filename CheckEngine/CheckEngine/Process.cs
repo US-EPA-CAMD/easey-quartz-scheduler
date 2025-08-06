@@ -1308,7 +1308,7 @@ namespace ECMPS.Checks.CheckEngine
                         errorMessage = string.Format(resultTemplate, "DB", errorMessage);
                         result = false;
                     }
-                    _logger.LogInformation("Completed update_ecmps_status_for_evaluation. result: {result}", result ? "Success" : "Failure");
+                    _logger.LogInformation("Completed update_ecmps_status_for_evaluation. result: {result}, EvalId: {EvalId}", result ? "Success" : "Failure", mCheckEngine.EvaluationId?.ToString() ?? "null");
                 }
                 catch (Exception ex)
                 {
