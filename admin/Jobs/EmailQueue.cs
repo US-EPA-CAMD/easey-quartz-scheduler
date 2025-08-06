@@ -19,6 +19,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
   {
     private NpgSqlContext _dbContext = null;
     private readonly ILogger<EmailQueue> _logger;
+    private readonly Guid _jobId = Guid.NewGuid();
 
     private IConfiguration Configuration { get; }
 
@@ -31,6 +32,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
     public async Task Execute(IJobExecutionContext context)
     {
+      _logger.LogInformation("Executing EmailQueue job. JobId: {JobId}", _jobId);
+
+      JobLog jl = new JobLog()
+      {
+        JobId = _jobId,
+        JobSystem = "Quartz",
+        JobClass = "EmailQueue",
+        JobName = context.JobDetail.Key.Name,
+        AddDate = Utils.getCurrentEasternTime(),
+        StartDate = Utils.getCurrentEasternTime(),
+        EndDate = null,
+        StatusCd = "WIP"
+      };
+      _dbContext.JobLogs.Add(jl);
+      await _dbContext.SaveChangesAsync();
+
       try
       {
         _logger.LogInformation("Checking Email Queue job now");
@@ -48,27 +65,30 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           ).ToList();
 
         string clientToken = await Utils.generateClientToken();
+        int maxEmails = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_EMAILS_TO_SEND"]);
 
-        if (inWIP.Count < Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_EMAILS_TO_SEND"]))
+        if (inWIP.Count < maxEmails)
         {
           if (inQueue.Count > 0)
           {
-            int jobs_to_schedule = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_EMAILS_TO_SEND"]) - inWIP.Count;
+            int jobs_to_schedule = Math.Min(maxEmails - inWIP.Count, inQueue.Count);
 
             _logger.LogInformation("Scheduling {JobCount} Email Queue jobs", jobs_to_schedule);
 
-            int index = 0;
             for (int i = 0; i < jobs_to_schedule; i++)
             {
-              if (index < inQueue.Count)
+              EmailToSend emailToSend = inQueue[i];
+              
+              try
               {
-                //Call Camd-Service email service
-                inQueue[i].StatusCode = "WIP";
-                _dbContext.EmailToSend.Update(inQueue[i]);
-                _dbContext.SaveChanges();
+                // Mark as WIP
+                emailToSend.StatusCode = "WIP";
+                _dbContext.EmailToSend.Update(emailToSend);
+                await _dbContext.SaveChangesAsync();
 
+                // Call Camd-Service email service
                 ToProcessPayload payload = new ToProcessPayload();
-                payload.emailToProcessId = Convert.ToInt64(inQueue[i].SendId);
+                payload.emailToSendId = Convert.ToInt64(emailToSend.SendId);
 
                 HttpClient client = new HttpClient();
                 StringContent httpContent = new StringContent(JsonConvert.SerializeObject(payload), System.Text.Encoding.UTF8, "application/json");
@@ -76,20 +96,53 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 client.DefaultRequestHeaders.Add("x-client-id", Configuration["EASEY_QUARTZ_SCHEDULER_CLIENT_ID"]);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", clientToken);
 
-                HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_CAMD_SERVICES"] + "/support/email/process", httpContent); //TODO: Replace this with mocked result
+                HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_CAMD_SERVICES"] + "/support/email/process", httpContent);
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                  _logger.LogError("Email service returned error for SendId: {SendId}. Status: {StatusCode}, Reason: {ReasonPhrase}", 
+                    emailToSend.SendId, response.StatusCode, response.ReasonPhrase);
+                  
+                  // Revert to QUEUED on failure
+                  emailToSend.StatusCode = "QUEUED";
+                  _dbContext.EmailToSend.Update(emailToSend);
+                  await _dbContext.SaveChangesAsync();
+                }
 
+                // Delay between email processing to avoid overwhelming the email service and maintain rate limiting
                 Thread.Sleep(Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_EMAIL_QUEUE_DELAY"] ?? "1") * 1000);
-                index++;
+              }
+              catch (Exception emailEx)
+              {
+                _logger.LogError(emailEx, "Error processing email SendId: {SendId}", emailToSend.SendId);
+                
+                // Revert to QUEUED on exception
+                emailToSend.StatusCode = "QUEUED";
+                _dbContext.EmailToSend.Update(emailToSend);
+                await _dbContext.SaveChangesAsync();
               }
             }
           }
         }
 
+        // Mark job as complete
+        jl.StatusCd = "COMPLETE";
+        jl.EndDate = Utils.getCurrentEasternTime();
+        _dbContext.JobLogs.Update(jl);
+        await _dbContext.SaveChangesAsync();
+
         return;
       }
       catch (Exception e)
       {
-        _logger.LogError(e, "Error scheduling Email Queue job");
+        // Mark job as error
+        jl.StatusCd = "ERROR";
+        jl.EndDate = Utils.getCurrentEasternTime();
+        jl.AdditionalDetails = e.Message;
+        _dbContext.JobLogs.Update(jl);
+        await _dbContext.SaveChangesAsync();
+        
+        _logger.LogError(e, "Error executing EmailQueue job. JobId: {JobId}", _jobId);
         return;
       }
     }
