@@ -111,7 +111,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
             var parameters = new List<NpgsqlParameter>
             {
-                _dbContext.CreateParameter("par_v_sysdate", DateTime.Today.ToString("yyyy-MM-dd"), NpgsqlDbType.Date, System.Data.ParameterDirection.Input),
+                _dbContext.CreateParameter("par_v_sysdate", DateTime.Today.ToString("yyyy-MM-dd"), NpgsqlDbType.Text, System.Data.ParameterDirection.Input),
                 _dbContext.CreateParameter("par_v_fac_id", null, NpgsqlDbType.Numeric, System.Data.ParameterDirection.Input),
                 _dbContext.CreateParameter("par_v_result", null, NpgsqlDbType.Text, System.Data.ParameterDirection.InputOutput),
                 _dbContext.CreateParameter("par_v_error_msg", null, NpgsqlDbType.Text, System.Data.ParameterDirection.InputOutput)
