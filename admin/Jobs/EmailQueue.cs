@@ -112,9 +112,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 // Delay between email processing to avoid overwhelming the email service and maintain rate limiting
                 Thread.Sleep(Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_EMAIL_QUEUE_DELAY"] ?? "1") * 1000);
               }
-              catch (Exception emailEx)
+              catch (Exception ex)
               {
-                _logger.LogError(emailEx, "Error processing email SendId: {SendId}", emailToSend.SendId);
+                _logger.LogError(ex, "Error processing email SendId: {SendId}", emailToSend.SendId);
                 
                 // Revert to QUEUED on exception
                 emailToSend.StatusCode = "QUEUED";

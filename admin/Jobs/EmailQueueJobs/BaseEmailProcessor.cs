@@ -40,26 +40,28 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         protected async Task<Dictionary<decimal, HashSet<string>>> ProcessEmailRecipients()
         {
             string jobName = GetJobName();
-            _logger.LogInformation("Executing {JobName} job. JobId: {JobId}", jobName, _jobId);
+            _logger.LogInformation("{JobName}: Executing job. JobId: {JobId}", jobName, _jobId);
 
             JobLog jl = await CreateJobLogEntry(jobName);
             
             try
             {
-                string emailTypeForDb = GetEmailTypeForDatabase();
+                string notificationTypeForDb = GetEmailTypeForDatabase();
                 
                 // Get queued emails for this type
                 List<EmailToProcess> inQueue = _dbContext.EmailToProcessQueue.FromSqlRaw(@"
                     SELECT *
                     FROM camdecmpsaux.email_to_process
-                    WHERE status_cd = 'QUEUED' AND email_type = {0}", emailTypeForDb).ToList();
+                    WHERE status_cd = 'QUEUED' AND email_type = {0}", notificationTypeForDb).ToList();
 
                 if (inQueue.Count == 0)
                 {
-                    _logger.LogInformation("No queued emails found for type: {EmailType}", emailTypeForDb);
+                    _logger.LogInformation("{JobName}: No queued emails found for type: {NotificationType}", jobName, notificationTypeForDb);
                     await CompleteJobLog(jl);
                     return new Dictionary<decimal, HashSet<string>>();
                 }
+
+                _logger.LogInformation("{JobName}: Found {QueueCount} emails queued for processing", jobName, inQueue.Count);
 
                 // Mark records as WIP and collect plant IDs
                 HashSet<long> plantIdSet = new HashSet<long>();
@@ -70,20 +72,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     plantIdSet.Add(Convert.ToInt64(process.FacId));
                 }
                 _dbContext.SaveChanges();
+                _logger.LogInformation("{JobName}: Marked {QueueCount} email records as WIP, found {PlantCount} unique facilities", jobName, inQueue.Count, plantIdSet.Count);
 
                 // Create plant ID list for API call
                 long[] plantIdList = new long[plantIdSet.Count];
                 plantIdSet.CopyTo(plantIdList);
 
                 // Call recipient API
-                string emailTypeForRecipientApi = GetEmailTypeForRecipientApi();
-                RecipientResponse recipientResponse = await CallRecipientAPI(emailTypeForRecipientApi, plantIdList);
+                string notificationTypeForRecipientApi = GetEmailTypeForRecipientApi();
+                RecipientResponse recipientResponse = await CallRecipientAPI(notificationTypeForRecipientApi, plantIdList);
 
                 // Process response and build facility-to-emails mapping
                 Dictionary<decimal, HashSet<string>> facIdToEmails = BuildFacilityEmailMapping(recipientResponse);
 
                 // Create EmailToSend records
-                await CreateEmailToSendRecords(inQueue, facIdToEmails);
+                int emailsCreated = await CreateEmailToSendRecords(inQueue, facIdToEmails);
+                _logger.LogInformation("{JobName}: Completed successfully. Created {EmailCount} emails for {FacilityCount} facilities", jobName, emailsCreated, facIdToEmails.Count);
 
                 await CompleteJobLog(jl);
                 return facIdToEmails;
@@ -128,16 +132,16 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             jl.AdditionalDetails = e.Message;
             _dbContext.JobLogs.Update(jl);
             await _dbContext.SaveChangesAsync();
-            _logger.LogError(e, "Error executing {JobName} job. JobId: {JobId}", GetJobName(), _jobId);
+            _logger.LogError(e, "{JobName}: Error executing job. JobId: {JobId}", GetJobName(), _jobId);
         }
 
-        private async Task<RecipientResponse> CallRecipientAPI(string emailType, long[] plantIdList)
+        private async Task<RecipientResponse> CallRecipientAPI(string notificationType, long[] plantIdList)
         {
             // Fire API Call
             ReminderNotificationPayload payload = new ReminderNotificationPayload()
             {
                 plantIdList = plantIdList,
-                emailType = emailType,
+                emailType = notificationType,
                 isMats = null,
                 plantId = null,
                 submissionType = null,
@@ -152,7 +156,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             string clientToken = await Utils.generateClientToken();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", clientToken);
 
-            _logger.LogInformation("Sending POST request to /support/email/emailRecipientList for emailType: {EmailType}", emailType);
+            _logger.LogInformation("{JobName}: Calling recipient API for {NotificationType} with {PlantCount} facilities", GetJobName(), notificationType, plantIdList.Length);
 
             HttpResponseMessage response = await client.PostAsync(_configuration["EASEY_CAMD_SERVICES"] + "/support/email/emailRecipientList", httpContent);
             response.EnsureSuccessStatusCode();
@@ -164,22 +168,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             // Check for API errors
             if (recipientResponse.hasError)
             {
-                _logger.LogError("Recipient List API returned error: {ErrorMessage}", recipientResponse.errorMessage);
+                _logger.LogError("{JobName}: Recipient List API returned error: {ErrorMessage}", GetJobName(), recipientResponse.errorMessage);
                 throw new Exception($"Recipient List API returned error: {recipientResponse.errorMessage}");
             }
 
-            // Log summary and first recipient if available
+            // Log summary
             int recipientCount = recipientResponse.recipients?.Length ?? 0;
-            if (recipientCount > 0)
-            {
-                string firstRecipient = recipientResponse.recipients[0].emailAddressList;
-                _logger.LogInformation("Successfully retrieved {RecipientCount} recipients for emailType: {EmailType}. First recipient: {FirstRecipient}", 
-                    recipientCount, emailType, firstRecipient);
-            }
-            else
-            {
-                _logger.LogInformation("Successfully retrieved {RecipientCount} recipients for emailType: {EmailType}", recipientCount, emailType);
-            }
+            _logger.LogInformation("{JobName}: Recipient API returned {RecipientCount} recipients for {NotificationType}", GetJobName(), recipientCount, notificationType);
             return recipientResponse;
         }
 
@@ -189,7 +184,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
             if (recipientResponse.recipients == null || recipientResponse.recipients.Length == 0)
             {
-                _logger.LogWarning("No recipients found in API response");
+                _logger.LogWarning("{JobName}: No recipients found in API response", GetJobName());
                 return facIdToEmails;
             }
 
@@ -200,7 +195,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 
                 if (string.IsNullOrEmpty(emailAddress))
                 {
-                    _logger.LogWarning("Empty email address found in recipient response");
+                    _logger.LogWarning("{JobName}: Empty email address found in recipient response", GetJobName());
                     continue;
                 }
 
@@ -220,12 +215,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 }
             }
 
-            _logger.LogInformation("Built email mapping for {FacilityCount} facilities", facIdToEmails.Count);
+            _logger.LogInformation("{JobName}: Built email mapping for {FacilityCount} facilities", GetJobName(), facIdToEmails.Count);
             return facIdToEmails;
         }
 
-        private async Task CreateEmailToSendRecords(List<EmailToProcess> inQueue, Dictionary<decimal, HashSet<string>> facIdToEmails)
+        private async Task<int> CreateEmailToSendRecords(List<EmailToProcess> inQueue, Dictionary<decimal, HashSet<string>> facIdToEmails)
         {
+            int totalEmailsCreated = 0;
+            int facilitiesWithoutRecipients = 0;
+
             foreach (EmailToProcess process in inQueue)
             {
                 HashSet<string> allEmailsForFacility = new HashSet<string>();
@@ -253,11 +251,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                         };
 
                         _dbContext.EmailToSend.Add(es);
+                        totalEmailsCreated++;
                     }
                 }
                 else
                 {
-                    _logger.LogWarning("No email recipients found for facility ID: {FacId}.", process.FacId);
+                    facilitiesWithoutRecipients++;
+                    _logger.LogWarning("{JobName}: No email recipients found for facility ID: {FacId}", GetJobName(), process.FacId);
                 }
 
                 // Mark as COMPLETE only after EMAIL_TO_SEND records are created
@@ -266,7 +266,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             }
 
             _dbContext.SaveChanges();
-            _logger.LogInformation("Successfully processed {QueueCount} email queue items", inQueue.Count);
+            
+            if (facilitiesWithoutRecipients > 0)
+            {
+                _logger.LogWarning("{JobName}: Processed {QueueCount} queue items, created {EmailCount} emails. {NoRecipientCount} facilities had no recipients", 
+                    GetJobName(), inQueue.Count, totalEmailsCreated, facilitiesWithoutRecipients);
+            }
+            else
+            {
+                _logger.LogInformation("{JobName}: Processed {QueueCount} queue items, created {EmailCount} emails", GetJobName(), inQueue.Count, totalEmailsCreated);
+            }
+
+            return totalEmailsCreated;
         }
     }
 }
