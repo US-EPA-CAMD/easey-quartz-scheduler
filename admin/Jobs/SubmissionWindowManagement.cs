@@ -111,24 +111,24 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
             var parameters = new List<NpgsqlParameter>
             {
-                _dbContext.CreateParameter("par_v_sysdate", DateTime.Today.ToString("yyyy-MM-dd"), NpgsqlDbType.Text, System.Data.ParameterDirection.Input),
-                _dbContext.CreateParameter("par_v_fac_id", null, NpgsqlDbType.Numeric, System.Data.ParameterDirection.Input),
-                _dbContext.CreateParameter("par_v_result", null, NpgsqlDbType.Text, System.Data.ParameterDirection.InputOutput),
-                _dbContext.CreateParameter("par_v_error_msg", null, NpgsqlDbType.Text, System.Data.ParameterDirection.InputOutput)
+                _dbContext.CreateParameter("v_sysdate", DateTime.Today.ToString("yyyy-MM-dd"), NpgsqlDbType.Text, System.Data.ParameterDirection.Input),
+                _dbContext.CreateParameter("v_fac_id", null, NpgsqlDbType.Numeric, System.Data.ParameterDirection.Input),
+                _dbContext.CreateParameter("v_result", null, NpgsqlDbType.Text, System.Data.ParameterDirection.InputOutput),
+                _dbContext.CreateParameter("v_error_msg", null, NpgsqlDbType.Text, System.Data.ParameterDirection.InputOutput)
             };
 
             var command = _dbContext.ExecuteProcedure("camdecmpsaux.init_and_close_em_submission_access", parameters);
 
             // Get the output values
-            var resultParam = command.Parameters["par_v_result"];
-            var errorMsgParam = command.Parameters["par_v_error_msg"];
+            var resultParam = command.Parameters["v_result"];
+            var errorMsgParam = command.Parameters["v_error_msg"];
 
             var result = resultParam.Value != DBNull.Value ? resultParam.Value.ToString() : null;
             var errorMsg = errorMsgParam.Value != DBNull.Value ? errorMsgParam.Value.ToString() : null;
 
             // Get input parameters for error logging
-            var sysdateParam = command.Parameters["par_v_sysdate"];
-            var facIdParam = command.Parameters["par_v_fac_id"];
+            var sysdateParam = command.Parameters["v_sysdate"];
+            var facIdParam = command.Parameters["v_fac_id"];
             var sysdate = sysdateParam.Value != DBNull.Value ? sysdateParam.Value.ToString() : "null";
             var facId = facIdParam.Value != DBNull.Value ? facIdParam.Value.ToString() : "null";
 
