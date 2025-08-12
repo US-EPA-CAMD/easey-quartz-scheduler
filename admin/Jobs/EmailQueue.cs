@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
+  [DisallowConcurrentExecution]
   public class EmailQueue : IJob
   {
     private NpgSqlContext _dbContext = null;

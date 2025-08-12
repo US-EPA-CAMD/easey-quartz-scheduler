@@ -19,6 +19,7 @@ using ECMPS.Checks.EmissionsReport;
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
 
+    [DisallowConcurrentExecution]
     public class PdemJob : IJob
     {
 

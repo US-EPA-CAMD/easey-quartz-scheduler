@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
+  [DisallowConcurrentExecution]
   public class ApportionedEmissionsBulkData : IJob
   {
     private Guid job_id = Guid.NewGuid();
