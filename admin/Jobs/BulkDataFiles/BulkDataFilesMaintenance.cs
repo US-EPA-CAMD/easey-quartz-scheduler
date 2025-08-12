@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
+  [DisallowConcurrentExecution]
   public class BulkDataFileMaintenance : IJob
   {
 

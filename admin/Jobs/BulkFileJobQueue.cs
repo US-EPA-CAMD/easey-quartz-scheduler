@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
+  [DisallowConcurrentExecution]
   public class BulkFileJobQueue : IJob
   {
     private NpgSqlContext _dbContext = null;

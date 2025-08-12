@@ -12,6 +12,7 @@ using Epa.Camd.Quartz.Scheduler.Models;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
+    [DisallowConcurrentExecution]
     public class SubmissionWindowManagement : IJob
     {
         private readonly NpgSqlContext _dbContext;
