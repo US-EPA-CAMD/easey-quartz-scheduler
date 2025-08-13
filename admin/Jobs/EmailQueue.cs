@@ -31,6 +31,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       _logger = logger;
     }
 
+    private async Task UpdateEmailStatus(EmailToSend emailToSend, string status)
+    {
+      emailToSend.StatusCode = status;
+      _dbContext.EmailToSend.Update(emailToSend);
+      await _dbContext.SaveChangesAsync();
+    }
+
     public async Task Execute(IJobExecutionContext context)
     {
       _logger.LogInformation("Executing EmailQueue job. JobId: {JobId}", _jobId);
@@ -83,9 +90,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               try
               {
                 // Mark as WIP
-                emailToSend.StatusCode = "WIP";
-                _dbContext.EmailToSend.Update(emailToSend);
-                await _dbContext.SaveChangesAsync();
+                await UpdateEmailStatus(emailToSend, "WIP");
 
                 // Call Camd-Service email service
                 ToProcessPayload payload = new ToProcessPayload();
@@ -99,15 +104,36 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
                 HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_CAMD_SERVICES"] + "/support/email/process", httpContent);
                 
+                bool emailProcessed = false;
+
                 if (!response.IsSuccessStatusCode)
                 {
-                  _logger.LogError("Email service returned error for SendId: {SendId}. Status: {StatusCode}, Reason: {ReasonPhrase}", 
-                    emailToSend.SendId, response.StatusCode, response.ReasonPhrase);
-                  
-                  // Revert to QUEUED on failure
-                  emailToSend.StatusCode = "QUEUED";
-                  _dbContext.EmailToSend.Update(emailToSend);
-                  await _dbContext.SaveChangesAsync();
+                  _logger.LogError(
+                    "Email service returned HTTP error for SendId: {SendId}. Status: {StatusCode}, Reason: {ReasonPhrase}",
+                    emailToSend.SendId, response.StatusCode, response.ReasonPhrase ?? "No reason phrase");
+                }
+                else
+                {
+                  // Parse response to check actual processing status
+                  string responseContent = await response.Content.ReadAsStringAsync();
+                  EmailProcessResponse emailResponse = JsonConvert.DeserializeObject<EmailProcessResponse>(responseContent);
+
+                  if (emailResponse != null && emailResponse.success)
+                  {
+                    emailProcessed = true;
+                    _logger.LogInformation("Email successfully processed. SendId: {SendId}", emailToSend.SendId);
+                  }
+                  else
+                  {
+                    _logger.LogError("Email processing failed for SendId: {SendId}. Error: {ErrorMessage}", emailToSend.SendId, emailResponse?.message ?? "Unknown error");
+                  }
+                }
+                
+                // Revert to QUEUED if not successfully processed
+                if (!emailProcessed)
+                {
+                  await UpdateEmailStatus(emailToSend, "QUEUED");
+                  _logger.LogInformation("Reverted email to QUEUED status. SendId: {SendId}", emailToSend.SendId);
                 }
 
                 // Delay between email processing to avoid overwhelming the email service and maintain rate limiting
@@ -115,12 +141,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               }
               catch (Exception ex)
               {
-                _logger.LogError(ex, "Error processing email SendId: {SendId}", emailToSend.SendId);
-                
+                _logger.LogError(ex, "Error processing email SendId: {SendId}", emailToSend?.SendId);
                 // Revert to QUEUED on exception
-                emailToSend.StatusCode = "QUEUED";
-                _dbContext.EmailToSend.Update(emailToSend);
-                await _dbContext.SaveChangesAsync();
+                await UpdateEmailStatus(emailToSend, "QUEUED");
+                _logger.LogInformation("Reverted email to QUEUED status due to exception. SendId: {SendId}", emailToSend?.SendId);
               }
             }
           }

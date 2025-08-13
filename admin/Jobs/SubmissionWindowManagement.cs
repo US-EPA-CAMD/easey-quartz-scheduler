@@ -57,7 +57,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 try
                 {
                     // Call the stored procedure to do the actual management of submission window
-                    await InitAndCloseEmSubmissionAccess();
+                    InitAndCloseEmSubmissionAccess();
 
                     // Trigger follow-up jobs
                     await TriggerFollowUpJobs(context);
@@ -106,7 +106,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             return false;
         }
 
-        private async Task InitAndCloseEmSubmissionAccess()
+        private void InitAndCloseEmSubmissionAccess()
         {
             _logger.LogInformation("Calling stored procedure camdecmpsaux.init_and_close_em_submission_access with date: {Date}", DateTime.Today.ToString("yyyy-MM-dd"));
 
