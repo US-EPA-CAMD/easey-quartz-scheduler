@@ -86,9 +86,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 HashSet<long> plantIdSet = new HashSet<long>();
                 foreach (EmailToProcess process in inQueue)
                 {
-                    plantIdSet.Add(Convert.ToInt64(process.FacId));
+                    long plantId = Convert.ToInt64(process.FacId);
+                    plantIdSet.Add(plantId);
+                    _logger.LogInformation("{JobName}: Converting EmailToProcess FacId {FacId} (decimal) to plantId {PlantId} (long)", 
+                        jobName, process.FacId, plantId);
                 }
-                _logger.LogInformation("{JobName}: Marked {QueueCount} email records as WIP, found {PlantCount} unique facilities", jobName, inQueue.Count, plantIdSet.Count);
+                _logger.LogInformation("{JobName}: Marked {QueueCount} email records as WIP, found {PlantCount} unique facilities. PlantIds: [{PlantIds}]", 
+                    jobName, inQueue.Count, plantIdSet.Count, string.Join(", ", plantIdSet.OrderBy(x => x)));
 
                 // Create plant ID list for API call
                 long[] plantIdList = new long[plantIdSet.Count];
@@ -218,6 +222,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 return facIdToEmails;
             }
 
+            _logger.LogInformation("{JobName}: Processing {RecipientCount} recipients from API response", GetJobName(), recipientResponse.recipients.Length);
+
             foreach (Recipient r in recipientResponse.recipients)
             {
                 // Parse the single email address (may have display name format)
@@ -229,23 +235,33 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     continue;
                 }
 
+                _logger.LogInformation("{JobName}: Processing recipient with email '{Email}' for plant IDs: [{PlantIds}]", 
+                    GetJobName(), emailAddress, string.Join(", ", r.plantIdList));
+
                 foreach (long facId in r.plantIdList)
                 {
                     decimal facIdDecimal = Convert.ToDecimal(facId);
                     
+                    _logger.LogInformation("{JobName}: Converting plantId {PlantId} (long) to facIdDecimal {FacIdDecimal} (decimal)", 
+                        GetJobName(), facId, facIdDecimal);
+                    
                     if (facIdToEmails.ContainsKey(facIdDecimal))
                     {
                         facIdToEmails[facIdDecimal].Add(emailAddress);
+                        _logger.LogInformation("{JobName}: Added email to existing facId {FacId}, total emails: {EmailCount}", 
+                            GetJobName(), facIdDecimal, facIdToEmails[facIdDecimal].Count);
                     }
                     else
                     {
                         HashSet<string> emails = new HashSet<string> { emailAddress };
                         facIdToEmails.Add(facIdDecimal, emails);
+                        _logger.LogInformation("{JobName}: Created new mapping for facId {FacId} with 1 email", GetJobName(), facIdDecimal);
                     }
                 }
             }
 
-            _logger.LogInformation("{JobName}: Built email mapping for {FacilityCount} facilities", GetJobName(), facIdToEmails.Count);
+            _logger.LogInformation("{JobName}: Built email mapping for {FacilityCount} facilities. Keys: [{Keys}]", 
+                GetJobName(), facIdToEmails.Count, string.Join(", ", facIdToEmails.Keys));
             return facIdToEmails;
         }
 
@@ -254,18 +270,36 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             int totalEmailsCreated = 0;
             int facilitiesWithoutRecipients = 0;
 
+            _logger.LogInformation("{JobName}: Processing {QueueCount} EmailToProcess records against {MappingCount} facility mappings", 
+                GetJobName(), inQueue.Count, facIdToEmails.Count);
+
             foreach (EmailToProcess emailToProcess in inQueue)
             {
+                _logger.LogInformation("{JobName}: Processing EmailToProcess with FacId: {FacId} (type: {FacIdType})", 
+                    GetJobName(), emailToProcess.FacId, emailToProcess.FacId.GetType().Name);
+
                 HashSet<string> allEmailsForFacility = new HashSet<string>();
 
                 // Add recipients from API response
                 if (facIdToEmails.ContainsKey(emailToProcess.FacId))
                 {
+                    _logger.LogInformation("{JobName}: Found mapping for FacId {FacId}, adding {EmailCount} emails", 
+                        GetJobName(), emailToProcess.FacId, facIdToEmails[emailToProcess.FacId].Count);
+                    
                     foreach (string email in facIdToEmails[emailToProcess.FacId])
                     {
                         allEmailsForFacility.Add(email);
+                        _logger.LogInformation("{JobName}: Added email: {Email}", GetJobName(), email);
                     }
                 }
+                else
+                {
+                    _logger.LogWarning("{JobName}: NO MAPPING FOUND for FacId {FacId}. Available keys: [{AvailableKeys}]", 
+                        GetJobName(), emailToProcess.FacId, string.Join(", ", facIdToEmails.Keys));
+                }
+
+                _logger.LogInformation("{JobName}: Total emails found for FacId {FacId}: {EmailCount}", 
+                    GetJobName(), emailToProcess.FacId, allEmailsForFacility.Count);
 
                 if (allEmailsForFacility.Count > 0)
                 {
@@ -291,8 +325,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 else
                 {
                     facilitiesWithoutRecipients++;
-                    _logger.LogWarning("{JobName}: No email recipients found for facility ID: {FacId}. Leaving as WIP for retry.", GetJobName(), emailToProcess.FacId);
-                    // Leave emailToProcess in WIP status - it's an error condition that should be investigated
+                    _logger.LogWarning("{JobName}: No email recipients found for facility ID: {FacId}. Changing status to QUEUED for retry.", GetJobName(), emailToProcess.FacId);
+                    emailToProcess.StatusCode = "QUEUED";
+                    _dbContext.EmailToProcessQueue.Update(emailToProcess);
                 }
             }
 
