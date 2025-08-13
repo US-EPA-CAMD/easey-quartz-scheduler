@@ -37,6 +37,23 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         protected abstract string GetEmailTypeForDatabase();
         protected abstract string GetJobName();
 
+        private async Task UpdateEmailProcessStatus(List<EmailToProcess> records, string status)
+        {
+            foreach (EmailToProcess process in records)
+            {
+                process.StatusCode = status;
+                _dbContext.EmailToProcessQueue.Update(process);
+            }
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task UpdateSingleEmailProcessStatus(EmailToProcess record, string status)
+        {
+            record.StatusCode = status;
+            _dbContext.EmailToProcessQueue.Update(record);
+            await _dbContext.SaveChangesAsync();
+        }
+
         protected async Task<Dictionary<decimal, HashSet<string>>> ProcessEmailRecipients()
         {
             string jobName = GetJobName();
@@ -64,14 +81,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 _logger.LogInformation("{JobName}: Found {QueueCount} emails queued for processing", jobName, inQueue.Count);
 
                 // Mark records as WIP and collect plant IDs
+                await UpdateEmailProcessStatus(inQueue, "WIP");
+                
                 HashSet<long> plantIdSet = new HashSet<long>();
                 foreach (EmailToProcess process in inQueue)
                 {
-                    process.StatusCode = "WIP";
-                    _dbContext.EmailToProcessQueue.Update(process);
                     plantIdSet.Add(Convert.ToInt64(process.FacId));
                 }
-                _dbContext.SaveChanges();
                 _logger.LogInformation("{JobName}: Marked {QueueCount} email records as WIP, found {PlantCount} unique facilities", jobName, inQueue.Count, plantIdSet.Count);
 
                 // Create plant ID list for API call
@@ -81,6 +97,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 // Call recipient API
                 string notificationTypeForRecipientApi = GetEmailTypeForRecipientApi();
                 RecipientResponse recipientResponse = await CallRecipientAPI(notificationTypeForRecipientApi, plantIdList);
+
+                // If recipient API failed completely, revert all records to QUEUED
+                if (recipientResponse.hasError && (recipientResponse.recipients == null || recipientResponse.recipients.Length == 0))
+                {
+                    _logger.LogError("{JobName}: Recipient API failed completely: {ErrorMessage}. Reverting {RecordCount} records to QUEUED.", jobName, recipientResponse.errorMessage ?? "Unknown error", inQueue.Count);
+                    await UpdateEmailProcessStatus(inQueue, "QUEUED");
+                    await CompleteJobLog(jl);
+                    return new Dictionary<decimal, HashSet<string>>();
+                }
 
                 // Process response and build facility-to-emails mapping
                 Dictionary<decimal, HashSet<string>> facIdToEmails = BuildFacilityEmailMapping(recipientResponse);
@@ -159,17 +184,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             _logger.LogInformation("{JobName}: Calling recipient API for {NotificationType} with {PlantCount} facilities", GetJobName(), notificationType, plantIdList.Length);
 
             HttpResponseMessage response = await client.PostAsync(_configuration["EASEY_CAMD_SERVICES"] + "/support/email/emailRecipientList", httpContent);
-            response.EnsureSuccessStatusCode();
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogError("{JobName}: Recipient API returned HTTP {StatusCode}: {ReasonPhrase}", GetJobName(), response.StatusCode, response.ReasonPhrase ?? "No reason phrase");
+                // Return empty recipient list on HTTP error, don't throw
+                return new RecipientResponse { recipients = new Recipient[0], hasError = true, errorMessage = $"HTTP {response.StatusCode}: {response.ReasonPhrase ?? "No reason phrase"}" };
+            }
 
             string responseContent = await response.Content.ReadAsStringAsync();
             
             RecipientResponse recipientResponse = JsonConvert.DeserializeObject<RecipientResponse>(responseContent);
 
-            // Check for API errors
+            // Check for API errors but don't throw - just return the error response
             if (recipientResponse.hasError)
             {
-                _logger.LogError("{JobName}: Recipient List API returned error: {ErrorMessage}", GetJobName(), recipientResponse.errorMessage);
-                throw new Exception($"Recipient List API returned error: {recipientResponse.errorMessage}");
+                _logger.LogError("{JobName}: Recipient List API returned error: {ErrorMessage}", GetJobName(), recipientResponse.errorMessage ?? "Unknown error");
             }
 
             // Log summary
@@ -224,14 +254,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             int totalEmailsCreated = 0;
             int facilitiesWithoutRecipients = 0;
 
-            foreach (EmailToProcess process in inQueue)
+            foreach (EmailToProcess emailToProcess in inQueue)
             {
                 HashSet<string> allEmailsForFacility = new HashSet<string>();
 
                 // Add recipients from API response
-                if (facIdToEmails.ContainsKey(process.FacId))
+                if (facIdToEmails.ContainsKey(emailToProcess.FacId))
                 {
-                    foreach (string email in facIdToEmails[process.FacId])
+                    foreach (string email in facIdToEmails[emailToProcess.FacId])
                     {
                         allEmailsForFacility.Add(email);
                     }
@@ -241,31 +271,32 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 {
                     foreach (string emailTo in allEmailsForFacility)
                     {
-                        EmailToSend es = new EmailToSend()
+                        EmailToSend emailToSend = new EmailToSend()
                         {
-                            Context = process.Context,
+                            Context = emailToProcess.Context,
                             StatusCode = "QUEUED",
-                            TemplateId = process.EventCode,
+                            TemplateId = emailToProcess.EventCode,
                             ToEmail = emailTo,
                             FromEmail = _configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"]
                         };
 
-                        _dbContext.EmailToSend.Add(es);
+                        _dbContext.EmailToSend.Add(emailToSend);
                         totalEmailsCreated++;
                     }
+                    
+                    // Mark as COMPLETE only when EMAIL_TO_SEND records are successfully created
+                    emailToProcess.StatusCode = "COMPLETE";
+                    _dbContext.EmailToProcessQueue.Update(emailToProcess);
                 }
                 else
                 {
                     facilitiesWithoutRecipients++;
-                    _logger.LogWarning("{JobName}: No email recipients found for facility ID: {FacId}", GetJobName(), process.FacId);
+                    _logger.LogWarning("{JobName}: No email recipients found for facility ID: {FacId}. Leaving as WIP for retry.", GetJobName(), emailToProcess.FacId);
+                    // Leave emailToProcess in WIP status - it's an error condition that should be investigated
                 }
-
-                // Mark as COMPLETE only after EMAIL_TO_SEND records are created
-                process.StatusCode = "COMPLETE";
-                _dbContext.EmailToProcessQueue.Update(process);
             }
 
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
             
             if (facilitiesWithoutRecipients > 0)
             {
