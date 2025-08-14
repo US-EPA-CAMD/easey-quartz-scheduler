@@ -355,8 +355,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 else
                 {
                     facilitiesWithoutRecipients++;
-                    _logger.LogWarning("{JobName}: No email recipients found for facility ID: {FacId}. Changing status to QUEUED for retry.", GetJobName(), emailToProcess.FacId);
-                    emailToProcess.StatusCode = "QUEUED";
+                    _logger.LogInformation("{JobName}: No email recipients found for facility ID: {FacId}. Marking as COMPLETE.", GetJobName(), emailToProcess.FacId);
+                    emailToProcess.StatusCode = "COMPLETE";
                     _dbContext.EmailToProcessQueue.Update(emailToProcess);
                     await _dbContext.SaveChangesAsync();
                 }
