@@ -114,6 +114,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 // Process response and build facility-to-emails mapping
                 Dictionary<decimal, HashSet<string>> facIdToEmails = BuildFacilityEmailMapping(recipientResponse);
 
+                // If no mappings were built, keep records in QUEUED
+                if (facIdToEmails.Count == 0)
+                {
+                    _logger.LogWarning("{JobName}: No email mappings received from recipient API. Keeping {RecordCount} records in QUEUED.", jobName, inQueue.Count);
+                    await CompleteJobLog(jl);
+                    return facIdToEmails;
+                }
+
                 // Create EmailToSend records
                 int emailsCreated = await CreateEmailToSendRecords(inQueue, facIdToEmails);
                 _logger.LogInformation("{JobName}: Completed successfully. Created {EmailCount} emails for {FacilityCount} facilities", jobName, emailsCreated, facIdToEmails.Count);
