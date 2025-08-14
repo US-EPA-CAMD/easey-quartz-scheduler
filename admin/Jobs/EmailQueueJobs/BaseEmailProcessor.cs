@@ -269,6 +269,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         {
             int totalEmailsCreated = 0;
             int facilitiesWithoutRecipients = 0;
+            int facilitiesWithErrors = 0;
 
             _logger.LogInformation("{JobName}: Processing {QueueCount} EmailToProcess records against {MappingCount} facility mappings", 
                 GetJobName(), inQueue.Count, facIdToEmails.Count);
@@ -303,24 +304,45 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
                 if (allEmailsForFacility.Count > 0)
                 {
-                    foreach (string emailTo in allEmailsForFacility)
+                    try
                     {
-                        EmailToSend emailToSend = new EmailToSend()
+                        // Create EmailToSend records for this facility
+                        foreach (string emailTo in allEmailsForFacility)
                         {
-                            Context = emailToProcess.Context,
-                            StatusCode = "QUEUED",
-                            TemplateId = emailToProcess.EventCode,
-                            ToEmail = emailTo,
-                            FromEmail = _configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"]
-                        };
+                            EmailToSend emailToSend = new EmailToSend()
+                            {
+                                Context = emailToProcess.Context,
+                                StatusCode = "QUEUED",
+                                TemplateId = emailToProcess.EventCode,
+                                ToEmail = emailTo,
+                                FromEmail = _configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"]
+                            };
 
-                        _dbContext.EmailToSend.Add(emailToSend);
-                        totalEmailsCreated++;
+                            _dbContext.EmailToSend.Add(emailToSend);
+                            totalEmailsCreated++;
+                        }
+                        
+                        // Mark as COMPLETE only when EMAIL_TO_SEND records are successfully created
+                        emailToProcess.StatusCode = "COMPLETE";
+                        _dbContext.EmailToProcessQueue.Update(emailToProcess);
+                        
+                        // Save changes for this facility immediately
+                        await _dbContext.SaveChangesAsync();
+                        _logger.LogInformation("{JobName}: Successfully created emails and marked FacId {FacId} as COMPLETE", GetJobName(), emailToProcess.FacId);
                     }
-                    
-                    // Mark as COMPLETE only when EMAIL_TO_SEND records are successfully created
-                    emailToProcess.StatusCode = "COMPLETE";
-                    _dbContext.EmailToProcessQueue.Update(emailToProcess);
+                    catch (Exception ex)
+                    {
+                        facilitiesWithErrors++;
+                        _logger.LogError(ex, "{JobName}: Failed to create EmailToSend records for FacId {FacId}. Reverting to QUEUED.", GetJobName(), emailToProcess.FacId);
+                        
+                        // Clear any pending changes for this facility
+                        _dbContext.ChangeTracker.Clear();
+                        
+                        // Revert this specific record to QUEUED
+                        emailToProcess.StatusCode = "QUEUED";
+                        _dbContext.EmailToProcessQueue.Update(emailToProcess);
+                        await _dbContext.SaveChangesAsync();
+                    }
                 }
                 else
                 {
@@ -328,15 +350,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     _logger.LogWarning("{JobName}: No email recipients found for facility ID: {FacId}. Changing status to QUEUED for retry.", GetJobName(), emailToProcess.FacId);
                     emailToProcess.StatusCode = "QUEUED";
                     _dbContext.EmailToProcessQueue.Update(emailToProcess);
+                    await _dbContext.SaveChangesAsync();
                 }
             }
-
-            await _dbContext.SaveChangesAsync();
             
-            if (facilitiesWithoutRecipients > 0)
+            if (facilitiesWithoutRecipients > 0 || facilitiesWithErrors > 0)
             {
-                _logger.LogWarning("{JobName}: Processed {QueueCount} queue items, created {EmailCount} emails. {NoRecipientCount} facilities had no recipients", 
-                    GetJobName(), inQueue.Count, totalEmailsCreated, facilitiesWithoutRecipients);
+                _logger.LogWarning("{JobName}: Processed {QueueCount} queue items, created {EmailCount} emails. {NoRecipientCount} facilities had no recipients, {ErrorCount} facilities had errors", 
+                    GetJobName(), inQueue.Count, totalEmailsCreated, facilitiesWithoutRecipients, facilitiesWithErrors);
             }
             else
             {
