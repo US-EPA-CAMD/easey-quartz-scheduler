@@ -116,9 +116,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
         /// - Record 2.Context: {"orisCode": 10485, "plantName": "Severstal Sparrows Point LLC", "plantState": "MD", "locationList": "BLR4", "windowOpenDate": "2010-10-01", "periodAbbreviation": "2010 Q3"}
         /// - Record 3.Context: {"orisCode": 10485, "plantName": "Severstal Sparrows Point LLC", "plantState": "MD", "locationList": "BLR3", "windowOpenDate": "2010-10-01", "periodAbbreviation": "2010 Q3"}
         /// 
-        /// Output: JSON object with facilities array for template loop processing:
+        /// Output: JSON object with emSubAccessList array for template loop processing:
         /// {
-        ///   "facilities": [
+        ///   "emSubAccessList": [
         ///     {"orisCode": 10485, "plantName": "Severstal Sparrows Point LLC", "plantState": "MD", "locationList": "BLR1", "windowOpenDate": "2010-10-01", "periodAbbreviation": "2010 Q3"},
         ///     {"orisCode": 10485, "plantName": "Severstal Sparrows Point LLC", "plantState": "MD", "locationList": "BLR4", "windowOpenDate": "2010-10-01", "periodAbbreviation": "2010 Q3"},
         ///     {"orisCode": 10485, "plantName": "Severstal Sparrows Point LLC", "plantState": "MD", "locationList": "BLR3", "windowOpenDate": "2010-10-01", "periodAbbreviation": "2010 Q3"}
@@ -149,7 +149,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                 return null;
             }
 
-            var templateContext = new { facilities };
+            var templateContext = new { emSubAccessList = facilities };
             return JsonConvert.SerializeObject(templateContext);
         }
     }
@@ -256,9 +256,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
         /// - Record 1.Context: {"orisCode": 55415, "plantName": "Vandolah Power Project", "plantState": "FL", "locationList": "GT401", "windowOpenDate": "2023-11-06", "periodAbbreviation": "2023 Q2"}
         /// - Record 2.Context: {"orisCode": 55415, "plantName": "Vandolah Power Project", "plantState": "FL", "locationList": "GT401", "windowOpenDate": "2023-11-06", "periodAbbreviation": "2023 Q3"}
         /// 
-        /// Output: JSON object with facilities array for template loop processing:
+        /// Output: JSON object with emSubAccessList array for template loop processing:
         /// {
-        ///   "facilities": [
+        ///   "emSubAccessList": [
         ///     {"orisCode": 55415, "plantName": "Vandolah Power Project", "plantState": "FL", "locationList": "GT401", "windowOpenDate": "2023-11-06", "periodAbbreviation": "2023 Q2"},
         ///     {"orisCode": 55415, "plantName": "Vandolah Power Project", "plantState": "FL", "locationList": "GT401", "windowOpenDate": "2023-11-06", "periodAbbreviation": "2023 Q3"}
         ///   ]
@@ -288,7 +288,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                 return null;
             }
 
-            var templateContext = new { facilities };
+            var templateContext = new { emSubAccessList = facilities };
             return JsonConvert.SerializeObject(templateContext);
         }
     }
