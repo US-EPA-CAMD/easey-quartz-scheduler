@@ -1,5 +1,6 @@
 #nullable enable
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,7 +16,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 		[Column("fac_id")]
  		public decimal FacId { get; set; }
 
-    [Column("email_type")]
+		[Column("email_type")]
  		public required string EmailType { get; set; }
 
 		[Column("event_code")]
@@ -44,5 +45,20 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 
 		[Column("status_cd")]
  		public required string StatusCode { get; set; }
+
+		[Column("note")]
+ 		public string? Note { get; set; }
+
+		[Column("note_time")]
+ 		public DateTime? NoteTime { get; set; }
+
+		[Column("queued_time")]
+ 		public DateTime? QueuedTime { get; set; }
+
+		[Column("started_time")]
+ 		public DateTime? StartedTime { get; set; }
+
+		[Column("failure_cnt")]
+ 		public int? FailureCount { get; set; }
 	}
 }

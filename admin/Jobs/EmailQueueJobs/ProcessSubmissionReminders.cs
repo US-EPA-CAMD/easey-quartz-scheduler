@@ -7,7 +7,7 @@ using Epa.Camd.Quartz.Scheduler.Models;
 using Microsoft.Extensions.DependencyInjection;
 using SilkierQuartz;
 
-namespace Epa.Camd.Quartz.Scheduler.Jobs
+namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
 {
     public class ProcessSubmissionReminders : BaseEmailProcessor, IJob
     {
@@ -32,12 +32,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         protected override string GetEmailTypeForRecipientApi()
         {
-            return SUBMISSION_REMINDER_EMAIL_TYPE_FOR_RECIP_API;
+            return SubmissionReminderEmailTypeForRecipientApi;
         }
         
         protected override string GetEmailTypeForDatabase()
         {
-            return SUBMISSION_REMINDER_EMAIL_TYPE_FOR_DB;
+            return SubmissionReminderEmailTypeForDb;
         }
 
         protected override string GetJobName()

@@ -14,6 +14,7 @@ using SilkierQuartz;
 using DatabaseAccess;
 
 using Epa.Camd.Quartz.Scheduler.Jobs;
+using Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs;
 using Epa.Camd.Quartz.Scheduler.Models;
 using Epa.Camd.Quartz.Scheduler.Jobs.Listeners;
 using Microsoft.AspNetCore.Http;
