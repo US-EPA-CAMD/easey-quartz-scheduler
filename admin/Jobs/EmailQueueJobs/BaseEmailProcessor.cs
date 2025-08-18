@@ -110,7 +110,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
             {
                 string notificationTypeForDb = GetEmailTypeForDatabase();
                 
-                // 1. Get all queued email_to_process records from database
+                // Get all queued email_to_process records from database
                 List<EmailToProcess> inQueue = _dbContext.EmailToProcessQueue.FromSqlRaw(@"
                     SELECT *
                     FROM camdecmpsaux.email_to_process
@@ -123,52 +123,62 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                     return;
                 }
 
-                _logger.LogInformation("{JobName}: Found {QueueCount} emails queued for processing", jobName, inQueue.Count);
+                var eventCodeGroups = inQueue.GroupBy(ep => ep.EventCode).ToList();
+                _logger.LogInformation("{JobName}: Found {QueueCount} emails across {EventCodeCount} event codes", jobName, inQueue.Count, eventCodeGroups.Count);
 
-                // 2: Mark all records as WIP
-                await UpdateEmailProcessStatus(inQueue, "WIP");
-                
-                // 3: Collect unique facility IDs for CBS API call
-                HashSet<long> plantIdSet = inQueue.Select(ep => Convert.ToInt64(ep.FacId)).ToHashSet();
-                long[] plantIdList = plantIdSet.ToArray();
-                
-                _logger.LogInformation("{JobName}: Marked {QueueCount} email_to_process records as WIP, found {PlantCount} unique facilities",  jobName, inQueue.Count, plantIdSet.Count);
-
-                // 4: Call camd-services to get all recipients for all facilities
-                string notificationTypeForRecipientApi = GetEmailTypeForRecipientApi();
-                RecipientResponse recipientResponse = await CallRecipientApi(notificationTypeForRecipientApi, plantIdList);
-
-                if (recipientResponse.hasError && (recipientResponse.recipients == null || recipientResponse.recipients.Length == 0))
+                // Process each event_code group separately
+                foreach (var eventCodeGroup in eventCodeGroups)
                 {
-                    string errorMessage = $"Recipient API failed: {recipientResponse.errorMessage ?? "Unknown error"}";
-                    _logger.LogError("{JobName}: {ErrorMessage}. Handling failure for {RecordCount} records.", 
-                        jobName, errorMessage, inQueue.Count);
-                    await HandleEmailProcessFailure(inQueue, errorMessage);
-                    await CompleteJobLog(jl);
-                    return;
+                    var eventCode = eventCodeGroup.Key;
+                    _logger.LogInformation("{JobName}: Processing event_code {EventCode} with {RecordCount} records", jobName, eventCode, eventCodeGroup.Count());
+                
+                    // 1. Grab the eventCode group records
+                    List<EmailToProcess> groupedRecords = eventCodeGroup.ToList();
+
+                    // 2: Mark all records as WIP
+                    await UpdateEmailProcessStatus(groupedRecords, "WIP");
+                
+                    // 3: Collect unique facility IDs for CBS API call
+                    HashSet<long> plantIdSet = groupedRecords.Select(ep => Convert.ToInt64(ep.FacId)).ToHashSet();
+                    long[] plantIdList = plantIdSet.ToArray();
+                    
+                    _logger.LogInformation("{JobName}: Event_code {EventCode} - Marked {QueueCount} email_to_process records as WIP, found {PlantCount} unique facilities", jobName, eventCode, groupedRecords.Count, plantIdSet.Count);
+
+                    // 4: Call camd-services to get all recipients for all facilities
+                    string notificationTypeForRecipientApi = GetEmailTypeForRecipientApi();
+                    RecipientResponse recipientResponse = await CallRecipientApi(notificationTypeForRecipientApi, plantIdList);
+
+                    if (recipientResponse.hasError && (recipientResponse.recipients == null || recipientResponse.recipients.Length == 0))
+                    {
+                        string errorMessage = $"Recipient API failed for event_code {eventCode}: {recipientResponse.errorMessage ?? "Unknown error"}";
+                        _logger.LogError("{JobName}: {ErrorMessage}. Handling failure for {RecordCount} records.", 
+                            jobName, errorMessage, groupedRecords.Count);
+                        await HandleEmailProcessFailure(groupedRecords, errorMessage);
+                        continue; // Continue with next event_code
+                    }
+
+                    // 5: Apply grouping strategy based on email type
+                    // - Submission reminders: Group by recipient (1 email per person, for one or more relevant facilities)
+                    // - Window notifications: Group by facility (1 email per facility, for one or more relevant recipients)
+                    var groupingStrategy = EmailGroupingStrategyFactory.CreateStrategy(notificationTypeForDb);
+                    var emailGroups = groupingStrategy.GroupEmailRecords(groupedRecords, recipientResponse, _logger);
+                
+                    if (emailGroups.Count == 0)
+                    {
+                        string warningMessage = $"No email groups created for event_code {eventCode} with {plantIdSet.Count} facilities - API returned {recipientResponse.recipients?.Length ?? 0} recipients but none matched our facilities or had valid email addresses";
+                        _logger.LogWarning("{JobName}: {Warning}. Handling failure for {RecordCount} records.", jobName, warningMessage, groupedRecords.Count);
+                        //If the recipient api returns no emails for all provided fac IDs for this group, let's consider it 'unusual' and retry
+                        await HandleEmailProcessFailure(groupedRecords, warningMessage);  
+                        continue; // Continue with next event_code
+                    }
+
+                    // 6: Create email_to_send records based on groups
+                    int recordsCreated = await CreateGroupedEmailToSendRecords(emailGroups);
+                    int totalGroups = emailGroups.Count;
+                    _logger.LogInformation("{JobName}: Completed event_code {EventCode}. Created {RecordCount} records for {GroupCount} groups", jobName, eventCode, recordsCreated, totalGroups);
                 }
 
-                // 5: Apply grouping strategy based on email type
-                // - Submission reminders: Group by recipient (1 email per person, for one or more relevant facilities)
-                // - Window notifications: Group by facility (1 email per facility, for one or more relevant recipients)
-                var groupingStrategy = EmailGroupingStrategyFactory.CreateStrategy(notificationTypeForDb);
-                var emailGroups = groupingStrategy.GroupEmailRecords(inQueue, recipientResponse, _logger);
-                
-                if (emailGroups.Count == 0)
-                {
-                    string warningMessage = $"No email groups created for {plantIdSet.Count} facilities - API returned {recipientResponse.recipients?.Length ?? 0} recipients but none matched our facilities or had valid email addresses";
-                    _logger.LogWarning("{JobName}: {Warning}. Handling failure for {RecordCount} records.",  jobName, warningMessage, inQueue.Count);
-                    //If the recipient api returns no emails for all provided fac IDs, let's consider it 'unusual' and retry
-                    await HandleEmailProcessFailure(inQueue, warningMessage);  
-                    await CompleteJobLog(jl);
-                    return;
-                }
-
-                // 6: Create email_to_send records based on groups
-                int recordsCreated = await CreateGroupedEmailToSendRecords(emailGroups);
-                int totalGroups = emailGroups.Count;
-                _logger.LogInformation("{JobName}: Completed successfully. Created {RecordCount} records for {GroupCount} groups", jobName, recordsCreated, totalGroups);
-
+                _logger.LogInformation("{JobName}: Completed successfully. Processed {EventCodeCount} event codes", jobName, eventCodeGroups.Count);
                 await CompleteJobLog(jl);
             }
             catch (Exception e)
