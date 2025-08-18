@@ -411,67 +411,78 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         {
             _logger.LogError("Evaluation {EvalId} failed with error: {ErrorMessage}", 
                 id, ex.Message);
+            _logger.LogError("Full exception details for EvalId: {EvalId} - {Exception}", id, ex.ToString());
+
+            context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
+            context.MergedJobDataMap.Add("EvaluationStatus", "FATAL");
+
             string errorDetails = ex switch
             {
               CheckEngineException cee => $"{cee.Message}\n{checkEngine.CheckEngineErrors}",
               _ => JsonConvert.SerializeObject(ex)
             };
-            evalRecord.Details = errorDetails;
 
+            try
+            {
+                switch(processCode){ //Reset status codes to EVAL in case of an evaluation error
+                    case "MP":
+                        _logger.LogInformation("Resetting MP evaluation status to EVAL for EvalId: {EvalId}", id);
+                        MonitorPlan mp = _dbContext.MonitorPlans.Find(monitorPlanId);
+                        mp.EvalStatus = "EVAL";
+                        _dbContext.MonitorPlans.Update(mp);
+                        break;
+                    case "QA":
+                        if(!string.IsNullOrWhiteSpace(dataMap.GetString("testSumId"))){
+                            string testId = dataMap.GetString("testSumId");
+                            _logger.LogInformation("Resetting test summary {TestId} status to EVAL for EvalId: {EvalId}", 
+                                testId, id);
+                            TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
+                            testSummaryRecord.EvalStatus = "EVAL";
+                            _dbContext.TestSummaries.Update(testSummaryRecord);
+                        }
+                        else if(!string.IsNullOrWhiteSpace(dataMap.GetString("qaCertId"))){
+                            string certId = dataMap.GetString("qaCertId");
+                            _logger.LogInformation("Resetting QA certification {CertId} status to EVAL for EvalId: {EvalId}", 
+                                certId, id);
+                            CertEvent certIdRecord = _dbContext.CertEvents.Find(certId);
+                            certIdRecord.EvalStatus = "EVAL";
+                            _dbContext.CertEvents.Update(certIdRecord);
+                        }
+                        else{
+                            string extensionExemptionId = dataMap.GetString("testExtensionExemption");
+                            _logger.LogInformation("Resetting extension exemption {ExemptionId} status to EVAL for EvalId: {EvalId}", 
+                                extensionExemptionId, id);
+                            TestExtensionExemption extensionExemptionRecord = _dbContext.TestExtensionExemptions.Find(extensionExemptionId);
+                            extensionExemptionRecord.EvalStatus = "EVAL";
+                            _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
+                        }
+                        break;
+                    case "EM":
+                        int rptPeriodId = Int32.Parse(dataMap.GetString("rptPeriodId"));
+                        _logger.LogInformation("Resetting EM evaluation status to EVAL for period {PeriodId}, EvalId: {EvalId}",
+                                                rptPeriodId, id);
+                        ReportingPeriod rp = _dbContext.ReportingPeriods.Find(rptPeriodId);
+                        EmissionEvaluation emissionEvalRecord = _dbContext.EmissionEvaluations.Find(monitorPlanId, rptPeriodId);
+                        emissionEvalRecord.EvalStatus = "EVAL";
+                        _dbContext.EmissionEvaluations.Update(emissionEvalRecord);
+                        break;
+                }
+                _dbContext.SaveChanges();
+            }
+            catch (Exception exx)
+            {
+              _logger.LogError("Error resetting evaluation status for EvalId: {EvalId} - {Exception}", id, exx.ToString());
+              errorDetails =
+                $"Primary error:\n{errorDetails}\n\n" +
+                $"Error resetting evaluation status:\n{exx.Message}\n{exx.StackTrace}";
+            }
+
+            evalRecord.Details = errorDetails;
             evalRecord.StatusCode = "ERROR";
             evalRecord.Note = ex.Message;
             evalRecord.NoteTime = Utils.getCurrentEasternTime();
+
             _dbContext.Evaluations.Update(evalRecord);
-            _dbContext.SaveChanges();
-
-            context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
-            context.MergedJobDataMap.Add("EvaluationStatus", "FATAL");
-            _logger.LogError("Full exception details for EvalId: {EvalId} - {Exception}", id, ex.ToString());
-
-
-            switch(processCode){ //Reset status codes to EVAL in case of an evaluation error
-                case "MP":
-                    _logger.LogInformation("Resetting MP evaluation status to EVAL for EvalId: {EvalId}", id);
-                    MonitorPlan mp = _dbContext.MonitorPlans.Find(monitorPlanId);
-                    mp.EvalStatus = "EVAL";
-                    _dbContext.MonitorPlans.Update(mp);
-                    break;
-                case "QA":
-                    if(!string.IsNullOrWhiteSpace(dataMap.GetString("testSumId"))){
-                        string testId = dataMap.GetString("testSumId");
-                        _logger.LogInformation("Resetting test summary {TestId} status to EVAL for EvalId: {EvalId}", 
-                            testId, id);
-                        TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
-                        testSummaryRecord.EvalStatus = "EVAL";
-                        _dbContext.TestSummaries.Update(testSummaryRecord);
-                    }
-                    else if(!string.IsNullOrWhiteSpace(dataMap.GetString("qaCertId"))){
-                        string certId = dataMap.GetString("qaCertId");
-                        _logger.LogInformation("Resetting QA certification {CertId} status to EVAL for EvalId: {EvalId}", 
-                            certId, id);
-                        CertEvent certIdRecord = _dbContext.CertEvents.Find(certId);
-                        certIdRecord.EvalStatus = "EVAL";
-                        _dbContext.CertEvents.Update(certIdRecord);
-                    }
-                    else{
-                        string extensionExemptionId = dataMap.GetString("testExtensionExemption");
-                        _logger.LogInformation("Resetting extension exemption {ExemptionId} status to EVAL for EvalId: {EvalId}", 
-                            extensionExemptionId, id);
-                        TestExtensionExemption extensionExemptionRecord = _dbContext.TestExtensionExemptions.Find(extensionExemptionId);
-                        extensionExemptionRecord.EvalStatus = "EVAL";
-                        _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
-                    }
-                    break;
-                case "EM":
-                    int rptPeriodId = Int32.Parse(dataMap.GetString("rptPeriodId"));
-                    _logger.LogInformation("Resetting EM evaluation status to EVAL for period {PeriodId}, EvalId: {EvalId}",
-                                            rptPeriodId, id);
-                    ReportingPeriod rp = _dbContext.ReportingPeriods.Find(rptPeriodId);
-                    EmissionEvaluation emissionEvalRecord = _dbContext.EmissionEvaluations.Find(monitorPlanId, rptPeriodId);
-                    emissionEvalRecord.EvalStatus = "EVAL";
-                    _dbContext.EmissionEvaluations.Update(emissionEvalRecord);
-                    break;
-            }
             _dbContext.SaveChanges();
 
             // Send the error email
