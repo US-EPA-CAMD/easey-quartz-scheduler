@@ -1,9 +1,11 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
 using ECMPS.Checks.DatabaseAccess;
+using Epa.Camd.Logger;
 
 namespace ECMPS.Checks.Parameters
 {
@@ -22,6 +24,7 @@ namespace ECMPS.Checks.Parameters
     {
       FCheckProcess = ACheckProcess;
       FDatabaseAux = ADatabaseAux;
+      _logger = LoggerProvider.GetLogger(GetType().FullName);
 
       InstantiateCheckParameterProperties();
       InitializeCheckParameterList();
@@ -49,6 +52,11 @@ namespace ECMPS.Checks.Parameters
     /// The AUX database connection object.
     /// </summary>
     protected cDatabase FDatabaseAux;
+
+    /// <summary>
+    /// The logger used for logging messages.
+    /// </summary>
+    protected ILogger _logger;
 
     #endregion
 

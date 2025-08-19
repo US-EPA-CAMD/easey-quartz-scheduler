@@ -92,10 +92,13 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
       }
       catch (Exception ex)
       {
-        Process.UpdateErrors(string.Format("Category: {0}  MonLocId: {1}  Message: {2}",
-                                           this.CategoryCd,
-                                           monLocId,
-                                           ex.Message));
+        Process.UpdateErrors(
+            string.Format("Category: {0}  MonLocId: {1}  Message: {2}",
+                this.CategoryCd,
+                monLocId,
+                ex.Message),
+            ex.StackTrace
+        );
         return false;
       }
     }
@@ -125,12 +128,15 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
       }
       catch (Exception ex)
       {
-        Process.UpdateErrors(string.Format("Category: {0}  MonLocId: {1}  OpDate: {2}  OpHour: {3}  Message: {4}",
-                                           this.CategoryCd,
-                                           monLocId,
-                                           opDate.ToShortDateString(),
-                                           opHour.ToString(),
-                                           ex.Message));
+        Process.UpdateErrors(
+            string.Format("Category: {0}  MonLocId: {1}  OpDate: {2}  OpHour: {3}  Message: {4}",
+                this.CategoryCd,
+                monLocId,
+                opDate.ToShortDateString(),
+                opHour.ToString(),
+                ex.Message),
+            ex.StackTrace
+        );
         return false;
       }
     }

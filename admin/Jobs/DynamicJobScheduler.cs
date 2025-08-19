@@ -22,6 +22,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
   /// <summary>
   /// Represents a job scheduler that dynamically schedules or reschedules jobs based on database configurations.
   /// </summary>
+  [DisallowConcurrentExecution]
   public class DynamicJobScheduler : IJob
   {
     private readonly NpgSqlContext _dbContext;

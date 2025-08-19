@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -91,9 +92,9 @@ namespace ECMPS.Checks.Parameters
       else
       {
         if (FOwner != null)
-          System.Diagnostics.Debug.WriteLine(string.Format("Aggregation of uninitialized parameters is not allowed: Category - {0}, Parameter - {1}", FOwner.CategoryCd, this.Name));
+          _logger.LogError(string.Format("Aggregation of uninitialized parameters is not allowed: Category - {0}, Parameter - {1}", FOwner.CategoryCd, this.Name));
         else
-          System.Diagnostics.Debug.WriteLine(string.Format("Aggregation of uninitialized parameters is not allowed: Parameter - {0}", this.Name));
+          _logger.LogError(string.Format("Aggregation of uninitialized parameters is not allowed: Parameter - {0}", this.Name));
 
         return FDefaultForNull;
       }

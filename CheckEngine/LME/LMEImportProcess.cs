@@ -67,8 +67,8 @@ namespace ECMPS.Checks.LME
             cLMEEmissionsDataIntegrityCategory LMEEmissionsCategory = new cLMEEmissionsDataIntegrityCategory( mCheckEngine, this );
             cLMEHourlyDataIntegrityCategory LMEHourlyCategory = new cLMEHourlyDataIntegrityCategory( mCheckEngine, this );
 
-            LMEEmissionsCategory.InitCheckBands( CheckEngine.DbAuxConnection, ref Result );
-            LMEHourlyCategory.InitCheckBands( CheckEngine.DbAuxConnection, ref Result );
+            LMEEmissionsCategory.InitCheckBands(CheckEngine.DbAuxConnection);
+            LMEHourlyCategory.InitCheckBands(CheckEngine.DbAuxConnection);
 
             RunResult = LMEEmissionsCategory.ProcessChecks();
 

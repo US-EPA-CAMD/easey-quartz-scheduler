@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 
 using ECMPS.Checks.TypeUtilities;
+using Epa.Camd.Logger;
 
 
 namespace ECMPS.Checks.CheckEngine
@@ -68,6 +70,7 @@ namespace ECMPS.Checks.CheckEngine
     /// <typeparam name="T">A descendent of CheckDataRow that implements a particular typed row.</typeparam>
     public class CheckDataView<T> : IEnumerable<T> where T : CheckDataRow, new()
     {
+        private readonly ILogger<CheckDataView<T>> _logger = LoggerProvider.GetLogger<CheckDataView<T>>();
 
         #region Public Constructors
 
@@ -109,7 +112,7 @@ namespace ECMPS.Checks.CheckEngine
             catch (Exception ex)
             {
                 SourceView = null;
-                System.Diagnostics.Debug.WriteLine(ex.Message);
+                _logger.LogError(ex.Message);
             }
         }
 
