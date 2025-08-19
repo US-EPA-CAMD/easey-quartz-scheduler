@@ -16,6 +16,7 @@ using Epa.Camd.Quartz.Scheduler.Models;
 
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
+  [DisallowConcurrentExecution]
   public class InventoryChanges : IJob
   {
     private Guid job_id = Guid.NewGuid();

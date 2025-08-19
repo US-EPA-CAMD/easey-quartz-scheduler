@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -49,26 +50,9 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 
     public  cMATSSupplementalMethodCategory GetInitialized(cCheckEngine ACheckEngine, cMonitorPlan AMonitorPlanProcess)
     {
-	  cMATSSupplementalMethodCategory Category;
-      string ErrorMessage = "";
+      var Category = new cMATSSupplementalMethodCategory(AMonitorPlanProcess);
 
-      try
-      {
-        Category = new cMATSSupplementalMethodCategory(AMonitorPlanProcess);
-
-        bool Result = Category.InitCheckBands(ACheckEngine.DbConnection, ref ErrorMessage);
-
-        if (!Result)
-        {
-          Category = null;
-          System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ErrorMessage));
-        }
-      }
-      catch (Exception ex)
-      {
-        Category = null;
-        System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, ex.Message));
-      }
+      Category.InitCheckBands(ACheckEngine.DbConnection);
 
       return Category;
     }
@@ -83,7 +67,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
 		mMATSMethodID = MATSMethodID;
 		CurrentRowId = mMATSMethodID;
 
-      System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", Label, CurrentRowId));
+      _logger.LogError(string.Format("{0}: {1}", Label, CurrentRowId));
 
       return base.ProcessChecks(MonitorLocationID);
     }

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -508,7 +509,7 @@ namespace ECMPS.Checks.OtherQAEvaluation
 			}
 			catch (Exception ex)
 			{
-				System.Diagnostics.Debug.WriteLine("cQAMain.InitSourceData failed: " + ex.Message);
+				_logger.LogError("cQAMain.InitSourceData failed: " + ex.Message);
 			}
 		}
 

@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Diagnostics;
 using ECMPS.Checks.CheckEngine.Definitions;
 using ECMPS.Checks.DatabaseAccess;
 using ECMPS.Checks.TypeUtilities;
@@ -106,6 +107,29 @@ namespace ECMPS.Checks.CheckEngine
 
             ChecksDllPath = checksDllPath;
             CommandTimeout = commandTimeout.Default(300);
+            EvaluationId = null;
+        }
+
+        /// <summary>
+        /// Creates a CheckEngine object and initialized the UserId, DataConnectionString,
+        /// AuxConnectionString, WsConnectionString, DllPath, SystemStateDumpPath properties, and EvaluationId.
+        /// This constructor should be used for evaluation queue processing where an evaluation ID is available.
+        /// </summary>
+        /// <param name="userId">The current user id.</param>
+        /// <param name="dataConnectionString">The ECMPS database connection string.</param>
+        /// <param name="checksDllPath">The path of the checks DLLs.</param>
+        /// <param name="systemStateDumpFilePath">The path in which to dump system state information.</param>
+        /// <param name="commandTimeout">The timeout to use on SQL commands.</param>
+        /// <param name="evaluationId">The evaluation id from the evaluation queue. For evaluation checks, this should not be null.</param>
+        public cCheckEngine(string userId,
+                            string dataConnectionString,
+                            string checksDllPath,
+                            string systemStateDumpFilePath,
+                            int? commandTimeout,
+                            long? evaluationId)
+            : this(userId, dataConnectionString, checksDllPath, systemStateDumpFilePath, commandTimeout)
+        {
+            EvaluationId = evaluationId;
         }
 
         #endregion
@@ -584,7 +608,7 @@ namespace ECMPS.Checks.CheckEngine
                     {
                         if (RunChecks_ProcessInit(processCd, categoryCd, additionalInitialization))
                         {
-                            _logger.LogInformation("Initializing check process for {ProcessCd} {CategoryCd}", processCd, categoryCd);
+                            _logger.LogInformation("Initializing check process for {ProcessCd} {CategoryCd}, EvalId: {EvalId}", processCd, categoryCd, EvaluationId?.ToString() ?? "null");
 
                             //This step may actually be completely unnecessary (includes should handle finding dlls)
                             Process = (cProcess)Activator.CreateInstanceFrom(ChecksDllPath + processDllName,
@@ -597,30 +621,33 @@ namespace ECMPS.Checks.CheckEngine
 
                             if (CheckSessionInit(batchId))
                             {
-                                _logger.LogInformation("Check session initialized for MonPlanId: {MonPlanId}, BatchId: {BatchId}", MonPlanId ?? "null", batchId ?? "null");
+                                _logger.LogInformation("Check session initialized for MonPlanId: {MonPlanId}, BatchId: {BatchId}, EvalId: {EvalId}", MonPlanId ?? "null", batchId ?? "null", EvaluationId?.ToString() ?? "null");
                                 
                                 if (Process.ExecuteChecks(ChecksDllPath, ref errorMessage))
                                 {
-                                    _logger.LogInformation("Checks executed successfully for MonPlanId: {MonPlanId}", MonPlanId ?? "null");
+                                    _logger.LogInformation("Checks executed successfully for MonPlanId: {MonPlanId}, EvalId: {EvalId}", MonPlanId ?? "null", EvaluationId?.ToString() ?? "null");
                                     result = CheckSessionCompleted(Process.SeverityCd);
                                 }
                                 else
                                 {
                                     CheckSessionFailed(errorMessage);
 
-                                    _logger.LogError("Check execution failed: {ErrorMessage}", errorMessage);
+                                    _logger.LogError("Check execution failed for EvalId: {EvalId}, ErrorMessage: {ErrorMessage}", EvaluationId?.ToString() ?? "null", errorMessage);
+                                    HandleProcessingError(string.Format("Check execution failed: {0}", errorMessage));
                                     result = false;
                                 }
                             }
                             else
                             {
-                                _logger.LogWarning("Check session initialization failed for process {ProcessCd}", processCd);
+                                _logger.LogWarning("Check session initialization failed for process {ProcessCd}, EvalId: {EvalId}", processCd, EvaluationId?.ToString() ?? "null");
+                                HandleProcessingError(string.Format("Check session initialization failed for process {0}", processCd));
                                 result = false;
                             }
                         }
                         else
                         {
-                            _logger.LogWarning("RunChecks_ProcessInit returned false for {ProcessCd} {CategoryCd}", processCd, categoryCd);
+                            _logger.LogWarning("RunChecks_ProcessInit returned false for {ProcessCd} {CategoryCd}, EvalId: {EvalId}", processCd, categoryCd, EvaluationId?.ToString() ?? "null");
+                            HandleProcessingError(string.Format("RunChecks_ProcessInit returned false for {0} {1}", processCd, categoryCd));
                             result = false;
                         }
                     }
@@ -643,21 +670,25 @@ namespace ECMPS.Checks.CheckEngine
                     }
                     else
                     {
-                        _logger.LogError("Check procedure init failed: {Error}", errorMessage);
+                        _logger.LogError("Check procedure init failed for EvalId: {EvalId}, Error: {Error}", EvaluationId?.ToString() ?? "null", errorMessage);
                         HandleProcessingError(string.Format("Check procedure init failed: {0}", errorMessage));
                         result = false;
                     }
                 }
                 else
                 {
-                    _logger.LogWarning("RunChecks_ProcessInit returned false for {ProcessCd}", processCd);
+                    _logger.LogWarning("RunChecks_ProcessInit returned false for {ProcessCd}, EvalId: {EvalId}", processCd, EvaluationId?.ToString() ?? "null");
+                    HandleProcessingError(string.Format("RunChecks_ProcessInit returned false for {0}", processCd));
                     result = false;
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unexpected exception while executing checks for process {ProcessCd}", processCd);
-                HandleProcessingError(string.Format("Check execution failed: {0}  {1}", ex.Message, ex.StackTrace));
+                _logger.LogError(ex, "Unexpected exception while executing checks for process {ProcessCd}, EvalId: {EvalId}", processCd, EvaluationId?.ToString() ?? "null");
+                HandleProcessingError(
+                    string.Format("Check execution failed: {0}", ex.Message),
+                    ex.StackTrace
+                );
                 result = false;
             }
 
@@ -821,6 +852,7 @@ namespace ECMPS.Checks.CheckEngine
                                           EvaluationEndedDate,
                                           UserId,
                                           batchId,
+                                          EvaluationId,
                                           ref chkSessionId,
                                           ref resultChar,
                                           ref errorMessage);
@@ -927,14 +959,17 @@ namespace ECMPS.Checks.CheckEngine
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "ECMPS data context creation failed for process {ProcessCd}", processCd);
-                    HandleProcessingError(string.Format("ECMPS data context creation failed: {0}", ex.Message));
+                    _logger.LogError(ex, "ECMPS data context creation failed for process {ProcessCd}, EvalId: {EvalId}", processCd, EvaluationId?.ToString() ?? "null");
+                    HandleProcessingError(
+                        string.Format("ECMPS data context creation failed: {0}", ex.Message),
+                        ex.StackTrace
+                    );
                     result = false;
                 }
             }
             else
             {
-                _logger.LogError("ECMPS connection failed for process {ProcessCd}, {Error}", processCd, DbConnection.LastError);
+                _logger.LogError("ECMPS connection failed for process {ProcessCd}, EvalId: {EvalId}, Error: {Error}", processCd, EvaluationId?.ToString() ?? "null", DbConnection.LastError);
                 HandleProcessingError(string.Format("ECMPS connection failed: {0}", DbConnection.LastError));
                 result = false;
             }
@@ -1146,7 +1181,10 @@ namespace ECMPS.Checks.CheckEngine
                     catch (Exception ex)
                     {
                         ReportingPeriod = null;
-                        HandleProcessingError(string.Format("Reporting Period load failed: {0}", ex.Message));
+                        HandleProcessingError(
+                            string.Format("Reporting Period load failed: {0}", ex.Message),
+                            ex.StackTrace
+                        );
                         result = false;
                     }
                 }
@@ -1256,14 +1294,22 @@ namespace ECMPS.Checks.CheckEngine
         /// Handles processing errors generated during a check session.
         /// </summary>
         /// <param name="message">The message to handle.</param>
-        public void HandleProcessingError(string message)
+        /// <param name="stackTrace">The stack trace of the error.</param>
+        /// <param name="depth">The number of frames to skip in the stack trace.</param>
+        public void HandleProcessingError(string message, string stackTrace = null, int depth = 1)
         {
             if (message.HasValue())
             {
+                var error = string.Format("CheckEngine Error: {0}\nStack Trace:\n{1}",
+                    message,
+                    // Use the stack trace if provided, otherwise generate a new one starting from the calling function.
+                    stackTrace.HasValue() ? stackTrace : new StackTrace(skipFrames: depth, fNeedFileInfo: true).ToString()
+                );
+
                 if (CheckEngineErrors.IsEmpty())
-                    CheckEngineErrors = message;
+                    CheckEngineErrors = error;
                 else
-                    CheckEngineErrors += Environment.NewLine + message;
+                    CheckEngineErrors += Environment.NewLine + error;
             }
         }
 
@@ -1296,6 +1342,11 @@ namespace ECMPS.Checks.CheckEngine
         /// The current user id.
         /// </summary>
         public string UserId { get; set; }
+
+        /// <summary>
+        /// The evaluation id from the evaluation queue.
+        /// </summary>
+        public long? EvaluationId { get; set; }
 
         #endregion
 

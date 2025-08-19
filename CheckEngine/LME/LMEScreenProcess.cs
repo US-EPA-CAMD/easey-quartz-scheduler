@@ -78,8 +78,6 @@ namespace ECMPS.Checks.LME
 
             //ElapsedTimes.TimingBegin("ExecuteChecks", this);
 
-            string ErrorMessage = "";
-
             int RptPeriodId = (mCheckEngine.RptPeriodId.HasValue && (mCheckEngine.RptPeriodId.Value > 0) ? mCheckEngine.RptPeriodId.Value : int.MinValue);
             SetCheckParameter( "Current_Reporting_Period", RptPeriodId, eParameterDataType.Integer );
             SetCheckParameter( "Fuel_Type_Reality_Checks_for_GCV_Cross_Check_Table", mSourceData.Tables["CrossCheck_FuelTypeRealityChecksforGCV"].DefaultView, eParameterDataType.DataView );
@@ -91,7 +89,7 @@ namespace ECMPS.Checks.LME
                     {
                         cHourlyOpDataRowCategory HourlyOpDataRow;
                         HourlyOpDataRow = new cHourlyOpDataRowCategory( mCheckEngine, this, mCheckEngine.ThisTable );
-                        HourlyOpDataRow.InitCheckBands( CheckEngine.DbAuxConnection, ref ErrorMessage );
+                        HourlyOpDataRow.InitCheckBands(CheckEngine.DbAuxConnection);
                         RunResult = HourlyOpDataRow.ProcessChecks( mCheckEngine.MonLocId );
                         HourlyOpDataRow.EraseParameters();
                         break;
@@ -101,7 +99,7 @@ namespace ECMPS.Checks.LME
                     {
                         cLTFFDataRowCategory LTFFDataRow;
                         LTFFDataRow = new cLTFFDataRowCategory( mCheckEngine, this, mCheckEngine.ThisTable );
-                        LTFFDataRow.InitCheckBands( CheckEngine.DbAuxConnection, ref ErrorMessage );
+                        LTFFDataRow.InitCheckBands( CheckEngine.DbAuxConnection);
                         RunResult = LTFFDataRow.ProcessChecks( mCheckEngine.MonLocId );
                         LTFFDataRow.EraseParameters();
                         break;
@@ -111,7 +109,7 @@ namespace ECMPS.Checks.LME
                     {
                         cEmissionCommentCategory EmissionCommentCategory;
                         EmissionCommentCategory = new cEmissionCommentCategory( mCheckEngine, this, mCheckEngine.ThisTable );
-                        EmissionCommentCategory.InitCheckBands( CheckEngine.DbAuxConnection, ref ErrorMessage );
+                        EmissionCommentCategory.InitCheckBands( CheckEngine.DbAuxConnection);
                         RunResult = EmissionCommentCategory.ProcessChecks( mCheckEngine.MonLocId );
                         EmissionCommentCategory.EraseParameters();
                         break;

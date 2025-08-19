@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ using ECMPS.Definitions.Enumerations;
 using ECMPS.Definitions.Extensions;
 using ECMPS.Definitions.SeverityCode;
 using ECMPS.ErrorSuppression;
+
+using Epa.Camd.Logger;
 
 
 namespace ECMPS.Checks.CheckEngine
@@ -36,6 +39,8 @@ namespace ECMPS.Checks.CheckEngine
 
             Populate(AChecksConnection, out ErrorMessage);
         }
+
+        private readonly ILogger<cResultCatalog> _logger = LoggerProvider.GetLogger<cResultCatalog>();
 
         #region Support Classes
 
@@ -297,14 +302,14 @@ namespace ECMPS.Checks.CheckEngine
                                 }
                                 else
                                 {
-                                    System.Diagnostics.Debug.WriteLine(string.Format("Check Result: [{0}] uses the null data row parameter [{1}] in a plugin",
+                                    _logger.LogError(string.Format("Check Result: [{0}] uses the null data row parameter [{1}] in a plugin",
                                                                                      AResultIdentifier, PluginParameter.ParameterName));
                                     PluginValue = "";
                                 }
                             }
                             else if (PluginParameter.ParameterType == eParameterDataType.DataView)
                             {
-                                System.Diagnostics.Debug.WriteLine(string.Format("Check Result: [{0}] uses data view parameter [{1}] in a plugin].",
+                                _logger.LogError(string.Format("Check Result: [{0}] uses data view parameter [{1}] in a plugin].",
                                                                                  AResultIdentifier, PluginParameter.ParameterName));
                                 PluginValue = PluginParameter.ValueAsString();
                             }
@@ -460,7 +465,7 @@ namespace ECMPS.Checks.CheckEngine
                            Populate_PrepErrorSuppressions(ref FResultLookup, ErrorSuppressionTable, out AErrorMessage));
 
             if (AErrorMessage != "")
-                Logging.LogMessage(AErrorMessage, "ResultCatalog::Populate Error", LogLevel.Information);
+                _logger.LogInformation(AErrorMessage, "ResultCatalog::Populate Error");
 
             return Result;
         }
@@ -600,7 +605,7 @@ namespace ECMPS.Checks.CheckEngine
             {
                 AResultTable = null;
                 AErrorMessage = "Populate_GetResultTable: " + ex.Message;
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                _logger.LogError(ex.ToString());
 
                 return false;
             }
