@@ -2444,8 +2444,7 @@ namespace ECMPS.Checks.DatabaseAccess
             catch (Exception ex)
             {
                 m_dvSeverityCode = null;
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-                Logging.LogException(new Exception("Loading of SEVERITY_CODE view failed", ex), null);
+                LoggerProvider.GetLogger(typeof(cDatabase).FullName).LogError(ex, "Loading of SEVERITY_CODE view failed");
                 return false;
             }
         }

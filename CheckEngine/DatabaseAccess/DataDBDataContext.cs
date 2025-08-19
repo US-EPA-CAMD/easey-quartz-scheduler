@@ -1,9 +1,12 @@
-﻿using System.Runtime.InteropServices.ComTypes;
+﻿using Microsoft.Extensions.Logging;
+using System.Runtime.InteropServices.ComTypes;
 using System;
 using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+
+using Epa.Camd.Logger;
 
 namespace ECMPS.Checks.DatabaseAccess
 {
@@ -24,6 +27,8 @@ namespace ECMPS.Checks.DatabaseAccess
             Database = database;
             CommandTimeout = commandTimeout;
         }
+
+        private readonly ILogger<DataDBDataContext> _logger = LoggerProvider.GetLogger<DataDBDataContext>();
         
         /// <summary>
         /// The command timeout to use for database commands.
@@ -68,7 +73,7 @@ namespace ECMPS.Checks.DatabaseAccess
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                _logger.LogError(ex.ToString());
             }
            //Database.CreateStoredProcedureCommand("camdecmpswks.GetFacilityInfo");
 
@@ -137,7 +142,7 @@ namespace ECMPS.Checks.DatabaseAccess
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                _logger.LogError(ex.ToString());
             }
 
             //Database.CreateStoredProcedureCommand("camdecmpswks.get_initial_values");
@@ -231,7 +236,7 @@ namespace ECMPS.Checks.DatabaseAccess
             {
                 result = 'N';
                 errorMessage = $"Error '{ex.Message}' encountered when getting information for reporting period id '{rptPeriodId}'";
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                _logger.LogError(ex.ToString());
             }
 
 

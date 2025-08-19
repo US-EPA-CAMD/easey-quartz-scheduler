@@ -1176,12 +1176,15 @@ namespace ECMPS.Checks.EmissionsReport
 			}
 			catch (Exception ex)
 			{
-				Process.UpdateErrors(string.Format("Category: {0}  MonLocId: {1}  OpDate: {2}  OpHour: {3}  Message: {4}",
-												   this.CategoryCd,
-												   AMonLocId,
-												   AOpDate.ToShortDateString(),
-												   AOpHour.ToString(),
-												   ex.Message));
+				Process.UpdateErrors(
+            string.Format("Category: {0}  MonLocId: {1}  OpDate: {2}  OpHour: {3}  Message: {4}",
+                this.CategoryCd,
+                AMonLocId,
+                AOpDate.ToShortDateString(),
+                AOpHour.ToString(),
+                ex.Message),
+            ex.StackTrace
+        );
 				return false;
 			}
 		}
@@ -1201,12 +1204,15 @@ namespace ECMPS.Checks.EmissionsReport
 			}
 			catch (Exception ex)
 			{
-				Process.UpdateErrors(string.Format("Category: {0}  MonLocId: {1}  OpDate: {2}  OpHour: {3}  Message: {4}",
-												   this.CategoryCd,
-												   AMonLocId,
-												   AOpDate.ToShortDateString(),
-												   AOpHour.ToString(),
-												   ex.Message));
+				Process.UpdateErrors(
+            string.Format("Category: {0}  MonLocId: {1}  OpDate: {2}  OpHour: {3}  Message: {4}",
+                this.CategoryCd,
+                AMonLocId,
+                AOpDate.ToShortDateString(),
+                AOpHour.ToString(),
+                ex.Message),
+            ex.StackTrace
+        );
 				return false;
 			}
 		}
@@ -1222,11 +1228,14 @@ namespace ECMPS.Checks.EmissionsReport
 			}
 			catch (Exception ex)
 			{
-				Process.UpdateErrors(string.Format("Category: {0}  OpDate: {1}  OpHour: {2}  Message: {3}",
-												   this.CategoryCd,
-												   AOpDate.ToShortDateString(),
-												   AOpHour.ToString(),
-												   ex.Message));
+				Process.UpdateErrors(
+            string.Format("Category: {0}  OpDate: {1}  OpHour: {2}  Message: {3}",
+                this.CategoryCd,
+                AOpDate.ToShortDateString(),
+                AOpHour.ToString(),
+                ex.Message),
+            ex.StackTrace
+        );
 				return false;
 			}
 		}
@@ -1243,11 +1252,14 @@ namespace ECMPS.Checks.EmissionsReport
 			}
 			catch (Exception ex)
 			{
-				Process.UpdateErrors(string.Format("Category: {0}  OpDate: {1}  OpHour: {2}  Message: {3}",
-												   this.CategoryCd,
-												   CurrentOpDate.ToShortDateString(),
-												   CurrentOpHour.ToString(),
-												   ex.Message));
+				Process.UpdateErrors(
+            string.Format("Category: {0}  OpDate: {1}  OpHour: {2}  Message: {3}",
+                this.CategoryCd,
+                CurrentOpDate.ToShortDateString(),
+                CurrentOpHour.ToString(),
+                ex.Message),
+            ex.StackTrace
+        );
 				return false;
 			}
 		}
@@ -1263,14 +1275,17 @@ namespace ECMPS.Checks.EmissionsReport
 				return ProcessChecksDo_WithPrep();
 			}
 			catch (Exception ex)
-			{
-				Process.UpdateErrors(string.Format("Category: {0}  MonLocId: {1}  OpDate: {2}  Message: {3}",
-												   this.CategoryCd,
-												   AMonLocId,
-												   AOpDate.ToShortDateString(),
-												   ex.Message));
-				return false;
-			}
+      {
+        Process.UpdateErrors(
+            string.Format("Category: {0}  MonLocId: {1}  OpDate: {2}  Message: {3}",
+                this.CategoryCd,
+                AMonLocId,
+                AOpDate.ToShortDateString(),
+                ex.Message),
+            ex.StackTrace
+        );
+        return false;
+      }
 		}
 
 		public new virtual bool ProcessChecks(string AMonLocId)
@@ -1285,10 +1300,13 @@ namespace ECMPS.Checks.EmissionsReport
 			}
 			catch (Exception ex)
 			{
-				Process.UpdateErrors(string.Format("Category: {0}  MonLocId: {1}  Message: {2}",
-												  this.CategoryCd,
-												  AMonLocId,
-												  ex.Message));
+				Process.UpdateErrors(
+            string.Format("Category: {0}  MonLocId: {1}  Message: {2}",
+                this.CategoryCd,
+                AMonLocId,
+                ex.Message),
+            ex.StackTrace
+        );
 				return false;
 			}
 		}
@@ -1306,10 +1324,13 @@ namespace ECMPS.Checks.EmissionsReport
 			}
 			catch (Exception ex)
 			{
-				Process.UpdateErrors(string.Format("Category: {0}  MonLocId: {1}  Message: {2}",
-												  this.CategoryCd,
-												  AMonLocId,
-												  ex.Message));
+				Process.UpdateErrors(
+            string.Format("Category: {0}  MonLocId: {1}  Message: {2}",
+                this.CategoryCd,
+                AMonLocId,
+                ex.Message),
+            ex.StackTrace
+        );
 				return false;
 			}
 		}
@@ -1328,9 +1349,12 @@ namespace ECMPS.Checks.EmissionsReport
 			catch (Exception ex)
 			{
 				CurrentMonLocId = AMonLocId;
-				Process.UpdateErrors("Category: " + this.CategoryCd + "  " +
-									 "MonLocId: " + CurrentMonLocId + "  " +
-									 "Message: " + ex.Message);
+				Process.UpdateErrors(
+            "Category: " + this.CategoryCd + "  " +
+                 "MonLocId: " + CurrentMonLocId + "  " +
+                 "Message: " + ex.Message,
+            ex.StackTrace
+        );
 				return false;
 			}
 		}
@@ -1351,11 +1375,14 @@ namespace ECMPS.Checks.EmissionsReport
 			catch (Exception ex)
 			{
 				CurrentMonLocId = AMonLocId;
-				Process.UpdateErrors("Category: " + this.CategoryCd + "  " +
-									 "MonLocId: " + CurrentMonLocId + "  " +
-									 "OpDate: " + CurrentOpDate + "  " +
-									 "OpHour: " + CurrentOpHour + "  " +
-									 "Message: " + ex.Message);
+				Process.UpdateErrors(
+            "Category: " + this.CategoryCd + "  " +
+                "MonLocId: " + CurrentMonLocId + "  " +
+                "OpDate: " + CurrentOpDate + "  " +
+                "OpHour: " + CurrentOpHour + "  " +
+                "Message: " + ex.Message,
+            ex.StackTrace
+        );
 				return false;
 			}
 		}
@@ -1368,7 +1395,10 @@ namespace ECMPS.Checks.EmissionsReport
 			}
 			catch (Exception ex)
 			{
-				Process.UpdateErrors(string.Format("Category: {0}  Message: {1}", this.CategoryCd, ex.Message));
+				Process.UpdateErrors(
+            string.Format("Category: {0}  Message: {1}", this.CategoryCd, ex.Message),
+            ex.StackTrace
+        );
 				return false;
 			}
 		}

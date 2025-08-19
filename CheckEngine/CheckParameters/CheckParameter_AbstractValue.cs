@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -100,9 +101,9 @@ namespace ECMPS.Checks.Parameters
           else
           {
             if (AOwner != null)
-              System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", AOwner.CategoryCd, this.Name, ErrorMessage));
+              _logger.LogError(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", AOwner.CategoryCd, this.Name, ErrorMessage));
             else
-              System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, ErrorMessage));
+              _logger.LogError(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, ErrorMessage));
 
             return false;
           }
@@ -114,9 +115,9 @@ namespace ECMPS.Checks.Parameters
       catch (Exception ex)
       {
         if (AOwner != null)
-          System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", AOwner.CategoryCd, this.Name, ex.Message));
+          _logger.LogError(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", AOwner.CategoryCd, this.Name, ex.Message));
         else
-          System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, ex.Message));
+          _logger.LogError(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, ex.Message));
 
         return false;
       }
@@ -142,9 +143,9 @@ namespace ECMPS.Checks.Parameters
           else
           {
             if (ACategory != null)
-              System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", ACategory.CategoryCd, this.Name, ErrorMessage));
+              _logger.LogError(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", ACategory.CategoryCd, this.Name, ErrorMessage));
             else
-              System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, ErrorMessage));
+              _logger.LogError(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, ErrorMessage));
 
             return false;
           }
@@ -155,9 +156,9 @@ namespace ECMPS.Checks.Parameters
       catch (Exception ex)
       {
         if (ACategory != null)
-          System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", ACategory.CategoryCd, this.Name, ex.Message));
+          _logger.LogError(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", ACategory.CategoryCd, this.Name, ex.Message));
         else
-          System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, ex.Message));
+          _logger.LogError(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, ex.Message));
 
         return false;
       }
@@ -248,9 +249,9 @@ namespace ECMPS.Checks.Parameters
       else
       {
         if (FOwner != null)
-          System.Diagnostics.Debug.WriteLine(string.Format("Update of uninitialized parameters is not allowed: Category - {0}, Parameter - {1}", FOwner.CategoryCd, this.Name));
+          _logger.LogError(string.Format("Update of uninitialized parameters is not allowed: Category - {0}, Parameter - {1}", FOwner.CategoryCd, this.Name));
         else
-          System.Diagnostics.Debug.WriteLine(string.Format("Update of uninitialized parameters is not allowed: Parameter - {0}", this.Name));
+          _logger.LogError(string.Format("Update of uninitialized parameters is not allowed: Parameter - {0}", this.Name));
       }
     }
 

@@ -14,6 +14,7 @@ using SilkierQuartz;
 using DatabaseAccess;
 
 using Epa.Camd.Quartz.Scheduler.Jobs;
+using Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs;
 using Epa.Camd.Quartz.Scheduler.Models;
 using Epa.Camd.Quartz.Scheduler.Jobs.Listeners;
 using Microsoft.AspNetCore.Http;
@@ -129,6 +130,8 @@ namespace Epa.Camd.Quartz.Scheduler
       
       CheckEngineEvaluation.RegisterWithQuartz(services);
       BulkDataFile.RegisterWithQuartz(services);
+      ProcessSubmissionReminders.RegisterWithQuartz(services);
+      ProcessWindowNotifications.RegisterWithQuartz(services);
       DynamicJobScheduler.RegisterWithQuartz(services, jobConfigurations);
 
       services.AddTransient<CheckEngineEvaluationListener>(); //DI for CheckEngineListener

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -202,9 +203,9 @@ namespace ECMPS.Checks.Parameters
     public override bool LegacySetValue(object ALegacyValue, cCheckCategory AOwner)
     {
       if (AOwner != null)
-        System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", AOwner.CategoryCd, this.Name, "Legacy setting of this parameter type is not allowed."));
+        _logger.LogError(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", AOwner.CategoryCd, this.Name, "Legacy setting of this parameter type is not allowed."));
       else
-        System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, "Legacy setting of this parameter type is not allowed."));
+        _logger.LogError(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, "Legacy setting of this parameter type is not allowed."));
 
       return false;
     }
@@ -219,9 +220,9 @@ namespace ECMPS.Checks.Parameters
     public override bool LegacyUpdateValue(object ALegacyValue, cCheckCategory ACategory)
     {
       if (ACategory != null)
-        System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", ACategory.CategoryCd, this.Name, "Legacy setting of this parameter type is not allowed."));
+        _logger.LogError(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", ACategory.CategoryCd, this.Name, "Legacy setting of this parameter type is not allowed."));
       else
-        System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, "Legacy setting of this parameter type is not allowed."));
+        _logger.LogError(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, "Legacy setting of this parameter type is not allowed."));
 
       return false;
     }

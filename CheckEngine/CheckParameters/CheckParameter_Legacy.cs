@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -110,9 +111,9 @@ namespace ECMPS.Checks.Parameters
       catch (Exception ex)
       {
         if (AOwner != null)
-          System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", AOwner.CategoryCd, this.Name, ex.Message));
+          _logger.LogError(string.Format("Error legacy setting of value: Category - {0}, Parameter - {1} : {2}", AOwner.CategoryCd, this.Name, ex.Message));
         else
-          System.Diagnostics.Debug.WriteLine(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, ex.Message));
+          _logger.LogError(string.Format("Error legacy setting of value: For Process, Parameter - {0} : {1}", this.Name, ex.Message));
 
         return false;
       }
@@ -142,9 +143,9 @@ namespace ECMPS.Checks.Parameters
           else
           {
             if (FOwner != null)
-              System.Diagnostics.Debug.WriteLine(string.Format("Error legacy updating of value: Category - {0}, Parameter - {1} : {2}", ACategory.CategoryCd, this.Name, "Cannot update a parameter of a different type"));
+              _logger.LogError(string.Format("Error legacy updating of value: Category - {0}, Parameter - {1} : {2}", ACategory.CategoryCd, this.Name, "Cannot update a parameter of a different type"));
             else
-              System.Diagnostics.Debug.WriteLine(string.Format("Error legacy updating of value: Parameter - {0} : {1}", this.Name, "Cannot update a parameter of a different type"));
+              _logger.LogError(string.Format("Error legacy updating of value: Parameter - {0} : {1}", this.Name, "Cannot update a parameter of a different type"));
 
             return false;
           }
@@ -155,9 +156,9 @@ namespace ECMPS.Checks.Parameters
       catch (Exception ex)
       {
         if (FOwner != null)
-          System.Diagnostics.Debug.WriteLine(string.Format("Error legacy updating of value: Category - {0}, Parameter - {1} : {2}", FOwner.CategoryCd, this.Name, ex.Message));
+          _logger.LogError(string.Format("Error legacy updating of value: Category - {0}, Parameter - {1} : {2}", FOwner.CategoryCd, this.Name, ex.Message));
         else
-          System.Diagnostics.Debug.WriteLine(string.Format("Error legacy updating of value: For Process, Parameter - {0} : {1}", this.Name, ex.Message));
+          _logger.LogError(string.Format("Error legacy updating of value: For Process, Parameter - {0} : {1}", this.Name, ex.Message));
 
         return false;
       }

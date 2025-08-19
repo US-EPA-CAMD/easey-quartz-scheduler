@@ -736,13 +736,13 @@ namespace ECMPS.Checks.CheckEngine
 
       if (ProcessParameters == null)
       {
-        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Get: Process - {0}, Parameter - {1} : {2}",
+        _logger.LogError(string.Format("Failed Parameter Get: Process - {0}, Parameter - {1} : {2}",
                                                          this.ProcessCd, AParameterName,
                                                          "Check parameters object not implemented for this process."));
       }
       else if (!ProcessParameters.ContainsLegacyParameter(AParameterName))
       {
-        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Get: Process - {0}, Parameter - {1} : {2}",
+        _logger.LogError(string.Format("Failed Parameter Get: Process - {0}, Parameter - {1} : {2}",
                                                          this.ProcessCd, AParameterName,
                                                          "Check parameter not implemented for this process."));
       }
@@ -763,7 +763,7 @@ namespace ECMPS.Checks.CheckEngine
         }
         catch (Exception ex)
         {
-          System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Get: Process - {0}, Parameter - {1} : {2}",
+          _logger.LogError(string.Format("Failed Parameter Get: Process - {0}, Parameter - {1} : {2}",
                                                            this.ProcessCd, AParameterName, ex.Message));
         }
       }
@@ -782,13 +782,13 @@ namespace ECMPS.Checks.CheckEngine
     {
       if (ProcessParameters == null)
       {
-        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Set: Process - {0}, Parameter - {1} : {2}",
+        _logger.LogError(string.Format("Failed Parameter Set: Process - {0}, Parameter - {1} : {2}",
                                                          this.ProcessCd, AParameterName,
                                                          "Check parameters object not implemented for this process."));
       }
       else if (!ProcessParameters.ContainsLegacyParameter(AParameterName))
       {
-        System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Set: Process - {0}, Parameter - {1} : {2}",
+        _logger.LogError(string.Format("Failed Parameter Set: Process - {0}, Parameter - {1} : {2}",
                                                          this.ProcessCd, AParameterName,
                                                          "Check parameter not implemented for this process."));
       }
@@ -802,7 +802,7 @@ namespace ECMPS.Checks.CheckEngine
         }
         catch (Exception ex)
         {
-          System.Diagnostics.Debug.WriteLine(string.Format("Failed Parameter Set: Process - {0}, Parameter - {1} : {2}",
+          _logger.LogError(string.Format("Failed Parameter Set: Process - {0}, Parameter - {1} : {2}",
                                              this.ProcessCd, AParameterName, ex.Message));
         }
       }
@@ -1308,7 +1308,7 @@ namespace ECMPS.Checks.CheckEngine
                         errorMessage = string.Format(resultTemplate, "DB", errorMessage);
                         result = false;
                     }
-                    _logger.LogInformation("Completed update_ecmps_status_for_evaluation. result: {result}", result ? "Success" : "Failure");
+                    _logger.LogInformation("Completed update_ecmps_status_for_evaluation. result: {result}, EvalId: {EvalId}", result ? "Success" : "Failure", mCheckEngine.EvaluationId?.ToString() ?? "null");
                 }
                 catch (Exception ex)
                 {
@@ -1686,9 +1686,10 @@ namespace ECMPS.Checks.CheckEngine
     /// UpdateErrors
     /// </summary>
     /// <param name="AErrorText"></param>
-    public void UpdateErrors(string AErrorText)
+    /// <param name="stackTrace">The stack trace of the error, if available</param>
+    public void UpdateErrors(string AErrorText, string stackTrace = null)
     {
-      CheckEngine.HandleProcessingError(AErrorText);
+      CheckEngine.HandleProcessingError(AErrorText, stackTrace, depth: 2);
     }
 
     /// <summary>
