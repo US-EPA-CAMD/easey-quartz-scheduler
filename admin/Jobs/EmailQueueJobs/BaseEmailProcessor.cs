@@ -10,20 +10,20 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Epa.Camd.Quartz.Scheduler.Models;
 
-namespace Epa.Camd.Quartz.Scheduler.Jobs
+namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
 {
     public abstract class BaseEmailProcessor
     {
-        public const string SUBMISSION_REMINDER_EMAIL_TYPE_FOR_RECIP_API = "SUBMISSIONREMINDER";
-        public const string WINDOW_NOTIFICATION_EMAIL_TYPE_FOR_RECIP_API = "WINDOWNOTIFICATION";
+        protected const string SubmissionReminderEmailTypeForRecipientApi = "SUBMISSIONREMINDER";
+        protected const string WindowNotificationEmailTypeForRecipientApi = "WINDOWNOTIFICATION";
         
-        public const string SUBMISSION_REMINDER_EMAIL_TYPE_FOR_DB = "submissionReminder";
-        public const string WINDOW_NOTIFICATION_EMAIL_TYPE_FOR_DB = "submissionWindow";
+        public const string SubmissionReminderEmailTypeForDb = "submissionReminder";
+        public const string WindowNotificationEmailTypeForDb = "windowNotification";
 
-        protected readonly NpgSqlContext _dbContext;
-        protected readonly IConfiguration _configuration;
-        protected readonly ILogger _logger;
-        protected readonly Guid _jobId;
+        private readonly NpgSqlContext _dbContext;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger _logger;
+        private readonly Guid _jobId;
 
         protected BaseEmailProcessor(NpgSqlContext dbContext, IConfiguration configuration, ILogger logger)
         {
@@ -37,24 +37,69 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         protected abstract string GetEmailTypeForDatabase();
         protected abstract string GetJobName();
 
-        private async Task UpdateEmailProcessStatus(List<EmailToProcess> records, string status)
+        private async Task UpdateEmailProcessStatus(List<EmailToProcess> records, string status, string note = null)
         {
+            DateTime currentTime = Utils.getCurrentEasternTime();
+            
             foreach (EmailToProcess process in records)
             {
                 process.StatusCode = status;
+                
+                // Set started_time when status is set to WIP
+                if (status == "WIP")
+                {
+                    process.StartedTime = currentTime;
+                }
+                
+                // Add note and note_time if provided (for errors/warnings)
+                if (!string.IsNullOrEmpty(note))
+                {
+                    process.Note = note;
+                    process.NoteTime = currentTime;
+                }
+                
                 _dbContext.EmailToProcessQueue.Update(process);
             }
             await _dbContext.SaveChangesAsync();
         }
 
-        private async Task UpdateSingleEmailProcessStatus(EmailToProcess record, string status)
+        private async Task HandleEmailProcessFailure(List<EmailToProcess> records, string errorMessage)
         {
-            record.StatusCode = status;
-            _dbContext.EmailToProcessQueue.Update(record);
+            DateTime currentTime = Utils.getCurrentEasternTime();
+            int maxRetries = int.Parse(_configuration["EASEY_QUARTZ_SCHEDULER_EMAIL_PROCESS_MAX_RETRIES"] ?? "3");
+            
+            foreach (EmailToProcess process in records)
+            {
+                // Increment failure count
+                process.FailureCount = (process.FailureCount ?? 0) + 1;
+                process.Note = errorMessage;
+                process.NoteTime = currentTime;
+                
+                // Set status based on failure count
+                if (process.FailureCount >= maxRetries)
+                {
+                    process.StatusCode = "ERROR";
+                    _logger.LogError("{JobName}: Email record failed {FailureCount} times, setting to ERROR. ToProcessId: {ToProcessId}, Last error: {Error}", 
+                        GetJobName(), process.FailureCount, process.ProcessId, errorMessage);
+                }
+                else
+                {
+                    process.StatusCode = "QUEUED"; // Retry - queued_time stays the same
+                    _logger.LogWarning("{JobName}: Email record failed (attempt {FailureCount}/{MaxRetries}), requeuing for retry. ToProcessId: {ToProcessId}, Error: {Error}", 
+                        GetJobName(), process.FailureCount, maxRetries, process.ProcessId, errorMessage);
+                }
+                
+                _dbContext.EmailToProcessQueue.Update(process);
+            }
+            
             await _dbContext.SaveChangesAsync();
         }
 
-        protected async Task<Dictionary<decimal, HashSet<string>>> ProcessEmailRecipients()
+        /// <summary>
+        /// Main processing method that coordinates email grouping and sending
+        /// Uses strategy pattern to group emails differently based on email type
+        /// </summary>
+        protected async Task ProcessEmailRecipients()
         {
             string jobName = GetJobName();
             _logger.LogInformation("{JobName}: Executing job. JobId: {JobId}", jobName, _jobId);
@@ -65,7 +110,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             {
                 string notificationTypeForDb = GetEmailTypeForDatabase();
                 
-                // Get queued emails for this type
+                // Get all queued email_to_process records from database
                 List<EmailToProcess> inQueue = _dbContext.EmailToProcessQueue.FromSqlRaw(@"
                     SELECT *
                     FROM camdecmpsaux.email_to_process
@@ -75,51 +120,66 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 {
                     _logger.LogInformation("{JobName}: No queued emails found for type: {NotificationType}", jobName, notificationTypeForDb);
                     await CompleteJobLog(jl);
-                    return new Dictionary<decimal, HashSet<string>>();
+                    return;
                 }
 
-                _logger.LogInformation("{JobName}: Found {QueueCount} emails queued for processing", jobName, inQueue.Count);
+                var eventCodeGroups = inQueue.GroupBy(ep => ep.EventCode).ToList();
+                _logger.LogInformation("{JobName}: Found {QueueCount} emails across {EventCodeCount} event codes", jobName, inQueue.Count, eventCodeGroups.Count);
 
-                // Mark records as WIP and collect plant IDs
-                await UpdateEmailProcessStatus(inQueue, "WIP");
+                // Process each event_code group separately
+                foreach (var eventCodeGroup in eventCodeGroups)
+                {
+                    var eventCode = eventCodeGroup.Key;
+                    _logger.LogInformation("{JobName}: Processing event_code {EventCode} with {RecordCount} records", jobName, eventCode, eventCodeGroup.Count());
                 
-                HashSet<long> plantIdSet = new HashSet<long>();
-                foreach (EmailToProcess process in inQueue)
-                {
-                    long plantId = Convert.ToInt64(process.FacId);
-                    plantIdSet.Add(plantId);
-                    _logger.LogInformation("{JobName}: Converting EmailToProcess FacId {FacId} (decimal) to plantId {PlantId} (long)", 
-                        jobName, process.FacId, plantId);
+                    // 1. Grab the eventCode group records
+                    List<EmailToProcess> groupedRecords = eventCodeGroup.ToList();
+
+                    // 2: Mark all records as WIP
+                    await UpdateEmailProcessStatus(groupedRecords, "WIP");
+                
+                    // 3: Collect unique facility IDs for CBS API call
+                    HashSet<long> plantIdSet = groupedRecords.Select(ep => Convert.ToInt64(ep.FacId)).ToHashSet();
+                    long[] plantIdList = plantIdSet.ToArray();
+                    
+                    _logger.LogInformation("{JobName}: Event_code {EventCode} - Marked {QueueCount} email_to_process records as WIP, found {PlantCount} unique facilities", jobName, eventCode, groupedRecords.Count, plantIdSet.Count);
+
+                    // 4: Call camd-services to get all recipients for all facilities
+                    string notificationTypeForRecipientApi = GetEmailTypeForRecipientApi();
+                    RecipientResponse recipientResponse = await CallRecipientApi(notificationTypeForRecipientApi, plantIdList);
+
+                    if (recipientResponse.hasError && (recipientResponse.recipients == null || recipientResponse.recipients.Length == 0))
+                    {
+                        string errorMessage = $"Recipient API failed for event_code {eventCode}: {recipientResponse.errorMessage ?? "Unknown error"}";
+                        _logger.LogError("{JobName}: {ErrorMessage}. Handling failure for {RecordCount} records.", 
+                            jobName, errorMessage, groupedRecords.Count);
+                        await HandleEmailProcessFailure(groupedRecords, errorMessage);
+                        continue; // Continue with next event_code
+                    }
+
+                    // 5: Apply grouping strategy based on email type
+                    // - Submission reminders: Group by recipient (1 email per person, for one or more relevant facilities)
+                    // - Window notifications: Group by facility (1 email per facility, for one or more relevant recipients)
+                    var groupingStrategy = EmailGroupingStrategyFactory.CreateStrategy(notificationTypeForDb);
+                    var emailGroups = groupingStrategy.GroupEmailRecords(groupedRecords, recipientResponse, _logger);
+                
+                    if (emailGroups.Count == 0)
+                    {
+                        string warningMessage = $"No email groups created for event_code {eventCode} with {plantIdSet.Count} facilities - API returned {recipientResponse.recipients?.Length ?? 0} recipients but none matched our facilities or had valid email addresses";
+                        _logger.LogWarning("{JobName}: {Warning}. Handling failure for {RecordCount} records.", jobName, warningMessage, groupedRecords.Count);
+                        //If the recipient api returns no emails for all provided fac IDs for this group, let's consider it 'unusual' and retry
+                        await HandleEmailProcessFailure(groupedRecords, warningMessage);  
+                        continue; // Continue with next event_code
+                    }
+
+                    // 6: Create email_to_send records based on groups
+                    int recordsCreated = await CreateGroupedEmailToSendRecords(emailGroups);
+                    int totalGroups = emailGroups.Count;
+                    _logger.LogInformation("{JobName}: Completed event_code {EventCode}. Created {RecordCount} records for {GroupCount} groups", jobName, eventCode, recordsCreated, totalGroups);
                 }
-                _logger.LogInformation("{JobName}: Marked {QueueCount} email records as WIP, found {PlantCount} unique facilities. PlantIds: [{PlantIds}]", 
-                    jobName, inQueue.Count, plantIdSet.Count, string.Join(", ", plantIdSet.OrderBy(x => x)));
 
-                // Create plant ID list for API call
-                long[] plantIdList = new long[plantIdSet.Count];
-                plantIdSet.CopyTo(plantIdList);
-
-                // Call recipient API
-                string notificationTypeForRecipientApi = GetEmailTypeForRecipientApi();
-                RecipientResponse recipientResponse = await CallRecipientAPI(notificationTypeForRecipientApi, plantIdList);
-
-                // If recipient API failed completely, revert all records to QUEUED
-                if (recipientResponse.hasError && (recipientResponse.recipients == null || recipientResponse.recipients.Length == 0))
-                {
-                    _logger.LogError("{JobName}: Recipient API failed completely: {ErrorMessage}. Reverting {RecordCount} records to QUEUED.", jobName, recipientResponse.errorMessage ?? "Unknown error", inQueue.Count);
-                    await UpdateEmailProcessStatus(inQueue, "QUEUED");
-                    await CompleteJobLog(jl);
-                    return new Dictionary<decimal, HashSet<string>>();
-                }
-
-                // Process response and build facility-to-emails mapping
-                Dictionary<decimal, HashSet<string>> facIdToEmails = BuildFacilityEmailMapping(recipientResponse);
-
-                // Create EmailToSend records
-                int emailsCreated = await CreateEmailToSendRecords(inQueue, facIdToEmails);
-                _logger.LogInformation("{JobName}: Completed successfully. Created {EmailCount} emails for {FacilityCount} facilities", jobName, emailsCreated, facIdToEmails.Count);
-
+                _logger.LogInformation("{JobName}: Completed successfully. Processed {EventCodeCount} event codes", jobName, eventCodeGroups.Count);
                 await CompleteJobLog(jl);
-                return facIdToEmails;
             }
             catch (Exception e)
             {
@@ -164,7 +224,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             _logger.LogError(e, "{JobName}: Error executing job. JobId: {JobId}", GetJobName(), _jobId);
         }
 
-        private async Task<RecipientResponse> CallRecipientAPI(string notificationType, long[] plantIdList)
+        private async Task<RecipientResponse> CallRecipientApi(string notificationType, long[] plantIdList)
         {
             // Fire API Call
             ReminderNotificationPayload payload = new ReminderNotificationPayload()
@@ -193,7 +253,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             {
                 _logger.LogError("{JobName}: Recipient API returned HTTP {StatusCode}: {ReasonPhrase}", GetJobName(), response.StatusCode, response.ReasonPhrase ?? "No reason phrase");
                 // Return empty recipient list on HTTP error, don't throw
-                return new RecipientResponse { recipients = new Recipient[0], hasError = true, errorMessage = $"HTTP {response.StatusCode}: {response.ReasonPhrase ?? "No reason phrase"}" };
+                return new RecipientResponse { recipients = [], hasError = true, errorMessage = $"HTTP {response.StatusCode}: {response.ReasonPhrase ?? "No reason phrase"}" };
             }
 
             string responseContent = await response.Content.ReadAsStringAsync();
@@ -212,138 +272,73 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             return recipientResponse;
         }
 
-        private Dictionary<decimal, HashSet<string>> BuildFacilityEmailMapping(RecipientResponse recipientResponse)
+
+        /// <summary>
+        /// Creates email_to_send records based on grouped emails
+        /// Each group becomes a single email_to_send record with potentially multiple recipients
+        /// </summary>
+        private async Task<int> CreateGroupedEmailToSendRecords(List<EmailGroup> emailGroups)
         {
-            Dictionary<decimal, HashSet<string>> facIdToEmails = new Dictionary<decimal, HashSet<string>>();
+            int totalRecordsCreated = 0;
+            int groupsWithErrors = 0;
 
-            if (recipientResponse.recipients == null || recipientResponse.recipients.Length == 0)
+            foreach (var group in emailGroups)
             {
-                _logger.LogWarning("{JobName}: No recipients found in API response", GetJobName());
-                return facIdToEmails;
-            }
-
-            _logger.LogInformation("{JobName}: Processing {RecipientCount} recipients from API response", GetJobName(), recipientResponse.recipients.Length);
-
-            foreach (Recipient r in recipientResponse.recipients)
-            {
-                // Parse the single email address (may have display name format)
-                string emailAddress = r.emailAddressList;
-                
-                if (string.IsNullOrEmpty(emailAddress))
+                try
                 {
-                    _logger.LogWarning("{JobName}: Empty email address found in recipient response", GetJobName());
-                    continue;
-                }
-
-                _logger.LogInformation("{JobName}: Processing recipient with email '{Email}' for plant IDs: [{PlantIds}]", 
-                    GetJobName(), emailAddress, string.Join(", ", r.plantIdList));
-
-                foreach (long facId in r.plantIdList)
-                {
-                    decimal facIdDecimal = Convert.ToDecimal(facId);
+                    // Combine all recipients with semicolon separator for TO field
+                    // Example: "john@epa.gov;jane@epa.gov;bob@epa.gov"
+                    string recipientList = string.Join(";", group.Recipients);
                     
-                    _logger.LogInformation("{JobName}: Converting plantId {PlantId} (long) to facIdDecimal {FacIdDecimal} (decimal)", 
-                        GetJobName(), facId, facIdDecimal);
-                    
-                    if (facIdToEmails.ContainsKey(facIdDecimal))
+                    EmailToSend emailToSend = new EmailToSend()
                     {
-                        facIdToEmails[facIdDecimal].Add(emailAddress);
-                        _logger.LogInformation("{JobName}: Added email to existing facId {FacId}, total emails: {EmailCount}", 
-                            GetJobName(), facIdDecimal, facIdToEmails[facIdDecimal].Count);
-                    }
-                    else
+                        Context = group.CombinedContext,  // JSON array for reminders, single context for notifications
+                        StatusCode = "QUEUED",
+                        TemplateId = group.TemplateId,
+                        ToEmail = recipientList,          // Multiple recipients in single field
+                        FromEmail = _configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"]
+                    };
+
+                    _dbContext.EmailToSend.Add(emailToSend);
+                    totalRecordsCreated++;
+
+                    // Mark all source email_to_process records as COMPLETE
+                    foreach (var emailRecord in group.EmailRecords)
                     {
-                        HashSet<string> emails = new HashSet<string> { emailAddress };
-                        facIdToEmails.Add(facIdDecimal, emails);
-                        _logger.LogInformation("{JobName}: Created new mapping for facId {FacId} with 1 email", GetJobName(), facIdDecimal);
-                    }
-                }
-            }
-
-            _logger.LogInformation("{JobName}: Built email mapping for {FacilityCount} facilities. Keys: [{Keys}]", 
-                GetJobName(), facIdToEmails.Count, string.Join(", ", facIdToEmails.Keys));
-            return facIdToEmails;
-        }
-
-        private async Task<int> CreateEmailToSendRecords(List<EmailToProcess> inQueue, Dictionary<decimal, HashSet<string>> facIdToEmails)
-        {
-            int totalEmailsCreated = 0;
-            int facilitiesWithoutRecipients = 0;
-
-            _logger.LogInformation("{JobName}: Processing {QueueCount} EmailToProcess records against {MappingCount} facility mappings", 
-                GetJobName(), inQueue.Count, facIdToEmails.Count);
-
-            foreach (EmailToProcess emailToProcess in inQueue)
-            {
-                _logger.LogInformation("{JobName}: Processing EmailToProcess with FacId: {FacId} (type: {FacIdType})", 
-                    GetJobName(), emailToProcess.FacId, emailToProcess.FacId.GetType().Name);
-
-                HashSet<string> allEmailsForFacility = new HashSet<string>();
-
-                // Add recipients from API response
-                if (facIdToEmails.ContainsKey(emailToProcess.FacId))
-                {
-                    _logger.LogInformation("{JobName}: Found mapping for FacId {FacId}, adding {EmailCount} emails", 
-                        GetJobName(), emailToProcess.FacId, facIdToEmails[emailToProcess.FacId].Count);
-                    
-                    foreach (string email in facIdToEmails[emailToProcess.FacId])
-                    {
-                        allEmailsForFacility.Add(email);
-                        _logger.LogInformation("{JobName}: Added email: {Email}", GetJobName(), email);
-                    }
-                }
-                else
-                {
-                    _logger.LogWarning("{JobName}: NO MAPPING FOUND for FacId {FacId}. Available keys: [{AvailableKeys}]", 
-                        GetJobName(), emailToProcess.FacId, string.Join(", ", facIdToEmails.Keys));
-                }
-
-                _logger.LogInformation("{JobName}: Total emails found for FacId {FacId}: {EmailCount}", 
-                    GetJobName(), emailToProcess.FacId, allEmailsForFacility.Count);
-
-                if (allEmailsForFacility.Count > 0)
-                {
-                    foreach (string emailTo in allEmailsForFacility)
-                    {
-                        EmailToSend emailToSend = new EmailToSend()
-                        {
-                            Context = emailToProcess.Context,
-                            StatusCode = "QUEUED",
-                            TemplateId = emailToProcess.EventCode,
-                            ToEmail = emailTo,
-                            FromEmail = _configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"]
-                        };
-
-                        _dbContext.EmailToSend.Add(emailToSend);
-                        totalEmailsCreated++;
+                        emailRecord.StatusCode = "COMPLETE";
+                        _dbContext.EmailToProcessQueue.Update(emailRecord);
                     }
                     
-                    // Mark as COMPLETE only when EMAIL_TO_SEND records are successfully created
-                    emailToProcess.StatusCode = "COMPLETE";
-                    _dbContext.EmailToProcessQueue.Update(emailToProcess);
+                    await _dbContext.SaveChangesAsync();
                 }
-                else
+                catch (Exception ex)
                 {
-                    facilitiesWithoutRecipients++;
-                    _logger.LogWarning("{JobName}: No email recipients found for facility ID: {FacId}. Changing status to QUEUED for retry.", GetJobName(), emailToProcess.FacId);
-                    emailToProcess.StatusCode = "QUEUED";
-                    _dbContext.EmailToProcessQueue.Update(emailToProcess);
+                    groupsWithErrors++;
+                    string errorMessage = $"Failed to create EmailToSend record for group {group.GroupKey}: {ex.Message}";
+                    string affectedIds = string.Join(", ", group.EmailRecords.Select(er => er.ProcessId));
+                    _logger.LogError(ex, "{JobName}: {ErrorMessage}. Affected ToProcessIds: [{ToProcessIds}]", GetJobName(), errorMessage, affectedIds);
+                    
+                    // Clear tracking to avoid conflicts (prevent Entity Framework state conflicts when continuing processing after an exception)
+                    _dbContext.ChangeTracker.Clear();
+                    
+                    // Handle failure for all records in this group
+                    await HandleEmailProcessFailure(group.EmailRecords, errorMessage);
                 }
             }
-
-            await _dbContext.SaveChangesAsync();
             
-            if (facilitiesWithoutRecipients > 0)
+            if (groupsWithErrors > 0)
             {
-                _logger.LogWarning("{JobName}: Processed {QueueCount} queue items, created {EmailCount} emails. {NoRecipientCount} facilities had no recipients", 
-                    GetJobName(), inQueue.Count, totalEmailsCreated, facilitiesWithoutRecipients);
+                int groupCount = emailGroups.Count;
+                _logger.LogWarning("{JobName}: Processed {GroupCount} groups, created {RecordCount} records. {ErrorCount} groups had errors", 
+                    GetJobName(), groupCount, totalRecordsCreated, groupsWithErrors);
             }
             else
             {
-                _logger.LogInformation("{JobName}: Processed {QueueCount} queue items, created {EmailCount} emails", GetJobName(), inQueue.Count, totalEmailsCreated);
+                int groupCount = emailGroups.Count;
+                _logger.LogInformation("{JobName}: Processed {GroupCount} groups, created {RecordCount} records", GetJobName(), groupCount, totalRecordsCreated);
             }
 
-            return totalEmailsCreated;
+            return totalRecordsCreated;
         }
     }
 }
