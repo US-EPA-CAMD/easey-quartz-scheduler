@@ -142,6 +142,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                     }
                 })
                 .Where(facility => facility != null)
+                .OrderBy(facility => (string)facility.plantName ?? "")
+                .ThenBy(facility => (string)facility.locationList ?? "")
+                .ThenBy(facility => (string)facility.periodAbbreviation ?? "")
                 .ToList();
 
             if (!facilities.Any())
@@ -281,6 +284,9 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                     }
                 })
                 .Where(facility => facility != null)
+                .OrderBy(facility => (string)facility.plantName ?? "")
+                .ThenBy(facility => (string)facility.locationList ?? "")
+                .ThenBy(facility => (string)facility.periodAbbreviation ?? "")
                 .ToList();
 
             if (!facilities.Any())
