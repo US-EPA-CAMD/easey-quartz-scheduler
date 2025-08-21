@@ -195,6 +195,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                         TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
                         testSummaryRecord.EvalStatus = "WIP";
                         _dbContext.TestSummaries.Update(testSummaryRecord);
+                        _dbContext.SaveChanges();
 
                         bool listResult = checkEngine.RunChecks_QaReport_Test(testId, monitorPlanId, eCheckEngineRunMode.Normal, es.SetId);
                         _logger.LogInformation("Test summary checks completed with result: {Result}, EvalId: {EvalId}", 
@@ -424,6 +425,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 default:
                     throw new Exception("A Process Code of [MP, QA, EM] is required and was not provided");
             }
+
+            _dbContext.SaveChanges();
         }
         catch (Exception ex)
         {
