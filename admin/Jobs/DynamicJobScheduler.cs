@@ -211,7 +211,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     /// <returns>The <see cref="Type"/> of the job.</returns>
     private static Type GetJobType(JobConfiguration jobConfig)
     {
-      return Type.GetType($"Epa.Camd.Quartz.Scheduler.Jobs.{jobConfig.JobClass}");
+      var jobType = Type.GetType($"Epa.Camd.Quartz.Scheduler.Jobs.{jobConfig.JobClass}");
+      if (jobType == null)
+      {
+        throw new ArgumentException($"Job class {jobConfig.JobClass} not found.");
+      }
+      return jobType;
     }
 
     /// <summary>
@@ -231,13 +236,19 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
         foreach (var jobConfig in jobConfigs)
         {
-          JobDescriptor jobDescriptor = JobDescriptorFactory.Create(GetJobType(jobConfig));
-          if (jobDescriptor.JobType == null)
+          // Find the job type based on the job class name in the configuration.
+          JobDescriptor jobDescriptor;
+          try
           {
-            _logger.LogError($"Job type for class {jobConfig.JobClass} not found.");
+            jobDescriptor = JobDescriptorFactory.Create(GetJobType(jobConfig));
+          }
+          catch (Exception e)
+          {
+            _logger.LogError($"Error creating job descriptor for class {jobConfig.JobClass}: {e.Message}");
             continue;
           }
 
+          // Schedule or unschedule the job based on its active status.
           if (jobConfig.IsActive)
           {
             try
