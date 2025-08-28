@@ -54,12 +54,10 @@ namespace Epa.Camd.Quartz.Scheduler
       // >
       // We want to access the `NpgSqlContext` here to retrieve the CORS options and job configurations from the database.
       List<CorsOptions> corsOptions;
-      List<JobConfiguration> jobConfigurations;
       using (var scope = services.BuildServiceProvider().CreateScope()) // Build a scoped service provider to access the DbContext
       {
         NpgSqlContext dbContext = scope.ServiceProvider.GetRequiredService<NpgSqlContext>();
         corsOptions = dbContext.CorsOptions.ToList();
-        jobConfigurations = dbContext.JobConfigurations.ToList();
       }
 #pragma warning restore ASP0000
 
@@ -133,7 +131,7 @@ namespace Epa.Camd.Quartz.Scheduler
       ProcessSubmissionReminders.RegisterWithQuartz(services);
       ProcessWindowNotifications.RegisterWithQuartz(services);
 
-      List<JobDescriptor> jobDescriptors = JobRegistry.BuildRegistry(typeof(DynamicJobScheduler).Assembly, jobConfigurations);
+      List<JobDescriptor> jobDescriptors = JobRegistry.BuildRegistry(typeof(DynamicJobScheduler).Assembly);
       DynamicJobScheduler.RegisterWithQuartz(services, jobDescriptors);
 
       services.AddTransient<CheckEngineEvaluationListener>(); //DI for CheckEngineListener
