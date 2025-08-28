@@ -11,8 +11,14 @@ using Microsoft.Extensions.Logging;
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   [DisallowConcurrentExecution]
-  public class ApportionedEmissionsBulkData : IJob
+  public class ApportionedEmissionsBulkData : IJob, IJobMetadata<ApportionedEmissionsBulkData>
   {
+    public static string JobName => "Apportioned Emissions Bulk Data";
+    public static string JobDescription => "Determine which emissions need to be regenerated and schedule BulkDataFile jobs to handle the regen";
+    public static string JobGroup => Constants.QuartzGroups.BULK_DATA;
+    public static string TriggerName => "Apportioned Emissions Bulk Data Trigger";
+    public static string TriggerDescription => "Runs nightly to determine if files need to be regenerated based on query results or end of reporting quarter";
+
     private Guid job_id = Guid.NewGuid();
 
     private NpgSqlContext _dbContext = null;

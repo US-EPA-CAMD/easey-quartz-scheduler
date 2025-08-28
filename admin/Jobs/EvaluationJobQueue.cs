@@ -12,8 +12,14 @@ using Microsoft.Extensions.Logging;
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   [DisallowConcurrentExecution]
-  public class EvaluationJobQueue : IJob
+  public class EvaluationJobQueue : IJob, IJobMetadata<EvaluationJobQueue>
   {
+    public static string JobName => "Evaluation Job Queue";
+    public static string JobDescription => "Operates on an interval to determine if files in evaluation queue can be triggered.";
+    public static string JobGroup => Constants.QuartzGroups.MAINTAINANCE;
+    public static string TriggerName => "Evaluation Job Queue Trigger";
+    public static string TriggerDescription => "Operate every 15 seconds to determine if there are files in evaluation queue which can be triggered";
+
     private NpgSqlContext _dbContext = null;
     private readonly ILogger<EvaluationJobQueue> _logger;
     private IConfiguration Configuration { get; }

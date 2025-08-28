@@ -16,8 +16,14 @@ using Microsoft.Extensions.Logging;
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   [DisallowConcurrentExecution]
-  public class EmailQueue : IJob
+  public class EmailQueue : IJob, IJobMetadata<EmailQueue>
   {
+    public static string JobName => "Email Queue";
+    public static string JobDescription => "Operates on an interval to determine if emails in the send email table can be sent.";
+    public static string JobGroup => Constants.QuartzGroups.MAINTAINANCE;
+    public static string TriggerName => "Email Queue Trigger";
+    public static string TriggerDescription => "Operate every minute to determine if there are emails in the queue which can be sent";
+
     private NpgSqlContext _dbContext = null;
     private readonly ILogger<EmailQueue> _logger;
     private readonly Guid _jobId = Guid.NewGuid();

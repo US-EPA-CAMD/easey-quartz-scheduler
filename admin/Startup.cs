@@ -132,7 +132,9 @@ namespace Epa.Camd.Quartz.Scheduler
       BulkDataFile.RegisterWithQuartz(services);
       ProcessSubmissionReminders.RegisterWithQuartz(services);
       ProcessWindowNotifications.RegisterWithQuartz(services);
-      DynamicJobScheduler.RegisterWithQuartz(services, jobConfigurations);
+
+      List<JobDescriptor> jobDescriptors = JobRegistry.BuildRegistry(typeof(DynamicJobScheduler).Assembly, jobConfigurations);
+      DynamicJobScheduler.RegisterWithQuartz(services, jobDescriptors);
 
       services.AddTransient<CheckEngineEvaluationListener>(); //DI for CheckEngineListener
       CheckEngineEvaluationListener.ServiceCollection = services; // Set service collection of the listener
