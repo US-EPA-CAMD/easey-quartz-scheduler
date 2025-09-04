@@ -442,64 +442,30 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
               CheckEngineException cee => $"{cee.Message}\n{checkEngine.CheckEngineErrors}",
               _ => JsonConvert.SerializeObject(ex)
             };
+            errorDetails = $"Primary error:\n{errorDetails}";
 
-            try
+            var pendingSiblingEvalRecords = _dbContext.Evaluations
+              .Where(e => e.EvaluationSetId == evalRecord.EvaluationSetId && e.StatusCode == "PENDING")
+              .ToList();
+
+            // Reset the current evaluation and pending sibling evaluations to EVAL status.
+            foreach (var record in pendingSiblingEvalRecords.Prepend(evalRecord))
             {
-                switch(processCode){ //Reset status codes to EVAL in case of an evaluation error
-                    case "MP":
-                        _logger.LogInformation("Resetting MP evaluation status to EVAL for EvalId: {EvalId}", id);
-                        MonitorPlan mp = _dbContext.MonitorPlans.Find(monitorPlanId);
-                        mp.EvalStatus = "EVAL";
-                        _dbContext.MonitorPlans.Update(mp);
-                        break;
-                    case "QA":
-                        if(!string.IsNullOrWhiteSpace(dataMap.GetString("testSumId"))){
-                            string testId = dataMap.GetString("testSumId");
-                            _logger.LogInformation("Resetting test summary {TestId} status to EVAL for EvalId: {EvalId}", 
-                                testId, id);
-                            TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
-                            testSummaryRecord.EvalStatus = "EVAL";
-                            _dbContext.TestSummaries.Update(testSummaryRecord);
-                        }
-                        else if(!string.IsNullOrWhiteSpace(dataMap.GetString("qaCertId"))){
-                            string certId = dataMap.GetString("qaCertId");
-                            _logger.LogInformation("Resetting QA certification {CertId} status to EVAL for EvalId: {EvalId}", 
-                                certId, id);
-                            CertEvent certIdRecord = _dbContext.CertEvents.Find(certId);
-                            certIdRecord.EvalStatus = "EVAL";
-                            _dbContext.CertEvents.Update(certIdRecord);
-                        }
-                        else{
-                            string extensionExemptionId = dataMap.GetString("testExtensionExemption");
-                            _logger.LogInformation("Resetting extension exemption {ExemptionId} status to EVAL for EvalId: {EvalId}", 
-                                extensionExemptionId, id);
-                            TestExtensionExemption extensionExemptionRecord = _dbContext.TestExtensionExemptions.Find(extensionExemptionId);
-                            extensionExemptionRecord.EvalStatus = "EVAL";
-                            _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
-                        }
-                        break;
-                    case "EM":
-                        int rptPeriodId = Int32.Parse(dataMap.GetString("rptPeriodId"));
-                        _logger.LogInformation("Resetting EM evaluation status to EVAL for period {PeriodId}, EvalId: {EvalId}",
-                                                rptPeriodId, id);
-                        ReportingPeriod rp = _dbContext.ReportingPeriods.Find(rptPeriodId);
-                        EmissionEvaluation emissionEvalRecord = _dbContext.EmissionEvaluations.Find(monitorPlanId, rptPeriodId);
-                        emissionEvalRecord.EvalStatus = "EVAL";
-                        _dbContext.EmissionEvaluations.Update(emissionEvalRecord);
-                        break;
-                }
-                _dbContext.SaveChanges();
-            }
-            catch (Exception exx)
-            {
-              _logger.LogError("Error resetting evaluation status for EvalId: {EvalId} - {Exception}", id, exx.ToString());
-              errorDetails =
-                $"Primary error:\n{errorDetails}\n\n" +
-                $"Error resetting evaluation status:\n{exx.Message}\n{exx.StackTrace}";
+              try
+              {
+                ResetToNeedsEvaluation(record, es);
+              }
+              catch (Exception resetEx)
+              {
+                _logger.LogError("Error resetting evaluation status for EvalId: {EvalId} - {Exception}", record.EvaluationId, resetEx.ToString());
+                errorDetails +=
+                  $"\n\nError resetting evaluation status for EvalId {record.EvaluationId}:\n{resetEx.Message}\n{resetEx.StackTrace}";
+              }
             }
 
             var noteTime = Utils.getCurrentEasternTime();
 
+            // Update the current evaluation to ERROR status.
             evalRecord.Details = errorDetails;
             evalRecord.StatusCode = "ERROR";
             evalRecord.Note = ex.Message;
@@ -507,9 +473,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             _dbContext.Evaluations.Update(evalRecord);
 
             // Update other evaluations in the set to ERROR status.
-            var pendingSiblingEvalRecords = _dbContext.Evaluations
-              .Where(e => e.EvaluationSetId == evalRecord.EvaluationSetId && e.StatusCode == "PENDING")
-              .ToList();
             foreach (var siblingEval in pendingSiblingEvalRecords)
             {
               siblingEval.StatusCode = "ERROR";
@@ -523,6 +486,59 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             // Send the error email
             _ = SendEvaluationErrorEmail(ex.Message, errorDetails, es.SetId, evalRecord.EvaluationId, evaluationStages);
         }
+    }
+
+    private void ResetToNeedsEvaluation(Evaluation evalQueueRecord, EvaluationSet evalSetRecord)
+    {
+      var evalId = evalQueueRecord.EvaluationId;
+      switch(evalQueueRecord.ProcessCode){ //Reset status codes to EVAL in case of an evaluation error
+          case "MP":
+              _logger.LogInformation("Resetting MP evaluation status to EVAL for EvalId: {EvalId}", evalId);
+              MonitorPlan mp = _dbContext.MonitorPlans.Find(evalSetRecord.MonPlanId);
+              mp.EvalStatus = "EVAL";
+              _dbContext.MonitorPlans.Update(mp);
+              break;
+          case "QA":
+              if(!string.IsNullOrWhiteSpace(evalQueueRecord.TestSumId))
+              {
+                  string testId = evalQueueRecord.TestSumId;
+                  _logger.LogInformation("Resetting test summary {TestId} status to EVAL for EvalId: {EvalId}",
+                      testId, evalId);
+                  TestSummary testSummaryRecord = _dbContext.TestSummaries.Find(testId);
+                  testSummaryRecord.EvalStatus = "EVAL";
+                  _dbContext.TestSummaries.Update(testSummaryRecord);
+              }
+              else if(!string.IsNullOrWhiteSpace(evalQueueRecord.QaCertEventId))
+              {
+                  string certId = evalQueueRecord.QaCertEventId;
+                  _logger.LogInformation("Resetting QA certification {CertId} status to EVAL for EvalId: {EvalId}",
+                      certId, evalId);
+                  CertEvent certIdRecord = _dbContext.CertEvents.Find(certId);
+                  certIdRecord.EvalStatus = "EVAL";
+                  _dbContext.CertEvents.Update(certIdRecord);
+              }
+              else
+              {
+                  string extensionExemptionId = evalQueueRecord.TeeId;
+                  _logger.LogInformation("Resetting extension exemption {ExemptionId} status to EVAL for EvalId: {EvalId}",
+                      extensionExemptionId, evalId);
+                  TestExtensionExemption extensionExemptionRecord = _dbContext.TestExtensionExemptions.Find(extensionExemptionId);
+                  extensionExemptionRecord.EvalStatus = "EVAL";
+                  _dbContext.TestExtensionExemptions.Update(extensionExemptionRecord);
+              }
+              break;
+          case "EM":
+              int rptPeriodId = evalQueueRecord.RptPeriod.Value;
+              _logger.LogInformation("Resetting EM evaluation status to EVAL for period {PeriodId}, EvalId: {EvalId}",
+                                      rptPeriodId, evalId);
+              ReportingPeriod rp = _dbContext.ReportingPeriods.Find(rptPeriodId);
+              EmissionEvaluation emissionEvalRecord = _dbContext.EmissionEvaluations.Find(evalSetRecord.MonPlanId, rptPeriodId);
+              emissionEvalRecord.EvalStatus = "EVAL";
+              _dbContext.EmissionEvaluations.Update(emissionEvalRecord);
+              break;
+      }
+
+      _dbContext.SaveChanges();
     }
 
     private async Task SendEvaluationErrorEmail(string errorMessage, string errorDetails, string evaluationSetId, long evaluationId, List<EvaluationStageDto> evaluationStages)
