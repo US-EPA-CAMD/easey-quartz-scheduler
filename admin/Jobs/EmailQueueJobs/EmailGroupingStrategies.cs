@@ -28,6 +28,73 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
     }
     
     /// <summary>
+    /// Represents the facility context data from email_to_process.context JSON
+    /// </summary>
+    public class FacilityContext
+    {
+        public string PlantName { get; set; }
+        public string LocationList { get; set; }
+        public string PeriodAbbreviation { get; set; }
+        public string PlantState { get; set; }
+        public int OrisCode { get; set; }
+        public string WindowOpenDate { get; set; }
+    }
+    
+    /// <summary>
+    /// Shared utility methods for email grouping strategies
+    /// </summary>
+    public static class EmailGroupingUtils
+    {
+        /// <summary>
+        /// Combines multiple facility contexts into a template-ready JSON object
+        /// 
+        /// Input: List of EmailToProcess records, each with Context field containing JSON string
+        /// 
+        /// Output: JSON object with emSubAccessList array for template loop processing:
+        /// {
+        ///   "emSubAccessList": [
+        ///     {"orisCode": 10485, "plantName": "Plant A", "plantState": "MD", "locationList": "BLR1", ...},
+        ///     {"orisCode": 10485, "plantName": "Plant A", "plantState": "MD", "locationList": "BLR4", ...}
+        ///   ]
+        /// }
+        /// </summary>
+        /// <param name="emailRecords">List of email records to combine</param>
+        /// <param name="operationName">Name of the operation for logging (e.g., "SubmissionReminder", "WindowNotification")</param>
+        /// <param name="logger">Optional logger for warnings</param>
+        /// <returns>JSON string with emSubAccessList array, or null if no valid facilities</returns>
+        public static string CombineContexts(List<EmailToProcess> emailRecords, string operationName = "EmailGrouping", ILogger logger = null)
+        {
+            var facilities = emailRecords
+                .Where(er => !string.IsNullOrEmpty(er.Context))
+                .Select(er => {
+                    try 
+                    {
+                        return JsonConvert.DeserializeObject<FacilityContext>(er.Context);
+                    }
+                    catch (JsonException ex)
+                    {
+                        logger?.LogWarning("{OperationName}: Skipping record with invalid JSON context. ToProcessId: {ToProcessId}, Error: {Error}", 
+                            operationName, er.ProcessId, ex.Message);
+                        return null;
+                    }
+                })
+                .Where(facility => facility != null)
+                .OrderBy(facility => facility.PlantName ?? "")
+                .ThenBy(facility => facility.LocationList ?? "")
+                .ThenBy(facility => facility.PeriodAbbreviation ?? "")
+                .ToList();
+
+            if (!facilities.Any())
+            {
+                return null;
+            }
+
+            var templateContext = new { emSubAccessList = facilities };
+            return JsonConvert.SerializeObject(templateContext);
+        }
+    }
+    
+    /// <summary>
     /// Groups emails by recipient - one email per person containing all their facilities
     /// 
     /// Example Input:
@@ -64,7 +131,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                         GroupKey = recipient,
                         Recipients = [recipient],
                         EmailRecords = recipientEmailRecords,
-                        CombinedContext = CombineContexts(recipientEmailRecords, logger), // JSON array of all contexts
+                        CombinedContext = EmailGroupingUtils.CombineContexts(recipientEmailRecords, "SubmissionReminderGrouping", logger),
                         TemplateId = recipientEmailRecords.First().EventCode
                     });
                 }
@@ -105,52 +172,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
             }
             
             return mapping;
-        }
-        
-        /// <summary>
-        /// Combines multiple facility contexts into a template-ready object for submission reminders
-        /// 
-        /// Input: List of EmailToProcess records, each with Context field containing JSON string
-        /// Example Context values for recipient managing Severstal Sparrows Point LLC (orisCode: 10485):
-        /// - Record 1.Context: {"orisCode": 10485, "plantName": "Severstal Sparrows Point LLC", "plantState": "MD", "locationList": "BLR1", "windowOpenDate": "2010-10-01", "periodAbbreviation": "2010 Q3"}
-        /// - Record 2.Context: {"orisCode": 10485, "plantName": "Severstal Sparrows Point LLC", "plantState": "MD", "locationList": "BLR4", "windowOpenDate": "2010-10-01", "periodAbbreviation": "2010 Q3"}
-        /// - Record 3.Context: {"orisCode": 10485, "plantName": "Severstal Sparrows Point LLC", "plantState": "MD", "locationList": "BLR3", "windowOpenDate": "2010-10-01", "periodAbbreviation": "2010 Q3"}
-        /// 
-        /// Output: JSON object with emSubAccessList array for template loop processing:
-        /// {
-        ///   "emSubAccessList": [
-        ///     {"orisCode": 10485, "plantName": "Severstal Sparrows Point LLC", "plantState": "MD", "locationList": "BLR1", "windowOpenDate": "2010-10-01", "periodAbbreviation": "2010 Q3"},
-        ///     {"orisCode": 10485, "plantName": "Severstal Sparrows Point LLC", "plantState": "MD", "locationList": "BLR4", "windowOpenDate": "2010-10-01", "periodAbbreviation": "2010 Q3"},
-        ///     {"orisCode": 10485, "plantName": "Severstal Sparrows Point LLC", "plantState": "MD", "locationList": "BLR3", "windowOpenDate": "2010-10-01", "periodAbbreviation": "2010 Q3"}
-        ///   ]
-        /// }
-        /// </summary>
-        private string CombineContexts(List<EmailToProcess> emailRecords, ILogger logger = null)
-        {
-            var facilities = emailRecords
-                .Where(er => !string.IsNullOrEmpty(er.Context))
-                .Select(er => {
-                    try 
-                    {
-                        return JsonConvert.DeserializeObject(er.Context);
-                    }
-                    catch (JsonException ex)
-                    {
-                        logger?.LogWarning("SubmissionReminderGrouping: Skipping record with invalid JSON context. ToProcessId: {ToProcessId}, Error: {Error}", 
-                            er.ProcessId, ex.Message);
-                        return null;
-                    }
-                })
-                .Where(facility => facility != null)
-                .ToList();
-
-            if (!facilities.Any())
-            {
-                return null;
-            }
-
-            var templateContext = new { emSubAccessList = facilities };
-            return JsonConvert.SerializeObject(templateContext);
         }
     }
     
@@ -196,7 +217,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                         GroupKey = facId.ToString(),
                         Recipients = facilityToRecipients[facId], // All recipients for this facility
                         EmailRecords = facilityEmailRecords,      // All monitoring locations for this facility
-                        CombinedContext = CombineContexts(facilityEmailRecords, logger), // JSON array of all location contexts
+                        CombinedContext = EmailGroupingUtils.CombineContexts(facilityEmailRecords, "WindowNotificationGrouping", logger),
                         TemplateId = facilityEmailRecords.First().EventCode
                     });
                 }
@@ -246,50 +267,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
             }
             
             return mapping;
-        }
-        
-        /// <summary>
-        /// Combines multiple monitoring location contexts into a template-ready object for window notifications
-        /// 
-        /// Input: List of EmailToProcess records for different locations within the same facility
-        /// Example Context values for Vandolah Power Project (orisCode: 55415):
-        /// - Record 1.Context: {"orisCode": 55415, "plantName": "Vandolah Power Project", "plantState": "FL", "locationList": "GT401", "windowOpenDate": "2023-11-06", "periodAbbreviation": "2023 Q2"}
-        /// - Record 2.Context: {"orisCode": 55415, "plantName": "Vandolah Power Project", "plantState": "FL", "locationList": "GT401", "windowOpenDate": "2023-11-06", "periodAbbreviation": "2023 Q3"}
-        /// 
-        /// Output: JSON object with emSubAccessList array for template loop processing:
-        /// {
-        ///   "emSubAccessList": [
-        ///     {"orisCode": 55415, "plantName": "Vandolah Power Project", "plantState": "FL", "locationList": "GT401", "windowOpenDate": "2023-11-06", "periodAbbreviation": "2023 Q2"},
-        ///     {"orisCode": 55415, "plantName": "Vandolah Power Project", "plantState": "FL", "locationList": "GT401", "windowOpenDate": "2023-11-06", "periodAbbreviation": "2023 Q3"}
-        ///   ]
-        /// }
-        /// </summary>
-        private string CombineContexts(List<EmailToProcess> emailRecords, ILogger logger = null)
-        {
-            var facilities = emailRecords
-                .Where(er => !string.IsNullOrEmpty(er.Context))
-                .Select(er => {
-                    try 
-                    {
-                        return JsonConvert.DeserializeObject(er.Context);
-                    }
-                    catch (JsonException ex)
-                    {
-                        logger?.LogWarning("WindowNotificationGrouping: Skipping record with invalid JSON context. ToProcessId: {ToProcessId}, Error: {Error}", 
-                            er.ProcessId, ex.Message);
-                        return null;
-                    }
-                })
-                .Where(facility => facility != null)
-                .ToList();
-
-            if (!facilities.Any())
-            {
-                return null;
-            }
-
-            var templateContext = new { emSubAccessList = facilities };
-            return JsonConvert.SerializeObject(templateContext);
         }
     }
     
