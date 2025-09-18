@@ -63,18 +63,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 _dbContext.SubmissionSet.Update(inQueue[i]);
                 _dbContext.SaveChanges();
 
-                ToProcessSubmissionPayload payload = new ToProcessSubmissionPayload();
-                payload.submissionSetId = inQueue[i].SetId;
-
-                HttpClient client = new HttpClient();
-                StringContent httpContent = new StringContent(JsonConvert.SerializeObject(payload), System.Text.Encoding.UTF8, "application/json");
-                client.DefaultRequestHeaders.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
-                client.DefaultRequestHeaders.Add("x-client-id", Configuration["EASEY_QUARTZ_SCHEDULER_CLIENT_ID"]);
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", clientToken);
-
                 _logger.LogInformation("Submitting to camd-services SubmissionSetId {SubmissionSetId}", inQueue[i]?.SetId);
-                HttpResponseMessage response = await client.PostAsync(Configuration["EASEY_CAMD_SERVICES"] + "/submission/process", httpContent); //TODO: Replace this with mocked result
-                _logger.LogInformation("Submitted job for SubmissionSetId {SubmissionSetId} with response {ResponseStatusCode}", inQueue[i]?.SetId, response != null ? response.StatusCode.ToString() : "null");
+
+                try
+                {
+                  await SubmitProcessJob(inQueue[i]?.SetId, clientToken);
+                }
+                catch
+                {
+                  inQueue[i].StatusCode = "ERROR";
+                  _dbContext.SubmissionSet.Update(inQueue[i]);
+                  _dbContext.SaveChanges();
+                }
 
                 Thread.Sleep(Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_SUBMISSION_JOB_QUEUE_DELAY"] ?? "1") * 1000);
                 index++;
@@ -99,5 +99,71 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         return;
       }
     }
+
+    /// <summary>
+    /// Submits a process job to the camd-services API with retry logic and exponential backoff.
+    /// </summary>
+    /// <param name="setId">The submission set ID to process.</param>
+    /// <param name="clientToken">The client token for authentication.</param>
+    private async Task SubmitProcessJob(string setId, string clientToken)
+    {
+        ToProcessSubmissionPayload payload = new ToProcessSubmissionPayload
+        {
+            submissionSetId = setId
+        };
+
+        using HttpClient client = new HttpClient();
+        client.DefaultRequestHeaders.Add("x-api-key", Configuration["EASEY_QUARTZ_SCHEDULER_API_KEY"]);
+        client.DefaultRequestHeaders.Add("x-client-id", Configuration["EASEY_QUARTZ_SCHEDULER_CLIENT_ID"]);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", clientToken);
+
+        const int maxRetries = 3;
+        var rng = new Random();
+
+        for (int retryCount = 0; retryCount < maxRetries; retryCount++)
+        {
+            try
+            {
+                using var httpContent = new StringContent(
+                    JsonConvert.SerializeObject(payload),
+                    System.Text.Encoding.UTF8,
+                    "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(
+                    Configuration["EASEY_CAMD_SERVICES"] + "/submission/process", 
+                    httpContent);
+
+                response.EnsureSuccessStatusCode();
+
+                _logger.LogInformation(
+                    "Submitted job for SubmissionSetId {SubmissionSetId} with response {ResponseStatusCode}",
+                    setId, response.StatusCode);
+
+                return; // success, exit method
+            }
+            catch (Exception e) when (retryCount < maxRetries - 1)
+            {
+                // Calculate exponential backoff with jitter (e.g., 0.5x to 1.5x of the base delay)
+                int delayMs = (int)(Math.Pow(2, retryCount) * 1000);
+                int jitter = rng.Next((int)(delayMs * 0.5), (int)(delayMs * 1.5));
+
+                _logger.LogWarning(
+                    e,
+                    "Error submitting SubmissionSetId {SubmissionSetId}. Retrying in {DelayMs}ms... Attempt {RetryCount}/{MaxRetries}",
+                    setId, jitter, retryCount + 1, maxRetries);
+
+                await Task.Delay(jitter);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(
+                    e,
+                    "Failed to submit SubmissionSetId {SubmissionSetId} after {RetryCount} attempts",
+                    setId, maxRetries);
+                throw;
+            }
+        }
+    }
+
   }
 }
