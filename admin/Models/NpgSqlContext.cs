@@ -25,6 +25,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
         public DbSet<InventoryStatusLog> InventoryStatusLogs { get; set; }
 
         public DbSet<SubmissionSet> SubmissionSet { get; set; }
+        public DbSet<Submission> Submissions { get; set; }
 
         public DbSet<EmailToProcess> EmailToProcessQueue { get; set; }
         public DbSet<EmailToSend> EmailToSend { get; set; }
@@ -49,6 +50,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
         public DbSet<MonitorPlanLocation> MonitorPlanLocations { get; set; }
 
         public DbSet<PdemReport> PdemReport { get; set; }
+
+        public DbSet<ClientConfiguration> ClientConfigurations { get; set; }
 
         public NpgSqlContext(IConfiguration configuration, ILogger<NpgSqlContext> logger, DbContextOptions<NpgSqlContext> options) : base(options)
         {
