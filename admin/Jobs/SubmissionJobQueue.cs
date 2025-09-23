@@ -150,7 +150,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
           .ToList();
 
         // Update the status of the associated submissions to ERROR.
-        foreach (var submission in submissionsInSet.Prepend(setRecord))
+        foreach (var submission in submissionsInSet)
         {
           submission.StatusCode = "ERROR";
           submission.Note = ex.Message;
@@ -179,7 +179,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       try
       {
           ClientConfig clientConfig = _dbContext.ClientConfigurations
-            .Where(c => c.ConfigName == "ecmps-ui")
+            .Where(c => c.ClientName == "ecmps-ui")
             .FirstOrDefault();
 
           if (clientConfig == null || string.IsNullOrEmpty(clientConfig.SupportEmail))

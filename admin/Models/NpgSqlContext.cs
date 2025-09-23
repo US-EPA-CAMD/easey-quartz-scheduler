@@ -51,7 +51,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 
         public DbSet<PdemReport> PdemReport { get; set; }
 
-        public DbSet<ClientConfiguration> ClientConfigurations { get; set; }
+        public DbSet<ClientConfig> ClientConfigurations { get; set; }
 
         public NpgSqlContext(IConfiguration configuration, ILogger<NpgSqlContext> logger, DbContextOptions<NpgSqlContext> options) : base(options)
         {
