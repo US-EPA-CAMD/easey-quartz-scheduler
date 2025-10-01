@@ -291,7 +291,7 @@ namespace ECMPS.Checks.SpanChecks
               Category.SetCheckParameter("Span_MEC_Value_Valid", false, eParameterDataType.Boolean);
               Category.CheckCatalogResult = "A";
             }
-            else if( ComponentTypeCd.InList( "SO2,NOX" ) && ( SpanScaleCd == "H" ) &&
+            else if( ComponentTypeCd.InList( "SO2,NOX,HG" ) && ( SpanScaleCd == "H" ) &&
                      (CurrentSpan["Default_High_Range"] != DBNull.Value))
             {
               Category.SetCheckParameter("Span_MEC_Value_Valid", false, eParameterDataType.Boolean);
