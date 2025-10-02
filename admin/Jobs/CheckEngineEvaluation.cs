@@ -280,7 +280,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                         SELECT eq.*
                         FROM camdecmpsaux.evaluation_queue eq
                         JOIN camdecmpsaux.evaluation_set es USING(evaluation_set_id)
-                        WHERE eq.process_cd = 'EM' AND eq.status_cd IN ('PENDING', 'QUEUED', 'WIP') AND es.mon_plan_id = {0}
+                        WHERE eq.process_cd = 'EM' AND eq.status_cd IN ('PENDING', 'QUEUED', 'CLAIMED', 'WIP') AND es.mon_plan_id = {0}
                         ORDER BY eq.rpt_period_id
                         ", es.MonPlanId).ToList();
 
