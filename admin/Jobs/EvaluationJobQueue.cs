@@ -49,29 +49,29 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 // Exit if nothing in queue
                 if (inQueue.Count == 0) continue;
 
-                List<Evaluation> wip = _dbContext.Evaluations.FromSqlRaw(@"
+                List<Evaluation> wipOrClaimed = _dbContext.Evaluations.FromSqlRaw(@"
                     SELECT *
                     FROM camdecmpsaux.evaluation_queue
                     WHERE process_cd = {0} AND status_cd in ('WIP', 'CLAIMED')
                     ORDER BY queued_time", processType
                 ).ToList();
 
-                _logger.LogInformation("Found {Count} {Type} evaluations in WIP status", 
-                    wip.Count, processType);
+                _logger.LogInformation("Found {Count} {Type} evaluations in WIP or CLAIMED status", 
+                    wipOrClaimed.Count, processType);
 
                 int maxAllowed = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_" + processType +"_EVALUATIONS"]);
                 _logger.LogInformation("Max allowed {Type} evaluations: {MaxAllowed}", 
                     processType, maxAllowed);
 
                 // Exit if at max
-                if(wip.Count >= maxAllowed)
+                if(wipOrClaimed.Count >= maxAllowed)
                 {
                   _logger.LogInformation("Maximum number of {Type} evaluations ({MaxAllowed}) already in progress", 
                       processType, maxAllowed);
                   continue;
                 }
 
-                int jobs_to_schedule = maxAllowed - wip.Count;
+                int jobs_to_schedule = maxAllowed - wipOrClaimed.Count;
                 _logger.LogInformation("Attempting to schedule {JobCount} {Type} evaluations", 
                     jobs_to_schedule, processType);
 
