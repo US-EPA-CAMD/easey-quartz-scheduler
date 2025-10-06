@@ -14,8 +14,14 @@ using Epa.Camd.Quartz.Scheduler.Models;
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
     [DisallowConcurrentExecution]
-    public class SubmissionWindowManagement : IJob
+    public class SubmissionWindowManagement : IJob, IJobMetadata<SubmissionWindowManagement>
     {
+        public static string JobName => "Submission Window Management";
+        public static string JobDescription => "Manages emission submission windows";
+        public static string JobGroup => Constants.QuartzGroups.MAINTAINANCE;
+        public static string TriggerName => "Submission Window Management Trigger";
+        public static string TriggerDescription => "Runs daily at 3AM to initialize and close emission submission access";
+
         private readonly NpgSqlContext _dbContext;
         private readonly IConfiguration _configuration;
         private readonly ILogger<SubmissionWindowManagement> _logger;

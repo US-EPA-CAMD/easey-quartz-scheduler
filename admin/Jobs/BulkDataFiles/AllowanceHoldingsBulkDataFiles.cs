@@ -9,8 +9,13 @@ using Microsoft.Extensions.Logging;
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   [DisallowConcurrentExecution]
-  public class AllowanceHoldingsBulkDataFiles : IJob
+  public class AllowanceHoldingsBulkDataFiles : IJob, IJobMetadata<AllowanceHoldingsBulkDataFiles>
   {
+    public static string JobName => "Allowance Holdings Bulk Data";
+    public static string JobDescription => "Generate Allowance Holdings and schedule BulkDataFile jobs to handle the regen";
+    public static string JobGroup => Constants.QuartzGroups.BULK_DATA;
+    public static string TriggerName => "Allowance Holdings Bulk Data Trigger";
+    public static string TriggerDescription => "Runs nightly to generate allowance holdings files";
 
     private Guid _jobId = Guid.NewGuid();
     private NpgSqlContext _dbContext = null;
