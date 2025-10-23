@@ -14,3 +14,17 @@ statementTimeout: 300000
 idleInTransactionSessionTimeout: 300000
 connectionLifeTime: 1800
 logLevel: Warning
+maxEmEvaluations: 10
+maxBulkFileJobs: 8
+maxCheckThreads: 10
+maxMpEvaluations: 10
+maxQaEvaluations: 10
+maxSubmissionJobs: 10
+maxEmailsToSend: 10
+massEvaluationEmail: "ecmps@epa.gov"
+windowNotificationFromEmail: "ecmps@epa.gov"
+submissionErrorFromEmail: "ecmps@epa.gov"
+bulkFileJobQueueDelay: 5
+emailQueueDelay: 1
+evaluationJobQueueDelay: 1
+submissionJobQueueDelay: 1

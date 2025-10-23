@@ -8,23 +8,8 @@ namespace Epa.Camd.Quartz.Scheduler.Models
   public class JobConfiguration
   {
     [Key]
-    [Column("job_type")]
-    public string JobType { get; set; }
-
-    [Column("job_name")]
-    public string JobName { get; set; }
-
-    [Column("job_description")]
-    public string JobDescription { get; set; }
-
-    [Column("job_group")]
-    public string JobGroup { get; set; }
-
-    [Column("trigger_name")]
-    public string TriggerName { get; set; }
-
-    [Column("trigger_description")]
-    public string TriggerDescription { get; set; }
+    [Column("job_class")]
+    public string JobClass { get; set; }
 
     [Column("cron_expression")]
     public string CronExpression { get; set; }

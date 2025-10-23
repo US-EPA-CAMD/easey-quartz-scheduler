@@ -58,6 +58,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
       if(inSet.Count > 0){ // The jobs are not all done running yet, more eval records with this set id are coming up
         return;
       }
+
+      // Check if all records in the set have ERROR status
+      List<Evaluation> allRecordsInSet = _dbContext.Evaluations.FromSqlRaw(@"
+            SELECT *
+            FROM camdecmpsaux.evaluation_queue
+            WHERE evaluation_set_id = {0};", setId
+          ).ToList();
+
+      if(allRecordsInSet.All(e => e.StatusCode == "ERROR")){
+        _logger.LogInformation("All evaluations in set {SetId} have ERROR status. Skipping mass evaluation email.", setId);
+        return;
+      }
       
       /*
         Generate new client token for email request and send the email request -----------------

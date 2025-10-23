@@ -17,8 +17,14 @@ using Epa.Camd.Quartz.Scheduler.Models;
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   [DisallowConcurrentExecution]
-  public class InventoryChanges : IJob
+  public class InventoryChanges : IJob, IJobMetadata<InventoryChanges>
   {
+    public static string JobName => "Inventory Changes";
+    public static string JobDescription => "Operates on an interval to determine if any remote facility/unit inventory changes require changes to existing monitoring plans.";
+    public static string JobGroup => Constants.QuartzGroups.MAINTAINANCE;
+    public static string TriggerName => "Inventory Changes Trigger";
+    public static string TriggerDescription => "Operate every 5 minutes to determine if there are any new changes recorded in the inventory status log.";
+
     private Guid job_id = Guid.NewGuid();
 
     private NpgSqlContext _dbContext = null;

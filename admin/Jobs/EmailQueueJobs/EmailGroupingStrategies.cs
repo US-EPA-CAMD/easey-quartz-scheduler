@@ -32,11 +32,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
     /// </summary>
     public class FacilityContext
     {
+        [JsonProperty("plantName")]
         public string PlantName { get; set; }
+
+        [JsonProperty("locationList")]
         public string LocationList { get; set; }
+
+        [JsonProperty("periodAbbreviation")]
         public string PeriodAbbreviation { get; set; }
+
+        [JsonProperty("plantState")]
         public string PlantState { get; set; }
+
+        [JsonProperty("orisCode")]
         public int OrisCode { get; set; }
+
+        [JsonProperty("windowOpenDate")]
         public string WindowOpenDate { get; set; }
     }
     
