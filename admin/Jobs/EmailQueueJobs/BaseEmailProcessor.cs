@@ -275,7 +275,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
 
         /// <summary>
         /// Creates email_to_send records based on grouped emails
-        /// Each group becomes a single email_to_send record with potentially multiple recipients
+        /// Each recipient in a group gets their own separate email with populated template variables
         /// </summary>
         private async Task<int> CreateGroupedEmailToSendRecords(List<EmailGroup> emailGroups)
         {
@@ -286,21 +286,24 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
             {
                 try
                 {
-                    // Combine all recipients with semicolon separator for TO field
-                    // Example: "john@epa.gov;jane@epa.gov;bob@epa.gov"
-                    string recipientList = string.Join(";", group.Recipients);
-                    
-                    EmailToSend emailToSend = new EmailToSend()
+                    // Create separate email for EACH recipient instead of combining them
+                    foreach (var recipient in group.Recipients)
                     {
-                        Context = group.CombinedContext,  // JSON array for reminders, single context for notifications
-                        StatusCode = "QUEUED",
-                        TemplateId = group.TemplateId,
-                        ToEmail = recipientList,          // Multiple recipients in single field
-                        FromEmail = _configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"]
-                    };
+                        // Process the context to include recipient-specific template variables
+                        string processedContext = ProcessContextWithEmailData(group.CombinedContext, recipient);
+                        
+                        EmailToSend emailToSend = new EmailToSend()
+                        {
+                            Context = processedContext,  // Context with populated template variables
+                            StatusCode = "QUEUED",
+                            TemplateId = group.TemplateId,
+                            ToEmail = recipient,              // Single recipient per email
+                            FromEmail = _configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"]
+                        };
 
-                    _dbContext.EmailToSend.Add(emailToSend);
-                    totalRecordsCreated++;
+                        _dbContext.EmailToSend.Add(emailToSend);
+                        totalRecordsCreated++;
+                    }
 
                     // Mark all source email_to_process records as COMPLETE
                     foreach (var emailRecord in group.EmailRecords)
@@ -310,11 +313,14 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                     }
                     
                     await _dbContext.SaveChangesAsync();
+                    
+                    _logger.LogDebug("{JobName}: Created {EmailCount} individual emails for group {GroupKey} with {RecipientCount} recipients", 
+                        GetJobName(), group.Recipients.Count, group.GroupKey, group.Recipients.Count);
                 }
                 catch (Exception ex)
                 {
                     groupsWithErrors++;
-                    string errorMessage = $"Failed to create EmailToSend record for group {group.GroupKey}: {ex.Message}";
+                    string errorMessage = $"Failed to create EmailToSend records for group {group.GroupKey}: {ex.Message}";
                     string affectedIds = string.Join(", ", group.EmailRecords.Select(er => er.ProcessId));
                     _logger.LogError(ex, "{JobName}: {ErrorMessage}. Affected ToProcessIds: [{ToProcessIds}]", GetJobName(), errorMessage, affectedIds);
                     
@@ -329,16 +335,51 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
             if (groupsWithErrors > 0)
             {
                 int groupCount = emailGroups.Count;
-                _logger.LogWarning("{JobName}: Processed {GroupCount} groups, created {RecordCount} records. {ErrorCount} groups had errors", 
+                _logger.LogWarning("{JobName}: Processed {GroupCount} groups, created {RecordCount} individual email records. {ErrorCount} groups had errors", 
                     GetJobName(), groupCount, totalRecordsCreated, groupsWithErrors);
             }
             else
             {
                 int groupCount = emailGroups.Count;
-                _logger.LogInformation("{JobName}: Processed {GroupCount} groups, created {RecordCount} records", GetJobName(), groupCount, totalRecordsCreated);
+                _logger.LogInformation("{JobName}: Processed {GroupCount} groups, created {RecordCount} individual email records", 
+                    GetJobName(), groupCount, totalRecordsCreated);
             }
 
             return totalRecordsCreated;
+        }
+
+        /// <summary>
+        /// Processes the context JSON to include email template variables
+        /// This ensures [[toEmail]] and [[fromEmail]] placeholders are populated with actual email addresses
+        /// </summary>
+        private string ProcessContextWithEmailData(string originalContext, string recipientEmail)
+        {
+            try
+            {
+                // Parse the existing context or create new one
+                var contextDict = string.IsNullOrEmpty(originalContext) 
+                    ? new Dictionary<string, object>() 
+                    : JsonConvert.DeserializeObject<Dictionary<string, object>>(originalContext) ?? new Dictionary<string, object>();
+                
+                // Add email information for template variables
+                contextDict["toEmail"] = recipientEmail;
+                contextDict["fromEmail"] = _configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"];
+                
+                return JsonConvert.SerializeObject(contextDict);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("{JobName}: Failed to process context for recipient {Recipient}. Creating basic context. Error: {Error}", 
+                    GetJobName(), recipientEmail, ex.Message);
+                
+                // Fallback: create a basic context with the essential email variables
+                var fallbackContext = new
+                {
+                    toEmail = recipientEmail,
+                    fromEmail = _configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"]
+                };
+                return JsonConvert.SerializeObject(fallbackContext);
+            }
         }
     }
 }
