@@ -439,4 +439,4 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
         public string Email { get; set; }
         public List<long> FacilityIds { get; set; } = new List<long>();
     }
-} 
+}
