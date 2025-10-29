@@ -148,6 +148,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                     string notificationTypeForRecipientApi = GetEmailTypeForRecipientApi();
                     RecipientResponse recipientResponse = await CallRecipientApi(notificationTypeForRecipientApi, plantIdList);
 
+                    var allIndividualRecipients = ParseRecipientResponse(recipientResponse);
+                    _logger.LogInformation("{JobName}: Parsed {IndividualCount} individual emails from {RecipientCount} recipient groups", 
+                        jobName, allIndividualRecipients.Count, recipientResponse.recipients?.Length ?? 0);
+
                     if (recipientResponse.hasError && (recipientResponse.recipients == null || recipientResponse.recipients.Length == 0))
                     {
                         string errorMessage = $"Recipient API failed for event_code {eventCode}: {recipientResponse.errorMessage ?? "Unknown error"}";
@@ -161,11 +165,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                     // - Submission reminders: Group by recipient (1 email per person, for one or more relevant facilities)
                     // - Window notifications: Group by facility (1 email per facility, for one or more relevant recipients)
                     var groupingStrategy = EmailGroupingStrategyFactory.CreateStrategy(notificationTypeForDb);
-                    var emailGroups = groupingStrategy.GroupEmailRecords(groupedRecords, recipientResponse, _logger);
+                    var emailGroups = groupingStrategy.GroupEmailRecords(groupedRecords, allIndividualRecipients, _logger);
                 
                     if (emailGroups.Count == 0)
                     {
-                        string warningMessage = $"No email groups created for event_code {eventCode} with {plantIdSet.Count} facilities - API returned {recipientResponse.recipients?.Length ?? 0} recipients but none matched our facilities or had valid email addresses";
+                        string warningMessage = $"No email groups created for event_code {eventCode} with {plantIdSet.Count} facilities - API returned {allIndividualRecipients.Count} individual emails but none matched our facilities";
                         _logger.LogWarning("{JobName}: {Warning}. Handling failure for {RecordCount} records.", jobName, warningMessage, groupedRecords.Count);
                         //If the recipient api returns no emails for all provided fac IDs for this group, let's consider it 'unusual' and retry
                         await HandleEmailProcessFailure(groupedRecords, warningMessage);  
@@ -186,6 +190,42 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                 await ErrorJobLog(jl, e);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Parses RecipientResponse to extract individual emails from emailAddressList strings
+        /// </summary>
+        private List<IndividualRecipient> ParseRecipientResponse(RecipientResponse recipientResponse)
+        {
+            var individualRecipients = new List<IndividualRecipient>();
+            
+            if (recipientResponse.recipients == null)
+                return individualRecipients;
+
+            foreach (var recipientGroup in recipientResponse.recipients)
+            {
+                if (string.IsNullOrWhiteSpace(recipientGroup.emailAddressList))
+                    continue;
+
+                // Parse comma/semicolon separated email list
+                var individualEmails = recipientGroup.emailAddressList
+                    .Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(email => email.Trim())
+                    .Where(email => !string.IsNullOrWhiteSpace(email))
+                    .ToList();
+
+                // Create individual recipient for each email
+                foreach (var email in individualEmails)
+                {
+                    individualRecipients.Add(new IndividualRecipient
+                    {
+                        Email = email,
+                        FacilityIds = recipientGroup.plantIdList?.ToList() ?? new List<long>()
+                    });
+                }
+            }
+
+            return individualRecipients;
         }
 
         private async Task<JobLog> CreateJobLogEntry(string jobName)
@@ -253,7 +293,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
             {
                 _logger.LogError("{JobName}: Recipient API returned HTTP {StatusCode}: {ReasonPhrase}", GetJobName(), response.StatusCode, response.ReasonPhrase ?? "No reason phrase");
                 // Return empty recipient list on HTTP error, don't throw
-                return new RecipientResponse { recipients = [], hasError = true, errorMessage = $"HTTP {response.StatusCode}: {response.ReasonPhrase ?? "No reason phrase"}" };
+                return new RecipientResponse { recipients = Array.Empty<Recipient>(), hasError = true, errorMessage = $"HTTP {response.StatusCode}: {response.ReasonPhrase ?? "No reason phrase"}" };
             }
 
             string responseContent = await response.Content.ReadAsStringAsync();
@@ -268,10 +308,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
 
             // Log summary
             int recipientCount = recipientResponse.recipients?.Length ?? 0;
-            _logger.LogInformation("{JobName}: Recipient API returned {RecipientCount} recipients for {NotificationType}", GetJobName(), recipientCount, notificationType);
+            _logger.LogInformation("{JobName}: Recipient API returned {RecipientCount} recipient groups for {NotificationType}", GetJobName(), recipientCount, notificationType);
+            
             return recipientResponse;
         }
-
 
         /// <summary>
         /// Creates email_to_send records based on grouped emails
@@ -286,18 +326,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
             {
                 try
                 {
+                    // Get the complete list of all recipients for this group to include in email body
+                    List<string> allRecipientsInGroup = group.Recipients.ToList();
+                             
                     // Create separate email for EACH recipient instead of combining them
                     foreach (var recipient in group.Recipients)
                     {
-                        // Process the context to include recipient-specific template variables
-                        string processedContext = ProcessContextWithEmailData(group.CombinedContext, recipient);
                         
+                        // Process the context to include recipient-specific template variables AND the full recipient list
+                        string processedContext = ProcessContextWithEmailData(group.CombinedContext, recipient, allRecipientsInGroup);
+
                         EmailToSend emailToSend = new EmailToSend()
                         {
-                            Context = processedContext,  // Context with populated template variables
+                            Context = processedContext,  // Context with populated template variables including full recipient list
                             StatusCode = "QUEUED",
                             TemplateId = group.TemplateId,
-                            ToEmail = recipient,              // Single recipient per email
+                            ToEmail = recipient,              // Single recipient per email (To field)
                             FromEmail = _configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"]
                         };
 
@@ -314,7 +358,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                     
                     await _dbContext.SaveChangesAsync();
                     
-                    _logger.LogDebug("{JobName}: Created {EmailCount} individual emails for group {GroupKey} with {RecipientCount} recipients", 
+                    _logger.LogInformation("{JobName}: Created {EmailCount} individual emails for group {GroupKey} with {RecipientCount} recipients", 
                         GetJobName(), group.Recipients.Count, group.GroupKey, group.Recipients.Count);
                 }
                 catch (Exception ex)
@@ -349,10 +393,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
         }
 
         /// <summary>
-        /// Processes the context JSON to include email template variables
-        /// This ensures [[toEmail]] and [[fromEmail]] placeholders are populated with actual email addresses
+        /// Processes the context JSON to include email template variables and full recipient list
+        /// This ensures template placeholders are populated with actual data
         /// </summary>
-        private string ProcessContextWithEmailData(string originalContext, string recipientEmail)
+        private string ProcessContextWithEmailData(string originalContext, string recipientEmail, List<string> allRecipients)
         {
             try
             {
@@ -362,8 +406,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                     : JsonConvert.DeserializeObject<Dictionary<string, object>>(originalContext) ?? new Dictionary<string, object>();
                 
                 // Add email information for template variables
-                contextDict["toEmail"] = recipientEmail;
+                contextDict["toEmail"] = recipientEmail;  // Current recipient (for To field)
                 contextDict["fromEmail"] = _configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"];
+                
+                // Add the full list of all recipients for display in email body "To:" section
+                contextDict["allToEmails"] = string.Join("; ", allRecipients);
                 
                 return JsonConvert.SerializeObject(contextDict);
             }
@@ -376,10 +423,20 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                 var fallbackContext = new
                 {
                     toEmail = recipientEmail,
-                    fromEmail = _configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"]
+                    fromEmail = _configuration["EASEY_QUARTZ_SCHEDULER_WINDOW_NOTIFICATION_FROM_EMAIL"],
+                    allToEmails = string.Join("; ", allRecipients)
                 };
                 return JsonConvert.SerializeObject(fallbackContext);
             }
         }
+    }
+
+    /// <summary>
+    /// Represents an individual email recipient with their associated facilities
+    /// </summary>
+    public class IndividualRecipient
+    {
+        public string Email { get; set; }
+        public List<long> FacilityIds { get; set; } = new List<long>();
     }
 }
