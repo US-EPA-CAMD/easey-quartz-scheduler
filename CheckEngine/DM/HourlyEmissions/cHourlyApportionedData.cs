@@ -819,9 +819,9 @@ namespace ECMPS.DM.HourlyEmissions
             {
                 int apportionPos = unitDex + apportionHourOffset;
 
-                FillMissingMatsRates(apportionPos, HgMassArray, MLoadArray, HitArray, cDecimalPlaces.Hgreo, cDecimalPlaces.Hgrhi, HgRateEoArray, HgRateHiArray);
-                FillMissingMatsRates(apportionPos, HclMassArray, MLoadArray, HitArray, cDecimalPlaces.Hclreo, cDecimalPlaces.Hclrhi, HclRateEoArray, HclRateHiArray);
-                FillMissingMatsRates(apportionPos, HfMassArray, MLoadArray, HitArray, cDecimalPlaces.Hfreo, cDecimalPlaces.Hfrhi, HfRateEoArray, HfRateHiArray);
+                FillMissingMatsRates(apportionPos, HgMassArray, MLoadArray, HitArray, HgRateEoArray, HgRateHiArray, cDecimalPlaces.Hgreo, cDecimalPlaces.Hgrhi, cCalculatedToStoredFactor.Hgreo, cCalculatedToStoredFactor.Hgrhi);
+                FillMissingMatsRates(apportionPos, HclMassArray, MLoadArray, HitArray, HclRateEoArray, HclRateHiArray, cDecimalPlaces.Hclreo, cDecimalPlaces.Hclrhi, cCalculatedToStoredFactor.Hclreo, cCalculatedToStoredFactor.Hclrhi);
+                FillMissingMatsRates(apportionPos, HfMassArray, MLoadArray, HitArray, HfRateEoArray, HfRateHiArray, cDecimalPlaces.Hfreo, cDecimalPlaces.Hfrhi, cCalculatedToStoredFactor.Hfreo, cCalculatedToStoredFactor.Hfrhi);
             }
         }
 
@@ -832,27 +832,30 @@ namespace ECMPS.DM.HourlyEmissions
         /// <param name="massArray">The array of mass values to use in the calculation.</param>
         /// <param name="matsLoadArray">The array of MATS loads to use in the electrical output based calculations.</param>
         /// <param name="hitArray">The array of heat inputs to use in the heat input based calculations.</param>
-        /// <param name="eoBasedRateDecimalPlaces">The number of decimals for the electrical output based rate.</param>
-        /// <param name="hiBasedRateDecimalPlaces">The number of decimals for the heat input based rate.</param>
         /// <param name="eoBasedRateArray">The array of electrical output based rates containing the value to calculate.</param>
         /// <param name="hiBasedRateArray">The array of heat input based rates containing the value to calculate.</param>
+        /// <param name="eoBasedRateDecimalPlaces">The number of decimals for the electrical output based rate.</param>
+        /// <param name="hiBasedRateDecimalPlaces">The number of decimals for the heat input based rate.</param>
+        /// <param name="eoBasedRateConvertFactor">The conversion factor for the calculated to stored electrical output based rate.</param>
+        /// <param name="hiBasedRateConvertFactor">The conversion factor for the calculated to stored heat input based rate.</param>
         protected void FillMissingMatsRates(int apportionPos,
                                             decimal?[] massArray, decimal?[] matsLoadArray, decimal?[] hitArray,
+                                            decimal?[] eoBasedRateArray, decimal?[] hiBasedRateArray,
                                             int eoBasedRateDecimalPlaces, int hiBasedRateDecimalPlaces,
-                                            decimal?[] eoBasedRateArray, decimal?[] hiBasedRateArray)
+                                            int eoBasedRateConvertFactor, int hiBasedRateConvertFactor)
         {
             /* Set Electrical Output rate if it does not exist and the mass and MATS load values exist. */
             if (!eoBasedRateArray[apportionPos].HasValue)
             {
                 if (massArray[apportionPos].HasValue && matsLoadArray[apportionPos].HasValue && (matsLoadArray[apportionPos].Value > 0) && (OpTimeArray[apportionPos].Value > 0))
-                    eoBasedRateArray[apportionPos] = Math.Round(1000 * massArray[apportionPos].Value / (matsLoadArray[apportionPos].Value * OpTimeArray[apportionPos].Value), eoBasedRateDecimalPlaces, MidpointRounding.AwayFromZero);
+                    eoBasedRateArray[apportionPos] = Math.Round(eoBasedRateConvertFactor * massArray[apportionPos].Value / (matsLoadArray[apportionPos].Value * OpTimeArray[apportionPos].Value), eoBasedRateDecimalPlaces, MidpointRounding.AwayFromZero);
             }
 
             /* Set Heat Input rate if it is null and the mass and Heat Input values exist. */
             if (!hiBasedRateArray[apportionPos].HasValue)
             {
                 if (massArray[apportionPos].HasValue && hitArray[apportionPos].HasValue && (hitArray[apportionPos].Value > 0))
-                    hiBasedRateArray[apportionPos] = Math.Round(1000000 * massArray[apportionPos].Value / hitArray[apportionPos].Value, hiBasedRateDecimalPlaces, MidpointRounding.AwayFromZero);
+                    hiBasedRateArray[apportionPos] = Math.Round(hiBasedRateConvertFactor * massArray[apportionPos].Value / hitArray[apportionPos].Value, hiBasedRateDecimalPlaces, MidpointRounding.AwayFromZero);
             }
         }
 
