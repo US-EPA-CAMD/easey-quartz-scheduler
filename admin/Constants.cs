@@ -10,5 +10,10 @@ namespace Epa.Camd.Quartz.Scheduler
       public static readonly string BULK_DATA = "BULK_DATA";
       public static readonly string MAINTAINANCE = "MAINTAINANCE";
     }
+
+    public static class EmailTemplateIds
+    {
+      public static readonly int SUBMISSION_FAILURE_SUPPORT = 203;
+    }
   }
 }
