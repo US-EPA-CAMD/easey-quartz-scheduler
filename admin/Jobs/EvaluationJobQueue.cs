@@ -12,8 +12,14 @@ using Microsoft.Extensions.Logging;
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   [DisallowConcurrentExecution]
-  public class EvaluationJobQueue : IJob
+  public class EvaluationJobQueue : IJob, IJobMetadata<EvaluationJobQueue>
   {
+    public static string JobName => "Evaluation Job Queue";
+    public static string JobDescription => "Operates on an interval to determine if files in evaluation queue can be triggered.";
+    public static string JobGroup => Constants.QuartzGroups.MAINTAINANCE;
+    public static string TriggerName => "Evaluation Job Queue Trigger";
+    public static string TriggerDescription => "Operate every 15 seconds to determine if there are files in evaluation queue which can be triggered";
+
     private NpgSqlContext _dbContext = null;
     private readonly ILogger<EvaluationJobQueue> _logger;
     private IConfiguration Configuration { get; }
@@ -31,79 +37,114 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         {
             _logger.LogInformation("Starting evaluation queue check");
             
-            string[] types = new string[]{"MP", "QA", "EM"};
+            string[] processTypes = new string[]{"MP", "QA", "EM"};
 
-            foreach(string type in types){
-                _logger.LogInformation("Checking {Type} evaluations", type);
+            foreach(string processType in processTypes){
+                _logger.LogInformation("Checking {Type} evaluations", processType);
                 
                 List<Evaluation> inQueue = _dbContext.Evaluations.FromSqlRaw(@"
                     SELECT *
                     FROM camdecmpsaux.evaluation_queue
                     WHERE process_cd = {0} AND status_cd = 'QUEUED'
-                    ORDER BY queued_time", type
+                    ORDER BY queued_time", processType
                 ).ToList();
 
                 _logger.LogInformation("Found {Count} {Type} evaluations in QUEUED status", 
-                    inQueue.Count, type);
+                    inQueue.Count, processType);
 
-                List<Evaluation> wip = _dbContext.Evaluations.FromSqlRaw(@"
+                // Exit if nothing in queue
+                if (inQueue.Count == 0) continue;
+
+                List<Evaluation> wipOrClaimed = _dbContext.Evaluations.FromSqlRaw(@"
                     SELECT *
                     FROM camdecmpsaux.evaluation_queue
-                    WHERE process_cd = {0} AND status_cd = 'WIP'
-                    ORDER BY queued_time", type
+                    WHERE process_cd = {0} AND status_cd in ('WIP', 'CLAIMED')
+                    ORDER BY queued_time", processType
                 ).ToList();
 
-                _logger.LogInformation("Found {Count} {Type} evaluations in WIP status", 
-                    wip.Count, type);
+                _logger.LogInformation("Found {Count} {Type} evaluations in WIP or CLAIMED status", 
+                    wipOrClaimed.Count, processType);
 
-                int maxAllowed = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_" + type +"_EVALUATIONS"]);
+                int maxAllowed = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_" + processType +"_EVALUATIONS"]);
                 _logger.LogInformation("Max allowed {Type} evaluations: {MaxAllowed}", 
-                    type, maxAllowed);
+                    processType, maxAllowed);
 
-                if(wip.Count < maxAllowed){
-                    if(inQueue.Count > 0){
-                        int jobs_to_schedule = maxAllowed - wip.Count;
-                        _logger.LogInformation("Attempting to schedule {JobCount} {Type} evaluations", 
-                            jobs_to_schedule, type);
+                // Exit if at max
+                if(wipOrClaimed.Count >= maxAllowed)
+                {
+                  _logger.LogInformation("Maximum number of {Type} evaluations ({MaxAllowed}) already in progress", 
+                      processType, maxAllowed);
+                  continue;
+                }
 
-                        for(int i = 0; i < jobs_to_schedule; i++){
-                            if(i < inQueue.Count){
-                                Evaluation toSchedule = inQueue[i];
-                                _logger.LogInformation("Processing evaluation ID {EvalId}", 
-                                    toSchedule.EvaluationId);
-                                
-                                EvaluationSet es = _dbContext.EvaluationSet.Find(toSchedule.EvaluationSetId);
-                                
-                                _logger.LogInformation("Starting CheckEngineEvaluation for ID {EvalId}", 
-                                    toSchedule.EvaluationId);
-                                await CheckEngineEvaluation.StartNow(
-                                    context.Scheduler,
-                                    toSchedule.EvaluationId,
-                                    es.SetId,
-                                    toSchedule.ProcessCode,
-                                    es.FacId,
-                                    es.FacName,
-                                    es.MonPlanId,
-                                    es.Config,
-                                    es.UserId,
-                                    es.UserEmail,
-                                    toSchedule.QueuedTime,
-                                    toSchedule.TestSumId,
-                                    toSchedule.QaCertEventId,
-                                    toSchedule.TeeId,
-                                    toSchedule.RptPeriod
-                                );
+                int jobs_to_schedule = maxAllowed - wipOrClaimed.Count;
+                _logger.LogInformation("Attempting to schedule {JobCount} {Type} evaluations", 
+                    jobs_to_schedule, processType);
 
-                                int delaySeconds = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATION_JOB_QUEUE_DELAY"] ?? "1");
-                                _logger.LogInformation("Waiting {Delay}s before next evaluation", 
-                                    delaySeconds);
-                                Thread.Sleep(delaySeconds * 1000);
-                            }
-                        }
+                // Set to CLAIMED
+                List<Evaluation> claimed = _dbContext.Evaluations
+                  .FromSqlRaw(@"
+                      UPDATE camdecmpsaux.evaluation_queue
+                      SET status_cd = 'CLAIMED'
+                      WHERE evaluation_id IN (
+                          SELECT evaluation_id
+                          FROM camdecmpsaux.evaluation_queue
+                          WHERE process_cd = {0}
+                            AND status_cd = 'QUEUED'
+                          ORDER BY queued_time
+                          LIMIT {1}
+                          FOR UPDATE SKIP LOCKED
+                      )
+                      RETURNING *;",
+                      processType, jobs_to_schedule)
+                  .ToList();
+
+                _logger.LogInformation("Claimed {Count} {Type} evaluations for processing",
+                    claimed.Count, processType);
+
+                foreach(Evaluation toSchedule in claimed){
+                    try
+                    {
+                        _logger.LogInformation("Processing evaluation ID {EvalId}",
+                            toSchedule.EvaluationId);
+
+                        EvaluationSet es = _dbContext.EvaluationSet.Find(toSchedule.EvaluationSetId);
+
+                        _logger.LogInformation("Starting CheckEngineEvaluation for ID {EvalId}",
+                            toSchedule.EvaluationId);
+
+                        await CheckEngineEvaluation.StartNow(
+                            context.Scheduler,
+                            toSchedule.EvaluationId,
+                            es.SetId,
+                            toSchedule.ProcessCode,
+                            es.FacId,
+                            es.FacName,
+                            es.MonPlanId,
+                            es.Config,
+                            es.UserId,
+                            es.UserEmail,
+                            toSchedule.QueuedTime,
+                            toSchedule.TestSumId,
+                            toSchedule.QaCertEventId,
+                            toSchedule.TeeId,
+                            toSchedule.RptPeriod
+                        );
+
+                        int delaySeconds = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_EVALUATION_JOB_QUEUE_DELAY"] ?? "1");
+                        _logger.LogInformation("Waiting {Delay}s before next evaluation",
+                            delaySeconds);
+                        Thread.Sleep(delaySeconds * 1000);
                     }
-                } else {
-                    _logger.LogInformation("Maximum number of {Type} evaluations ({MaxAllowed}) already in progress", 
-                        type, maxAllowed);
+                    catch (Exception e)
+                    {
+                        _logger.LogError("Error starting CheckEngineEvaluation for evaluation ID {EvalId}: {ErrorMessage}",
+                            toSchedule.EvaluationId, e.Message);
+                        // Reset to QUEUED
+                        toSchedule.StatusCode = "QUEUED";
+                        _dbContext.Evaluations.Update(toSchedule);
+                        _dbContext.SaveChanges();
+                    }
                 }
             }
         }

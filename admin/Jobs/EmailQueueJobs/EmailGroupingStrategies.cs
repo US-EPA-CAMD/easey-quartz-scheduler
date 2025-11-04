@@ -12,7 +12,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
     /// </summary>
     public interface IEmailGroupingStrategy
     {
-        List<EmailGroup> GroupEmailRecords(List<EmailToProcess> emailRecords, RecipientResponse recipientResponse, ILogger logger = null);
+        List<EmailGroup> GroupEmailRecords(List<EmailToProcess> emailRecords, List<IndividualRecipient> individualRecipients, ILogger logger = null);
     }
     
     /// <summary>
@@ -32,11 +32,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
     /// </summary>
     public class FacilityContext
     {
+        [JsonProperty("plantName")]
         public string PlantName { get; set; }
+
+        [JsonProperty("locationList")]
         public string LocationList { get; set; }
+
+        [JsonProperty("periodAbbreviation")]
         public string PeriodAbbreviation { get; set; }
+
+        [JsonProperty("plantState")]
         public string PlantState { get; set; }
+
+        [JsonProperty("orisCode")]
         public int OrisCode { get; set; }
+
+        [JsonProperty("windowOpenDate")]
         public string WindowOpenDate { get; set; }
     }
     
@@ -109,29 +120,31 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
     /// </summary>
     public class SubmissionReminderGroupingStrategy : IEmailGroupingStrategy
     {
-        public List<EmailGroup> GroupEmailRecords(List<EmailToProcess> emailRecords, RecipientResponse recipientResponse, ILogger logger = null)
+        public List<EmailGroup> GroupEmailRecords(List<EmailToProcess> emailRecords, List<IndividualRecipient> individualRecipients, ILogger logger = null)
         {
             var groupedEmails = new List<EmailGroup>();
             
             // Build mapping: recipient email -> list of facility IDs they manage
-            var recipientToFacilities = BuildRecipientToFacilitiesMapping(recipientResponse, logger);
+            var recipientToFacilities = BuildRecipientToFacilitiesMapping(individualRecipients, logger);
             
             // Create one email group per recipient
             foreach (var (recipient, facilities) in recipientToFacilities)
             {
                 // Find all email records for facilities this recipient manages
                 var recipientEmailRecords = emailRecords
-                    .Where(er => facilities.Contains(er.FacId))
+                    .Where(er => facilities.Contains(Convert.ToInt64(er.FacId))) // FIXED: Convert decimal to long
                     .ToList();
                     
                 if (recipientEmailRecords.Any())
                 {
+                    var combinedContext = EmailGroupingUtils.CombineContexts(recipientEmailRecords, "SubmissionReminderGrouping", logger);
+                    
                     groupedEmails.Add(new EmailGroup
                     {
                         GroupKey = recipient,
-                        Recipients = [recipient],
+                        Recipients = new List<string> { recipient },
                         EmailRecords = recipientEmailRecords,
-                        CombinedContext = EmailGroupingUtils.CombineContexts(recipientEmailRecords, "SubmissionReminderGrouping", logger),
+                        CombinedContext = combinedContext,
                         TemplateId = recipientEmailRecords.First().EventCode
                     });
                 }
@@ -144,21 +157,23 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
         /// Creates mapping of recipient email to their managed facilities
         /// Example: {"john@epa.gov": [628, 629], "david@epa.gov": [629, 630]}
         /// </summary>
-        private Dictionary<string, List<decimal>> BuildRecipientToFacilitiesMapping(RecipientResponse recipientResponse, ILogger logger)
+        private Dictionary<string, List<long>> BuildRecipientToFacilitiesMapping(List<IndividualRecipient> individualRecipients, ILogger logger)
         {
-            var mapping = new Dictionary<string, List<decimal>>();
+            var mapping = new Dictionary<string, List<long>>();
             int skippedRecipients = 0;
             
-            foreach (var recipient in recipientResponse.recipients ?? [])
+            foreach (var recipient in individualRecipients)
             {
-                var email = recipient.emailAddressList;
+                var email = recipient.Email;
                 if (!string.IsNullOrEmpty(email))
                 {
                     if (!mapping.ContainsKey(email))
                     {
-                        mapping[email] = new List<decimal>();
+                        mapping[email] = new List<long>();
                     }
-                    mapping[email].AddRange( recipient.plantIdList.Select(id => Convert.ToDecimal(id)) );
+                    
+                    // Add all facility IDs for this recipient
+                    mapping[email].AddRange(recipient.FacilityIds);
                 }
                 else
                 {
@@ -166,9 +181,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
                 }
             }
             
+            // Remove duplicates from each recipient's facility list
+            foreach (var email in mapping.Keys.ToList())
+            {
+                mapping[email] = mapping[email].Distinct().ToList();
+            }
+            
             if (skippedRecipients > 0)
             {
-                logger?.LogWarning("Skipped {SkippedCount} recipients due to missing email addresses", skippedRecipients);
+                logger?.LogWarning("SubmissionReminderGrouping: Skipped {SkippedCount} recipients due to missing email addresses", skippedRecipients);
             }
             
             return mapping;
@@ -193,13 +214,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
     {
         public List<EmailGroup> GroupEmailRecords(
             List<EmailToProcess> emailRecords, 
-            RecipientResponse recipientResponse,
+            List<IndividualRecipient> individualRecipients,
             ILogger logger = null)
         {
             var groupedEmails = new List<EmailGroup>();
             
             // Build mapping: facility ID -> list of recipient emails
-            var facilityToRecipients = BuildFacilityToRecipientsMapping(recipientResponse, logger);
+            var facilityToRecipients = BuildFacilityToRecipientsMapping(individualRecipients, logger);
             
             // Group by facility ID to combine multiple monitoring locations
             var facilityGroups = emailRecords.GroupBy(er => er.FacId);
@@ -209,15 +230,19 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
             {
                 var facId = facilityGroup.Key;
                 var facilityEmailRecords = facilityGroup.ToList();
+                var facilityIdLong = Convert.ToInt64(facId); // Convert decimal to long
                 
-                if (facilityToRecipients.ContainsKey(facId))
+                if (facilityToRecipients.ContainsKey(facilityIdLong))
                 {
+                    var recipients = facilityToRecipients[facilityIdLong];
+                    var combinedContext = EmailGroupingUtils.CombineContexts(facilityEmailRecords, "WindowNotificationGrouping", logger);
+                    
                     groupedEmails.Add(new EmailGroup
                     {
                         GroupKey = facId.ToString(),
-                        Recipients = facilityToRecipients[facId], // All recipients for this facility
-                        EmailRecords = facilityEmailRecords,      // All monitoring locations for this facility
-                        CombinedContext = EmailGroupingUtils.CombineContexts(facilityEmailRecords, "WindowNotificationGrouping", logger),
+                        Recipients = recipients, // All recipients for this facility
+                        EmailRecords = facilityEmailRecords, // All monitoring locations for this facility
+                        CombinedContext = combinedContext,
                         TemplateId = facilityEmailRecords.First().EventCode
                     });
                 }
@@ -230,34 +255,36 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
         /// Creates mapping of facility ID to all its recipient emails
         /// Example: {628: ["john@epa.gov", "david@epa.gov"], 629: ["john@epa.gov", "bob@epa.gov"]}
         /// </summary>
-        private Dictionary<decimal, List<string>> BuildFacilityToRecipientsMapping(
-            RecipientResponse recipientResponse, ILogger logger)
+        private Dictionary<long, List<string>> BuildFacilityToRecipientsMapping(
+            List<IndividualRecipient> individualRecipients, ILogger logger)
         {
-            var mapping = new Dictionary<decimal, List<string>>();
+            var mapping = new Dictionary<long, List<string>>();
             int skippedRecipients = 0;
             
-            foreach (var recipient in recipientResponse.recipients ?? [])
+            foreach (var recipient in individualRecipients)
             {
-                var email = recipient.emailAddressList;
+                var email = recipient.Email;
                 if (!string.IsNullOrEmpty(email))
                 {
-                    foreach (var plantId in recipient.plantIdList)
+                    foreach (var facilityId in recipient.FacilityIds)
                     {
-                        var facId = Convert.ToDecimal(plantId);
-                        if (!mapping.ContainsKey(facId))
+                        if (!mapping.ContainsKey(facilityId))
                         {
-                            mapping[facId] = new List<string>();
+                            mapping[facilityId] = new List<string>();
                         }
 
                         // Add recipient to facility's list if not already present
-                        if (!mapping[facId].Contains(email)) mapping[facId].Add(email);
+                        if (!mapping[facilityId].Contains(email)) 
+                        {
+                            mapping[facilityId].Add(email);
+                        }
                     }
                 }
                 else
                 {
                     skippedRecipients++;
-                    logger?.LogWarning("WindowNotificationGrouping: Skipping recipient with null/empty emailAddressList. PlantIds: [{PlantIds}]", 
-                        string.Join(", ", recipient.plantIdList ?? []));
+                    logger?.LogWarning("WindowNotificationGrouping: Skipping recipient with null/empty email. FacilityIds: {FacilityIds}", 
+                        string.Join(", ", recipient.FacilityIds));
                 }
             }
             

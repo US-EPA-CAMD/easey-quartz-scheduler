@@ -15,13 +15,17 @@ using DatabaseAccess;
 using ECMPS.DM;
 using ECMPS.Checks.EmissionsReport;
 
-
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
 
     [DisallowConcurrentExecution]
-    public class PdemJob : IJob
+    public class PdemJob : IJob, IJobMetadata<PdemJob>
     {
+        public static string JobName => "Program Data Emissions Job Queue";
+        public static string JobDescription => "Operates on an interval to determine if emission reports in PDEM_REPORT table need to be generated.";
+        public static string JobGroup => Constants.QuartzGroups.MAINTAINANCE;
+        public static string TriggerName => "Program Data Emissions Job Queue Trigger";
+        public static string TriggerDescription => "Operate every minute to determine if there are PDEM reports which can be triggered for generation";
 
         public PdemJob(NpgSqlContext dbContext, IConfiguration configuration, ILogger<cUpdateEmissionsDb> logger)
         {

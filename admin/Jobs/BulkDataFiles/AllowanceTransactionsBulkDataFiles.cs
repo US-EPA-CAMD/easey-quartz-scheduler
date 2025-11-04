@@ -11,8 +11,13 @@ using Microsoft.Extensions.Logging;
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   [DisallowConcurrentExecution]
-  public class AllowanceTransactionsBulkDataFiles : IJob
+  public class AllowanceTransactionsBulkDataFiles : IJob, IJobMetadata<AllowanceTransactionsBulkDataFiles>
   {
+    public static string JobName => "Allowance Transactions Bulk Data";
+    public static string JobDescription => "Determine which allowance transactions need to be regenerated and schedule BulkDataFile jobs to handle the regen";
+    public static string JobGroup => Constants.QuartzGroups.BULK_DATA;
+    public static string TriggerName => "Allowance Transactions Bulk Data Trigger";
+    public static string TriggerDescription => "Runs nightly to determine if files need to be regenerated based on query results";
 
     private Guid job_id = Guid.NewGuid();
 

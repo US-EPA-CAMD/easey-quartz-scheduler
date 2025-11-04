@@ -13,8 +13,13 @@ using Microsoft.EntityFrameworkCore;
 namespace Epa.Camd.Quartz.Scheduler.Jobs
 {
   [DisallowConcurrentExecution]
-  public class BulkDataFileMaintenance : IJob
+  public class BulkDataFileMaintenance : IJob, IJobMetadata<BulkDataFileMaintenance>
   {
+    public static string JobName => "Bulk Data File Maintenance";
+    public static string JobDescription => "Run a check on the bulk data file maintenance queue";
+    public static string JobGroup => Constants.QuartzGroups.BULK_DATA;
+    public static string TriggerName => "Bulk Data File Maintenance Trigger";
+    public static string TriggerDescription => "Run nightly and check which files need to get rerun or cleaned up";
 
     private Guid job_id = Guid.NewGuid();
 
