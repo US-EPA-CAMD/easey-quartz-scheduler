@@ -2619,7 +2619,7 @@ namespace ECMPS.Checks.DatabaseAccess
         private static bool LoadSeverityCode()
         {
             string sql = "select Severity_Cd, Severity_Cd_Description, Severity_Level from camdecmpsmd.severity_code";
-            // Using replica: camdecmpsmd.severity_code is read-only reference data
+            // Using replica db: camdecmpsmd.severity_code is read-only reference data
             cDatabase dbConnection = cDatabase.GetConnection("LoadSeverityCode", cDatabase.eDatabaseTarget.READONLY);
 
             try
