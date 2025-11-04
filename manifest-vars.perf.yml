@@ -1,5 +1,6 @@
 instances: 2
 displayUI: true
+dbReplicaEnabled: false
 healthCheckType: port
 environment: performance
 host: easey-perf.app.cloud.gov

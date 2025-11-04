@@ -6468,8 +6468,9 @@ namespace ECMPS.Checks.EmissionsReport
 
         private void LoadCrossChecks()
         {
-            DataTable Catalog = mCheckEngine.DbConnection.GetDataTable("SELECT * FROM camdecmpsmd.cross_Check_Catalog");
-            DataTable Value = mCheckEngine.DbConnection.GetDataTable("SELECT * FROM camdecmpsmd.vw_cross_check_catalog_value");
+            // Using replica db: camdecmpsmd tables are read-only reference data
+            DataTable Catalog = mCheckEngine.DbReplicaConnection.GetDataTable("SELECT * FROM camdecmpsmd.cross_Check_Catalog");
+            DataTable Value = mCheckEngine.DbReplicaConnection.GetDataTable("SELECT * FROM camdecmpsmd.vw_cross_check_catalog_value");
             DataTable CrossCheck;
             DataRow CrossCheckRow;
             string CrossCheckName;

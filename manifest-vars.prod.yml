@@ -1,5 +1,6 @@
 instances: 4
 displayUI: false
+dbReplicaEnabled: true
 environment: production
 healthCheckType: process
 host: easey.app.cloud.gov

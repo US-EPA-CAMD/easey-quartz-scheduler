@@ -2258,7 +2258,8 @@ namespace ECMPS.Checks.QAScreenEvaluation
     private void LoadCrossChecks()
     {
       DataTable Catalog = mCheckEngine.DbConnection.GetDataTable("SELECT * FROM vw_Cross_Check_Catalog");
-      DataTable Value = mCheckEngine.DbConnection.GetDataTable("SELECT * FROM camdecmpsmd.vw_Cross_Check_Catalog_Value");
+      // Using replica db: camdecmpsmd.vw_Cross_Check_Catalog_Value is read-only reference data
+      DataTable Value = mCheckEngine.DbReplicaConnection.GetDataTable("SELECT * FROM camdecmpsmd.vw_Cross_Check_Catalog_Value");
       DataTable CrossCheck;
       DataRow CrossCheckRow;
       string CrossCheckName;

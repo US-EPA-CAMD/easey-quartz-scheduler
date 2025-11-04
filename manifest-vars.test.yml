@@ -1,5 +1,6 @@
 instances: 1
 displayUI: true
+dbReplicaEnabled: false
 environment: test
 healthCheckType: port
 host: easey-tst.app.cloud.gov

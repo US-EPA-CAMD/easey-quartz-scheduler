@@ -132,7 +132,8 @@ namespace ECMPS.Checks.CheckEngine.Definitions
         {
             bool bRetVal = false;
             string sql = "select Severity_Cd, Severity_Cd_Description, Severity_Level, 0 as Blocks_Submission from camdecmpsmd.severity_code";
-            cDatabase dbConnection = cDatabase.GetConnection("LoadSeverityCode");
+            // Use replica db: camdecmpsmd.severity_code is read-only reference data
+            cDatabase dbConnection = cDatabase.GetConnection("LoadSeverityCode", cDatabase.eDatabaseTarget.READONLY);
 
             try
             {

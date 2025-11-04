@@ -1,5 +1,6 @@
 instances: 2
 displayUI: true
+dbReplicaEnabled: true
 environment: beta
 healthCheckType: port
 host: easey-beta.app.cloud.gov

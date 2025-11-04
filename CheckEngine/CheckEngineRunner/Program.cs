@@ -13,28 +13,34 @@ using Serilog.Formatting.Compact;
 using Microsoft.Extensions.Logging;
 using Epa.Camd.Logger;
 using ECMPS.Checks.EmissionsReport;
+using DatabaseAccess;
+using Microsoft.Extensions.Configuration;
 
 namespace CheckEngineRunner
 {
     static class CheckEngineRunnerDBCredentials
     {
-        private static string dbName = Environment.GetEnvironmentVariable("EASEY_DB_NAME");
-        private static string dbPort = Environment.GetEnvironmentVariable("EASEY_DB_PORT");
-        private static string dbUser = Environment.GetEnvironmentVariable("EASEY_DB_USER");
-        private static string dbPwd = Environment.GetEnvironmentVariable("EASEY_DB_PWD");
+        private static IConfiguration _configuration;
+        private static string _connectionString;
 
-        private static string dbConnString = "server = localhost; port = " + dbPort + "; user id = " + dbUser + "; password = " + dbPwd + "; database = " + dbName + "; pooling = true";
+        public static void Initialize(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            _connectionString = ConnectionStringManager.getConnectionString(configuration);
+        }
 
-        public static string CheckEngineRunnerDBConnectionStr { get { return dbConnString; } }
+        public static string CheckEngineRunnerDBConnectionStr => _connectionString;
 
         public static void LogConnectionInfo(ILogger<Program> logger)
         {
             var dbInfo = new
             {
-                Host = "localhost",
-                Port = dbPort,
-                User = dbUser,
-                Database = dbName
+                Host = _configuration["EASEY_DB_HOST"] ?? "localhost",
+                ReplicaHost = _configuration["EASEY_DB_REPLICA_HOST"] ?? "(none)",
+                Port = _configuration["EASEY_DB_PORT"] ?? "5432",
+                User = _configuration["EASEY_DB_USER"] ?? "postgres",
+                Database = _configuration["EASEY_DB_NAME"] ?? "postgres",
+                ReplicaEnabled = _configuration["EASEY_QUARTZ_SCHEDULER_DB_REPLICA_ENABLED"] ?? "false"
             };
 
             logger.LogInformation("Database connection details (excluding password): {@DbInfo}", dbInfo);
@@ -45,10 +51,17 @@ namespace CheckEngineRunner
     {
         private static ILogger<Program> _logger;
 
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             ConfigureLogging();
 
+            // Build configuration from environment variables
+            var configuration = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .Build();
+
+            // Initialize database credentials using ConnectionStringManager
+            CheckEngineRunnerDBCredentials.Initialize(configuration);
             CheckEngineRunnerDBCredentials.LogConnectionInfo(_logger);
 
             string batchId = Guid.NewGuid().ToString();
