@@ -53,7 +53,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
     {
       var Category = new cWAFCategory(ACheckEngine, AMonitorPlanProcess);
 
-      Category.InitCheckBands(ACheckEngine.DbConnection);
+      Category.InitCheckBands(ACheckEngine.DbReplicaConnection);
 
       return Category;
     }

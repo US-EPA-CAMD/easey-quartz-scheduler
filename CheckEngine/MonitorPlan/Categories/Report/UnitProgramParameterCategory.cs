@@ -50,7 +50,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
     {
       var category = new cUnitProgramParameterCategory(unitProgramCategory);
 
-      category.InitCheckBands(category.CheckEngine.DbConnection);
+      category.InitCheckBands(category.CheckEngine.DbReplicaConnection);
 
       return category;
     }

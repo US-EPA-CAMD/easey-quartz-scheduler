@@ -52,7 +52,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
     {
       var Category = new cQualificationLEECategory(AMonitorPlanProcess);
 
-      Category.InitCheckBands(ACheckEngine.DbConnection);
+      Category.InitCheckBands(ACheckEngine.DbReplicaConnection);
 
       return Category;
     }
