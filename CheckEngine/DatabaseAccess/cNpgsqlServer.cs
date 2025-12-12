@@ -54,6 +54,22 @@ namespace ECMPS.Checks.DatabaseAccess
             MASTER = 4
         }
 
+        /// <summary>
+        /// The target database server type for connection routing
+        /// </summary>
+        public enum eDatabaseTarget
+        {
+            /// <summary>
+            /// Route to primary database (read-write)
+            /// </summary>
+            READWRITE = 0,
+
+            /// <summary>
+            /// Route to replica database (read-only, prefer standby)
+            /// </summary>
+            READONLY = 1
+        }
+
         #endregion
 
 
@@ -66,6 +82,20 @@ namespace ECMPS.Checks.DatabaseAccess
         private int m_nConnTimeout = 5;         // 5 seconds
 
         static private string _sDbConnectionString = null;
+
+        // Static data sources for connection pooling efficiency
+        static private NpgsqlDataSource _sqlDataSource = null;
+        static private NpgsqlDataSource _sqlDataSourcePrimary = null;
+        static private NpgsqlDataSource _sqlDataSourceReplica = null;
+        static private readonly object _dataSourceLock = new object();
+
+        /// <summary>
+        /// Indicates whether multi-host configuration is active (derived from data source state)
+        /// </summary>
+        public static bool IsMultiHostConfigured =>
+            _sqlDataSourcePrimary != null &&
+            _sqlDataSourceReplica != null &&
+            _sqlDataSourcePrimary != _sqlDataSourceReplica;
 
         private readonly ILogger<cDatabase> _logger = LoggerProvider.GetLogger<cDatabase>();
 
@@ -176,6 +206,16 @@ namespace ECMPS.Checks.DatabaseAccess
             set { m_sModule = value; }
         }
 
+        private eDatabaseTarget m_eDatabaseTarget = eDatabaseTarget.READWRITE;
+        /// <summary>
+        /// The database target for this connection (READWRITE or READONLY)
+        /// </summary>
+        public eDatabaseTarget DatabaseTarget
+        {
+            get { return m_eDatabaseTarget; }
+            set { m_eDatabaseTarget = value; }
+        }
+
         /// <summary>
         /// The timeout to assign to the command objects created.
         /// Default is 5 minutes
@@ -216,36 +256,124 @@ namespace ECMPS.Checks.DatabaseAccess
             }
         }
 
+        /// <summary>
+        /// Initialize the static data sources for multi-host connection pooling.
+        /// This method is thread-safe and will only initialize once.
+        /// </summary>
+        private static void InitializeDataSources()
+        {
+            // Double-check locking pattern for thread-safe lazy initialization
+            if (_sqlDataSource == null)
+            {
+                lock (_dataSourceLock)
+                {
+                    if (_sqlDataSource == null)
+                    {
+                        try
+                        {
+                            // Create connection string builder to check configuration
+                            var connStrBuilder = new NpgsqlConnectionStringBuilder(_sDbConnectionString);
+
+                            // Determine if multi-host is configured
+                            bool isMultiHost = !string.IsNullOrEmpty(connStrBuilder.Host) && connStrBuilder.Host.Contains(",");
+
+                            if (isMultiHost)
+                            {
+                                // Multi-host: use BuildMultiHost() + WithTargetSession() pattern
+                                var builder = new NpgsqlDataSourceBuilder(_sDbConnectionString);
+                                var multiHostDataSource = builder.BuildMultiHost();
+
+                                // Create wrapped data sources for routing
+                                _sqlDataSourcePrimary = multiHostDataSource.WithTargetSession(TargetSessionAttributes.ReadWrite);
+                                _sqlDataSourceReplica = multiHostDataSource.WithTargetSession(TargetSessionAttributes.PreferStandby);
+
+                            // Keep reference to primary as default
+                            _sqlDataSource = _sqlDataSourcePrimary;
+
+                            LoggerProvider.GetLogger<cDatabase>().LogInformation(
+                                    "Database data sources initialized successfully. Multi-host: True, Primary: ReadWrite, Replica: PreferStandby");
+                            }
+                            else
+                            {
+                                // Single-host: use same data source for both (no replica available)
+                                var builder = new NpgsqlDataSourceBuilder(_sDbConnectionString);
+                                _sqlDataSourcePrimary = builder.Build();
+                                _sqlDataSourceReplica = _sqlDataSourcePrimary;
+                                _sqlDataSource = _sqlDataSourcePrimary;
+
+                                LoggerProvider.GetLogger<cDatabase>().LogInformation(
+                                    "Database data sources initialized successfully. Single-host: using primary for all connections");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log error but don't fail - fallback to direct connection creation
+                            LoggerProvider.GetLogger<cDatabase>().LogError(ex,
+                                "Failed to initialize multi-host data sources. Falling back to single connection mode.");
+                            _sqlDataSource = null;
+                            _sqlDataSourcePrimary = null;
+                            _sqlDataSourceReplica = null;
+                        }
+                    }
+                }
+            }
+        }
+
         #endregion
 
 
         #region Construstors, startup code and cleanup code
 
         /// <summary>
-        /// Create a cNpgsqlDatabase object and get a connection to the specified catalog
+        /// Create a cNpgsqlDatabase object and get a connection to the specified catalog with target routing
         /// </summary>
         /// <param name="nCmdTimeout">The timeout to assign to the command objects created.</param>
         /// <param name="sModule">The calling module</param>
+        /// <param name="target">The database target (READWRITE for primary, READONLY for replica)</param>
         /// <returns>A cNpgsqlDatabase object with the connection already opened</returns>
-        public static cDatabase GetConnection(int nCmdTimeout, string sModule)
+        public static cDatabase GetConnection(int nCmdTimeout, string sModule, eDatabaseTarget target)
         {
-            cDatabase me = new cDatabase(sModule, nCmdTimeout);
+            cDatabase me = new cDatabase(sModule, nCmdTimeout, target);
             me.Open();
 
             return me;
         }
 
         /// <summary>
-        /// Create a cNpgsqlDatabase object and get a connection to the specified catalog
+        /// Create a cNpgsqlDatabase object and get a connection to the specified catalog with target routing
+        /// </summary>
+        /// <param name="sModule">The calling module</param>
+        /// <param name="target">The database target (READWRITE for primary, READONLY for replica)</param>
+        /// <returns>A cNpgsqlDatabase object with the connection already opened</returns>
+        public static cDatabase GetConnection(string sModule, eDatabaseTarget target)
+        {
+            cDatabase me = new cDatabase(sModule, target);
+            me.Open();
+
+            return me;
+        }
+
+        /// <summary>
+        /// Create a cNpgsqlDatabase object and get a connection to the primary database (backward compatibility)
+        /// </summary>
+        /// <param name="nCmdTimeout">The timeout to assign to the command objects created.</param>
+        /// <param name="sModule">The calling module</param>
+        /// <returns>A cNpgsqlDatabase object with the connection already opened</returns>
+        public static cDatabase GetConnection(int nCmdTimeout, string sModule)
+        {
+            // Default to READWRITE for backward compatibility
+            return GetConnection(nCmdTimeout, sModule, eDatabaseTarget.READWRITE);
+        }
+
+        /// <summary>
+        /// Create a cNpgsqlDatabase object and get a connection to the primary database (backward compatibility)
         /// </summary>
         /// <param name="sModule">The calling module</param>
         /// <returns>A cNpgsqlDatabase object with the connection already opened</returns>
         public static cDatabase GetConnection(string sModule)
         {
-            cDatabase me = new cDatabase(sModule);
-            me.Open();
-
-            return me;
+            // Default to READWRITE for backward compatibility
+            return GetConnection(sModule, eDatabaseTarget.READWRITE);
         }
 
         /// <summary>
@@ -253,6 +381,7 @@ namespace ECMPS.Checks.DatabaseAccess
         /// </summary>
         public cDatabase()
         {
+            m_eDatabaseTarget = eDatabaseTarget.READWRITE;
         }
 
         /// <summary>
@@ -262,10 +391,35 @@ namespace ECMPS.Checks.DatabaseAccess
         public cDatabase(string sModule)
         {
             m_sModule = sModule;
+            m_eDatabaseTarget = eDatabaseTarget.READWRITE;
         }
 
         /// <summary>
-        /// Constructor with module name, connection strings, and command timeout
+        /// Constructor with module name and database target
+        /// </summary>
+        /// <param name="sModule">The module/application name to give the connection</param>
+        /// <param name="target">The database target (READWRITE or READONLY)</param>
+        public cDatabase(string sModule, eDatabaseTarget target)
+        {
+            m_sModule = sModule;
+            m_eDatabaseTarget = target;
+        }
+
+        /// <summary>
+        /// Constructor with module name, command timeout, and database target
+        /// </summary>
+        /// <param name="sModule">The module/application name to give the connection</param>
+        /// <param name="nCmdTimeout">The timeout to assign to the command objects created.</param>
+        /// <param name="target">The database target (READWRITE or READONLY)</param>
+        public cDatabase(string sModule, int nCmdTimeout, eDatabaseTarget target)
+        {
+            m_sModule = sModule;
+            m_nCmdTimeout = nCmdTimeout;
+            m_eDatabaseTarget = target;
+        }
+
+        /// <summary>
+        /// Constructor with module name and command timeout (backward compatibility)
         /// </summary>
         /// <param name="sModule">The module/application name to give the connection</param>
         /// <param name="nCmdTimeout">The timeout to assign to the command objects created.</param>
@@ -273,6 +427,7 @@ namespace ECMPS.Checks.DatabaseAccess
         {
             m_sModule = sModule;
             m_nCmdTimeout = nCmdTimeout;
+            m_eDatabaseTarget = eDatabaseTarget.READWRITE;
         }
 
         /// <summary>
@@ -332,7 +487,38 @@ namespace ECMPS.Checks.DatabaseAccess
                 }
             }
 
-            m_sqlConn = new NpgsqlConnection(_sDbConnectionString);
+            // Initialize data sources if not already done
+            if (_sqlDataSource == null)
+            {
+                InitializeDataSources();
+            }
+
+            // Create connection using appropriate data source based on target
+            if (_sqlDataSource != null)
+            {
+                try
+                {
+                    if (m_eDatabaseTarget == eDatabaseTarget.READONLY)
+                    {
+                        m_sqlConn = _sqlDataSourceReplica.CreateConnection();
+                    }
+                    else
+                    {
+                        m_sqlConn = _sqlDataSourcePrimary.CreateConnection();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Failed to create connection from data source, falling back to direct connection");
+                    // Fallback to direct connection if data source fails
+                    m_sqlConn = new NpgsqlConnection(_sDbConnectionString);
+                }
+            }
+            else
+            {
+                // Fallback if data source initialization failed
+                m_sqlConn = new NpgsqlConnection(_sDbConnectionString);
+            }
 
             try
             {
@@ -2433,7 +2619,8 @@ namespace ECMPS.Checks.DatabaseAccess
         private static bool LoadSeverityCode()
         {
             string sql = "select Severity_Cd, Severity_Cd_Description, Severity_Level from camdecmpsmd.severity_code";
-            cDatabase dbConnection = cDatabase.GetConnection("LoadSeverityCode");
+            // Using replica db: camdecmpsmd.severity_code is read-only reference data
+            cDatabase dbConnection = cDatabase.GetConnection("LoadSeverityCode", cDatabase.eDatabaseTarget.READONLY);
 
             try
             {

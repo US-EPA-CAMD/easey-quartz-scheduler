@@ -52,7 +52,7 @@ namespace ECMPS.Checks.EmissionsReport
 
             try
             {
-                nsps4tSummaryDataCategory.InitCheckBands(summaryValueInitializationCategory.CheckEngine.DbConnection);
+                nsps4tSummaryDataCategory.InitCheckBands(summaryValueInitializationCategory.CheckEngine.DbReplicaConnection);
                 /* Setup non changing check parameters needed by the checks */
                 DataSet sourceDataSet = summaryValueInitializationCategory.Process.SourceData;
                 emparams.Nsps4tSummaryRecords = new CheckDataView<Nsps4tSummary>(new DataView(sourceDataSet.Tables["Nsps4tSummary"]));

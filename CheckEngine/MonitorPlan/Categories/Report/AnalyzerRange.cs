@@ -53,7 +53,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
     {
       var Category = new cAnalyzerRange(ACheckEngine, AMonitorPlanProcess);
 
-      Category.InitCheckBands(ACheckEngine.DbConnection);
+      Category.InitCheckBands(ACheckEngine.DbReplicaConnection);
 
       return Category;
     }

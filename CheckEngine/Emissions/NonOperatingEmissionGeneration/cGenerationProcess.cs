@@ -88,9 +88,9 @@ namespace ECMPS.Checks.NonOperatingEmissionGeneration
         cGenerationCategory locationHourlyCategory = new cGenerationCategory(locationCategory, "EMGENHR", emGenerationParameters);
         cGenerationCategory locationSummaryCategory = new cGenerationCategory(locationCategory, "EMGENSV", emGenerationParameters);
 
-        locationCategory.InitCheckBands(CheckEngine.DbConnection);
-        locationHourlyCategory.InitCheckBands(CheckEngine.DbConnection);
-        locationSummaryCategory.InitCheckBands(CheckEngine.DbConnection);
+        locationCategory.InitCheckBands(CheckEngine.DbReplicaConnection);
+        locationHourlyCategory.InitCheckBands(CheckEngine.DbReplicaConnection);
+        locationSummaryCategory.InitCheckBands(CheckEngine.DbReplicaConnection);
 
         SetDataParameterByMonitorPlan(CheckEngine.MonPlanId);
 

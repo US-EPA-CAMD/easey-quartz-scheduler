@@ -1,5 +1,6 @@
 instances: 2
 displayUI: false
+dbReplicaEnabled: true
 environment: staging
 healthCheckType: process
 host: easey-stg.app.cloud.gov

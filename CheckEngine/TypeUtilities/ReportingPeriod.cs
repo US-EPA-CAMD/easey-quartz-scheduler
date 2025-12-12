@@ -311,7 +311,8 @@ namespace ECMPS.Checks.TypeUtilities
         {
           try
           {
-            cDatabase Database = cDatabase.GetConnection("cDateFunctions");
+            // Using replica db: camdecmpsmd.reporting_period is read-only reference data
+            cDatabase Database = cDatabase.GetConnection("cDateFunctions", cDatabase.eDatabaseTarget.READONLY);
 
             FLookupTable = Database.GetDataTable("select * from camdecmpsmd.reporting_period order by Calendar_Year, Quarter");
           }

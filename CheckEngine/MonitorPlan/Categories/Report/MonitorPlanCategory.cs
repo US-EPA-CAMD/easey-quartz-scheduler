@@ -58,7 +58,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
         {
             var Category = new cMonitorPlanCategory(ACheckEngine, AMonitorPlanProcess, ref mpParams);
 
-            Category.InitCheckBands(ACheckEngine.DbConnection);
+            Category.InitCheckBands(ACheckEngine.DbReplicaConnection);
 
             return Category;
         }

@@ -943,7 +943,37 @@ namespace ECMPS.Checks.CheckEngine
                     module = string.Format("CheckEngine: {0}.{1}", processCd, categoryCd);
             }
 
-            DbConnection = cDatabase.GetConnection(CommandTimeout, module);
+			// First, initialize primary database connection (read-write)
+            DbConnection = cDatabase.GetConnection(CommandTimeout, module, cDatabase.eDatabaseTarget.READWRITE);
+
+            // Next, initialize replica database connection (read-only) for reference data queries
+            // Falls back to primary if replica database is unavailable (e.g., test environments)
+            try
+            {
+                DbReplicaConnection = cDatabase.GetConnection(CommandTimeout, module, cDatabase.eDatabaseTarget.READONLY);
+
+                // If replica connection failed, use primary as fallback
+                if (DbReplicaConnection == null || DbReplicaConnection.InternalError)
+                {
+                    _logger.LogInformation(DbReplicaConnection?.LastException,
+                        "Replica connection failed for {Module}: {ErrorMessage}. Using primary for all queries",
+                        module, DbReplicaConnection?.LastError ?? "Unknown error");
+                    DbReplicaConnection = DbConnection;
+                }
+				else if (!cDatabase.IsMultiHostConfigured)
+                {
+                    _logger.LogInformation("Single-host configuration for {Module}, using primary for all queries", module);
+                }                
+                else
+                {
+                    _logger.LogInformation("Replica connection initialized successfully for {Module}", module);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex, "Replica connection unavailable for {Module}, using primary for all queries", module);
+                DbReplicaConnection = DbConnection;
+            }
 
             result = true;
 
@@ -1241,8 +1271,22 @@ namespace ECMPS.Checks.CheckEngine
         /// </summary>
         private void RunChecks_ProcessFini_Connections()
         {
+			// Store whether replica and primary are same connection before nulling
+            bool areSameConnection = (DbReplicaConnection != null) && (DbReplicaConnection == DbConnection);
+
+            // Close primary connection
             if ((DbConnection != null) && (DbConnection.State == ConnectionState.Open)) DbConnection.Close();
             DbConnection = null;
+
+            // Close replica connection ONLY if it's different from primary
+            // (In test environments without replica, both may point to same object)
+            if ((DbReplicaConnection != null) &&
+                !areSameConnection &&
+                (DbReplicaConnection.State == ConnectionState.Open))
+            {
+                DbReplicaConnection.Close();
+            }
+            DbReplicaConnection = null;
         }
 
         #endregion
@@ -1539,6 +1583,11 @@ namespace ECMPS.Checks.CheckEngine
         /// Connection to ECMPS database
         /// </summary>
         public cDatabase DbConnection { get; private set; }
+
+        /// <summary>
+        /// Connection to ECMPS database (replica, read-only)
+        /// </summary>
+        public cDatabase DbReplicaConnection { get; private set; }
 
         /// <summary>
         /// Data context for the ECMPS database
