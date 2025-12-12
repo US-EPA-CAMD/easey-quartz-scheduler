@@ -197,8 +197,6 @@ namespace ECMPS.Checks.LinearityChecks
 						}
 					}
 					
-					/* TODO: BeginDateHour / etc is not defined as part of qaParams.CurrentLinearityTest
-					
 					if ((qaParams.LinearityComponentValid == true) && TestTypeCd.InList("LINE,HGLINE,HGSI3"))
                     {
 						int count = qaParams.SystemComponentRecords.CountRows
@@ -206,10 +204,10 @@ namespace ECMPS.Checks.LinearityChecks
 								new cFilterCondition[]
                                 {
 									new cFilterCondition("COMPONENT_ID", qaParams.CurrentLinearityTest.ComponentId),
-									new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual.ToString(), qaParams.CurrentLinearityTest.BeginDatehour.Default(DateTypes.START), eNullDateDefault.Min),
-									new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual.ToString(), qaParams.CurrentLinearityTest.BeginDatehour.Default(DateTypes.START), eNullDateDefault.Max),
-									new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual.ToString(), qaParams.CurrentLinearityTest.EndDatehour.Default(DateTypes.END), eNullDateDefault.Min),
-									new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual.ToString(), qaParams.CurrentLinearityTest.EndDatehour.Default(DateTypes.END), eNullDateDefault.Max)
+									new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual, qaParams.CurrentLinearityTest.BeginDatehour.Default(DateTypes.START), eNullDateDefault.Min),
+									new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual, qaParams.CurrentLinearityTest.BeginDatehour.Default(DateTypes.START), eNullDateDefault.Max),
+									new cFilterCondition("BEGIN_DATEHOUR", eFilterConditionRelativeCompare.LessThanOrEqual, qaParams.CurrentLinearityTest.EndDatehour.Default(DateTypes.END), eNullDateDefault.Min),
+									new cFilterCondition("END_DATEHOUR", eFilterConditionRelativeCompare.GreaterThanOrEqual, qaParams.CurrentLinearityTest.EndDatehour.Default(DateTypes.END), eNullDateDefault.Max)
 								}
 							);
 
@@ -226,7 +224,6 @@ namespace ECMPS.Checks.LinearityChecks
 							}
 						}
                     }
-					*/
 				}
 			}
 			catch (Exception ex)
