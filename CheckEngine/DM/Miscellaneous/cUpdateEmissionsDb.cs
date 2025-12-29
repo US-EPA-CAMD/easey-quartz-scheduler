@@ -484,7 +484,7 @@ namespace ECMPS.Checks.EmissionsReport
                     locationLinkSpanCountTable = Db.GetDataTable($"select * from camdecmpsaux.PDEM_UPDATE_INIT_GET_SPANNING_LINK_COUNTS( '{monPlanId}', {rptPeriodId} )");
                     locationLinkActiveTable = Db.GetDataTable($"select * from camdecmpsaux.PDEM_UPDATE_INIT_GET_ACTIVE_LINK_COUNTS( '{monPlanId}', {rptPeriodId} )");
                     specialMethodCountTable = Db.GetDataTable($"select * from camdecmpsaux.PDEM_UPDATE_INIT_GET_CP_LTFF_INFO( '{monPlanId}', {rptPeriodId} )");
-                    monitorHourTable = Db.GetDataTable($"select * from camdecmpsaux.PDEM_UPDATE_INIT_GET_COMBINED_HOURLY_DATA( '{monPlanId}', {rptPeriodId} )");
+                    monitorHourTable = Db.GetDataTable($"select * from camdecmpsaux.PDEM_UPDATE_INIT_GET_COMBINED_HOURLY_DATA( {pdemReportId} )");
                 }
                 else
                 {
