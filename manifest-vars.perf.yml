@@ -1,4 +1,4 @@
-instances: 2
+instances: 4
 displayUI: true
 dbReplicaEnabled: true
 healthCheckType: port
