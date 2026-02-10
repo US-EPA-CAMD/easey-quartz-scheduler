@@ -161,8 +161,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
     {
       var parameters = new List<NpgsqlParameter>
         {
-          new NpgsqlParameter("par_V_UNIT_ID", NpgsqlDbType.Numeric) { Value = inventoryStatusLog.UnitId, Direction = ParameterDirection.Input },
-          new NpgsqlParameter("par_V_DATA_TYPE_CD", NpgsqlDbType.Varchar) { Value = inventoryStatusLog.DataTypeCd, Direction = ParameterDirection.Input }
+          new NpgsqlParameter("par_v_unit_id", NpgsqlDbType.Numeric) { Value = inventoryStatusLog.UnitId, Direction = ParameterDirection.Input },
+          new NpgsqlParameter("par_v_data_type_cd", NpgsqlDbType.Varchar) { Value = inventoryStatusLog.DataTypeCd, Direction = ParameterDirection.Input }
         };
       _dbContext.ExecuteProcedure("camdecmpswks.update_mp_eval_status_and_reporting_freq", parameters, connection, sqlTransaction);
     }
