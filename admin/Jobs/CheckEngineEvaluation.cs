@@ -312,8 +312,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     emissionEvalRecord.EvalStatus = evaluationStatus;
                     _dbContext.EmissionEvaluations.Update(emissionEvalRecord);
 
-                    await _dbContext.ExecuteEmissionRefreshProcedure(monitorPlanId, rp.year, rp.quarter);
-
                     evaluationStages.Add(new EvaluationStageDto
                     {
                        action = "EM_EVAL_COMPLETED",
