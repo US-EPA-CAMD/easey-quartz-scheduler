@@ -1,4 +1,5 @@
-instances: 2
+instances: 4
+memory: 3072M
 displayUI: true
 dbReplicaEnabled: true
 healthCheckType: port
