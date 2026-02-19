@@ -73,31 +73,141 @@ namespace ECMPS.Checks.DatabaseAccess
         #endregion
 
 
-        #region Public Properties and their associated member variables
+        #region Data Source Static Fields, Dependent Properties, and Helper Field and Method for Locked Updates
 
-        private NpgsqlCommand m_sqlCmd = null;
-        private NpgsqlConnection m_sqlConn = null;
-
-        private int m_nCmdTimeout = 60 * 15;     // 15 minutes
-        private int m_nConnTimeout = 5;         // 5 seconds
-
-        static private string _sDbConnectionString = null;
-
-        // Static data sources for connection pooling efficiency
-        static private NpgsqlDataSource _sqlDataSource = null;
-        static private NpgsqlDataSource _sqlDataSourcePrimary = null;
-        static private NpgsqlDataSource _sqlDataSourceReplica = null;
+        /// <summary>
+        /// Object locked to perform data source changes on a thread.
+        /// </summary>
         static private readonly object _dataSourceLock = new object();
+
+
+        /// <summary>
+        /// Initialize the static data sources for multi-host connection pooling.
+        /// This method is thread-safe and will only initialize once.
+        /// </summary>
+        private static void InitializeDataSources()
+        {
+            // Double-check locking pattern for thread-safe lazy initialization
+            if (_sqlDataSource == null)
+            {
+                lock (_dataSourceLock)
+                {
+                    if (_sqlDataSource == null)
+                    {
+                        try
+                        {
+                            // Create connection string builder to check configuration
+                            var connStrBuilder = new NpgsqlConnectionStringBuilder(_sDbConnectionString);
+
+                            // Determine if multi-host is configured
+                            bool isMultiHost = !string.IsNullOrEmpty(connStrBuilder.Host) && connStrBuilder.Host.Contains(",");
+
+                            if (isMultiHost)
+                            {
+                                // Multi-host: use BuildMultiHost() + WithTargetSession() pattern
+                                var builder = new NpgsqlDataSourceBuilder(_sDbConnectionString);
+                                var multiHostDataSource = builder.BuildMultiHost();
+
+                                // Create wrapped data sources for routing
+                                _sqlDataSourcePrimary = multiHostDataSource.WithTargetSession(TargetSessionAttributes.ReadWrite);
+                                _sqlDataSourceReplica = multiHostDataSource.WithTargetSession(TargetSessionAttributes.PreferStandby);
+
+                                // Keep reference to primary as default
+                                _sqlDataSource = _sqlDataSourcePrimary;
+
+                                LoggerProvider.GetLogger<cDatabase>().LogInformation(
+                                        "Database data sources initialized successfully. Multi-host: True, Primary: ReadWrite, Replica: PreferStandby");
+                            }
+                            else
+                            {
+                                // Single-host: use same data source for both (no replica available)
+                                var builder = new NpgsqlDataSourceBuilder(_sDbConnectionString);
+                                _sqlDataSourcePrimary = builder.Build();
+                                _sqlDataSourceReplica = _sqlDataSourcePrimary;
+                                _sqlDataSource = _sqlDataSourcePrimary;
+
+                                LoggerProvider.GetLogger<cDatabase>().LogInformation(
+                                    "Database data sources initialized successfully. Single-host: using primary for all connections");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log error but don't fail - fallback to direct connection creation
+                            LoggerProvider.GetLogger<cDatabase>().LogError(ex,
+                                "Failed to initialize multi-host data sources. Falling back to single connection mode.");
+                            _sqlDataSource = null;
+                            _sqlDataSourcePrimary = null;
+                            _sqlDataSourceReplica = null;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Static data sources for connection pooling efficiency
+        /// </summary>
+        static private NpgsqlDataSource _sqlDataSource;
+
+        /// <summary>
+        /// Primary data source
+        /// </summary>
+        static private NpgsqlDataSource _sqlDataSourcePrimary;
+
+        /// <summary>
+        /// Replication data source
+        /// </summary>
+        static private NpgsqlDataSource _sqlDataSourceReplica;
+
 
         /// <summary>
         /// Indicates whether multi-host configuration is active (derived from data source state)
         /// </summary>
-        public static bool IsMultiHostConfigured =>
-            _sqlDataSourcePrimary != null &&
-            _sqlDataSourceReplica != null &&
-            _sqlDataSourcePrimary != _sqlDataSourceReplica;
+        static public bool IsMultiHostConfigured
+        {
+            get
+            {
+                return _sqlDataSourcePrimary != null &&
+                         _sqlDataSourceReplica != null &&
+                         _sqlDataSourcePrimary != _sqlDataSourceReplica;
+            }
+        }
 
-        private readonly ILogger<cDatabase> _logger = LoggerProvider.GetLogger<cDatabase>();
+        #endregion
+
+
+        #region Static Properties and Supporting Thread Specific Static Variables
+
+        /// <summary>
+        /// Connection string used to connect to ECMPS Data database
+        /// </summary>
+        static public string DbConnectionString
+        {
+            get { return _sDbConnectionString; }
+            set { _sDbConnectionString = value; }
+        }
+
+        [ThreadStatic]
+        static private string _sDbConnectionString = null;
+
+
+        /// <summary>
+        /// Do we show errors, or are we being stealthy?
+        /// </summary>
+        static public bool StealthMode
+        {
+            get { return _bStealth; }
+            set { _bStealth = value; }
+        }
+
+        [ThreadStatic]
+        static private bool _bStealth;
+
+        #endregion
+
+
+        #region Static Fields and Properties
 
         /// <summary>
         /// The default command timeout (15 minutes)
@@ -106,6 +216,19 @@ namespace ECMPS.Checks.DatabaseAccess
         {
             get { return 60 * 15; }
         }
+
+        #endregion
+
+
+        #region Public Properties and their associated member variables
+
+        private NpgsqlCommand m_sqlCmd = null;
+        private NpgsqlConnection m_sqlConn = null;
+
+        private int m_nCmdTimeout = 60 * 15;     // 15 minutes
+        private int m_nConnTimeout = 5;         // 5 seconds
+
+        private readonly ILogger<cDatabase> _logger = LoggerProvider.GetLogger<cDatabase>();
 
         // Internal Error Variables
 
@@ -122,17 +245,6 @@ namespace ECMPS.Checks.DatabaseAccess
         /// The last error generated by this class
         /// </summary>
         private string m_sLastError = "";
-
-        static private bool _bStealth = false;
-
-        /// <summary>
-        /// Do we show errors, or are we being stealthy?
-        /// </summary>
-        public static bool StealthMode
-        {
-            get { return _bStealth; }
-            set { _bStealth = value; }
-        }
 
         /// <summary>
         /// The NpgsqlClient.Command object
@@ -161,15 +273,6 @@ namespace ECMPS.Checks.DatabaseAccess
                     return ConnectionState.Closed;
                 return m_sqlConn.State;
             }
-        }
-
-        /// <summary>
-        /// Connection string used to connect to ECMPS Data database
-        /// </summary>
-        static public string DbConnectionString
-        {
-            get { return _sDbConnectionString; }
-            set { _sDbConnectionString = value; }
         }
 
         /// <summary>
@@ -253,69 +356,6 @@ namespace ECMPS.Checks.DatabaseAccess
             set
             {
                 m_nConnTimeout = value;
-            }
-        }
-
-        /// <summary>
-        /// Initialize the static data sources for multi-host connection pooling.
-        /// This method is thread-safe and will only initialize once.
-        /// </summary>
-        private static void InitializeDataSources()
-        {
-            // Double-check locking pattern for thread-safe lazy initialization
-            if (_sqlDataSource == null)
-            {
-                lock (_dataSourceLock)
-                {
-                    if (_sqlDataSource == null)
-                    {
-                        try
-                        {
-                            // Create connection string builder to check configuration
-                            var connStrBuilder = new NpgsqlConnectionStringBuilder(_sDbConnectionString);
-
-                            // Determine if multi-host is configured
-                            bool isMultiHost = !string.IsNullOrEmpty(connStrBuilder.Host) && connStrBuilder.Host.Contains(",");
-
-                            if (isMultiHost)
-                            {
-                                // Multi-host: use BuildMultiHost() + WithTargetSession() pattern
-                                var builder = new NpgsqlDataSourceBuilder(_sDbConnectionString);
-                                var multiHostDataSource = builder.BuildMultiHost();
-
-                                // Create wrapped data sources for routing
-                                _sqlDataSourcePrimary = multiHostDataSource.WithTargetSession(TargetSessionAttributes.ReadWrite);
-                                _sqlDataSourceReplica = multiHostDataSource.WithTargetSession(TargetSessionAttributes.PreferStandby);
-
-                            // Keep reference to primary as default
-                            _sqlDataSource = _sqlDataSourcePrimary;
-
-                            LoggerProvider.GetLogger<cDatabase>().LogInformation(
-                                    "Database data sources initialized successfully. Multi-host: True, Primary: ReadWrite, Replica: PreferStandby");
-                            }
-                            else
-                            {
-                                // Single-host: use same data source for both (no replica available)
-                                var builder = new NpgsqlDataSourceBuilder(_sDbConnectionString);
-                                _sqlDataSourcePrimary = builder.Build();
-                                _sqlDataSourceReplica = _sqlDataSourcePrimary;
-                                _sqlDataSource = _sqlDataSourcePrimary;
-
-                                LoggerProvider.GetLogger<cDatabase>().LogInformation(
-                                    "Database data sources initialized successfully. Single-host: using primary for all connections");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            // Log error but don't fail - fallback to direct connection creation
-                            LoggerProvider.GetLogger<cDatabase>().LogError(ex,
-                                "Failed to initialize multi-host data sources. Falling back to single connection mode.");
-                            _sqlDataSource = null;
-                            _sqlDataSourcePrimary = null;
-                            _sqlDataSourceReplica = null;
-                        }
-                    }
-                }
             }
         }
 
@@ -2553,6 +2593,7 @@ namespace ECMPS.Checks.DatabaseAccess
 
         #region Public Static Methods: Severity Code
 
+        [ThreadStatic]
         private static DataView m_dvSeverityCode = null;
 
         /// <summary>

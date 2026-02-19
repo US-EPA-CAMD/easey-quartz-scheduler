@@ -471,12 +471,20 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <summary>
         /// Contains the update data table object for supplemental data.
         /// </summary>
-        public static DataTable SupplementalDataUpdateLocationDataTable { get; set; }
+        public static DataTable SupplementalDataUpdateLocationDataTable { get => supplementalDataUpdateLocationDataTable; set => supplementalDataUpdateLocationDataTable = value; }
+
+        [ThreadStatic]
+        private static DataTable supplementalDataUpdateLocationDataTable;
+
 
         /// <summary>
         /// Contains the update data table object for supplemental data.
         /// </summary>
-        public static DataTable SupplementalDataUpdateSystemDataTable { get; set; }
+        public static DataTable SupplementalDataUpdateSystemDataTable { get => supplementalDataUpdateSystemDataTable; set => supplementalDataUpdateSystemDataTable = value; }
+
+        [ThreadStatic]
+        private static DataTable supplementalDataUpdateSystemDataTable;
+
 
         /// <summary>
         /// Contains the name of the update schema for the supplemental data.

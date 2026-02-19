@@ -2223,14 +2223,7 @@ namespace ECMPS.Checks.EmissionsChecks
 
 
                             // Initialize fcValidationInfo to the general Fc range.
-                            {
-                                FFactorRangeChecksRow fFactorRangeChecksRow = emParams.FFactorRangeCrossCheckTable.FindRow(new cFilterCondition("Factor", "FC"));
-
-                                decimal minValue = (fFactorRangeChecksRow != null) ? fFactorRangeChecksRow.LowerValue.AsDecimal().Default(Decimal.MinValue) : Decimal.MinValue;
-                                decimal maxValue = (fFactorRangeChecksRow != null) ? fFactorRangeChecksRow.UpperValue.AsDecimal().Default(Decimal.MaxValue) : Decimal.MaxValue;
-
-                                fcValidationInfo = new FcValidationInfo(FcValidationInfo.NonFuelSpecificMinValue.Value, FcValidationInfo.NonFuelSpecificMaxValue.Value);
-                            }
+                            fcValidationInfo = new FcValidationInfo(FcValidationInfo.NonFuelSpecificMinValue.Value, FcValidationInfo.NonFuelSpecificMaxValue.Value);
 
 
                             if (!otherFound)
