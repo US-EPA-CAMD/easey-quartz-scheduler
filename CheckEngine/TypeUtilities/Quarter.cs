@@ -57,7 +57,10 @@ namespace ECMPS.Checks.TypeUtilities
 				throw new ArgumentOutOfRangeException("quarterKey", quarterKey, "quarterKey must be greater than or equal to 5 to represent the minimum of year 1 AD, quarter 1.");
 			}
 
-			if (!QuarterDictionary.ContainsKey(quarterKey))
+            if (QuarterDictionary == null)
+                QuarterDictionary = new Dictionary<int, Quarter>();
+
+            if (!QuarterDictionary.ContainsKey(quarterKey))
 			{
 				new Quarter(quarterKey); // Automatically added to QuarterDictionary
 			}
