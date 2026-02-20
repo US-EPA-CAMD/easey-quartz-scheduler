@@ -23,8 +23,7 @@ namespace ECMPS.Checks.TypeUtilities
         {
         }
 
-        [ThreadStatic]
-        private static DataTable FReportingPeriodTable;
+        private static DataTable FReportingPeriodTable = null;
 
         /// <summary>
         /// Returns the current Reporting Period Table

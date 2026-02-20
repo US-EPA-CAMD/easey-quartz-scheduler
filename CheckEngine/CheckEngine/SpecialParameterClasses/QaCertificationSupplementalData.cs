@@ -290,16 +290,12 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// </summary>
         public static string QualityAssuredModcList {  get { return "01,02,03,04,14,16,17,19,20,21,22,32,33,41,42,43,44,47,53,54"; } }
 
-
         /// <summary>
         /// Contains the update data table object for supplemental data.
         /// </summary>
-        public static DataTable SupplementalDataUpdateDataTable { get => supplementalDataUpdateDataTable; set => supplementalDataUpdateDataTable = value; }
+        public static DataTable SupplementalDataUpdateDataTable { get; set; }
 
-        [ThreadStatic]
-        private static DataTable supplementalDataUpdateDataTable;
-
-
+        
         /// <summary>
         /// Contains the name of the update schema for the supplemental data.
         /// </summary>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -43,11 +42,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <summary>
         /// Contains the update data table object for supplemental data.
         /// </summary>
-        public static DataTable SupplementalDataUpdateDataTable { get => supplementalDataUpdateDataTable; set => supplementalDataUpdateDataTable = value; }
-
-        [ThreadStatic]
-        private static DataTable supplementalDataUpdateDataTable;
-
+        public static DataTable SupplementalDataUpdateDataTable { get; set; }
 
         /// <summary>
         /// Contains the name of the update schema for the supplemental data.
