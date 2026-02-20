@@ -29,12 +29,19 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <summary>
         /// Contains the minimum non-fuel-specific Fc value for the location.
         /// </summary>
-        static public decimal? NonFuelSpecificMaxValue { get; set; }
+        static public decimal? NonFuelSpecificMaxValue { get => nonFuelSpecificMaxValue; set => nonFuelSpecificMaxValue = value; }
+
+        [ThreadStatic]
+        static private decimal? nonFuelSpecificMaxValue;
+
 
         /// <summary>
         /// Contains the maximum non-fuel-specific Fc value for the location.
         /// </summary>
-        static public decimal? NonFuelSpecificMinValue { get; set; }
+        static public decimal? NonFuelSpecificMinValue { get => nonFuelSpecificMinValue; set => nonFuelSpecificMinValue = value; }
+
+        [ThreadStatic]
+        static private decimal? nonFuelSpecificMinValue;
 
 
         /// <summary>

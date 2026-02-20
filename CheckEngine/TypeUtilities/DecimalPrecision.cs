@@ -55,6 +55,7 @@ namespace ECMPS.Checks.TypeUtilities
 
     }
 
+    [ThreadStatic]
     private static cHandleDecimalPrecision[] FDecimalPrecision;
 
     /// <summary>

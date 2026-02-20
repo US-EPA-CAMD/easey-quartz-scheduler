@@ -338,6 +338,7 @@ namespace ECMPS.Checks.TypeUtilities
     /// <summary>
     /// Contains the lookup table used to read reporting period information.
     /// </summary>
+    [ThreadStatic]
     protected static DataTable FLookupTable = null;
 
     #endregion

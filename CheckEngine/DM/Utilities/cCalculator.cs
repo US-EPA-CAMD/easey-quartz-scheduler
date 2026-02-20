@@ -67,30 +67,37 @@ namespace ECMPS.DM.Utilities
 
     #region Public Properties
 
-    /// <summary>
-    /// Error detail
-    /// </summary>
-    public static string ErrorDetail { get; private set; }
+        /// <summary>
+        /// Error detail
+        /// </summary>
+        public static string ErrorDetail { get => errorDetail; private set => errorDetail = value; }
 
-    /// <summary>
-    /// Unexpected exception trapped by calculator
-    /// </summary>
-    public static Exception TrappedException { get; private set; }
+        [ThreadStatic]
+        private static string errorDetail;
+
+
+        /// <summary>
+        /// Unexpected exception trapped by calculator
+        /// </summary>
+        public static Exception TrappedException { get => trappedException; private set => trappedException = value; }
+
+        [ThreadStatic]
+        private static Exception trappedException;
 
     #endregion
 
 
-    #region Public Methods: Evaluate
+        #region Public Methods: Evaluate
 
-    /// <summary>
-    /// Evaluates a reverse polish notation formula using a set of values where the formula
-    /// indicates the position of the values in the value list using the [#] format where #
-    /// is the position of the value in the value list.
-    /// </summary>
-    /// <param name="equation">Reverse polish notation equation.</param>
-    /// <param name="values">List of values to use in the formula.</param>
-    /// <param name="errorResult">Error enumeration value.</param>
-    /// <returns>Return the result of the evaluation, or null if the evaluation failed.</returns>
+        /// <summary>
+        /// Evaluates a reverse polish notation formula using a set of values where the formula
+        /// indicates the position of the values in the value list using the [#] format where #
+        /// is the position of the value in the value list.
+        /// </summary>
+        /// <param name="equation">Reverse polish notation equation.</param>
+        /// <param name="values">List of values to use in the formula.</param>
+        /// <param name="errorResult">Error enumeration value.</param>
+        /// <returns>Return the result of the evaluation, or null if the evaluation failed.</returns>
     public static decimal? EvaluateReversePolish(string equation, decimal?[] values, out eCalculatorError? errorResult)
     {
       bool failed = false;

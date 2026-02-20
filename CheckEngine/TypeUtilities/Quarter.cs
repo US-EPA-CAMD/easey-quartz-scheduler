@@ -21,7 +21,11 @@ namespace ECMPS.Checks.TypeUtilities
 		/// <exception cref="System.ArgumentOutOfRangeException">Thrown when quarterKey represents a quarter before year 1 AD, quarter 1.</exception>
 		private Quarter(int quarterKey)
 		{
-			if (QuarterDictionary.ContainsKey(quarterKey))
+			if (QuarterDictionary == null)
+				QuarterDictionary = new Dictionary<int, Quarter>();
+
+
+            if (QuarterDictionary.ContainsKey(quarterKey))
 				throw new ArgumentException( $"A Quarter object was previously created for quarterKey {quarterKey}.", "quarterKey");
 			if (quarterKey < 5)
 				throw new ArgumentOutOfRangeException("quarterKey", quarterKey, "quarterKey must be greater than or equal to 5 to represent the minimum of year 1 AD, quarter 1.");
@@ -53,7 +57,10 @@ namespace ECMPS.Checks.TypeUtilities
 				throw new ArgumentOutOfRangeException("quarterKey", quarterKey, "quarterKey must be greater than or equal to 5 to represent the minimum of year 1 AD, quarter 1.");
 			}
 
-			if (!QuarterDictionary.ContainsKey(quarterKey))
+            if (QuarterDictionary == null)
+                QuarterDictionary = new Dictionary<int, Quarter>();
+
+            if (!QuarterDictionary.ContainsKey(quarterKey))
 			{
 				new Quarter(quarterKey); // Automatically added to QuarterDictionary
 			}
@@ -102,12 +109,13 @@ namespace ECMPS.Checks.TypeUtilities
 			return FetchQuarter(quarterKey.Value);
 		}
 
-        #endregion
+		#endregion
 
 
-        #region Private Statuc Fields
+		#region Private Statuc Fields
 
-        private static Dictionary<int, Quarter> QuarterDictionary = new Dictionary<int, Quarter>();
+		[ThreadStatic]
+        private static Dictionary<int, Quarter> QuarterDictionary;
 
 		#endregion
 
