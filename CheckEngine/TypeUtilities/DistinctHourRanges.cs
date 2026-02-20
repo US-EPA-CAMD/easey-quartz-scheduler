@@ -58,19 +58,13 @@ namespace ECMPS.Checks.TypeUtilities
         /// <summary>
         /// The maximum hour with date for Distinct Hour Ranges.
         /// </summary>
-        public static DateTime MaxHour { get => maxHour; private set => maxHour = value; }
-
-        [ThreadStatic]
-        private static DateTime maxHour;
+        public static DateTime MaxHour { get; private set; }
 
 
         /// <summary>
         /// The minimum hour with date for Distinct Hour Ranges.
         /// </summary>
-        public static DateTime MinHour { get => minHour; private set=> minHour = value; }
-
-        [ThreadStatic]
-        private static DateTime minHour;
+        public static DateTime MinHour { get; private set; }
 
 
         /// <summary>

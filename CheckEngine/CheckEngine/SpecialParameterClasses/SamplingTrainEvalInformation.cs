@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 
 
 namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
@@ -37,11 +36,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <summary>
         /// Contains the update data table object for sampling trian supplemental data.
         /// </summary>
-        public static DataTable SupplementalDataUpdateDataTable { get => supplementalDataUpdateDataTable; set => supplementalDataUpdateDataTable = value; }
-
-        [ThreadStatic]
-        private static DataTable supplementalDataUpdateDataTable;
-
+        public static DataTable SupplementalDataUpdateDataTable { get; set; }
 
         /// <summary>
         /// Contains the name of the update catalog (database) for sampling trian supplemental data.

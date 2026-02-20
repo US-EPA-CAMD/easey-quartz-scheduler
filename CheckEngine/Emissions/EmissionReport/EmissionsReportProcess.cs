@@ -4612,48 +4612,76 @@ namespace ECMPS.Checks.EmissionsReport
         /// <param name="errorMessage">The error message returned on failure.</param>
         /// <returns>Returns true if the update succeeds.</returns>
         protected override bool DbUpdate_CalcWsLoad(NpgsqlTransaction sqlTransaction, ref string errorMessage)
-        {
+        {            
+            DataTable[] sourceTables = new DataTable[]
+            {FCalcDailyCal, FCalcDailyTestSummary, FCalcDerivedHrlyValue, FCalcMonitorHrlyValue, FCalcHrlyFuelFlow, FCalcHrlyParamFuelFlow, FCalcLongTermFuelFlow, FCalcDailyEmission, FCalcDailyFuel, FCalcSummaryValue, CalcMATSDHVData, CalcMATSMHVData,
+            CalcHrlyGasFlowMeter, CalcSamplingTrain, CalcSorbentTrap, SamplingTrainEvalInformation.SupplementalDataUpdateDataTable, CalcWeeklyTestSummary, CalcWeeklySystemIntegrity, QaCertificationSupplementalData.SupplementalDataUpdateDataTable,
+            SystemOperatingSupplementalData.SupplementalDataUpdateDataTable, ComponentOperatingSupplementalData.SupplementalDataUpdateDataTable, LastQualityAssuredValueSupplementalData.SupplementalDataUpdateDataTable,
+            cDailyCalibrationData.SupplementalDataUpdateLocationDataTable, cDailyCalibrationData.SupplementalDataUpdateSystemDataTable};
+            
+            string[] tableLocation = new string[]{"camdecmpscalc.daily_calibration", "camdecmpscalc.daily_test_summary", "camdecmpscalc.derived_hrly_value", "camdecmpscalc.monitor_hrly_value", "camdecmpscalc.hrly_param_fuel_flow", "camdecmpscalc.long_term_fuel_flow",
+            "camdecmpscalc.daily_emission", "camdecmpscalc.daily_fuel", "camdecmpscalc.summary_value", "camdecmpscalc.mats_derived_hrly_value", "camdecmpscalc.mats_monitor_hrly_value", "camdecmpscalc.hrly_gas_flow_meter", "camdecmpscalc.sampling_train","camdecmpscalc.sorbent_trap",
+            SamplingTrainEvalInformation.SupplementalDataUpdateTableName, "camdecmpscalc.weekly_test_summary", "camdecmpscalc.weekly_system_integrity", QaCertificationSupplementalData.SupplementalDataUpdateTablePath, SystemOperatingSupplementalData.SupplementalDataUpdateTablePath,
+            ComponentOperatingSupplementalData.SupplementalDataUpdateTablePath, LastQualityAssuredValueSupplementalData.SupplementalDataUpdateTablePath, cDailyCalibrationData.SupplementalDataUpdateLocationTablePath, cDailyCalibrationData.SupplementalDataUpdateSystemTablePath};
+
+            
             bool result;
+            /*
+            for(int i = 0; i < sourceTables.Length; i++){
+                Task.Run(() => 
+                {
+                    result = DbConnection.BulkLoad(sourceTables[i], tableLocation[i], ref errorMessage);    
+                } );
+            }
+            */
 
+            //if (mCheckEngine.DbConnection.ClearUpdateSession(eWorkspaceDataType.EM, mCheckEngine.ChkSessionId))
+            //{
             if (
-                    DbConnection.BulkLoad(FCalcDailyCal, "camdecmpscalc.daily_calibration", ref errorMessage) &&
-                    DbConnection.BulkLoad(FCalcDailyTestSummary, "camdecmpscalc.daily_test_summary", ref errorMessage) &&
-                    DbConnection.BulkLoad(FCalcDerivedHrlyValue, "camdecmpscalc.derived_hrly_value", ref errorMessage) &&
-                    DbConnection.BulkLoad(FCalcMonitorHrlyValue, "camdecmpscalc.monitor_hrly_value", ref errorMessage) &&
-                    DbConnection.BulkLoad(FCalcHrlyFuelFlow, "camdecmpscalc.hrly_fuel_flow", ref errorMessage) &&
-                    DbConnection.BulkLoad(FCalcHrlyParamFuelFlow, "camdecmpscalc.hrly_param_fuel_flow", ref errorMessage) &&
-                    DbConnection.BulkLoad(FCalcLongTermFuelFlow, "camdecmpscalc.long_term_fuel_flow", ref errorMessage) &&
-                    DbConnection.BulkLoad(FCalcDailyEmission, "camdecmpscalc.daily_emission", ref errorMessage) &&
-                    DbConnection.BulkLoad(FCalcDailyFuel, "camdecmpscalc.daily_fuel", ref errorMessage) &&
+                        DbConnection.BulkLoad(FCalcDailyCal, "camdecmpscalc.daily_calibration", ref errorMessage) &&
+                        DbConnection.BulkLoad(FCalcDailyTestSummary, "camdecmpscalc.daily_test_summary", ref errorMessage) &&
+                        DbConnection.BulkLoad(FCalcDerivedHrlyValue, "camdecmpscalc.derived_hrly_value", ref errorMessage) &&
+                        DbConnection.BulkLoad(FCalcMonitorHrlyValue, "camdecmpscalc.monitor_hrly_value", ref errorMessage) &&
+                        DbConnection.BulkLoad(FCalcHrlyFuelFlow, "camdecmpscalc.hrly_fuel_flow", ref errorMessage) &&
+                        DbConnection.BulkLoad(FCalcHrlyParamFuelFlow, "camdecmpscalc.hrly_param_fuel_flow", ref errorMessage) &&
+                        DbConnection.BulkLoad(FCalcLongTermFuelFlow, "camdecmpscalc.long_term_fuel_flow", ref errorMessage) &&
+                        DbConnection.BulkLoad(FCalcDailyEmission, "camdecmpscalc.daily_emission", ref errorMessage) &&
+                        DbConnection.BulkLoad(FCalcDailyFuel, "camdecmpscalc.daily_fuel", ref errorMessage) &&
 
-                    DbConnection.BulkLoad(FOperatingSuppData, "camdecmpscalc.operating_supp_data", ref errorMessage) &&
+                        DbConnection.BulkLoad(FOperatingSuppData, "camdecmpscalc.operating_supp_data", ref errorMessage) &&
 
-                    DbConnection.BulkLoad(FCalcSummaryValue, "camdecmpscalc.summary_value", ref errorMessage) &&
-                    DbConnection.BulkLoad(CalcMATSDHVData, "camdecmpscalc.mats_derived_hrly_value", ref errorMessage) &&
-                    DbConnection.BulkLoad(CalcMATSMHVData, "camdecmpscalc.mats_monitor_hrly_value", ref errorMessage) &&
-                    /* Sorbent Trap Related */
-                    DbConnection.BulkLoad(CalcHrlyGasFlowMeter, "camdecmpscalc.hrly_gas_flow_meter", ref errorMessage) &&
-                    DbConnection.BulkLoad(CalcSamplingTrain, "camdecmpscalc.sampling_train", ref errorMessage) &&
-                    DbConnection.BulkLoad(CalcSorbentTrap, "camdecmpscalc.sorbent_trap", ref errorMessage) &&
-                    /* Sampling Train Supplemental Data*/
-                    DbConnection.BulkLoad(SamplingTrainEvalInformation.SupplementalDataUpdateDataTable,
-                                          SamplingTrainEvalInformation.SupplementalDataUpdateTablePath,
-                                          ref errorMessage) &&
-                    /* Weekly Emission Tests */
-                    DbConnection.BulkLoad(CalcWeeklyTestSummary, "camdecmpscalc.weekly_test_summary", ref errorMessage) &&
-                    DbConnection.BulkLoad(CalcWeeklySystemIntegrity, "camdecmpscalc.weekly_system_integrity", ref errorMessage) &&
-                    /* Supplemental Data*/
-                    DbConnection.BulkLoad(QaCertificationSupplementalData.SupplementalDataUpdateDataTable, QaCertificationSupplementalData.SupplementalDataUpdateTablePath, ref errorMessage) &&
-                    DbConnection.BulkLoad(SystemOperatingSupplementalData.SupplementalDataUpdateDataTable, SystemOperatingSupplementalData.SupplementalDataUpdateTablePath, ref errorMessage) &&
-                    DbConnection.BulkLoad(ComponentOperatingSupplementalData.SupplementalDataUpdateDataTable, ComponentOperatingSupplementalData.SupplementalDataUpdateTablePath, ref errorMessage) &&
-                    DbConnection.BulkLoad(LastQualityAssuredValueSupplementalData.SupplementalDataUpdateDataTable, LastQualityAssuredValueSupplementalData.SupplementalDataUpdateTablePath, ref errorMessage) &&
-                    DbConnection.BulkLoad(cDailyCalibrationData.SupplementalDataUpdateLocationDataTable, cDailyCalibrationData.SupplementalDataUpdateLocationTablePath, ref errorMessage) &&
-                    DbConnection.BulkLoad(cDailyCalibrationData.SupplementalDataUpdateSystemDataTable, cDailyCalibrationData.SupplementalDataUpdateSystemTablePath, ref errorMessage) &&
-                    cLastDailyInterferenceCheck.SaveSupplementalData(LatesDailyInterferenceCheckObject, CheckEngine.RptPeriodId.Value, CheckEngine.ChkSessionId, DbConnection, ref errorMessage)
-               )
-                result = true;
-            else
-                result = false;
+                        DbConnection.BulkLoad(FCalcSummaryValue, "camdecmpscalc.summary_value", ref errorMessage) &&
+                        DbConnection.BulkLoad(CalcMATSDHVData, "camdecmpscalc.mats_derived_hrly_value", ref errorMessage) &&
+                        DbConnection.BulkLoad(CalcMATSMHVData, "camdecmpscalc.mats_monitor_hrly_value", ref errorMessage) &&
+                        /* Sorbent Trap Related */
+                        DbConnection.BulkLoad(CalcHrlyGasFlowMeter, "camdecmpscalc.hrly_gas_flow_meter", ref errorMessage) &&
+                        DbConnection.BulkLoad(CalcSamplingTrain, "camdecmpscalc.sampling_train", ref errorMessage) &&
+                        DbConnection.BulkLoad(CalcSorbentTrap, "camdecmpscalc.sorbent_trap", ref errorMessage) &&
+                        /* Sampling Train Supplemental Data*/
+                        DbConnection.BulkLoad(SamplingTrainEvalInformation.SupplementalDataUpdateDataTable,
+                                                SamplingTrainEvalInformation.SupplementalDataUpdateTablePath,
+                                                ref errorMessage) &&
+                        /* Weekly Emission Tests */
+                        DbConnection.BulkLoad(CalcWeeklyTestSummary, "camdecmpscalc.weekly_test_summary", ref errorMessage) &&
+                        DbConnection.BulkLoad(CalcWeeklySystemIntegrity, "camdecmpscalc.weekly_system_integrity", ref errorMessage) &&
+                        /* Supplemental Data*/
+                        DbConnection.BulkLoad(QaCertificationSupplementalData.SupplementalDataUpdateDataTable, QaCertificationSupplementalData.SupplementalDataUpdateTablePath, ref errorMessage) &&
+                        DbConnection.BulkLoad(SystemOperatingSupplementalData.SupplementalDataUpdateDataTable, SystemOperatingSupplementalData.SupplementalDataUpdateTablePath, ref errorMessage) &&
+                        DbConnection.BulkLoad(ComponentOperatingSupplementalData.SupplementalDataUpdateDataTable, ComponentOperatingSupplementalData.SupplementalDataUpdateTablePath, ref errorMessage) &&
+                        DbConnection.BulkLoad(LastQualityAssuredValueSupplementalData.SupplementalDataUpdateDataTable, LastQualityAssuredValueSupplementalData.SupplementalDataUpdateTablePath, ref errorMessage) &&
+                        DbConnection.BulkLoad(cDailyCalibrationData.SupplementalDataUpdateLocationDataTable, cDailyCalibrationData.SupplementalDataUpdateLocationTablePath, ref errorMessage) &&
+                        DbConnection.BulkLoad(cDailyCalibrationData.SupplementalDataUpdateSystemDataTable, cDailyCalibrationData.SupplementalDataUpdateSystemTablePath, ref errorMessage) &&
+                        cLastDailyInterferenceCheck.SaveSupplementalData(LatesDailyInterferenceCheckObject, CheckEngine.RptPeriodId.Value, CheckEngine.ChkSessionId, DbConnection, ref errorMessage)
+                   )
+                    result = true;
+                else
+                    result = false;
+            //}
+            //else
+            //{
+                //errorMessage = mCheckEngine.DbWsConnection.LastError;
+                //result = false;
+            //}
 
             return result;
         }
