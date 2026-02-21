@@ -134,12 +134,13 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// Exception will occur if the data table object is null or the columns do not exist
         /// in the table.
         /// </summary>
+        /// <param name="supplementalDataUpdateDataTable">The SupplementalDataUpdateDataTable to udpate.</param>
         /// <param name="checkSessionId">The id of the workspace session for the evaluations.</param>
-        public void LoadSupplementalDataUpdateRow(string checkSessionId)
+        public void LoadSupplementalDataUpdateRow(DataTable supplementalDataUpdateDataTable, string checkSessionId)
         {
-            if ((SupplementalDataUpdateDataTable != null) && !IsSupplementalData)
+            if ((supplementalDataUpdateDataTable != null) && !IsSupplementalData)
             {
-                DataRow dataRow = SupplementalDataUpdateDataTable.NewRow();
+                DataRow dataRow = supplementalDataUpdateDataTable.NewRow();
 
                 dataRow["CHK_SESSION_ID"] = checkSessionId;
                 dataRow["TRAP_TRAIN_ID"] = TrapTrainId;
@@ -148,7 +149,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                 dataRow["GFM_TOTAL_COUNT"] = TotalGfmCount;
                 dataRow["GFM_NOT_AVAILABLE_COUNT"] = NotAvailablelGfmCount;
 
-                SupplementalDataUpdateDataTable.Rows.Add(dataRow);
+                supplementalDataUpdateDataTable.Rows.Add(dataRow);
             }
         }
 

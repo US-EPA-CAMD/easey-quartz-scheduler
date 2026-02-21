@@ -40,11 +40,6 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         #region Static Properties and Methods
 
         /// <summary>
-        /// Contains the update data table object for supplemental data.
-        /// </summary>
-        public static DataTable SupplementalDataUpdateDataTable { get; set; }
-
-        /// <summary>
         /// Contains the name of the update schema for the supplemental data.
         /// </summary>
         public static string SupplementalDataUpdateSchemaName { get { return "camdecmpscalc"; } }
@@ -63,22 +58,21 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <summary>
         /// Creates a new instance of SupplementalDataUpdateDataTable and populates it with data from the passed dictionary array.  
         /// </summary>
+        /// <param name="supplementalDataUpdateDataTable">The SupplementalDataUpdateDataTable to udpate.</param>
         /// <param name="supplementalDataDictionaryArray">Dictionary containing data used to update the table.</param>
         /// <param name="checkSessionId">The workspace session id for check session.</param>
         /// <param name="connection">Database connection to use when creating the internal supplemental data table.</param>
-        public static void LoadSupplementalDataUpdateDataTable(Dictionary<string, SystemOperatingSupplementalData>[] supplementalDataDictionaryArray, string checkSessionId, NpgsqlConnection connection)
-
-        //  public static void LoadSupplementalDataUpdateDataTable(Dictionary<string, SystemOperatingSupplementalData>[] supplementalDataDictionaryArray, decimal workspaceSessionId, SqlConnection connection)
+        public static void LoadSupplementalDataUpdateDataTable(DataTable supplementalDataUpdateDataTable, Dictionary<string, SystemOperatingSupplementalData>[] supplementalDataDictionaryArray, string checkSessionId, NpgsqlConnection connection)
         {
-            SupplementalDataUpdateDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateTableName, connection);
+            supplementalDataUpdateDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateTableName, connection);
 
-            if (SupplementalDataUpdateDataTable != null)
+            if (supplementalDataUpdateDataTable != null)
             {
                 foreach (Dictionary<string, SystemOperatingSupplementalData> supplementalDataDictionary in supplementalDataDictionaryArray)
                 {
                     foreach (OperatingSupplementalData supplementalData in supplementalDataDictionary.Values)
                     {
-                        LoadSupplementalDataUpdateDataDoRow(supplementalData, "MON_SYS_ID", SupplementalDataUpdateDataTable, checkSessionId);
+                        LoadSupplementalDataUpdateDataDoRow(supplementalData, "MON_SYS_ID", supplementalDataUpdateDataTable, checkSessionId);
                     }
                 }
             }

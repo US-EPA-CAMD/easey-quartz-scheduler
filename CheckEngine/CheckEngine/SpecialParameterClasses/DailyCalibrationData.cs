@@ -374,20 +374,21 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <summary>
         /// Updates the supplemental data load tables for each component.
         /// </summary>
-        /// <param name="rptPeriodId"></param>
-        /// <param name="checkSessionId"></param>
-        /// <param name="connection"></param>
-        public void LoadIntoSupplementalDataTables(int rptPeriodId, string checkSessionId, NpgsqlConnection connection)
-        //public void LoadIntoSupplementalDataTables(int rptPeriodId, decimal workspaceSessionId, SqlConnection connection)
+        /// <param name="supplementalDataUpdateLocationDataTable">The location level SupplementalDataUpdateDataTable to udpate.</param>
+        /// <param name="supplementalDataUpdateSystemDataTable">The system level SupplementalDataUpdateDataTable to udpate.</param>
+        /// <param name="rptPeriodId">The reporting period id for the emission file.</param>
+        /// <param name="checkSessionId">The workspace session id for check session.</param>
+        /// <param name="connection">Database connection to use when creating the internal supplemental data table.</param>
+        public void LoadIntoSupplementalDataTables(DataTable supplementalDataUpdateLocationDataTable, DataTable supplementalDataUpdateSystemDataTable, int rptPeriodId, string checkSessionId, NpgsqlConnection connection)
         {
-            SupplementalDataUpdateLocationDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateLocationTableName, connection);
-            SupplementalDataUpdateSystemDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateSystemTableName, connection);
+            supplementalDataUpdateLocationDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateLocationTableName, connection);
+            supplementalDataUpdateSystemDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateSystemTableName, connection);
 
-            if ((SupplementalDataUpdateLocationDataTable != null) && (SupplementalDataUpdateSystemDataTable != null))
+            if ((supplementalDataUpdateLocationDataTable != null) && (supplementalDataUpdateSystemDataTable != null))
             {
                 foreach (string componentId in ComponentData.Keys)
                 {
-                    ComponentData[componentId].LoadIntoSupplementalDataTables(SupplementalDataUpdateLocationDataTable, SupplementalDataUpdateSystemDataTable, rptPeriodId, checkSessionId);
+                    ComponentData[componentId].LoadIntoSupplementalDataTables(supplementalDataUpdateLocationDataTable, supplementalDataUpdateSystemDataTable, rptPeriodId, checkSessionId);
                 }
             }
         }
@@ -467,16 +468,6 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 
 
         #region Static Properties
-
-        /// <summary>
-        /// Contains the update data table object for supplemental data.
-        /// </summary>
-        public static DataTable SupplementalDataUpdateLocationDataTable { get; set; }
-
-        /// <summary>
-        /// Contains the update data table object for supplemental data.
-        /// </summary>
-        public static DataTable SupplementalDataUpdateSystemDataTable { get; set; }
 
         /// <summary>
         /// Contains the name of the update schema for the supplemental data.
