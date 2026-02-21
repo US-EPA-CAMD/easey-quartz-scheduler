@@ -196,7 +196,7 @@ namespace ECMPS.DM.Utilities
                       break;
                   }
                 }
-                catch (Exception ex)
+                catch
                 {
                   errorResult = eCalculatorError.Exception;
                   failed = true;
