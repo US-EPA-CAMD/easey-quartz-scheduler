@@ -157,8 +157,20 @@ namespace ECMPS.Checks.DatabaseAccess
         /// </summary>
         static public string DbConnectionString
         {
-            get { return _sDbConnectionString; }
-            set { _sDbConnectionString = value; }
+            get 
+            {
+                lock (_dataSourceLock)
+                {
+                    return _sDbConnectionString;
+                }
+            }
+            set
+            {
+                lock (_dataSourceLock)
+                {
+                    _sDbConnectionString = value; 
+                }
+            }
         }
 
         /// <summary>
@@ -500,13 +512,13 @@ namespace ECMPS.Checks.DatabaseAccess
                 {
                     _logger.LogWarning(ex, "Failed to create connection from data source, falling back to direct connection");
                     // Fallback to direct connection if data source fails
-                    m_sqlConn = new NpgsqlConnection(_sDbConnectionString);
+                    m_sqlConn = new NpgsqlConnection(DbConnectionString);
                 }
             }
             else
             {
                 // Fallback if data source initialization failed
-                m_sqlConn = new NpgsqlConnection(_sDbConnectionString);
+                m_sqlConn = new NpgsqlConnection(DbConnectionString);
             }
 
             try
@@ -517,7 +529,7 @@ namespace ECMPS.Checks.DatabaseAccess
             }
             catch (NpgsqlException sqlEx)
             {
-                string sError = string.Format("The action failed. Connection String: {0}", _sDbConnectionString);
+                string sError = string.Format("The action failed. Connection String: {0}", DbConnectionString);
 
                 _LastException = new Exception(sError, sqlEx);
                 _LastException.Source = "ECMPS.Client.Common.cNpgsqlDatabase.Open()";
