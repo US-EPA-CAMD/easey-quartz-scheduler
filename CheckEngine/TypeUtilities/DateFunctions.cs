@@ -23,38 +23,33 @@ namespace ECMPS.Checks.TypeUtilities
         {
         }
 
-        private static DataTable FReportingPeriodTable = null;
+
+        /// <summary>
+        /// Populates the Reporting Period table.
+        /// </summary>
+        static cDateFunctions()
+        {
+            try
+            {
+                // Using replica db: camdecmpsmd.reporting_period is read-only reference data
+                cDatabase Database = cDatabase.GetConnection("cDateFunctions", cDatabase.eDatabaseTarget.READONLY);
+
+                FReportingPeriodTable = Database.GetDataTable("select * from camdecmpsmd.reporting_period order by Calendar_Year, Quarter");
+            }
+            catch
+            {
+                FReportingPeriodTable = null;
+            }
+        }
+
+
+        private static readonly DataTable FReportingPeriodTable;
+
 
         /// <summary>
         /// Returns the current Reporting Period Table
         /// </summary>
-        public static DataTable ReportingPeriodTable
-        {
-            get
-            {
-                if (FReportingPeriodTable == null)
-                {
-                    try
-                    {
-                        // Using replica db: camdecmpsmd.reporting_period is read-only reference data
-                        cDatabase Database = cDatabase.GetConnection("cDateFunctions", cDatabase.eDatabaseTarget.READONLY);
-
-                        FReportingPeriodTable = Database.GetDataTable("select * from camdecmpsmd.reporting_period order by Calendar_Year, Quarter");
-                    }
-                    catch
-                    {
-                        FReportingPeriodTable = null;
-                    }
-                }
-
-                return FReportingPeriodTable;
-            }
-
-            set
-            {
-                FReportingPeriodTable = value;
-            }
-        }
+        public static DataTable ReportingPeriodTable { get { return FReportingPeriodTable; } }
 
 
         /// <summary>
