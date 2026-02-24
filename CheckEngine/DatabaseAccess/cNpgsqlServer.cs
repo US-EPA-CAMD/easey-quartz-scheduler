@@ -123,17 +123,6 @@ namespace ECMPS.Checks.DatabaseAccess
         /// </summary>
         private string m_sLastError = "";
 
-        static private bool _bStealth = false;
-
-        /// <summary>
-        /// Do we show errors, or are we being stealthy?
-        /// </summary>
-        public static bool StealthMode
-        {
-            get { return _bStealth; }
-            set { _bStealth = value; }
-        }
-
         /// <summary>
         /// The NpgsqlClient.Command object
         /// </summary>
@@ -540,8 +529,7 @@ namespace ECMPS.Checks.DatabaseAccess
                 // set our error flag!
                 m_bInternalError = true;
 
-                if (_bStealth == false)
-                    Logging.LogException(_LastException, "Error Connecting to Database");
+                Logging.LogException(_LastException, "Error Connecting to Database");
             }
 
             return bRetVal;
@@ -2546,94 +2534,6 @@ namespace ECMPS.Checks.DatabaseAccess
             }
 
             return nSessionID;
-        }
-
-        #endregion
-
-
-        #region Public Static Methods: Severity Code
-
-        private static DataView m_dvSeverityCode = null;
-
-        /// <summary>
-        /// Returns the Severity Description associated with the passed Severity Code.
-        /// </summary>
-        /// <param name="ASeverityCd">The severity code for which a discription is returned.</param>
-        /// <param name="ADefault">The default description to use if the passed severity code is not known.</param>
-        /// <returns>The description associated with the passed severity code.</returns>
-        [Obsolete("Please use new extension method on eSeverityCd", false)]
-        public static string GetSeverityDescription(string ASeverityCd, string ADefault)
-        {
-            string Result = ADefault;
-
-            if ((m_dvSeverityCode != null) || LoadSeverityCode())
-            {
-                DataRowView SeverityRow = GetSeverityRow(ASeverityCd);
-
-                if ((SeverityRow != null) && (SeverityRow["Severity_Cd_Description"] != DBNull.Value))
-                    Result = Convert.ToString(SeverityRow["Severity_Cd_Description"]);
-            }
-
-            return Result;
-        }
-
-        /// <summary>
-        /// Returns the Severity Description associated with the passed Severity Level.
-        /// </summary>
-        /// <param name="ASeverityCd">The severity code for which a level is returned.</param>
-        /// <param name="ADefault">The default level to use if the passed severity code is not known.</param>
-        /// <returns>The level associated with the passed severity code.</returns>
-        [Obsolete("Please use new extension method on eSeverityCd", false)]
-        public static int GetSeverityLevel(string ASeverityCd, int ADefault)
-        {
-            int Result = ADefault;
-
-            if ((m_dvSeverityCode != null) || LoadSeverityCode())
-            {
-                DataRowView SeverityRow = GetSeverityRow(ASeverityCd);
-
-                if ((SeverityRow != null) && (SeverityRow["Severity_Level"] != DBNull.Value))
-                    Result = Convert.ToInt32(SeverityRow["Severity_Level"]);
-            }
-
-            return Result;
-        }
-
-        private static DataRowView GetSeverityRow(string ASeverityCd)
-        {
-            DataRowView Result = null;
-
-            if (!string.IsNullOrEmpty(ASeverityCd))
-            {
-                m_dvSeverityCode.RowFilter = string.Format("Severity_Cd = '{0}'", ASeverityCd);
-
-                if (m_dvSeverityCode.Count == 1)
-                    Result = m_dvSeverityCode[0];
-
-                m_dvSeverityCode.RowFilter = null;
-            }
-
-            return Result;
-        }
-
-        private static bool LoadSeverityCode()
-        {
-            string sql = "select Severity_Cd, Severity_Cd_Description, Severity_Level from camdecmpsmd.severity_code";
-            // Using replica db: camdecmpsmd.severity_code is read-only reference data
-            cDatabase dbConnection = cDatabase.GetConnection("LoadSeverityCode", cDatabase.eDatabaseTarget.READONLY);
-
-            try
-            {
-                DataTable SverityCodeTable = dbConnection.GetDataTable(sql);
-                m_dvSeverityCode = new DataView(SverityCodeTable, null, "Severity_Cd", DataViewRowState.CurrentRows);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                m_dvSeverityCode = null;
-                LoggerProvider.GetLogger(typeof(cDatabase).FullName).LogError(ex, "Loading of SEVERITY_CODE view failed");
-                return false;
-            }
         }
 
         #endregion
