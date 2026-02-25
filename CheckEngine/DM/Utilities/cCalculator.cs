@@ -65,16 +65,6 @@ namespace ECMPS.DM.Utilities
     #endregion
 
 
-    #region Public Properties
-
-    /// <summary>
-    /// Unexpected exception trapped by calculator
-    /// </summary>
-    public static Exception TrappedException { get; private set; }
-
-    #endregion
-
-
     #region Public Methods: Evaluate
 
     /// <summary>
