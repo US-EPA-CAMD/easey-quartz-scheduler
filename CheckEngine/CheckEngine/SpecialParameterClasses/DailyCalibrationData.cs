@@ -379,7 +379,7 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="rptPeriodId">The reporting period id for the emission file.</param>
         /// <param name="checkSessionId">The workspace session id for check session.</param>
         /// <param name="connection">Database connection to use when creating the internal supplemental data table.</param>
-        public void LoadIntoSupplementalDataTables(DataTable supplementalDataUpdateLocationDataTable, DataTable supplementalDataUpdateSystemDataTable, int rptPeriodId, string checkSessionId, NpgsqlConnection connection)
+        public void LoadIntoSupplementalDataTables(out DataTable supplementalDataUpdateLocationDataTable, out DataTable supplementalDataUpdateSystemDataTable, int rptPeriodId, string checkSessionId, NpgsqlConnection connection)
         {
             supplementalDataUpdateLocationDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateLocationTableName, connection);
             supplementalDataUpdateSystemDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateSystemTableName, connection);

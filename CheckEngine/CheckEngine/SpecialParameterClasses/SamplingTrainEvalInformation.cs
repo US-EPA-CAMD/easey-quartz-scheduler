@@ -34,11 +34,6 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 
 
         /// <summary>
-        /// Contains the update data table object for sampling trian supplemental data.
-        /// </summary>
-        public static DataTable SupplementalDataUpdateDataTable { get; set; }
-
-        /// <summary>
         /// Contains the name of the update catalog (database) for sampling trian supplemental data.
         /// </summary>
         public static string SupplementalDataUpdateCatalogName { get { return "camdecmpscalc"; } }

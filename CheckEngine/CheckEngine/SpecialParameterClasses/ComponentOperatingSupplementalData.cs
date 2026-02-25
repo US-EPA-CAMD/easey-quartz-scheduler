@@ -58,13 +58,13 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <summary>
         /// Creates a new instance of SupplementalDataUpdateDataTable and populates it with data from the passed dictionary array.  
         /// </summary>
-        /// <param name="supplementalDataUpdateDataTable">The SupplementalDataUpdateDataTable to udpate.</param>
         /// <param name="supplementalDataDictionaryArray">Dictionary containing data used to update the table.</param>
         /// <param name="checkSessionId">The workspace session id for check session.</param>
         /// <param name="connection">Database connection to use when creating the internal supplemental data table.</param>
-        public static void LoadSupplementalDataUpdateDataTable(DataTable supplementalDataUpdateDataTable, Dictionary<string, ComponentOperatingSupplementalData>[] supplementalDataDictionaryArray, string checkSessionId, NpgsqlConnection connection)
+        /// <returns>The updated SupplementalDataUpdateDataTable.</returns>
+        public static DataTable LoadSupplementalDataUpdateDataTable(Dictionary<string, ComponentOperatingSupplementalData>[] supplementalDataDictionaryArray, string checkSessionId, NpgsqlConnection connection)
         {
-            supplementalDataUpdateDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateTableName, connection);
+            DataTable supplementalDataUpdateDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateTableName, connection);
 
             if (supplementalDataUpdateDataTable != null)
             {
@@ -76,6 +76,8 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                     }
                 }
             }
+
+            return supplementalDataUpdateDataTable;
         }
 
         #endregion

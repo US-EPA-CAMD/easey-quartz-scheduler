@@ -1314,14 +1314,22 @@ namespace ECMPS.Checks.EmissionsReport
 
                 } // Abort Checks check
 
+                // Initialize Daily Calibration Supplemental Data Table variables
+                DataTable dailyCalibrationLocationSupplementalDataTable;
+                DataTable dailyCalibrationSystemSupplementalDataTable;
+
                 // Populate Supplemental Data Tables for Database Updating
                 SaveOperatingSuppFuelData(RptPeriodId, MonitorLocationView);
                 SamplingTrainSuppDataUpdate();
-                QaCertificationSupplementalData.LoadSupplementalDataUpdateDataTable(QaCertificationSupplementalDataTable, emParams.QaCertEventSuppDataDictionaryArray, CheckEngine.ChkSessionId, CheckEngine.DbConnection.SQLConnection);
-                SystemOperatingSupplementalData.LoadSupplementalDataUpdateDataTable(SystemOperatingSupplementalDataTable, emParams.SystemOperatingSuppDataDictionaryArray, CheckEngine.ChkSessionId, CheckEngine.DbConnection.SQLConnection);
-                ComponentOperatingSupplementalData.LoadSupplementalDataUpdateDataTable(ComponentOperatingSupplementalDataTable, emParams.ComponentOperatingSuppDataDictionaryArray, CheckEngine.ChkSessionId, CheckEngine.DbConnection.SQLConnection);
-                LastQualityAssuredValueSupplementalData.LoadSupplementalDataUpdateDataTable(LastQualityAssuredValueSupplementalDataTable, emParams.LastQualityAssuredValueSuppDataDictionaryArray, CheckEngine.ChkSessionId, CheckEngine.DbConnection.SQLConnection);
-                emParams.MostRecentDailyCalibrationTestObject.LoadIntoSupplementalDataTables(DailyCalibrationLocationSupplementalDataTable, DailyCalibrationSystemSupplementalDataTable, CheckEngine.RptPeriodId.Value, CheckEngine.ChkSessionId, CheckEngine.DbConnection.SQLConnection);
+                QaCertificationSupplementalDataTable = QaCertificationSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.QaCertEventSuppDataDictionaryArray, CheckEngine.ChkSessionId, CheckEngine.DbConnection.SQLConnection);
+                SystemOperatingSupplementalDataTable = SystemOperatingSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.SystemOperatingSuppDataDictionaryArray, CheckEngine.ChkSessionId, CheckEngine.DbConnection.SQLConnection);
+                ComponentOperatingSupplementalDataTable = ComponentOperatingSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.ComponentOperatingSuppDataDictionaryArray, CheckEngine.ChkSessionId, CheckEngine.DbConnection.SQLConnection);
+                LastQualityAssuredValueSupplementalDataTable = LastQualityAssuredValueSupplementalData.LoadSupplementalDataUpdateDataTable(emParams.LastQualityAssuredValueSuppDataDictionaryArray, CheckEngine.ChkSessionId, CheckEngine.DbConnection.SQLConnection);
+                emParams.MostRecentDailyCalibrationTestObject.LoadIntoSupplementalDataTables(out dailyCalibrationLocationSupplementalDataTable, out dailyCalibrationSystemSupplementalDataTable, CheckEngine.RptPeriodId.Value, CheckEngine.ChkSessionId, CheckEngine.DbConnection.SQLConnection);
+
+                // Update the Daily Calibration Supplemental Data Table properties
+                DailyCalibrationLocationSupplementalDataTable = dailyCalibrationLocationSupplementalDataTable;
+                DailyCalibrationSystemSupplementalDataTable = dailyCalibrationSystemSupplementalDataTable;
 
                 FSummaryValueInitializationCategory.EraseParameters();
 
@@ -6025,7 +6033,7 @@ namespace ECMPS.Checks.EmissionsReport
         {
             string errorMessage = "";
 
-            SamplingTrainEvalInformation.SupplementalDataUpdateDataTable
+            SamplingTrainSupplementalDataTable
                 = CloneTable(SamplingTrainEvalInformation.SupplementalDataUpdateCatalogName,
                              SamplingTrainEvalInformation.SupplementalDataUpdateTableName,
                              CheckEngine.DbConnection.SQLConnection,
