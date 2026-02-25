@@ -303,44 +303,30 @@ namespace ECMPS.Checks.TypeUtilities
     /// <summary>
     /// Returns the current Reporting Period Table
     /// </summary>
-    public static DataTable LookupTable
+    public static DataTable LookupTable { get { return FLookupTable; } }
+
+
+    static cReportingPeriod()
     {
-      get
-      {
-        if (FLookupTable == null)
+        try
         {
-          try
-          {
             // Using replica db: camdecmpsmd.reporting_period is read-only reference data
             cDatabase Database = cDatabase.GetConnection("cDateFunctions", cDatabase.eDatabaseTarget.READONLY);
 
             FLookupTable = Database.GetDataTable("select * from camdecmpsmd.reporting_period order by Calendar_Year, Quarter");
-          }
-          catch (Exception ex)
-          {
+        }
+        catch (Exception ex)
+        {
             LoggerProvider.GetLogger<cReportingPeriod>().LogError(ex, "Error retrieving Reporting Period Lookup Table");
             FLookupTable = null;
-          }
         }
-
-        return FLookupTable;
-      }
-
-      set
-      {
-        FLookupTable = value;
-      }
     }
 
 
-    #region Property Fields
-
-    /// <summary>
-    /// Contains the lookup table used to read reporting period information.
-    /// </summary>
-    protected static DataTable FLookupTable = null;
-
-    #endregion
+        /// <summary>
+        /// Contains the lookup table used to read reporting period information.
+        /// </summary>
+        protected static readonly DataTable FLookupTable = null;
 
     #endregion
 

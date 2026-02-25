@@ -25,7 +25,7 @@ namespace ECMPS.Checks.CheckEngine.Definitions
 
         #region Severity Code
 
-        private static DataView _dvSeverityCode = null;
+        private static readonly DataView _dvSeverityCode = RetrieveSeverityCodeData();
 
         /// <summary>
         /// Returns whether the passed Severity Code will block submissions
@@ -34,7 +34,7 @@ namespace ECMPS.Checks.CheckEngine.Definitions
         /// <returns>true if the severity code blocks submission, otherwise false</returns>
         public static bool BlocksSubmission(this eSeverityCd ASeverityCd)
         {
-            if ((_dvSeverityCode != null) || LoadSeverityCode())
+            if (_dvSeverityCode != null)
             {
                 DataRowView SeverityRow = GetSeverityRow(ASeverityCd.ToStringValue());
 
@@ -54,7 +54,7 @@ namespace ECMPS.Checks.CheckEngine.Definitions
         {
             string Result = ADefault;
 
-            if ((_dvSeverityCode != null) || LoadSeverityCode())
+            if (_dvSeverityCode != null)
             {
                 DataRowView SeverityRow = GetSeverityRow(ASeverityCd.ToStringValue());
 
@@ -85,7 +85,7 @@ namespace ECMPS.Checks.CheckEngine.Definitions
         {
             int Result = ADefault;
 
-            if ((_dvSeverityCode != null) || LoadSeverityCode())
+            if (_dvSeverityCode != null)
             {
                 DataRowView SeverityRow = GetSeverityRow(ASeverityCd.ToStringValue());
 
@@ -125,12 +125,13 @@ namespace ECMPS.Checks.CheckEngine.Definitions
         }
 
         /// <summary>
-        /// Load the severity code table, _dvSeverityCode, if successful
+        /// Returns the severity code table if .
         /// </summary>
-        /// <returns>true if successful, false if an error</returns>
-        private static bool LoadSeverityCode()
+        /// <returns>DataView if successful, null if an error</returns>
+        private static DataView RetrieveSeverityCodeData()
         {
-            bool bRetVal = false;
+            DataView result;
+
             string sql = "select Severity_Cd, Severity_Cd_Description, Severity_Level, 0 as Blocks_Submission from camdecmpsmd.severity_code";
             // Use replica db: camdecmpsmd.severity_code is read-only reference data
             cDatabase dbConnection = cDatabase.GetConnection("LoadSeverityCode", cDatabase.eDatabaseTarget.READONLY);
@@ -138,8 +139,8 @@ namespace ECMPS.Checks.CheckEngine.Definitions
             try
             {
                 DataTable dtSeverityCode = dbConnection.GetDataTable(sql);
-                _dvSeverityCode = new DataView(dtSeverityCode, null, "Severity_Cd", DataViewRowState.CurrentRows);
-                foreach (DataRowView drSeverityCode in _dvSeverityCode)
+                result = new DataView(dtSeverityCode, null, "Severity_Cd", DataViewRowState.CurrentRows);
+                foreach (DataRowView drSeverityCode in result)
                 {
                     string sSeverityCd = cDBConvert.ToString(drSeverityCode["severity_cd"]);
                     if (sSeverityCd == eSeverityCd.FATAL.ToStringValue() ||
@@ -147,17 +148,16 @@ namespace ECMPS.Checks.CheckEngine.Definitions
                         sSeverityCd == eSeverityCd.EXCEPTION.ToStringValue())
                         drSeverityCode["Blocks_Submission"] = 1;
                 }
-                bRetVal = true;
             }
             catch (Exception ex)
             {
-                _dvSeverityCode = null;
+                result = null;
                 _logger.LogError(ex, "Loading of SEVERITY_CODE view failed");
-                bRetVal = false;
             }
 
             dbConnection.Close();
-            return bRetVal;
+
+            return result;
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace ECMPS.Checks.CheckEngine.Definitions
         public static eSeverityCd ToSeverityCd(this string SeverityCode)
         {
             eSeverityCd SeverityCd = eSeverityCd.NONE;
-            if ((_dvSeverityCode != null) || LoadSeverityCode())
+            if (_dvSeverityCode != null)
             {
                 DataRowView SeverityRow = GetSeverityRow(SeverityCode);
 

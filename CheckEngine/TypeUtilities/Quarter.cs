@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Runtime.Serialization;
 
 namespace ECMPS.Checks.TypeUtilities
@@ -21,8 +23,6 @@ namespace ECMPS.Checks.TypeUtilities
 		/// <exception cref="System.ArgumentOutOfRangeException">Thrown when quarterKey represents a quarter before year 1 AD, quarter 1.</exception>
 		private Quarter(int quarterKey)
 		{
-			if (QuarterDictionary.ContainsKey(quarterKey))
-				throw new ArgumentException( $"A Quarter object was previously created for quarterKey {quarterKey}.", "quarterKey");
 			if (quarterKey < 5)
 				throw new ArgumentOutOfRangeException("quarterKey", quarterKey, "quarterKey must be greater than or equal to 5 to represent the minimum of year 1 AD, quarter 1.");
 
@@ -31,22 +31,46 @@ namespace ECMPS.Checks.TypeUtilities
 			
 			YearValue = GetYearValue(quarterKey);
 			QuarterValue = GetQuarterValue(quarterKey);
-
-			QuarterDictionary.Add(quarterKey, this);
 		}
 
 		#endregion
 
 
-		#region Public Static Methods: Get Quarter Object
+		#region Static Constructor
 
 		/// <summary>
-		/// Returns the Quarter object for the passed date, creating it if it does not already exist.
+		/// Static constructor that should run once for the class regardless of thread.
 		/// </summary>
-		/// <param name="quarterKey"></param>
-		/// <returns>The quarter object for the quarterKey.</returns>
-		/// <exception cref="System.ArgumentOutOfRangeException">Thrown when quarterKey represents a quarter before year 1 AD, quarter 1.</exception>
-		public static Quarter FetchQuarter(int quarterKey)
+		static Quarter()
+		{
+			int beginYear = 1993;
+			int endYear = DateTime.Now.Year + 1;
+            int quarterKey;
+
+			Dictionary<int, Quarter> quarterDictionary = new Dictionary<int, Quarter>();
+
+            for (int year = beginYear; year <= endYear; year++)
+                for (int quarter = 1; quarter <= 4; quarter++)
+                {
+                    quarterKey = GetQuarterKey(year, quarter);
+                    quarterDictionary.Add(quarterKey, new Quarter(quarterKey));
+                }
+
+			QuarterDictionary = quarterDictionary.ToFrozenDictionary();
+        }
+
+        #endregion
+
+
+        #region Public Static Methods: Get Quarter Object
+
+        /// <summary>
+        /// Returns the Quarter object for the passed date, creating it if it does not already exist.
+        /// </summary>
+        /// <param name="quarterKey"></param>
+        /// <returns>The quarter object for the quarterKey.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when quarterKey represents a quarter before year 1 AD, quarter 1.</exception>
+        public static Quarter FetchQuarter(int quarterKey)
 		{
 			if (quarterKey < 5)
 			{
@@ -54,9 +78,9 @@ namespace ECMPS.Checks.TypeUtilities
 			}
 
 			if (!QuarterDictionary.ContainsKey(quarterKey))
-			{
-				new Quarter(quarterKey); // Automatically added to QuarterDictionary
-			}
+            {
+                throw new ArgumentOutOfRangeException("quarterKey", quarterKey, $"quarterKey must be inclusively between years 1993 and {DateTime.Now.Year + 1}.");
+            }
 
 			return QuarterDictionary[quarterKey];
 		}
@@ -107,7 +131,7 @@ namespace ECMPS.Checks.TypeUtilities
 
         #region Private Statuc Fields
 
-        private static Dictionary<int, Quarter> QuarterDictionary = new Dictionary<int, Quarter>();
+        private static readonly FrozenDictionary<int, Quarter> QuarterDictionary;
 
 		#endregion
 

@@ -27,17 +27,6 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
 
 
         /// <summary>
-        /// Contains the minimum non-fuel-specific Fc value for the location.
-        /// </summary>
-        static public decimal? NonFuelSpecificMaxValue { get; set; }
-
-        /// <summary>
-        /// Contains the maximum non-fuel-specific Fc value for the location.
-        /// </summary>
-        static public decimal? NonFuelSpecificMinValue { get; set; }
-
-
-        /// <summary>
         /// Indicates whether the Fc value range is fueld specific.
         /// </summary>
         public bool IsFuelSpecific { get; private set; }

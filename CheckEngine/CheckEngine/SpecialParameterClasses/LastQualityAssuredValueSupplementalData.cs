@@ -173,12 +173,6 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// </summary>
         public static string QualityAssuredModcList { get { return "01,02,03,04,14,16,17,19,20,21,22,47,53,54"; } }
 
-
-        /// <summary>
-        /// Contains the update data table object for supplemental data.
-        /// </summary>
-        public static DataTable SupplementalDataUpdateDataTable { get; set; }
-
         /// <summary>
         /// Contains the name of the update schema for the supplemental data.
         /// </summary>
@@ -201,19 +195,18 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
         /// <param name="supplementalDataDictionaryArray">Dictionary containing data used to update the table.</param>
         /// <param name="checkSessionId">The workspace session id for check session.</param>
         /// <param name="connection">Database connection to use when creating the internal supplemental data table.</param>
-        public static void LoadSupplementalDataUpdateDataTable(Dictionary<string, LastQualityAssuredValueSupplementalData>[] supplementalDataDictionaryArray, string checkSessionId, NpgsqlConnection connection)
-
-        // public static void LoadSupplementalDataUpdateDataTable(Dictionary<string, LastQualityAssuredValueSupplementalData>[] supplementalDataDictionaryArray, decimal workspaceSessionId, SqlConnection connection)
+        /// <returns>The updated SupplementalDataUpdateDataTable.</returns>
+        public static DataTable LoadSupplementalDataUpdateDataTable(Dictionary<string, LastQualityAssuredValueSupplementalData>[] supplementalDataDictionaryArray, string checkSessionId, NpgsqlConnection connection)
         {
-            SupplementalDataUpdateDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateTableName, connection);
+            DataTable supplementalDataUpdateDataTable = cDataFunctions.CreateDataTable(SupplementalDataUpdateSchemaName, SupplementalDataUpdateTableName, connection);
 
-            if (SupplementalDataUpdateDataTable != null)
+            if (supplementalDataUpdateDataTable != null)
             {
                 foreach (Dictionary<string, LastQualityAssuredValueSupplementalData> supplementalDataDictionary in supplementalDataDictionaryArray)
                 {
                     foreach (LastQualityAssuredValueSupplementalData supplementalData in supplementalDataDictionary.Values)
                     {
-                        DataRow dataRow = SupplementalDataUpdateDataTable.NewRow();
+                        DataRow dataRow = supplementalDataUpdateDataTable.NewRow();
 
                         dataRow["CHK_SESSION_ID"] = checkSessionId;
                         dataRow["MON_LOC_ID"] = supplementalData.MonLocId;
@@ -235,10 +228,12 @@ namespace ECMPS.Checks.CheckEngine.SpecialParameterClasses
                         else
                             dataRow["ADJUSTED_HRLY_VALUE"] = DBNull.Value;
 
-                        SupplementalDataUpdateDataTable.Rows.Add(dataRow);
+                        supplementalDataUpdateDataTable.Rows.Add(dataRow);
                     }
                 }
             }
+
+            return supplementalDataUpdateDataTable;
         }
 
         #endregion

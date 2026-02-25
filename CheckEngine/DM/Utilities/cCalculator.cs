@@ -65,21 +65,6 @@ namespace ECMPS.DM.Utilities
     #endregion
 
 
-    #region Public Properties
-
-    /// <summary>
-    /// Error detail
-    /// </summary>
-    public static string ErrorDetail { get; private set; }
-
-    /// <summary>
-    /// Unexpected exception trapped by calculator
-    /// </summary>
-    public static Exception TrappedException { get; private set; }
-
-    #endregion
-
-
     #region Public Methods: Evaluate
 
     /// <summary>
@@ -95,7 +80,6 @@ namespace ECMPS.DM.Utilities
     {
       bool failed = false;
 
-      TrappedException = null;
       errorResult = null;
 
       Stack<decimal> stack = new Stack<decimal>();
@@ -120,7 +104,6 @@ namespace ECMPS.DM.Utilities
               }
               else
               {
-                ErrorDetail = equation.Substring(charPos);
                 errorResult = eCalculatorError.Index;
                 failed = true;
               }
@@ -137,7 +120,6 @@ namespace ECMPS.DM.Utilities
               }
               else
               {
-                ErrorDetail = equation.Substring(charPos);
                 errorResult = eCalculatorError.Value;
                 failed = true;
               }
@@ -198,23 +180,20 @@ namespace ECMPS.DM.Utilities
 
                     default:
                       {
-                        ErrorDetail = character.ToString();
                         errorResult = eCalculatorError.Operator;
                         failed = true;
                       }
                       break;
                   }
                 }
-                catch (Exception ex)
+                catch
                 {
-                  TrappedException = ex;
                   errorResult = eCalculatorError.Exception;
                   failed = true;
                 }
               }
               else
               {
-                ErrorDetail = stack.Count.ToString();
                 errorResult = eCalculatorError.OperandCount;
                 failed = true;
               }
@@ -223,7 +202,6 @@ namespace ECMPS.DM.Utilities
 
           default:
             {
-              ErrorDetail = character.ToString();
               errorResult = eCalculatorError.UnexpectedCharacter;
               failed = true;
             }

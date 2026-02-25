@@ -55,12 +55,12 @@ namespace ECMPS.Checks.TypeUtilities
 
     }
 
-    private static cHandleDecimalPrecision[] FDecimalPrecision;
+    private static readonly cHandleDecimalPrecision[] FDecimalPrecision;
 
     /// <summary>
-    /// Initialize the class
+    /// Initialize the FDecimalPrecision field.
     /// </summary>
-    public static void Initialize()
+    static cDecimalPrecision()
     {
       FDecimalPrecision = new cHandleDecimalPrecision[Enum.GetValues(typeof(eDecimalPrecision)).Length];
 
