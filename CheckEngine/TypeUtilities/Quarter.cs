@@ -56,7 +56,7 @@ namespace ECMPS.Checks.TypeUtilities
                     quarterDictionary.Add(quarterKey, new Quarter(quarterKey));
                 }
 
-			FrozenDictionary<int, Quarter> QuarterDictionary = quarterDictionary.ToFrozenDictionary();
+			QuarterDictionary = quarterDictionary.ToFrozenDictionary();
         }
 
         #endregion
