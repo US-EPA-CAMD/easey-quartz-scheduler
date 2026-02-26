@@ -1491,7 +1491,7 @@ namespace ECMPS.Checks.FormulaChecks
                     foreach (VwMonitorSystemRow monitorSystemRow in monitorSystemRecords)
                     {
                         if ((monitorSystemRow.BeginDatehour <= distinctHourRange.Began) && 
-                            (monitorSystemRow.EndDatehour.Default(DistinctHourRanges.MaxHour) >= distinctHourRange.Ended))
+                            (monitorSystemRow.EndDatehour.Default(distinctHourRanges.MaxHour) >= distinctHourRange.Ended))
                         {
                             monSysIdCondition = new cFilterCondition("MON_SYS_ID", monitorSystemRow.MonSysId);
                             monitorSystemComponentRecords
@@ -1502,7 +1502,7 @@ namespace ECMPS.Checks.FormulaChecks
                             {
                                 if ((monitorSystemComponentRow.MonSysId == monitorSystemRow.MonSysId) &&
                                     (monitorSystemComponentRow.BeginDatehour <= distinctHourRange.Began) &&
-                                    (monitorSystemComponentRow.EndDatehour.Default(DistinctHourRanges.MaxHour) >= distinctHourRange.Ended))
+                                    (monitorSystemComponentRow.EndDatehour.Default(distinctHourRanges.MaxHour) >= distinctHourRange.Ended))
                                 {
                                     componentCount += 1;
 

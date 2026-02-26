@@ -2229,7 +2229,7 @@ namespace ECMPS.Checks.EmissionsChecks
                                 decimal minValue = (fFactorRangeChecksRow != null) ? fFactorRangeChecksRow.LowerValue.AsDecimal().Default(Decimal.MinValue) : Decimal.MinValue;
                                 decimal maxValue = (fFactorRangeChecksRow != null) ? fFactorRangeChecksRow.UpperValue.AsDecimal().Default(Decimal.MaxValue) : Decimal.MaxValue;
 
-                                fcValidationInfo = new FcValidationInfo(FcValidationInfo.NonFuelSpecificMinValue.Value, FcValidationInfo.NonFuelSpecificMaxValue.Value);
+                                fcValidationInfo = new FcValidationInfo(minValue, maxValue);
                             }
 
 

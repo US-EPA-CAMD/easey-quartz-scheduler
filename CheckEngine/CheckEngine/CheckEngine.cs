@@ -99,8 +99,6 @@ namespace ECMPS.Checks.CheckEngine
                             string systemStateDumpFilePath,
                             int? commandTimeout)
         {
-            cDecimalPrecision.Initialize();
-
             UserId = userId;
 
             DbConnectionString = dataConnectionString;
