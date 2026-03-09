@@ -46,57 +46,67 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             WHERE status_cd = 'QUEUED'"
           ).ToList();
 
-        List<SubmissionSet> inWIP = _dbContext.SubmissionSet.FromSqlRaw(@"
+        if (inQueue.Count == 0)
+        {
+          _logger.LogInformation("No items in queue to process.");
+          return;
+        }
+
+        List<SubmissionSet> wipOrClaimed = _dbContext.SubmissionSet.FromSqlRaw(@"
             SELECT *
             FROM camdecmpsaux.submission_set
-            WHERE status_cd = 'WIP'"
+            WHERE status_cd in ('WIP', 'CLAIMED')"
           ).ToList();
 
-        _logger.LogInformation("Found {InQueueCount} items in queue and {InWIPCount} items in WIP", inQueue?.Count ?? 0, inWIP?.Count ?? 0);
+        _logger.LogInformation("Found {InQueueCount} items in queue and {InWIPCount} items in WIP or CLAIMED", inQueue?.Count ?? 0, wipOrClaimed?.Count ?? 0);
 
-        if(inWIP.Count < Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_SUBMISSION_JOBS"])){
-          if(inQueue.Count > 0){
-            int jobs_to_schedule = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_SUBMISSION_JOBS"]) - inWIP.Count;
-            _logger.LogInformation("Scheduling {JobsToSchedule} jobs", jobs_to_schedule);
+        var maxAllowed = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_SUBMISSION_JOBS"]);
 
-            int index = 0;
-
-            string clientToken = await Utils.generateClientToken();
-
-            for(int i = 0; i < jobs_to_schedule; i++){
-              if(index < inQueue.Count){
-                var setRecord = inQueue[i];
-                setRecord.StatusCode = "WIP";
-                _dbContext.SubmissionSet.Update(setRecord);
-                _dbContext.SaveChanges();
-
-                _logger.LogInformation("Submitting to camd-services SubmissionSetId {SubmissionSetId}", setRecord.SetId);
-
-                try
-                {
-                  await SubmitSet(setRecord.SetId, clientToken);
-                }
-                catch (Exception ex)
-                {
-                  HandleSubmissionError(setRecord, ex);
-                }
-
-                Thread.Sleep(Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_SUBMISSION_JOB_QUEUE_DELAY"] ?? "1") * 1000);
-                index++;
-              }
-            }
-          }
-          else
-          {
-             _logger.LogInformation("No items in queue to process.");
-          }
+        // Exit if max number of allowed jobs already in progress
+        if (wipOrClaimed.Count >= maxAllowed) {
+            _logger.LogInformation("Maximum number of submission jobs ({MaxJobs}) already in progress. Skipping processing...", maxAllowed);
+            return;
         }
-        else
+
+        int jobs_to_schedule = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_SUBMISSION_JOBS"]) - wipOrClaimed.Count;
+        _logger.LogInformation("Scheduling {JobsToSchedule} jobs", jobs_to_schedule);
+
+        // Set to CLAIMED
+        List<SubmissionSet> claimed = _dbContext.SubmissionSet
+          .FromSqlRaw(@"
+              UPDATE camdecmpsaux.submission_set
+              SET status_cd = 'CLAIMED'
+              WHERE submission_set_id IN (
+                  SELECT submission_set_id
+                  FROM camdecmpsaux.submission_set
+                  WHERE status_cd = 'QUEUED'
+                  ORDER BY queued_time
+                  LIMIT {0}
+                  FOR UPDATE SKIP LOCKED
+              )
+              RETURNING *;",
+              jobs_to_schedule)
+          .ToList();
+
+        _logger.LogInformation("Claimed {ClaimedCount} submission sets for processing", claimed?.Count ?? 0);
+
+        string clientToken = await Utils.generateClientToken();
+
+        foreach (var setRecord in claimed)
         {
-           _logger.LogInformation("Maximum number of submission jobs ({MaxJobs}) already in progress. Skipping processing...", Configuration["EASEY_QUARTZ_SCHEDULER_MAX_SUBMISSION_JOBS"]);
-        }
+          _logger.LogInformation("Submitting to camd-services SubmissionSetId {SubmissionSetId}", setRecord.SetId);
 
-        return;
+          try
+          {
+            await SubmitSet(setRecord.SetId, clientToken);
+          }
+          catch (Exception ex)
+          {
+            HandleSubmissionError(setRecord, ex);
+          }
+
+          Thread.Sleep(Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_SUBMISSION_JOB_QUEUE_DELAY"] ?? "1") * 1000);
+        }
       }
       catch (Exception e)
       {
