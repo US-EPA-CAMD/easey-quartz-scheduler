@@ -1,4 +1,4 @@
-instances: 4
+instances: 6
 memory: 3072M
 displayUI: true
 dbReplicaEnabled: true
