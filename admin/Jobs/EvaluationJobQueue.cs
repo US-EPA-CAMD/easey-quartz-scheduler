@@ -42,42 +42,32 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             foreach(string processType in processTypes){
                 _logger.LogInformation("Checking {Type} evaluations", processType);
                 
-                List<Evaluation> inQueue = _dbContext.Evaluations.FromSqlRaw(@"
-                    SELECT *
-                    FROM camdecmpsaux.evaluation_queue
-                    WHERE process_cd = {0} AND status_cd = 'QUEUED'
-                    ORDER BY queued_time", processType
-                ).ToList();
+                int inQueueCount = _dbContext.Evaluations.Count(s => s.ProcessCode == processType && s.StatusCode == "QUEUED");
 
                 _logger.LogInformation("Found {Count} {Type} evaluations in QUEUED status", 
-                    inQueue.Count, processType);
+                    inQueueCount, processType);
 
                 // Exit if nothing in queue
-                if (inQueue.Count == 0) continue;
+                if (inQueueCount == 0) continue;
 
-                List<Evaluation> wipOrClaimed = _dbContext.Evaluations.FromSqlRaw(@"
-                    SELECT *
-                    FROM camdecmpsaux.evaluation_queue
-                    WHERE process_cd = {0} AND status_cd in ('WIP', 'CLAIMED')
-                    ORDER BY queued_time", processType
-                ).ToList();
+                int wipOrClaimedCount = _dbContext.Evaluations.Count(s => s.ProcessCode == processType && (s.StatusCode == "WIP" || s.StatusCode == "CLAIMED"));
 
                 _logger.LogInformation("Found {Count} {Type} evaluations in WIP or CLAIMED status", 
-                    wipOrClaimed.Count, processType);
+                    wipOrClaimedCount, processType);
 
                 int maxAllowed = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_" + processType +"_EVALUATIONS"]);
                 _logger.LogInformation("Max allowed {Type} evaluations: {MaxAllowed}", 
                     processType, maxAllowed);
 
                 // Exit if at max
-                if(wipOrClaimed.Count >= maxAllowed)
+                if(wipOrClaimedCount >= maxAllowed)
                 {
                   _logger.LogInformation("Maximum number of {Type} evaluations ({MaxAllowed}) already in progress", 
                       processType, maxAllowed);
                   continue;
                 }
 
-                int jobs_to_schedule = maxAllowed - wipOrClaimed.Count;
+                int jobs_to_schedule = maxAllowed - wipOrClaimedCount;
                 _logger.LogInformation("Attempting to schedule {JobCount} {Type} evaluations", 
                     jobs_to_schedule, processType);
 

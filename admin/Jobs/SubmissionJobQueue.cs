@@ -40,35 +40,25 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       {
         _logger.LogInformation("Starting submission job execution. Checking QUEUED status submissions ");
 
-        List<SubmissionSet> inQueue = _dbContext.SubmissionSet.FromSqlRaw(@"
-            SELECT *
-            FROM camdecmpsaux.submission_set
-            WHERE status_cd = 'QUEUED'"
-          ).ToList();
+        int inQueueCount = _dbContext.SubmissionSet.Count(s => s.StatusCode == "QUEUED");
 
-        if (inQueue.Count == 0)
-        {
-          _logger.LogInformation("No items in queue to process.");
-          return;
-        }
+        _logger.LogInformation("Found {InQueueCount} submission sets in QUEUED status", inQueueCount);
 
-        List<SubmissionSet> wipOrClaimed = _dbContext.SubmissionSet.FromSqlRaw(@"
-            SELECT *
-            FROM camdecmpsaux.submission_set
-            WHERE status_cd in ('WIP', 'CLAIMED')"
-          ).ToList();
+        if (inQueueCount == 0) return;
 
-        _logger.LogInformation("Found {InQueueCount} items in queue and {InWIPCount} items in WIP or CLAIMED", inQueue?.Count ?? 0, wipOrClaimed?.Count ?? 0);
+        int wipOrClaimedCount = _dbContext.SubmissionSet.Count(s => s.StatusCode == "WIP" || s.StatusCode == "CLAIMED");
+
+        _logger.LogInformation("Found {InQueueCount} items in queue and {InWIPCount} items in WIP or CLAIMED", inQueueCount, wipOrClaimedCount);
 
         var maxAllowed = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_SUBMISSION_JOBS"]);
 
         // Exit if max number of allowed jobs already in progress
-        if (wipOrClaimed.Count >= maxAllowed) {
+        if (wipOrClaimedCount >= maxAllowed) {
             _logger.LogInformation("Maximum number of submission jobs ({MaxJobs}) already in progress. Skipping processing...", maxAllowed);
             return;
         }
 
-        int jobs_to_schedule = Int32.Parse(Configuration["EASEY_QUARTZ_SCHEDULER_MAX_SUBMISSION_JOBS"]) - wipOrClaimed.Count;
+        int jobs_to_schedule = maxAllowed - wipOrClaimedCount;
         _logger.LogInformation("Scheduling {JobsToSchedule} jobs", jobs_to_schedule);
 
         // Set to CLAIMED
