@@ -35,3 +35,5 @@ updates:
         versions: [">=7.0.0"]
       - dependency-name: "Serilog.AspNetCore"
         versions: [">=7.0.0"]
+      - dependency-name: "Handlebars.Net"
+        versions: [">=2.0.0"]        
