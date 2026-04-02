@@ -13,8 +13,8 @@
     <DebugSymbols>False</DebugSymbols>
   </PropertyGroup>-->
   <ItemGroup>
-    <PackageReference Include="AWSSDK.Core" Version="3.5.2.8" />
-    <PackageReference Include="AWSSDK.S3" Version="3.5.8.3" />
+    <PackageReference Include="AWSSDK.Core" Version="3.7.500.95" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.511.5" />
     <PackageReference Include="DotNetEnv" Version="2.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
