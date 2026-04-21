@@ -23,13 +23,13 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
 
     private IConfiguration Configuration { get; }
     private readonly ILogger<CheckEngineEvaluationListener> _logger;
-    private NpgSqlContext _dbContext = null;
+    private readonly IDbContextFactory<NpgSqlContext> _dbContextFactory;
 
     public static IServiceCollection ServiceCollection {get; set;}
 
-    public CheckEngineEvaluationListener(NpgSqlContext dbContext, IConfiguration configuration, ILogger<CheckEngineEvaluationListener> logger)
+    public CheckEngineEvaluationListener(IDbContextFactory<NpgSqlContext> dbContextFactory, IConfiguration configuration, ILogger<CheckEngineEvaluationListener> logger)
     {
-      _dbContext = dbContext;
+      _dbContextFactory = dbContextFactory;
       Configuration = configuration;
       _logger = logger;
     }
@@ -47,8 +47,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
       JobDataMap dataMap = context.MergedJobDataMap;
       string setId = dataMap.GetString("SetId"); // Set id of the completed evaluation
       string userEmail = dataMap.GetString("UserEmail"); // Set id of the completed evaluation
-      
-      List<Evaluation> inSet = _dbContext.Evaluations.FromSqlRaw(@"
+
+      using var dbContext = _dbContextFactory.CreateDbContext();
+
+      List<Evaluation> inSet = dbContext.Evaluations.FromSqlRaw(@"
             SELECT *
             FROM camdecmpsaux.evaluation_queue
             WHERE evaluation_set_id = {0} AND status_cd not in ('COMPLETE', 'ERROR');", setId
@@ -60,7 +62,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.Listeners
       }
 
       // Check if all records in the set have ERROR status
-      List<Evaluation> allRecordsInSet = _dbContext.Evaluations.FromSqlRaw(@"
+      List<Evaluation> allRecordsInSet = dbContext.Evaluations.FromSqlRaw(@"
             SELECT *
             FROM camdecmpsaux.evaluation_queue
             WHERE evaluation_set_id = {0};", setId
