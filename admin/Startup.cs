@@ -43,8 +43,11 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddAppConfiguration(_configuration);
 
-      services.AddDbContext<NpgSqlContext>(options =>
+      services.AddDbContextFactory<NpgSqlContext>(options =>
         options.UseNpgsql(_connectionString)
+      );
+      services.AddScoped<NpgSqlContext>(sp =>
+        sp.GetRequiredService<IDbContextFactory<NpgSqlContext>>().CreateDbContext()
       );
 
 #pragma warning disable ASP0000 
