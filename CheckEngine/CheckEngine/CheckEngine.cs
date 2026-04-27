@@ -644,7 +644,7 @@ namespace ECMPS.Checks.CheckEngine
                         }
                         else
                         {
-                            _logger.LogWarning("RunChecks_ProcessInit returned false for {ProcessCd} {CategoryCd}, EvalId: {EvalId}", processCd, categoryCd, EvaluationId?.ToString() ?? "null");
+                            _logger.LogError("RunChecks_ProcessInit returned false for {ProcessCd} {CategoryCd}, EvalId: {EvalId}", processCd, categoryCd, EvaluationId?.ToString() ?? "null");
                             HandleProcessingError(string.Format("RunChecks_ProcessInit returned false for {0} {1}", processCd, categoryCd));
                             result = false;
                         }
@@ -675,7 +675,7 @@ namespace ECMPS.Checks.CheckEngine
                 }
                 else
                 {
-                    _logger.LogWarning("RunChecks_ProcessInit returned false for {ProcessCd}, EvalId: {EvalId}", processCd, EvaluationId?.ToString() ?? "null");
+                    _logger.LogError("RunChecks_ProcessInit returned false for {ProcessCd}, EvalId: {EvalId}", processCd, EvaluationId?.ToString() ?? "null");
                     HandleProcessingError(string.Format("RunChecks_ProcessInit returned false for {0}", processCd));
                     result = false;
                 }
@@ -1119,7 +1119,11 @@ namespace ECMPS.Checks.CheckEngine
                 firstEcmpsReportingPeriodId = null;
                 firstEcmpsReportingPeriod = null;
 
-                HandleProcessingError(errorMessage);
+                // Surface a default if the underlying call returned no message,
+                // since HandleProcessingError silently drops null/empty input.
+                HandleProcessingError(string.IsNullOrEmpty(errorMessage)
+                    ? string.Format("Facility lookup failed for {0} {1}.", facilityLookupType, facilityLookupId)
+                    : errorMessage);
                 result = false;
             }
 
