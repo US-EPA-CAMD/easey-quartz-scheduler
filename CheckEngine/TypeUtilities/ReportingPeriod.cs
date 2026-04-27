@@ -308,10 +308,11 @@ namespace ECMPS.Checks.TypeUtilities
 
     static cReportingPeriod()
     {
+        cDatabase Database = null;
         try
         {
             // Using replica db: camdecmpsmd.reporting_period is read-only reference data
-            cDatabase Database = cDatabase.GetConnection("cDateFunctions", cDatabase.eDatabaseTarget.READONLY);
+            Database = cDatabase.GetConnection("cDateFunctions", cDatabase.eDatabaseTarget.READONLY);
 
             FLookupTable = Database.GetDataTable("select * from camdecmpsmd.reporting_period order by Calendar_Year, Quarter");
         }
@@ -319,6 +320,15 @@ namespace ECMPS.Checks.TypeUtilities
         {
             LoggerProvider.GetLogger<cReportingPeriod>().LogError(ex, "Error retrieving Reporting Period Lookup Table");
             FLookupTable = null;
+        }
+        finally
+        {
+            // Return the rented connection to the pool. Must not throw — a static ctor that
+            // propagates poisons the type for the rest of the process.
+            if (Database != null)
+            {
+                try { Database.Close(); } catch { /* best-effort */ }
+            }
         }
     }
 

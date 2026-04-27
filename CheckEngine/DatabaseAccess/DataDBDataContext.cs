@@ -62,18 +62,22 @@ namespace ECMPS.Checks.DatabaseAccess
 
                 foreach (DataRow row in AResultTable.Rows)
                 {
-                    facId = int.Parse(row["facId"].ToString());
+                    // Read error_msg first so it is preserved even if a subsequent column is null/unparseable.
+                    errorMessage = (row["error_msg"] != DBNull.Value) ? row["error_msg"].ToString() : null;
+
+                    facId = (row["facId"] != DBNull.Value) ? int.Parse(row["facId"].ToString()) : (int?)null; // Must handle a null facId
 
                     firstEcmpsRptPeriodId = (row["firstEcmpsRptPeriodId"] != DBNull.Value) ? int.Parse(row["firstEcmpsRptPeriodId"].ToString()) : (int?)null; // Must handle a null firstEcmpsrptPeriodId
-
-                    errorMessage = row["error_msg"].ToString();
                 }
 
 
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.ToString());
+                // Use structured logging: passing ex.ToString() as the template causes Serilog to try to
+                // parse '{...}' segments from the stack trace as placeholders and silently drop the entry.
+                _logger.LogError(ex, "GetFacilityInfo failed for lookupType={LookupType}, lookupId={LookupId}", lookupType, lookupId);
+                errorMessage = ex.Message;
             }
            //Database.CreateStoredProcedureCommand("camdecmpswks.GetFacilityInfo");
 
