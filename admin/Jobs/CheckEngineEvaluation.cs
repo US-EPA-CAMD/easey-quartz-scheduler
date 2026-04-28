@@ -428,9 +428,18 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         }
         catch (Exception ex)
         {
-            _logger.LogError("Evaluation {EvalId} failed with error: {ErrorMessage}", 
+            _logger.LogError("Evaluation {EvalId} failed with error: {ErrorMessage}",
                 id, ex.Message);
             _logger.LogError("Full exception details for EvalId: {EvalId} - {Exception}", id, ex.ToString());
+
+            // Surface the CheckEngine's own internal error narrative to the application log.
+            // Without this, only the outer wrapper exception ("MP/QA/EM Report Check Run Failed.") reaches cloud.gov logs.
+            if (checkEngine != null && !string.IsNullOrEmpty(checkEngine.CheckEngineErrors))
+            {
+                _logger.LogError(
+                    "CheckEngine internal errors for EvalId: {EvalId}, ProcessCode: {ProcessCode} - {CheckEngineErrors}",
+                    id, processCode, checkEngine.CheckEngineErrors);
+            }
 
             context.MergedJobDataMap.Add("EvaluationResult", "FAILED");
             context.MergedJobDataMap.Add("EvaluationStatus", "FATAL");
