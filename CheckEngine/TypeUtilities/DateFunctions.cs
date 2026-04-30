@@ -29,16 +29,26 @@ namespace ECMPS.Checks.TypeUtilities
         /// </summary>
         static cDateFunctions()
         {
+            cDatabase Database = null;
             try
             {
                 // Using replica db: camdecmpsmd.reporting_period is read-only reference data
-                cDatabase Database = cDatabase.GetConnection("cDateFunctions", cDatabase.eDatabaseTarget.READONLY);
+                Database = cDatabase.GetConnection("cDateFunctions", cDatabase.eDatabaseTarget.READONLY);
 
                 FReportingPeriodTable = Database.GetDataTable("select * from camdecmpsmd.reporting_period order by Calendar_Year, Quarter");
             }
             catch
             {
                 FReportingPeriodTable = null;
+            }
+            finally
+            {
+                // Return the rented connection to the pool. Must not throw — a static ctor that
+                // propagates poisons the type for the rest of the process.
+                if (Database != null)
+                {
+                    try { Database.Close(); } catch { /* best-effort */ }
+                }
             }
         }
 

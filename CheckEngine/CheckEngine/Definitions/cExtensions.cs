@@ -134,7 +134,7 @@ namespace ECMPS.Checks.CheckEngine.Definitions
 
             string sql = "select Severity_Cd, Severity_Cd_Description, Severity_Level, 0 as Blocks_Submission from camdecmpsmd.severity_code";
             // Use replica db: camdecmpsmd.severity_code is read-only reference data
-            cDatabase dbConnection = cDatabase.GetConnection("LoadSeverityCode", cDatabase.eDatabaseTarget.READONLY);
+            using cDatabase dbConnection = cDatabase.GetConnection("LoadSeverityCode", cDatabase.eDatabaseTarget.READONLY);
 
             try
             {
@@ -154,8 +154,6 @@ namespace ECMPS.Checks.CheckEngine.Definitions
                 result = null;
                 _logger.LogError(ex, "Loading of SEVERITY_CODE view failed");
             }
-
-            dbConnection.Close();
 
             return result;
         }

@@ -31,13 +31,12 @@ namespace ECMPS.DM
         /// <param name="dbConnectionString">The database string for the ECMPS PostgreSQL database.</param>
         /// <param name="logger">The ILogger instance to use.</param>
         /// <param name="commandTimeout">The timeout to use</param>
-        public cUpdateEmissions( string dbConnectionString, ILogger<cUpdateEmissionsDb> logger, int commandTimeout = 300 ) 
+        public cUpdateEmissions( string dbConnectionString, ILogger<cUpdateEmissionsDb> logger, int commandTimeout = 300 )
         {
             cDatabase.DbConnectionString = dbConnectionString;
 
-            _dbConnection = cDatabase.GetConnection( commandTimeout, "Apportionment" );
+            _commandTimeout = commandTimeout;
             _logger = logger;
-            _updateEmissionsDb = new cUpdateEmissionsDb( _dbConnection, logger);
         }
         
         #endregion
@@ -60,9 +59,8 @@ namespace ECMPS.DM
 
         #region Private Fields
 
-        private readonly cDatabase _dbConnection;
+        private readonly int _commandTimeout;
         private readonly ILogger<cUpdateEmissionsDb> _logger;
-        private readonly cUpdateEmissionsDb _updateEmissionsDb;
 
 
         #endregion
@@ -76,6 +74,12 @@ namespace ECMPS.DM
         /// <param name="pdemReportId">The PDEM_REPORT_ID of the update.</param>
         public void ProcessEmissionReport(long pdemReportId)
         {
+            // Connection is opened per-call and disposed via `using` so it is always returned
+            // to the pool, even on exceptions. Holding it on the instance previously leaked
+            // connections every time PdemJob ran.
+            using cDatabase _dbConnection = cDatabase.GetConnection(_commandTimeout, "Apportionment");
+            cUpdateEmissionsDb _updateEmissionsDb = new cUpdateEmissionsDb(_dbConnection, _logger);
+
             try
             {
                 _updateEmissionsDb.TransactionBegin();
