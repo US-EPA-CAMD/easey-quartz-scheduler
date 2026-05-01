@@ -18,7 +18,7 @@ namespace ECMPS.Checks.DatabaseAccess
     /// <summary>
     /// Database abstration class for PostgreSQL Server
     /// </summary>
-    public class cDatabase
+    public class cDatabase : IDisposable
     {
 
         #region Public Types
