@@ -122,17 +122,17 @@ namespace Epa.Camd.Quartz.Scheduler
 
       services.AddOptions();
 
-      // Inject a configured HttpClient for the `BulkDataFile` job.
-      services.AddHttpClient<BulkDataFile>(client =>
-      {
-          client.Timeout = TimeSpan.FromMilliseconds(1803000);
-      });
-
-      
       CheckEngineEvaluation.RegisterWithQuartz(services);
       BulkDataFile.RegisterWithQuartz(services);
       ProcessSubmissionReminders.RegisterWithQuartz(services);
       ProcessWindowNotifications.RegisterWithQuartz(services);
+
+      // Inject a configured HttpClient for the `BulkDataFile` job.
+      // AddHttpClient<T> MUST be the last DI registration for BulkDataFile.
+      services.AddHttpClient<BulkDataFile>(client =>
+      {
+          client.Timeout = TimeSpan.FromMilliseconds(1830000);
+      });
 
       List<JobDescriptor> jobDescriptors = JobRegistry.BuildRegistry(typeof(DynamicJobScheduler).Assembly);
       DynamicJobScheduler.RegisterWithQuartz(services, jobDescriptors);
