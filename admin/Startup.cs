@@ -131,7 +131,8 @@ namespace Epa.Camd.Quartz.Scheduler
       // AddHttpClient<T> MUST be the last DI registration for BulkDataFile.
       services.AddHttpClient<BulkDataFile>(client =>
       {
-          client.Timeout = TimeSpan.FromMilliseconds(1830000);
+          client.Timeout = TimeSpan.FromMilliseconds(
+              Int32.Parse(_configuration["EASEY_QUARTZ_SCHEDULER_BULK_DATA_HTTP_TIMEOUT"]));
       });
 
       List<JobDescriptor> jobDescriptors = JobRegistry.BuildRegistry(typeof(DynamicJobScheduler).Assembly);

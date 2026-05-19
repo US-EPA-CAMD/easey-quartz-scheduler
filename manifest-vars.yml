@@ -16,6 +16,7 @@ host: easey-dev.app.cloud.gov
 apiGatewayHost: api.epa.gov/easey/dev
 bulkDataS3Bucket: cg-e7433599-fb63-4afa-9e14-652c10fa370a
 bulkBufferSize: 5242880
+bulkDataHttpTimeout: 1830000
 emailProcessMaxRetries: 3
 maxConnectionPool: 100
 idleTimeout: 300
