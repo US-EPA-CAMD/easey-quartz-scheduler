@@ -91,9 +91,12 @@ namespace SilkierQuartz
 
         public static IServiceCollection AddQuartzJob<TJob>(this IServiceCollection services, JobKey key, string description) where TJob : class
         {
-            services.AddTransient<TJob>();
+            if (!services.Any(sd => sd.ServiceType == typeof(TJob)))
+            {
+                services.AddTransient<TJob>();
+            }
             var jobDetail = JobBuilder.Create(typeof(TJob)).WithIdentity(key).WithDescription(description).Build();
-        
+
             jobList.Add(jobDetail.JobType.ToString() + ", " + Assembly.GetAssembly(typeof(TJob)).ToString().Split(",")[0]);
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(jobDetail, new List<ITrigger>()));
             return services;
@@ -207,7 +210,10 @@ namespace SilkierQuartz
             IEnumerable<TriggerBuilder> triggerBuilders)
             where TJob : class, IJob
         {
-            jobRegistrator.Services.AddTransient<TJob>();
+            if (!jobRegistrator.Services.Any(sd => sd.ServiceType == typeof(TJob)))
+            {
+                jobRegistrator.Services.AddTransient<TJob>();
+            }
 
             var jobDetail = JobBuilder.Create<TJob>().Build();
 
