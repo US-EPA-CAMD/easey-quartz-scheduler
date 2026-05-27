@@ -128,7 +128,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         submissionDateDisplay = setRecord.QueuedTime.ToString("MMMM dd, yyyy 'at' h:mm tt"),
         submissionId = setRecord.SetId,
         submitter = setRecord.UserId,
-        yearQtr = "N/A", // The error occurred before processing any individual submissions, so this is not applicable
+        yearQtr = "N/A",
       };
       return JsonConvert.SerializeObject(context);
     }
@@ -249,37 +249,55 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     Configuration["EASEY_CAMD_SERVICES"] + "/submission/process", 
                     httpContent);
 
-                response.EnsureSuccessStatusCode();
+          /// FIX: 202 Accepted is the expected success response from /submission/process.
+          /// Do NOT retry - submission is already processing asynchronously in background.
+          /// Retrying causes duplicate processSubmissionSet executions and duplicate
+          /// feedback emails (EM, MP, QA) sent to users.
+          if (response.StatusCode == System.Net.HttpStatusCode.Accepted)
+          {
+            _logger.LogInformation(
+              "Submission accepted for async processing (202). SubmissionSetId: {SubmissionSetId}",
+              setId);
+            return;
+          }
 
-                _logger.LogInformation(
-                    "Submitted job for SubmissionSetId {SubmissionSetId} with response {ResponseStatusCode}",
-                    setId, response.StatusCode);
+          /// Any other 2xx is also a success - do not retry
+          if (response.IsSuccessStatusCode)
+          {
+            _logger.LogInformation(
+              "Submitted job for SubmissionSetId {SubmissionSetId} with response {ResponseStatusCode}",
+              setId, response.StatusCode);
+            return;
+          }
 
-                return; // success, exit method
-            }
-            catch (Exception e) when (retryCount < maxRetries - 1)
-            {
-                // Calculate exponential backoff with jitter (e.g., 0.5x to 1.5x of the base delay)
-                int delayMs = (int)(Math.Pow(2, retryCount) * 1000);
-                int jitter = rng.Next((int)(delayMs * 0.5), (int)(delayMs * 1.5));
+          /// Non-success: log warning and throw to trigger retry logic
+          _logger.LogWarning(
+            "Non-success response for SubmissionSetId {SubmissionSetId}. Status: {StatusCode}. Will retry if attempts remain.",
+            setId, response.StatusCode);
 
-                _logger.LogWarning(
-                    e,
-                    "Error submitting SubmissionSetId {SubmissionSetId}. Retrying in {DelayMs}ms... Attempt {RetryCount}/{MaxRetries}",
-                    setId, jitter, retryCount + 1, maxRetries);
-
-                await Task.Delay(jitter);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(
-                    e,
-                    "Failed to submit SubmissionSetId {SubmissionSetId} after {RetryCount} attempts",
-                    setId, maxRetries);
-                throw;
-            }
+          response.EnsureSuccessStatusCode();
         }
-    }
+        catch (Exception e) when (retryCount < maxRetries - 1)
+        {
+          int delayMs = (int)(Math.Pow(2, retryCount) * 1000);
+          int jitter = rng.Next((int)(delayMs * 0.5), (int)(delayMs * 1.5));
 
+          _logger.LogWarning(
+            e,
+            "Error submitting SubmissionSetId {SubmissionSetId}. Retrying in {DelayMs}ms... Attempt {RetryCount}/{MaxRetries}",
+            setId, jitter, retryCount + 1, maxRetries);
+
+          await Task.Delay(jitter);
+        }
+        catch (Exception e)
+        {
+          _logger.LogError(
+            e,
+            "Failed to submit SubmissionSetId {SubmissionSetId} after {RetryCount} attempts",
+            setId, maxRetries);
+          throw;
+        }
+      }
+    }
   }
 }
