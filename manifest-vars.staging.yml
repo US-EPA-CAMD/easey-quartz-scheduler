@@ -1,4 +1,4 @@
-instances: 2
+instances: 1
 displayUI: false
 dbReplicaEnabled: true
 environment: staging
