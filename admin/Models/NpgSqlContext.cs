@@ -27,6 +27,9 @@ namespace Epa.Camd.Quartz.Scheduler.Models
         public DbSet<SubmissionSet> SubmissionSet { get; set; }
         public DbSet<Submission> Submissions { get; set; }
 
+        public DbSet<ImportSet> ImportSet { get; set; }
+        public DbSet<ImportQueue> ImportQueue { get; set; }
+
         public DbSet<EmailToProcess> EmailToProcessQueue { get; set; }
         public DbSet<EmailToSend> EmailToSend { get; set; }
         public DbSet<ProgramCode> ProgramCodes { get; set; }
