@@ -48,7 +48,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         int wipOrClaimedCount = _dbContext.ImportSet.Count(s => s.StatusCode == "CLAIMED" || s.StatusCode == "WIP");
         _logger.LogInformation("Found {InQueueCount} import sets in queue and {InWIPCount} in CLAIMED or WIP", inQueueCount, wipOrClaimedCount);
 
-        var maxAllowed = Int32.Parse(_configuration["EASEY_QUARTZ_SCHEDULER_MAX_IMPORT_JOBS"] ?? "1");
+        var maxAllowed = Int32.Parse(_configuration["EASEY_QUARTZ_SCHEDULER_MAX_BULK_IMPORT_JOBS"] ?? "1");
 
         if (wipOrClaimedCount >= maxAllowed)
         {
