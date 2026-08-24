@@ -23,6 +23,7 @@ maxMpEvaluations: 10
 maxQaEvaluations: 10
 maxSubmissionJobs: 10
 maxEmailsToSend: 10
+maxBulkImportJobs: 10
 massEvaluationEmail: "ecmps@epa.gov"
 windowNotificationFromEmail: "ecmps@epa.gov"
 submissionErrorFromEmail: "ecmps@epa.gov"
@@ -30,3 +31,4 @@ bulkFileJobQueueDelay: 5
 emailQueueDelay: 1
 evaluationJobQueueDelay: 1
 submissionJobQueueDelay: 1
+bulkImportJobQueueDelay: 1
