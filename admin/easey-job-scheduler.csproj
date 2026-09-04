@@ -23,12 +23,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.9.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.9.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.1" />
-    <PackageReference Include="Quartz" Version="3.20.0" />
+    <PackageReference Include="Quartz" Version="3.20.1" />
     <PackageReference Include="Quartz.AspNetCore" Version="3.20.0" />
     <PackageReference Include="Quartz.Jobs" Version="3.20.0" />
     <PackageReference Include="Quartz.Plugins" Version="3.20.0" />
     <PackageReference Include="Quartz.Plugins.RecentHistory" Version="1.0.3" />
-    <PackageReference Include="Quartz.Plugins.TimeZoneConverter" Version="3.20.0" />
+    <PackageReference Include="Quartz.Plugins.TimeZoneConverter" Version="3.20.1" />
     <PackageReference Include="Quartz.Serialization.Json" Version="3.20.0" />
   </ItemGroup>
   <ItemGroup>
