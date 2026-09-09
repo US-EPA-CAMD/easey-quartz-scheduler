@@ -37,3 +37,6 @@ updates:
         versions: [">=7.0.0"]
       - dependency-name: "Handlebars.Net"
         versions: [">=2.0.0"]        
+      - dependency-name: "Quartz.Serialization.Json"
+        versions: [">=4.0.0"]
+        
