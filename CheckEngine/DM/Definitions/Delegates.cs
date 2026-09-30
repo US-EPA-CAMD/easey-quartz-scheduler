@@ -136,7 +136,7 @@ namespace ECMPS.DM.Definitions
                                         eApportionmentType? apportionmentType,
                                         bool? isMatsEmissionReport,
                                         long[] pdemReportIdArray,
-                                        int?[] unitKeyArray,
+                                        long?[] unitKeyArray,
                                         DateTime?[] opDateArray,
                                         int?[] opHourArray,
                                         decimal?[] opTimeArray,

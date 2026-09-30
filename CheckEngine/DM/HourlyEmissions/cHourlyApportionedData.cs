@@ -35,7 +35,7 @@ namespace ECMPS.DM.HourlyEmissions
 
             // Initialize data arrays
             {
-                UnitKeyArray = new int?[DataLength];
+                UnitKeyArray = new long?[DataLength];
                 PdemReportIdArray = new long[DataLength];
                 OpDateArray = new DateTime?[DataLength];
                 OpHourArray = new int?[DataLength];
@@ -241,7 +241,7 @@ namespace ECMPS.DM.HourlyEmissions
         /// <summary>
         /// The arrau of Unit Keys (UNIT_ID).
         /// </summary>
-        public int?[] UnitKeyArray { get; private set; }
+        public long?[] UnitKeyArray { get; private set; }
 
         /// <summary>
         /// The array of Op Dates.

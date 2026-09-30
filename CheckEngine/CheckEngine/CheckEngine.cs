@@ -1065,7 +1065,7 @@ namespace ECMPS.Checks.CheckEngine
         /// <returns>Return true if processing is successful.</returns>
         private bool RunChecks_ProcessInit_GetFacilityInfo(eFacilityLookupType facilityLookupType,
                                                            string facilityLookupId,
-                                                           out int? facilityId,
+                                                           out long? facilityId,
                                                            out int? firstEcmpsReportingPeriodId,
                                                            out cReportingPeriod firstEcmpsReportingPeriod)
         {
@@ -1141,7 +1141,7 @@ namespace ECMPS.Checks.CheckEngine
         {
             bool result;
 
-            int? facilityId;
+            long? facilityId;
             int? firstEcmpsReportingPeriodId;
             cReportingPeriod firstEcmpsReportingPeriod;
 

@@ -104,7 +104,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         });
 
         string processCode = dataMap.GetString("ProcessCode");
-        int facilityId = dataMap.GetIntValue("FacilityId");
+        long facilityId = Convert.ToInt64(dataMap["FacilityId"]);
         string facilityName = dataMap.GetString("FacilityName");
         string monitorPlanId = dataMap.GetString("MonitorPlanId");
         string monPlanConfig = dataMap.GetString("Configuration");
@@ -642,7 +642,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
       long id,
       string setId,
       string processCode,
-      int facilityId,
+      long facilityId,
       string facilityName,
       string monitorPlanId,
       string monPlanConfig,

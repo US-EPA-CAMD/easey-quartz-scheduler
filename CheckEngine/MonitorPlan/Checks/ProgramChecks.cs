@@ -638,7 +638,7 @@ namespace ECMPS.Checks.ProgramChecks
                         DateTime evaluationBeginDate = mpParams.ProgramParameterEvaluationBeginDate.Value;
                         DateTime evaluationEndDate = mpParams.ProgramParameterEvaluationEndDate.Value;
                         string unitMonLocId = mpParams.CurrentProgramParameter.MonLocId;
-                        int unitId = mpParams.CurrentProgramParameter.UnitId.Value;
+                        long unitId = mpParams.CurrentProgramParameter.UnitId.Value;
 
 
                         /* Get Method Parameter list and description for current Program Parameter row */
@@ -814,7 +814,7 @@ namespace ECMPS.Checks.ProgramChecks
                         DateTime evaluationBeginDate = mpParams.ProgramParameterEvaluationBeginDate.Value;
                         DateTime evaluationEndDate = mpParams.ProgramParameterEvaluationEndDate.Value;
                         string unitMonLocId = mpParams.CurrentProgramParameter.MonLocId;
-                        int unitId = mpParams.CurrentProgramParameter.UnitId.Value;
+                        long unitId = mpParams.CurrentProgramParameter.UnitId.Value;
 
                         /* Widely Used Result Sets*/
                         CheckDataView<VwUnitStackConfigurationRow> unitStackConfigurationView;

@@ -11,7 +11,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
  		public string Id { get; set; }
 
 		[Column("unit_id")]
-		public int? UnitId { get; set; }
+		public long? UnitId { get; set; }
 
 		[Column("unitid")]
 		public string UnitName { get; set; }		

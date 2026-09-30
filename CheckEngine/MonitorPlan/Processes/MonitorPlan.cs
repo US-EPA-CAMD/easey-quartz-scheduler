@@ -450,7 +450,7 @@ namespace ECMPS.Checks.MonitorPlanEvaluation
             AddSourceDataTable("MonitorMethod", "camdecmpswks.vw_monitor_method", AllRelatedLocationsWhere);  //SQL Server Source: "VW_MONITOR_METHOD"
             AddSourceDataTable("MATSMethodData", string.Format("camdecmpswks.mats_method_data_parameter('{0}')", mCheckEngine.MonPlanId), AllRelatedLocationsWhere);  //SQL Server Source: "CheckMp.MATSMethodDataParameter('{0}')"
             AddSourceDataTable("MATSCombinedMethod", string.Format("camdecmpswks.mats_combined_method('{0}')", mCheckEngine.MonPlanId), AllRelatedLocationsWhere);  //SQL Server Source: "CheckMp.MatsCombinedMethod('{0}')"
-            AddSourceDataTable("CombinedFacilityMethodRecords", string.Format("camdecmpswks.combined_methods('{0}')", int.Parse(mFacilityID.ToString())), AllRelatedLocationsWhere);  //SQL Server Source: "CheckMp.CombinedMethods('{0}')"
+            AddSourceDataTable("CombinedFacilityMethodRecords", string.Format("camdecmpswks.combined_methods('{0}')", mFacilityID), AllRelatedLocationsWhere);  //SQL Server Source: "CheckMp.CombinedMethods('{0}')"
 
             AddSourceDataTable("MonitorQualification", "camdecmpswks.vw_monitor_qualification", AllRelatedLocationsWhere); //SQL Server Source: "VW_MONITOR_QUALIFICATION"
             AddSourceDataTable("MonitorQualificationPct", "camdecmpswks.vw_monitor_qualification_pct", AllRelatedLocationsWhere); //SQL Server Source: "VW_MONITOR_QUALIFICATION_PCT"

@@ -8,7 +8,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
 	{
  		[Key]
 		[Column("fac_id")]
- 		public int Id { get; set; }
+		public long Id { get; set; }
 
 		[Column("oris_code")]
  		public int OrisCode { get; set; }		 

@@ -2546,7 +2546,7 @@ namespace ECMPS.Checks.EmissionsChecks
                         CheckDataView<VwMpLocationFuelRow> unitFuelRecords
                             = emParams.FacilityUnitFuelRecords.FindActiveRows(emParams.CurrentReportingPeriodBeginDate.Value,
                                                                                   emParams.CurrentReportingPeriodEndDate.Value,
-                                                                                  new cFilterCondition("UNIT_ID", eFilterConditionRelativeCompare.Equals, (int)monitoringPlanLocationRecord.UnitId.Value),
+                                                                                  new cFilterCondition("UNIT_ID", eFilterConditionRelativeCompare.Equals, monitoringPlanLocationRecord.UnitId.Value),
                                                                                   new cFilterCondition("INDICATOR_CD", "P,S", eFilterConditionStringCompare.InList));
 
                         foreach (VwMpLocationFuelRow unitFuelRecord in unitFuelRecords)
