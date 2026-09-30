@@ -25,7 +25,7 @@ namespace ECMPS.DM.Utilities
     /// <param name="locationKey">The location key of the location.</param>
     /// <param name="unitKey">The unit key if the location is a unit.</param>
     /// <param name="locationName">The name of the location.</param>
-    public cLocationInfo(string locationKey, int? unitKey, string locationName)
+    public cLocationInfo(string locationKey, long? unitKey, string locationName)
     {
       if (!locationKey.HasValue() && !locationName.HasValue())
         throw new System.ArgumentException("Argument cannot be null", "locationKey, locationName");
@@ -57,7 +57,7 @@ namespace ECMPS.DM.Utilities
     /// <summary>
     /// The Unit Key of the location.
     /// </summary>
-    public int? UnitKey { get; private set; }
+    public long? UnitKey { get; private set; }
 
     #endregion
 

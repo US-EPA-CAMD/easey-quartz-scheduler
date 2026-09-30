@@ -70,7 +70,7 @@ namespace ECMPS.Checks.EmissionsReport
             /// <param name="checkCatalogResultId">The check catalog result id of the result.</param>
             /// <param name="checkResult">The check result of the result.</param>
             /// <param name="severityCd">The severity code of the result.</param>
-            public cCheckCatalogResult(int? checkCatalogResultId, string checkResult, string severityCd)
+            public cCheckCatalogResult(long? checkCatalogResultId, string checkResult, string severityCd)
             {
                 CheckCatalogResultId = checkCatalogResultId;
                 CheckResult = checkResult;
@@ -80,7 +80,7 @@ namespace ECMPS.Checks.EmissionsReport
             /// <summary>
             /// The severity code of the result.
             /// </summary>
-            public int? CheckCatalogResultId { get; private set; }
+            public long? CheckCatalogResultId { get; private set; }
 
             /// <summary>
             /// The check result value of the result.
@@ -178,7 +178,7 @@ namespace ECMPS.Checks.EmissionsReport
                         for (int apportionmentRangeDex = 0; apportionmentRangeDex < apportionmentRangeView.Count; apportionmentRangeDex++)
                         {
                             DataRowView apportionmentRangeRow = apportionmentRangeView[apportionmentRangeDex];
-                            int? apportRangeId = apportionmentRangeRow["Apport_Range_Id"].AsInteger();
+                            long? apportRangeId = apportionmentRangeRow["Apport_Range_Id"].AsLong();
                             DateTime beginDateHour = apportionmentRangeRow["Begin_DateHour"].AsDateTime(DateTime.MinValue);
                             DateTime endDateHour = apportionmentRangeRow["End_DateHour"].AsDateTime(DateTime.MaxValue);
 
@@ -191,7 +191,7 @@ namespace ECMPS.Checks.EmissionsReport
 
                             foreach (DataRowView apportionmentDataRow in apportionmentDataView)
                             {
-                                int? apportDataId = apportionmentDataRow["Apport_Data_Id"].AsInteger();
+                                long? apportDataId = apportionmentDataRow["Apport_Data_Id"].AsLong();
 
                                 // Init Factor Formula Object
                                 cFactorFormulae factorFormulae = new cFactorFormulae(unitInfo, locationInfo,
@@ -617,7 +617,7 @@ namespace ECMPS.Checks.EmissionsReport
             bool result;
 
             long[] pdemReportIdArray = hourlyApportionedData.PdemReportIdArray;
-            int?[] unitKeyArray = hourlyApportionedData.UnitKeyArray;
+            long?[] unitKeyArray = hourlyApportionedData.UnitKeyArray;
             DateTime?[] opDateArray = hourlyApportionedData.OpDateArray;
             int?[] opHourArray = hourlyApportionedData.OpHourArray;
             decimal?[] opTimeArray = hourlyApportionedData.OpTimeArray;

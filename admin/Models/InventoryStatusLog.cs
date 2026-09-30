@@ -12,10 +12,10 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public int InventoryStatusLogId { get; set; }
 
     [Column("fac_id")]
-    public int FacId { get; set; }
+    public long FacId { get; set; }
 
     [Column("unit_id")]
-    public int UnitId { get; set; }
+    public long UnitId { get; set; }
 
     [Column("data_type_cd")]
     public string DataTypeCd { get; set; }

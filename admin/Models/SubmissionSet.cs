@@ -24,7 +24,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
     public string UserEmail { get; set; }
 
     [Column("fac_id")]
-    public Int32 FacId { get; set; }
+    public long FacId { get; set; }
 
     [Column("oris_code")]
     public Int32 OrisCode { get; set; }

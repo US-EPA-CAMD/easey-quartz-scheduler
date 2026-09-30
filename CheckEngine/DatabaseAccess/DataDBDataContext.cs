@@ -50,7 +50,7 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <param name="firstEcmpsRptPeriodId">First ECMPS RPT_PERIOD_ID for the facility.</param>
         /// <param name="errorMessage">Message returned if the get failed.</param>
         /// <returns></returns>
-        public int GetFacilityInfo(string lookupType, string lookupId, ref System.Nullable<int> facId, ref System.Nullable<int> firstEcmpsRptPeriodId, ref string errorMessage)
+        public int GetFacilityInfo(string lookupType, string lookupId, ref System.Nullable<long> facId, ref System.Nullable<int> firstEcmpsRptPeriodId, ref string errorMessage)
         {
             //TODO (EC-3519): Testing Needed
             DataTable AResultTable;
@@ -65,7 +65,7 @@ namespace ECMPS.Checks.DatabaseAccess
                     // Read error_msg first so it is preserved even if a subsequent column is null/unparseable.
                     errorMessage = (row["error_msg"] != DBNull.Value) ? row["error_msg"].ToString() : null;
 
-                    facId = (row["facId"] != DBNull.Value) ? int.Parse(row["facId"].ToString()) : (int?)null; // Must handle a null facId
+                    facId = (row["facId"] != DBNull.Value) ? long.Parse(row["facId"].ToString()) : (long?)null; // Must handle a null facId
 
                     firstEcmpsRptPeriodId = (row["firstEcmpsRptPeriodId"] != DBNull.Value) ? int.Parse(row["firstEcmpsRptPeriodId"].ToString()) : (int?)null; // Must handle a null firstEcmpsrptPeriodId
                 }

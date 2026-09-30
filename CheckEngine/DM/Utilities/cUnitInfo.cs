@@ -19,7 +19,7 @@ namespace ECMPS.DM.Utilities
     /// <param name="unitKey">The unit (UNIT_ID) key.</param>
     /// <param name="unitName">The name of the unit.</param>
     /// <param name="locationPosition">The position of the location in Location Info.</param>
-    public cUnitInfo(string locationKey, int? unitKey, string unitName, int? locationPosition)
+    public cUnitInfo(string locationKey, long? unitKey, string unitName, int? locationPosition)
       : base(locationKey, unitKey, unitName)
     {
       LocationPosition = locationPosition;

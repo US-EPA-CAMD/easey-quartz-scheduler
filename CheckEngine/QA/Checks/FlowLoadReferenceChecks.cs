@@ -637,7 +637,7 @@ namespace ECMPS.Checks.FlowLoadReferenceChecks
                             string OldFilter3 = UnitStackConfigs.RowFilter;
                             string UnitStackPipeID2 = cDBConvert.ToString(CurrentFlowToLoadReference["MON_LOC_ID"]);
                             UnitStackConfigs.RowFilter = AddToDataViewFilter(OldFilter3, "STACK_PIPE_MON_LOC_ID = '" + UnitStackPipeID2 + "'");
-                            int UnitID = cDBConvert.ToInteger(((DataRowView)UnitStackConfigs[0])["UNIT_ID"]);
+                            long UnitID = cDBConvert.ToLong(((DataRowView)UnitStackConfigs[0])["UNIT_ID"]);
                             UnitStackConfigs.RowFilter = AddToDataViewFilter(OldFilter3, "UNIT_ID = " + UnitID + " AND STACK_NAME LIKE 'MS%' AND STACK_NAME <> '" + UnitStackPipeID + "'");
                             DataView FacQASuppDataRecords = (DataView)Category.GetCheckParameter("Facility_QA_Supplemental_Data_Records").ParameterValue;
                             string OldFilter4 = FacQASuppDataRecords.RowFilter;

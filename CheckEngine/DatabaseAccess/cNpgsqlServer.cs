@@ -2566,7 +2566,7 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <returns>True if the facility was located</returns>
         public bool GetFacilityInfo(eFacilityLookupType lookupType,
                                     string lookupId,
-                                    ref int? facId,
+                                    ref long? facId,
                                     ref int? firstEcmpsRptPeriodId,
                                     ref string errorMessage)
         {
@@ -2616,7 +2616,7 @@ namespace ECMPS.Checks.DatabaseAccess
         /// <returns>True if the facility was located</returns>
         public bool GetFacilityInfo(eFacilityLookupType lookupType,
                                     string lookupId,
-                                    ref int? facId,
+                                    ref long? facId,
                                     ref int? firstEcmpsRptPeriodId)
         {
             bool result;

@@ -26,7 +26,7 @@ namespace ECMPS.Checks.Parameters
     /// <param name="ARuleCheckId">The rule check id of the associated check</param>
     /// <param name="ACheckTypeCd">The check type id of the associated check</param>
     /// <param name="ACheckNumber">The check number of the assocaited check</param>
-    public cParameterizedCheck(int ARuleCheckId, string ACheckTypeCd, int ACheckNumber)
+    public cParameterizedCheck(long ARuleCheckId, string ACheckTypeCd, int ACheckNumber)
     {
       FRuleCheckId = ARuleCheckId;
       FCheckTypeCd = ACheckTypeCd;
@@ -48,7 +48,7 @@ namespace ECMPS.Checks.Parameters
     private cCheckParameter[] FCheckParametersInputOptional = null;
     private cCheckParameter[] FCheckParametersInputRequired = null;
     private cCheckParameter[] FCheckParametersOutput = null;
-    private int FRuleCheckId;
+    private long FRuleCheckId;
 
     #endregion
 
@@ -102,7 +102,7 @@ namespace ECMPS.Checks.Parameters
     /// <summary>
     /// The rule check id associated with the Parameterized Check
     /// </summary>
-    public int RuleCheckId { get { return FRuleCheckId; } }
+    public long RuleCheckId { get { return FRuleCheckId; } }
 
     #endregion
 

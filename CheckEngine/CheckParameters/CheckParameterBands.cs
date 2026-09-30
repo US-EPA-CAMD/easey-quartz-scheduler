@@ -231,7 +231,7 @@ namespace ECMPS.Checks.Parameters
 
         foreach (DataRow CheckRow in CheckTable.Rows)
         {
-          int RuleCheckId = cDBConvert.ToInteger(CheckRow["RULE_CHECK_ID"]);
+          long RuleCheckId = cDBConvert.ToLong(CheckRow["RULE_CHECK_ID"]);
           string CheckTypeCd = cDBConvert.ToString(CheckRow["CHECK_TYPE_CD"]);
           int CheckNumber = cDBConvert.ToInteger(CheckRow["CHECK_NUMBER"]);
 
@@ -353,7 +353,7 @@ namespace ECMPS.Checks.Parameters
 
     #region Private Methods: SQL Execution
 
-    private bool GetCategoryCheckParameters(int ARuleCheckId, eParameterUsageType AParameterUsageType, cDatabase ADatabase,
+    private bool GetCategoryCheckParameters(long ARuleCheckId, eParameterUsageType AParameterUsageType, cDatabase ADatabase,
                                             out DataTable AResultTable, ref string AErrorMessage)
     {
       string Sql;
@@ -383,7 +383,7 @@ namespace ECMPS.Checks.Parameters
       return cUtilities.Database_GetDataTable(Sql, ADatabase, out AResultTable, ref AErrorMessage);
     }
 
-    private bool GetCategoryCheckParameters(int ARuleCheckId, eParameterUsageType AParameterUsageType,
+    private bool GetCategoryCheckParameters(long ARuleCheckId, eParameterUsageType AParameterUsageType,
                                             cDatabase AAuxDatabase, cCheckParameters ACheckParameters,
                                             out cCheckParameter[] AParameterList, ref string AErrorMessage)
     {

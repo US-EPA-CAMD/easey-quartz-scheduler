@@ -11,7 +11,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
  		public string Id { get; set; }
 
 		[Column("fac_id")]
-		public int FacilityId { get; set; }
+		public long FacilityId { get; set; }
 
 		[Column("eval_status_cd")]
  		public string EvalStatus { get; set; }

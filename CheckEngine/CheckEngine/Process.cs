@@ -1585,7 +1585,7 @@ namespace ECMPS.Checks.CheckEngine
     /// <returns></returns>
     protected long GetFacilityID()
     {
-      return cDBConvert.ToInteger(mCheckEngine.DbConnection.ExecuteScalar("SELECT FAC_ID FROM camdecmpswks.monitor_plan WHERE MON_PLAN_ID = '" + mCheckEngine.MonPlanId + "'"));
+      return cDBConvert.ToLong(mCheckEngine.DbConnection.ExecuteScalar("SELECT FAC_ID FROM camdecmpswks.monitor_plan WHERE MON_PLAN_ID = '" + mCheckEngine.MonPlanId + "'"));
     }
 
     /// <summary>
@@ -1596,10 +1596,10 @@ namespace ECMPS.Checks.CheckEngine
       mCheckLogs.Columns.Add("CHK_LOG_ID");
       mCheckLogs.Columns.Add("CHK_SESSION_ID");
       mCheckLogs.Columns.Add("BEGIN_DATE", System.Type.GetType("System.DateTime"));
-      mCheckLogs.Columns.Add("RULE_CHECK_ID", System.Type.GetType("System.Int32"));
+      mCheckLogs.Columns.Add("RULE_CHECK_ID", System.Type.GetType("System.Int64"));
       mCheckLogs.Columns.Add("RESULT_MESSAGE");
       mCheckLogs.Columns.Add("CHK_LOG_COMMENT");
-      mCheckLogs.Columns.Add("CHECK_CATALOG_RESULT_ID", System.Type.GetType("System.Int32"));
+      mCheckLogs.Columns.Add("CHECK_CATALOG_RESULT_ID", System.Type.GetType("System.Int64"));
       mCheckLogs.Columns.Add("MON_LOC_ID");
       mCheckLogs.Columns.Add("TEST_SUM_ID");
       mCheckLogs.Columns.Add("SOURCE_TABLE");
@@ -1609,16 +1609,16 @@ namespace ECMPS.Checks.CheckEngine
       mCheckLogs.Columns.Add("CHECK_RESULT");
       mCheckLogs.Columns.Add("SEVERITY_CD");
       mCheckLogs.Columns.Add("SUPPRESSED_SEVERITY_CD");
-      mCheckLogs.Columns.Add("ERROR_SUPPRESS_ID", System.Type.GetType("System.Int32"));
+      mCheckLogs.Columns.Add("ERROR_SUPPRESS_ID", System.Type.GetType("System.Int64"));
 
       //The order of these columns must match the order of the columns in the Check Log table.
       mCheckLogsMerged.Columns.Add("CHK_LOG_ID");
       mCheckLogsMerged.Columns.Add("CHK_SESSION_ID");
       mCheckLogsMerged.Columns.Add("BEGIN_DATE", System.Type.GetType("System.DateTime"));
-      mCheckLogsMerged.Columns.Add("RULE_CHECK_ID", System.Type.GetType("System.Int32"));
+      mCheckLogsMerged.Columns.Add("RULE_CHECK_ID", System.Type.GetType("System.Int64"));
       mCheckLogsMerged.Columns.Add("RESULT_MESSAGE");
       mCheckLogsMerged.Columns.Add("CHK_LOG_COMMENT");
-      mCheckLogsMerged.Columns.Add("CHECK_CATALOG_RESULT_ID", System.Type.GetType("System.Int32"));
+      mCheckLogsMerged.Columns.Add("CHECK_CATALOG_RESULT_ID", System.Type.GetType("System.Int64"));
       mCheckLogsMerged.Columns.Add("MON_LOC_ID");
       mCheckLogsMerged.Columns.Add("TEST_SUM_ID");
       mCheckLogsMerged.Columns.Add("OP_BEGIN_DATE", System.Type.GetType("System.DateTime"));
@@ -1632,7 +1632,7 @@ namespace ECMPS.Checks.CheckEngine
       mCheckLogsMerged.Columns.Add("CHECK_RESULT");
       mCheckLogsMerged.Columns.Add("SEVERITY_CD");
       mCheckLogsMerged.Columns.Add("SUPPRESSED_SEVERITY_CD");
-      mCheckLogsMerged.Columns.Add("ERROR_SUPPRESS_ID", System.Type.GetType("System.Int32"));
+      mCheckLogsMerged.Columns.Add("ERROR_SUPPRESS_ID", System.Type.GetType("System.Int64"));
     }
 
     #endregion

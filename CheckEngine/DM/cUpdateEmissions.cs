@@ -426,7 +426,7 @@ namespace ECMPS.DM
                 try
                 {
                     locationInfo[locationDex] = new cLocationInfo(locationRow["MON_LOC_ID"].AsString(),
-                                                                  locationRow["UNIT_ID"].AsInteger(),
+                                                                  locationRow["UNIT_ID"].AsLong(),
                                                                   locationRow["LOCATION_NAME"].AsString());
                 }
                 catch (Exception ex)

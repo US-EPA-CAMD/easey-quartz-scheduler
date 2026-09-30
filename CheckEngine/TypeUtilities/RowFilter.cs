@@ -267,6 +267,23 @@ namespace ECMPS.Checks.TypeUtilities
         }
 
         /// <summary>
+        /// Creates a long integer filter condition and specifies the comparison method.
+        /// </summary>
+        /// <param name="field">The database column involved in the filter.</param>
+        /// <param name="compare">The comparison to perform.</param>
+        /// <param name="value">The value by which to filter.</param>
+        public cFilterCondition(string field, eFilterConditionRelativeCompare compare, long value)
+        {
+            Field = field;
+            DataType = eFilterDataType.Long;
+            Value = value;
+            Compare = Convert(compare);
+            Negate = false;
+            SubstrPos = int.MinValue;
+            SubstrLen = int.MinValue;
+        }
+
+        /// <summary>
         /// Creates a filter condition class for a date/time and specifying a comparison method.
         /// </summary>
         /// <param name="field">The database column involved in the filter.</param>
@@ -275,6 +292,22 @@ namespace ECMPS.Checks.TypeUtilities
         {
             Field = field;
             DataType = eFilterDataType.Integer;
+            Value = value;
+            Compare = eFilterConditionCompare.Equals;
+            Negate = false;
+            SubstrPos = int.MinValue;
+            SubstrLen = int.MinValue;
+        }
+
+        /// <summary>
+        /// Creates a long integer equality filter condition.
+        /// </summary>
+        /// <param name="field">The database column involved in the filter.</param>
+        /// <param name="value">The value by which to filter.</param>
+        public cFilterCondition(string field, long value)
+        {
+            Field = field;
+            DataType = eFilterDataType.Long;
             Value = value;
             Compare = eFilterConditionCompare.Equals;
             Negate = false;
