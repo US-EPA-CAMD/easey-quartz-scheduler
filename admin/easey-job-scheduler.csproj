@@ -29,7 +29,7 @@
     <PackageReference Include="Quartz.Plugins" Version="3.22.4" />
     <PackageReference Include="Quartz.Plugins.RecentHistory" Version="1.0.3" />
     <PackageReference Include="Quartz.Plugins.TimeZoneConverter" Version="3.22.3" />
-    <PackageReference Include="Quartz.Serialization.Json" Version="3.22.3" />
+    <PackageReference Include="Quartz.Serialization.Json" Version="3.22.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CheckEngine\CheckEngine\CheckEngine.csproj" />
