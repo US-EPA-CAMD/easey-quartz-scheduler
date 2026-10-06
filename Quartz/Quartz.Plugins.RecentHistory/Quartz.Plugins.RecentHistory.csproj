@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Quartz" Version="3.22.3" />
+    <PackageReference Include="Quartz" Version="3.22.4" />
   </ItemGroup>
 
   <ItemGroup>
