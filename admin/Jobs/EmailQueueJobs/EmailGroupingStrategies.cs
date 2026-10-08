@@ -132,7 +132,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
             {
                 // Find all email records for facilities this recipient manages
                 var recipientEmailRecords = emailRecords
-                    .Where(er => facilities.Contains(Convert.ToInt64(er.FacId))) // FIXED: Convert decimal to long
+                    .Where(er => facilities.Contains(Convert.ToInt64(er.FacId)))
                     .ToList();
                     
                 if (recipientEmailRecords.Any())
@@ -230,7 +230,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs.EmailQueueJobs
             {
                 var facId = facilityGroup.Key;
                 var facilityEmailRecords = facilityGroup.ToList();
-                var facilityIdLong = Convert.ToInt64(facId); // Convert decimal to long
+                var facilityIdLong = Convert.ToInt64(facId);
                 
                 if (facilityToRecipients.ContainsKey(facilityIdLong))
                 {

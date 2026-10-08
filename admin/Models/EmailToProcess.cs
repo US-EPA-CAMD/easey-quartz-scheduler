@@ -14,7 +14,7 @@ namespace Epa.Camd.Quartz.Scheduler.Models
  		public long ProcessId { get; set; }
 
 		[Column("fac_id")]
- 		public decimal FacId { get; set; }
+		public int FacId { get; set; }
 
 		[Column("email_type")]
  		public required string EmailType { get; set; }
