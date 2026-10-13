@@ -93535,7 +93535,7 @@ namespace ECMPS.Checks.Data.Ecmps.Dbo.View
         }
         
         /// UNIT_ID
-        public decimal? UnitId
+        public int? UnitId
         {
             get
             {
@@ -93546,7 +93546,7 @@ namespace ECMPS.Checks.Data.Ecmps.Dbo.View
                 }
                 else
                 {
-                    return ((decimal?)(SourceRow["UNIT_ID"]));
+                    return (Convert.ToInt32(SourceRow["UNIT_ID"]));
                 }
             }
             set
