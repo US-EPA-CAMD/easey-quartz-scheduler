@@ -392,7 +392,7 @@ namespace ECMPS.Checks.UnitControlChecks
 				DataView dvControlRecords = (DataView)Category.GetCheckParameter("Control_Records").ParameterValue;
 				sFilterPair[] criteria1 = new sFilterPair[4];
 				criteria1[0].Set("UNIT_ID", CurrentRecord["UNIT_ID"], eFilterDataType.Integer);
-				criteria1[1].Set("control_equip_param_cd", CurrentRecord["control_equip_param_cd"].ToString());
+				criteria1[1].Set("CE_PARAM", CurrentRecord["CE_PARAM"].ToString());
 				criteria1[2].Set("CONTROL_CD", CurrentRecord["CONTROL_CD"].ToString());
 				criteria1[3].Set("INSTALL_DATE", CurrentRecord["INSTALL_DATE"], eFilterDataType.DateBegan);
 				sFilterPair[] criteria2 = new sFilterPair[4];
