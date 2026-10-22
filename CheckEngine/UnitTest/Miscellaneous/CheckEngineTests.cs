@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using ECMPS.Checks.CheckEngine;
+using ECMPS.Checks.Data.Ecmps.Dbo.Table;
 using ECMPS.Checks.Data.Ecmps.Dbo.View;
 
 namespace UnitTest.Miscellaneous
@@ -45,6 +46,20 @@ namespace UnitTest.Miscellaneous
 
                 Assert.AreEqual(4, testCount, "No rows");
             }
+        }
+
+        [TestMethod]
+        public void ControlRows_CeParamRoundTrips()
+        {
+            UnitControlRow unitControl = new UnitControlRow(ceParam: "NOX");
+            VwLocationControlRow locationControl = new VwLocationControlRow(ceParam: "SO2");
+
+            Assert.AreEqual("NOX", unitControl.CeParam);
+            Assert.AreEqual("SO2", locationControl.CeParam);
+            Assert.IsTrue(UnitControlRow.CreateBaseTable().Columns.Contains("CE_PARAM"));
+            Assert.IsTrue(VwLocationControlRow.CreateBaseTable().Columns.Contains("CE_PARAM"));
+            Assert.IsFalse(UnitControlRow.CreateBaseTable().Columns.Contains("control_equip_param_cd"));
+            Assert.IsFalse(VwLocationControlRow.CreateBaseTable().Columns.Contains("control_equip_param_cd"));
         }
 
 
