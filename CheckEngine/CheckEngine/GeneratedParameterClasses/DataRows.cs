@@ -39615,13 +39615,13 @@ namespace ECMPS.Checks.Data.Ecmps.Dbo.Table
             get
             {
                 if (((SourceRow == null) 
-                            || (SourceRow["control_equip_param_cd"] == DBNull.Value)))
+                            || (SourceRow["CE_PARAM"] == DBNull.Value)))
                 {
                     return null;
                 }
                 else
                 {
-                    return ((string)(SourceRow["control_equip_param_cd"]));
+                    return ((string)(SourceRow["CE_PARAM"]));
                 }
             }
             set
@@ -39631,11 +39631,11 @@ namespace ECMPS.Checks.Data.Ecmps.Dbo.Table
                 {
                     if ((value == null))
                     {
-                        SourceRow["control_equip_param_cd"] = DBNull.Value;
+                        SourceRow["CE_PARAM"] = DBNull.Value;
                     }
                     else
                     {
-                        SourceRow["control_equip_param_cd"] = value;
+                        SourceRow["CE_PARAM"] = value;
                     }
                 }
             }
@@ -39939,7 +39939,7 @@ namespace ECMPS.Checks.Data.Ecmps.Dbo.Table
             System.Data.DataTable result = new System.Data.DataTable("UNIT_CONTROL");
             result.Columns.Add("CTL_ID", typeof(string));
             result.Columns.Add("UNIT_ID", typeof(int));
-            result.Columns.Add("control_equip_param_cd", typeof(string));
+            result.Columns.Add("CE_PARAM", typeof(string));
             result.Columns.Add("CONTROL_CD", typeof(string));
             result.Columns.Add("ORIG_IND", typeof(int));
             result.Columns.Add("SEAS_IND", typeof(int));
@@ -47295,13 +47295,13 @@ namespace ECMPS.Checks.Data.Ecmps.Dbo.View
             get
             {
                 if (((SourceRow == null) 
-                            || (SourceRow["control_equip_param_cd"] == DBNull.Value)))
+                            || (SourceRow["CE_PARAM"] == DBNull.Value)))
                 {
                     return null;
                 }
                 else
                 {
-                    return ((string)(SourceRow["control_equip_param_cd"]));
+                    return ((string)(SourceRow["CE_PARAM"]));
                 }
             }
             set
@@ -47311,11 +47311,11 @@ namespace ECMPS.Checks.Data.Ecmps.Dbo.View
                 {
                     if ((value == null))
                     {
-                        SourceRow["control_equip_param_cd"] = DBNull.Value;
+                        SourceRow["CE_PARAM"] = DBNull.Value;
                     }
                     else
                     {
-                        SourceRow["control_equip_param_cd"] = value;
+                        SourceRow["CE_PARAM"] = value;
                     }
                 }
             }
@@ -47562,7 +47562,7 @@ namespace ECMPS.Checks.Data.Ecmps.Dbo.View
             result.Columns.Add("UNITID", typeof(string));
             result.Columns.Add("COMM_OP_DATE", typeof(System.DateTime));
             result.Columns.Add("COMR_OP_DATE", typeof(System.DateTime));
-            result.Columns.Add("control_equip_param_cd", typeof(string));
+            result.Columns.Add("CE_PARAM", typeof(string));
             result.Columns.Add("CONTROL_CD", typeof(string));
             result.Columns.Add("CONTROL_CD_DESCRIPTION", typeof(string));
             result.Columns.Add("ORIG_IND", typeof(int));
