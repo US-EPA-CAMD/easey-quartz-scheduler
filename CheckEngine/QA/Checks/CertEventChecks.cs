@@ -818,7 +818,7 @@ namespace ECMPS.Checks.CertEventChecks
 
             ControlRecs = (DataView)Category.GetCheckParameter("Location_Control_Records").ParameterValue;
             ControlFilter = new sFilterPair[2];
-            ControlFilter[0].Set("control_equip_param_cd", "SO2");
+            ControlFilter[0].Set("CE_PARAM", "SO2");
             ControlFilter[1].Set("INSTALL_DATE", CertDate, eFilterDataType.DateBegan, eFilterPairRelativeCompare.LessThanOrEqual);
             if (CountRows(ControlRecs, ControlFilter) == 0)
               Category.CheckCatalogResult = "A";
@@ -828,7 +828,7 @@ namespace ECMPS.Checks.CertEventChecks
             {
               ControlRecs = (DataView)Category.GetCheckParameter("Location_Control_Records").ParameterValue;
               ControlFilter = new sFilterPair[2];
-              ControlFilter[0].Set("control_equip_param_cd", "NOX");
+              ControlFilter[0].Set("CE_PARAM", "NOX");
               ControlFilter[1].Set("INSTALL_DATE", CertDate, eFilterDataType.DateBegan, eFilterPairRelativeCompare.LessThanOrEqual);
               if (CountRows(ControlRecs, ControlFilter) == 0)
                 Category.CheckCatalogResult = "B";
