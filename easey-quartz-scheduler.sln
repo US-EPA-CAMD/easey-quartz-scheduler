@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.9.34701.34
+# Visual Studio Version 18
+VisualStudioVersion = 18.10.12210.168 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "easey-job-scheduler", "admin\easey-job-scheduler.csproj", "{3CCFC9F6-379F-4BEB-B929-5CDD28AA9E5A}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logger", "Logger\Logger.csproj", "{5AD067BC-D847-4E05-AAD9-986909E73AB6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quartz.Plugins.RecentHistory", "Quartz\Quartz.Plugins.RecentHistory\Quartz.Plugins.RecentHistory.csproj", "{AD000665-A776-4D57-8AEA-09CFB2EDA7D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobRunner", "JobRunner\JobRunner.csproj", "{3E2B7EBC-3BB8-464D-8156-24C289D35D41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +113,10 @@ Global
 		{AD000665-A776-4D57-8AEA-09CFB2EDA7D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD000665-A776-4D57-8AEA-09CFB2EDA7D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD000665-A776-4D57-8AEA-09CFB2EDA7D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E2B7EBC-3BB8-464D-8156-24C289D35D41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E2B7EBC-3BB8-464D-8156-24C289D35D41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E2B7EBC-3BB8-464D-8156-24C289D35D41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E2B7EBC-3BB8-464D-8156-24C289D35D41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,7 +9,8 @@ namespace Epa.Camd.Quartz.Scheduler
       public static readonly string EVALUATIONS = "EVALUATIONS";
       public static readonly string BULK_DATA = "BULK_DATA";
       public static readonly string MAINTAINANCE = "MAINTAINANCE";
-    }
+      public static readonly string DATA_MART_REFRESH = "DATA_MART_REFRESH";
+        }
 
     public static class EmailTemplateIds
     {
