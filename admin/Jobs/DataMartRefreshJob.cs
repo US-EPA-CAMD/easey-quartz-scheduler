@@ -107,6 +107,11 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     throw new Exception("Error occurred while executing camddmw.dm_refresh_get_start_info. See logs for details.");
                 }
 
+                if (!CallDataMartRefreshes_ForDataGroup("camddmw", "dm_refresh_all_unit_data", isFullRefresh, lookbackDate))
+                {
+                    throw new Exception("Error occurred while executing camddmw.dm_refresh_all_unit_data. See logs for details.");
+                }
+
                 if (!CallDataMartRefreshes_ForDataGroup("camddmw", "dm_refresh_all_allowance_data", isFullRefresh, lookbackDate))
                 {
                     throw new Exception("Error occurred while executing camddmw.dm_refresh_all_allowance_data. See logs for details.");
@@ -115,11 +120,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                 if (!CallDataMartRefreshes_ForDataGroup("camddmw", "dm_refresh_all_compliance_data", isFullRefresh, lookbackDate))
                 {
                     throw new Exception("Error occurred while executing camddmw.dm_refresh_all_compliance_data. See logs for details.");
-                }
-
-                if (!CallDataMartRefreshes_ForDataGroup("camddmw", "dm_refresh_all_unit_data", isFullRefresh, lookbackDate))
-                {
-                    throw new Exception("Error occurred while executing camddmw.dm_refresh_all_unit_data. See logs for details.");
                 }
 
                 logger.LogInformation("Completed Data Mart refresh stored procedures.");
