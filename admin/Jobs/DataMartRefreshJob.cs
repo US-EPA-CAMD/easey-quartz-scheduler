@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.PortableExecutable;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 
@@ -93,8 +94,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         {
             logger.LogInformation("Calling Data Mart refresh stored procedures.");
 
+            int? dmRefreshLogId = null;
+
             try
             {
+                if (!CallDataMartRefreshes_LogStart(out dmRefreshLogId))
+                {
+                    throw new Exception("Error occurred while executing camddmw.dm_refresh_get_start_info. See logs for details.");
+                }
+
                 CallDataMartRefreshes_Snapshots();
 
                 if (!CallDataMartRefreshes_UpdateSupportingData())
@@ -102,7 +110,7 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     throw new Exception("Error occurred while executing camddmw.dm_refresh_update_supporting_data. See logs for details.");
                 }
 
-                if (!CallDataMartRefreshes_GetStartInfo(out bool? isFullRefresh, out DateOnly? lookbackDate))
+                if (!CallDataMartRefreshes_GetStartInfo(dmRefreshLogId.Value, out bool? isFullRefresh, out DateOnly? lookbackDate))
                 {
                     throw new Exception("Error occurred while executing camddmw.dm_refresh_get_start_info. See logs for details.");
                 }
@@ -122,11 +130,22 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
                     throw new Exception("Error occurred while executing camddmw.dm_refresh_all_compliance_data. See logs for details.");
                 }
 
-                logger.LogInformation("Completed Data Mart refresh stored procedures.");
+                if (!CallDataMartRefreshes_LogComplete(dmRefreshLogId.Value))
+                {
+                    throw new Exception("Error occurred while executing camddmw.dm_refresh_log_complete. See logs for details.");
+                }
+
+                logger.LogInformation("Completed Data Mart refresh stored procedures for log ID {DmRefreshLogId}.", dmRefreshLogId);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error executing Data Mart refresh stored procedures.");
+
+                if (dmRefreshLogId.HasValue && !CallDataMartRefreshes_LogFailed(dmRefreshLogId.Value, ex))
+                {
+                    logger.LogError(ex, "Error occurred while logging Data Mart refresh failure for log ID {DmRefreshLogId}.", dmRefreshLogId.Value );
+                }
+
                 throw;
             }
         }
@@ -144,12 +163,12 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
             try
             {
-                var command = dbContext.ExecuteProcedure(storedProcedureFullName, []);
+                var command = dbContext.ExecuteProcedure(storedProcedureFullName, new ());
                 logger.LogInformation("{StoredProcedure} completed.", storedProcedureFullName);
             }
             catch (Exception ex)
             {
-                logger.LogInformation("{StoredProcedure} failed.", storedProcedureFullName);
+                logger.LogError(ex, "{StoredProcedure} failed.", storedProcedureFullName);
                 throw;
             }
         }
@@ -188,7 +207,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             lookbackDateInParameter.Value = lookbackDate ?? (object)DBNull.Value;
 
             // Execute the stored procedure
-            dbContext.ExecuteProcedure(storedProcedureFullName, [ isFullRefreshInParameter, lookbackDateInParameter, errorJsonOutParameter, resultOutParameter ]);
+            dbContext.ExecuteProcedure(
+                storedProcedureFullName,
+                new () { isFullRefreshInParameter, lookbackDateInParameter, errorJsonOutParameter, resultOutParameter }
+            );
 
             // Get the output values
             var errorJson = errorJsonOutParameter.Value != DBNull.Value ? errorJsonOutParameter.Value.ToString() : null;
@@ -225,29 +247,38 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
         /// 
         /// The stored procedure must have the following parameters:
         /// 
+        ///     - dmRefreshLogId_in (input parameter of type integer)
         ///     - isfullrefresh_out (output parameter of type boolean)
         ///     - lookbackdate_out (output parameter of type date)
         ///     - errorjson_out (output parameter of type json)
         ///     - result_out (output parameter of type boolean)
         /// </summary>
+        /// <param name="dmRefreshLogId">Primary key of the data mart refresh log.</param>
         /// <param name="isFullRefresh">Output parameter that indicates whether a full refresh is required.</param>
         /// <param name="lookbackDate">Output parameter that provides the lookback date.</param>
         /// <returns><see langword="true"/> when the stored procedure returns a successful result; otherwise, <see langword="false"/>.</returns>
         /// <exception cref="Exception">Thrown when <c>result_out</c> is missing or contains an unexpected value instead of a boolean success indicator.</exception>
-        private bool CallDataMartRefreshes_GetStartInfo(out bool? isFullRefresh, out DateOnly? lookbackDate)
+        private bool CallDataMartRefreshes_GetStartInfo(int dmRefreshLogId, out bool? isFullRefresh, out DateOnly? lookbackDate)
         {
             const string storedProcedureFullName = "camddmw.dm_refresh_get_start_info";
 
             logger.LogInformation("{StoredProcedure} starting", storedProcedureFullName);
 
             // Create parameters for the stored procedure
+            var dmRefreshLogIdInParameter = dbContext.CreateParameter("dmrefreshlogid_in", dmRefreshLogId.ToString(), NpgsqlDbType.Integer, System.Data.ParameterDirection.Input);
             var errorJsonOutParameter = dbContext.CreateParameter("errorjson_out", null, NpgsqlDbType.Json, System.Data.ParameterDirection.Output);
             var isFullRefreshOutParameter = dbContext.CreateParameter("isfullrefresh_out", null, NpgsqlDbType.Boolean, System.Data.ParameterDirection.Output);
             var lookbackDateOutParameter = dbContext.CreateParameter("lookbackdate_out", null, NpgsqlDbType.Date, System.Data.ParameterDirection.Output);
             var resultOutParameter = dbContext.CreateParameter("result_out", null, NpgsqlDbType.Boolean, System.Data.ParameterDirection.Output);
 
+            // Set the input parameter values, using DBNull.Value for nulls
+            dmRefreshLogIdInParameter.Value = dmRefreshLogId;
+
             // Execute the stored procedure
-            dbContext.ExecuteProcedure(storedProcedureFullName, [ isFullRefreshOutParameter, lookbackDateOutParameter, errorJsonOutParameter, resultOutParameter ]);
+            dbContext.ExecuteProcedure(
+                storedProcedureFullName,
+                new () { dmRefreshLogIdInParameter, isFullRefreshOutParameter, lookbackDateOutParameter, errorJsonOutParameter, resultOutParameter }
+            );
 
             // Get the output values
             var errorJson = errorJsonOutParameter.Value != DBNull.Value ? errorJsonOutParameter.Value.ToString() : null;
@@ -303,6 +334,244 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
 
 
         /// <summary>
+        /// Calls the camddmw.dm_refresh_log_complete stored procedure.
+        /// 
+        /// The stored procedure must have the following parameters:
+        /// 
+        ///     - dmRefreshLogId_in (input parameter of type integer)
+        ///     - errorjson_out (output parameter of type json)
+        ///     - result_out (output parameter of type boolean)
+        /// </summary>
+        /// <param name="dmRefreshLogId">Primary key of the data mart refresh log.</param>
+        /// <returns><see langword="true"/> when the stored procedure returns a successful result; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="Exception">Thrown when <c>result_out</c> is missing or contains an unexpected value instead of a boolean success indicator.</exception>
+        private bool CallDataMartRefreshes_LogComplete(int dmRefreshLogId)
+        {
+            const string storedProcedureFullName = "camddmw.dm_refresh_log_complete";
+
+            logger.LogInformation("{StoredProcedure} starting", storedProcedureFullName);
+
+            // Create parameters for the stored procedure
+            var dmRefreshLogIdInParameter = dbContext.CreateParameter("dmrefreshlogid_in", dmRefreshLogId.ToString(), NpgsqlDbType.Integer, System.Data.ParameterDirection.Input);
+            var errorJsonOutParameter = dbContext.CreateParameter("errorjson_out", null, NpgsqlDbType.Json, System.Data.ParameterDirection.Output);
+            var resultOutParameter = dbContext.CreateParameter("result_out", null, NpgsqlDbType.Boolean, System.Data.ParameterDirection.Output);
+
+            // Set the input parameter values, using DBNull.Value for nulls
+            dmRefreshLogIdInParameter.Value = dmRefreshLogId;
+
+            // Execute the stored procedure
+            dbContext.ExecuteProcedure(
+                storedProcedureFullName,
+                new () { dmRefreshLogIdInParameter, errorJsonOutParameter, resultOutParameter }
+            );
+
+            // Get the output values
+            var errorJson = errorJsonOutParameter.Value != DBNull.Value ? errorJsonOutParameter.Value.ToString() : null;
+            var result = resultOutParameter.Value != DBNull.Value ? (bool?)resultOutParameter.Value : null;
+
+
+            logger.LogInformation("{StoredProcedure} completed with result: {Result}", storedProcedureFullName, Convert.ToString(result) ?? "null");
+
+            // Log the results
+            if (result == null)
+            {
+                // Unexpected result value - treat as error
+                logger.LogError("{StoredProcedure} returned unexpected Result value: {Result}. Expected 'True' or 'False'. Error details: {ErrorJson}.",
+                                 storedProcedureFullName, Convert.ToString(result) ?? "null", errorJson ?? "null");
+                throw new Exception($"{storedProcedureFullName} returned unexpected Result value: '{Convert.ToString(result) ?? "null"}'. Expected 'True' or 'False'.");
+            }
+            else if (!result.Value)
+            {
+                if (!string.IsNullOrWhiteSpace(errorJson))
+                    logger.LogError("{StoredProcedure} returned an error. Error details: {ErrorJson}.",
+                                     storedProcedureFullName, errorJson ?? "null");
+                else
+                    logger.LogError("{StoredProcedure} returned an error.",
+                                     storedProcedureFullName);
+            }
+
+            return result ?? false;
+        }
+
+
+        /// <summary>
+        /// Calls the camddmw.dm_refresh_log_failed stored procedure.
+        /// 
+        /// The stored procedure must have the following parameters:
+        /// 
+        ///     - dmRefreshLogId_in (input parameter of type integer)
+        ///     - errorJson_in (input parameter of type json)
+        ///     - errorjson_out (output parameter of type json)
+        ///     - result_out (output parameter of type boolean)
+        /// </summary>
+        /// <param name="dmRefreshLogId">Primary key of the data mart refresh log.</param>
+        /// <param name="exception">The exception that captured the failure.</param>
+        /// <returns><see langword="true"/> when the stored procedure returns a successful result; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="Exception">Thrown when <c>result_out</c> is missing or contains an unexpected value instead of a boolean success indicator.</exception>
+        private bool CallDataMartRefreshes_LogFailed(int dmRefreshLogId, Exception exception)
+        {
+            const string storedProcedureFullName = "camddmw.dm_refresh_log_failed";
+
+            logger.LogInformation("{StoredProcedure} starting", storedProcedureFullName);
+
+            // Create parameters for the stored procedure
+            var dmRefreshLogIdInParameter = dbContext.CreateParameter("dmrefreshlogid_in", dmRefreshLogId.ToString(), NpgsqlDbType.Integer, System.Data.ParameterDirection.Input);
+            var errorJsonInParameter = dbContext.CreateParameter("errorjson_in", exception?.ToString(), NpgsqlDbType.Json, System.Data.ParameterDirection.Input);
+            var errorJsonOutParameter = dbContext.CreateParameter("errorjson_out", null, NpgsqlDbType.Json, System.Data.ParameterDirection.Output);
+            var resultOutParameter = dbContext.CreateParameter("result_out", null, NpgsqlDbType.Boolean, System.Data.ParameterDirection.Output);
+
+            // Set the input parameter values, using DBNull.Value for nulls
+            dmRefreshLogIdInParameter.Value = dmRefreshLogId;
+            errorJsonInParameter.Value = (exception != null)
+                                       ? JsonSerializer.Serialize
+                                         (
+                                           exception.GetType().ToString() == "Npgsql.PostgresException"
+                                           ? new Dictionary<string, string>
+                                             {
+                                                { "ExceptionType", exception.GetType().ToString() },
+                                                { "Message", exception.Message },
+                                                { "StackTrace", exception.StackTrace ?? string.Empty },
+                                                { "InnerException", exception.InnerException?.ToString() ?? string.Empty },
+                                                { "Source", exception.Source ?? string.Empty },
+                                                { "SqlState", ((PostgresException)exception).SqlState ?? string.Empty },
+                                                { "Severity", ((PostgresException)exception).Severity ?? string.Empty },
+                                                { "InvariantSeverity", ((PostgresException)exception).InvariantSeverity ?? string.Empty },
+                                                { "MessageText", ((PostgresException)exception).MessageText ?? string.Empty },
+                                                { "Detail", ((PostgresException)exception).Detail ?? string.Empty },
+                                                { "Hint", ((PostgresException)exception).Hint ?? string.Empty },
+                                                { "InternalQuery", ((PostgresException)exception).InternalQuery ?? string.Empty },
+                                                { "Where", ((PostgresException)exception).Where ?? string.Empty },
+                                                { "SchemaName", ((PostgresException)exception).SchemaName ?? string.Empty },
+                                                { "TableName", ((PostgresException)exception).TableName ?? string.Empty },
+                                                { "ColumnName", ((PostgresException)exception).ColumnName ?? string.Empty },
+                                                { "DataTypeName", ((PostgresException)exception).DataTypeName ?? string.Empty },
+                                                { "ConstraintName", ((PostgresException)exception).ConstraintName ?? string.Empty },
+                                                { "File", ((PostgresException)exception).File ?? string.Empty },
+                                                { "Line", ((PostgresException)exception).Line ?? string.Empty },
+                                                { "Routine", ((PostgresException)exception).Routine ?? string.Empty },
+                                                { "IsTransient", ((PostgresException)exception).IsTransient ? "True" : "False" }
+                                             }
+                                           : new Dictionary<string, string>
+                                             {
+                                                { "ExceptionType", exception.GetType().ToString() },
+                                                { "Message", exception.Message },
+                                                { "StackTrace", exception.StackTrace ?? string.Empty },
+                                                { "InnerException", exception.InnerException?.ToString() ?? string.Empty },
+                                                { "Source", exception.Source ?? string.Empty }
+                                             }
+                                         )
+                                       : "{ \"Message\": \"No exception provided\" }";
+            /*
+            errorJsonInParameter.Value = (exception != null)
+                                       ? JsonSerializer.Serialize
+                                         (
+                                            exception.GetType() // Retrieve the exact runtime Type of the exception.
+                                                     .GetProperties() // Get all public properties of the exception type
+                                                     .Where(p => p.Name != nameof(Exception.TargetSite)) // Exclude TargetSite property which returns MethodBase object that includes non-serializable data.
+                                                     .ToDictionary(p => p.Name, p => p.GetValue(exception)?.ToString()) // Create a dictionary of property names and their string values.
+                                         )
+                                       : "{ \"Message\": \"No exception provided\" }";
+            */
+
+            // Execute the stored procedure
+            dbContext.ExecuteProcedure(
+                storedProcedureFullName,
+                new () { dmRefreshLogIdInParameter, errorJsonInParameter, errorJsonOutParameter, resultOutParameter }
+            );
+
+            // Get the output values
+            var errorJson = errorJsonOutParameter.Value != DBNull.Value ? errorJsonOutParameter.Value.ToString() : null;
+            var result = resultOutParameter.Value != DBNull.Value ? (bool?)resultOutParameter.Value : null;
+
+
+            logger.LogInformation("{StoredProcedure} completed with result: {Result}", storedProcedureFullName, Convert.ToString(result) ?? "null");
+
+            // Log the results
+            if (result == null)
+            {
+                // Unexpected result value - treat as error
+                logger.LogError("{StoredProcedure} returned unexpected Result value: {Result}. Expected 'True' or 'False'. Error details: {ErrorJson}.",
+                                 storedProcedureFullName, Convert.ToString(result) ?? "null", errorJson ?? "null");
+                throw new Exception($"{storedProcedureFullName} returned unexpected Result value: '{Convert.ToString(result) ?? "null"}'. Expected 'True' or 'False'.");
+            }
+            else if (!result.Value)
+            {
+                if (!string.IsNullOrWhiteSpace(errorJson))
+                    logger.LogError("{StoredProcedure} returned an error. Error details: {ErrorJson}.",
+                                     storedProcedureFullName, errorJson ?? "null");
+                else
+                    logger.LogError("{StoredProcedure} returned an error.",
+                                     storedProcedureFullName);
+            }
+
+            return result ?? false;
+        }
+
+
+        /// <summary>
+        /// Calls the camddmw.dm_refresh_log_start stored procedure.
+        /// 
+        /// The stored procedure must have the following parameters:
+        /// 
+        ///     - dmRefreshLogId (output parameter of type integer)
+        ///     - errorjson_out (output parameter of type json)
+        ///     - result_out (output parameter of type boolean)
+        /// </summary>
+        /// <param name="dmRefreshLogId">Primary key of the data mart refresh log.</param>
+        /// <returns><see langword="true"/> when the stored procedure returns a successful result; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="Exception">Thrown when <c>result_out</c> is missing or contains an unexpected value instead of a boolean success indicator.</exception>
+        private bool CallDataMartRefreshes_LogStart(out int? dmRefreshLogId)
+        {
+            const string storedProcedureFullName = "camddmw.dm_refresh_log_start";
+
+            logger.LogInformation("{StoredProcedure} starting", storedProcedureFullName);
+
+            // Create parameters for the stored procedure
+            var dmRefreshLogIdOutParameter = dbContext.CreateParameter("dmrefreshlogid_out", null, NpgsqlDbType.Integer, System.Data.ParameterDirection.Output);
+            var errorJsonOutParameter = dbContext.CreateParameter("errorjson_out", null, NpgsqlDbType.Json, System.Data.ParameterDirection.Output);
+            var resultOutParameter = dbContext.CreateParameter("result_out", null, NpgsqlDbType.Boolean, System.Data.ParameterDirection.Output);
+
+            // Execute the stored procedure
+            dbContext.ExecuteProcedure(
+                storedProcedureFullName,
+                new () { dmRefreshLogIdOutParameter, errorJsonOutParameter, resultOutParameter }
+            );
+
+            // Get the output values
+            dmRefreshLogId = dmRefreshLogIdOutParameter.Value != DBNull.Value ? (int?)dmRefreshLogIdOutParameter.Value : null;
+            var errorJson = errorJsonOutParameter.Value != DBNull.Value ? errorJsonOutParameter.Value.ToString() : null;
+            var result = resultOutParameter.Value != DBNull.Value ? (bool?)resultOutParameter.Value : null;
+
+
+            logger.LogInformation("{StoredProcedure} completed with result: {Result}", storedProcedureFullName, Convert.ToString(result) ?? "null");
+
+            // Log the results
+            if (result == null)
+            {
+                // Unexpected result value - treat as error
+                logger.LogError("{StoredProcedure} returned unexpected Result value: {Result}. Expected 'True' or 'False'. Error details: {ErrorJson}.",
+                                 storedProcedureFullName, Convert.ToString(result) ?? "null", errorJson ?? "null");
+                throw new Exception($"{storedProcedureFullName} returned unexpected Result value: '{Convert.ToString(result) ?? "null"}'. Expected 'True' or 'False'.");
+            }
+            else if (!result.Value)
+            {
+                if (!string.IsNullOrWhiteSpace(errorJson))
+                    logger.LogError("{StoredProcedure} returned an error. Error details: {ErrorJson}.",
+                                     storedProcedureFullName, errorJson ?? "null");
+                else
+                    logger.LogError("{StoredProcedure} returned an error.",
+                                     storedProcedureFullName);
+            }
+            else
+            {
+                logger.LogInformation("{StoredProcedure} indicates an incremental refresh is required.", storedProcedureFullName);
+            }
+
+            return result ?? false;
+        }
+
+
+        /// <summary>
         /// Calls camddmw.dm_refresh_update_supporting_data stored procedure and returns the result of the stored procedure.  If the stored procedure returns false, then an error occurred and the error details are logged.
         /// 
         /// The stored procedure must have the following parameters:
@@ -323,7 +592,10 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             var resultOutParameter = dbContext.CreateParameter("result_out", null, NpgsqlDbType.Boolean, System.Data.ParameterDirection.Output);
 
             // Execute the stored procedure
-            dbContext.ExecuteProcedure(storedProcedureFullName, [ errorJsonOutParameter, resultOutParameter ]);
+            dbContext.ExecuteProcedure(
+                storedProcedureFullName,
+                new () { errorJsonOutParameter, resultOutParameter }
+            );
 
             // Get the output values
             var errorJson = errorJsonOutParameter.Value != DBNull.Value ? errorJsonOutParameter.Value.ToString() : null;
