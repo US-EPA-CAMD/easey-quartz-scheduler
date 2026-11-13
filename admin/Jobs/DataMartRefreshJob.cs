@@ -286,8 +286,6 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             var result = resultOutParameter.Value != DBNull.Value ? (bool?)resultOutParameter.Value : null;
 
             // Should handle default type change for PostgreSQL Date type in Npgsql version 10.
-            
-            
             lookbackDate = lookbackDateOutParameter.Value switch
             {
                 DateTime datatime => DateOnly.FromDateTime(datatime),
