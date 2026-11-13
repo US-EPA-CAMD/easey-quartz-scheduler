@@ -283,8 +283,15 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             // Get the output values
             var errorJson = errorJsonOutParameter.Value != DBNull.Value ? errorJsonOutParameter.Value.ToString() : null;
             isFullRefresh = isFullRefreshOutParameter.Value != DBNull.Value ? (bool?)isFullRefreshOutParameter.Value : null;
-            lookbackDate = lookbackDateOutParameter.Value != DBNull.Value ? (DateOnly?)lookbackDateOutParameter.Value : null;
             var result = resultOutParameter.Value != DBNull.Value ? (bool?)resultOutParameter.Value : null;
+
+            // Should handle default type change for PostgreSQL Date type in Npgsql version 10.
+            lookbackDate = lookbackDateOutParameter.Value switch
+            {
+                DateTime datatime => DateOnly.FromDateTime(datatime),
+                DateOnly dataonly => dataonly,
+                _ => null
+            };
 
 
             logger.LogInformation("{StoredProcedure} completed with result: {Result}", storedProcedureFullName, Convert.ToString(result) ?? "null");
