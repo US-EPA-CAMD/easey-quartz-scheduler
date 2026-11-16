@@ -288,8 +288,8 @@ namespace Epa.Camd.Quartz.Scheduler.Jobs
             // Should handle default type change for PostgreSQL Date type in Npgsql version 10.
             lookbackDate = lookbackDateOutParameter.Value switch
             {
-                DateTime datatime => DateOnly.FromDateTime(datatime),
-                DateOnly dataonly => dataonly,
+                DateTime datetime => DateOnly.FromDateTime(datetime),
+                DateOnly dateonly => dateonly,
                 _ => null
             };
 
