@@ -16,6 +16,10 @@ updates:
     schedule:
       interval: "daily" 
     open-pull-requests-limit: 25
+    groups:
+      quartz:
+        patterns:
+          - "Quartz*"
     ignore:
       - dependency-name: "Microsoft.Extensions.FileProviders.Embedded"
         versions: [">=9.0.0"]
